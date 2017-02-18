@@ -56,7 +56,7 @@ class PullRequestDetailsPresenter extends BasePresenter<PullRequestDetailsMvp.Vi
     }
 
     @Override public void onItemLongClick(int position, View v, PullRequestAdapterModel item) {
-        //TODO
+        onItemClick(position, v, item);
     }
 
     @Override public int getCurrentPage() {

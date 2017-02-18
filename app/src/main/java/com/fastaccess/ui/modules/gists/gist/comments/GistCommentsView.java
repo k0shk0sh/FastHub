@@ -54,7 +54,6 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         gistId = getArguments().getString("gistId");
         recycler.setEmptyView(stateLayout, refresh);
-        recycler.setItemViewCacheSize(10);//FIXME
         if (gistId == null) return;
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);

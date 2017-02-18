@@ -66,7 +66,7 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
     }
 
     @Override public void onItemLongClick(int position, View v, IssueEventAdapterModel item) {
-        //TODO
+        onItemClick(position, v, item);
     }
 
     @Override public int getCurrentPage() {
