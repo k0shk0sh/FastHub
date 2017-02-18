@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_gravity="center"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_xs_large"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_back"
+            android:tint="@color/black"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            style="@style/Base.TextAppearance.AppCompat.Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_weight="1"
+            android:text="@string/markdown"/>
+
+        <com.fastaccess.ui.widgets.FontButton
+            android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/cancel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/bluish_primary"/>
+
+        <com.fastaccess.ui.widgets.FontButton
+            android:id="@+id/ok"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/submit"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/bluish_accent"/>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/toolbar_shadow"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <com.fastaccess.ui.widgets.FontEditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/transparent"
+            android:gravity="top|start"
+            android:hint="@string/type_here"
+            android:inputType="textMultiLine"
+            android:minLines="5"
+            android:padding="@dimen/spacing_xs_large"
+            android:scrollbars="vertical"
+            tools:ignore="ScrollViewSize"/>
+
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/toolbar_shadow_up"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal">
+
+        <HorizontalScrollView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_weight="1"
+            android:fadeScrollbars="true"
+            android:scrollbarFadeDuration="500"
+            android:scrollbarSize="1dp"
+            android:scrollbarStyle="outsideOverlay">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start|center"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/headerOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/header_one"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_header_one"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/headerTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/header_two"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_header_two"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/headerThree"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/header_three"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_header_three"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/bold"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_format_bold"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/italic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/italic"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_format_italic"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/strikethrough"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/strike_through"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_format_strikethrough"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/bullet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/bullet"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_format_list_bulleted"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/numbered"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/numbered_list"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_list_numbers"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/header"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/header"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_minus"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/code"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_code"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/quote"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/quote"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_format_quote"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/link"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/link"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_insert_link"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/image"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/image"
+                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_image"/>
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_normal"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_eye"/>
+    </LinearLayout>
+</LinearLayout>

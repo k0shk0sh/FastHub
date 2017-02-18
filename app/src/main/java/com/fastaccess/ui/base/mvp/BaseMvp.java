@@ -1,0 +1,57 @@
+package com.fastaccess.ui.base.mvp;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
+
+import net.grandcentrix.thirtyinch.TiView;
+
+import rx.Observable;
+import rx.Subscription;
+import rx.functions.Action1;
+
+/**
+ * Created by Kosh on 25 May 2016, 9:09 PM
+ */
+
+public interface BaseMvp {
+    interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback {
+        void showProgress(@StringRes int resId);
+
+        void hideProgress();
+
+        void showMessage(@StringRes int titleRes, @StringRes int msgRes);
+
+        void showMessage(@NonNull String titleRes, @NonNull String msgRes);
+
+        void showErrorMessage(@NonNull String msgRes);
+
+        boolean isLoggedIn();
+    }
+
+    interface FAPresenter {
+        void manageSubscription(@Nullable Subscription subscription);
+
+        boolean isApiCalled();
+
+        void onSubscribed();
+
+        <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable);
+
+        <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Action1<T> onNext);
+    }
+
+    interface PaginationListener<P> {
+        int getCurrentPage();
+
+        int getPreviousTotal();
+
+        void setCurrentPage(int page);
+
+        void setPreviousTotal(int previousTotal);
+
+        void onCallApi(int page, @Nullable P parameter);
+    }
+}

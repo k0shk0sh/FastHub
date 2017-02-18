@@ -1,0 +1,7 @@
+<resources>
+    <dimen name="layout_margin">84dp</dimen>
+    <integer name="num_columns">3</integer>
+    <dimen name="fab_margin">24dp</dimen>
+    <integer name="small_spans">3</integer>
+    <dimen name="grid_spacing">@dimen/spacing_micro</dimen>
+</resources>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest package="com.fastaccess"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name=".App"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name="com.fastaccess.ui.modules.main.MainView">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.modules.login.LoginView"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="fast-for-github.firebaseapp.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.modules.user.UserPagerView"
+            android:label="@string/user"/>
+
+        <activity
+            android:name=".ui.modules.repos.RepoPagerView"
+            android:label="@string/repo"/>
+
+        <activity
+            android:name=".ui.modules.repos.issues.issue.details.IssuePagerView"
+            android:label="@string/issue"/>
+
+        <activity
+            android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
+            android:label="@string/pull_request"/>
+
+        <activity
+            android:name=".ui.modules.repos.code.commit.details.CommitPagerView"
+            android:label="@string/commit"/>
+
+        <activity
+            android:name=".ui.modules.code.CodeViewerView"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/viewer"/>
+
+        <activity
+            android:name=".ui.modules.editor.EditorView"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/write"/>
+
+        <activity
+            android:name=".ui.modules.gists.create.CreateGistView"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/create_gist"/>
+
+        <activity
+            android:name=".ui.modules.gists.gist.GistView"
+            android:label="@string/gist"/>
+
+        <activity android:name=".ui.modules.search.SearchView"/>
+
+        <activity
+            android:name=".ui.modules.parser.LinksParserActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:theme="@android:style/Theme.NoDisplay">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <data
+                    android:host="github.com"
+                    android:scheme="http"/>
+                <data
+                    android:host="github.com"
+                    android:scheme="https"/>
+
+                <data
+                    android:host="gist.github.com"
+                    android:scheme="http"/>
+                <data
+                    android:host="gist.github.com"
+                    android:scheme="https"/>
+
+                <data android:pathPattern=".*"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      android:layout_width="wrap_content"
+      app:bbn_itemAnimationDuration="200"
+      app:bbn_itemColorActive="?colorAccent"
+      app:bbn_itemColorInactive="@color/dark_gray"
+      app:bbn_rippleColor="@color/transparent">
+
+    <item
+        android:id="@+id/feeds"
+        android:color="?colorPrimary"
+        android:icon="@drawable/ic_github"
+        android:title="@string/feeds"/>
+
+    <item
+        android:id="@+id/gists"
+        android:color="?colorPrimary"
+        android:icon="@drawable/ic_gists"
+        android:title="@string/gists"/>
+    <item
+        android:id="@+id/profile"
+        android:color="?colorPrimary"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/profile"/>
+
+</menu>

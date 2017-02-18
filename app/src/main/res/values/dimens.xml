@@ -1,0 +1,26 @@
+<resources>
+    <dimen name="layout_margin">16dp</dimen>
+    <dimen name="spacing_micro">4dp</dimen>
+    <dimen name="spacing_normal">8dp</dimen>
+    <dimen name="spacing_xs_large">16dp</dimen>
+    <dimen name="spacing_s_large">24dp</dimen>
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_xlarge">48dp</dimen>
+    <dimen name="spacing_huge">64dp</dimen>
+    <dimen name="keyline_1">72dp</dimen>
+    <dimen name="fab_spacing">86dp</dimen> <!-- keyline + fab margin -->
+    <dimen name="fab_margin">16dp</dimen>
+    <integer name="num_columns">1</integer>
+    <integer name="small_spans">1</integer>
+    <dimen name="grid_spacing">0dp</dimen>
+    <dimen name="bullet_radius">2dp</dimen>
+    <dimen name="bullet_gap_width">8dp</dimen>
+    <dimen name="quote_stripe_width">8dp</dimen>
+    <dimen name="quote_gap_width">2dp</dimen>
+    <item name="aspect_16_9" format="float" type="dimen">1.7778</item>
+    <item name="aspect_4_3" format="float" type="dimen">1.3333</item>
+    <item name="aspect_large" format="float" type="dimen">2.5</item>
+    <dimen name="large_icon_zie">48dp</dimen>
+    <dimen name="header_icon_zie">64dp</dimen>
+    <dimen name="icon_size">24dp</dimen>
+</resources>

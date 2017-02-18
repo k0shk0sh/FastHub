@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <set android:ordering="together">
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:propertyName="backgroundColor"
+                android:valueFrom="@color/windowBackground"
+                android:valueTo="@color/white"
+                android:valueType="colorType"/>
+
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:propertyName="translationZ"
+                android:startOffset="300"
+                android:valueTo="2dp"/>
+        </set>
+    </item>
+
+    <item>
+        <set android:ordering="together">
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:propertyName="backgroundColor"
+                android:valueFrom="@color/white"
+                android:valueTo="@color/windowBackground"
+                android:valueType="colorType"/>
+
+            <objectAnimator
+                android:duration="@android:integer/config_shortAnimTime"
+                android:interpolator="@android:interpolator/fast_out_slow_in"
+                android:propertyName="translationZ"
+                android:valueTo="0dp"/>
+        </set>
+    </item>
+
+</selector>

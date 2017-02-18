@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/header_background"
+    android:gravity="bottom"
+    android:minHeight="172dp"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_xs_large">
+
+    <com.fastaccess.ui.widgets.AvatarLayout
+        android:id="@+id/avatarLayout"
+        android:layout_width="@dimen/header_icon_zie"
+        android:layout_height="@dimen/header_icon_zie"
+        android:layout_marginBottom="@dimen/spacing_normal"/>
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/username"
+        style="@style/TextAppearance.AppCompat.Title.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"/>
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/email"
+        style="@style/TextAppearance.AppCompat.Medium.Inverse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"/>
+
+</LinearLayout>

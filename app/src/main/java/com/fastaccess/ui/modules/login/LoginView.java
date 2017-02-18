@@ -1,0 +1,83 @@
+package com.fastaccess.ui.modules.login;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import com.fastaccess.R;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.main.MainView;
+import com.fastaccess.ui.widgets.AppbarRefreshLayout;
+
+import butterknife.BindView;
+
+/**
+ * Created by Kosh on 08 Feb 2017, 9:10 PM
+ */
+
+public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> implements LoginMvp.View {
+
+
+    @BindView(R.id.webView) WebView webView;
+    @BindView(R.id.refresh) AppbarRefreshLayout refresh;
+
+    @Override protected int layout() {
+        return R.layout.login_layout;
+    }
+
+    @Override protected boolean isTransparent() {
+        return true;
+    }
+
+    @Override protected boolean canBack() {
+        return false;
+    }
+
+    @Override protected boolean isSecured() {
+        return true;
+    }
+
+    @NonNull @Override public LoginPresenter providePresenter() {
+        return new LoginPresenter();
+    }
+
+    @Override public void onRefresh() {
+        webView.loadUrl(getPresenter().getAuthorizationUrl().toString());
+    }
+
+    @Override public void onSuccessfullyLoggedIn() {
+        hideProgress();
+        startActivity(new Intent(this, MainView.class));
+        finish();
+    }
+
+    @Override protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        refresh.setOnRefreshListener(this);
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override public void onProgressChanged(WebView view, int progress) {
+                super.onProgressChanged(view, progress);
+                if (progress == 100) {
+                    refresh.setRefreshing(false);
+                } else if (progress < 100) {
+                    refresh.setRefreshing(true);//if (!refresh.isRefreshing())  is handled by the method,we shouldn't care.
+                }
+            }
+        });
+        webView.setWebViewClient(new WebViewClient() {
+            @SuppressWarnings("deprecation") @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                String code = getPresenter().getCode(url);
+                Logger.e(code, url);
+                if (code != null) {
+                    getPresenter().onGetToken(code);
+                }
+                return false;
+            }
+        });
+        onRefresh();
+    }
+}

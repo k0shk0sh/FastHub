@@ -1,0 +1,118 @@
+apply plugin: 'com.android.application'
+apply plugin: 'me.tatarka.retrolambda'
+apply plugin: "com.neenbedankt.android-apt"
+apply plugin: 'com.jakewharton.hugo'
+apply plugin: 'com.siimkinks.sqlitemagic'
+
+android {
+    signingConfigs {
+        signing {
+            keyAlias ANDROID_KEY_ALIAS
+            keyPassword ANDROID_STORE_PASSWORD
+            storeFile file('StyleMe')
+            storePassword ANDROID_STORE_PASSWORD
+        }
+    }
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        applicationId "com.fastaccess.github"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 100
+        versionName "1.0.0"
+        signingConfig signingConfigs.signing
+        buildConfigField "String", "GITHUB_CLIENT_ID", "\"${GITHUB_CLIENT_ID}\""
+        buildConfigField "String", "GITHUB_SECRET", "\"${GITHUB_SECRET}\""
+        buildConfigField "String", "REDIRECT_URL", "\"${REDIRECT_URL}\""
+        buildConfigField "String", "REST_URL", '"https://api.github.com/"'
+    }
+    buildTypes {
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    "src/main/res/",
+                    "src/main/res/layouts/main_layouts",
+                    "src/main/res/layouts/row_layouts",
+                    "src/main/res/layouts/other_layouts",
+                    "src/main/res"
+            ]
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+        htmlReport true
+        xmlReport true
+        disable 'InvalidPackage'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    configurations {
+        all*.exclude module: 'annotations'
+    }
+}
+
+retrolambda {
+    oldJdk System.getenv("JAVA7_HOME")
+}
+
+repositories {
+    maven { url "https://clojars.org/repo/" }
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+    maven { url "http://dl.bintray.com/amulyakhare/maven" }
+    maven { url "https://jitpack.io" }
+    maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
+    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
+}
+
+dependencies {
+    ext {
+        supportVerion = "25.1.1"
+        firebase = "10.0.1"
+        thirtyinchVersion = '0.8.0-rc3'
+        retrofit = '2.1.0'
+    }
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile "com.android.support:appcompat-v7:${supportVerion}"
+    compile "com.android.support:design:${supportVerion}"
+    compile "com.android.support:cardview-v7:${supportVerion}"
+    compile "com.android.support:recyclerview-v7:${supportVerion}"
+    compile "com.android.support:preference-v14:${supportVerion}"
+    compile "com.android.support:customtabs:${supportVerion}"
+    compile "com.google.firebase:firebase-messaging:${firebase}"
+    compile "com.google.firebase:firebase-analytics:${firebase}"
+    compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
+    compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
+    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+    compile 'frankiesardo:icepick:3.1.0'
+    compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:1.0.7'
+    compile 'pub.devrel:easypermissions:0.2.1'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.2'
+    compile "com.squareup.retrofit2:retrofit:${retrofit}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofit}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
+    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'com.annimon:stream:1.1.4'
+    compile 'com.commonsware.cwac:anddown:0.3.0'
+    provided "org.projectlombok:lombok:1.12.6"
+    apt "org.projectlombok:lombok:1.12.6"
+    apt 'frankiesardo:icepick-processor:3.1.0'
+    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+}
+
+apply plugin: "com.google.gms.google-services"

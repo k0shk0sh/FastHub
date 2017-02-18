@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_micro"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground"
+    android:stateListAnimator="@animator/cardview_selector"
+    app:contentPaddingBottom="@dimen/spacing_normal"
+    app:contentPaddingLeft="@dimen/spacing_xs_large"
+    app:contentPaddingRight="@dimen/spacing_xs_large"
+    app:contentPaddingTop="@dimen/spacing_normal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.AvatarLayout
+                android:id="@+id/avatarView"
+                android:layout_width="48dp"
+                android:layout_height="48dp"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/name"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_weight="1"
+                android:maxLines="1"
+                android:textColor="@color/primary_text"
+                tools:text="When one acquires"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/date"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/secondary_text"
+                tools:text="50 minutes ago"/>
+        </LinearLayout>
+
+        <com.fastaccess.ui.widgets.SpanFixTextView
+            android:id="@+id/comment"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:textColor="@color/primary_text"
+            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

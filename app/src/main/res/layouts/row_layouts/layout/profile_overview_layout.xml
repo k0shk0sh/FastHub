@@ -1,0 +1,201 @@
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:paddingBottom="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/layout_margin"
+    android:paddingStart="@dimen/layout_margin"
+    android:paddingTop="@dimen/spacing_normal">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xs_large">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <android.support.v7.widget.CardView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="36dp"
+                        app:cardUseCompatPadding="true"
+                        app:contentPaddingBottom="@dimen/spacing_xs_large"
+                        app:contentPaddingLeft="@dimen/spacing_xs_large"
+                        app:contentPaddingRight="@dimen/spacing_xs_large"
+                        app:contentPaddingTop="@dimen/spacing_s_large">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
+                            android:orientation="vertical">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                android:id="@+id/username"
+                                style="@style/Base.TextAppearance.AppCompat.Title"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:paddingTop="@dimen/spacing_normal"
+                                android:textStyle="bold"
+                                android:transitionName="@string/title_transition"
+                                tools:text="Cum classis nocere"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                android:id="@+id/description"
+                                style="@style/Base.TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_micro"
+                                android:layout_marginTop="@dimen/spacing_micro"
+                                tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
+                        </LinearLayout>
+
+                    </android.support.v7.widget.CardView>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="90dp"
+                    android:layout_gravity="top|center">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/following"
+                        style="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|bottom|center"
+                        android:layout_marginEnd="@dimen/spacing_xs_large"
+                        android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:gravity="center"
+                        tools:text="Following\n40"/>
+
+                    <com.fastaccess.ui.widgets.AvatarLayout
+                        android:id="@+id/avatarLayout"
+                        android:layout_width="@dimen/keyline_1"
+                        android:layout_height="@dimen/keyline_1"
+                        android:layout_gravity="top|center"
+                        android:transitionName="@string/icon_transition"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/followers"
+                        style="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|bottom|center"
+                        android:layout_marginEnd="@dimen/spacing_xs_large"
+                        android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:gravity="center"
+                        tools:text="Followers\n140"/>
+                </FrameLayout>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardUseCompatPadding="true"
+                    app:contentPaddingBottom="@dimen/spacing_xs_large"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_s_large">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/organization"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:drawablePadding="@dimen/spacing_xs_large"
+                            android:drawableStart="@drawable/ic_group"
+                            tools:text="Cum classis nocere"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/location"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:autoLink="map"
+                            android:drawablePadding="@dimen/spacing_xs_large"
+                            android:drawableStart="@drawable/ic_location"
+
+                            tools:text="Cum classis nocere"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/email"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:autoLink="email"
+                            android:drawablePadding="@dimen/spacing_xs_large"
+                            android:drawableStart="@drawable/ic_email"
+                            tools:text="Cum classis nocere"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/link"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:autoLink="web"
+                            android:drawablePadding="@dimen/spacing_xs_large"
+                            android:drawableStart="@drawable/ic_insert_link"
+                            tools:text="Cum classis nocere"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/joined"
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/spacing_xs_large"
+                            android:drawableStart="@drawable/ic_time"
+                            tools:text="Cum classis nocere"/>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/progress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?android:windowBackground"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+    </FrameLayout>
+</android.support.v4.widget.NestedScrollView>

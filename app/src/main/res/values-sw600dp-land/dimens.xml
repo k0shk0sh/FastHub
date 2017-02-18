@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="layout_margin">52dp</dimen>
+    <dimen name="fab_margin">24dp</dimen>
+    <integer name="small_spans">2</integer>
+    <dimen name="grid_spacing">@dimen/spacing_micro</dimen>
+</resources>

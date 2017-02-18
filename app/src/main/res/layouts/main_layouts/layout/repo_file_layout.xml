@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingStart="@dimen/spacing_xs_large"
+        android:paddingTop="@dimen/spacing_normal"
+        android:orientation="horizontal">
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/toParentFolder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/parent_folder"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:padding="8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_home"
+            android:visibility="gone"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:orientation="horizontal"
+            app:layoutManager="@string/linear_layout_manager"
+            tools:listitem="@layout/file_path_row_item"/>
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/filesFragment"
+        android:name="com.fastaccess.ui.modules.repos.code.files.RepoFilesView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/spacing_micro"
+        tools:layout="@layout/vertical_refresh_list"/>
+
+</LinearLayout>
