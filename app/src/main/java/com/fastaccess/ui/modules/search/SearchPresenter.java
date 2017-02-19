@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.widget.AutoCompleteTextView;
 
-import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SearchHistoryModel;
@@ -53,9 +52,8 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
             users.onSetSearchQuery(query);
             issues.onSetSearchQuery(query);
             code.onSetSearchQuery(query);
-            Optional<Boolean> noneMatch = Stream.of(hints).map(searchHistoryModel -> !searchHistoryModel.getText().equalsIgnoreCase(query))
-                    .findFirst();
-            if (noneMatch.isPresent() && noneMatch.get()) {
+            boolean noneMatch = Stream.of(hints).noneMatch(value -> value.getText().equalsIgnoreCase(query));
+            if (noneMatch) {
                 manageSubscription(new SearchHistoryModel(query).save().subscribe());
                 sendToView(view -> view.onNotifyAdapter(new SearchHistoryModel(query)));
             }
