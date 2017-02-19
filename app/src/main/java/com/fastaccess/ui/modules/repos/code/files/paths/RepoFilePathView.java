@@ -10,6 +10,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesView;
@@ -52,21 +53,38 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
 
     @Override public void onItemClicked(@NonNull RepoFilesModel model, int position) {
         if (getRepoFilesView().isRefreshing()) return; // avoid calling for path while the other still loading...
-        if ((adapter.getItemCount() - 1) > position) {
+        if ((position + 1) < adapter.getItemCount()) {
             adapter.subList(position + 1, adapter.getItemCount());
         }
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), model.getPath());
+
     }
 
     @Override public void onAppendPath(@NonNull RepoFilesModel model) {
         adapter.addItem(model);
         onShowHideBackBtn();
-        recycler.scrollToPosition(adapter.getItemCount() - 1); //smoothScrollToPosition(index) hides the recyclerview? WTF GOOGLE.
+        recycler.scrollToPosition(adapter.getItemCount() - 1); //smoothScrollToPosition(index) hides the recyclerview? MIND-BLOWING??.
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), model.getPath());
     }
 
     @Override public void onSendData() {
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPath());
+    }
+
+    @Override public boolean canPressBack() {
+        return adapter == null || adapter.getItemCount() == 0;
+    }
+
+    @Override public void onBackPressed() {
+        int position = adapter.getItemCount() > 2 ? adapter.getItemCount() - 2 : adapter.getItemCount() - 1;
+        Logger.e(position, adapter.getItemCount());
+        if (position > 0 && position <= adapter.getItemCount()) {
+            if (position == 1) position = 0;
+            RepoFilesModel repoFilesModel = adapter.getItem(position);
+            onItemClicked(repoFilesModel, position);
+        } else {
+            onBackClicked();
+        }
     }
 
     @Override protected int fragmentLayout() {

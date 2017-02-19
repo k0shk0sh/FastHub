@@ -93,11 +93,10 @@ dependencies {
     compile "com.google.firebase:firebase-analytics:${firebase}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
-    compile 'com.android.support.constraint:constraint-layout:1.0.0-beta4'
+    compile 'com.firebase:firebase-jobdispatcher:0.5.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
     compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'org.greenrobot:eventbus:3.0.0'
     compile 'frankiesardo:icepick:3.1.0'
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:1.0.7'
     compile 'pub.devrel:easypermissions:0.2.1'

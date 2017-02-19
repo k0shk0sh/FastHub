@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.commonsware.cwac.anddown.AndDown;
 import com.fastaccess.helper.TypeFaceHelper;
+import com.fastaccess.provider.tasks.NotificationJobTask;
 import com.fastaccess.provider.uil.UILProvider;
 import com.siimkinks.sqlitemagic.SqliteMagic;
 
@@ -25,12 +26,12 @@ public class App extends Application {
         SqliteMagic.init(this);
         UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
+        NotificationJobTask.scheduleJob(this);//schedule the job for the notifications
     }
 
     @NonNull public static App getInstance() {
         return instance;
     }
-
 
     @NonNull public AndDown getAndDown() {
         if (andDown == null) {

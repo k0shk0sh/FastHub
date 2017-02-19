@@ -87,6 +87,8 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         } else if (item.getItemId() == R.id.search) {
             startActivity(new Intent(this, SearchView.class));
             return true;
+        } else if (item.getItemId() == R.id.notifications) {
+            //TODO
         }
         return super.onOptionsItemSelected(item);
     }

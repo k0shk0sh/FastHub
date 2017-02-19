@@ -24,6 +24,10 @@ interface RepoFilePathMvp {
         void onAppendPath(@NonNull RepoFilesModel model);
 
         void onSendData();
+
+        boolean canPressBack();
+
+        void onBackPressed();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

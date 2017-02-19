@@ -23,6 +23,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -243,6 +244,21 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onBackPressed() {
+        if (navType == RepoPagerMvp.CODE) {
+            RepoCodePagerView codePagerView = (RepoCodePagerView) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoCodePagerView.TAG);
+            if (codePagerView != null) {
+                if (codePagerView.canPressBack()) {
+                    super.onBackPressed();
+                } else {
+                    codePagerView.onBackPressed();
+                    return;
+                }
+            }
+        }
+        super.onBackPressed();
     }
 
     private void showHideFab() {

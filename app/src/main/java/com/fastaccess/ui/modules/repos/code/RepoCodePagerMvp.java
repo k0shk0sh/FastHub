@@ -8,7 +8,11 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 
 interface RepoCodePagerMvp {
 
-    interface View extends BaseMvp.FAView {}
+    interface View extends BaseMvp.FAView {
+        boolean canPressBack();
+
+        void onBackPressed();
+    }
 
     interface Presenter extends BaseMvp.FAPresenter {}
 }

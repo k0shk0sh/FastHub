@@ -6,7 +6,7 @@ buildscript {
         maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.0-beta4'
+        classpath 'com.android.tools.build:gradle:2.3.0-rc1'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'me.tatarka:gradle-retrolambda:3.2.4'

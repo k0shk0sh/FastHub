@@ -13,6 +13,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathView;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
@@ -56,5 +57,18 @@ public class RepoCodePagerView extends BaseFragment<RepoCodePagerMvp.View, RepoC
 
     @NonNull @Override public RepoCodePagerPresenter providePresenter() {
         return new RepoCodePagerPresenter();
+    }
+
+    @Override public boolean canPressBack() {
+        if (pager.getCurrentItem() != 1) return true;
+        RepoFilePathView pathView = (RepoFilePathView) pager.getAdapter().instantiateItem(pager, 1);
+        return pathView == null || pathView.canPressBack();
+    }
+
+    @Override public void onBackPressed() {
+        RepoFilePathView pathView = (RepoFilePathView) pager.getAdapter().instantiateItem(pager, 1);
+        if (pathView != null) {
+            pathView.onBackPressed();
+        }
     }
 }

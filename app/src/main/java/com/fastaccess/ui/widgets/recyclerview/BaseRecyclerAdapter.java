@@ -120,7 +120,6 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     public void subList(int fromPosition, int toPosition) {
-        toPosition = data.size() > toPosition ? toPosition : data.size();
         data.subList(fromPosition, toPosition).clear();
         notifyItemRangeRemoved(fromPosition, toPosition);
     }
