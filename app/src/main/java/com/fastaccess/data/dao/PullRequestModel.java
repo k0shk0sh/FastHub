@@ -108,6 +108,17 @@ public class PullRequestModel implements Parcelable {
                 .runQuery();
     }
 
+    public static Observable<PullRequestModel> getPullRequest(int number, @NonNull String repoId, @NonNull String login) {
+        return Select.from(PullRequestModelTable.PULL_REQUEST_MODEL)
+                .where(PullRequestModelTable.PULL_REQUEST_MODEL.NUMBER.is(number)
+                        .and(PullRequestModelTable.PULL_REQUEST_MODEL.LOGIN.is(login))
+                        .and(PullRequestModelTable.PULL_REQUEST_MODEL.REPO_ID.is(repoId)))
+                .queryDeep()
+                .takeFirst()
+                .observe()
+                .runQuery();
+    }
+
     @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context) {
         UserModel merger = pullRequest.getMergedBy() != null ? pullRequest.getMergedBy() : pullRequest.getBase().getUser();
         boolean isMerge = pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.getMergedAt());

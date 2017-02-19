@@ -22,6 +22,8 @@ interface RepoIssuesMvp {
         void onNotifyAdapter();
 
         @NonNull OnLoadMore<IssueState> getLoadMore();
+
+        void onAddIssue();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -33,5 +35,9 @@ interface RepoIssuesMvp {
         void onWorkOffline();
 
         @NonNull ArrayList<IssueModel> getIssues();
+
+        @NonNull String repoId();
+
+        @NonNull String login();
     }
 }

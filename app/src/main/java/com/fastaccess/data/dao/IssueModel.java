@@ -141,7 +141,7 @@ public class IssueModel implements Parcelable {
         this.user = in.readParcelable(UserModel.class.getClassLoader());
         this.assignee = in.readParcelable(UserModel.class.getClassLoader());
         this.assignees = new UsersListModel();
-        in.readList(this.assignees, this.assignee.getClass().getClassLoader());
+        in.readList(this.assignees, this.assignees.getClass().getClassLoader());
         this.labels = new LabelListModel();
         in.readList(this.labels, this.labels.getClass().getClassLoader());
         this.milestone = in.readParcelable(MilestoneModel.class.getClassLoader());

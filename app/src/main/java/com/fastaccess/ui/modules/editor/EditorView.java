@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -12,6 +13,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontEditText;
@@ -72,17 +74,23 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
         if (InputHelper.isEmpty(editText)) return;
         if (v.getTag() == null) {
             v.setTag("whatever");
+            MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
             ViewHelper.hideKeyboard(editText);
         } else {
             v.setTag(null);
             editText.setText(savedText);
+            editText.setSelection(savedText.length());
         }
     }
+
 
     @OnClick({R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic,
             R.id.strikethrough, R.id.bullet, R.id.header, R.id.code, R.id.numbered,
             R.id.quote, R.id.link, R.id.image}) void onActions(View v) {
-        if (viewCode.getTag() != null) return;
+        if (viewCode.getTag() != null) {
+            Snackbar.make(editText, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show();
+            return;
+        }
         getPresenter().onActionClicked(editText, v.getId());
     }
 

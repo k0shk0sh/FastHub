@@ -2,10 +2,12 @@ package com.fastaccess.ui.modules.repos;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,12 +16,14 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 
@@ -29,6 +33,7 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
 import hugo.weaving.DebugLog;
+import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
 /**
@@ -47,6 +52,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindView(R.id.license) FontTextView license;
     @BindColor(R.color.accent) int accentColor;
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
+    @BindView(R.id.fab) FloatingActionButton fab;
+    @State @RepoPagerMvp.RepoNavigationType int navType;
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 
     @DebugLog public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
@@ -62,6 +69,15 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                 .put(BundleConstant.EXTRA_TWO, login)
                 .end());
         return intent;
+    }
+
+    @OnClick(R.id.fab) public void onAddIssue() {
+        if (navType == RepoPagerMvp.ISSUES) {
+            RepoIssuesPagerView pagerView = (RepoIssuesPagerView) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerView.TAG);
+            if (pagerView != null) {
+                pagerView.onAddIssue();
+            }
+        }
     }
 
     @OnClick(R.id.headerTitle) void onTitleClick() {
@@ -117,12 +133,16 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                 onInitRepo();
             }
         }
+        fab.setImageResource(R.drawable.ic_add);
+        fab.setImageTintList(ColorStateList.valueOf(Color.WHITE));
+        showHideFab();
     }
 
     @Override public void onNavigationChanged(@RepoPagerMvp.RepoNavigationType int navType) {
+        this.navType = navType;
+        showHideFab();
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
-
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 
@@ -223,5 +243,13 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showHideFab() {
+        if (navType == RepoPagerMvp.ISSUES) {
+            fab.show();
+        } else {
+            fab.hide();
+        }
     }
 }

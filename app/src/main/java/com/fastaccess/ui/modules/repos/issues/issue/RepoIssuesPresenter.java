@@ -105,6 +105,14 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         return issues;
     }
 
+    @NonNull @Override public String repoId() {
+        return repoId;
+    }
+
+    @NonNull @Override public String login() {
+        return login;
+    }
+
     @Override public void onItemClick(int position, View v, IssueModel item) {
         Logger.e(Bundler.start().put("item", item).end().size());
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());

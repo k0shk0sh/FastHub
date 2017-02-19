@@ -9,8 +9,8 @@
     android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
     android:stateListAnimator="@animator/raise_selector">
 
@@ -24,7 +24,8 @@
             android:id="@+id/avatarLayout"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <LinearLayout
             android:layout_width="match_parent"

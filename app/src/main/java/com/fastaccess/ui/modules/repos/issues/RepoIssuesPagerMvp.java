@@ -8,7 +8,9 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 
 interface RepoIssuesPagerMvp {
 
-    interface View extends BaseMvp.FAView {}
+    interface View extends BaseMvp.FAView {
+        void onAddIssue();
+    }
 
     interface Presenter extends BaseMvp.FAPresenter {}
 }

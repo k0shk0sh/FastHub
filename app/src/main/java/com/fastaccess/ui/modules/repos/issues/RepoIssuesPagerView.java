@@ -12,6 +12,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.issues.issue.RepoIssuesView;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
@@ -24,7 +25,6 @@ public class RepoIssuesPagerView extends BaseFragment<RepoIssuesPagerMvp.View, R
 
 
     public static final String TAG = RepoIssuesPagerView.class.getSimpleName();
-
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
 
@@ -52,5 +52,11 @@ public class RepoIssuesPagerView extends BaseFragment<RepoIssuesPagerMvp.View, R
 
     @NonNull @Override public RepoIssuesPagerPresenter providePresenter() {
         return new RepoIssuesPagerPresenter();
+    }
+
+    @Override public void onAddIssue() {
+        if (pager.getCurrentItem() != 0) pager.setCurrentItem(0);
+        RepoIssuesView repoIssuesView = (RepoIssuesView) pager.getAdapter().instantiateItem(pager, 0);
+        repoIssuesView.onAddIssue();
     }
 }

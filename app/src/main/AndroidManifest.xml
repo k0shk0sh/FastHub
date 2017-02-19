@@ -50,6 +50,11 @@
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerView"
             android:label="@string/issue"/>
+        <activity
+            android:name=".ui.modules.repos.issues.create.CreateIssueView"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/create_issue"
+            android:theme="@style/WhenLargeTheme"/>
 
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
@@ -67,12 +72,14 @@
         <activity
             android:name=".ui.modules.editor.EditorView"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/write"/>
+            android:label="@string/write"
+            android:theme="@style/WhenLargeTheme"/>
 
         <activity
             android:name=".ui.modules.gists.create.CreateGistView"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/create_gist"/>
+            android:label="@string/create_gist"
+            android:theme="@style/WhenLargeTheme"/>
 
         <activity
             android:name=".ui.modules.gists.gist.GistView"

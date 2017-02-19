@@ -134,4 +134,11 @@
     <string name="gist">Gist</string>
     <string name="clear">Clear</string>
     <string name="users">Users</string>
+    <string name="title">Title</string>
+    <string name="milestone">Milestone</string>
+    <string name="assign_myself">Assign myself</string>
+    <string name="submit_issue">Submit Issue</string>
+    <string name="error_creating_issue">Error creating issue.</string>
+    <string name="create_issue">Create Issue</string>
+    <string name="error_highlighting_editor">Please un-select highlighting to continue editing.</string>
 </resources>

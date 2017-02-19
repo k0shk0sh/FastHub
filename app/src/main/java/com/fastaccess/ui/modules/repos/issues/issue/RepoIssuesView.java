@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.repos.issues.issue;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -15,6 +18,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -70,6 +74,19 @@ public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesP
         }
     }
 
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE && data != null) {
+            Bundle bundle = data.getExtras();
+            if (bundle != null) {
+                IssueModel issueModel = bundle.getParcelable(BundleConstant.ITEM);
+                if (issueModel != null) {
+                    adapter.addItem(issueModel, 0);
+                }
+            }
+        }
+    }
+
     @NonNull @Override public RepoIssuesPresenter providePresenter() {
         return new RepoIssuesPresenter();
     }
@@ -95,6 +112,10 @@ public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesP
             onLoadMore = new OnLoadMore<>(getPresenter());
         }
         return onLoadMore;
+    }
+
+    @Override public void onAddIssue() {
+        CreateIssueView.startForResult(this, getPresenter().login(), getPresenter().repoId());
     }
 
     @Override public void onRefresh() {

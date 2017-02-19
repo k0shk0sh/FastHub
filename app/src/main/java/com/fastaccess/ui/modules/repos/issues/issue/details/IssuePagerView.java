@@ -164,8 +164,8 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         UserModel userModel = issueModel.getUser();
         title.setText(issueModel.getTitle());
         if (userModel != null) {
-            date.setVisibility(View.GONE);
-            size.setText(SpannableBuilder.builder().append(getString(issueModel.getState().getStatus()))
+            size.setVisibility(View.GONE);
+            date.setText(SpannableBuilder.builder().append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(userModel.getLogin()).append(" ")
                     .append(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt())));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());

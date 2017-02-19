@@ -1,8 +1,11 @@
 package com.fastaccess.data.service;
 
 
+import android.support.annotation.NonNull;
+
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CommentsModel;
+import com.fastaccess.data.dao.CreateIssueModel;
 import com.fastaccess.data.dao.IssueEventModel;
 import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.IssueRequestModel;
@@ -75,4 +78,6 @@ public interface IssueService {
     @DELETE("repos/{owner}/{repo}/issues/comments/{id}")
     Observable<Response<Boolean>> deleteIssueComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);
 
+    @POST("repos/{owner}/{repo}/issues")
+    Observable<IssueModel> createIssue(@Path("owner") String owner, @Path("repo") String repo, @NonNull @Body CreateIssueModel body);
 }

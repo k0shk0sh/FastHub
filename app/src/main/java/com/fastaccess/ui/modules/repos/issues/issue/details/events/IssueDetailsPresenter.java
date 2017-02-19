@@ -45,7 +45,19 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
     }
 
     @Override public void onWorkOffline() {
-        //TODO
+        if (events.isEmpty() || events.size() == 1) {
+            manageSubscription(IssueEventModel.get(issueModel.getRepoId(), issueModel.getLogin(), String.valueOf(issueModel.getNumber()))
+                    .subscribe(
+                            models -> {
+                                if (models != null) {
+                                    events.addAll(IssueEventAdapterModel.addEvents(models));
+                                    sendToView(IssueDetailsMvp.View::onNotifyAdapter);
+                                }
+                            }
+                    ));
+        } else {
+            sendToView(IssueDetailsMvp.View::hideProgress);
+        }
     }
 
     @NonNull @Override public ArrayList<IssueEventAdapterModel> getEvents() {
@@ -103,7 +115,7 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         getEvents().subList(1, getEvents().size()).clear();
-                        //TODO SAVE
+                        manageSubscription(IssueEventModel.save(response.getItems(), repoID, login, String.valueOf(number)).subscribe());
                     }
                     getEvents().addAll(IssueEventAdapterModel.addEvents(response.getItems()));
                     sendToView(IssueDetailsMvp.View::onNotifyAdapter);

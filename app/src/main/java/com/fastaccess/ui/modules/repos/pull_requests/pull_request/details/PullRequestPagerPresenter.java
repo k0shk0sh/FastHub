@@ -38,7 +38,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
-        onWorkOffline(issueNumber, repoId, login);
+        onWorkOffline();
         return super.onError(throwable, observable);
     }
 
@@ -65,8 +65,16 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         sendToView(PullRequestPagerMvp.View::onSetupIssue);
     }
 
-    @Override public void onWorkOffline(long issueNumber, @NonNull String repoId, @NonNull String login) {
-        //TODO
+    @Override public void onWorkOffline() {
+        if (pullRequest == null) {
+            manageSubscription(PullRequestModel.getPullRequest(issueNumber, repoId, login)
+                    .subscribe(pullRequestModel -> {
+                        if (pullRequestModel != null) {
+                            pullRequest = pullRequestModel;
+                            sendToView(PullRequestPagerMvp.View::onSetupIssue);
+                        }
+                    }));
+        }
     }
 
     @Override public boolean isOwner() {

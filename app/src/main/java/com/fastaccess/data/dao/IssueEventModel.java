@@ -2,17 +2,24 @@ package com.fastaccess.data.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.siimkinks.sqlitemagic.Delete;
+import com.siimkinks.sqlitemagic.IssueEventModelTable;
+import com.siimkinks.sqlitemagic.Select;
 import com.siimkinks.sqlitemagic.annotation.Column;
 import com.siimkinks.sqlitemagic.annotation.Id;
 import com.siimkinks.sqlitemagic.annotation.Table;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import rx.Completable;
+import rx.Observable;
 
 /**
  * Created by Kosh on 10 Dec 2016, 3:34 PM
@@ -34,6 +41,41 @@ public class IssueEventModel implements Parcelable {
     @Column String commitId;
     @Column String commitUrl;
     @Column Date createdAt;
+    @Column String issueId;
+    @Column String repoId;
+    @Column String login;
+
+    public Completable save() {
+        return this.persist().observe().toCompletable();
+    }
+
+    public static Completable save(@NonNull List<IssueEventModel> models, @NonNull String repoId, @NonNull String login, @NonNull String issueId) {
+        return Delete.from(IssueEventModelTable.ISSUE_EVENT_MODEL)
+                .where(IssueEventModelTable.ISSUE_EVENT_MODEL.LOGIN.is(login)
+                        .and(IssueEventModelTable.ISSUE_EVENT_MODEL.REPO_ID.is(repoId))
+                        .and(IssueEventModelTable.ISSUE_EVENT_MODEL.ISSUE_ID.is(issueId)))
+                .observe()
+                .toCompletable()
+                .andThen(Observable.from(models)
+                        .map(issueEventModel -> {
+                            issueEventModel.setIssueId(issueId);
+                            issueEventModel.setLogin(login);
+                            issueEventModel.setRepoId(repoId);
+                            return issueEventModel.save();
+                        }))
+                .toCompletable();
+    }
+
+    public static Observable<List<IssueEventModel>> get(@NonNull String repoId, @NonNull String login, @NonNull String issueId) {
+        return Select.from(IssueEventModelTable.ISSUE_EVENT_MODEL)
+                .where(IssueEventModelTable.ISSUE_EVENT_MODEL.LOGIN.is(login)
+                        .and(IssueEventModelTable.ISSUE_EVENT_MODEL.REPO_ID.is(repoId))
+                        .and(IssueEventModelTable.ISSUE_EVENT_MODEL.ISSUE_ID.is(issueId)))
+                .orderBy(IssueEventModelTable.ISSUE_EVENT_MODEL.CREATED_AT.desc())
+                .queryDeep()
+                .observe()
+                .runQuery();
+    }
 
     @Override public int describeContents() { return 0; }
 

@@ -31,7 +31,7 @@ interface PullRequestPagerMvp {
 
         void onActivityCreated(@Nullable Intent intent);
 
-        void onWorkOffline(long issueNumber, @NonNull String repoId, @NonNull String login);
+        void onWorkOffline();
 
         boolean isOwner();
 
