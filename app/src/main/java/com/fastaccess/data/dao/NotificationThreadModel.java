@@ -56,6 +56,13 @@ public class NotificationThreadModel implements Parcelable {
                 .runQuery();
     }
 
+    public static boolean hasUnreadNotifications() {
+        return Select.from(NotificationThreadModelTable.NOTIFICATION_THREAD_MODEL)
+                .where(NotificationThreadModelTable.NOTIFICATION_THREAD_MODEL.UNREAD.is(true))
+                .count()
+                .execute() > 0;
+    }
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -17,10 +18,15 @@ import android.widget.Toast;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.NotificationThreadModel;
+import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.TypeFaceHelper;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.create.CreateGistView;
+import com.fastaccess.ui.modules.notification.NotificationsBottomSheet;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 
@@ -77,6 +83,10 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
+        if (isLoggedIn() && NotificationThreadModel.hasUnreadNotifications()) {
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).getIcon(),
+                    ContextCompat.getColor(this, R.color.accent));
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -88,7 +98,9 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             startActivity(new Intent(this, SearchView.class));
             return true;
         } else if (item.getItemId() == R.id.notifications) {
-            //TODO
+            Logger.e(AppHelper.getFragmentByTag(getSupportFragmentManager(), "NotificationsBottomSheet"));
+            NotificationsBottomSheet.newInstance()
+                    .show(getSupportFragmentManager(), "NotificationsBottomSheet");
         }
         return super.onOptionsItemSelected(item);
     }

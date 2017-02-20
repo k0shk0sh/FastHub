@@ -55,7 +55,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     @Override public void onBindViewHolder(VH holder, int position) {
-        animate(holder);
+        animate(holder, position);
         onBindView(holder, position);
     }
 
@@ -63,8 +63,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         return data.size();
     }
 
-    private void animate(VH holder) {
-        int position = holder.getLayoutPosition();
+    private void animate(VH holder, int position) {
         if (isEnableAnimation() && position > lastKnowingPosition) {
             AnimHelper.startBeatsAnimation(holder.itemView);
             lastKnowingPosition = position;

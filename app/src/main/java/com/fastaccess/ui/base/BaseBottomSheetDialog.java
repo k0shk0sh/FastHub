@@ -8,9 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 
+import com.fastaccess.R;
 import com.fastaccess.helper.ViewHelper;
 
 import butterknife.ButterKnife;
@@ -60,18 +63,27 @@ import icepick.Icepick;
         }
     }
 
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(layoutRes(), container, false);
+        unbinder = ButterKnife.bind(this, view);
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override public void onGlobalLayout() {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                View parent = getDialog().findViewById(R.id.design_bottom_sheet);
+                if (parent != null) {
+                    bottomSheetBehavior = BottomSheetBehavior.from(parent);
+                    if (bottomSheetBehavior != null) {
+                        bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }
+            }
+        });
+        return view;
+    }
+
     @Override public void setupDialog(Dialog dialog, int style) {
         super.setupDialog(dialog, style);
-        View contentView = View.inflate(getContext(), layoutRes(), null);
-        dialog.setContentView(contentView);
-        View parent = ((View) contentView.getParent());
-        bottomSheetBehavior = BottomSheetBehavior.from(parent);
-        if (bottomSheetBehavior != null) {
-            bottomSheetBehavior.setBottomSheetCallback(bottomSheetCallback);
-            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-        }
-        unbinder = ButterKnife.bind(this, contentView);
-        onViewCreated(contentView, dialog.onSaveInstanceState());
     }
 
     @Override public void onDestroyView() {
