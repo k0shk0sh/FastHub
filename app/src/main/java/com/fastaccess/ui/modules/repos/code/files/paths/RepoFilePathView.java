@@ -41,18 +41,19 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
     }
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {
-        getPresenter().getPaths().clear();
-        onNotifyAdapter();
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), null);
+        if (adapter.getItemCount() > 0) {
+            getPresenter().getPaths().clear();
+            onNotifyAdapter();
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), null);
+        }
     }
 
     @Override public void onNotifyAdapter() {
         adapter.notifyDataSetChanged();
-        onShowHideBackBtn();
     }
 
     @Override public void onItemClicked(@NonNull RepoFilesModel model, int position) {
-        if (getRepoFilesView().isRefreshing()) return; // avoid calling for path while the other still loading...
+        if (getRepoFilesView().isRefreshing()) return;
         if ((position + 1) < adapter.getItemCount()) {
             adapter.subList(position + 1, adapter.getItemCount());
         }
@@ -62,7 +63,6 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
 
     @Override public void onAppendPath(@NonNull RepoFilesModel model) {
         adapter.addItem(model);
-        onShowHideBackBtn();
         recycler.scrollToPosition(adapter.getItemCount() - 1); //smoothScrollToPosition(index) hides the recyclerview? MIND-BLOWING??.
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), model.getPath());
     }
@@ -109,17 +109,5 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
             repoFilesView = (RepoFilesView) getChildFragmentManager().findFragmentById(R.id.filesFragment);
         }
         return repoFilesView;
-    }
-
-    private void onShowHideBackBtn() {
-        if (adapter.getItemCount() > 0) {
-            if (!toParentFolder.isShown()) {
-                toParentFolder.setVisibility(View.VISIBLE);
-            }
-        } else {
-            if (toParentFolder.isShown()) {
-                toParentFolder.setVisibility(View.GONE);
-            }
-        }
     }
 }

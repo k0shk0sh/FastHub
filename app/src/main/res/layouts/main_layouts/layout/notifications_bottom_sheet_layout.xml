@@ -8,9 +8,9 @@
     <include layout="@layout/appbar_elevation_dark"/>
 
     <FrameLayout
+        android:id="@+id/notificationView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/scroll_behavior"
-        android:id="@+id/notificationView"/>
+        app:layout_behavior="@string/scroll_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

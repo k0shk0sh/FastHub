@@ -4,8 +4,8 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
+import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
-import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
 import com.fastaccess.R;
@@ -19,7 +19,7 @@ import icepick.State;
 /**
  * Created by Kosh on 20 Nov 2016, 12:21 AM
  */
-public class StateLayout extends FrameLayout {
+public class StateLayout extends NestedScrollView {
 
     private static final int SHOW_PROGRESS_STATE = 1;
     private static final int HIDE_PROGRESS_STATE = 2;
@@ -117,7 +117,6 @@ public class StateLayout extends FrameLayout {
         if (isInEditMode()) return;
         ButterKnife.bind(this);
         emptyText.setFreezesText(true);
-        setNestedScrollingEnabled(true);
     }
 
     @Override protected void onDetachedFromWindow() {

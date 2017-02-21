@@ -93,9 +93,9 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onHandleConfirmDialog(@Nullable Bundle bundle) {
         if (bundle != null) {
-            boolean proceed = bundle.getBoolean(BundleConstant.EXTRA);
+            boolean proceedCloseIssue = bundle.getBoolean(BundleConstant.EXTRA);
             boolean proceedLockUnlock = bundle.getBoolean(BundleConstant.EXTRA_TWO);
-            if (proceed) {
+            if (proceedCloseIssue) {
                 onOpenCloseIssue();
             } else if (proceedLockUnlock) {
                 onLockUnlockIssue();

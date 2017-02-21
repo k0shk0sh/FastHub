@@ -15,7 +15,8 @@ import rx.Observable;
 
 public interface NotificationService {
 
-    @GET("notifications") Observable<Pageable<NotificationThreadModel>> getNotifications();
+    @GET("notifications")
+    Observable<Pageable<NotificationThreadModel>> getNotifications();
 
     @GET("/notifications/threads/{id}")
     Observable<NotificationThreadModel> getNotification(@Path("id") String id);

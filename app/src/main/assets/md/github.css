@@ -1,4 +1,4 @@
-.markdown-body {
+body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
     padding: 15px;
@@ -6,51 +6,51 @@
     word-wrap: break-word
 }
 
-.markdown-body::before {
+body::before {
     display: table;
     content: ""
 }
 
-.markdown-body::after {
+body::after {
     display: table;
     clear: both;
     content: ""
 }
 
-.markdown-body>:first-child {
+body>:first-child {
     margin-top: 0!important
 }
 
-.markdown-body>:last-child {
+body>:last-child {
     margin-bottom: 0!important
 }
 
-.markdown-body a:not([href]) {
+body a:not([href]) {
     color: inherit;
     text-decoration: none
 }
 
-.markdown-body .absent {
+body .absent {
     color: #c00
 }
 
-.markdown-body .anchor {
+body .anchor {
     float: left;
     padding-right: 4px;
     margin-left: -20px;
     line-height: 1
 }
 
-.markdown-body .anchor:focus {
+body .anchor:focus {
     outline: none
 }
 
-.markdown-body p, .markdown-body blockquote, .markdown-body ul, .markdown-body ol, .markdown-body dl, .markdown-body table, .markdown-body pre {
+body p, body blockquote, body ul, body ol, body dl, body table, body pre {
     margin-top: 0;
     margin-bottom: 16px
 }
 
-.markdown-body hr {
+body hr {
     height: .25em;
     padding: 0;
     margin: 24px 0;
@@ -58,21 +58,21 @@
     border: 0
 }
 
-.markdown-body blockquote {
+body blockquote {
     padding: 0 1em;
     color: #777;
     border-left: .25em solid #ddd
 }
 
-.markdown-body blockquote>:first-child {
+body blockquote>:first-child {
     margin-top: 0
 }
 
-.markdown-body blockquote>:last-child {
+body blockquote>:last-child {
     margin-bottom: 0
 }
 
-.markdown-body kbd {
+body kbd {
     display: inline-block;
     padding: 3px 5px;
     font-size: 11px;
@@ -86,91 +86,91 @@
     box-shadow: inset 0 -1px 0 #bbb
 }
 
-.markdown-body .loweralpha {
+body .loweralpha {
     list-style-type: lower-alpha
 }
 
-.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4, .markdown-body h5, .markdown-body h6 {
+body h1, body h2, body h3, body h4, body h5, body h6 {
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
     line-height: 1.25
 }
 
-.markdown-body h1 .octicon-link, .markdown-body h2 .octicon-link, .markdown-body h3 .octicon-link, .markdown-body h4 .octicon-link, .markdown-body h5 .octicon-link, .markdown-body h6 .octicon-link {
+body h1 .octicon-link, body h2 .octicon-link, body h3 .octicon-link, body h4 .octicon-link, body h5 .octicon-link, body h6 .octicon-link {
     color: #000;
     vertical-align: middle;
     visibility: hidden
 }
 
-.markdown-body h1:hover .anchor, .markdown-body h2:hover .anchor, .markdown-body h3:hover .anchor, .markdown-body h4:hover .anchor, .markdown-body h5:hover .anchor, .markdown-body h6:hover .anchor {
+body h1:hover .anchor, body h2:hover .anchor, body h3:hover .anchor, body h4:hover .anchor, body h5:hover .anchor, body h6:hover .anchor {
     text-decoration: none
 }
 
-.markdown-body h1:hover .anchor .octicon-link, .markdown-body h2:hover .anchor .octicon-link, .markdown-body h3:hover .anchor .octicon-link, .markdown-body h4:hover .anchor .octicon-link, .markdown-body h5:hover .anchor .octicon-link, .markdown-body h6:hover .anchor .octicon-link {
+body h1:hover .anchor .octicon-link, body h2:hover .anchor .octicon-link, body h3:hover .anchor .octicon-link, body h4:hover .anchor .octicon-link, body h5:hover .anchor .octicon-link, body h6:hover .anchor .octicon-link {
     visibility: visible
 }
 
-.markdown-body h1 tt, .markdown-body h1 code, .markdown-body h2 tt, .markdown-body h2 code, .markdown-body h3 tt, .markdown-body h3 code, .markdown-body h4 tt, .markdown-body h4 code, .markdown-body h5 tt, .markdown-body h5 code, .markdown-body h6 tt, .markdown-body h6 code {
+body h1 tt, body h1 code, body h2 tt, body h2 code, body h3 tt, body h3 code, body h4 tt, body h4 code, body h5 tt, body h5 code, body h6 tt, body h6 code {
     font-size: inherit
 }
 
-.markdown-body h1 {
+body h1 {
     padding-bottom: .3em;
     font-size: 2em;
     border-bottom: 1px solid #eee
 }
 
-.markdown-body h2 {
+body h2 {
     padding-bottom: .3em;
     font-size: 1.5em;
     border-bottom: 1px solid #eee
 }
 
-.markdown-body h3 {
+body h3 {
     font-size: 1.25em
 }
 
-.markdown-body h4 {
+body h4 {
     font-size: 1em
 }
 
-.markdown-body h5 {
+body h5 {
     font-size: .875em
 }
 
-.markdown-body h6 {
+body h6 {
     font-size: .85em;
     color: #777
 }
 
-.markdown-body ul, .markdown-body ol {
+body ul, body ol {
     padding-left: 2em
 }
 
-.markdown-body ul.no-list, .markdown-body ol.no-list {
+body ul.no-list, body ol.no-list {
     padding: 0;
     list-style-type: none
 }
 
-.markdown-body ul ul, .markdown-body ul ol, .markdown-body ol ol, .markdown-body ol ul {
+body ul ul, body ul ol, body ol ol, body ol ul {
     margin-top: 0;
     margin-bottom: 0
 }
 
-.markdown-body li>p {
+body li>p {
     margin-top: 16px
 }
 
-.markdown-body li+li {
+body li+li {
     margin-top: .25em
 }
 
-.markdown-body dl {
+body dl {
     padding: 0
 }
 
-.markdown-body dl dt {
+body dl dt {
     padding: 0;
     margin-top: 16px;
     font-size: 1em;
@@ -178,61 +178,61 @@
     font-weight: 700
 }
 
-.markdown-body dl dd {
+body dl dd {
     padding: 0 16px;
     margin-bottom: 16px
 }
 
-.markdown-body table {
+body table {
     display: block;
     width: 100%;
     overflow: auto
 }
 
-.markdown-body table th {
+body table th {
     font-weight: 700
 }
 
-.markdown-body table th, .markdown-body table td {
+body table th, body table td {
     padding: 6px 13px;
     border: 1px solid #ddd
 }
 
-.markdown-body table tr {
+body table tr {
     background-color: #fff;
     border-top: 1px solid #ccc
 }
 
-.markdown-body table tr:nth-child(2n) {
+body table tr:nth-child(2n) {
     background-color: #f8f8f8
 }
 
-.markdown-body img {
+body img {
     max-width: 100%;
     box-sizing: content-box;
     background-color: #fff
 }
 
-.markdown-body img[align=right] {
+body img[align=right] {
     padding-left: 20px
 }
 
-.markdown-body img[align=left] {
+body img[align=left] {
     padding-right: 20px
 }
 
-.markdown-body .emoji {
+body .emoji {
     max-width: none;
     vertical-align: text-top;
     background-color: transparent
 }
 
-.markdown-body span.frame {
+body span.frame {
     display: block;
     overflow: hidden
 }
 
-.markdown-body span.frame>span {
+body span.frame>span {
     display: block;
     float: left;
     width: auto;
@@ -242,80 +242,80 @@
     border: 1px solid #ddd
 }
 
-.markdown-body span.frame span img {
+body span.frame span img {
     display: block;
     float: left
 }
 
-.markdown-body span.frame span span {
+body span.frame span span {
     display: block;
     padding: 5px 0 0;
     clear: both;
     color: #333
 }
 
-.markdown-body span.align-center {
+body span.align-center {
     display: block;
     overflow: hidden;
     clear: both
 }
 
-.markdown-body span.align-center>span {
+body span.align-center>span {
     display: block;
     margin: 13px auto 0;
     overflow: hidden;
     text-align: center
 }
 
-.markdown-body span.align-center span img {
+body span.align-center span img {
     margin: 0 auto;
     text-align: center
 }
 
-.markdown-body span.align-right {
+body span.align-right {
     display: block;
     overflow: hidden;
     clear: both
 }
 
-.markdown-body span.align-right>span {
+body span.align-right>span {
     display: block;
     margin: 13px 0 0;
     overflow: hidden;
     text-align: right
 }
 
-.markdown-body span.align-right span img {
+body span.align-right span img {
     margin: 0;
     text-align: right
 }
 
-.markdown-body span.float-left {
+body span.float-left {
     display: block;
     float: left;
     margin-right: 13px;
     overflow: hidden
 }
 
-.markdown-body span.float-left span {
+body span.float-left span {
     margin: 13px 0 0
 }
 
-.markdown-body span.float-right {
+body span.float-right {
     display: block;
     float: right;
     margin-left: 13px;
     overflow: hidden
 }
 
-.markdown-body span.float-right>span {
+body span.float-right>span {
     display: block;
     margin: 13px auto 0;
     overflow: hidden;
     text-align: right
 }
 
-.markdown-body code, .markdown-body tt {
+body code, body tt {
     padding: 0;
     padding-top: .2em;
     padding-bottom: .2em;
@@ -325,24 +325,24 @@
     border-radius: 3px
 }
 
-.markdown-body code::before, .markdown-body code::after, .markdown-body tt::before, .markdown-body tt::after {
+body code::before, body code::after, body tt::before, body tt::after {
     letter-spacing: -.2em;
     content: "\00a0"
 }
 
-.markdown-body code br, .markdown-body tt br {
+body code br, body tt br {
     display: none
 }
 
-.markdown-body del code {
+body del code {
     text-decoration: inherit
 }
 
-.markdown-body pre {
+body pre {
     word-wrap: normal
 }
 
-.markdown-body pre>code {
+body pre>code {
     padding: 0;
     margin: 0;
     font-size: 100%;
@@ -352,16 +352,16 @@
     border: 0
 }
 
-.markdown-body .highlight {
+body .highlight {
     margin-bottom: 16px
 }
 
-.markdown-body .highlight pre {
+body .highlight pre {
     margin-bottom: 0;
     word-break: normal
 }
 
-.markdown-body .highlight pre, .markdown-body pre {
+body .highlight pre, body pre {
     padding: 16px;
     overflow: auto;
     font-size: 85%;
@@ -370,7 +370,7 @@
     border-radius: 3px
 }
 
-.markdown-body pre code, .markdown-body pre tt {
+body pre code, body pre tt {
     display: inline;
     max-width: auto;
     padding: 0;
@@ -382,11 +382,11 @@
     border: 0
 }
 
-.markdown-body pre code::before, .markdown-body pre code::after, .markdown-body pre tt::before, .markdown-body pre tt::after {
+body pre code::before, body pre code::after, body pre tt::before, body pre tt::after {
     content: normal
 }
 
-.markdown-body .csv-data td, .markdown-body .csv-data th {
+body .csv-data td, body .csv-data th {
     padding: 5px;
     overflow: hidden;
     font-size: 12px;
@@ -395,54 +395,54 @@
     white-space: nowrap
 }
 
-.markdown-body .csv-data .blob-num {
+body .csv-data .blob-num {
     padding: 10px 8px 9px;
     text-align: right;
     background: #fff;
     border: 0
 }
 
-.markdown-body .csv-data tr {
+body .csv-data tr {
     border-top: 0
 }
 
-.markdown-body .csv-data th {
+body .csv-data th {
     font-weight: 700;
     background: #f8f8f8;
     border-top: 0
 }
 
-.markdown-body {
+body {
     font-size: 15px
 }
 
-.markdown-body blockquote {
+body blockquote {
     margin-right: 0;
     margin-left: 0
 }
 
-.markdown-body code {
+body code {
     white-space: normal
 }
 
-.markdown-body.email-format {
+body.email-format {
     line-height: 1.5em!important
 }
 
-.markdown-body.email-format div {
+body.email-format div {
     white-space: pre-wrap
 }
 
-.markdown-body .email-hidden-reply {
+body .email-hidden-reply {
     display: none;
     white-space: pre-wrap
 }
 
-.markdown-body .email-hidden-reply.expanded {
+body .email-hidden-reply.expanded {
     display: block
 }
 
-.markdown-body .email-quoted-reply, .markdown-body .email-signature-reply {
+body .email-quoted-reply, body .email-signature-reply {
     padding: 0 15px;
     margin-bottom: 15px;
     color: #767676;

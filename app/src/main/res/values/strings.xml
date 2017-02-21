@@ -144,4 +144,6 @@
     <string name="notifictions">Notifications</string>
     <string name="unread_notification">You have unread notifications</string>
     <string name="open">Open</string>
+    <string name="notification_type">Notification Type</string>
+    <string name="back_slash">/</string>
 </resources>

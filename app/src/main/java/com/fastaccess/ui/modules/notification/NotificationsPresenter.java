@@ -1,10 +1,12 @@
 package com.fastaccess.ui.modules.notification;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.view.View;
 
 import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -20,7 +22,15 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     private ArrayList<NotificationThreadModel> notifications = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, NotificationThreadModel item) {
-
+        makeRestCall(RestProvider.getNotificationService()
+                        .markAsRead(String.valueOf(item.getId())),
+                booleanResponse -> {
+                    item.setUnread(booleanResponse.code() == 205);
+                    manageSubscription(item.save().subscribe());
+                    notifications.remove(position);
+                    sendToView(NotificationsMvp.View::onNotifyAdapter);
+                });
+        if (item.getRepository() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(item.getRepository().getHtmlUrl()));
     }
 
     @Override public void onItemLongClick(int position, View v, NotificationThreadModel item) {
@@ -37,6 +47,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
                 response -> {
                     notifications.clear();
                     if (response.getItems() != null) {
+                        manageSubscription(NotificationThreadModel.save(response.getItems()).subscribe());
                         notifications.addAll(response.getItems());
                     }
                     sendToView(NotificationsMvp.View::onNotifyAdapter);

@@ -23,6 +23,7 @@ public class PayloadModel implements Parcelable {
     @Id @Column long id;
     @Column String action;
     @Column(onDeleteCascade = true, handleRecursively = false) RepoModel forkee;
+    @Column(onDeleteCascade = true, handleRecursively = false) IssueModel issueModel;
 
     @Override public int describeContents() { return 0; }
 

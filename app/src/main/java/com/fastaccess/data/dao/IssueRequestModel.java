@@ -21,14 +21,12 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class IssueRequestModel implements Parcelable {
 
-
     private IssueState state;
     private String title;
     private String body;
-    private String milestone;
+    private Integer milestone;
     private String assignee;
     private List<String> labels;
-
 
     public static IssueRequestModel clone(@NonNull IssueModel issue) {
         IssueRequestModel model = new IssueRequestModel();
@@ -38,7 +36,7 @@ public class IssueRequestModel implements Parcelable {
         }
         model.setAssignee(issue.getAssignee() != null ? issue.getAssignee().getLogin() : null);
         model.setBody(issue.getBody());
-        model.setMilestone(issue.getMilestone() != null ? String.valueOf(issue.getMilestone().getNumber()) : "0");
+        model.setMilestone(issue.getMilestone() != null ? issue.getMilestone().getNumber() : null);
         model.setState(issue.getState() == IssueState.closed ? IssueState.open : IssueState.closed);
         model.setTitle(issue.getTitle());
         return model;
@@ -50,7 +48,7 @@ public class IssueRequestModel implements Parcelable {
         dest.writeInt(this.state == null ? -1 : this.state.ordinal());
         dest.writeString(this.title);
         dest.writeString(this.body);
-        dest.writeString(this.milestone);
+        dest.writeValue(this.milestone);
         dest.writeString(this.assignee);
         dest.writeStringList(this.labels);
     }
@@ -60,7 +58,7 @@ public class IssueRequestModel implements Parcelable {
         this.state = tmpState == -1 ? null : IssueState.values()[tmpState];
         this.title = in.readString();
         this.body = in.readString();
-        this.milestone = in.readString();
+        this.milestone = (Integer) in.readValue(Integer.class.getClassLoader());
         this.assignee = in.readString();
         this.labels = in.createStringArrayList();
     }

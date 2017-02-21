@@ -9,8 +9,8 @@
     android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
     android:stateListAnimator="@animator/raise_selector">
 
@@ -45,7 +45,7 @@
             <com.fastaccess.ui.widgets.AutoLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_micro"
                 app:auto_gravity="start"
                 app:auto_orientation="horizontal">
 

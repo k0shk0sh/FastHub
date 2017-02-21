@@ -10,28 +10,31 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?colorPrimaryDark"
+        android:orientation="horizontal"
         android:paddingBottom="@dimen/spacing_normal"
         android:paddingEnd="@dimen/spacing_xs_large"
         android:paddingStart="@dimen/spacing_xs_large"
-        android:paddingTop="@dimen/spacing_normal"
-        android:orientation="horizontal">
+        android:paddingTop="@dimen/spacing_normal">
 
-        <com.fastaccess.ui.widgets.ForegroundImageView
+        <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/toParentFolder"
+            style="@style/TextAppearance.AppCompat.Medium"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/parent_folder"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:padding="8dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_home"
-            android:visibility="gone"/>
+            android:layout_gravity="center|start"
+            android:layout_marginStart="@dimen/spacing_micro"
+            android:background="?selectableItemBackgroundBorderless"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center|start|top"
+            android:text="@string/back_slash"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/spacing_xs_large"
             android:orientation="horizontal"
