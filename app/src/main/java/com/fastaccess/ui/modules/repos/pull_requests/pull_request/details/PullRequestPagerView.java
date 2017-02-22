@@ -105,7 +105,6 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         } else {
             onSetupIssue();
         }
-        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
     }

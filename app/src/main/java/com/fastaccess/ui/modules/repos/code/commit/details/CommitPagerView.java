@@ -11,6 +11,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitModel;
@@ -132,7 +133,8 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
         title.setText(commit.getGitCommit().getMessage());
-        size.setText(ParseDateFormat.getTimeAgo(dateValue));
+        size.setVisibility(View.GONE);
+        date.setText(ParseDateFormat.getTimeAgo(dateValue));
         avatarLayout.setUrl(avatar, login);
         addition.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getAdditions() : 0));
         deletion.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getDeletions() : 0));
