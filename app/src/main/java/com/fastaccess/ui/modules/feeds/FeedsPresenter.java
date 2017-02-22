@@ -103,8 +103,8 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             NameParser parser = new NameParser(item.getPayload().getForkee().getHtmlUrl());
             RepoPagerView.startRepoPager(v.getContext(), parser);
         } else {
-            if (item.getPayload().getIssueModel() != null) {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssueModel().getHtmlUrl()));
+            if (item.getPayload().getIssue() != null) {
+                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()));
             } else {
                 SchemeParser.launchUri(v.getContext(), Uri.parse(item.getRepo().getName()));
             }

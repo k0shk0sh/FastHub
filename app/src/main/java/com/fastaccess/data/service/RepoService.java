@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MarkdownModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.ReleasesModel;
@@ -88,7 +89,7 @@ public interface RepoService {
 
     @POST("repos/{owner}/{repo}/commits/{sha}/comments")
     Observable<CommentsModel> postCommitComment(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
-                                                          @NonNull @Path("sha") String ref, @Body CommentRequestModel model);
+                                                @NonNull @Path("sha") String ref, @Body CommentRequestModel model);
 
     @PATCH("repos/{owner}/{repo}/comments/{id}")
     Observable<CommentsModel> editCommitComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,
@@ -100,5 +101,8 @@ public interface RepoService {
     @GET("repos/{owner}/{repo}/contents/{getPath}")
     Observable<Pageable<RepoFilesModel>> getRepoFiles(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                       @NonNull @Path("getPath") String path);
+
+    @GET("repos/{owner}/{repo}/labels")
+    Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
 }

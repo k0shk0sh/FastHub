@@ -172,7 +172,8 @@ public class RestProvider {
             ResponseBody body = ((HttpException) throwable).response().errorBody();
             if (body != null) {
                 try {
-                    return gson.fromJson(body.toString(), GitHubErrorResponse.class);
+                    Logger.e(body.string());
+                    return new Gson().fromJson(body.toString(), GitHubErrorResponse.class);
                 } catch (Exception ignored) {}
             }
         }

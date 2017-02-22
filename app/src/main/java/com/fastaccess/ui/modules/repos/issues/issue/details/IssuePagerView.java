@@ -15,6 +15,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
@@ -26,12 +27,16 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
+import com.fastaccess.ui.modules.repos.labels.LabelsView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -110,6 +115,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         getMenuInflater().inflate(R.menu.issue_menu, menu);
         menu.findItem(R.id.closeIssue).setVisible(getPresenter().isOwner());
         menu.findItem(R.id.lockIssue).setVisible(getPresenter().isOwner());
+        menu.findItem(R.id.labels).setVisible(getPresenter().isOwner());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -131,6 +137,10 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
                     getPresenter().isLocked() ? getString(R.string.unlock_issue_details) : getString(R.string.lock_issue_details),
                     Bundler.start().put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            return true;
+        } else if (item.getItemId() == R.id.labels) {
+            getPresenter().onLoadLabels();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -143,6 +153,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         Logger.e(isOwner);
         menu.findItem(R.id.closeIssue).setVisible(isOwner);
         menu.findItem(R.id.lockIssue).setVisible(isOwner);
+        menu.findItem(R.id.labels).setVisible(isOwner);
         if (isOwner) {
             //noinspection ConstantConditions ( getIssue at this stage is not null but AS doesn't know. )
             closeIssue.setTitle(getPresenter().getIssue().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string.close));
@@ -201,11 +212,22 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         }
     }
 
+    @Override public void onLabelsRetrieved(@NonNull List<LabelModel> items) {
+        hideProgress();
+        LabelsView.newInstance(items)
+                .show(getSupportFragmentManager(), "LabelsView");
+    }
+
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk) {
             getPresenter().onHandleConfirmDialog(bundle);
         }
+    }
+
+    @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
+        Logger.e(labels, labels.size());
+        getPresenter().onPutLabels(labels);
     }
 
     private void hideShowFab() {

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical">
 
     <com.fastaccess.ui.widgets.FontTextView
@@ -12,6 +12,7 @@
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minWidth="250dp"
         android:padding="@dimen/spacing_xs_large"
         android:textColor="@color/primary_text"
         android:textStyle="bold"

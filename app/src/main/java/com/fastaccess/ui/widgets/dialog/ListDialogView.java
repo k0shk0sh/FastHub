@@ -11,10 +11,13 @@ import com.fastaccess.R;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.SimpleListAdapter;
-import com.fastaccess.ui.base.BaseBottomSheetDialog;
+import com.fastaccess.ui.base.BaseDialogFragment;
+import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+
+import net.grandcentrix.thirtyinch.TiPresenter;
 
 import java.util.ArrayList;
 
@@ -24,19 +27,31 @@ import butterknife.BindView;
  * Created by Kosh on 31 Dec 2016, 3:19 PM
  */
 
-public class ListDialogView<O extends Parcelable> extends BaseBottomSheetDialog implements BaseViewHolder.OnItemClickListener<O> {
+public class ListDialogView<O extends Parcelable> extends BaseDialogFragment implements BaseViewHolder.OnItemClickListener<O> {
+
+    @BindView(R.id.title) FontTextView title;
+    @BindView(R.id.recycler) DynamicRecyclerView recycler;
 
     public interface onSimpleItemSelection<O extends Parcelable> {
         void onItemSelected(O item);
     }
 
-    @BindView(R.id.title) FontTextView title;
-    @BindView(R.id.recycler) DynamicRecyclerView recycler;
-
     private onSimpleItemSelection onSimpleItemSelection;
 
-    @Override protected int layoutRes() {
+    @Override protected int fragmentLayout() {
         return R.layout.simple_list_dialog;
+    }
+
+    @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ArrayList<O> objects = getArguments().getParcelableArrayList(BundleConstant.ITEM);
+        String titleText = getArguments().getString(BundleConstant.EXTRA);
+        title.setText(titleText);
+        if (objects != null) {
+            SimpleListAdapter<O> adapter = new SimpleListAdapter<>(objects, this);
+            recycler.setAdapter(adapter);
+        } else {
+            dismiss();
+        }
     }
 
     @Override public void onAttach(Context context) {
@@ -53,17 +68,8 @@ public class ListDialogView<O extends Parcelable> extends BaseBottomSheetDialog 
         onSimpleItemSelection = null;
     }
 
-    @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        ArrayList<O> objects = getArguments().getParcelableArrayList(BundleConstant.ITEM);
-        String titleText = getArguments().getString(BundleConstant.EXTRA);
-        title.setText(titleText);
-        if (objects != null) {
-            SimpleListAdapter<O> adapter = new SimpleListAdapter<>(objects, this);
-            recycler.setAdapter(adapter);
-        } else {
-            dismiss();
-        }
+    @NonNull @Override public TiPresenter providePresenter() {
+        return new BasePresenter();
     }
 
     @SuppressWarnings("unchecked") @Override public void onItemClick(int position, View v, O item) {

@@ -146,4 +146,7 @@
     <string name="open">Open</string>
     <string name="notification_type">Notification Type</string>
     <string name="back_slash">/</string>
+    <string name="labels">Labels</string>
+    <string name="no_labels">No Labels</string>
+    <string name="labels_added_successfully">Labels Added Successfully</string>
 </resources>

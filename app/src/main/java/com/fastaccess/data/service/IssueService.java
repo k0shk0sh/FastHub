@@ -9,7 +9,10 @@ import com.fastaccess.data.dao.CreateIssueModel;
 import com.fastaccess.data.dao.IssueEventModel;
 import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.IssueRequestModel;
+import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.Pageable;
+
+import java.util.List;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -80,4 +83,8 @@ public interface IssueService {
 
     @POST("repos/{owner}/{repo}/issues")
     Observable<IssueModel> createIssue(@Path("owner") String owner, @Path("repo") String repo, @NonNull @Body CreateIssueModel body);
+
+    @POST("repos/{owner}/{repo}/issues/{number}/labels")
+    Observable<Pageable<LabelModel>> putLabels(@Path("owner") String owner, @Path("repo") String repo,
+                                               @Path("number") int number, @Body @NonNull List<String> labels);
 }

@@ -5,6 +5,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -131,6 +132,12 @@ public class ViewHelper {
     public static void hideKeyboard(@NonNull View view) {
         InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    @ColorInt public static int generateTextColor(int color) {
+        return Color.rgb(255 - Color.red(color),
+                255 - Color.green(color),
+                255 - Color.blue(color));
     }
 
 }

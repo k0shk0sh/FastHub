@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -41,6 +42,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
         throwable.printStackTrace();
         GitHubErrorResponse errorResponse = RestProvider.getErrorResponse(throwable);
+        Logger.e(errorResponse);
         if (errorResponse != null && errorResponse.getMessage() != null) {
             sendToView(v -> v.showErrorMessage(errorResponse.getMessage()));
         } else {
