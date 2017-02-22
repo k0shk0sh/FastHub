@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.PullRequestModel;
@@ -19,6 +22,8 @@ import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.SpannableBuilder;
+
+import java.util.ArrayList;
 
 import retrofit2.Response;
 import rx.Observable;
@@ -134,6 +139,32 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @NonNull @Override public SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context) {
         return PullRequestModel.getMergeBy(pullRequest, context);
+    }
+
+    @Override public void onLoadLabels() {
+        manageSubscription(
+                RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
+                        .doOnSubscribe(this::onSubscribed)
+                        .doOnNext(response -> {
+                            if (response.getItems() != null && !response.getItems().isEmpty()) {
+                                sendToView(view -> view.onLabelsRetrieved(response.getItems()));
+                            } else {
+                                sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
+                            }
+                        })
+                        .onErrorReturn(throwable -> {
+                            sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
+                            return null;
+                        })
+                        .subscribe()
+        );
+    }
+
+    @Override public void onPutLabels(@NonNull ArrayList<LabelModel> labels) {
+        makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
+                Stream.of(labels).filter(value -> value != null && value.getName() != null)
+                        .map(LabelModel::getName).collect(Collectors.toList())),
+                labelModels -> sendToView(view -> view.showMessage(R.string.success, R.string.labels_added_successfully)));
     }
 
     @Override public void onMerge() {

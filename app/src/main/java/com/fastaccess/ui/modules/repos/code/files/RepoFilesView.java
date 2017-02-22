@@ -14,7 +14,9 @@ import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -51,7 +53,7 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
                 getParent().onAppendPath(model);
             }
         } else {
-            if (model.getSize() > 1000000 /* > 1mb */) {
+            if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(model.getDownloadUrl())) {
                 MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
                         Bundler.start().put(BundleConstant.EXTRA, model.getDownloadUrl()).end())
                         .show(getChildFragmentManager(), "MessageDialogView");

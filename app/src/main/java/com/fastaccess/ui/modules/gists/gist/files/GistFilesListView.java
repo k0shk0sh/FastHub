@@ -11,7 +11,9 @@ import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.GithubFileModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.GistFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -64,7 +66,7 @@ public class GistFilesListView extends BaseFragment<GistFilesListMvp.View, GistF
     }
 
     @Override public void onOpenFile(@NonNull FilesListModel item) {
-        if (item.getSize() > 1000000 /* > 1mb */) {
+        if (item.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(item.getRawUrl())) {
             MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
                     Bundler.start().put(BundleConstant.EXTRA, item.getRawUrl()).end())
                     .show(getChildFragmentManager(), "MessageDialogView");

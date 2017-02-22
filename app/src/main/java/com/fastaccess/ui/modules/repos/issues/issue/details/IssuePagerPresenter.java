@@ -89,7 +89,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         UserModel userModel = getIssue() != null ? getIssue().getUser() : null;
         LoginModel me = LoginModel.getUser();
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(getIssue().getHtmlUrl());
-        return userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin())
+        return (userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin()))
                 || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
     }
 
