@@ -95,7 +95,7 @@ public class SchemeParser {
             if (gist != null) {
                 return GistView.createIntent(context, gist);
             }
-        } else if (HOST_DEFAULT.equals(data.getHost())) {
+        } else {
             Intent userIntent = getUser(context, data);
             Intent pullRequestIntent = getPullRequestIntent(context, data);
             Intent issueIntent = getIssueIntent(context, data);

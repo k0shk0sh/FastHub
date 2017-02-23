@@ -67,9 +67,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         if (downloadedStream == null) {
             manageSubscription(FileModel.get(url)
                     .subscribe(fileModel -> {
-                        if (fileModel == null) {
-                            onWorkOnline();
-                        } else {
+                        if (fileModel != null) {
                             isImage = MarkDownProvider.isImage(fileModel.getFullUrl());
                             if (isImage) {
                                 sendToView(view -> view.onSetImageUrl(fileModel.getFullUrl()));
