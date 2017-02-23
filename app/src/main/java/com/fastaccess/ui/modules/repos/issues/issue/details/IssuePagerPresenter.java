@@ -176,6 +176,6 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
                         .map(LabelModel::getName).collect(Collectors.toList())),
-                labelModels -> sendToView(view -> view.showMessage(R.string.success, R.string.labels_added_successfully)));
+                labelModels -> sendToView(view -> view.onLabelsAdded()));
     }
 }

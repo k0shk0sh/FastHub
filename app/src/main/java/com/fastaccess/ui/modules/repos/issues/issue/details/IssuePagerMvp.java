@@ -27,6 +27,8 @@ interface IssuePagerMvp {
         void showErrorIssueActionMsg(boolean isClose);
 
         void onLabelsRetrieved(@NonNull List<LabelModel> items);
+
+        void onLabelsAdded();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

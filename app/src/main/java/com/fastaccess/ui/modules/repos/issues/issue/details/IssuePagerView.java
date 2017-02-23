@@ -27,6 +27,7 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
+import com.fastaccess.ui.modules.repos.issues.issue.details.events.IssueDetailsView;
 import com.fastaccess.ui.modules.repos.labels.LabelsView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -135,7 +136,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             MessageDialogView.newInstance(
                     getPresenter().isLocked() ? getString(R.string.unlock_issue) : getString(R.string.lock_issue),
                     getPresenter().isLocked() ? getString(R.string.unlock_issue_details) : getString(R.string.lock_issue_details),
-                    Bundler.start().put(BundleConstant.EXTRA, true).end())
+                    Bundler.start().put(BundleConstant.EXTRA_TWO, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.labels) {
@@ -216,6 +217,14 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         hideProgress();
         LabelsView.newInstance(items)
                 .show(getSupportFragmentManager(), "LabelsView");
+    }
+
+    @Override public void onLabelsAdded() {
+        showMessage(R.string.success, R.string.labels_added_successfully);
+        IssueDetailsView issueDetailsView = (IssueDetailsView) pager.getAdapter().instantiateItem(pager, 0);
+        if (issueDetailsView != null) {
+            issueDetailsView.onRefresh();
+        }
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

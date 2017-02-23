@@ -15,6 +15,7 @@ import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReleasesAdapter;
@@ -106,8 +107,11 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
     @Override public void onDownload(@NonNull ReleasesModel item) {
         ListDialogView<SimpleUrlsModel> dialogView = new ListDialogView<>();
         dialogView.initArguments(getString(R.string.releases),
-                Stream.of(new SimpleUrlsModel(getString(R.string.download_as_zip), item.getZipBallUrl()),
-                        new SimpleUrlsModel(getString(R.string.download_as_tar), item.getTarballUrl()))
+                Stream.of(!InputHelper.isEmpty(item.getZipBallUrl()) ?
+                          new SimpleUrlsModel(getString(R.string.download_as_zip), item.getZipBallUrl()) : null,
+                        !InputHelper.isEmpty(item.getTarballUrl()) ?
+                        new SimpleUrlsModel(getString(R.string.download_as_tar), item.getTarballUrl()) : null)
+                        .filter(value -> value != null)
                         .collect(Collectors.toCollection(ArrayList::new)));
         dialogView.show(getChildFragmentManager(), "ListDialogView");
     }
@@ -130,6 +134,7 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
     }
 
     @Override public void onItemSelected(SimpleUrlsModel item) {
+        Logger.e(item, item.getUrl());
         RestProvider.downloadFile(getContext(), item.getUrl());
     }
 }

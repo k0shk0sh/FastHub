@@ -17,7 +17,6 @@ import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.UserRestService;
-import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
@@ -100,25 +99,14 @@ public class RestProvider {
                 .build();
     }
 
-    @SuppressWarnings("WeakerAccess") public static long downloadFile(@NonNull Context context, @NonNull String url, @Nullable String fileName) {
+    public static long downloadFile(@NonNull Context context, @NonNull String url) {
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri uri = Uri.parse(url);
-        DownloadManager.Request request = new DownloadManager.Request(uri);
-        Logger.e(FileHelper.getDownloadDirectory(), fileName);
-        if (!InputHelper.isEmpty(fileName)) {
-            request.setDestinationInExternalPublicDir(FileHelper.getDownloadDirectory(), fileName);
-            request.setDescription(String.format("%s %s", context.getString(R.string.downloading), fileName));
-        } else {
-            request.setDescription(String.format("%s %s", context.getString(R.string.downloading), url));
-        }
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setDescription(url);
         request.setTitle(context.getString(R.string.downloading_file));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         return downloadManager.enqueue(request);
-    }
-
-    public static long downloadFile(@NonNull Context context, @NonNull String url) {
-        return downloadFile(context, url, null);
     }
 
     public static int getErrorCode(Throwable throwable) {
