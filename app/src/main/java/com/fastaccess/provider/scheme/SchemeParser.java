@@ -11,7 +11,6 @@ import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.modules.code.CodeViewerView;
 import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
@@ -101,8 +100,9 @@ public class SchemeParser {
             Intent issueIntent = getIssueIntent(context, data);
             Intent repoIntent = getRepo(context, data);
             Intent commit = getCommit(context, data);
+            Intent commits = getCommits(context, data);
             Intent blob = getBlob(context, data);
-            Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, issueIntent, repoIntent, blob);
+            Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits, issueIntent, repoIntent, blob);
             Optional<Intent> empty = Optional.empty();
             if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty)
                 return intentOptional.get();
@@ -156,6 +156,18 @@ public class SchemeParser {
         return RepoPagerView.createIntent(context, repoName, owner);
     }
 
+    @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.isEmpty() || segments.size() < 4) return null;
+        if (segments.get(3).equals("commits")) {
+            String login = segments.get(1);
+            String repoId = segments.get(2);
+            String sha = segments.get(4);
+            return CommitPagerView.createIntent(context, repoId, login, sha);
+        }
+        return null;
+    }
+
     @Nullable private static Intent getCommit(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4 || !"commit".equals(segments.get(2))) return null;
@@ -186,7 +198,6 @@ public class SchemeParser {
             String fullUrl = uri.toString();
             return CodeViewerView.createIntent(context, fullUrl);
         }
-        Logger.e(uri);
         return null;
     }
 

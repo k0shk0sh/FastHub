@@ -1,6 +1,6 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.events;
 
-import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +10,10 @@ import com.fastaccess.data.dao.IssueEventAdapterModel;
 import com.fastaccess.data.dao.IssueEventModel;
 import com.fastaccess.data.dao.PullRequestAdapterModel;
 import com.fastaccess.data.dao.PullRequestModel;
-import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -45,12 +45,9 @@ class PullRequestDetailsPresenter extends BasePresenter<PullRequestDetailsMvp.Vi
     @Override public void onItemClick(int position, View v, PullRequestAdapterModel item) {
         Logger.e(item.getType());
         if (item.getType() != IssueEventAdapterModel.HEADER) {
-            IssueEventModel issueEventModel = item.getIssueEvent();
-            if (issueEventModel.getCommitUrl() != null) {
-                Activity activity = ActivityHelper.getActivity(v.getContext());
-                if (activity != null) {
-                    ActivityHelper.startCustomTab(activity, issueEventModel.getCommitUrl());
-                }
+            IssueEventModel pullEvent = item.getIssueEvent();
+            if (pullEvent.getCommitUrl() != null) {
+                SchemeParser.launchUri(v.getContext(), Uri.parse(pullEvent.getCommitUrl()));
             }
         }
     }
