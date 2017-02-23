@@ -84,7 +84,7 @@ public class NotificationJobTask extends JobService {
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_announcement)
                     .setContentTitle(context.getString(R.string.notifictions))
-                    .setContentText(context.getString(R.string.unread_notification))
+                    .setContentText(context.getString(R.string.unread_notification) + " (" + count + ")")
                     .setNumber((int) count)
                     .addAction(R.drawable.ic_github, context.getString(R.string.open), PendingIntent.getActivity(context, 0, new Intent(),
                             PendingIntent.FLAG_UPDATE_CURRENT))

@@ -39,9 +39,11 @@ interface MainMvp {
 
         void onCloseDrawer();
 
-        void onOpenSettings();
-
         void onHideShowFab();
+
+        void onSubmitFeedback();
+
+        void onLogout();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, NavigationView.OnNavigationItemSelectedListener,

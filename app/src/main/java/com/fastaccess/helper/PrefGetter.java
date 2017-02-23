@@ -16,4 +16,8 @@ public class PrefGetter {
     public static String getToken() {
         return PrefHelper.getString(TOKEN);
     }
+
+    public static void clear() {
+        PrefHelper.clearPrefs();
+    }
 }

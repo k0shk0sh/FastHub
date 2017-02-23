@@ -1,12 +1,12 @@
 package com.prettifier.pretty.helper;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.BuildConfig;
+import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.helper.Logger;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -17,13 +17,8 @@ import java.util.regex.Pattern;
  */
 
 public class GithubHelper {
-    private static Matcher IMAGE_TAG_MATCHER = Pattern.compile("<(img|IMG)(.*?)>").matcher("");
-
-    private static Matcher IMAGE_SRC_MATCHER = Pattern.compile("(src|SRC)=\"(.*?)\"").matcher("");
-
-    private static Matcher LINK_TAG_MATCHER = Pattern.compile("<(a|A)(.*?)>").matcher("");
-
-    private static Matcher HREF_MATCHER = Pattern.compile("(href)=\"(.*?)\"").matcher("");
+    private static Pattern LINK_TAG_MATCHER = Pattern.compile("href=\"(.*?)\"");
+    private static Pattern IMAGE_TAG_MATCHER = Pattern.compile("src=\"(.*?)\"");
 
     @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl) {
         if (baseUrl == null) {
@@ -34,47 +29,35 @@ public class GithubHelper {
     }
 
     @NonNull private static String validateImageBaseUrl(@NonNull String source, @NonNull String baseUrl) {
-        Uri uri = Uri.parse(baseUrl);
-        List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 2) return source;
-        String owner = segments.get(0);
-        String repoName = segments.get(1);
-        Matcher matcher = IMAGE_TAG_MATCHER.reset(source);
+        NameParser nameParser = new NameParser(baseUrl);
+        String owner = nameParser.getUsername();
+        String repoName = nameParser.getName();
+        Matcher matcher = IMAGE_TAG_MATCHER.matcher(source);
         while (matcher.find()) {
-            String image = matcher.group(2).trim();
-            IMAGE_SRC_MATCHER.reset(image);
-            String src = null;
-            if (IMAGE_SRC_MATCHER.find()) {
-                src = IMAGE_SRC_MATCHER.group(2).trim();
-            }
-            if (src == null || src.startsWith("http://") || src.startsWith("https://")) {
+            String src = matcher.group(1).trim();
+            if (src.startsWith("http://") || src.startsWith("https://")) {
                 continue;
             }
+            Logger.e(src);
             String finalSrc = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + src;
-            source = source.replace(src, finalSrc);
+            source = source.replace("src=\"" + src + "\"", "src=\"" + finalSrc + "\"");
         }
         return validateLinks(source, baseUrl);
     }
 
     private static String validateLinks(@NonNull String source, @NonNull String baseUrl) {
-        Uri uri = Uri.parse(baseUrl);
-        List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 2) return source;
-        String owner = segments.get(0);
-        String repoName = segments.get(1);
-        Matcher matcher = LINK_TAG_MATCHER.reset(source);
+        NameParser nameParser = new NameParser(baseUrl);
+        String owner = nameParser.getUsername();
+        String repoName = nameParser.getName();
+        Matcher matcher = LINK_TAG_MATCHER.matcher(source);
         while (matcher.find()) {
-            String link = matcher.group(2).trim();
-            HREF_MATCHER.reset(link);
-            String href = null;
-            if (HREF_MATCHER.find()) {
-                href = HREF_MATCHER.group(2).trim();
-            }
-            if (href == null || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
+            String href = matcher.group(1).trim();
+            if (href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
                 continue;
             }
+            Logger.e(href);
             String finalSrc = BuildConfig.REST_URL + "repos/" + owner + "/" + repoName + "/contents/" + href;
-            source = source.replace(href, finalSrc);
+            source = source.replace("href=\"" + href + "\"", "href=\"" + finalSrc + "\"");
         }
         return source;
     }

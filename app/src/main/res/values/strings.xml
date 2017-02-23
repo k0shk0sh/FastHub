@@ -149,4 +149,8 @@
     <string name="labels">Labels</string>
     <string name="no_labels">No Labels</string>
     <string name="labels_added_successfully">Labels Added Successfully</string>
+    <string name="submit_feedback">Submit Feedback</string>
+    <string name="logout">Logout</string>
+    <string name="thank_you_for_feedback">Thanks for your feedback.</string>
+    <string name="current_version">Current Version</string>
 </resources>

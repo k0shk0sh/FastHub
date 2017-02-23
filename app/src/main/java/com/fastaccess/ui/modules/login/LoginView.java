@@ -3,6 +3,7 @@ package com.fastaccess.ui.modules.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -58,6 +59,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         refresh.setOnRefreshListener(this);
+        webView.getSettings().setSaveFormData(false);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override public void onProgressChanged(WebView view, int progress) {
                 super.onProgressChanged(view, progress);

@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.repos.issues.create;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -33,6 +34,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
     @BindView(R.id.description) FontTextView description;
     @State String repoId;
     @State String login;
+    @State boolean isFeedback;
 
     private CharSequence savedText;
 
@@ -43,6 +45,18 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                 .put(BundleConstant.ID, repoId)
                 .end());
         fragment.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+    }
+
+    public static void startForResult(@NonNull Activity activity) {
+        String login = "k0shk0sh"; // FIXME: 23/02/2017 hardcoded
+        String repoId = "FastHub";// FIXME: 23/02/2017 hardcoded
+        Intent intent = new Intent(activity, CreateIssueView.class);
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA_TWO, true)
+                .end());
+        activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onSetCode(@NonNull CharSequence charSequence) {
@@ -92,7 +106,9 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
         if (savedInstanceState == null) {
             login = getIntent().getExtras().getString(BundleConstant.EXTRA);
             repoId = getIntent().getExtras().getString(BundleConstant.ID);
+            isFeedback = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TWO);
         }
+        if (isFeedback) setTitle(R.string.submit_feedback);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

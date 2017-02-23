@@ -7,12 +7,10 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
@@ -24,8 +22,8 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.login.LoginView;
-import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
+import com.tapadoo.alerter.Alerter;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -40,8 +38,6 @@ import icepick.State;
 
 public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
         BaseMvp.FAView {
-
-    private Toast toast;
 
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
@@ -111,23 +107,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
         hideProgress();
-        if (!isFinishing()) {
-            try {
-                getSupportFragmentManager().executePendingTransactions();
-                Fragment fragment = AppHelper.getFragmentByTag(getSupportFragmentManager(), "BaseActivity");
-                if (fragment == null) {
-                    MessageDialogView.newInstance(titleRes, msgRes).show(getSupportFragmentManager(), "BaseActivity");
-                } else {
-                    MessageDialogView messageDialogView = (MessageDialogView) fragment;
-                    messageDialogView.setArguments(MessageDialogView.getBundle(titleRes, msgRes, false, null));
-                    messageDialogView.initMessage();
-                }
-                return;
-            } catch (Exception ignored) {}
-        }
-        if (toast != null) toast.cancel();
-        toast = Toast.makeText(this, msgRes, Toast.LENGTH_LONG);
-        toast.show();
+        Alerter.create(this)
+                .setTitle(titleRes)
+                .setText(msgRes)
+                .setBackgroundColor(titleRes.equals(getString(R.string.success)) ? R.color.material_green_700 : R.color.material_orange_700)
+                .show();
+
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {

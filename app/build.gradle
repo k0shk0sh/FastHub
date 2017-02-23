@@ -99,7 +99,6 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'frankiesardo:icepick:3.1.0'
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:1.0.7'
-    compile 'pub.devrel:easypermissions:0.2.1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.2'
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
@@ -108,6 +107,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'com.annimon:stream:1.1.4'
     compile 'com.commonsware.cwac:anddown:0.3.0'
+    compile 'com.tapadoo.android:alerter:1.0.1'
     provided "org.projectlombok:lombok:1.12.6"
     apt "org.projectlombok:lombok:1.12.6"
     apt 'frankiesardo:icepick-processor:3.1.0'

@@ -27,8 +27,9 @@ public class NameParser {
             if (segments == null || segments.size() < 2) {
                 return;
             }
-            this.name = segments.get(1);
-            this.username = segments.get(0);
+            boolean isFirstPathIsRepo = (segments.get(0).equalsIgnoreCase("repos") || segments.get(0).equalsIgnoreCase("repo"));
+            this.username = isFirstPathIsRepo ? segments.get(1) : segments.get(0);
+            this.name = isFirstPathIsRepo ? segments.get(2) : segments.get(1);
         }
     }
 

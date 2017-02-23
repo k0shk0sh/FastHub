@@ -13,22 +13,29 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.create.CreateGistView;
 import com.fastaccess.ui.modules.notification.NotificationsBottomSheet;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.widgets.AvatarLayout;
+import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,6 +50,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.navigation) NavigationView navigationView;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+    @BindView(R.id.versionText) FontTextView versionText;
 
     private long backPressTimer;
 
@@ -79,6 +87,13 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         onInit(savedInstanceState);
         onHideShowFab();
         hideShowShadow(navType != MainMvp.PROFILE);
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
+            showMessage(R.string.success, R.string.thank_you_for_feedback);
+        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -134,16 +149,23 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
     }
 
-    @Override public void onOpenSettings() {
-
-    }
-
     @Override public void onHideShowFab() {
         if (navType == MainMvp.GISTS) {
             fab.show();
         } else {
             fab.hide();
         }
+    }
+
+    @Override public void onSubmitFeedback() {
+        CreateIssueView.startForResult(this);
+    }
+
+    @Override public void onLogout() {
+        CookieManager.getInstance().removeAllCookies(null);
+        PrefGetter.clear();
+        LoginModel.deleteTable().execute();
+        recreate();
     }
 
     private boolean canExit() {
@@ -178,6 +200,11 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
                     ((TextView) view.findViewById(R.id.email)).setText(userModel.getLogin());
                 }
             }
+            versionText.setText(SpannableBuilder.builder()
+                    .append(getString(R.string.current_version))
+                    .append("(")
+                    .bold(BuildConfig.VERSION_NAME)
+                    .append(")"));
         }
     }
 }
