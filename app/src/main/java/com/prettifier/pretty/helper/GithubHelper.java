@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -56,8 +57,14 @@ public class GithubHelper {
                 continue;
             }
             Logger.e(href);
-            String finalSrc = BuildConfig.REST_URL + "repos/" + owner + "/" + repoName + "/contents/" + href;
-            source = source.replace("href=\"" + href + "\"", "href=\"" + finalSrc + "\"");
+            boolean isImage = MarkDownProvider.isImage(href);
+            String link;
+            if (isImage) {
+                link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href;
+            } else {
+                link = BuildConfig.REST_URL + "repos/" + owner + "/" + repoName + "/contents/" + href;
+            }
+            source = source.replace("href=\"" + href + "\"", "href=\"" + link + "\"");
         }
         return source;
     }
