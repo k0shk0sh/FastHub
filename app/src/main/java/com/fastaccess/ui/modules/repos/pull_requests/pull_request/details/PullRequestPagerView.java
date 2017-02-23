@@ -111,7 +111,8 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.pull_request_menu, menu);
-        menu.findItem(R.id.merge).setVisible(getPresenter().isRepoOwner() && getPresenter().isMergeable());
+        menu.findItem(R.id.merge).setVisible(false);
+//        menu.findItem(R.id.merge).setVisible(getPresenter().isRepoOwner() && getPresenter().isMergeable());
         menu.findItem(R.id.lockIssue).setVisible(getPresenter().isOwner() || getPresenter().isRepoOwner());
         menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner());
         return super.onCreateOptionsMenu(menu);
@@ -145,7 +146,8 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
         lockIssue.setVisible(isRepoOwner);
         menu.findItem(R.id.labels).setVisible(isRepoOwner);
-        menu.findItem(R.id.merge).setVisible(isMergable && (isRepoOwner));
+//        menu.findItem(R.id.merge).setVisible(isMergable && (isRepoOwner));
+        menu.findItem(R.id.merge).setVisible(false);
         return super.onPrepareOptionsMenu(menu);
     }
 
