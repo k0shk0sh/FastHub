@@ -41,6 +41,8 @@ interface IssuePagerMvp {
 
         boolean isOwner();
 
+        boolean isRepoOwner();
+
         boolean isLocked();
 
         void onHandleConfirmDialog(@Nullable Bundle bundle);

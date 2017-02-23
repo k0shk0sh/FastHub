@@ -116,7 +116,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         getMenuInflater().inflate(R.menu.issue_menu, menu);
         menu.findItem(R.id.closeIssue).setVisible(getPresenter().isOwner());
         menu.findItem(R.id.lockIssue).setVisible(getPresenter().isOwner());
-        menu.findItem(R.id.labels).setVisible(getPresenter().isOwner());
+        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -154,7 +154,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         Logger.e(isOwner);
         menu.findItem(R.id.closeIssue).setVisible(isOwner);
         menu.findItem(R.id.lockIssue).setVisible(isOwner);
-        menu.findItem(R.id.labels).setVisible(isOwner);
+        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner());
         if (isOwner) {
             //noinspection ConstantConditions ( getIssue at this stage is not null but AS doesn't know. )
             closeIssue.setTitle(getPresenter().getIssue().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string.close));

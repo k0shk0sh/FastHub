@@ -9,10 +9,13 @@ import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.data.dao.types.FilesType;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import rx.Observable;
 
@@ -22,6 +25,7 @@ import rx.Observable;
 
 class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements RepoFilesMvp.Presenter {
     private ArrayList<RepoFilesModel> files = new ArrayList<>();
+    private HashMap<String, ArrayList<RepoFilesModel>> cachedFiles = new LinkedHashMap<>();
     private String repoId;
     private String login;
     private String path;
@@ -62,21 +66,42 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         if (repoId == null || login == null) return;
         makeRestCall(RestProvider.getRepoService().getRepoFiles(login, repoId, path),
                 response -> {
-                    getFiles().clear();
+                    files.clear();
                     manageSubscription(RepoFilesModel.save(response.getItems(), login, repoId).subscribe());
-                    getFiles().addAll(Stream.of(response.getItems()).sortBy(model -> model.getType() == FilesType.file)
-                            .collect(com.annimon.stream.Collectors.toList()));
+                    ArrayList<RepoFilesModel> repoFilesModels = Stream.of(response.getItems())
+                            .sortBy(model -> model.getType() == FilesType.file)
+                            .collect(com.annimon.stream.Collectors.toCollection(ArrayList::new));
+                    cachedFiles.put(path, repoFilesModels);
+                    files.addAll(repoFilesModels);
                     sendToView(RepoFilesMvp.View::onNotifyAdapter);
                 });
 
     }
 
     @Override public void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @Nullable String path) {
-        this.login = login;
-        this.repoId = repoId;
-        if (!Objects.toString(path, "").equalsIgnoreCase(this.path)) {
-            this.path = Objects.toString(path, "");
-            onCallApi();
+        ArrayList<RepoFilesModel> cachedFiles = getCachedFiles(Objects.toString(path, ""));
+        if (cachedFiles != null && !cachedFiles.isEmpty()) {
+            Logger.e(files.size());
+            files.clear();
+            files.addAll(cachedFiles);
+            Logger.e(files.size(), cachedFiles.size());
+            sendToView(RepoFilesMvp.View::onNotifyAdapter);
+        } else {
+            this.login = login;
+            this.repoId = repoId;
+            if (!Objects.toString(path, "").equalsIgnoreCase(this.path)) {
+                this.path = Objects.toString(path, "");
+                onCallApi();
+            }
         }
+    }
+
+    @Nullable @Override public ArrayList<RepoFilesModel> getCachedFiles(@NonNull String url) {
+        return cachedFiles.get(url);
+    }
+
+    @Override public void cacheFiles(@NonNull String url, @NonNull ArrayList<RepoFilesModel> files) {
+        Logger.e(url, files);
+        cachedFiles.put(url, files);
     }
 }

@@ -93,6 +93,15 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                 || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
     }
 
+    @Override public boolean isRepoOwner() {
+        if (getIssue() == null) return false;
+        UserModel userModel = getIssue() != null ? getIssue().getUser() : null;
+        LoginModel me = LoginModel.getUser();
+        PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(getIssue().getHtmlUrl());
+        return userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin())
+                || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
+    }
+
     @Override public boolean isLocked() {
         return getIssue() != null && getIssue().isLocked();
     }
