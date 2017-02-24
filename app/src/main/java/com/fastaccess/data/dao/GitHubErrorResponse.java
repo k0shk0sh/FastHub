@@ -16,4 +16,11 @@ public class GitHubErrorResponse {
     private String documentation_url;
     private List<GistHubErrorsModel> errors;
 
+    @Override public String toString() {
+        return "GitHubErrorResponse{" +
+                "message='" + message + '\'' +
+                ", documentation_url='" + documentation_url + '\'' +
+                ", errors=" + errors +
+                '}';
+    }
 }

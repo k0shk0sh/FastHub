@@ -153,4 +153,5 @@
     <string name="logout">Logout</string>
     <string name="thank_you_for_feedback">Thanks for your feedback.</string>
     <string name="current_version">Current Version</string>
+    <string name="custom_tablet_provider">com.fastaccess.ui.widgets.TabletBehavior</string>
 </resources>

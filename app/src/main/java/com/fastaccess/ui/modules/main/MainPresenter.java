@@ -95,11 +95,11 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         return false;
     }
 
-    @Override public void onMenuItemSelect(@IdRes int id, int position) {
+    @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {
         if (getView() != null) {
             getView().onNavigationChanged(position);
         }
     }
 
-    @Override public void onMenuItemReselect(@IdRes int id, int position) {}
+    @Override public void onMenuItemReselect(@IdRes int id, int position, boolean fromUser) {}
 }

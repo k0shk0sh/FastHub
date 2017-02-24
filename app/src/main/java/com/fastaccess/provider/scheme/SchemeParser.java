@@ -29,8 +29,6 @@ import static android.content.Intent.CATEGORY_BROWSABLE;
  */
 
 public class SchemeParser {
-
-
     private static final String HOST_DEFAULT = "github.com";
     private static final String HOST_GISTS = "gist.github.com";
     private static final String PROTOCOL_HTTPS = "https";

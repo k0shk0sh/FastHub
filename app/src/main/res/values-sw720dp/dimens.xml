@@ -3,5 +3,5 @@
     <dimen name="layout_margin">58dp</dimen>
     <integer name="num_columns">2</integer>
     <dimen name="fab_margin">24dp</dimen>
-    <integer name="small_spans">1</integer>
+    <integer name="small_spans">2</integer>
 </resources>
