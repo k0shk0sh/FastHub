@@ -154,5 +154,5 @@
     <string name="thank_you_for_feedback">Thanks for your feedback.</string>
     <string name="current_version">Current Version</string>
     <string name="custom_tablet_provider">com.fastaccess.ui.widgets.TabletBehavior</string>
-    <string name="support_development_enable_ads">Support development, enable Ads :) .</string>
+    <string name="support_development_enable_ads">Support development, enable Ads.</string>
 </resources>
