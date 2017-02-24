@@ -9,7 +9,7 @@ android {
         signing {
             keyAlias ANDROID_KEY_ALIAS
             keyPassword ANDROID_STORE_PASSWORD
-            storeFile file('StyleMe')
+            storeFile file('fastaccess-key')
             storePassword ANDROID_STORE_PASSWORD
         }
     }
