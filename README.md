@@ -1,5 +1,7 @@
 # Welcome to FastHub
 
+![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/feature_graphic.png?raw=true "Logo")
+
 **FastHub** is yet another <b>open source</b> GitHub client app but unlike any other app, FastHub built from ground up.
  
 # Features
@@ -29,8 +31,4 @@ You love FastHub? You want new features or bug fixes? Please contribute to the  
 
 # ScreenShots
 
-![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/web_hi_res_512.png?raw=true "Logo")
-![Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true "Main Screen")
-![Main Screen-Land](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main_landscape.png?raw=true "Main Screen-Land")
-![Tablet Repo Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "Tablet Repo Screen")
-![Tablet Commit Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_commits.png?raw=true "Tablet Commit Scree")
+[Art](https://github.com/k0shk0sh/FastHub/tree/master/art)
