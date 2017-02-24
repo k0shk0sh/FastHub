@@ -3,10 +3,12 @@
 <b>FastHub</b> is yet another <b>open source</b> GitHub client app but unlike any other app, FastHub built from ground up.
 
 
-![Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/main-screen.png?raw=true? "Main Screen")
-![Main Screen-Land](https://github.com/k0shk0sh/FastHub/blob/master/art/main-screen.png?raw=true? "Main Screen-Land")
-![Table Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/table-main.png?raw=true? "Table Main Screen")
-![Table Repo Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/table-main.png?raw=true? "Table Repo Screen")
+
+![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/web_hi_res_512.png?raw=true "Logo")
+![Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/main_screen.png?raw=true "Main Screen")
+![Main Screen-Land](https://github.com/k0shk0sh/FastHub/blob/master/art/main_screen_landscape.png?raw=true "Main Screen-Land")
+![Table Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_main.png?raw=true "Table Main Screen")
+![Table Repo Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "Table Repo Screen")
 
 <b>P.S:</b> <i>FastHub</i> contain Ads, but they are disabled by default, you could enable them if you like to support development. 
 
