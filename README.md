@@ -7,7 +7,8 @@
 ![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/web_hi_res_512.png?raw=true "Logo")
 ![Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true "Main Screen")
 ![Main Screen-Land](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main_landscape.png?raw=true "Main Screen-Land")
-![Table Repo Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "Table Repo Screen")
+![Tablet Repo Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "Tablet Repo Screen")
+![Tablet Commit Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_commits.png?raw=true "Tablet Commit Scree")
 
 <b>P.S:</b> <i>FastHub</i> contain Ads, but they are disabled by default, you could enable them if you like to support development. 
 
