@@ -1,9 +1,10 @@
 <resources>
-    <string name="app_name">FastHub</string>
+    <string name="app_name" translatable="false">FastHub</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
     <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
     <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
     <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
+    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
     <string name="in_progress">In Progress, Please Wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
@@ -153,6 +154,5 @@
     <string name="logout">Logout</string>
     <string name="thank_you_for_feedback">Thanks for your feedback.</string>
     <string name="current_version">Current Version</string>
-    <string name="custom_tablet_provider">com.fastaccess.ui.widgets.TabletBehavior</string>
     <string name="support_development_enable_ads">Support development, enable Ads.</string>
 </resources>
