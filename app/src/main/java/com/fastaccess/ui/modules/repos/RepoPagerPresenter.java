@@ -235,6 +235,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 }
                 break;
             case RepoPagerMvp.ISSUES:
+                if ((getRepo() != null && !getRepo().isHasIssues())) return;
                 if (repoIssuesPagerView == null) {
                     onAddAndHide(fragmentManager, RepoIssuesPagerView.newInstance(repoId(), login()), currentVisible);
                 } else {
@@ -272,6 +273,9 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     }
 
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {
+        if (id == R.id.issues && (getRepo() != null && !getRepo().isHasIssues())) {
+            return;
+        }
         if (getView() != null && isViewAttached()) {
             getView().onNavigationChanged(position);
         }
