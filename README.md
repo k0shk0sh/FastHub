@@ -9,6 +9,7 @@
 - Watch, Star and Fork Repos.
 - Close, Open, Label and Create Issues.
 - Close, Open and Label Pull Requests.
+- Lock & Unlock conversations on Issues and Pull Requests.
 - Comment on Issues, Pull Requests, Commits and Gists
 - Edit and Delete Comments.
 - Create Gists.
@@ -28,8 +29,10 @@ You love FastHub? You want new features or bug fixes? Please contribute to the  
 
 # ScreenShots
 
+<p align="center">
 ![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/web_hi_res_512.png?raw=true "Logo")
 ![Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true "Main Screen")
 ![Main Screen-Land](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main_landscape.png?raw=true "Main Screen-Land")
 ![Tablet Repo Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "Tablet Repo Screen")
 ![Tablet Commit Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_commits.png?raw=true "Tablet Commit Scree")
+</p>
