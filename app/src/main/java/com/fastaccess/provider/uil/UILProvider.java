@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -23,13 +24,14 @@ public class UILProvider {
     public static void initUIL(@NonNull Context context) {
         ImageLoader imageLoader = ImageLoader.getInstance();
         if (!imageLoader.isInited()) {
-            ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(context)
-                    .writeDebugLogs()
+            ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context)
                     .defaultDisplayImageOptions(getOptions())
                     .denyCacheImageMultipleSizesInMemory()
-                    .diskCache(new LimitedAgeDiskCache(context.getCacheDir(), AlarmManager.INTERVAL_DAY))
-                    .build();
-            imageLoader.init(config);
+                    .diskCache(new LimitedAgeDiskCache(context.getCacheDir(), AlarmManager.INTERVAL_DAY));
+            if (BuildConfig.DEBUG) {
+                builder.writeDebugLogs();
+            }
+            imageLoader.init(builder.build());
         }
     }
 
