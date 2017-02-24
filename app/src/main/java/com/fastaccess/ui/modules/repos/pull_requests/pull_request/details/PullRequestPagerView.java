@@ -68,7 +68,8 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
 
     @OnClick(R.id.headerTitle) void onTitleClick() {
         if (getPresenter().getPullRequest() != null && !InputHelper.isEmpty(getPresenter().getPullRequest().getTitle()))
-            showMessage(getString(R.string.details), getPresenter().getPullRequest().getTitle());
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getPullRequest().getTitle())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick(R.id.fab) void onAddComment() {

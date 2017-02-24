@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
 
     <group android:checkableBehavior="none">
+
         <item
             android:id="@+id/feedback"
             android:icon="@drawable/ic_announcement"
@@ -11,7 +13,7 @@
             android:id="@+id/logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/logout"/>
-    </group>
 
+    </group>
 
 </menu>

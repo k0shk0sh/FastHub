@@ -65,7 +65,8 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
 
     @OnClick(R.id.headerTitle) void onTitleClick() {
         if (getPresenter().getGist() != null && !InputHelper.isEmpty(getPresenter().getGist().getDescription()))
-            showMessage(getString(R.string.details), getPresenter().getGist().getDescription());
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getGist().getDescription())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick({R.id.startGist, R.id.forkGist}) public void onGistActions(View view) {

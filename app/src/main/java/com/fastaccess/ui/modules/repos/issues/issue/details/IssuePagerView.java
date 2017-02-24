@@ -71,7 +71,8 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @OnClick(R.id.headerTitle) void onTitleClick() {
         if (getPresenter().getIssue() != null && !InputHelper.isEmpty(getPresenter().getIssue().getTitle()))
-            showMessage(getString(R.string.details), getPresenter().getIssue().getTitle());
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick(R.id.fab) void onAddComment() {

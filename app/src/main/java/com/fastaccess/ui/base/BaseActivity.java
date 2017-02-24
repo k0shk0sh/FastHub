@@ -23,6 +23,8 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.login.LoginView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.tapadoo.alerter.Alerter;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -42,6 +44,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.toolbarShadow) View shadowView;
+    @Nullable @BindView(R.id.adView) AdView adView;
 
     @LayoutRes protected abstract int layout();
 
@@ -72,6 +75,14 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             if (!isLoggedIn()) {
                 startActivity(new Intent(this, LoginView.class));
                 finish();
+            }
+        }
+        if (adView != null) {
+            boolean isAdsEnabled = PrefGetter.isAdsEnabled();
+            adView.setVisibility(isAdsEnabled ? View.VISIBLE : View.GONE);
+            if (isAdsEnabled) {
+                AdRequest adRequest = new AdRequest.Builder().build();
+                adView.loadAd(adRequest);
             }
         }
     }

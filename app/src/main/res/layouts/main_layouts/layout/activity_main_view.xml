@@ -9,20 +9,38 @@
     android:fitsSystemWindows="true"
     tools:context="com.fastaccess.ui.modules.main.MainView">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <include layout="@layout/appbar_start_margin"/>
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <include layout="@layout/fragment_container"/>
+            <include layout="@layout/appbar_start_margin"/>
 
-        <include layout="@layout/bottom_fab"/>
+            <include layout="@layout/fragment_container"/>
 
-        <include layout="@layout/main_bottom_navigation"/>
+            <include layout="@layout/bottom_fab"/>
 
-    </android.support.design.widget.CoordinatorLayout>
+            <include layout="@layout/main_bottom_navigation"/>
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <com.google.android.gms.ads.AdView
+            android:id="@+id/adView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?colorPrimary"
+            android:visibility="gone"
+            app:adSize="BANNER"
+            app:adUnitId="@string/banner_ad_unit_id"/>
+    </LinearLayout>
+
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation"
@@ -45,10 +63,13 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/spacing_xs_large">
 
+            <include layout="@layout/enable_ads_swift"/>
+
             <com.fastaccess.ui.widgets.FontTextView
                 style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_micro"
                 android:gravity="center"
                 android:text="@string/app_name"/>
 

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
  */
 
 public class PrefGetter {
+    private static final String ADS = "enable_ads";
     private static final String TOKEN = "token";
 
     public static void setToken(@NonNull String token) {
@@ -15,6 +16,14 @@ public class PrefGetter {
 
     public static String getToken() {
         return PrefHelper.getString(TOKEN);
+    }
+
+    public static boolean isAdsEnabled() {
+        return PrefHelper.getBoolean(ADS);
+    }
+
+    public static void setAdsEnabled(boolean isEnabled) {
+        PrefHelper.set(ADS, isEnabled);
     }
 
     public static void clear() {

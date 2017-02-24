@@ -28,6 +28,7 @@ import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommen
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ViewPagerView;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.util.Date;
 
@@ -69,7 +70,8 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
 
     @OnClick(R.id.headerTitle) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
-            showMessage(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage());
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick(R.id.fab) void onAddComment() {

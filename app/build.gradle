@@ -34,6 +34,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+    productFlavors {
+        debuggingApp {}
+        productionApp {}
+    }
+
     sourceSets {
         main {
             res.srcDirs = [
@@ -77,8 +84,8 @@ repositories {
 
 dependencies {
     ext {
-        supportVerion = "25.1.1"
-        firebase = "10.0.1"
+        supportVerion = "25.2.0"
+        firebase = "10.2.0"
         thirtyinchVersion = '0.8.0-rc3'
         retrofit = '2.1.0'
     }
@@ -91,8 +98,13 @@ dependencies {
     compile "com.android.support:customtabs:${supportVerion}"
     compile "com.google.firebase:firebase-messaging:${firebase}"
     compile "com.google.firebase:firebase-analytics:${firebase}"
+    compile "com.google.firebase:firebase-ads:${firebase}"
+    compile "com.google.firebase:firebase-crash:${firebase}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
+    compile "com.squareup.retrofit2:retrofit:${retrofit}"
+    compile "com.squareup.retrofit2:converter-gson:${retrofit}"
+    compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
     compile 'com.firebase:firebase-jobdispatcher:0.5.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
@@ -101,17 +113,14 @@ dependencies {
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.2'
-    compile "com.squareup.retrofit2:retrofit:${retrofit}"
-    compile "com.squareup.retrofit2:converter-gson:${retrofit}"
-    compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'com.annimon:stream:1.1.4'
     compile 'com.commonsware.cwac:anddown:0.3.0'
     compile 'com.tapadoo.android:alerter:1.0.1'
-    provided "org.projectlombok:lombok:1.12.6"
-    apt "org.projectlombok:lombok:1.12.6"
+    apt 'org.projectlombok:lombok:1.12.6'
     apt 'frankiesardo:icepick-processor:3.1.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    provided 'org.projectlombok:lombok:1.12.6'
 }
 
 apply plugin: "com.google.gms.google-services"

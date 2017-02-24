@@ -27,6 +27,7 @@ import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.text.NumberFormat;
 
@@ -83,8 +84,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
 
     @OnClick(R.id.headerTitle) void onTitleClick() {
         RepoModel repoModel = getPresenter().getRepo();
-        if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription()))
-            showMessage(getString(R.string.details), repoModel.getDescription());
+        if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
+            MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
+        }
     }
 
     @OnClick({R.id.forkRepo, R.id.starRepo, R.id.watchRepo}) public void onClick(View view) {

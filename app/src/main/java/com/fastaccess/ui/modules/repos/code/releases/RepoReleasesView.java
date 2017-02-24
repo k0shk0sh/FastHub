@@ -119,7 +119,7 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
     @Override public void onShowDetails(@NonNull ReleasesModel item) {
         if (!InputHelper.isEmpty(item.getBody())) {
             MessageDialogView.newInstance(!InputHelper.isEmpty(item.getName()) ? item.getName() : item.getTagName(),
-                    item.getBody(), true).show(getChildFragmentManager(), "MessageDialogView");
+                    item.getBody(), true).show(getChildFragmentManager(), MessageDialogView.TAG);
         } else {
             showErrorMessage(getString(R.string.no_body));
         }

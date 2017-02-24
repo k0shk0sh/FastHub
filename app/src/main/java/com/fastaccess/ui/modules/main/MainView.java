@@ -34,6 +34,7 @@ import com.fastaccess.ui.modules.notification.NotificationsBottomSheet;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.widgets.AvatarLayout;
+import com.fastaccess.ui.widgets.FontSwitchView;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
@@ -51,8 +52,14 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @BindView(R.id.navigation) NavigationView navigationView;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.versionText) FontTextView versionText;
+    @BindView(R.id.enableAds) FontSwitchView enableAds;
 
     private long backPressTimer;
+
+    @OnClick(R.id.enableAds) void onEnableAds(View view) {
+        PrefGetter.setAdsEnabled(((FontSwitchView) view).isChecked());
+        recreate();
+    }
 
     @OnClick(R.id.fab) void onClick() {
         if (navType == MainMvp.GISTS) {
@@ -87,6 +94,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         onInit(savedInstanceState);
         onHideShowFab();
         hideShowShadow(navType != MainMvp.PROFILE);
+        enableAds.setChecked(PrefGetter.isAdsEnabled());
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

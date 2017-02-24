@@ -10,20 +10,20 @@ import com.fastaccess.helper.TypeFaceHelper;
 /**
  * Created by Kosh on 8/18/2015. copyrights are reserved
  */
-public class SwitchView extends SwitchCompat {
+public class FontSwitchView extends SwitchCompat {
 
-    public SwitchView(Context context) {
+    public FontSwitchView(Context context) {
         super(context);
         init();
     }
 
-    public SwitchView(Context context, AttributeSet attrs) {
+    public FontSwitchView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
 
     }
 
-    public SwitchView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FontSwitchView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
