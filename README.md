@@ -29,6 +29,9 @@ You love FastHub? You want new features or bug fixes? Please contribute to the  
 
 > **FastHub** contain Ads, but they are disabled by default, you could enable them if you like to support development.
 
-# ScreenShots
+# Copyright Notice
 
-[Art](https://github.com/k0shk0sh/FastHub/tree/master/art)
+Copyright (C) 2017 Kosh. 
+
+Licensed under the [GPL-3.0](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE)
+license (see the LICENSE file).
