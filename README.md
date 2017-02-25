@@ -1,8 +1,12 @@
-# Welcome to FastHub
+# Welcome to FastHub 
+
+<a href='https://play.google.com/store/apps/details?id=com.fastaccess.github&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png'/></a>
 
 ![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/feature_graphic.png?raw=true "Logo")
 
 **FastHub** is yet another <b>open source</b> GitHub client app but unlike any other app, FastHub built from ground up.
+ 
+ 
  
 # Features
 

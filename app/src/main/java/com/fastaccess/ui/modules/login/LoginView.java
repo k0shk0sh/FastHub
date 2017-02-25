@@ -1,15 +1,15 @@
 package com.fastaccess.ui.modules.login;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
@@ -66,20 +66,33 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
                 if (progress == 100) {
                     refresh.setRefreshing(false);
                 } else if (progress < 100) {
-                    refresh.setRefreshing(true);//if (!refresh.isRefreshing())  is handled by the method,we shouldn't care.
+                    refresh.setRefreshing(true);
                 }
             }
         });
-        webView.setWebViewClient(new WebViewClient() {
-            @SuppressWarnings("deprecation") @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                String code = getPresenter().getCode(url);
-                Logger.e(code, url);
-                if (code != null) {
-                    getPresenter().onGetToken(code);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            webView.setWebViewClient(new WebViewClient() {
+                @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+                    String code = getPresenter().getCode(request.getUrl().toString());
+                    if (code != null) {
+                        getPresenter().onGetToken(code);
+                    }
+                    return false;
                 }
-                return false;
-            }
-        });
+            });
+        } else {
+            webView.setWebViewClient(new WebViewClient() {
+                @SuppressWarnings("deprecation") @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    String code = getPresenter().getCode(url);
+                    if (code != null) {
+                        getPresenter().onGetToken(code);
+                    }
+                    return false;
+                }
+            });
+        }
         onRefresh();
     }
 }
