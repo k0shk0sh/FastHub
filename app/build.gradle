@@ -19,8 +19,8 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 100
-        versionName "1.0.0"
+        versionCode 101
+        versionName "1.0.1"
         signingConfig signingConfigs.signing
         buildConfigField "String", "GITHUB_CLIENT_ID", "\"${GITHUB_CLIENT_ID}\""
         buildConfigField "String", "GITHUB_SECRET", "\"${GITHUB_SECRET}\""
