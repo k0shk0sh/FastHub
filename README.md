@@ -30,6 +30,8 @@
 
 You love FastHub? You want new features or bug fixes? Please contribute to the  project either by creating PR or submitting an issue ticket.
 
+[Contribution Guide](CONTRIBUTE.md) 
+
 > **FastHub** contain Ads, but they are disabled by default, you could enable them if you like to support development.
 
 # Copyright Notice

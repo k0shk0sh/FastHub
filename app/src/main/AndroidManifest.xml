@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
         <activity
-            android:name="com.fastaccess.ui.modules.main.MainView">
+            android:name="com.fastaccess.ui.modules.main.MainView"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -26,7 +26,7 @@
 
     <style name="SplashTheme" parent="AppTheme.Base">
         <item name="colorPrimaryDark">@color/transparent</item>
-        <!--<item name="android:windowBackground">@drawable/splash_screen_drawable</item>-->
+        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
     </style>
 
 

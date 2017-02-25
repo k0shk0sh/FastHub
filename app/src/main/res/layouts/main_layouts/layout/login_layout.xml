@@ -19,7 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:background="@drawable/header_background"
+            android:background="?colorPrimaryDark"
             android:fitsSystemWindows="true"
             android:gravity="center"
             android:orientation="vertical"
@@ -28,12 +28,13 @@
             app:layout_scrollFlags="scroll|enterAlways">
 
             <com.fastaccess.ui.widgets.FontTextView
-                style="@style/TextAppearance.AppCompat.Title.Inverse"
+                style="@style/TextAppearance.AppCompat.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="@string/sign_in_to_github"/>
+                android:text="@string/sign_in_to_github"
+                android:textColor="?colorAccent"/>
 
         </LinearLayout>
 
