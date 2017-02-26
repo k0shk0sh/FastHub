@@ -56,12 +56,13 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
                 getParent().onAppendPath(model);
             }
         } else {
-            if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(model.getDownloadUrl())) {
+            String url = InputHelper.isEmpty(model.getDownloadUrl()) ? model.getUrl() : model.getDownloadUrl();
+            if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(url)) {
                 MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
                         Bundler.start().put(BundleConstant.EXTRA, model.getDownloadUrl()).end())
                         .show(getChildFragmentManager(), "MessageDialogView");
             } else {
-                CodeViewerView.startActivity(getContext(), model.getDownloadUrl());
+                CodeViewerView.startActivity(getContext(), url);
             }
         }
     }

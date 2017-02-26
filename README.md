@@ -43,7 +43,7 @@
 - BottomNavigationView for `Fragments` navigation.
 - UIL for image loading.
 - AndDown for comments markdown highlighting.
-- Alerter for displaying error/success messages.
+- Toasty for displaying error/success messages.
 - CircleImageView for avatar images.
 - MatrialTapTargetPrompt for displying guides throughout the app.
 - Firebase analytics, crash reporting, ads & messaging. (analytics & messaging not yet implemented.)

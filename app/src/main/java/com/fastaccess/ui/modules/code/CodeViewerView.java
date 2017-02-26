@@ -32,7 +32,7 @@ public class CodeViewerView extends BaseActivity {
     @State String url;
 
     public static void startActivity(@NonNull Context context, @NonNull String url) {
-        context.startActivity(createIntent(context, url));
+        if (!InputHelper.isEmpty(url)) context.startActivity(createIntent(context, url));
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String url) {

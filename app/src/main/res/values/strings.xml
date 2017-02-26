@@ -172,4 +172,5 @@
     <string name="watch">Watch</string>
     <string name="watch_hint">Click here to watch/unwatch repo.</string>
     <string name="fork_repo_hint">Click here to fork repo.</string>
+    <string name="no_url">No url found.</string>
 </resources>

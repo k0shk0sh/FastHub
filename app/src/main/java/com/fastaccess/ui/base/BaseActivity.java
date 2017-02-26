@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
@@ -26,12 +27,12 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.tapadoo.alerter.Alerter;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import es.dmoral.toasty.Toasty;
 import icepick.Icepick;
 import icepick.State;
 
@@ -46,6 +47,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.toolbarShadow) View shadowView;
     @Nullable @BindView(R.id.adView) AdView adView;
+    private Toast toast;
 
     @LayoutRes protected abstract int layout();
 
@@ -139,11 +141,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
         hideProgress();
-        Alerter.create(this)
-                .setTitle(titleRes)
-                .setText(msgRes)
-                .setBackgroundColor(titleRes.equals(getString(R.string.error)) ? R.color.material_orange_700 : R.color.material_green_700)
-                .show();
+        if (toast != null) toast.cancel();
+        toast = titleRes.equals(getString(R.string.error))
+                ? Toasty.warning(getApplicationContext(), msgRes, Toast.LENGTH_LONG)
+                : Toasty.normal(getApplicationContext(), msgRes, Toast.LENGTH_LONG);
+        toast.show();
 
     }
 

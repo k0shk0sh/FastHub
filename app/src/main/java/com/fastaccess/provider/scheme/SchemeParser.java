@@ -198,7 +198,7 @@ public class SchemeParser {
                 fullUrl = "https://raw.githubusercontent.com/" + segments.get(0) + "/" + segments.get(1) + "/" +
                         segments.get(segments.size() - 2) + "/" + uri.getLastPathSegment();
             }
-            return CodeViewerView.createIntent(context, fullUrl);
+            if (fullUrl != null) return CodeViewerView.createIntent(context, fullUrl);
         }
         return null;
     }

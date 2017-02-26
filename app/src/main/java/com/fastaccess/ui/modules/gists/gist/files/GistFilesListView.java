@@ -66,12 +66,16 @@ public class GistFilesListView extends BaseFragment<GistFilesListMvp.View, GistF
     }
 
     @Override public void onOpenFile(@NonNull FilesListModel item) {
-        if (item.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(item.getRawUrl())) {
-            MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
-                    Bundler.start().put(BundleConstant.EXTRA, item.getRawUrl()).end())
-                    .show(getChildFragmentManager(), "MessageDialogView");
+        if (item.getRawUrl() != null) {
+            if (item.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(item.getRawUrl())) {
+                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
+                        Bundler.start().put(BundleConstant.EXTRA, item.getRawUrl()).end())
+                        .show(getChildFragmentManager(), "MessageDialogView");
+            } else {
+                CodeViewerView.startActivity(getContext(), item.getRawUrl());
+            }
         } else {
-            CodeViewerView.startActivity(getContext(), item.getRawUrl());
+            showErrorMessage(getString(R.string.no_url));
         }
     }
 

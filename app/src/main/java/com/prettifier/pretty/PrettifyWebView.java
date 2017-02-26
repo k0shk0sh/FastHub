@@ -17,7 +17,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.modules.code.CodeViewerView;
@@ -148,7 +147,7 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     private void startActivity(Uri url) {
-        Logger.e(url);
+        if (url == null) return;
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerView.startActivity(getContext(), url.toString());
         } else {

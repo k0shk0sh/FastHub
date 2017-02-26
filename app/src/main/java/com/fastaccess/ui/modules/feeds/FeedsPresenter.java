@@ -10,8 +10,10 @@ import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.EventsModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.types.EventsType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -47,7 +49,6 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
                     if (getCurrentPage() == 1) {
                         manageSubscription(EventsModel.save(response.getItems()).subscribe());
                         eventsModels.clear();
-
                     }
                     eventsModels.addAll(response.getItems());
                     sendToView(FeedsMvp.View::onNotifyAdapter);
@@ -90,8 +91,10 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty()) {
             manageSubscription(EventsModel.getEvents().subscribe(modelList -> {
-                eventsModels.addAll(modelList);
-                sendToView(FeedsMvp.View::onNotifyAdapter);
+                if (modelList != null) {
+                    eventsModels.addAll(modelList);
+                    sendToView(FeedsMvp.View::onNotifyAdapter);
+                }
             }));
         } else {
             sendToView(FeedsMvp.View::hideProgress);
@@ -103,10 +106,13 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             NameParser parser = new NameParser(item.getPayload().getForkee().getHtmlUrl());
             RepoPagerView.startRepoPager(v.getContext(), parser);
         } else {
-            if (item.getPayload().getIssue() != null) {
+            if (item.getPayload() != null && item.getPayload().getIssue() != null) {
                 SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()));
             } else {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getRepo().getName()));
+                RepoModel repoModel = item.getRepo();
+                String name = InputHelper.isEmpty(repoModel.getName()) ? repoModel.getFullName() : repoModel.getName();
+                if (name == null) return;
+                if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(name));
             }
         }
     }

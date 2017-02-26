@@ -20,11 +20,11 @@ public class InputHelper {
     }
 
     public static boolean isEmpty(String text) {
-        return text == null || TextUtils.isEmpty(text) || isWhiteSpaces(text);
+        return text == null || TextUtils.isEmpty(text) || isWhiteSpaces(text) || text.equalsIgnoreCase("null");
     }
 
     public static boolean isEmpty(Object text) {
-        return text == null || TextUtils.isEmpty(text.toString()) || isWhiteSpaces(text.toString());
+        return text == null || isEmpty(text.toString());
     }
 
     public static boolean isEmpty(EditText text) {
