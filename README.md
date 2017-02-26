@@ -35,7 +35,7 @@
 - RxJava & RxAndroid for Retrofit & Background threads.
 - Retrofit for consuming rest api.
 - SqliteMagic for offline mode.
-- Stream API for dealing with iterations.
+- Stream API for dealing with `ArrayLists`.
 - JobScheduler using Firebase JobDispatcher for notifications service.
 - ButterKnife for views binding.
 - Icepick for saving instance of objects.
@@ -45,7 +45,7 @@
 - AndDown for comments markdown highlighting.
 - Alerter for displaying error/success messages.
 - CircleImageView for avatar images.
-- MatrialTagPrompt for displying guides throughout the app.
+- MatrialTapTargetPrompt for displying guides throughout the app.
 - Firebase analytics, crash reporting, ads & messaging. (analytics & messaging not yet implemented.)
 - The mighty Android support libs.
 
