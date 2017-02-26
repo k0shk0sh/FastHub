@@ -17,7 +17,7 @@
 - Lock & Unlock conversations on Issues and Pull Requests.
 - Comment on Issues, Pull Requests, Commits and Gists
 - Edit and Delete Comments.
-- Create Gists.
+- Create/Delete Gists.
 - View Gists and their files.
 - Follow and Unfollow users.
 - Search Users, Repos, Issues,Pull Requests and Code.

@@ -25,6 +25,7 @@ import com.fastaccess.ui.modules.login.LoginView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.tapadoo.alerter.Alerter;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -79,12 +80,29 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         if (adView != null) {
             boolean isAdsEnabled = PrefGetter.isAdsEnabled();
-            adView.setVisibility(isAdsEnabled ? View.VISIBLE : View.GONE);
             if (isAdsEnabled) {
-                AdRequest adRequest = new AdRequest.Builder().build();
+                adView.setVisibility(View.VISIBLE);
+                MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice(getString(R.string.test_device_id))
+                        .build();
                 adView.loadAd(adRequest);
             }
         }
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        if (adView != null && adView.isShown()) {
+            adView.resume();
+        }
+    }
+
+    @Override protected void onPause() {
+        if (adView != null && adView.isShown()) {
+            adView.pause();
+        }
+        super.onPause();
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -101,6 +119,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override protected void onDestroy() {
+        if (adView != null && adView.isShown()) {
+            adView.destroy();
+        }
         super.onDestroy();
     }
 
