@@ -30,7 +30,7 @@
 # FastHub made of:
 
 - Min SDK(21) but Appcompat is used all the way.
-- MVP architecture'd using Thirtyinch lib for the edibility of maintaining and following one structure throughout the project.
+- MVP architecture'd (using Thirtyinch lib) for the easiness of maintaining and following one structure throughout the project.
 - Lambda expressions because __you know why__.
 - RxJava & RxAndroid for Retrofit & Background threads.
 - Retrofit for consuming rest api.
