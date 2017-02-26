@@ -43,12 +43,17 @@ license (see the LICENSE file).
 
 # Screenshots
 
-#### Mobile
+#### Mobile Portrait
 ![MainScreen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true "MainScreen")
+
+#### Mobile Landscape
 ![MainScreenLandscape](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main_landscape.png?raw=true "MainScreenLandscape")
 
-#### Tablets 
+#### Tablet-Repo 
 ![MainScreenRepo](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "MainScreen")
+
+#### Tablet-Commit
+
 ![MainScreenCommit](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_commits.png?raw=true "MainScreenCommit")
 
 
