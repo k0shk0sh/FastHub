@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -75,6 +76,10 @@ public class ViewerView extends BaseFragment<ViewerMvp.View, ViewerPresenter> im
 
     @Override public void onShowMdProgress() {
         stateLayout.showProgress();
+    }
+
+    @Override public void openUrl(@NonNull String url) {
+        ActivityHelper.startCustomTab(getActivity(), url);
     }
 
     @Override public void showProgress(@StringRes int resId) {

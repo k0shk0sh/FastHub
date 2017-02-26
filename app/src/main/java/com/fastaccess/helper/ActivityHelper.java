@@ -34,13 +34,6 @@ public class ActivityHelper {
         return null;
     }
 
-    public static void startCustomTab(@NonNull Activity context) {
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(ContextCompat.getColor(context, R.color.primary));
-        CustomTabsIntent tabsIntent = builder.build();
-        tabsIntent.launchUrl(context, Uri.parse("https://github.com/k0shk0sh/FastHub"));
-    }
-
     public static void startCustomTab(@NonNull Activity context, @NonNull Uri url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
         builder.setToolbarColor(ContextCompat.getColor(context, R.color.primary));

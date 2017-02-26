@@ -32,6 +32,10 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         if (code == 404) {
             sendToView(view -> view.onShowError(isRepo ? R.string.no_readme_found : R.string.no_file_found));
         } else {
+            if (code == 406) {
+                sendToView(view -> view.openUrl(url));
+                return null;
+            }
             onWorkOffline();
             return super.onError(throwable, observable);
         }

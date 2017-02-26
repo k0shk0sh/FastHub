@@ -28,6 +28,7 @@ interface ViewerMvp {
 
         void onShowMdProgress();
 
+        void openUrl(@NonNull String url);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
