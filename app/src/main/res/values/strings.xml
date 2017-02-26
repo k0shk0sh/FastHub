@@ -123,6 +123,7 @@
     <string name="write">Write</string>
     <string name="description">Description</string>
     <string name="file_name">File Name</string>
+    <string name="file_name_hint">File Name with extension</string>
     <string name="create_secret_gist">Secret Gist</string>
     <string name="create_public_gist">Public Gist</string>
     <string name="submit_as">Submit As</string>
@@ -158,4 +159,5 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="gist_description">Gist Description</string>
 </resources>
