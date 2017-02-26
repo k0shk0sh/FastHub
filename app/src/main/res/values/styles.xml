@@ -24,7 +24,7 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
-    <style name="SplashTheme" parent="AppTheme.Base">
+    <style name="SplashTheme" parent="AppTheme">
         <item name="colorPrimaryDark">@color/transparent</item>
         <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
     </style>

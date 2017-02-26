@@ -31,6 +31,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.create.CreateGistView;
 import com.fastaccess.ui.modules.notification.NotificationsBottomSheet;
+import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -174,6 +175,10 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         PrefGetter.clear();
         LoginModel.deleteTable().execute();
         recreate();
+    }
+
+    @Override public void openFasHubRepo() {
+        startActivity(RepoPagerView.createIntent(this, "FastHub", "k0shk0sh"));
     }
 
     private boolean canExit() {

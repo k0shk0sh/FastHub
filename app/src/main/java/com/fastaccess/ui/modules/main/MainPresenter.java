@@ -90,6 +90,8 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
             } else if (item.getItemId() == R.id.logout) {
                 getView().onLogout();
                 return true;
+            }else if(item.getItemId() == R.id.fhRepo){
+                getView().openFasHubRepo();
             }
         }
         return false;

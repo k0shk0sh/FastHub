@@ -44,6 +44,8 @@ interface MainMvp {
         void onSubmitFeedback();
 
         void onLogout();
+
+        void openFasHubRepo();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, NavigationView.OnNavigationItemSelectedListener,

@@ -13,7 +13,6 @@ import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -199,7 +198,6 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             manageSubscription(RepoModel.getRepo(repoId)
                     .subscribe(repoModel -> {
                         repo = repoModel;
-                        Logger.e(repo.getName(), repo.getOwner().getLogin());
                         sendToView(view -> {
                             view.onInitRepo();
                             view.onNavigationChanged(RepoPagerMvp.CODE);

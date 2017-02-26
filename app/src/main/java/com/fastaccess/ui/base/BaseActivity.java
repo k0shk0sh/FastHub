@@ -121,7 +121,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Alerter.create(this)
                 .setTitle(titleRes)
                 .setText(msgRes)
-                .setBackgroundColor(titleRes.equals(getString(R.string.success)) ? R.color.material_green_700 : R.color.material_orange_700)
+                .setBackgroundColor(titleRes.equals(getString(R.string.error)) ? R.color.material_orange_700 : R.color.material_green_700)
                 .show();
 
     }

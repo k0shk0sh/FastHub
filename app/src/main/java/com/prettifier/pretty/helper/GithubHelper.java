@@ -12,9 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * This Class was created by Patrick J
- * on 09.06.16. For more Details and Licensing
- * have a look at the README.md
+ * Created by Kosh on 25 Dec 2016, 9:12 PM
  */
 
 public class GithubHelper {

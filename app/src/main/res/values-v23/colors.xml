@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary_dark">#9E9E9E</color> <!-- lighter color looks cooler in darker statusbar. -->
+</resources>
