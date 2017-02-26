@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.main;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -96,6 +98,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         onHideShowFab();
         hideShowShadow(navType != MainMvp.PROFILE);
         enableAds.setChecked(PrefGetter.isAdsEnabled());
+        ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).cancel(BundleConstant.REQUEST_CODE);//cancel notification if any.
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -16,6 +16,7 @@ import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.modules.main.MainView;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -80,13 +81,15 @@ public class NotificationJobTask extends JobService {
                 .count();
         Logger.e(count, notificationThreadModels);
         if (count > 0) {
+            Intent intent = new Intent(this, MainView.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Context context = getApplicationContext();
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_announcement)
                     .setContentTitle(context.getString(R.string.notifictions))
                     .setContentText(context.getString(R.string.unread_notification) + " (" + count + ")")
                     .setNumber((int) count)
-                    .addAction(R.drawable.ic_github, context.getString(R.string.open), PendingIntent.getActivity(context, 0, new Intent(),
+                    .addAction(R.drawable.ic_github, context.getString(R.string.open), PendingIntent.getActivity(context, 0, intent,
                             PendingIntent.FLAG_UPDATE_CURRENT))
                     .build();
             ((NotificationManager) context.getSystemService(NOTIFICATION_SERVICE)).notify(BundleConstant.REQUEST_CODE, notification);

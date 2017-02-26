@@ -19,7 +19,7 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
     private CommitFileListModel files = new CommitFileListModel();
 
     @Override public void onItemClick(int position, View v, CommitFileModel item) {
-
+        
     }
 
     @Override public void onItemLongClick(int position, View v, CommitFileModel item) {

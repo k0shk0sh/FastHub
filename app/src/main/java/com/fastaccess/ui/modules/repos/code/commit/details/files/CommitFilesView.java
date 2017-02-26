@@ -8,6 +8,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
@@ -66,6 +67,9 @@ public class CommitFilesView extends BaseFragment<CommitFilesMvp.View, CommitFil
     }
 
     @Override public void onToggle(int position, boolean isCollapsed) {
+        if (adapter.getItem(position).getPatch() == null) {
+            ActivityHelper.forceOpenInBrowser(getContext(), adapter.getItem(position).getBlobUrl());
+        }
         getSparseBooleanArray().put(position, isCollapsed);
         adapter.notifyItemChanged(position);
     }
