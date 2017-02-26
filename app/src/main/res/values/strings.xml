@@ -101,6 +101,7 @@
     <string name="error_deleting_comment">Error Deleting Comment</string>
     <string name="delete">Delete</string>
     <string name="comments">Comments</string>
+    <string name="comment">Comment</string>
     <string name="issue">Issue</string>
     <string name="merge">Merge</string>
     <string name="pull_request">Pull Request</string>
@@ -160,4 +161,15 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="gist_description">Gist Description</string>
+    <string name="avatar_click_hint">Whenever there is a User avatar, you can click it to open the User\'s Profile</string>
+    <string name="feeds_fork_hint">Long click on Fork event to choose to open either Original Repo or the Forked Repo.</string>
+    <string name="click_here_to_download_release_hint">Click here to download releases.</string>
+    <string name="options">Options</string>
+    <string name="click_file_option_hint">Click here to download File or share a Directory.</string>
+    <string name="comment_hint">Single tap to tag a user or to edit the comment if you are the author.\nLong press if you are the author of the
+        comment to delete it.</string>
+    <string name="star_hint">Click here to star/unstar repo.</string>
+    <string name="watch">Watch</string>
+    <string name="watch_hint">Click here to watch/unwatch repo.</string>
+    <string name="fork_repo_hint">Click here to fork repo.</string>
 </resources>

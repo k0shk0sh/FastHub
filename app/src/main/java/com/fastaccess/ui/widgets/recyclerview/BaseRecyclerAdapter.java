@@ -3,6 +3,7 @@ package com.fastaccess.ui.widgets.recyclerview;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.helper.AnimHelper;
@@ -16,10 +17,16 @@ import java.util.List;
 public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         P extends BaseViewHolder.OnItemClickListener<M>> extends RecyclerView.Adapter<VH> {
 
+    public interface GuideListener<M> {
+        void onShowGuide(@NonNull View itemView, @NonNull M model);
+    }
+
     @NonNull private List<M> data;
     @Nullable private P listener;
     private int lastKnowingPosition = -1;
     private boolean enableAnimation = true;
+    private boolean showedGuide;
+    private GuideListener guideListener;
 
     public BaseRecyclerAdapter() {
         this(new ArrayList<>());
@@ -57,10 +64,19 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     @Override public void onBindViewHolder(VH holder, int position) {
         animate(holder, position);
         onBindView(holder, position);
+        onShowGuide(holder, position);
     }
 
     @Override public int getItemCount() {
         return data.size();
+    }
+
+    @SuppressWarnings("unchecked")
+    protected void onShowGuide(@NonNull VH holder, int position) {// give the flexibility to other adapters to override this
+        if (position == 0 && !isShowedGuide() && guideListener != null) {
+            guideListener.onShowGuide(holder.itemView, getItem(position));
+            showedGuide = true;
+        }
     }
 
     private void animate(VH holder, int position) {
@@ -144,5 +160,13 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     public void setListener(@Nullable P listener) {
         this.listener = listener;
         notifyDataSetChanged();
+    }
+
+    public void setGuideListener(GuideListener guideListener) {
+        this.guideListener = guideListener;
+    }
+
+    public boolean isShowedGuide() {
+        return showedGuide;
     }
 }

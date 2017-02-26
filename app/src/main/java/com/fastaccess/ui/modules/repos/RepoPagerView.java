@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -21,6 +22,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
@@ -37,6 +39,7 @@ import butterknife.OnClick;
 import hugo.weaving.DebugLog;
 import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 09 Dec 2016, 4:17 PM
@@ -176,6 +179,42 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         license.setVisibility(repoModel.getLicense() != null ? View.VISIBLE : View.GONE);
         if (repoModel.getLicense() != null) license.setText(repoModel.getLicense().getSpdxId());
         supportInvalidateOptionsMenu();
+        if (!PrefGetter.isRepoGuideShowed()) {
+            new MaterialTapTargetPrompt.Builder(this)
+                    .setTarget(watchRepo)
+                    .setPrimaryText(R.string.watch)
+                    .setSecondaryText(R.string.watch_hint)
+                    .setCaptureTouchEventOutsidePrompt(true)
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+
+                        }
+
+                        @Override public void onHidePromptComplete() {
+                            new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
+                                    .setTarget(starRepo)
+                                    .setPrimaryText(R.string.star)
+                                    .setSecondaryText(R.string.star_hint)
+                                    .setCaptureTouchEventOutsidePrompt(true)
+                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+
+                                        }
+
+                                        @Override public void onHidePromptComplete() {
+                                            new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
+                                                    .setTarget(forkRepo)
+                                                    .setPrimaryText(R.string.fork)
+                                                    .setSecondaryText(R.string.fork_repo_hint)
+                                                    .setCaptureTouchEventOutsidePrompt(true)
+                                                    .show();
+                                        }
+                                    })
+                                    .show();
+                        }
+                    })
+                    .show();
+        }
     }
 
     @Override public void onRepoWatched(boolean isWatched) {

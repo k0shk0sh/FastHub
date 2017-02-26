@@ -6,11 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.EventsModel;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
@@ -22,6 +25,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -50,6 +54,7 @@ public class FeedsView extends BaseFragment<FeedsMvp.View, FeedsPresenter> imple
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new FeedsAdapter(getPresenter().getEvents());
+        adapter.setGuideListener(this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -112,5 +117,30 @@ public class FeedsView extends BaseFragment<FeedsMvp.View, FeedsPresenter> imple
 
     @Override public void onItemSelected(SimpleUrlsModel item) {
         SchemeParser.launchUri(getContext(), Uri.parse(item.getItem()));
+    }
+
+    @Override public void onShowGuide(@NonNull View itemView, @NonNull EventsModel model) {
+        if (!PrefGetter.isUserIconGuideShowed()) {
+            new MaterialTapTargetPrompt.Builder(getActivity())
+                    .setTarget(itemView.findViewById(R.id.avatarLayout))
+                    .setPrimaryText(R.string.users)
+                    .setSecondaryText(R.string.avatar_click_hint)
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+
+                        }
+
+                        @Override public void onHidePromptComplete() {
+                            new MaterialTapTargetPrompt.Builder(getActivity())
+                                    .setTarget(itemView)
+                                    .setPrimaryText(R.string.fork)
+                                    .setSecondaryText(R.string.feeds_fork_hint)
+                                    .setCaptureTouchEventOutsidePrompt(true)
+                                    .show();
+                        }
+                    })
+                    .setCaptureTouchEventOutsidePrompt(true)
+                    .show();
+        }
     }
 }

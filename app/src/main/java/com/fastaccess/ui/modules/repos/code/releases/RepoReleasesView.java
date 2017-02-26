@@ -16,6 +16,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReleasesAdapter;
@@ -28,6 +29,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -74,6 +76,22 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getReleases().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
+        }
+    }
+
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && adapter != null) {
+            if (!PrefGetter.isReleaseHintShow()) {
+                adapter.setGuideListener((itemView, model) ->
+                        new MaterialTapTargetPrompt.Builder(getActivity())
+                                .setTarget(itemView.findViewById(R.id.download))
+                                .setPrimaryText(R.string.download)
+                                .setSecondaryText(R.string.click_here_to_download_release_hint)
+                                .setCaptureTouchEventOutsidePrompt(true)
+                                .show());
+                adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
+            }
         }
     }
 

@@ -16,6 +16,8 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilesAdapter;
@@ -28,6 +30,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 18 Feb 2017, 2:10 AM
@@ -102,6 +105,23 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
         adapter = new RepoFilesAdapter(getPresenter().getFiles());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+    }
+
+    @Override public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Logger.e(hidden);
+        if (!hidden && adapter != null && isSafe()) {
+            if (!PrefGetter.isFileOptionHintShow()) {
+                adapter.setGuideListener((itemView, model) ->
+                        new MaterialTapTargetPrompt.Builder(getActivity())
+                                .setTarget(itemView.findViewById(R.id.menu))
+                                .setPrimaryText(R.string.options)
+                                .setSecondaryText(R.string.click_file_option_hint)
+                                .setCaptureTouchEventOutsidePrompt(true)
+                                .show());
+                adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
+            }
+        }
     }
 
     @Override public void showProgress(@StringRes int resId) {

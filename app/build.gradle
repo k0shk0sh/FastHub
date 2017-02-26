@@ -117,6 +117,7 @@ dependencies {
     compile 'com.annimon:stream:1.1.4'
     compile 'com.commonsware.cwac:anddown:0.3.0'
     compile 'com.tapadoo.android:alerter:1.0.1'
+    compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.2'
     apt 'org.projectlombok:lombok:1.12.6'
     apt 'frankiesardo:icepick-processor:3.1.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'

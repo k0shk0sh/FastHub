@@ -104,6 +104,12 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         return new RepoFilePathPresenter();
     }
 
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        //noinspection ConstantConditions (for this state, it is still null!!!)
+        if (isSafe() && getRepoFilesView() != null) getRepoFilesView().onHiddenChanged(!isVisibleToUser);
+    }
+
     @NonNull public RepoFilesView getRepoFilesView() {
         if (repoFilesView == null) {
             repoFilesView = (RepoFilesView) getChildFragmentManager().findFragmentById(R.id.filesFragment);

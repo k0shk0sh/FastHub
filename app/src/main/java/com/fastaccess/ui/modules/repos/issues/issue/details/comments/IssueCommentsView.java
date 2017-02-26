@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommentsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -23,6 +24,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
 import retrofit2.Response;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -173,6 +175,22 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk) {
             getPresenter().onHandleDeletion(bundle);
+        }
+    }
+
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && adapter != null) {
+            if (!PrefGetter.isCommentHintShowed()) {
+                adapter.setGuideListener((itemView, model) ->
+                        new MaterialTapTargetPrompt.Builder(getActivity())
+                                .setTarget(itemView.findViewById(R.id.menu))
+                                .setPrimaryText(R.string.comment)
+                                .setSecondaryText(R.string.comment_hint)
+                                .setCaptureTouchEventOutsidePrompt(true)
+                                .show());
+                adapter.notifyDataSetChanged();
+            }
         }
     }
 }

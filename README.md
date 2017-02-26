@@ -3,7 +3,7 @@
 
 ![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/feature_graphic.png?raw=true "Logo")
 
-**FastHub** is yet another <b>open source</b> GitHub client app but unlike any other app, FastHub built from ground up.
+**FastHub** is yet another **open source** GitHub client app but unlike any other app, FastHub built from ground up.
  
  
  
@@ -25,6 +25,29 @@
 - Markdown and code highlighting support.
 - Receive notifications.
 - Loads more...
+
+
+# FastHub made of:
+
+- Min SDK(21) but Appcompat is used all the way.
+- MVP architecture'd using Thirtyinch lib for the edibility of maintaining and following one structure throughout the project.
+- Lambda expressions because __you know why__.
+- RxJava & RxAndroid for Retrofit & Background threads.
+- Retrofit for consuming rest api.
+- SqliteMagic for offline mode.
+- Stream API for dealing with iterations.
+- JobScheduler using Firebase JobDispatcher for notifications service.
+- ButterKnife for views binding.
+- Icepick for saving instance of objects.
+- Lombok for (getters/setters).
+- BottomNavigationView for `Fragments` navigation.
+- UIL for image loading.
+- AndDown for comments markdown highlighting.
+- Alerter for displaying error/success messages.
+- CircleImageView for avatar images.
+- MatrialTagPrompt for displying guides throughout the app.
+- Firebase analytics, crash reporting, ads & messaging. (analytics & messaging not yet implemented.)
+- The mighty Android support libs.
 
 # Contribution
 

@@ -9,6 +9,11 @@ import android.support.annotation.NonNull;
 public class PrefGetter {
     private static final String ADS = "enable_ads";
     private static final String TOKEN = "token";
+    private static final String USER_ICON_GUIDE = "user_icon_guide";
+    private static final String RELEASE_GUIDE = "release_guide";
+    private static final String FILE_OPTION_GUIDE = "file_option_guide";
+    private static final String COMMENTS_GUIDE = "comments_guide";
+    private static final String REPO_GUIDE = "repo_guide";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -28,5 +33,35 @@ public class PrefGetter {
 
     public static void clear() {
         PrefHelper.clearPrefs();
+    }
+
+    public static boolean isUserIconGuideShowed() {
+        boolean isShowed = PrefHelper.getBoolean(USER_ICON_GUIDE);
+        PrefHelper.set(USER_ICON_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isReleaseHintShow() {
+        boolean isShowed = PrefHelper.getBoolean(RELEASE_GUIDE);
+        PrefHelper.set(RELEASE_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isFileOptionHintShow() {
+        boolean isShowed = PrefHelper.getBoolean(FILE_OPTION_GUIDE);
+        PrefHelper.set(FILE_OPTION_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isCommentHintShowed() {
+        boolean isShowed = PrefHelper.getBoolean(COMMENTS_GUIDE);
+        PrefHelper.set(COMMENTS_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isRepoGuideShowed() {
+        boolean isShowed = PrefHelper.getBoolean(REPO_GUIDE);
+        PrefHelper.set(REPO_GUIDE, true);
+        return isShowed;
     }
 }
