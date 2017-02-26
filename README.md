@@ -40,3 +40,15 @@ Copyright (C) 2017 Kosh.
 
 Licensed under the [GPL-3.0](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE)
 license (see the LICENSE file).
+
+# Screenshots
+
+#### Mobile
+![MainScreen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true "MainScreen")
+![MainScreenLandscape](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main_landscape.png?raw=true "MainScreenLandscape")
+
+#### Tablets 
+![MainScreenRepo](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "MainScreen")
+![MainScreenCommit](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_commits.png?raw=true "MainScreenCommit")
+
+
