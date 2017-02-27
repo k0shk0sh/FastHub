@@ -14,6 +14,7 @@ public class PrefGetter {
     private static final String FILE_OPTION_GUIDE = "file_option_guide";
     private static final String COMMENTS_GUIDE = "comments_guide";
     private static final String REPO_GUIDE = "repo_guide";
+    private static final String MARKDOWNDOWN_GUIDE = "markdowndown_guide";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -62,6 +63,12 @@ public class PrefGetter {
     public static boolean isRepoGuideShowed() {
         boolean isShowed = PrefHelper.getBoolean(REPO_GUIDE);
         PrefHelper.set(REPO_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isEditorHintShowed() {
+        boolean isShowed = PrefHelper.getBoolean(MARKDOWNDOWN_GUIDE);
+        PrefHelper.set(MARKDOWNDOWN_GUIDE, true);
         return isShowed;
     }
 }

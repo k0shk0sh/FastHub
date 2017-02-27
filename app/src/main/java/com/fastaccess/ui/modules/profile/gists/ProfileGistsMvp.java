@@ -20,6 +20,8 @@ interface ProfileGistsMvp {
         void onNotifyAdapter();
 
         @NonNull OnLoadMore<String> getLoadMore();
+
+        void onStartGistView(@NonNull String gistId);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

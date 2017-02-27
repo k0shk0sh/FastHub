@@ -80,31 +80,6 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         return comments;
     }
 
-    @Override public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data,
-                                           @NonNull DynamicRecyclerView recycler, @NonNull CommentsAdapter adapter) {
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            if (requestCode == BundleConstant.REQUEST_CODE) {
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
-                    CommentsModel commentsModel = bundle.getParcelable(BundleConstant.ITEM);
-                    if (isNew) {
-                        adapter.addItem(commentsModel);
-                        recycler.smoothScrollToPosition(adapter.getItemCount());
-                    } else {
-                        int position = adapter.getItem(commentsModel);
-                        if (position != -1) {
-                            adapter.swapItem(commentsModel, position);
-                            recycler.smoothScrollToPosition(position);
-                        } else {
-                            adapter.addItem(commentsModel);
-                            recycler.smoothScrollToPosition(adapter.getItemCount());
-                        }
-                    }
-                }
-            }
-        }
-    }
 
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
         if (bundle != null) {

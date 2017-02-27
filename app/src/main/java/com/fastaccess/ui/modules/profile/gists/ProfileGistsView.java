@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.profile.gists;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,12 +10,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.GistsModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.GistsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -96,9 +99,20 @@ public class ProfileGistsView extends BaseFragment<ProfileGistsMvp.View, Profile
         return onLoadMore;
     }
 
-    @Override public void onDestroyView() {
-        recycler.removeOnScrollListener(getLoadMore());
-        super.onDestroyView();
+    @Override public void onStartGistView(@NonNull String gistId) {
+        startActivityForResult(GistView.createIntent(getContext(), gistId), BundleConstant.REQUEST_CODE);
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
+            if (data != null && data.getExtras() != null) {
+                GistsModel gistsModel = data.getExtras().getParcelable(BundleConstant.ITEM);
+                if (gistsModel != null && adapter != null) {
+                    adapter.removeItem(gistsModel);
+                }
+            }
+        }
     }
 
     @Override public void onClick(View view) {

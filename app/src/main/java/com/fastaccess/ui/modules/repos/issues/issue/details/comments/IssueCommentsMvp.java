@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.repos.issues.issue.details.comments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,10 +8,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
-import com.fastaccess.ui.adapter.CommentsAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
-import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
 
@@ -52,9 +49,6 @@ interface IssueCommentsMvp {
         void onFragmentCreated(@Nullable Bundle bundle);
 
         @NonNull ArrayList<CommentsModel> getComments();
-
-        void onActivityResult(int requestCode, int resultCode, @Nullable Intent data,
-                              @NonNull DynamicRecyclerView recycler, @NonNull CommentsAdapter adapter);
 
         void onWorkOffline();
 

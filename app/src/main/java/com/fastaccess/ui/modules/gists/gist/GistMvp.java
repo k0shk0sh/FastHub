@@ -29,6 +29,8 @@ interface GistMvp {
 
         @Nullable GistsModel getGist();
 
+        @NonNull String gistId();
+
         void onActivityCreated(@Nullable Intent intent);
 
         void onDeleteGist();

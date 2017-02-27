@@ -100,6 +100,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     public void addItem(M item) {
         data.add(item);
         notifyItemInserted(getItemCount() - 1);
+        notifyItemRangeInserted(getItemCount() - 1, getItemCount());
     }
 
     @SuppressWarnings("WeakerAccess") public void addItems(List<M> items) {
@@ -110,6 +111,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     @SuppressWarnings("WeakerAccess") public void removeItem(int position) {
         data.remove(position);
         notifyItemRemoved(position);
+        notifyItemRangeRemoved(position, getItemCount());
     }
 
     public void removeItem(M item) {

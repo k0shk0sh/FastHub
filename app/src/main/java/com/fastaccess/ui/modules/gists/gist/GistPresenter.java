@@ -28,6 +28,10 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
         return gist;
     }
 
+    @NonNull @Override public String gistId() {
+        return gistId;
+    }
+
     @SuppressWarnings("unchecked") @Override public void onActivityCreated(@Nullable Intent intent) {
         if (intent == null || intent.getExtras() == null) {
             return;

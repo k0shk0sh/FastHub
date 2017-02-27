@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
@@ -23,6 +24,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import icepick.State;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 27 Nov 2016, 1:32 AM
@@ -83,7 +85,6 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
         }
     }
 
-
     @OnClick({R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic,
             R.id.strikethrough, R.id.bullet, R.id.header, R.id.code, R.id.numbered,
             R.id.quote, R.id.link, R.id.image}) void onActions(View v) {
@@ -123,9 +124,20 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
                     issueNumber = bundle.getInt(BundleConstant.EXTRA_THREE);
                 }
                 commentId = bundle.getLong(BundleConstant.EXTRA_FOUR);
-
-                editText.setText(bundle.getString(BundleConstant.EXTRA));
+                String textToUpdate = bundle.getString(BundleConstant.EXTRA);
+                editText.setText(textToUpdate);
+                if (!InputHelper.isEmpty(textToUpdate)) {
+                    editText.setSelection(InputHelper.toString(editText).length());
+                }
             }
+        }
+        if (!PrefGetter.isEditorHintShowed()) {
+            new MaterialTapTargetPrompt.Builder(this)
+                    .setTarget(viewCode)
+                    .setPrimaryText(R.string.view_code)
+                    .setSecondaryText(R.string.click_to_toggle_highlighting)
+                    .setCaptureTouchEventOutsidePrompt(true)
+                    .show();
         }
     }
 

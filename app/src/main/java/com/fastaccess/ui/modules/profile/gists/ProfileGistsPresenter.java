@@ -7,7 +7,6 @@ import android.view.View;
 import com.fastaccess.data.dao.GistsModel;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.gists.gist.GistView;
 
 import java.util.ArrayList;
 
@@ -89,7 +88,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
     }
 
     @Override public void onItemClick(int position, View v, GistsModel item) {
-        v.getContext().startActivity(GistView.createIntent(v.getContext(), item.getGistId()));
+        if (getView() != null) getView().onStartGistView(item.getGistId());
     }
 
     @Override public void onItemLongClick(int position, View v, GistsModel item) {

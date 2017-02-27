@@ -1,7 +1,5 @@
 package com.fastaccess.ui.modules.repos.code.commit.details.comments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,9 +10,7 @@ import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.ui.adapter.CommentsAdapter;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
 
@@ -78,33 +74,6 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
 
     @NonNull @Override public ArrayList<CommentsModel> getComments() {
         return comments;
-    }
-
-    @Override public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data,
-                                           @NonNull DynamicRecyclerView recycler,
-                                           @NonNull CommentsAdapter adapter) {
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            if (requestCode == BundleConstant.REQUEST_CODE) {
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
-                    CommentsModel commentsModel = bundle.getParcelable(BundleConstant.ITEM);
-                    if (isNew) {
-                        adapter.addItem(commentsModel);
-                        recycler.smoothScrollToPosition(adapter.getItemCount());
-                    } else {
-                        int position = adapter.getItem(commentsModel);
-                        if (position != -1) {
-                            adapter.swapItem(commentsModel, position);
-                            recycler.smoothScrollToPosition(position);
-                        } else {
-                            adapter.addItem(commentsModel);
-                            recycler.smoothScrollToPosition(adapter.getItemCount());
-                        }
-                    }
-                }
-            }
-        }
     }
 
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {

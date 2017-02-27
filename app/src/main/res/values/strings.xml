@@ -174,4 +174,8 @@
     <string name="fork_repo_hint">Click here to fork repo.</string>
     <string name="no_url">No url found.</string>
     <string name="last_updated">Last Updated</string>
+    <string name="preview">Preview</string>
+    <string name="view_code">Syntax Highlighter</string>
+    <string name="click_to_toggle_highlighting">Click here to toggle Syntax Highlighting.\nYou can scroll the Markdown editor icons for more
+        markdown options.</string>
 </resources>

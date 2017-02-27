@@ -144,6 +144,13 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override public void onSuccessDeleted() {
         hideProgress();
+        if (getPresenter().getGist() != null) {
+            Intent intent = new Intent();
+            GistsModel gistsModel = new GistsModel();
+            gistsModel.setUrl(getPresenter().getGist().getUrl());
+            intent.putExtras(Bundler.start().put(BundleConstant.ITEM, gistsModel).end());
+            setResult(RESULT_OK, intent);
+        }
         finish();
     }
 
