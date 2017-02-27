@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.annimon.stream.Stream;
+import com.google.gson.annotations.SerializedName;
 import com.siimkinks.sqlitemagic.Delete;
 import com.siimkinks.sqlitemagic.RepoModelTable;
 import com.siimkinks.sqlitemagic.Select;
@@ -101,7 +102,7 @@ public class RepoModel implements Parcelable {
     @Column(onDeleteCascade = true, handleRecursively = false) RepoModel source;
     @Column(onDeleteCascade = true) LicenseModel license;
     @Column int networkCount;
-    @Column int subsCount;
+    @SerializedName("subscribers_count") @Column int subsCount;
     @Column String starredUser;
     @Column String reposOwner;
 
