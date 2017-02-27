@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
@@ -95,11 +96,8 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public boolean isRepoOwner() {
         if (getIssue() == null) return false;
-        UserModel userModel = getIssue() != null ? getIssue().getUser() : null;
         LoginModel me = LoginModel.getUser();
-        PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(getIssue().getHtmlUrl());
-        return userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin())
-                || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
+        return TextUtils.equals(login, me.getLogin());
     }
 
     @Override public boolean isLocked() {

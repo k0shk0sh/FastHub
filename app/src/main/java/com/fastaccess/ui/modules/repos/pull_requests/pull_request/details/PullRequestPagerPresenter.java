@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
@@ -13,8 +14,6 @@ import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.PullRequestModel;
-import com.fastaccess.data.dao.PullsIssuesParser;
-import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -97,11 +96,8 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public boolean isRepoOwner() {
         if (getPullRequest() == null) return false;
-        UserModel userModel = getPullRequest() != null ? getPullRequest().getUser() : null;
         LoginModel me = LoginModel.getUser();
-        PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(getPullRequest().getHtmlUrl());
-        return userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin())
-                || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
+        return TextUtils.equals(login, me.getLogin());
     }
 
     @Override public boolean isLocked() {
