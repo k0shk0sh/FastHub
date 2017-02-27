@@ -49,6 +49,8 @@
 - Firebase analytics, crash reporting, ads & messaging. (analytics & messaging not yet implemented.)
 - The mighty Android support libs.
 
+> To download the app from here, please visit the releases page.
+
 # Contribution
 
 You love FastHub? You want new features or bug fixes? Please contribute to the  project either by creating PR or submitting an issue ticket.
