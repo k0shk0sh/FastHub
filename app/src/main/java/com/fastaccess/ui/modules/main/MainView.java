@@ -125,6 +125,8 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             startActivity(new Intent(this, SearchView.class));
             return true;
         } else if (item.getItemId() == R.id.notifications) {
+            ViewHelper.tintDrawable(item.getIcon(),
+                    ContextCompat.getColor(this, R.color.primary_text));
             Logger.e(AppHelper.getFragmentByTag(getSupportFragmentManager(), "NotificationsBottomSheet"));
             NotificationsBottomSheet.newInstance()
                     .show(getSupportFragmentManager(), "NotificationsBottomSheet");

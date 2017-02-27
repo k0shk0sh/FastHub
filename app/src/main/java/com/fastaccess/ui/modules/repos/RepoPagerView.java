@@ -221,7 +221,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                                                                                     .setCaptureTouchEventOutsidePrompt(true)
                                                                                     .show();
                                                                         }
-                                                                    });
+                                                                    })
+                                                                    .show();
                                                         }
 
                                                         @Override public void onHidePromptComplete() {

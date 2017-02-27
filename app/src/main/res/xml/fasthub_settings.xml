@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="General Setting">
+
+        <ListPreference
+            android:key="notificationTime"
+            android:summary="Change the background notification task time"
+            android:title="Background Notification Sync"/>
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>
