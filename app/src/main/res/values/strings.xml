@@ -178,4 +178,7 @@
     <string name="view_code">Syntax Highlighter</string>
     <string name="click_to_toggle_highlighting">Click here to toggle Syntax Highlighting.\nYou can scroll the Markdown editor icons for more
         markdown options.</string>
+    <string name="creation_date">Creation Date</string>
+    <string name="creation_date_hint">This date represent the creation date.</string>
+    <string name="last_updated_hint">This date represent when the last activity happened.</string>
 </resources>

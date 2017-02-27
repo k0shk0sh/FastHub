@@ -36,8 +36,7 @@ public class ParseDateFormat {
     public static CharSequence getTimeAgo(@Nullable Date parsedDate) {
         if (parsedDate != null) {
             long toLocalTime = parsedDate.getTime() + getInstance().timeZone.getRawOffset() + getInstance().timeZone.getDSTSavings();
-            return DateUtils.getRelativeTimeSpanString(toLocalTime, System.currentTimeMillis
-                    (), DateUtils.SECOND_IN_MILLIS);
+            return DateUtils.getRelativeTimeSpanString(toLocalTime, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         }
         return "N/A";
     }

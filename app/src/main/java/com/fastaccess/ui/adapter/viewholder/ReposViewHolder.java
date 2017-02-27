@@ -31,7 +31,6 @@ public class ReposViewHolder extends BaseViewHolder<RepoModel> {
     @BindView(R.id.forks) FontTextView forks;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindString(R.string.forked) String forked;
-    @BindString(R.string.last_updated) String lastUpdated;
 
     private ReposViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -56,9 +55,7 @@ public class ReposViewHolder extends BaseViewHolder<RepoModel> {
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         stars.setText(numberFormat.format(repo.getStargazersCount()));
         forks.setText(numberFormat.format(repo.getForks()));
-        date.setText(SpannableBuilder.builder().append(lastUpdated)
-                .append(" ")
-                .append(ParseDateFormat.getTimeAgo(repo.getUpdatedAt())));
+        date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
     }
 
     @Override public void bind(@NonNull RepoModel repo) {}

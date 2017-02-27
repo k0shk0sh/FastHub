@@ -179,16 +179,14 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         license.setVisibility(repoModel.getLicense() != null ? View.VISIBLE : View.GONE);
         if (repoModel.getLicense() != null) license.setText(repoModel.getLicense().getSpdxId());
         supportInvalidateOptionsMenu();
-        if (!PrefGetter.isRepoGuideShowed()) {
+        if (!PrefGetter.isRepoGuideShowed()) {// the mother of nesting. #dontjudgeme.
             new MaterialTapTargetPrompt.Builder(this)
                     .setTarget(watchRepo)
                     .setPrimaryText(R.string.watch)
                     .setSecondaryText(R.string.watch_hint)
                     .setCaptureTouchEventOutsidePrompt(true)
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-
-                        }
+                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
 
                         @Override public void onHidePromptComplete() {
                             new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
@@ -197,9 +195,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                                     .setSecondaryText(R.string.star_hint)
                                     .setCaptureTouchEventOutsidePrompt(true)
                                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-
-                                        }
+                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
 
                                         @Override public void onHidePromptComplete() {
                                             new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
@@ -207,6 +203,31 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                                                     .setPrimaryText(R.string.fork)
                                                     .setSecondaryText(R.string.fork_repo_hint)
                                                     .setCaptureTouchEventOutsidePrompt(true)
+                                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+                                                            new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
+                                                                    .setTarget(date)
+                                                                    .setPrimaryText(R.string.creation_date)
+                                                                    .setSecondaryText(R.string.creation_date_hint)
+                                                                    .setCaptureTouchEventOutsidePrompt(true)
+                                                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
+
+                                                                        @Override public void onHidePromptComplete() {
+                                                                            new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
+                                                                                    .setTarget(size)
+                                                                                    .setPrimaryText(R.string.last_updated)
+                                                                                    .setSecondaryText(R.string.last_updated_hint)
+                                                                                    .setCaptureTouchEventOutsidePrompt(true)
+                                                                                    .show();
+                                                                        }
+                                                                    });
+                                                        }
+
+                                                        @Override public void onHidePromptComplete() {
+
+                                                        }
+                                                    })
                                                     .show();
                                         }
                                     })

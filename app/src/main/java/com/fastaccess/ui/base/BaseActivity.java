@@ -144,7 +144,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (toast != null) toast.cancel();
         toast = titleRes.equals(getString(R.string.error))
                 ? Toasty.warning(getApplicationContext(), msgRes, Toast.LENGTH_LONG)
-                : Toasty.normal(getApplicationContext(), msgRes, Toast.LENGTH_LONG);
+                : Toasty.info(getApplicationContext(), msgRes, Toast.LENGTH_LONG);
         toast.show();
 
     }
