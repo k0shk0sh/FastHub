@@ -11,6 +11,7 @@ import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.modules.code.CodeViewerView;
 import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
@@ -111,10 +112,20 @@ public class SchemeParser {
     @Nullable private static Intent getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
-        if (!"pull".equals(segments.get(2))) return null;
-        String owner = segments.get(0);
-        String repo = segments.get(1);
-        String number = segments.get(3);
+        String owner;
+        String repo;
+        String number;
+        if ("pull".equals(segments.get(2))) {
+            owner = segments.get(0);
+            repo = segments.get(1);
+            number = segments.get(3);
+        } else if ("pull".equals(segments.get(3))) {//notifications url.
+            owner = segments.get(1);
+            repo = segments.get(2);
+            number = segments.get(4);
+        } else {
+            return null;
+        }
         if (InputHelper.isEmpty(number))
             return null;
         int issueNumber;
@@ -130,10 +141,21 @@ public class SchemeParser {
     @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
-        if (!"issues".equals(segments.get(2))) return null;
-        String owner = segments.get(0);
-        String repo = segments.get(1);
-        String number = segments.get(3);
+        Logger.e(segments, segments.size());
+        String owner;
+        String repo;
+        String number;
+        if ("issues".equals(segments.get(2))) {
+            owner = segments.get(0);
+            repo = segments.get(1);
+            number = segments.get(3);
+        } else if ("issues".equals(segments.get(3))) {//notifications url.
+            owner = segments.get(1);
+            repo = segments.get(2);
+            number = segments.get(4);
+        } else {
+            return null;
+        }
         if (InputHelper.isEmpty(number))
             return null;
         int issueNumber;

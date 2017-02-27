@@ -14,9 +14,8 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.ui.modules.main.MainView;
+import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -45,7 +44,7 @@ public class NotificationJobTask extends JobService {
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
                         if (item != null) onSave(item.getItems());
-                    }, throwable -> Logger.e(throwable.getMessage()));
+                    }, Throwable::printStackTrace);
         }
         return false;
     }
@@ -79,18 +78,19 @@ public class NotificationJobTask extends JobService {
         long count = Stream.of(notificationThreadModels)
                 .filter(NotificationThreadModel::isUnread)
                 .count();
-        Logger.e(count, notificationThreadModels);
         if (count > 0) {
-            Intent intent = new Intent(this, MainView.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             Context context = getApplicationContext();
+            Intent intent = new Intent(this, NotificationActivityView.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_announcement)
                     .setContentTitle(context.getString(R.string.notifictions))
                     .setContentText(context.getString(R.string.unread_notification) + " (" + count + ")")
+                    .setContentIntent(pendingIntent)
                     .setNumber((int) count)
-                    .addAction(R.drawable.ic_github, context.getString(R.string.open), PendingIntent.getActivity(context, 0, intent,
-                            PendingIntent.FLAG_UPDATE_CURRENT))
+                    .addAction(R.drawable.ic_github, context.getString(R.string.open), pendingIntent)
                     .build();
             ((NotificationManager) context.getSystemService(NOTIFICATION_SERVICE)).notify(BundleConstant.REQUEST_CODE, notification);
         }

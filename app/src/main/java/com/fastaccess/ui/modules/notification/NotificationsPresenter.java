@@ -22,15 +22,19 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     private ArrayList<NotificationThreadModel> notifications = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, NotificationThreadModel item) {
-        makeRestCall(RestProvider.getNotificationService()
-                        .markAsRead(String.valueOf(item.getId())),
-                booleanResponse -> {
-                    item.setUnread(booleanResponse.code() == 205);
-                    manageSubscription(item.save().subscribe());
-                    notifications.remove(position);
-                    sendToView(NotificationsMvp.View::onNotifyAdapter);
-                });
-        if (item.getRepository() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(item.getRepository().getHtmlUrl()));
+        if (item.isUnread()) {
+            makeRestCall(RestProvider.getNotificationService()
+                            .markAsRead(String.valueOf(item.getId())),
+                    booleanResponse -> {
+                        item.setUnread(booleanResponse.code() == 205);
+                        manageSubscription(item.save().subscribe());
+                        notifications.remove(position);
+                        sendToView(NotificationsMvp.View::onNotifyAdapter);
+                    });
+        }
+        if (item.getSubject() != null) {
+            SchemeParser.launchUri(v.getContext(), Uri.parse(item.getSubject().getUrl()));
+        }
     }
 
     @Override public void onItemLongClick(int position, View v, NotificationThreadModel item) {

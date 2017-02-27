@@ -28,13 +28,12 @@ public class App extends Application {
         UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
         NotificationJobTask.scheduleJob(this);//schedule the job for the notifications
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {//disable crash reporting while developing.
             Thread.setDefaultUncaughtExceptionHandler((paramThread, paramThrowable) -> {
                 Log.e("Crash", paramThrowable.getMessage(), paramThrowable);
                 System.exit(2);
             });
         }
-
     }
 
     @NonNull public static App getInstance() {

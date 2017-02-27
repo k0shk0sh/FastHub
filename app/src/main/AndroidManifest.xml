@@ -90,6 +90,10 @@
         <activity android:name=".ui.modules.search.SearchView"/>
 
         <activity
+            android:name=".ui.modules.notification.NotificationActivityView"
+            android:label="@string/notifictions"/>
+
+        <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:excludeFromRecents="true"
