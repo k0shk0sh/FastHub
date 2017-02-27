@@ -1,6 +1,5 @@
 package com.fastaccess.provider.scheme;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -23,7 +22,6 @@ import com.fastaccess.ui.modules.user.UserPagerView;
 import java.util.List;
 
 import static android.content.Intent.ACTION_VIEW;
-import static android.content.Intent.CATEGORY_BROWSABLE;
 
 /**
  * Created by Kosh on 09 Dec 2016, 4:44 PM
@@ -39,12 +37,7 @@ public class SchemeParser {
         if (intent != null) {
             context.startActivity(intent);
         } else {
-            Activity activity = ActivityHelper.getActivity(context);
-            if (activity == null) {
-                context.startActivity(new Intent(ACTION_VIEW, data.getData()).addCategory(CATEGORY_BROWSABLE));
-            } else {
-                ActivityHelper.startCustomTab(activity, data.getData());
-            }
+            ActivityHelper.forceOpenInBrowser(context, data.getData());
         }
     }
 
@@ -53,12 +46,7 @@ public class SchemeParser {
         if (intent != null) {
             context.startActivity(intent);
         } else {
-            Activity activity = ActivityHelper.getActivity(context);
-            if (activity == null) {
-                context.startActivity(new Intent(ACTION_VIEW, data).addCategory(CATEGORY_BROWSABLE));
-            } else {
-                ActivityHelper.startCustomTab(activity, data);
-            }
+            ActivityHelper.forceOpenInBrowser(context, data);
         }
     }
 
@@ -78,10 +66,15 @@ public class SchemeParser {
             if (InputHelper.isEmpty(scheme)) scheme = PROTOCOL_HTTPS;
             String prefix = scheme + "://" + host;
             String path = data.getPath();
-            if (!InputHelper.isEmpty(path))
-                if (path.charAt(0) == '/') data = Uri.parse(prefix + path);
-                else data = Uri.parse(prefix + '/' + path);
-            else data = Uri.parse(prefix);
+            if (!InputHelper.isEmpty(path)) {
+                if (path.charAt(0) == '/') {
+                    data = Uri.parse(prefix + path);
+                } else {
+                    data = Uri.parse(prefix + '/' + path);
+                }
+            } else {
+                data = Uri.parse(prefix);
+            }
         }
 
         return getIntentForURI(context, data);
@@ -101,10 +94,14 @@ public class SchemeParser {
             Intent commit = getCommit(context, data);
             Intent commits = getCommits(context, data);
             Intent blob = getBlob(context, data);
-            Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits, issueIntent, repoIntent, blob);
+            Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
+                    issueIntent, repoIntent, blob);
             Optional<Intent> empty = Optional.empty();
-            if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty)
+            if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                 return intentOptional.get();
+            } else {
+                return getGeneralRepo(context, data);
+            }
         }
         return null;
     }
@@ -174,6 +171,23 @@ public class SchemeParser {
         String owner = segments.get(0);
         String repoName = segments.get(1);
         return RepoPagerView.createIntent(context, repoName, owner);
+    }
+
+    /**
+     * [[k0shk0sh, FastHub, issues], k0shk0sh/fastHub/(issues,pulls,commits, etc)]
+     */
+    @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
+        //TODO parse deeper links to their associate views. meantime fallback to repoPage
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.isEmpty()) return null;
+        if (segments.size() == 1) {
+            return getUser(context, uri);
+        } else if (segments.size() > 1) {
+            String owner = segments.get(0);
+            String repoName = segments.get(1);
+            return RepoPagerView.createIntent(context, repoName, owner);
+        }
+        return null;
     }
 
     @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri) {

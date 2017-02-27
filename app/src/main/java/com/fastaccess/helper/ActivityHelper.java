@@ -46,18 +46,21 @@ public class ActivityHelper {
         startCustomTab(context, Uri.parse(url));
     }
 
-    public static void forceOpenInBrowser(@NonNull Context context, @NonNull String url) {
+    public static void forceOpenInBrowser(@NonNull Context context, @NonNull Uri url) {
         try {
             Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
             Intent i = new Intent(Intent.ACTION_VIEW, uri);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         } catch (ActivityNotFoundException e) {
-            Uri uri = Uri.parse(url);
-            Intent i = new Intent(Intent.ACTION_VIEW, uri);
+            Intent i = new Intent(Intent.ACTION_VIEW, url);
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(i);
         }
+    }
+
+    public static void forceOpenInBrowser(@NonNull Context context, @NonNull String url) {
+        forceOpenInBrowser(context, Uri.parse(url));
     }
 
     @SafeVarargs public static void start(Activity activity, Class cl, Pair<View, String>... sharedElements) {

@@ -38,9 +38,9 @@ public class LinksParserActivity extends Activity {
         }
         if (intent.getAction().equals(Intent.ACTION_VIEW)) {
             onUriReceived();
-        } else {
-            finish();
+            return;
         }
+        finish();
     }
 
     private void onUriReceived() {
