@@ -29,10 +29,10 @@ public class ReposAdapter extends BaseRecyclerAdapter<RepoModel, ReposViewHolder
     }
 
     @Override protected ReposViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return ReposViewHolder.newInstance(parent, this);
+        return ReposViewHolder.newInstance(parent, this, isStarred, withImage);
     }
 
     @Override protected void onBindView(ReposViewHolder holder, int position) {
-        holder.bind(getItem(position), isStarred, withImage);
+        holder.bind(getItem(position));
     }
 }

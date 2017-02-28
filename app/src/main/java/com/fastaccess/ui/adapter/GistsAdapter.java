@@ -28,10 +28,10 @@ public class GistsAdapter extends BaseRecyclerAdapter<GistsModel, GistsViewHolde
     }
 
     @Override protected GistsViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return new GistsViewHolder(GistsViewHolder.getView(parent), this);
+        return GistsViewHolder.newInstance(parent, this, isForProfile);
     }
 
     @Override protected void onBindView(GistsViewHolder holder, int position) {
-        holder.bind(getItem(position), isForProfile);
+        holder.bind(getItem(position));
     }
 }

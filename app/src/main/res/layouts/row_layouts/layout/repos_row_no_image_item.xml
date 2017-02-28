@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/grid_spacing"
+    android:clickable="true"
+    android:foreground="?android:selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal"
+    android:stateListAnimator="@animator/raise_selector">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:textColor="@color/primary_text"
+            android:textStyle="bold"
+            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+
+        <com.fastaccess.ui.widgets.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
+            app:auto_gravity="start"
+            app:auto_orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/stars"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:drawableStart="@drawable/ic_star"
+                android:gravity="start|center"
+                android:textColor="@color/secondary_text"
+                app:drawableColor="@color/secondary_text"
+                tools:text="1000"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/forks"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:drawableStart="@drawable/ic_fork"
+                android:gravity="start|center"
+                android:textColor="@color/secondary_text"
+                app:drawableColor="@color/secondary_text"
+                tools:text="5000"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/date"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:drawableStart="@drawable/ic_time"
+                android:gravity="start|center"
+                android:textColor="@color/secondary_text"
+                app:drawableColor="@color/secondary_text"
+                tools:text="50 minutes ago"/>
+
+        </com.fastaccess.ui.widgets.AutoLinearLayout>
+    </LinearLayout>
+
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

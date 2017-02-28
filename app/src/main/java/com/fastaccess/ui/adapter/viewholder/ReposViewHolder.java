@@ -29,18 +29,27 @@ public class ReposViewHolder extends BaseViewHolder<RepoModel> {
     @BindView(R.id.date) FontTextView date;
     @BindView(R.id.stars) FontTextView stars;
     @BindView(R.id.forks) FontTextView forks;
-    @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindString(R.string.forked) String forked;
+    private boolean isStarred;
+    private boolean withImage;
 
-    private ReposViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private ReposViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean isStarred, boolean withImage) {
         super(itemView, adapter);
+        this.isStarred = isStarred;
+        this.withImage = withImage;
     }
 
-    public static ReposViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new ReposViewHolder(getView(viewGroup, R.layout.repos_row_item), adapter);
+    public static ReposViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean isStarred, boolean withImage) {
+        if (withImage) {
+            return new ReposViewHolder(getView(viewGroup, R.layout.repos_row_item), adapter, isStarred, true);
+        } else {
+            return new ReposViewHolder(getView(viewGroup, R.layout.repos_row_no_image_item), adapter, isStarred, false);
+        }
+
     }
 
-    public void bind(@NonNull RepoModel repo, boolean isStarred, boolean withImage) {
+    @Override public void bind(@NonNull RepoModel repo) {
         if (repo.isFork()) {
             title.setText(SpannableBuilder.builder().bold(forked).append(" ").append(repo.getName()));
         } else {
@@ -49,14 +58,14 @@ public class ReposViewHolder extends BaseViewHolder<RepoModel> {
         if (withImage) {
             String avatar = repo.getOwner() != null ? repo.getOwner().getAvatarUrl() : null;
             String login = repo.getOwner() != null ? repo.getOwner().getLogin() : null;
-            avatarLayout.setVisibility(View.VISIBLE);
-            avatarLayout.setUrl(avatar, login);
+            if (avatarLayout != null) {
+                avatarLayout.setVisibility(View.VISIBLE);
+                avatarLayout.setUrl(avatar, login);
+            }
         }
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         stars.setText(numberFormat.format(repo.getStargazersCount()));
         forks.setText(numberFormat.format(repo.getForks()));
         date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
     }
-
-    @Override public void bind(@NonNull RepoModel repo) {}
 }

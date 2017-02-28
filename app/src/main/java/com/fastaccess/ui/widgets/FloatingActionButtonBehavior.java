@@ -16,10 +16,6 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import static android.util.Log.INFO;
 import static it.sephiroth.android.library.bottomnavigation.MiscUtils.log;
 
-/**
- * Created by crugnola on 11/2/16.
- * BottomNavigation
- */
 @SuppressWarnings("unused")
 public class FloatingActionButtonBehavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
     private static final String TAG = FloatingActionButtonBehavior.class.getSimpleName();
@@ -88,7 +84,6 @@ public class FloatingActionButtonBehavior extends CoordinatorLayout.Behavior<Flo
     }
 
     public void setNavigationBarHeight(final int height) {
-        log(TAG, INFO, "setNavigationBarHeight: %d", height);
         this.navigationBarHeight = height;
     }
 }

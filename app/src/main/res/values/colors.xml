@@ -4,6 +4,7 @@
     <color name="primary_dark">#9E9E9E</color>
     <color name="primary_light">#FAFAFA</color>
     <color name="accent">@color/material_blue_accent_700</color>
+    <color name="universal_primary_dark_color">#E0E0E0</color>
     <color name="bluish_primary">#FF2A456B</color>
     <color name="bluish_primary_dark">#213755</color>
     <color name="bluish_primary_light">#C5CAE9</color>

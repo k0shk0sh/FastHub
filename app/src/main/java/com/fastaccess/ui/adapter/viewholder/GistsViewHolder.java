@@ -21,31 +21,35 @@ import butterknife.BindView;
 
 public class GistsViewHolder extends BaseViewHolder<GistsModel> {
 
-    @BindView(R.id.avatarLayout) AvatarLayout avatar;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
+    private boolean isFromProfile;
 
-    public GistsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private GistsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean isFromProfile) {
         super(itemView, adapter);
         title.setMaxLines(2);
+        this.isFromProfile = isFromProfile;
     }
 
-    public static View getView(@NonNull ViewGroup viewGroup) {
-        return getView(viewGroup, R.layout.feeds_row_item);
-    }
-
-    public void bind(@NonNull GistsModel item, boolean isFromProfile) {
+    public static GistsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter, boolean isFromProfile) {
         if (!isFromProfile) {
-            avatar.setVisibility(View.VISIBLE);
+            return new GistsViewHolder(getView(viewGroup, R.layout.feeds_row_item), adapter, false);
+        } else {
+            return new GistsViewHolder(getView(viewGroup, R.layout.feeds_row_no_image_item), adapter, true);
+        }
+    }
+
+
+    @Override public void bind(@NonNull GistsModel item) {
+        if (!isFromProfile) {
             String url = item.getOwner() != null ? item.getOwner().getAvatarUrl() : item.getUser() != null ? item.getUser().getAvatarUrl() : null;
             String login = item.getOwner() != null ? item.getOwner().getLogin() : item.getUser() != null ? item.getUser().getLogin() : null;
-            avatar.setUrl(url, login);
-        } else {
-            avatar.setVisibility(View.GONE);
+            if (avatar != null) {
+                avatar.setUrl(url, login);
+            }
         }
         title.setText(item.getDisplayTitle(isFromProfile));
         date.setText(ParseDateFormat.getTimeAgo(item.getCreatedAt()));
     }
-
-    @Override public void bind(@NonNull GistsModel item) {}
 }
