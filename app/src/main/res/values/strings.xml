@@ -181,4 +181,5 @@
     <string name="creation_date">Creation Date</string>
     <string name="creation_date_hint">This date represent the creation date.</string>
     <string name="last_updated_hint">This date represent when the last activity happened.</string>
+    <string name="bbn_fab_default_behavior">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
 </resources>
