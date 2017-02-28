@@ -120,8 +120,8 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         IssueModel currentIssue = getIssue();
         if (currentIssue != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue);
-            manageSubscription(RxHelper.getObserver(RestProvider.getIssueService().editIssue(currentIssue.getUser().getLogin(),
-                    currentIssue.getRepoId(), currentIssue.getNumber(), requestModel))
+            manageSubscription(RxHelper.getObserver(RestProvider.getIssueService().editIssue(login, repoId,
+                    issueNumber, requestModel))
                     .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
                     .doOnNext(issue -> {
                         if (issue != null) {

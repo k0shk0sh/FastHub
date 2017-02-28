@@ -23,9 +23,7 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NotificationThreadModel;
-import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -111,8 +109,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         if (isLoggedIn() && NotificationThreadModel.hasUnreadNotifications()) {
-            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).getIcon(),
-                    ContextCompat.getColor(this, R.color.accent));
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).getIcon(), ContextCompat.getColor(this, R.color.accent));
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -125,11 +122,10 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             startActivity(new Intent(this, SearchView.class));
             return true;
         } else if (item.getItemId() == R.id.notifications) {
-            ViewHelper.tintDrawable(item.getIcon(),
-                    ContextCompat.getColor(this, R.color.primary_text));
-            Logger.e(AppHelper.getFragmentByTag(getSupportFragmentManager(), "NotificationsBottomSheet"));
+            ViewHelper.tintDrawable(item.getIcon(), ContextCompat.getColor(this, R.color.primary_text));
             NotificationsBottomSheet.newInstance()
                     .show(getSupportFragmentManager(), "NotificationsBottomSheet");
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
