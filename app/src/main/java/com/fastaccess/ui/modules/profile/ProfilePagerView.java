@@ -56,4 +56,12 @@ public class ProfilePagerView extends BaseFragment<ProfilePagerMvp.View, Profile
     @NonNull @Override public ProfilePagerPresenter providePresenter() {
         return new ProfilePagerPresenter();
     }
+
+    @Override public void onNavigateToFollowers() {
+        pager.setCurrentItem(4);
+    }
+
+    @Override public void onNavigateToFollowing() {
+        pager.setCurrentItem(5);
+    }
 }

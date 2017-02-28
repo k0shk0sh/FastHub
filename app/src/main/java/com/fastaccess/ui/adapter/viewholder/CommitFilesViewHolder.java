@@ -50,8 +50,10 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     private void onToggle(boolean expanded) {
         if (!expanded) {
             patch.setText(".....");
+            name.setMaxLines(2);
             toggle.setRotation(0.0f);
         } else {
+            name.setMaxLines(5);
             setPatchText(pathText);
             toggle.setRotation(180f);
         }

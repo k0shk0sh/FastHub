@@ -6,9 +6,13 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
  * Created by Kosh on 03 Dec 2016, 7:59 AM
  */
 
-interface ProfilePagerMvp {
+public interface ProfilePagerMvp {
 
-    interface View extends BaseMvp.FAView {}
+    interface View extends BaseMvp.FAView {
+        void onNavigateToFollowers();
+
+        void onNavigateToFollowing();
+    }
 
     interface Presenter extends BaseMvp.FAPresenter {}
 }

@@ -125,4 +125,12 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
     @Override public void onInvalidateMenuItem() {
         supportInvalidateOptionsMenu();
     }
+
+    @Override public void onNavigateToFollowers() {
+        pager.setCurrentItem(4);
+    }
+
+    @Override public void onNavigateToFollowing() {
+        pager.setCurrentItem(5);
+    }
 }

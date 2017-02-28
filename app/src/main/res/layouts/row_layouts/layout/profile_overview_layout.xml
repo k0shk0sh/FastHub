@@ -84,6 +84,7 @@
                         android:layout_gravity="start|bottom|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         tools:text="Following\n40"/>
 
@@ -102,6 +103,7 @@
                         android:layout_gravity="end|bottom|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         tools:text="Followers\n140"/>
                 </FrameLayout>

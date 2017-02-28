@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.overview;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,11 +14,13 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import icepick.State;
 
 /**
@@ -40,10 +43,34 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
 
     @State UserModel userModel;
 
+    private ProfilePagerMvp.View profileCallback;
+
     public static ProfileOverviewView newInstance(String login) {
         ProfileOverviewView view = new ProfileOverviewView();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, login).end());
         return view;
+    }
+
+    @OnClick({R.id.following, R.id.followers}) void onClick(View view) {
+        if (view.getId() == R.id.followers) {
+            profileCallback.onNavigateToFollowers();
+        } else {
+            profileCallback.onNavigateToFollowing();
+        }
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof ProfilePagerMvp.View) {
+            profileCallback = (ProfilePagerMvp.View) getParentFragment();
+        } else {
+            profileCallback = (ProfilePagerMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        profileCallback = null;
+        super.onDetach();
     }
 
     @Override protected int fragmentLayout() {

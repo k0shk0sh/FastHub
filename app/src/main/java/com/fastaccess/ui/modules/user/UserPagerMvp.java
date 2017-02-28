@@ -3,14 +3,15 @@ package com.fastaccess.ui.modules.user;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 
 /**
  * Created by Kosh on 04 Dec 2016, 1:11 PM
  */
 
-interface UserPagerMvp {
+public interface UserPagerMvp {
 
-    interface View extends BaseMvp.FAView {
+    interface View extends BaseMvp.FAView, ProfilePagerMvp.View {
         void onInvalidateMenuItem();
     }
 
