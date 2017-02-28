@@ -30,6 +30,7 @@ public class NotificationsBottomSheet extends BaseBottomSheetDialog {
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         toolbar.setNavigationIcon(R.drawable.ic_arrow_drop_down);
+        toolbar.setNavigationContentDescription(getString(R.string.back));
         toolbar.setTitle(R.string.notifictions);
         toolbar.setNavigationOnClickListener(v -> dismiss());
         if (savedInstanceState == null) {

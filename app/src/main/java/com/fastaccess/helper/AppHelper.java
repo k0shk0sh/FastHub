@@ -1,5 +1,6 @@
 package com.fastaccess.helper;
 
+import android.app.NotificationManager;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,5 +22,10 @@ public class AppHelper {
 
     @Nullable public static Fragment getFragmentByTag(@NonNull FragmentManager fragmentManager, @NonNull String tag) {
         return fragmentManager.findFragmentByTag(tag);
+    }
+
+    public static void cancelNotification(@NonNull Context context){
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(BundleConstant.REQUEST_CODE);
+
     }
 }

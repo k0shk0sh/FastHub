@@ -1,8 +1,11 @@
 package com.fastaccess.ui.modules.notification;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -31,5 +34,10 @@ public class NotificationActivityView extends BaseActivity {
 
     @NonNull @Override public TiPresenter providePresenter() {
         return new BasePresenter();
+    }
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        AppHelper.cancelNotification(this);
     }
 }

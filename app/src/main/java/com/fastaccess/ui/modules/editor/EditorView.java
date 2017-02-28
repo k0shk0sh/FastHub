@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -16,7 +18,6 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
-import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontEditText;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 
@@ -33,8 +34,6 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> implements EditorMvp.View {
 
     private CharSequence savedText;
-    @BindView(R.id.cancel) FontButton cancel;
-    @BindView(R.id.ok) FontButton ok;
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
 
@@ -95,18 +94,6 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
         getPresenter().onActionClicked(editText, v.getId());
     }
 
-    @OnClick(value = {R.id.ok, R.id.cancel}) void onClick(View view) {
-        if (view.getId() == R.id.ok) {
-            getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
-        } else {
-            finish();
-        }
-    }
-
-    @OnClick(R.id.back) void onBack() {
-        finish();
-    }
-
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
@@ -157,5 +144,18 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
         intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, savedText).end());
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.done_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.submit) {
+            getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

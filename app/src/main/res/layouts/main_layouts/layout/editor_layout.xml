@@ -6,60 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:layout_gravity="center"
-        android:gravity="end"
-        android:orientation="horizontal">
-
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:foreground="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/spacing_xs_large"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_back"
-            android:tint="@color/black"/>
-
-        <com.fastaccess.ui.widgets.FontTextView
-            style="@style/Base.TextAppearance.AppCompat.Title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
-            android:layout_weight="1"
-            android:text="@string/markdown"/>
-
-        <com.fastaccess.ui.widgets.FontButton
-            android:id="@+id/cancel"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/cancel"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/bluish_primary"/>
-
-        <com.fastaccess.ui.widgets.FontButton
-            android:id="@+id/ok"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/submit"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/bluish_accent"/>
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/toolbar_shadow"/>
+    <include layout="@layout/appbar_elevation_dark"/>
 
     <ScrollView
         android:layout_width="match_parent"
