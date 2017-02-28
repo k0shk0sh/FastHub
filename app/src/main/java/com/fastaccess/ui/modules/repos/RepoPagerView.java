@@ -36,6 +36,7 @@ import java.text.NumberFormat;
 import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import hugo.weaving.DebugLog;
 import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
@@ -74,6 +75,16 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                 .put(BundleConstant.EXTRA_TWO, login)
                 .end());
         return intent;
+    }
+
+    @OnLongClick(R.id.date) boolean onShowDateHint() {
+        showMessage(R.string.creation_date, R.string.creation_date_hint);
+        return true;
+    }
+
+    @OnLongClick(R.id.size) boolean onShowLastUpdateDateHint() {
+        showMessage(R.string.last_updated, R.string.last_updated_hint);
+        return true;
     }
 
     @OnClick(R.id.fab) public void onAddIssue() {
@@ -203,39 +214,11 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                                                     .setPrimaryText(R.string.fork)
                                                     .setSecondaryText(R.string.fork_repo_hint)
                                                     .setCaptureTouchEventOutsidePrompt(true)
-                                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-                                                            new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
-                                                                    .setTarget(date)
-                                                                    .setPrimaryText(R.string.creation_date)
-                                                                    .setSecondaryText(R.string.creation_date_hint)
-                                                                    .setCaptureTouchEventOutsidePrompt(true)
-                                                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
-
-                                                                        @Override public void onHidePromptComplete() {
-                                                                            new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
-                                                                                    .setTarget(size)
-                                                                                    .setPrimaryText(R.string.last_updated)
-                                                                                    .setSecondaryText(R.string.last_updated_hint)
-                                                                                    .setCaptureTouchEventOutsidePrompt(true)
-                                                                                    .show();
-                                                                        }
-                                                                    })
-                                                                    .show();
-                                                        }
-
-                                                        @Override public void onHidePromptComplete() {
-
-                                                        }
-                                                    })
                                                     .show();
                                         }
-                                    })
-                                    .show();
+                                    }).show();
                         }
-                    })
-                    .show();
+                    }).show();
         }
     }
 
