@@ -80,7 +80,7 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

@@ -72,7 +72,7 @@ public class SearchCodeView extends BaseFragment<SearchCodeMvp.View, SearchCodeP
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

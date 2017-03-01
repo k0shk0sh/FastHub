@@ -40,7 +40,7 @@ public class NotificationJobTask extends JobService {
     @Override public boolean onStartJob(JobParameters job) {
         if (LoginModel.getUser() != null) {
             RestProvider.getNotificationService()
-                    .getNotifications()
+                    .getNotifications(0)
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
                         if (item != null) onSave(item.getItems());

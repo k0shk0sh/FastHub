@@ -83,7 +83,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

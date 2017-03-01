@@ -73,7 +73,7 @@ public class ProfileGistsView extends BaseFragment<ProfileGistsMvp.View, Profile
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

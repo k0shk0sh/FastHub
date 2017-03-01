@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notification_types">
+        <item>@string/unread</item>
+        <item>@string/all</item>
+    </string-array>
+</resources>

@@ -24,10 +24,6 @@ public class NotificationsViewHolder extends BaseViewHolder<NotificationThreadMo
     @BindView(R.id.date) FontTextView date;
     @BindView(R.id.notificationTitle) FontTextView notificationTitle;
 
-    @Override public void onClick(View v) {
-        super.onClick(v);
-    }
-
     private NotificationsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
     }

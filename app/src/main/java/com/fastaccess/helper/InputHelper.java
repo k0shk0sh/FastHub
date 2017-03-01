@@ -61,7 +61,9 @@ public class InputHelper {
 
     public static long toLong(TextView textView) {
         if (!isEmpty(textView)) {
-            return Long.valueOf(toString(textView));
+            try {
+                return Long.valueOf(toString(textView));
+            } catch (NumberFormatException ignored) {}
         }
         return 0;
     }

@@ -69,7 +69,7 @@ public class ProfileFollowingView extends BaseFragment<ProfileFollowingMvp.View,
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

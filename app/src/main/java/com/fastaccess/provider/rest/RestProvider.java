@@ -86,7 +86,7 @@ public class RestProvider {
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 });
-        client.cache(provideCache());//disable cache, since we are going offline.
+//        client.cache(provideCache());//disable cache, since we are going offline.
         return client.build();
     }
 

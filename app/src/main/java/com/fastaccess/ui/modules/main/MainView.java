@@ -29,7 +29,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.create.CreateGistView;
-import com.fastaccess.ui.modules.notification.NotificationsBottomSheet;
+import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
@@ -122,8 +122,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             return true;
         } else if (item.getItemId() == R.id.notifications) {
             ViewHelper.tintDrawable(item.getIcon(), ContextCompat.getColor(this, R.color.primary_text));
-            NotificationsBottomSheet.newInstance()
-                    .show(getSupportFragmentManager(), "NotificationsBottomSheet");
+            startActivity(new Intent(this,NotificationActivityView.class));
             return true;
         }
         return super.onOptionsItemSelected(item);

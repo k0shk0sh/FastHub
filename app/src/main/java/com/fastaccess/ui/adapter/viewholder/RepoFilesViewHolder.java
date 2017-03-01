@@ -38,14 +38,16 @@ public class RepoFilesViewHolder extends BaseViewHolder<RepoFilesModel> {
     }
 
     @Override public void bind(@NonNull RepoFilesModel filesModel) {
-        contentTypeImage.setImageResource(filesModel.getType().getIcon());
         contentTypeImage.setContentDescription(String.format("%s %s", filesModel.getName(), file));
         title.setText(filesModel.getName());
-        if (filesModel.getType() == FilesType.file) {
-            size.setText(Formatter.formatFileSize(size.getContext(), filesModel.getSize()));
-            size.setVisibility(View.VISIBLE);
-        } else {
-            size.setVisibility(View.GONE);
+        if (filesModel.getType() != null) {
+            contentTypeImage.setImageResource(filesModel.getType().getIcon());
+            if (filesModel.getType() == FilesType.file) {
+                size.setText(Formatter.formatFileSize(size.getContext(), filesModel.getSize()));
+                size.setVisibility(View.VISIBLE);
+            } else {
+                size.setVisibility(View.GONE);
+            }
         }
     }
 }

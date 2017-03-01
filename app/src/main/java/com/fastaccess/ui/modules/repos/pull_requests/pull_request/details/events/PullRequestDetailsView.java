@@ -75,7 +75,7 @@ public class PullRequestDetailsView extends BaseFragment<PullRequestDetailsMvp.V
     }
 
     @Override public void showProgress(@StringRes int msgId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

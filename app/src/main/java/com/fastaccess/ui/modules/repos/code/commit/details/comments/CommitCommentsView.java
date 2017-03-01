@@ -82,7 +82,7 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

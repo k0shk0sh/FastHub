@@ -3,6 +3,7 @@ apply plugin: 'me.tatarka.retrolambda'
 apply plugin: "com.neenbedankt.android-apt"
 apply plugin: 'com.jakewharton.hugo'
 apply plugin: 'com.siimkinks.sqlitemagic'
+apply plugin: 'com.google.firebase.firebase-crash'
 
 android {
     signingConfigs {
@@ -96,8 +97,6 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportVerion}"
     compile "com.android.support:preference-v14:${supportVerion}"
     compile "com.android.support:customtabs:${supportVerion}"
-    compile "com.google.firebase:firebase-messaging:${firebase}"
-    compile "com.google.firebase:firebase-analytics:${firebase}"
     compile "com.google.firebase:firebase-ads:${firebase}"
     compile "com.google.firebase:firebase-crash:${firebase}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"

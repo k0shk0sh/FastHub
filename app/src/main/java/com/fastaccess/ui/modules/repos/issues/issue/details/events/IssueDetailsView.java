@@ -69,7 +69,7 @@ public class IssueDetailsView extends BaseFragment<IssueDetailsMvp.View, IssueDe
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

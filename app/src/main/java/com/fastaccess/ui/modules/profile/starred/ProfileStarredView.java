@@ -70,7 +70,7 @@ public class ProfileStarredView extends BaseFragment<ProfileStarredMvp.View, Pro
 
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

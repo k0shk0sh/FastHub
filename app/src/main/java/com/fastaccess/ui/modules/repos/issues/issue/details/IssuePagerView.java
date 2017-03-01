@@ -76,9 +76,11 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     }
 
     @OnClick(R.id.fab) void onAddComment() {
-        IssueCommentsView view = (IssueCommentsView) pager.getAdapter().instantiateItem(pager, 1);
-        if (view != null) {
-            view.onStartNewComment();
+        if (pager != null && pager.getAdapter() != null) {
+            IssueCommentsView view = (IssueCommentsView) pager.getAdapter().instantiateItem(pager, 1);
+            if (view != null) {
+                view.onStartNewComment();
+            }
         }
     }
 

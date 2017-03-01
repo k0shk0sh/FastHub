@@ -97,7 +97,7 @@ public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesP
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

@@ -69,7 +69,7 @@ public class ProfileReposView extends BaseFragment<ProfileReposMvp.View, Profile
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

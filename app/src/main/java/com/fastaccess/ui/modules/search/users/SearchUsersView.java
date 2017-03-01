@@ -69,7 +69,7 @@ public class SearchUsersView extends BaseFragment<SearchUsersMvp.View, SearchUse
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

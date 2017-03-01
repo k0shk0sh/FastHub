@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.fastaccess.data.dao.NotificationThreadModel;
+import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -16,15 +17,23 @@ import java.util.ArrayList;
 public interface NotificationsMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener {
+
+        @NonNull OnLoadMore getLoadMore();
+
         void onNotifyAdapter();
+
+        void onTypeChanged(boolean unread);
     }
 
-    interface Presenter extends BaseViewHolder.OnItemClickListener<NotificationThreadModel> {
-
-        void onCallApi();
+    interface Presenter extends BaseViewHolder.OnItemClickListener<NotificationThreadModel>,
+            BaseMvp.PaginationListener {
 
         void onWorkOffline();
 
         @NonNull ArrayList<NotificationThreadModel> getNotifications();
+
+        void onReadAll();
+
+        void showAllNotifications(boolean showAll);
     }
 }

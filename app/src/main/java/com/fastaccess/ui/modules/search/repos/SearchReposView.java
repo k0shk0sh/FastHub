@@ -70,7 +70,7 @@ public class SearchReposView extends BaseFragment<SearchReposMvp.View, SearchRep
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

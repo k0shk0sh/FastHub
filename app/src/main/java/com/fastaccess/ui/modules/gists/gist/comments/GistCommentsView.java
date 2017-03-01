@@ -84,7 +84,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
