@@ -56,7 +56,7 @@ public class RestProvider {
 
     private static Cache provideCache() {
         if (cache == null) {
-            int cacheSize = 20 * 1024 * 1024;
+            int cacheSize = 20 * 1024 * 1024; //20MB
             cache = new Cache(App.getInstance().getCacheDir(), cacheSize);
         }
         return cache;
@@ -86,7 +86,7 @@ public class RestProvider {
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 });
-//        client.cache(provideCache());//disable cache, since we are going offline.
+        client.cache(provideCache());//disable cache, since we are going offline.
         return client.build();
     }
 

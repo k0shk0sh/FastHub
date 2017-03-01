@@ -26,6 +26,10 @@ interface CommitPagerMvp {
 
         void onWorkOffline(@NonNull String sha, @NonNull String repoId, @NonNull String login);
 
+        String getLogin();
+
+        String getRepoId();
+
     }
 
 }

@@ -185,24 +185,6 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         hideShowFab();
     }
 
-    @Override public void showSuccessIssueActionMsg(boolean isClose) {
-        hideProgress();
-        if (isClose) {
-            showMessage(getString(R.string.success), getString(R.string.success_closed));
-        } else {
-            showMessage(getString(R.string.success), getString(R.string.success_re_opened));
-        }
-    }
-
-    @Override public void showErrorIssueActionMsg(boolean isClose) {
-        hideProgress();
-        if (isClose) {
-            showMessage(getString(R.string.error), getString(R.string.error_closing_issue));
-        } else {
-            showMessage(getString(R.string.error), getString(R.string.error_re_opening_issue));
-        }
-    }
-
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk) {
@@ -219,6 +201,10 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
         Logger.e(labels, labels.size());
         getPresenter().onPutLabels(labels);
+    }
+
+    @Override public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void hideShowFab() {

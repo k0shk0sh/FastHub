@@ -11,6 +11,7 @@ import com.annimon.stream.IntStream;
 import com.commonsware.cwac.anddown.AndDown;
 import com.fastaccess.App;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.uil.UILImageGetter;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
@@ -42,7 +43,7 @@ public class MarkDownProvider {
                         AndDown.HOEDOWN_EXT_SUPERSCRIPT |
                         AndDown.HOEDOWN_EXT_DISABLE_INDENTED_CODE, 0);
         //noinspection deprecation
-        textView.setText(Html.fromHtml(text));
+        textView.setText(Html.fromHtml(text, new UILImageGetter(textView), null));
     }
 
 //    public static RichText convertTextToMarkDown(@NonNull TextView textView, @NonNull String text) {

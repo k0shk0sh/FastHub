@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -107,7 +108,9 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @OnClick({R.id.forkRepo, R.id.starRepo, R.id.watchRepo}) public void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepo:
-                getPresenter().onFork();
+                MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
+                        Bundler.start().put(BundleConstant.EXTRA, true).end())
+                        .show(getSupportFragmentManager(), MessageDialogView.TAG);
                 break;
             case R.id.starRepo:
                 getPresenter().onStar();
@@ -291,6 +294,14 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk && bundle != null) {
+            boolean fork = bundle.getBoolean(BundleConstant.EXTRA);
+            if (fork) getPresenter().onFork();
+        }
     }
 
     @Override public void onBackPressed() {

@@ -54,6 +54,10 @@ interface IssuePagerMvp {
         void onLoadLabels();
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
+
+        String getLogin();
+
+        String getRepoId();
     }
 
 }

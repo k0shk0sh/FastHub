@@ -188,4 +188,12 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             );
         }
     }
+
+    @Override public String getLogin() {
+        return login;
+    }
+
+    @Override public String getRepoId() {
+        return repoId;
+    }
 }

@@ -185,4 +185,12 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                         .map(LabelModel::getName).collect(Collectors.toList())),
                 labelModels -> sendToView(view -> view.onLabelsAdded()));
     }
+
+    @Override public String getLogin() {
+        return login;
+    }
+
+    @Override public String getRepoId() {
+        return repoId;
+    }
 }

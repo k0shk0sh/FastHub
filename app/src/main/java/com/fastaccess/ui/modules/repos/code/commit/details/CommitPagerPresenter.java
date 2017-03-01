@@ -62,4 +62,12 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
                 }));
     }
 
+    @Override public String getLogin() {
+        return login;
+    }
+
+    @Override public String getRepoId() {
+        return repoId;
+    }
+
 }

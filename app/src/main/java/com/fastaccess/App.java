@@ -17,7 +17,6 @@ import com.siimkinks.sqlitemagic.SqliteMagic;
 
 public class App extends Application {
     private static App instance;
-
     private AndDown andDown;
 
     @Override public void onCreate() {

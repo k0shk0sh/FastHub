@@ -10,7 +10,6 @@ import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.modules.code.CodeViewerView;
 import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
@@ -99,8 +98,6 @@ public class SchemeParser {
             Optional<Intent> empty = Optional.empty();
             if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                 return intentOptional.get();
-            } else {
-                return getGeneralRepo(context, data);
             }
         }
         return null;
@@ -138,7 +135,6 @@ public class SchemeParser {
     @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
-        Logger.e(segments, segments.size());
         String owner;
         String repo;
         String number;
@@ -178,14 +174,16 @@ public class SchemeParser {
      */
     @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
         //TODO parse deeper links to their associate views. meantime fallback to repoPage
-        List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.isEmpty()) return null;
-        if (segments.size() == 1) {
-            return getUser(context, uri);
-        } else if (segments.size() > 1) {
-            String owner = segments.get(0);
-            String repoName = segments.get(1);
-            return RepoPagerView.createIntent(context, repoName, owner);
+        if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals("api.github.com")) {
+            List<String> segments = uri.getPathSegments();
+            if (segments == null || segments.isEmpty()) return null;
+            if (segments.size() == 1) {
+                return getUser(context, uri);
+            } else if (segments.size() > 1) {
+                String owner = segments.get(0);
+                String repoName = segments.get(1);
+                return RepoPagerView.createIntent(context, repoName, owner);
+            }
         }
         return null;
     }

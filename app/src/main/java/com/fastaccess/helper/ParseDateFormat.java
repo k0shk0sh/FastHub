@@ -36,7 +36,6 @@ public class ParseDateFormat {
     public static CharSequence getTimeAgo(@Nullable Date parsedDate) {
         if (parsedDate != null) {
             long toLocalTime = parsedDate.getTime() + getInstance().timeZone.getRawOffset() + getInstance().timeZone.getDSTSavings();
-            Logger.e(INSTANCE.timeZone.getID());
             if (INSTANCE.timeZone.getID().equalsIgnoreCase("UTC")) {
                 toLocalTime = parsedDate.getTime();
             }

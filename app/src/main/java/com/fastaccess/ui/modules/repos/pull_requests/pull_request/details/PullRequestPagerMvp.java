@@ -25,10 +25,6 @@ interface PullRequestPagerMvp {
 
         void onSetupIssue();
 
-        void showSuccessIssueActionMsg(boolean isClose);
-
-        void showErrorIssueActionMsg(boolean isClose);
-
         void onLabelsRetrieved(@NonNull List<LabelModel> items);
     }
 
@@ -59,6 +55,10 @@ interface PullRequestPagerMvp {
         void onLoadLabels();
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
+
+        String getLogin();
+
+        String getRepoId();
     }
 
 }

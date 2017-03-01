@@ -152,6 +152,10 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
         hideShowFab();
     }
 
+    @Override public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
             fab.show();
