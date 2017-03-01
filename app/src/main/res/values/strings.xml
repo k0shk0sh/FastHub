@@ -186,4 +186,6 @@
     <string name="all_notifications">All Notifications</string>
     <string name="unread">Unread</string>
     <string name="all">All</string>
+    <string name="delete_repo">Delete Repo</string>
+    <string name="delete_repo_warning">Deleting this repo can not be undone.</string>
 </resources>

@@ -75,6 +75,8 @@ interface RepoPagerMvp {
 
         boolean isForked();
 
+        boolean isRepoOwner();
+
         void onWatch();
 
         void onStar();
@@ -93,5 +95,6 @@ interface RepoPagerMvp {
 
         void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide);
 
+        void onDeleteRepo();
     }
 }

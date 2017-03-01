@@ -279,6 +279,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             menuItem.setVisible(true);
             menuItem.setTitle(repoModel.getParent().getFullName());
         }
+        menu.findItem(R.id.deleteRepo).setVisible(getPresenter().isRepoOwner());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -292,6 +293,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                 RepoPagerView.startRepoPager(this, new NameParser(parent.getHtmlUrl()));
             }
             return true;
+        } else if (item.getItemId() == R.id.deleteRepo) {
+            MessageDialogView.newInstance(getString(R.string.delete_repo), getString(R.string.delete_repo_warning),
+                    Bundler.start().put(BundleConstant.EXTRA_TWO, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -299,8 +304,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk && bundle != null) {
+            boolean isDelete = bundle.getBoolean(BundleConstant.EXTRA_TWO);
             boolean fork = bundle.getBoolean(BundleConstant.EXTRA);
             if (fork) getPresenter().onFork();
+            if (isDelete) getPresenter().onDeleteRepo();
         }
     }
 

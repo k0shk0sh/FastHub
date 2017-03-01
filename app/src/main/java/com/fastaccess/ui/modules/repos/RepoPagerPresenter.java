@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -87,6 +88,10 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public boolean isForked() {
         return isForked;
+    }
+
+    @Override public boolean isRepoOwner() {
+        return (getRepo() != null && getRepo().getOwner() != null) && getRepo().getOwner().getLogin().equals(LoginModel.getUser().getLogin());
     }
 
     @Override public void onWatch() {
@@ -268,6 +273,19 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 .add(R.id.container, toAdd, toAdd.getClass().getSimpleName())
                 .commit();
         toAdd.onHiddenChanged(false);
+    }
+
+    @Override public void onDeleteRepo() {
+        if (isRepoOwner()) {
+            makeRestCall(RestProvider.getRepoService().deleteRepo(login, repoId),
+                    booleanResponse -> {
+                        if (booleanResponse.code() == 204) {
+                            if (repo != null) repo.delete().execute();
+                            repo = null;
+                            sendToView(RepoPagerMvp.View::onInitRepo);
+                        }
+                    });
+        }
     }
 
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {

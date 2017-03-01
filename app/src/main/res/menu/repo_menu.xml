@@ -8,6 +8,12 @@
         app:showAsAction="never"/>
 
     <item
+        android:id="@+id/deleteRepo"
+        android:visible="false"
+        android:title="@string/delete_repo"
+        app:showAsAction="never"/>
+
+    <item
         android:id="@+id/originalRepo"
         android:visible="false"
         app:showAsAction="never"/>

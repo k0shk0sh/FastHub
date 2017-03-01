@@ -41,6 +41,9 @@ public interface RepoService {
     @GET("repos/{login}/{repoId}") @Headers({"Accept: application/vnd.github.drax-preview+json"})
     Observable<RepoModel> getRepo(@Path("login") String login, @Path("repoId") String repoId);
 
+    @DELETE("repos/{login}/{repoId}")
+    Observable<Response<Boolean>> deleteRepo(@Path("login") String login, @Path("repoId") String repoId);
+
     @GET @Headers("Accept: application/vnd.github.html")
     Observable<String> getReadmeHtml(@NonNull @Url String url);
 
