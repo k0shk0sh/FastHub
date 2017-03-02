@@ -154,10 +154,11 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         MenuItem lockIssue = menu.findItem(R.id.lockIssue);
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
+        boolean isCollaborator = getPresenter().isCollaborator();
         Logger.e(isOwner);
-        menu.findItem(R.id.closeIssue).setVisible(isOwner);
-        menu.findItem(R.id.lockIssue).setVisible(isOwner);
-        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner());
+        menu.findItem(R.id.closeIssue).setVisible(isOwner || isCollaborator);
+        menu.findItem(R.id.lockIssue).setVisible(isOwner || isCollaborator);
+        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner() || isCollaborator);
         if (isOwner) {
             //noinspection ConstantConditions ( getIssue at this stage is not null but AS doesn't know. )
             closeIssue.setTitle(getPresenter().getIssue().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string.close));
@@ -228,6 +229,10 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         if (issueDetailsView != null) {
             issueDetailsView.onRefresh();
         }
+    }
+
+    @Override public void onUpdateMenu() {
+        supportInvalidateOptionsMenu();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

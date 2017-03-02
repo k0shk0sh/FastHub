@@ -29,6 +29,8 @@ interface IssuePagerMvp {
         void onLabelsRetrieved(@NonNull List<LabelModel> items);
 
         void onLabelsAdded();
+
+        void onUpdateMenu();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -44,6 +46,8 @@ interface IssuePagerMvp {
         boolean isRepoOwner();
 
         boolean isLocked();
+
+        boolean isCollaborator();
 
         void onHandleConfirmDialog(@Nullable Bundle bundle);
 

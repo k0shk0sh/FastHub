@@ -11,6 +11,7 @@ import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.IssueRequestModel;
+import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
@@ -38,6 +39,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     private int issueNumber;
     private String login;
     private String repoId;
+    private boolean isCollaborator;
 
     @Nullable @Override public IssueModel getIssue() {
         return issueModel;
@@ -65,6 +67,12 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                             issueModel.setRepoId(repoId);
                             issueModel.setLogin(login);
                             sendToView(IssuePagerMvp.View::onSetupIssue);
+                            manageSubscription(RxHelper.getObserver(RestProvider.getRepoService()
+                                    .isCollaborator(login, repoId, LoginModel.getUser().getLogin()))
+                                    .subscribe(booleanResponse -> {
+                                        isCollaborator = booleanResponse.code() == 204;
+                                        sendToView(IssuePagerMvp.View::onUpdateMenu);
+                                    }, Throwable::printStackTrace));
                         });
                 return;
             }
@@ -102,6 +110,10 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public boolean isLocked() {
         return getIssue() != null && getIssue().isLocked();
+    }
+
+    @Override public boolean isCollaborator() {
+        return isCollaborator;
     }
 
     @Override public void onHandleConfirmDialog(@Nullable Bundle bundle) {
@@ -183,7 +195,13 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
                         .map(LabelModel::getName).collect(Collectors.toList())),
-                labelModels -> sendToView(view -> view.onLabelsAdded()));
+                labelModels -> {
+                    sendToView(IssuePagerMvp.View::onLabelsAdded);
+                    LabelListModel listModel = new LabelListModel();
+                    listModel.addAll(labels);
+                    issueModel.setLabels(listModel);
+                    manageSubscription(issueModel.save().subscribe());
+                });
     }
 
     @Override public String getLogin() {

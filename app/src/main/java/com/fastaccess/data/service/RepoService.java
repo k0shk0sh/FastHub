@@ -59,12 +59,6 @@ public interface RepoService {
     @POST("/repos/{owner}/{repo}/forks")
     Observable<RepoModel> forkRepo(@NonNull @Path("owner") String login, @NonNull @Path("repo") String repoId);
 
-    @GET("repos/{owner}/{repo}/subscribers")
-    Observable<Pageable<UserModel>> getRepoWatchers(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
-
-    @GET("users/{username}/subscriptions")
-    Observable<Pageable<RepoModel>> getWatchedRepos(@Path("username") String username, @Query("page") int page);
-
     @GET("user/subscriptions/{owner}/{repo}")
     Observable<Response<Boolean>> isWatchingRepo(@Path("owner") String owner, @Path("repo") String repo);
 
@@ -107,5 +101,10 @@ public interface RepoService {
 
     @GET("repos/{owner}/{repo}/labels")
     Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+
+    @GET("repos/{owner}/{repo}/collaborators/{username}")
+    Observable<Response<Boolean>> isCollaborator(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                                 @NonNull @Path("username") String username);
+
 
 }

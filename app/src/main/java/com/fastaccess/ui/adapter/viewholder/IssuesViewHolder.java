@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -38,9 +39,16 @@ public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
 
     public void bind(@NonNull IssueModel issueModel, boolean withAvatar) {
         title.setText(issueModel.getTitle());
-        details.setText(SpannableBuilder.builder().append(itemView.getResources().getString(issueModel.getState().getStatus()))
-                .append(" ").append(by).append(" ").append(issueModel.getUser().getLogin()).append(" ")
-                .append(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt())));
+        if (issueModel.getState() != null) {
+            CharSequence data = ParseDateFormat.getTimeAgo(issueModel.getState() == IssueState.open
+                                                           ? issueModel.getCreatedAt() : issueModel.getClosedAt());
+            details.setText(SpannableBuilder.builder()
+                    .append(itemView.getResources().getString(issueModel.getState().getStatus()))
+                    .append(" ").append(by).append(" ")
+                    .append(issueModel.getState() == IssueState.closed
+                            ? issueModel.getClosedBy().getLogin() : issueModel.getUser().getLogin()).append(" ")
+                    .append(data));
+        }
         if (withAvatar) {
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);

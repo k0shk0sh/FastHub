@@ -55,7 +55,6 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
         }
-        setHasOptionsMenu(true);
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
