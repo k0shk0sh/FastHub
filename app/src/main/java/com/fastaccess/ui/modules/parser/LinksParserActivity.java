@@ -8,7 +8,7 @@ import android.widget.Toast;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
-import com.fastaccess.provider.scheme.SchemeParser;
+import com.fastaccess.provider.scheme.StackBuilderSchemeParser;
 import com.fastaccess.ui.modules.login.LoginView;
 
 /**
@@ -46,7 +46,7 @@ public class LinksParserActivity extends Activity {
     }
 
     private void onUriReceived() {
-        SchemeParser.launchUri(this, getIntent());
+        StackBuilderSchemeParser.launchUri(this, getIntent());
         finish();
     }
 }

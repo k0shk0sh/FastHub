@@ -43,18 +43,33 @@
 
         <activity
             android:name=".ui.modules.user.UserPagerView"
+            android:excludeFromRecents="true"
             android:label="@string/user"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.main.MainView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainView"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.repos.RepoPagerView"
+            android:excludeFromRecents="true"
             android:label="@string/repo"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.main.MainView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainView"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerView"
+            android:excludeFromRecents="true"
             android:label="@string/issue"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerView"/>
+        </activity>
         <activity
             android:name=".ui.modules.repos.issues.create.CreateIssueView"
             android:configChanges="keyboard|orientation|screenSize"
@@ -63,19 +78,34 @@
 
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
+            android:excludeFromRecents="true"
             android:label="@string/pull_request"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerView"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerView"
+            android:excludeFromRecents="true"
             android:label="@string/commit"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerView"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.code.CodeViewerView"
             android:configChanges="keyboard|orientation|screenSize"
+            android:excludeFromRecents="true"
             android:label="@string/viewer"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.main.MainView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainView"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.editor.EditorView"
@@ -91,15 +121,25 @@
 
         <activity
             android:name=".ui.modules.gists.gist.GistView"
+            android:excludeFromRecents="true"
             android:label="@string/gist"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.main.MainView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainView"/>
+        </activity>
 
         <activity android:name=".ui.modules.search.SearchView"/>
 
         <activity
             android:name=".ui.modules.notification.NotificationActivityView"
+            android:excludeFromRecents="true"
             android:label="@string/notifictions"
-            android:excludeFromRecents="true"/>
+            android:parentActivityName=".ui.modules.main.MainView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainView"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

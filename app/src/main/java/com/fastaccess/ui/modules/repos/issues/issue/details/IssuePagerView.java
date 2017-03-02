@@ -242,10 +242,6 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onBackPressed() {
-        super.onBackPressed();
-    }
-
     private void hideShowFab() {
         if (getPresenter().isLocked() && !getPresenter().isOwner()) {
             fab.hide();

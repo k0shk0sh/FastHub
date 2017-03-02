@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 
 import com.annimon.stream.Optional;
@@ -13,6 +14,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.modules.code.CodeViewerView;
 import com.fastaccess.ui.modules.gists.gist.GistView;
+import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
@@ -27,7 +29,7 @@ import static android.content.Intent.ACTION_VIEW;
  * Created by Kosh on 09 Dec 2016, 4:44 PM
  */
 
-public class SchemeParser {
+public class StackBuilderSchemeParser {
     private static final String HOST_DEFAULT = "github.com";
     private static final String HOST_GISTS = "gist.github.com";
     private static final String RAW_AUTHORITY = "raw.githubusercontent.com";
@@ -41,22 +43,22 @@ public class SchemeParser {
     }
 
     public static void launchUri(@NonNull Context context, @NonNull Uri data) {
-        Intent intent = convert(context, data);
+        TaskStackBuilder intent = convert(context, data);
         if (intent != null) {
-            context.startActivity(intent);
+            intent.startActivities();
         } else {
             ActivityHelper.forceOpenInBrowser(context, data);
         }
     }
 
-    @Nullable private static Intent convert(@NonNull Context context, final Intent intent) {
+    @Nullable private static TaskStackBuilder convert(@NonNull Context context, final Intent intent) {
         if (intent == null) return null;
         if (!ACTION_VIEW.equals(intent.getAction())) return null;
         Uri data = intent.getData();
         return convert(context, data);
     }
 
-    @Nullable private static Intent convert(@NonNull Context context, Uri data) {
+    @Nullable private static TaskStackBuilder convert(@NonNull Context context, Uri data) {
         if (data == null) return null;
         if (InputHelper.isEmpty(data.getHost()) || InputHelper.isEmpty(data.getScheme())) {
             String host = data.getHost();
@@ -79,26 +81,28 @@ public class SchemeParser {
         return getIntentForURI(context, data);
     }
 
-    @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data) {
+    @Nullable private static TaskStackBuilder getIntentForURI(@NonNull Context context, @NonNull Uri data) {
         if (HOST_GISTS.equals(data.getHost())) {
             String gist = getGistId(data);
             if (gist != null) {
-                return GistView.createIntent(context, gist);
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainView.class)
+                        .addNextIntent(GistView.createIntent(context, gist));
             }
         } else {
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY)) {
-                Intent userIntent = getUser(context, data);
-                Intent pullRequestIntent = getPullRequestIntent(context, data);
-                Intent issueIntent = getIssueIntent(context, data);
-                Intent repoIntent = getRepo(context, data);
-                Intent commit = getCommit(context, data);
-                Intent commits = getCommits(context, data);
-                Intent blob = getBlob(context, data);
-                Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
+                TaskStackBuilder userIntent = getUser(context, data);
+                TaskStackBuilder pullRequestIntent = getPullRequestIntent(context, data);
+                TaskStackBuilder issueIntent = getIssueIntent(context, data);
+                TaskStackBuilder repoIntent = getRepo(context, data);
+                TaskStackBuilder commit = getCommit(context, data);
+                TaskStackBuilder commits = getCommits(context, data);
+                TaskStackBuilder blob = getBlob(context, data);
+                Optional<TaskStackBuilder> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
                         issueIntent, repoIntent, blob);
-                Optional<Intent> empty = Optional.empty();
+                Optional<TaskStackBuilder> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
                 } else {
@@ -109,7 +113,7 @@ public class SchemeParser {
         return null;
     }
 
-    @Nullable private static Intent getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String owner;
@@ -135,10 +139,12 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return PullRequestPagerView.createIntent(context, repo, owner, issueNumber);
+        return TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
+                .addNextIntent(PullRequestPagerView.createIntent(context, repo, owner, issueNumber));
     }
 
-    @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String owner;
@@ -164,21 +170,25 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return IssuePagerView.createIntent(context, repo, owner, issueNumber);
+        return TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
+                .addNextIntent(IssuePagerView.createIntent(context, repo, owner, issueNumber));
     }
 
-    @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getRepo(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 2 || segments.size() > 2) return null;
         String owner = segments.get(0);
         String repoName = segments.get(1);
-        return RepoPagerView.createIntent(context, repoName, owner);
+        return TaskStackBuilder.create(context)
+                .addParentStack(MainView.class)
+                .addNextIntent(RepoPagerView.createIntent(context, repoName, owner));
     }
 
     /**
      * [[k0shk0sh, FastHub, issues], k0shk0sh/fastHub/(issues,pulls,commits, etc)]
      */
-    @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
         //TODO parse deeper links to their associate views. meantime fallback to repoPage
         if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY)) {
             List<String> segments = uri.getPathSegments();
@@ -188,47 +198,50 @@ public class SchemeParser {
             } else if (segments.size() > 1) {
                 String owner = segments.get(0);
                 String repoName = segments.get(1);
-                return RepoPagerView.createIntent(context, repoName, owner);
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainView.class)
+                        .addNextIntent(RepoPagerView.createIntent(context, repoName, owner));
             }
         }
         return null;
     }
 
-    @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getCommits(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.isEmpty() || segments.size() < 4) return null;
         if (segments.get(3).equals("commits")) {
             String login = segments.get(1);
             String repoId = segments.get(2);
             String sha = segments.get(4);
-            return CommitPagerView.createIntent(context, repoId, login, sha);
+            return TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repoId, login))
+                    .addNextIntent(CommitPagerView.createIntent(context, repoId, login, sha));
         }
         return null;
     }
 
-    @Nullable private static Intent getCommit(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getCommit(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4 || !"commit".equals(segments.get(2))) return null;
         String login = segments.get(0);
         String repoId = segments.get(1);
         String sha = segments.get(3);
-        return CommitPagerView.createIntent(context, repoId, login, sha);
+        return TaskStackBuilder.create(context)
+                .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repoId, login))
+                .addNextIntent(CommitPagerView.createIntent(context, repoId, login, sha));
     }
 
-    @Nullable private static String getGistId(@NonNull Uri uri) {
-        List<String> segments = uri.getPathSegments();
-        return segments != null && !segments.isEmpty() ? segments.get(0) : null;
-    }
-
-    @Nullable private static Intent getUser(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getUser(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments != null && !segments.isEmpty() && segments.size() == 1) {
-            return UserPagerView.createIntent(context, segments.get(0));
+            return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
+                    .addNextIntent(UserPagerView.createIntent(context, segments.get(0)));
         }
         return null;
     }
 
-    @Nullable private static Intent getBlob(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static TaskStackBuilder getBlob(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
@@ -238,11 +251,17 @@ public class SchemeParser {
                 fullUrl = "https://" + RAW_AUTHORITY + "/" + segments.get(0) + "/" + segments.get(1) + "/" +
                         segments.get(segments.size() - 2) + "/" + uri.getLastPathSegment();
             }
-            if (fullUrl != null) return CodeViewerView.createIntent(context, fullUrl);
+            if (fullUrl != null) {
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainView.class)
+                        .addNextIntent(CodeViewerView.createIntent(context, fullUrl));
+            }
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
-                return CodeViewerView.createIntent(context, uri.toString());
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainView.class)
+                        .addNextIntent(CodeViewerView.createIntent(context, uri.toString()));
             }
         }
         return null;
@@ -250,5 +269,10 @@ public class SchemeParser {
 
     @SafeVarargs private static <T> Optional<T> returnNonNull(T... t) {
         return Stream.of(t).filter(value -> value != null).findFirst();
+    }
+
+    @Nullable private static String getGistId(@NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        return segments != null && !segments.isEmpty() ? segments.get(0) : null;
     }
 }
