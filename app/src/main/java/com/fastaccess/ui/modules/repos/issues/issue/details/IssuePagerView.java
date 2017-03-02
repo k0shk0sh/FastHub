@@ -181,9 +181,18 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         title.setText(issueModel.getTitle());
         if (userModel != null) {
             size.setVisibility(View.GONE);
+            String username;
+            CharSequence parsedDate;
+            if (issueModel.getState() == IssueState.closed) {
+                username = issueModel.getClosedBy() != null ? issueModel.getClosedBy().getLogin() : "N/A";
+                parsedDate = issueModel.getClosedAt() != null ? ParseDateFormat.getTimeAgo(issueModel.getClosedAt()) : "N/A";
+            } else {
+                parsedDate = ParseDateFormat.getTimeAgo(issueModel.getCreatedAt());
+                username = issueModel.getUser() != null ? issueModel.getUser().getLogin() : "N/A";
+            }
             date.setText(SpannableBuilder.builder().append(getString(issueModel.getState().getStatus()))
-                    .append(" ").append(getString(R.string.by)).append(" ").append(userModel.getLogin()).append(" ")
-                    .append(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt())));
+                    .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
+                    .append(parsedDate));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
         }
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this, issueModel)));

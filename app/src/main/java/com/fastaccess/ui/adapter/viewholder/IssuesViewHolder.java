@@ -44,9 +44,7 @@ public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
                                                            ? issueModel.getCreatedAt() : issueModel.getClosedAt());
             details.setText(SpannableBuilder.builder()
                     .append(itemView.getResources().getString(issueModel.getState().getStatus()))
-                    .append(" ").append(by).append(" ")
-                    .append(issueModel.getState() == IssueState.closed
-                            ? issueModel.getClosedBy().getLogin() : issueModel.getUser().getLogin()).append(" ")
+                    .append(" ")
                     .append(data));
         }
         if (withAvatar) {
