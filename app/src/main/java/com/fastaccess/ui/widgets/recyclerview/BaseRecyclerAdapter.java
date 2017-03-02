@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.helper.AnimHelper;
+import com.fastaccess.helper.PrefGetter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     @NonNull private List<M> data;
     @Nullable private P listener;
     private int lastKnowingPosition = -1;
-    private boolean enableAnimation = true;
+    private boolean enableAnimation = !PrefGetter.isRVAnimationEnabled();
     private boolean showedGuide;
     private GuideListener guideListener;
 

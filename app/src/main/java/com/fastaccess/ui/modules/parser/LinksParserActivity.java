@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.provider.scheme.SchemeParser;
+import com.fastaccess.ui.modules.login.LoginView;
 
 /**
  * Created by Kosh on 09 Dec 2016, 12:31 PM
@@ -20,6 +21,7 @@ public class LinksParserActivity extends Activity {
         super.onCreate(savedInstanceState);
         if (LoginModel.getUser() == null) {
             Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, LoginView.class));
             finish();
             return;
         }

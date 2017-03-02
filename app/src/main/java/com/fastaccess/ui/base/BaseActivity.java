@@ -115,6 +115,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (canBack()) {
             if (item.getItemId() == android.R.id.home) {
                 onBackPressed();
+                return true;
             }
         }
         return super.onOptionsItemSelected(item);

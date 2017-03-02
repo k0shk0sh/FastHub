@@ -105,6 +105,7 @@
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:excludeFromRecents="true"
+            android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay">
 
             <intent-filter>

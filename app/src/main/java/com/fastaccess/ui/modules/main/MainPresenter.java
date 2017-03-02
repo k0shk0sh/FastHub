@@ -90,6 +90,8 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 return true;
             } else if (item.getItemId() == R.id.fhRepo) {
                 getView().openFasHubRepo();
+            } else if (item.getItemId() == R.id.settings) {
+                getView().onOpenSettings();
             }
         }
         return false;

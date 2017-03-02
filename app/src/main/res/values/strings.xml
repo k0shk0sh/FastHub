@@ -97,7 +97,7 @@
     <string name="status">Status</string>
     <string name="confirm_message">Are you sure?</string>
     <string name="success">Success</string>
-    <string name="to">To</string>
+    <string name="to">to</string>
     <string name="error_deleting_comment">Error Deleting Comment</string>
     <string name="delete">Delete</string>
     <string name="comments">Comments</string>
@@ -188,4 +188,9 @@
     <string name="all">All</string>
     <string name="delete_repo">Delete Repo</string>
     <string name="delete_repo_warning">Deleting this repo can not be undone.</string>
+    <string name="thirty_minutes">Thirty Minutes</string>
+    <string name="twenty_minutes">Twenty Minutes</string>
+    <string name="ten_minutes">Ten Minutes</string>
+    <string name="five_minutes">Five Minutes</string>
+    <string name="one_minute">One Minute</string>
 </resources>

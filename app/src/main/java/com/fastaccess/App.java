@@ -2,6 +2,7 @@ package com.fastaccess;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 
 import com.commonsware.cwac.anddown.AndDown;
@@ -22,6 +23,7 @@ public class App extends Application {
     @Override public void onCreate() {
         super.onCreate();
         instance = this;
+        PreferenceManager.setDefaultValues(this, R.xml.fasthub_settings, false);
         SqliteMagic.setLoggingEnabled(BuildConfig.DEBUG);
         SqliteMagic.init(this);
         UILProvider.initUIL(this);
@@ -45,4 +47,5 @@ public class App extends Application {
         }
         return andDown;
     }
+
 }

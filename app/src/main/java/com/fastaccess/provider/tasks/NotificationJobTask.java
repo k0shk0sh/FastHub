@@ -14,6 +14,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.firebase.jobdispatcher.Constraint;
@@ -54,7 +55,13 @@ public class NotificationJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context) {
+        scheduleJob(context, PrefGetter.getNotificationTaskDuration(context) == 0 ? (30 * 60) : PrefGetter.getNotificationTaskDuration(context),
+                false);
+    }
+
+    public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        if (cancel) dispatcher.cancel(EVERY_30_MINS);
         Job.Builder builder = dispatcher
                 .newJobBuilder()
                 .setTag(EVERY_30_MINS)
@@ -62,7 +69,7 @@ public class NotificationJobTask extends JobService {
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(10, 30 * 60 /*every 30 seconds*/))
+                .setTrigger(Trigger.executionWindow(10, duration))
                 .setService(NotificationJobTask.class);
         dispatcher.mustSchedule(builder.build());
     }

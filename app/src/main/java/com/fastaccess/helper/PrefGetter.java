@@ -1,6 +1,9 @@
 package com.fastaccess.helper;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
+
+import com.fastaccess.R;
 
 /**
  * Created by Kosh on 10 Nov 2016, 3:43 PM
@@ -70,5 +73,27 @@ public class PrefGetter {
         boolean isShowed = PrefHelper.getBoolean(MARKDOWNDOWN_GUIDE);
         PrefHelper.set(MARKDOWNDOWN_GUIDE, true);
         return isShowed;
+    }
+
+    public static boolean isRVAnimationEnabled() {
+        return PrefHelper.getBoolean("recylerViewAnimation");
+    }
+
+    public static int getNotificationTaskDuration(@NonNull Context context) {
+        String s = PrefHelper.getString("notificationTime");
+        if (!InputHelper.isEmpty(s)) {
+            if (s.equals(context.getString(R.string.thirty_minutes))) {
+                return 30 * 60;
+            } else if (s.equals(context.getString(R.string.twenty_minutes))) {
+                return 20 * 60;
+            } else if (s.equals(context.getString(R.string.ten_minutes))) {
+                return 10 * 60;
+            } else if (s.equals(context.getString(R.string.five_minutes))) {
+                return 5 * 60;
+            } else if (s.equals(context.getString(R.string.one_minute))) {
+                return 60;
+            }
+        }
+        return 0;
     }
 }

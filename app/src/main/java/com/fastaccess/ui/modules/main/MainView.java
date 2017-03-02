@@ -33,6 +33,7 @@ import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
+import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontSwitchView;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -178,6 +179,10 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public void openFasHubRepo() {
         startActivity(RepoPagerView.createIntent(this, "FastHub", "k0shk0sh"));
+    }
+
+    @Override public void onOpenSettings() {
+        SettingsBottomSheetDialog.show(getSupportFragmentManager());
     }
 
     private boolean canExit() {

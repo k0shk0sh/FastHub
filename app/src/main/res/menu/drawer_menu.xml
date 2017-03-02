@@ -13,6 +13,13 @@
             android:id="@+id/feedback"
             android:icon="@drawable/ic_announcement"
             android:title="@string/submit_feedback"/>
+
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/settings"/>
+
         <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_logout"
