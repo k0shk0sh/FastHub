@@ -44,17 +44,17 @@
         <activity
             android:name=".ui.modules.user.UserPagerView"
             android:label="@string/user"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name=".ui.modules.repos.RepoPagerView"
             android:label="@string/repo"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerView"
             android:label="@string/issue"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
         <activity
             android:name=".ui.modules.repos.issues.create.CreateIssueView"
             android:configChanges="keyboard|orientation|screenSize"
@@ -64,18 +64,18 @@
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
             android:label="@string/pull_request"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerView"
             android:label="@string/commit"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name=".ui.modules.code.CodeViewerView"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/viewer"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name=".ui.modules.editor.EditorView"
@@ -92,14 +92,14 @@
         <activity
             android:name=".ui.modules.gists.gist.GistView"
             android:label="@string/gist"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
 
         <activity android:name=".ui.modules.search.SearchView"/>
 
         <activity
             android:name=".ui.modules.notification.NotificationActivityView"
             android:label="@string/notifictions"
-            android:noHistory="true"/>
+            android:excludeFromRecents="true"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

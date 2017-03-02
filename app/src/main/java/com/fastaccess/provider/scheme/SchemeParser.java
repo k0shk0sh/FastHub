@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
@@ -29,6 +30,8 @@ import static android.content.Intent.ACTION_VIEW;
 public class SchemeParser {
     private static final String HOST_DEFAULT = "github.com";
     private static final String HOST_GISTS = "gist.github.com";
+    private static final String RAW_AUTHORITY = "raw.githubusercontent.com";
+    private static final String API_AUTHORITY = "api.github.com";
     private static final String PROTOCOL_HTTPS = "https";
 
     public static void launchUri(@NonNull Context context, @NonNull Intent data) {
@@ -86,18 +89,24 @@ public class SchemeParser {
                 return GistView.createIntent(context, gist);
             }
         } else {
-            Intent userIntent = getUser(context, data);
-            Intent pullRequestIntent = getPullRequestIntent(context, data);
-            Intent issueIntent = getIssueIntent(context, data);
-            Intent repoIntent = getRepo(context, data);
-            Intent commit = getCommit(context, data);
-            Intent commits = getCommits(context, data);
-            Intent blob = getBlob(context, data);
-            Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
-                    issueIntent, repoIntent, blob);
-            Optional<Intent> empty = Optional.empty();
-            if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
-                return intentOptional.get();
+            String authority = data.getAuthority();
+            if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
+                    TextUtils.equals(authority, API_AUTHORITY)) {
+                Intent userIntent = getUser(context, data);
+                Intent pullRequestIntent = getPullRequestIntent(context, data);
+                Intent issueIntent = getIssueIntent(context, data);
+                Intent repoIntent = getRepo(context, data);
+                Intent commit = getCommit(context, data);
+                Intent commits = getCommits(context, data);
+                Intent blob = getBlob(context, data);
+                Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
+                        issueIntent, repoIntent, blob);
+                Optional<Intent> empty = Optional.empty();
+                if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
+                    return intentOptional.get();
+                } else {
+                    return getGeneralRepo(context, data);
+                }
             }
         }
         return null;
@@ -174,7 +183,7 @@ public class SchemeParser {
      */
     @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
         //TODO parse deeper links to their associate views. meantime fallback to repoPage
-        if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals("api.github.com")) {
+        if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY)) {
             List<String> segments = uri.getPathSegments();
             if (segments == null || segments.isEmpty()) return null;
             if (segments.size() == 1) {
@@ -229,10 +238,15 @@ public class SchemeParser {
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
             String fullUrl = uri.toString();
             if (uri.getAuthority().equalsIgnoreCase(HOST_DEFAULT)) {
-                fullUrl = "https://raw.githubusercontent.com/" + segments.get(0) + "/" + segments.get(1) + "/" +
+                fullUrl = "https://" + RAW_AUTHORITY + "/" + segments.get(0) + "/" + segments.get(1) + "/" +
                         segments.get(segments.size() - 2) + "/" + uri.getLastPathSegment();
             }
             if (fullUrl != null) return CodeViewerView.createIntent(context, fullUrl);
+        } else {
+            String authority = uri.getAuthority();
+            if (TextUtils.equals(authority, RAW_AUTHORITY)) {
+                return CodeViewerView.createIntent(context, uri.toString());
+            }
         }
         return null;
     }

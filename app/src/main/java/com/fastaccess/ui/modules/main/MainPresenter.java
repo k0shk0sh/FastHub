@@ -15,8 +15,6 @@ import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.GistsView;
 import com.fastaccess.ui.modules.profile.ProfilePagerView;
 
-import hugo.weaving.DebugLog;
-
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
 
@@ -30,7 +28,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         return !drawerLayout.isDrawerOpen(GravityCompat.START);
     }
 
-    @DebugLog @SuppressWarnings("ConstantConditions")
+    @SuppressWarnings("ConstantConditions")
     @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
         FeedsView homeView = (FeedsView) getFragmentByTag(fragmentManager, FeedsView.TAG);
@@ -61,7 +59,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         }
     }
 
-    @DebugLog @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow, @NonNull Fragment toHide) {
+    @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow, @NonNull Fragment toHide) {
         toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()
@@ -71,7 +69,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         toShow.onHiddenChanged(false);
     }
 
-    @DebugLog @Override public void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide) {
+    @Override public void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide) {
         toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()
@@ -90,7 +88,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
             } else if (item.getItemId() == R.id.logout) {
                 getView().onLogout();
                 return true;
-            }else if(item.getItemId() == R.id.fhRepo){
+            } else if (item.getItemId() == R.id.fhRepo) {
                 getView().openFasHubRepo();
             }
         }

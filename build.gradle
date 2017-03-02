@@ -11,7 +11,6 @@ buildscript {
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'me.tatarka:gradle-retrolambda:3.2.4'
         classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-        classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
         classpath 'com.siimkinks.sqlitemagic:sqlitemagic-plugin:0.11.0'
         classpath 'com.google.firebase:firebase-plugins:1.0.5'
     }

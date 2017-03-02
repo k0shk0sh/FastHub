@@ -3,10 +3,8 @@ package com.prettifier.pretty.helper;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.BuildConfig;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.helper.Logger;
-import com.fastaccess.provider.markdown.MarkDownProvider;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,17 +49,10 @@ public class GithubHelper {
         Matcher matcher = LINK_TAG_MATCHER.matcher(source);
         while (matcher.find()) {
             String href = matcher.group(1).trim();
-            if (href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
+            if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
                 continue;
             }
-            Logger.e(href);
-            boolean isImage = MarkDownProvider.isImage(href);
-            String link;
-            if (isImage) {
-                link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href;
-            } else {
-                link = BuildConfig.REST_URL + "repos/" + owner + "/" + repoName + "/contents/" + href;
-            }
+            String link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href;
             source = source.replace("href=\"" + href + "\"", "href=\"" + link + "\"");
         }
         return source;

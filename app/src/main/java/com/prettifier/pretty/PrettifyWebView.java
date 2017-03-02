@@ -17,6 +17,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.modules.code.CodeViewerView;
@@ -138,20 +139,20 @@ public class PrettifyWebView extends NestedWebView {
         }
     }
 
-    private class WebClient extends WebViewClient {
-        @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-            startActivity(request.getUrl());
-
-            return true;
-        }
-    }
-
     private void startActivity(Uri url) {
         if (url == null) return;
+        Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerView.startActivity(getContext(), url.toString());
         } else {
             SchemeParser.launchUri(getContext(), url);
+        }
+    }
+
+    private class WebClient extends WebViewClient {
+        @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+            startActivity(request.getUrl());
+            return true;
         }
     }
 

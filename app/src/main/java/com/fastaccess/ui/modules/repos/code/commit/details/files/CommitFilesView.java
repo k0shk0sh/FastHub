@@ -18,7 +18,6 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
-import hugo.weaving.DebugLog;
 import icepick.State;
 
 /**
@@ -74,7 +73,7 @@ public class CommitFilesView extends BaseFragment<CommitFilesMvp.View, CommitFil
         adapter.notifyItemChanged(position);
     }
 
-    @DebugLog @Override public boolean isCollapsed(int position) {
+    @Override public boolean isCollapsed(int position) {
         return getSparseBooleanArray().get(position);
     }
 

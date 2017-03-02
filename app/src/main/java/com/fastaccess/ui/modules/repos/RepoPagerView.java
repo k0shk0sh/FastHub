@@ -38,7 +38,6 @@ import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import hugo.weaving.DebugLog;
 import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
@@ -63,13 +62,13 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @State @RepoPagerMvp.RepoNavigationType int navType;
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
 
-    @DebugLog public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
+    public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
         if (!InputHelper.isEmpty(nameParser.getName()) && !InputHelper.isEmpty(nameParser.getUsername())) {
             context.startActivity(createIntent(context, nameParser.getName(), nameParser.getUsername()));
         }
     }
 
-    @DebugLog public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login) {
         Intent intent = new Intent(context, RepoPagerView.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, repoId)
