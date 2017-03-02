@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.NotificationCompat;
 
 import com.annimon.stream.Stream;
@@ -17,7 +16,6 @@ import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
@@ -89,12 +87,10 @@ public class NotificationJobTask extends JobService {
                 .count();
         if (count > 0) {
             Context context = getApplicationContext();
-            TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(context);
-            taskStackBuilder.addParentStack(MainView.class);
             Intent intent = new Intent(this, NotificationActivityView.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            taskStackBuilder.addNextIntent(intent);
-            PendingIntent pendingIntent = taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_announcement)
                     .setContentTitle(context.getString(R.string.notifictions))

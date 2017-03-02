@@ -36,7 +36,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
                             .markAsRead(String.valueOf(item.getId())),
                     booleanResponse -> {
                         item.setUnread(booleanResponse.code() == 205);
-                        manageSubscription(item.save().subscribe());
+                        item.persist().execute();
                         notifications.remove(position);
                         sendToView(NotificationsMvp.View::onNotifyAdapter);
                     });
