@@ -97,7 +97,7 @@ dependencies {
     compile "com.android.support:preference-v14:${supportVerion}"
     compile "com.android.support:customtabs:${supportVerion}"
     compile "com.google.firebase:firebase-ads:${firebase}"
-    compile "com.google.firebase:firebase-crash:${firebase}"
+    releaseCompile "com.google.firebase:firebase-crash:${firebase}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
     compile "com.squareup.retrofit2:retrofit:${retrofit}"

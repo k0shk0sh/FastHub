@@ -40,19 +40,29 @@ public class ViewPagerView extends ViewPager {
         requestLayout();
     }
 
-    @Override public boolean onTouchEvent(MotionEvent event) {
-        return !isEnabled() || super.onTouchEvent(event);
-    }
-
-    @Override public boolean onInterceptTouchEvent(MotionEvent event) {
-        return isEnabled() && super.onInterceptTouchEvent(event);
-    }
-
     @Override public void setAdapter(PagerAdapter adapter) {
         super.setAdapter(adapter);
         if (isInEditMode()) return;
         if (adapter != null) {
             setOffscreenPageLimit(adapter.getCount());
         }
+    }
+
+    @Override public boolean onTouchEvent(MotionEvent event) {
+        try {
+            return !isEnabled() || super.onTouchEvent(event);
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override public boolean onInterceptTouchEvent(MotionEvent event) {
+        try {
+            return isEnabled() && super.onInterceptTouchEvent(event);
+        } catch (IllegalArgumentException ex) {
+            ex.printStackTrace();
+        }
+        return false;
     }
 }

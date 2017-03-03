@@ -62,7 +62,7 @@ public class InputHelper {
     public static long toLong(TextView textView) {
         if (!isEmpty(textView)) {
             try {
-                return Long.valueOf(toString(textView));
+                return Long.valueOf(toString(textView).replace(".", "").replaceAll(",", ""));
             } catch (NumberFormatException ignored) {}
         }
         return 0;
