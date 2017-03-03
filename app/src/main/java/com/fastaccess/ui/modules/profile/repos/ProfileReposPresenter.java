@@ -2,8 +2,10 @@ package com.fastaccess.ui.modules.profile.repos;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
+import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.provider.rest.RestProvider;
@@ -24,6 +26,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    private String currentLoggedIn;
 
     @Override public int getCurrentPage() {
         return page;
@@ -51,6 +54,9 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
     }
 
     @Override public void onCallApi(int page, @Nullable String parameter) {
+        if (currentLoggedIn == null) {
+            currentLoggedIn = LoginModel.getUser().getLogin();
+        }
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -63,7 +69,9 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
             sendToView(ProfileReposMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getUserService().getRepos(parameter, page),
+        makeRestCall(TextUtils.equals(currentLoggedIn, parameter)
+                     ? RestProvider.getUserService().getRepos(page)
+                     : RestProvider.getUserService().getRepos(parameter, page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {

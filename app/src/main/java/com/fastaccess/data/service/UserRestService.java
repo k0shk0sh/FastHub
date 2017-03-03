@@ -40,8 +40,10 @@ public interface UserRestService {
     @GET("users/{username}/received_events")
     Observable<Pageable<EventsModel>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
 
-    @GET("users/{username}/repos?sort=pushed&direction=desc") Observable<Pageable<RepoModel>>
-    getRepos(@Path("username") @NonNull String username, @Query("page") int page);
+    @GET("users/{username}/repos?sort=pushed&direction=desc")
+    Observable<Pageable<RepoModel>> getRepos(@Path("username") @NonNull String username, @Query("page") int page);
+
+    @GET("/user/repos?sort=pushed&direction=desc") Observable<Pageable<RepoModel>> getRepos(@Query("page") int page);
 
     @GET("users/{username}/starred") Observable<Pageable<RepoModel>>
     getStarred(@Path("username") @NonNull String username, @Query("page") int page);
