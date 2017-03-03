@@ -1,86 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/grid_spacing"
-        android:background="@color/universal_primary_dark_color"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/spacing_normal"
-        android:paddingEnd="@dimen/spacing_xs_large"
-        android:paddingStart="@dimen/spacing_xs_large"
-        android:paddingTop="@dimen/spacing_normal">
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/toParentFolder"
-            style="@style/TextAppearance.AppCompat.Medium"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:background="?selectableItemBackgroundBorderless"
-            android:drawableEnd="@drawable/ic_arrow_right"
-            android:gravity="center|start|top"
-            android:text="@string/back_slash"/>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/spacing_xs_large"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            app:layoutManager="@string/linear_layout_manager"
-            tools:listitem="@layout/file_path_row_item"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/grid_spacing"
-        android:clickable="true"
-        android:orientation="horizontal"
-        android:paddingEnd="@dimen/spacing_xs_large"
-        android:paddingStart="@dimen/spacing_xs_large">
-
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/switch_branch"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_branch"/>
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/branches"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
-            android:layout_weight="1"
-            android:spinnerMode="dialog"
-            app:backgroundTint="?colorAccent"
-            tools:entries="@array/notification_types"/>
-
-        <ProgressBar
-            android:id="@+id/branchesProgress"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-
-
-    </LinearLayout>
+    <include layout="@layout/repo_file_header_layout"/>
 
     <fragment
         android:id="@+id/filesFragment"

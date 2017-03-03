@@ -87,16 +87,12 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
         popup.show();
     }
 
-    @Override public void onSetData(@NonNull String login, @NonNull String repoId, @NonNull String path, @NonNull String ref) {
-        getPresenter().onInitDataAndRequest(login, repoId, path, ref);
+    @Override public void onSetData(@NonNull String login, @NonNull String repoId, @NonNull String path, @NonNull String ref, boolean clear) {
+        getPresenter().onInitDataAndRequest(login, repoId, path, ref, clear);
     }
 
     @Override public boolean isRefreshing() {
         return refresh.isRefreshing();
-    }
-
-    @Override public void onForceRefresh(@NonNull String login, @NonNull String repoId, @NonNull String path, @NonNull String ref) {
-
     }
 
     @Override protected int fragmentLayout() {
