@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.annimon.stream.Objects;
+import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
     private String login;
     private String path;
     private ArrayList<RepoFilesModel> paths = new ArrayList<>();
+    private ArrayList<BranchesModel> branches = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, RepoFilesModel item) {
         if (!item.getPath().equalsIgnoreCase(path)) if (getView() != null) getView().onItemClicked(item, position);
@@ -40,6 +43,19 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                 throw new NullPointerException(String.format("error, repoId(%s) or login(%s) is null", repoId, login));
             }
             sendToView(RepoFilePathMvp.View::onSendData);
+            if (branches.isEmpty()) {
+                makeRestCall(RestProvider.getRepoService().getBranches(login, repoId),
+                        response -> {
+                            if (response != null && response.getItems() != null) {
+                                branches.clear();
+                                branches.addAll(response.getItems());
+                                sendToView(view -> {
+                                    view.setBranchesData(branches);
+                                    view.hideProgress();
+                                });
+                            }
+                        });
+            }
         } else {
             throw new NullPointerException("Bundle is null");
         }
@@ -59,5 +75,9 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
 
     @NonNull @Override public ArrayList<RepoFilesModel> getPaths() {
         return paths;
+    }
+
+    @NonNull @Override public ArrayList<BranchesModel> getBranches() {
+        return branches;
     }
 }

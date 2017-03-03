@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EventsModel;
-import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -43,7 +42,8 @@ public class FeedsViewHolder extends BaseViewHolder<EventsModel> {
         }
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "n/a").append(" ");
-        spannableBuilder.bold(eventsModel.getType().getType()).append(" ");
+        if (eventsModel.getType() != null)
+            spannableBuilder.bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase()).append(" ");
         spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "n/a");
         title.setText(spannableBuilder);
         date.setText(ParseDateFormat.getTimeAgo(eventsModel.getCreatedAt()));

@@ -2,6 +2,7 @@ package com.fastaccess.data.service;
 
 import android.support.annotation.NonNull;
 
+import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.CommitModel;
@@ -95,9 +96,9 @@ public interface RepoService {
     @DELETE("repos/{owner}/{repo}/comments/{id}")
     Observable<Response<Boolean>> deleteComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);
 
-    @GET("repos/{owner}/{repo}/contents/{getPath}")
+    @GET("repos/{owner}/{repo}/contents/{path}")
     Observable<Pageable<RepoFilesModel>> getRepoFiles(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
-                                                      @NonNull @Path("getPath") String path);
+                                                      @NonNull @Path("path") String path, @NonNull @Query("ref") String ref);
 
     @GET("repos/{owner}/{repo}/labels")
     Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
@@ -106,5 +107,7 @@ public interface RepoService {
     Observable<Response<Boolean>> isCollaborator(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                  @NonNull @Path("username") String username);
 
+    @GET("repos/{owner}/{repo}/branches")
+    Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
 }

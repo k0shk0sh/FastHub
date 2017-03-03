@@ -19,7 +19,7 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
  * Created by Kosh on 09 Dec 2016, 4:16 PM
  */
 
-interface RepoPagerMvp {
+public interface RepoPagerMvp {
 
     int CODE = 0;
     int ISSUES = 1;
@@ -58,6 +58,8 @@ interface RepoPagerMvp {
         void onChangeStarCount(boolean isStarred);
 
         void onChangeForkCount(boolean isForked);
+
+        boolean hasUserInteractedWithView();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BottomNavigation.OnMenuItemSelectionListener {

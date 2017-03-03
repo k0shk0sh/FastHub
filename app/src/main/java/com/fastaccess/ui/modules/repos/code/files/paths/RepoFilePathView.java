@@ -1,22 +1,34 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 
+import com.annimon.stream.Objects;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
+import icepick.State;
 
 /**
  * Created by Kosh on 18 Feb 2017, 2:10 AM
@@ -26,9 +38,14 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
 
     @BindView(R.id.recycler) RecyclerView recycler;
     @BindView(R.id.toParentFolder) View toParentFolder;
+    @BindView(R.id.branches) Spinner branches;
+    @BindView(R.id.branchesProgress) ProgressBar branchesProgress;
+
+    @State String ref = "master";
 
     private RepoFilePathsAdapter adapter;
     private RepoFilesView repoFilesView;
+    private RepoPagerMvp.View repoCallback;
 
     public static RepoFilePathView newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path) {
         RepoFilePathView view = new RepoFilePathView();
@@ -44,8 +61,30 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         if (adapter.getItemCount() > 0) {
             getPresenter().getPaths().clear();
             onNotifyAdapter();
-            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), null);
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref);
         }
+    }
+
+    @OnItemSelected(R.id.branches) void onBranchSelected(int position) {
+        if (repoCallback.hasUserInteractedWithView()) {
+            ref = ((BranchesModel) branches.getItemAtPosition(position)).getName();
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref);
+            onBackClicked();
+        }
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) context;
+        } else if (getParentFragment() instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) getParentFragment();
+        }
+    }
+
+    @Override public void onDetach() {
+        repoCallback = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter() {
@@ -57,18 +96,18 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         if ((position + 1) < adapter.getItemCount()) {
             adapter.subList(position + 1, adapter.getItemCount());
         }
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), model.getPath());
+        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref);
 
     }
 
     @Override public void onAppendPath(@NonNull RepoFilesModel model) {
         adapter.addItem(model);
         recycler.scrollToPosition(adapter.getItemCount() - 1); //smoothScrollToPosition(index) hides the recyclerview? MIND-BLOWING??.
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), model.getPath());
+        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref);
     }
 
     @Override public void onSendData() {
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPath());
+        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(getPresenter().getPath(), ""), ref);
     }
 
     @Override public boolean canPressBack() {
@@ -87,6 +126,23 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         }
     }
 
+    @Override public void showProgress(@StringRes int resId) {
+        branchesProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override public void hideProgress() {
+        branchesProgress.setVisibility(View.GONE);
+    }
+
+    @Override public void showErrorMessage(@NonNull String msgRes) {
+        hideProgress();
+        super.showErrorMessage(msgRes);
+    }
+
+    @Override public void setBranchesData(@NonNull List<BranchesModel> branchesData) {
+        branches.setAdapter(new ArrayAdapter<>(getContext(), android.R.layout.simple_dropdown_item_1line, branchesData));
+    }
+
     @Override protected int fragmentLayout() {
         return R.layout.repo_file_layout;
     }
@@ -98,6 +154,7 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         }
+        setBranchesData(getPresenter().getBranches());
     }
 
     @NonNull @Override public RepoFilePathPresenter providePresenter() {

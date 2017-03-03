@@ -33,8 +33,9 @@
                     android:id="@+id/notificationType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:entries="@array/notification_types"
                     android:minWidth="150dp"
-                    android:entries="@array/notification_types"/>
+                    app:backgroundTint="?colorAccent"/>
             </android.support.v7.widget.Toolbar>
         </LinearLayout>
 

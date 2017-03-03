@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 20 Nov 2016, 11:10 AM
@@ -28,6 +30,8 @@ interface RepoFilePathMvp {
         boolean canPressBack();
 
         void onBackPressed();
+
+        void setBranchesData(@NonNull List<BranchesModel> branches);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -42,6 +46,8 @@ interface RepoFilePathMvp {
         @Nullable String getPath();
 
         @NonNull ArrayList<RepoFilesModel> getPaths();
+
+        @NonNull ArrayList<BranchesModel> getBranches();
     }
 
 

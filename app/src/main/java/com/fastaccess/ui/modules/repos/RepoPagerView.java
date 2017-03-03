@@ -61,6 +61,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindView(R.id.fab) FloatingActionButton fab;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
+    private boolean userInteracted;
 
     public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
         if (!InputHelper.isEmpty(nameParser.getName()) && !InputHelper.isEmpty(nameParser.getUsername())) {
@@ -264,6 +265,15 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @Override public void onChangeForkCount(boolean isForked) {
         long count = InputHelper.toLong(forkRepo);
         forkRepo.setText(numberFormat.format(isForked ? (count + 1) : (count > 0 ? (count - 1) : 0)));
+    }
+
+    @Override public void onUserInteraction() {
+        super.onUserInteraction();
+        userInteracted = true;
+    }
+
+    @Override public boolean hasUserInteractedWithView() {
+        return userInteracted;
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
