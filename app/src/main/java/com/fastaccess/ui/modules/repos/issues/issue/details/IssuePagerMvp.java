@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.labels.LabelsMvp;
 
@@ -28,7 +29,7 @@ interface IssuePagerMvp {
 
         void onLabelsRetrieved(@NonNull List<LabelModel> items);
 
-        void onLabelsAdded();
+        void onUpdateTimeline();
 
         void onUpdateMenu();
     }
@@ -56,6 +57,8 @@ interface IssuePagerMvp {
         void onLockUnlockIssue();
 
         void onLoadLabels();
+
+        void onPutMilestones(@NonNull MilestoneModel milestone);
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
 

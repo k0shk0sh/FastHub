@@ -15,6 +15,7 @@ import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.MergeRequestModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UserModel;
@@ -195,7 +196,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
                         .map(LabelModel::getName).collect(Collectors.toList())),
                 labelModels -> {
-                    sendToView(PullRequestPagerMvp.View::onLabelsAdded);
+                    sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
                     LabelListModel listModel = new LabelListModel();
                     listModel.addAll(labels);
                     pullRequest.setLabels(listModel);
@@ -203,8 +204,22 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 });
     }
 
+    @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {
+        pullRequest.setMilestone(milestone);
+        IssueRequestModel issueRequestModel = IssueRequestModel.clone(pullRequest, false);
+        makeRestCall(RestProvider.getPullRequestSerice().editIssue(login, repoId, issueNumber, issueRequestModel),
+                pr -> {
+                    this.pullRequest = pr;
+                    pullRequest.setLogin(login);
+                    pullRequest.setRepoId(repoId);
+                    manageSubscription(pr.save().subscribe());
+                    sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
+                });
+
+    }
+
     @Override public void onMerge() {
-        if (isMergeable() && (isOwner() || isRepoOwner())) {//double the checking
+        if (isMergeable() && (isCollaborator() || isRepoOwner())) {//double the checking
             MergeRequestModel mergeRequestModel = new MergeRequestModel();
 //            mergeRequestModel.setBase(String.valueOf(getPullRequest().getBase().getId()));
 //            mergeRequestModel.setHead(String.valueOf(getPullRequest().getHead().getId()));

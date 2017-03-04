@@ -92,6 +92,8 @@ public class PrefGetter {
                 return 5 * 60;
             } else if (s.equals(context.getString(R.string.one_minute))) {
                 return 60;
+            } else if (s.equals(context.getString(R.string.turn_off))) {
+                return -1;
             }
         }
         return 0;

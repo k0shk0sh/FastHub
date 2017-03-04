@@ -219,4 +219,11 @@
     <string name="edit">Edit</string>
     <string name="update_issue">Update Issue</string>
     <string name="update_pull_request">Update Pull Request</string>
+    <string name="no_milestones">No Milestones</string>
+    <string name="add">Add</string>
+    <string name="done">Done</string>
+    <string name="home">Home</string>
+    <string name="create_milestone">Create Milestone</string>
+    <string name="error_creating_milestone">Error creating milestone</string>
+    <string name="due_on">Due On</string>
 </resources>

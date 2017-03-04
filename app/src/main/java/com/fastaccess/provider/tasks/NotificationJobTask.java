@@ -55,13 +55,17 @@ public class NotificationJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context) {
-        scheduleJob(context, PrefGetter.getNotificationTaskDuration(context) == 0 ? (30 * 60) : PrefGetter.getNotificationTaskDuration(context),
-                false);
+        int duration = PrefGetter.getNotificationTaskDuration(context);
+        scheduleJob(context, duration == 0 ? (30 * 60) : duration, false);
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
         if (cancel) dispatcher.cancel(EVERY_30_MINS);
+        if (duration == -1) {
+            dispatcher.cancel(EVERY_30_MINS);
+            return;
+        }
         Job.Builder builder = dispatcher
                 .newJobBuilder()
                 .setTag(EVERY_30_MINS)

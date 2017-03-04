@@ -6,8 +6,10 @@ import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.CreateMilestoneModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MarkdownModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.ReleasesModel;
 import com.fastaccess.data.dao.RepoFilesModel;
@@ -110,4 +112,13 @@ public interface RepoService {
     @GET("repos/{owner}/{repo}/branches")
     Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
+    @GET("repos/{owner}/{repo}/milestones")
+    Observable<Pageable<MilestoneModel>> getMilestones(@Path("owner") String owner, @Path("repo") String repo);
+
+    @POST("repos/{owner}/{repo}/milestones")
+    Observable<MilestoneModel> createMilestone(@Path("owner") String owner, @Path("repo") String repo,
+                                               @Body CreateMilestoneModel create);
+
+    @GET("repos/{owner}/{repo}/assignees")
+    Observable<Pageable<UserModel>> getAssignees(@Path("owner") String owner, @Path("repo") String repo);
 }

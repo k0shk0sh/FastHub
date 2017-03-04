@@ -1,9 +1,11 @@
 package com.fastaccess.helper;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.format.DateUtils;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -42,5 +44,23 @@ public class ParseDateFormat {
             return DateUtils.getRelativeTimeSpanString(toLocalTime, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
         }
         return "N/A";
+    }
+
+    public static String toGithubDate(@NonNull Date date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
+        return simpleDateFormat.format(date);
+    }
+
+    public static String prettifyDate(long timestamp) {
+        return new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(new Date(timestamp));
+    }
+
+    @Nullable public static Date getDateFromString(@NonNull String date) {
+        try {
+            return new SimpleDateFormat("dd-MM-yyyy", Locale.US).parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

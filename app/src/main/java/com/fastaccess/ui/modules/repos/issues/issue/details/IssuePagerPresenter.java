@@ -14,6 +14,7 @@ import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.data.dao.types.IssueState;
@@ -191,12 +192,26 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         );
     }
 
+    @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {
+        issueModel.setMilestone(milestone);
+        IssueRequestModel issueRequestModel = IssueRequestModel.clone(issueModel, false);
+        makeRestCall(RestProvider.getIssueService().editIssue(login, repoId, issueNumber, issueRequestModel),
+                issue -> {
+                    this.issueModel = issue;
+                    issueModel.setLogin(login);
+                    issueModel.setRepoId(repoId);
+                    manageSubscription(issue.save().subscribe());
+                    sendToView(IssuePagerMvp.View::onUpdateTimeline);
+                });
+
+    }
+
     @Override public void onPutLabels(@NonNull ArrayList<LabelModel> labels) {
         makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
                         .map(LabelModel::getName).collect(Collectors.toList())),
                 labelModels -> {
-                    sendToView(IssuePagerMvp.View::onLabelsAdded);
+                    sendToView(IssuePagerMvp.View::onUpdateTimeline);
                     LabelListModel listModel = new LabelListModel();
                     listModel.addAll(labels);
                     issueModel.setLabels(listModel);

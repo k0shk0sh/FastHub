@@ -6,10 +6,12 @@
     </string-array>
 
     <string-array name="notification_duration">
+        <item>@string/turn_off</item>
         <item>@string/one_minute</item>
         <item>@string/five_minutes</item>
         <item>@string/ten_minutes</item>
         <item>@string/twenty_minutes</item>
         <item>@string/thirty_minutes</item>
     </string-array>
+    <string name="turn_off">Turn Off</string>
 </resources>

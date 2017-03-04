@@ -53,4 +53,8 @@ public interface PullRequestService {
     Observable<PullRequestModel> editPullRequest(@Path("owner") String owner, @Path("repo") String repo,
                                                  @Path("number") int number,
                                                  @Body IssueRequestModel issue);
+    @PATCH("repos/{owner}/{repo}/issues/{number}")
+    Observable<PullRequestModel> editIssue(@Path("owner") String owner, @Path("repo") String repo,
+                                           @Path("number") int number,
+                                           @Body IssueRequestModel issue);
 }

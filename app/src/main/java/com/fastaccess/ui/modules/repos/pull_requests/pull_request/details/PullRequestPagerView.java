@@ -14,8 +14,8 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
-import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.data.dao.types.IssueState;
@@ -26,6 +26,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
 import com.fastaccess.ui.modules.repos.labels.LabelsView;
@@ -116,11 +117,17 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
-            if (data != null) {
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
-                PullRequestModel pullRequestModel = bundle.getParcelable(BundleConstant.ITEM);
-                if (pullRequestModel != null) getPresenter().onUpdatePullRequest(pullRequestModel);
+                PullRequestModel pullRequest = bundle.getParcelable(BundleConstant.ITEM);
+                if (pullRequest != null) getPresenter().onUpdatePullRequest(pullRequest);
+            } else if (requestCode == MilestoneActivityView.CREATE_MILESTONE_RQ) {
+                Bundle bundle = data.getExtras();
+                MilestoneModel milestoneModel = bundle.getParcelable(BundleConstant.ITEM);
+                if (milestoneModel != null) {
+                    getPresenter().onPutMilestones(milestoneModel);
+                }
             }
         }
     }
@@ -156,6 +163,8 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         } else if (item.getItemId() == R.id.edit) {
             CreateIssueView.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPullRequest());
             return true;
+        } else if (item.getItemId() == R.id.milestone) {
+            MilestoneActivityView.startActivity(this, getPresenter().getLogin(), getPresenter().getRepoId());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -178,19 +187,15 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         assignees.setVisible(isCollaborator || isRepoOwner);
         edit.setVisible(isCollaborator || isRepoOwner || isOwner);
         if (getPresenter().getPullRequest() != null) {
-            closeIssue.setVisible((isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
-            lockIssue.setVisible((isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
+            closeIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
+            lockIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
+            closeIssue.setTitle(getPresenter().getPullRequest().getState() == IssueState.closed
+                                ? getString(R.string.re_open) : getString(R.string.close));
+            lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
         } else {
             closeIssue.setVisible(false);
             lockIssue.setVisible(false);
         }
-        if (isOwner) {
-            //noinspection ConstantConditions ( getIssue at this stage is not null but AS doesn't know. )
-            closeIssue.setTitle(getPresenter().getPullRequest().getState() == IssueState.closed
-                                ? getString(R.string.re_open) : getString(R.string.close));
-            lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
-        }
-
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -267,7 +272,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         }
     }
 
-    @Override public void onLabelsAdded() {
+    @Override public void onUpdateTimeline() {
         showMessage(R.string.success, R.string.labels_added_successfully);
         PullRequestDetailsView pullRequestDetailsView = (PullRequestDetailsView) pager.getAdapter().instantiateItem(pager, 0);
         if (pullRequestDetailsView != null) {

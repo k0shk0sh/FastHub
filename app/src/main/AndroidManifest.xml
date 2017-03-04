@@ -142,6 +142,10 @@
         </activity>
 
         <activity
+            android:name=".ui.modules.repos.extras.milestone.create.MilestoneActivityView"
+            android:theme="@style/WhenLargeTheme"/>
+
+        <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:excludeFromRecents="true"

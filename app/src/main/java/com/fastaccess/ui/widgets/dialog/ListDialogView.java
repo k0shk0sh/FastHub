@@ -20,6 +20,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import net.grandcentrix.thirtyinch.TiPresenter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -28,6 +29,8 @@ import butterknife.BindView;
  */
 
 public class ListDialogView<O extends Parcelable> extends BaseDialogFragment implements BaseViewHolder.OnItemClickListener<O> {
+
+    public static final String TAG = ListDialogView.class.getSimpleName();
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
@@ -87,6 +90,13 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
         setArguments(Bundler.start()
                 .put(BundleConstant.EXTRA, title)
                 .putParcelableArrayList(BundleConstant.ITEM, objects)
+                .end());
+    }
+
+    public void initArguments(@NonNull String title, @NonNull List<O> objects) {
+        setArguments(Bundler.start()
+                .put(BundleConstant.EXTRA, title)
+                .putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) objects)
                 .end());
     }
 }

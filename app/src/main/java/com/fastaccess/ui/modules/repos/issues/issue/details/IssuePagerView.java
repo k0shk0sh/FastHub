@@ -16,6 +16,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
@@ -26,6 +27,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.events.IssueDetailsView;
@@ -118,11 +120,17 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
-            if (data != null) {
+        if (resultCode == RESULT_OK && data != null) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
                 IssueModel issueModel = bundle.getParcelable(BundleConstant.ITEM);
                 if (issueModel != null) getPresenter().onUpdateIssue(issueModel);
+            } else if (requestCode == MilestoneActivityView.CREATE_MILESTONE_RQ) {
+                Bundle bundle = data.getExtras();
+                MilestoneModel milestoneModel = bundle.getParcelable(BundleConstant.ITEM);
+                if (milestoneModel != null) {
+                    getPresenter().onPutMilestones(milestoneModel);
+                }
             }
         }
     }
@@ -160,6 +168,8 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         } else if (item.getItemId() == R.id.edit) {
             CreateIssueView.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getIssue());
             return true;
+        } else if (item.getItemId() == R.id.milestone) {
+            MilestoneActivityView.startActivity(this, getPresenter().getLogin(), getPresenter().getRepoId());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -257,7 +267,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
                 .show(getSupportFragmentManager(), "LabelsView");
     }
 
-    @Override public void onLabelsAdded() {
+    @Override public void onUpdateTimeline() {
         showMessage(R.string.success, R.string.labels_added_successfully);
         IssueDetailsView issueDetailsView = (IssueDetailsView) pager.getAdapter().instantiateItem(pager, 0);
         if (issueDetailsView != null) {

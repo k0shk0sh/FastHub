@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.labels.LabelsMvp;
@@ -21,7 +22,8 @@ import java.util.List;
 
 interface PullRequestPagerMvp {
 
-    interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener {
+    interface
+    View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener {
 
         void onSetupIssue();
 
@@ -33,7 +35,7 @@ interface PullRequestPagerMvp {
 
         void showErrorIssueActionMsg(boolean isClose);
 
-        void onLabelsAdded();
+        void onUpdateTimeline();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -65,6 +67,8 @@ interface PullRequestPagerMvp {
         void onLoadLabels();
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
+
+        void onPutMilestones(@NonNull MilestoneModel milestone);
 
         String getLogin();
 
