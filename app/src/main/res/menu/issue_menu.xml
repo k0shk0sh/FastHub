@@ -5,10 +5,30 @@
 
 
     <item
-        android:id="@+id/labels"
-        android:icon="@drawable/ic_label"
-        android:title="@string/labels"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/editMenu"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/action"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/edit"
+                android:icon="@drawable/ic_edit"
+                android:title="@string/edit"/>
+            <item
+                android:id="@+id/labels"
+                android:icon="@drawable/ic_label"
+                android:title="@string/labels"/>
+            <item
+                android:id="@+id/milestone"
+                android:icon="@drawable/ic_milestone"
+                android:title="@string/milestone"/>
+
+            <item
+                android:id="@+id/assignees"
+                android:icon="@drawable/ic_profile"
+                android:title="@string/assignees"/>
+        </menu>
+    </item>
 
     <item
         android:id="@+id/share"

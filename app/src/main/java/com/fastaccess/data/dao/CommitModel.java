@@ -139,8 +139,10 @@ public class CommitModel implements Parcelable {
         this.author = in.readParcelable(UserModel.class.getClassLoader());
         this.committer = in.readParcelable(UserModel.class.getClassLoader());
         this.user = in.readParcelable(UserModel.class.getClassLoader());
+        parents = new CommitListModel();
         in.readList(this.parents, this.parents.getClass().getClassLoader());
         this.stats = in.readParcelable(GithubState.class.getClassLoader());
+        files = new CommitFileListModel();
         in.readList(this.files, this.files.getClass().getClassLoader());
         this.htmlUrl = in.readString();
         this.login = in.readString();

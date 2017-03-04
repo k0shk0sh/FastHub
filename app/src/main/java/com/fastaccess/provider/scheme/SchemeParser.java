@@ -1,5 +1,6 @@
 package com.fastaccess.provider.scheme;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,7 +46,12 @@ public class SchemeParser {
         if (intent != null) {
             context.startActivity(intent);
         } else {
-            ActivityHelper.forceOpenInBrowser(context, data);
+            Activity activity = ActivityHelper.getActivity(context);
+            if (activity == null) {
+                ActivityHelper.forceOpenInBrowser(context, data);
+            } else {
+                ActivityHelper.startCustomTab(activity, data);
+            }
         }
     }
 
@@ -115,11 +121,11 @@ public class SchemeParser {
         String owner;
         String repo;
         String number;
-        if ("pull".equals(segments.get(2))) {
+        if ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("pull".equals(segments.get(3))) {//notifications url.
+        } else if ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);

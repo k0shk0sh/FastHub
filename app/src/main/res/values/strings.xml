@@ -215,4 +215,8 @@
     <string name="pr_review_event">PR preview</string>
     <string name="repo_event">Repo Event</string>
     <string name="switch_branch">Switch Branch</string>
+    <string name="assignees">Assignees</string>
+    <string name="edit">Edit</string>
+    <string name="update_issue">Update Issue</string>
+    <string name="update_pull_request">Update Pull Request</string>
 </resources>

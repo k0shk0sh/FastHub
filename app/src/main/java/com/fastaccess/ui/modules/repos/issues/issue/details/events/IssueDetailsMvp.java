@@ -23,6 +23,7 @@ interface IssueDetailsMvp {
         void onNotifyAdapter();
 
         @NonNull OnLoadMore getLoadMore();
+
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<IssueEventAdapterModel>,

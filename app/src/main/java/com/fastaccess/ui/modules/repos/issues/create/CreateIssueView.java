@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.MotionEvent;
+import android.widget.Button;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -32,8 +35,12 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
 
     @BindView(R.id.title) TextInputLayout title;
     @BindView(R.id.description) FontTextView description;
+    @BindView(R.id.createSecretGist) Button createIssue;
+
     @State String repoId;
     @State String login;
+    @State IssueModel issue;
+    @State PullRequestModel pullRequest;
     @State boolean isFeedback;
 
     private CharSequence savedText;
@@ -45,6 +52,32 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                 .put(BundleConstant.ID, repoId)
                 .end());
         fragment.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+    }
+
+    public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
+                                      @Nullable IssueModel issueModel) {
+        if (issueModel != null) {
+            Intent intent = new Intent(activity, CreateIssueView.class);
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.EXTRA, login)
+                    .put(BundleConstant.ID, repoId)
+                    .put(BundleConstant.ITEM, issueModel)
+                    .end());
+            activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        }
+    }
+
+    public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
+                                      @Nullable PullRequestModel pullRequestModel) {
+        if (pullRequestModel != null) {
+            Intent intent = new Intent(activity, CreateIssueView.class);
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.EXTRA, login)
+                    .put(BundleConstant.ID, repoId)
+                    .put(BundleConstant.ITEM, pullRequestModel)
+                    .end());
+            activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        }
     }
 
     public static void startForResult(@NonNull Activity activity) {
@@ -81,6 +114,15 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
         showMessage(R.string.success, R.string.successfully_submitted);
     }
 
+    @Override public void onSuccessSubmission(PullRequestModel issueModel) {
+        hideProgress();
+        Intent intent = new Intent();
+        intent.putExtras(Bundler.start().put(BundleConstant.ITEM, issueModel).end());
+        setResult(RESULT_OK, intent);
+        finish();
+        showMessage(R.string.success, R.string.successfully_submitted);
+    }
+
     @NonNull @Override public CreateIssuePresenter providePresenter() {
         return new CreateIssuePresenter();
     }
@@ -104,9 +146,35 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            login = getIntent().getExtras().getString(BundleConstant.EXTRA);
-            repoId = getIntent().getExtras().getString(BundleConstant.ID);
-            isFeedback = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TWO);
+            Bundle bundle = getIntent().getExtras();
+            login = bundle.getString(BundleConstant.EXTRA);
+            repoId = bundle.getString(BundleConstant.ID);
+            isFeedback = bundle.getBoolean(BundleConstant.EXTRA_TWO);
+            if (bundle.getParcelable(BundleConstant.ITEM) != null) {
+                if (bundle.getParcelable(BundleConstant.ITEM) instanceof IssueModel) {
+                    issue = bundle.getParcelable(BundleConstant.ITEM);
+                    createIssue.setText(R.string.update_issue);
+                } else if (bundle.getParcelable(BundleConstant.ITEM) instanceof PullRequestModel) {
+                    pullRequest = bundle.getParcelable(BundleConstant.ITEM);
+                    createIssue.setText(R.string.update_pull_request);
+                }
+            }
+            if (issue != null) {
+                if (!InputHelper.isEmpty(issue.getTitle())) {
+                    if (title.getEditText() != null) title.getEditText().setText(issue.getTitle());
+                }
+                if (!InputHelper.isEmpty(issue.getBody())) {
+                    onSetCode(issue.getBody());
+                }
+            }
+            if (pullRequest != null) {
+                if (!InputHelper.isEmpty(pullRequest.getTitle())) {
+                    if (title.getEditText() != null) title.getEditText().setText(pullRequest.getTitle());
+                }
+                if (!InputHelper.isEmpty(pullRequest.getBody())) {
+                    onSetCode(pullRequest.getBody());
+                }
+            }
         }
         if (isFeedback) setTitle(R.string.submit_feedback);
     }
@@ -131,6 +199,6 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
     }
 
     @OnClick(R.id.createSecretGist) public void onClick() {
-        getPresenter().onSubmit(InputHelper.toString(title), savedText, login, repoId);
+        getPresenter().onSubmit(InputHelper.toString(title), savedText, login, repoId, issue, pullRequest);
     }
 }

@@ -14,9 +14,11 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -24,8 +26,10 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
 import com.fastaccess.ui.modules.repos.labels.LabelsView;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.events.PullRequestDetailsView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -110,12 +114,20 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         forkGist.setVisibility(View.GONE);
     }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
+            if (data != null) {
+                Bundle bundle = data.getExtras();
+                PullRequestModel pullRequestModel = bundle.getParcelable(BundleConstant.ITEM);
+                if (pullRequestModel != null) getPresenter().onUpdatePullRequest(pullRequestModel);
+            }
+        }
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.pull_request_menu, menu);
         menu.findItem(R.id.merge).setVisible(false);
-//        menu.findItem(R.id.merge).setVisible(getPresenter().isRepoOwner() && getPresenter().isMergeable());
-        menu.findItem(R.id.lockIssue).setVisible(getPresenter().isOwner() || getPresenter().isRepoOwner());
-        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -123,32 +135,62 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         if (item.getItemId() == R.id.share) {
             if (getPresenter().getPullRequest() != null) ActivityHelper.shareUrl(this, getPresenter().getPullRequest().getHtmlUrl());
             return true;
+        } else if (item.getItemId() == R.id.closeIssue) {
+            PullRequestModel issueModel = getPresenter().getPullRequest();
+            if (issueModel == null) return true;
+            MessageDialogView.newInstance(
+                    issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
+                    getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true).end())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
+            return true;
         } else if (item.getItemId() == R.id.lockIssue) {
             MessageDialogView.newInstance(
                     getPresenter().isLocked() ? getString(R.string.unlock_issue) : getString(R.string.lock_issue),
                     getPresenter().isLocked() ? getString(R.string.unlock_issue_details) : getString(R.string.lock_issue_details),
-                    Bundler.start().put(BundleConstant.EXTRA, true).end())
+                    Bundler.start().put(BundleConstant.EXTRA_TWO, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
-        } else if (item.getItemId() == R.id.merge) {
-            getPresenter().onMerge();
         } else if (item.getItemId() == R.id.labels) {
             getPresenter().onLoadLabels();
+            return true;
+        } else if (item.getItemId() == R.id.edit) {
+            CreateIssueView.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPullRequest());
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem closeIssue = menu.findItem(R.id.closeIssue);
         MenuItem lockIssue = menu.findItem(R.id.lockIssue);
-        boolean isRepoOwner = getPresenter().isRepoOwner();
+        MenuItem milestone = menu.findItem(R.id.milestone);
+        MenuItem labels = menu.findItem(R.id.labels);
+        MenuItem assignees = menu.findItem(R.id.assignees);
+        MenuItem edit = menu.findItem(R.id.edit);
+        MenuItem editMenu = menu.findItem(R.id.editMenu);
+        boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
-        boolean isMergable = getPresenter().isMergeable();
-        lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
-        lockIssue.setVisible(isRepoOwner);
-        menu.findItem(R.id.labels).setVisible(isRepoOwner);
-//        menu.findItem(R.id.merge).setVisible(isMergable && (isRepoOwner));
-        menu.findItem(R.id.merge).setVisible(false);
+        boolean isCollaborator = getPresenter().isCollaborator();
+        boolean isRepoOwner = getPresenter().isRepoOwner();
+        editMenu.setVisible(isOwner || isCollaborator);
+        milestone.setVisible(isCollaborator || isRepoOwner);
+        labels.setVisible(isCollaborator || isRepoOwner);
+        assignees.setVisible(isCollaborator || isRepoOwner);
+        edit.setVisible(isCollaborator || isRepoOwner || isOwner);
+        if (getPresenter().getPullRequest() != null) {
+            closeIssue.setVisible((isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
+            lockIssue.setVisible((isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
+        } else {
+            closeIssue.setVisible(false);
+            lockIssue.setVisible(false);
+        }
+        if (isOwner) {
+            //noinspection ConstantConditions ( getIssue at this stage is not null but AS doesn't know. )
+            closeIssue.setTitle(getPresenter().getPullRequest().getState() == IssueState.closed
+                                ? getString(R.string.re_open) : getString(R.string.close));
+            lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
+        }
+
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -198,13 +240,39 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
                 .show(getSupportFragmentManager(), "LabelsView");
     }
 
+    @Override public void onUpdateMenu() {
+        supportInvalidateOptionsMenu();
+    }
+
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
         Logger.e(labels, labels.size());
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onBackPressed() {
-        super.onBackPressed();
+    @Override public void showSuccessIssueActionMsg(boolean isClose) {
+        hideProgress();
+        if (isClose) {
+            showMessage(getString(R.string.success), getString(R.string.success_closed));
+        } else {
+            showMessage(getString(R.string.success), getString(R.string.success_re_opened));
+        }
+    }
+
+    @Override public void showErrorIssueActionMsg(boolean isClose) {
+        hideProgress();
+        if (isClose) {
+            showMessage(getString(R.string.error), getString(R.string.error_closing_issue));
+        } else {
+            showMessage(getString(R.string.error), getString(R.string.error_re_opening_issue));
+        }
+    }
+
+    @Override public void onLabelsAdded() {
+        showMessage(R.string.success, R.string.labels_added_successfully);
+        PullRequestDetailsView pullRequestDetailsView = (PullRequestDetailsView) pager.getAdapter().instantiateItem(pager, 0);
+        if (pullRequestDetailsView != null) {
+            pullRequestDetailsView.onRefresh();
+        }
     }
 
     private void hideShowFab() {

@@ -26,6 +26,14 @@ interface PullRequestPagerMvp {
         void onSetupIssue();
 
         void onLabelsRetrieved(@NonNull List<LabelModel> items);
+
+        void onUpdateMenu();
+
+        void showSuccessIssueActionMsg(boolean isClose);
+
+        void showErrorIssueActionMsg(boolean isClose);
+
+        void onLabelsAdded();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -46,6 +54,8 @@ interface PullRequestPagerMvp {
 
         void onHandleConfirmDialog(@Nullable Bundle bundle);
 
+        void onOpenCloseIssue();
+
         void onLockUnlockConversations();
 
         @NonNull SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context);
@@ -59,6 +69,10 @@ interface PullRequestPagerMvp {
         String getLogin();
 
         String getRepoId();
+
+        boolean isCollaborator();
+
+        void onUpdatePullRequest(@NonNull PullRequestModel pullRequestModel);
     }
 
 }

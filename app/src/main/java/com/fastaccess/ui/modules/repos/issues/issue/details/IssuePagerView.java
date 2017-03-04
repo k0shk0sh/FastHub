@@ -26,6 +26,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.events.IssueDetailsView;
 import com.fastaccess.ui.modules.repos.labels.LabelsView;
@@ -115,6 +116,17 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         forkGist.setVisibility(View.GONE);
     }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
+            if (data != null) {
+                Bundle bundle = data.getExtras();
+                IssueModel issueModel = bundle.getParcelable(BundleConstant.ITEM);
+                if (issueModel != null) getPresenter().onUpdateIssue(issueModel);
+            }
+        }
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.issue_menu, menu);
         menu.findItem(R.id.closeIssue).setVisible(getPresenter().isOwner());
@@ -145,6 +157,9 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         } else if (item.getItemId() == R.id.labels) {
             getPresenter().onLoadLabels();
             return true;
+        } else if (item.getItemId() == R.id.edit) {
+            CreateIssueView.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getIssue());
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -152,10 +167,20 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem closeIssue = menu.findItem(R.id.closeIssue);
         MenuItem lockIssue = menu.findItem(R.id.lockIssue);
+        MenuItem milestone = menu.findItem(R.id.milestone);
+        MenuItem labels = menu.findItem(R.id.labels);
+        MenuItem assignees = menu.findItem(R.id.assignees);
+        MenuItem edit = menu.findItem(R.id.edit);
+        MenuItem editMenu = menu.findItem(R.id.editMenu);
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
-        Logger.e(isOwner);
+        boolean isRepoOwner = getPresenter().isRepoOwner();
+        editMenu.setVisible(isOwner || isCollaborator);
+        milestone.setVisible(isCollaborator || isRepoOwner);
+        labels.setVisible(isCollaborator || isRepoOwner);
+        assignees.setVisible(isCollaborator || isRepoOwner);
+        edit.setVisible(isCollaborator || isRepoOwner || isOwner);
         menu.findItem(R.id.closeIssue).setVisible(isOwner || isCollaborator);
         menu.findItem(R.id.lockIssue).setVisible(isOwner || isCollaborator);
         menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner() || isCollaborator);

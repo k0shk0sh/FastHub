@@ -10,10 +10,15 @@ import android.text.TextUtils;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.IssueRequestModel;
+import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -36,6 +41,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     private int issueNumber;
     private String login;
     private String repoId;
+    private boolean isCollaborator;
 
     @Nullable @Override public PullRequestModel getPullRequest() {
         return pullRequest;
@@ -62,6 +68,12 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                             pullRequest.setLogin(login);
                             sendToView(PullRequestPagerMvp.View::onSetupIssue);
                             manageSubscription(pullRequest.save().subscribe());
+                            manageSubscription(RxHelper.getObserver(RestProvider.getRepoService()
+                                    .isCollaborator(login, repoId, LoginModel.getUser().getLogin()))
+                                    .subscribe(booleanResponse -> {
+                                        isCollaborator = booleanResponse.code() == 204;
+                                        sendToView(PullRequestPagerMvp.View::onUpdateMenu);
+                                    }, Throwable::printStackTrace));
                         });
                 return;
             }
@@ -82,16 +94,12 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     @Override public boolean isOwner() {
-        boolean isOwner;
-        PullRequestModel pullRequestModel = getPullRequest();
-        if (pullRequestModel == null) return false;
-        if (pullRequestModel.getAssignee() != null) {
-            isOwner = pullRequestModel.getAssignee().getLogin().equals(LoginModel.getUser().getLogin());
-        } else {
-            isOwner = pullRequestModel.getBase() != null &&
-                    getPullRequest().getBase().getUser().getLogin().equals(LoginModel.getUser().getLogin());
-        }
-        return isOwner;
+        if (getPullRequest() == null) return false;
+        UserModel userModel = getPullRequest() != null ? getPullRequest().getUser() : null;
+        LoginModel me = LoginModel.getUser();
+        PullsIssuesParser parser = PullsIssuesParser.getForIssue(getPullRequest().getHtmlUrl());
+        return (userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin()))
+                || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
     }
 
     @Override public boolean isRepoOwner() {
@@ -110,8 +118,11 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onHandleConfirmDialog(@Nullable Bundle bundle) {
         if (bundle != null) {
-            boolean proceedLockUnlock = bundle.getBoolean(BundleConstant.EXTRA);
-            if (proceedLockUnlock) {
+            boolean proceedCloseIssue = bundle.getBoolean(BundleConstant.EXTRA);
+            boolean proceedLockUnlock = bundle.getBoolean(BundleConstant.EXTRA_TWO);
+            if (proceedCloseIssue) {
+                onOpenCloseIssue();
+            } else if (proceedLockUnlock) {
                 onLockUnlockConversations();
             }
         }
@@ -131,6 +142,29 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 sendToView(PullRequestPagerMvp.View::onSetupIssue);
             }
         });
+    }
+
+    @Override public void onOpenCloseIssue() {
+        if (getPullRequest() != null) {
+            IssueRequestModel requestModel = IssueRequestModel.clone(getPullRequest(), true);
+            manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestSerice().editPullRequest(login, repoId,
+                    issueNumber, requestModel))
+                    .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
+                    .doOnNext(issue -> {
+                        if (issue != null) {
+                            sendToView(view -> view.showSuccessIssueActionMsg(getPullRequest().getState() == IssueState.open));
+                            issue.setRepoId(getPullRequest().getRepoId());
+                            issue.setLogin(getPullRequest().getLogin());
+                            pullRequest = issue;
+                            sendToView(PullRequestPagerMvp.View::onSetupIssue);
+                        }
+                    })
+                    .onErrorReturn(throwable -> {
+                        sendToView(view -> view.showErrorIssueActionMsg(getPullRequest().getState() == IssueState.open));
+                        return null;
+                    })
+                    .subscribe());
+        }
     }
 
     @NonNull @Override public SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context) {
@@ -160,7 +194,13 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
                         .map(LabelModel::getName).collect(Collectors.toList())),
-                labelModels -> sendToView(view -> view.showMessage(R.string.success, R.string.labels_added_successfully)));
+                labelModels -> {
+                    sendToView(PullRequestPagerMvp.View::onLabelsAdded);
+                    LabelListModel listModel = new LabelListModel();
+                    listModel.addAll(labels);
+                    pullRequest.setLabels(listModel);
+                    manageSubscription(pullRequest.save().subscribe());
+                });
     }
 
     @Override public void onMerge() {
@@ -195,5 +235,17 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public String getRepoId() {
         return repoId;
+    }
+
+    @Override public boolean isCollaborator() {
+        return isCollaborator;
+    }
+
+    @Override public void onUpdatePullRequest(@NonNull PullRequestModel pullRequestModel) {
+        this.pullRequest = pullRequestModel;
+        this.pullRequest.setLogin(login);
+        this.pullRequest.setRepoId(repoId);
+        manageSubscription(pullRequest.save().subscribe());
+        sendToView(PullRequestPagerMvp.View::onSetupIssue);
     }
 }

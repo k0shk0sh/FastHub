@@ -62,6 +62,8 @@ interface IssuePagerMvp {
         String getLogin();
 
         String getRepoId();
+
+        void onUpdateIssue(@NonNull IssueModel issueModel);
     }
 
 }

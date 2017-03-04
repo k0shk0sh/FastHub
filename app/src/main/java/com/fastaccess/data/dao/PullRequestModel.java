@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.types.IssueState;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.siimkinks.sqlitemagic.Delete;
@@ -120,8 +119,8 @@ public class PullRequestModel implements Parcelable {
     }
 
     @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context) {
-        UserModel merger = pullRequest.getMergedBy() != null ? pullRequest.getMergedBy() : pullRequest.getBase().getUser();
-        boolean isMerge = pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.getMergedAt());
+        boolean isMerge = pullRequest.isMerged();
+        UserModel merger = (isMerge && pullRequest.getMergedBy() != null) ? pullRequest.getMergedBy() : pullRequest.getUser();
         String status = !isMerge ? context.getString(pullRequest.getState().getStatus()) : context.getString(R.string.merged);
         SpannableBuilder builder = SpannableBuilder.builder();
         builder.append(merger.getLogin())

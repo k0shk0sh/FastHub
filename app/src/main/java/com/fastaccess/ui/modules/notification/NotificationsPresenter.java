@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.notification;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
@@ -9,7 +8,6 @@ import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -42,7 +40,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
                     });
         }
         if (item.getSubject() != null && item.getSubject().getUrl() != null) {
-            SchemeParser.launchUri(v.getContext(), Uri.parse(item.getSubject().getUrl()));
+            if (getView() != null) getView().onClick(item.getSubject().getUrl());
         }
     }
 

@@ -1,15 +1,17 @@
 package com.fastaccess.data.service;
 
 import com.fastaccess.data.dao.CommitModel;
-import com.fastaccess.data.dao.FilesListModel;
+import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MergeResponseModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.RepoFilesModel;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.PATCH;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -39,11 +41,16 @@ public interface PullRequestService {
                                                             @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/files")
-    Observable<Pageable<FilesListModel>> getPullRequestFiles(@Path("owner") String owner, @Path("repo") String repo,
+    Observable<Pageable<RepoFilesModel>> getPullRequestFiles(@Path("owner") String owner, @Path("repo") String repo,
                                                              @Path("number") long number,
                                                              @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/merge")
     Observable<Response<Boolean>> hasPullRequestBeenMerged(@Path("owner") String owner, @Path("repo") String repo,
                                                            @Path("number") long number);
+
+    @PATCH("repos/{owner}/{repo}/pulls/{number}")
+    Observable<PullRequestModel> editPullRequest(@Path("owner") String owner, @Path("repo") String repo,
+                                                 @Path("number") int number,
+                                                 @Body IssueRequestModel issue);
 }

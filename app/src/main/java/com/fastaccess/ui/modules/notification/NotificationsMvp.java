@@ -23,6 +23,8 @@ public interface NotificationsMvp {
         void onNotifyAdapter();
 
         void onTypeChanged(boolean unread);
+
+        void onClick(@NonNull String url);
     }
 
     interface Presenter extends BaseViewHolder.OnItemClickListener<NotificationThreadModel>,

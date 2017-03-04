@@ -3,9 +3,13 @@ package com.fastaccess.ui.modules.repos.issues.create;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CreateIssueModel;
+import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.IssueRequestModel;
+import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -29,23 +33,55 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
     }
 
     @Override public void onSubmit(@NonNull String title, @NonNull CharSequence description,
-                                   @NonNull String login, @NonNull String repo) {
+                                   @NonNull String login, @NonNull String repo,
+                                   @Nullable IssueModel issue, @Nullable PullRequestModel pullRequestModel) {
         boolean isEmptyTitle = InputHelper.isEmpty(title);
         if (getView() != null) {
             getView().onTitleError(isEmptyTitle);
         }
         if (!isEmptyTitle) {
-            CreateIssueModel createIssueModel = new CreateIssueModel();
-            createIssueModel.setBody(InputHelper.toString(description));
-            createIssueModel.setTitle(title);
-            makeRestCall(RestProvider.getIssueService().createIssue(login, repo, createIssueModel),
-                    issueModel -> {
-                        if (issueModel != null) {
-                            sendToView(view -> view.onSuccessSubmission(issueModel));
-                        } else {
-                            sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
-                        }
-                    });
+            if (issue == null && pullRequestModel == null) {
+                CreateIssueModel createIssueModel = new CreateIssueModel();
+                createIssueModel.setBody(InputHelper.toString(description));
+                createIssueModel.setTitle(title);
+                makeRestCall(RestProvider.getIssueService().createIssue(login, repo, createIssueModel),
+                        issueModel -> {
+                            if (issueModel != null) {
+                                sendToView(view -> view.onSuccessSubmission(issueModel));
+                            } else {
+                                sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
+                            }
+                        });
+            } else {
+                if (issue != null) {
+                    issue.setBody(InputHelper.toString(description));
+                    issue.setTitle(title);
+                    int number = issue.getNumber();
+                    IssueRequestModel requestModel = IssueRequestModel.clone(issue, false);
+                    makeRestCall(RestProvider.getIssueService().editIssue(login, repo, number, requestModel),
+                            issueModel -> {
+                                if (issueModel != null) {
+                                    sendToView(view -> view.onSuccessSubmission(issueModel));
+                                } else {
+                                    sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
+                                }
+                            });
+                }
+                if (pullRequestModel != null) {
+                    int number = pullRequestModel.getNumber();
+                    pullRequestModel.setBody(InputHelper.toString(description));
+                    pullRequestModel.setTitle(title);
+                    IssueRequestModel requestModel = IssueRequestModel.clone(pullRequestModel, false);
+                    makeRestCall(RestProvider.getPullRequestSerice().editPullRequest(login, repo, number, requestModel),
+                            pr -> {
+                                if (pr != null) {
+                                    sendToView(view -> view.onSuccessSubmission(pr));
+                                } else {
+                                    sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
+                                }
+                            });
+                }
+            }
         }
     }
 }

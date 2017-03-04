@@ -131,7 +131,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     @Override public void onOpenCloseIssue() {
         IssueModel currentIssue = getIssue();
         if (currentIssue != null) {
-            IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue);
+            IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue, true);
             manageSubscription(RxHelper.getObserver(RestProvider.getIssueService().editIssue(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
@@ -210,5 +210,13 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public String getRepoId() {
         return repoId;
+    }
+
+    @Override public void onUpdateIssue(@NonNull IssueModel issue) {
+        this.issueModel = issue;
+        this.issueModel.setLogin(login);
+        this.issueModel.setRepoId(repoId);
+        manageSubscription(issueModel.save().subscribe());
+        sendToView(IssuePagerMvp.View::onSetupIssue);
     }
 }
