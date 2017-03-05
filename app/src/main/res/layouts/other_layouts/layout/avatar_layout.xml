@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:foreground="?selectableItemBackgroundBorderless">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -9,12 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_github"/>
+        android:src="@color/primary"/>
 
     <ProgressBar
         android:id="@+id/avatarProgress"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+        android:visibility="gone"/>
 </merge>

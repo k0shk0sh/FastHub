@@ -2,6 +2,7 @@ package com.fastaccess.ui.widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -79,16 +80,15 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     }
 
     @Override public void onLoadingStarted(String imageUri, View view) {
-        avatarProgress.setVisibility(VISIBLE);
+        setBackgroundResource(R.drawable.circle_shape);
     }
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-        avatarProgress.setVisibility(GONE);
         avatar.setImageResource(R.drawable.ic_github_black);
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-        avatarProgress.setVisibility(GONE);
+        setBackgroundColor(Color.TRANSPARENT);
     }
 
     @Override public void onLoadingCancelled(String imageUri, View view) {}
@@ -100,7 +100,6 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
-            avatarProgress.setVisibility(GONE);
         }
     }
 }

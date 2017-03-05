@@ -41,18 +41,17 @@
                 android:icon="@drawable/ic_profile"
                 android:title="@string/assignees"/>
         </menu>
+        <item
+            android:id="@+id/merge"
+            android:icon="@drawable/ic_merge"
+            android:title="@string/merge"
+            app:showAsAction="ifRoom"/>
     </item>
-
-    <item
-        android:id="@+id/merge"
-        android:icon="@drawable/ic_merge"
-        android:title="@string/merge"
-        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>
