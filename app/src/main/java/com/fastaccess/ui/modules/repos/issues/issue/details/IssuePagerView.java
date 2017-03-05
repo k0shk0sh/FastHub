@@ -27,11 +27,12 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
+import com.fastaccess.ui.modules.repos.extras.labels.LabelsView;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.events.IssueDetailsView;
-import com.fastaccess.ui.modules.repos.labels.LabelsView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -170,6 +171,10 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneActivityView.startActivity(this, getPresenter().getLogin(), getPresenter().getRepoId());
+            return true;
+        } else if (item.getItemId() == R.id.assignees) {
+            getPresenter().onLoadAssignees();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -186,7 +191,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
         boolean isRepoOwner = getPresenter().isRepoOwner();
-        editMenu.setVisible(isOwner || isCollaborator);
+        editMenu.setVisible(isOwner || isCollaborator || isRepoOwner);
         milestone.setVisible(isCollaborator || isRepoOwner);
         labels.setVisible(isCollaborator || isRepoOwner);
         assignees.setVisible(isCollaborator || isRepoOwner);
@@ -195,11 +200,10 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         menu.findItem(R.id.lockIssue).setVisible(isOwner || isCollaborator);
         menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner() || isCollaborator);
         if (isOwner) {
-            //noinspection ConstantConditions ( getIssue at this stage is not null but AS doesn't know. )
+            if (getPresenter().getIssue() == null) return super.onPrepareOptionsMenu(menu);
             closeIssue.setTitle(getPresenter().getIssue().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string.close));
             lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
         }
-
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -279,6 +283,12 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         supportInvalidateOptionsMenu();
     }
 
+    @Override public void onShowAssignees(@NonNull List<UserModel> items) {
+        hideProgress();
+        AssigneesView.newInstance(items)
+                .show(getSupportFragmentManager(), "AssigneesView");
+    }
+
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk) {
@@ -289,6 +299,10 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
         Logger.e(labels, labels.size());
         getPresenter().onPutLabels(labels);
+    }
+
+    @Override public void onSelectedAssignees(@NonNull ArrayList<UserModel> users) {
+        getPresenter().onPutAssignees(users);
     }
 
     private void hideShowFab() {

@@ -26,10 +26,11 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
+import com.fastaccess.ui.modules.repos.extras.labels.LabelsView;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
-import com.fastaccess.ui.modules.repos.labels.LabelsView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.events.PullRequestDetailsView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -165,6 +166,10 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneActivityView.startActivity(this, getPresenter().getLogin(), getPresenter().getRepoId());
+            return true;
+        } else if (item.getItemId() == R.id.assignees) {
+            getPresenter().onLoadAssignees();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -181,7 +186,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
         boolean isRepoOwner = getPresenter().isRepoOwner();
-        editMenu.setVisible(isOwner || isCollaborator);
+        editMenu.setVisible(isOwner || isCollaborator || isRepoOwner);
         milestone.setVisible(isCollaborator || isRepoOwner);
         labels.setVisible(isCollaborator || isRepoOwner);
         assignees.setVisible(isCollaborator || isRepoOwner);
@@ -189,8 +194,8 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         if (getPresenter().getPullRequest() != null) {
             closeIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
             lockIssue.setVisible(isRepoOwner || (isOwner || isCollaborator) && getPresenter().getPullRequest().getState() == IssueState.open);
-            closeIssue.setTitle(getPresenter().getPullRequest().getState() == IssueState.closed
-                                ? getString(R.string.re_open) : getString(R.string.close));
+            closeIssue.setTitle(getPresenter().getPullRequest().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string
+                    .close));
             lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
         } else {
             closeIssue.setVisible(false);
@@ -254,6 +259,10 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         getPresenter().onPutLabels(labels);
     }
 
+    @Override public void onSelectedAssignees(@NonNull ArrayList<UserModel> users) {
+        getPresenter().onPutAssignees(users);
+    }
+
     @Override public void showSuccessIssueActionMsg(boolean isClose) {
         hideProgress();
         if (isClose) {
@@ -278,6 +287,12 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         if (pullRequestDetailsView != null) {
             pullRequestDetailsView.onRefresh();
         }
+    }
+
+    @Override public void onShowAssignees(@NonNull List<UserModel> items) {
+        hideProgress();
+        AssigneesView.newInstance(items)
+                .show(getSupportFragmentManager(), "AssigneesView");
     }
 
     private void hideShowFab() {

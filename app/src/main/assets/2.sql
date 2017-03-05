@@ -1,0 +1,1 @@
+ALTER TABLE pull_request_model ADD COLUMN assignees TEXT

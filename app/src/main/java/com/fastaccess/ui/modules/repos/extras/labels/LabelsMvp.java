@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.repos.labels;
+package com.fastaccess.ui.modules.repos.extras.labels;
 
 import android.support.annotation.NonNull;
 

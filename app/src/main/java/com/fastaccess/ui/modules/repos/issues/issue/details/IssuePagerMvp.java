@@ -8,8 +8,10 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.ui.base.mvp.BaseMvp;
-import com.fastaccess.ui.modules.repos.labels.LabelsMvp;
+import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
+import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +22,8 @@ import java.util.List;
 
 interface IssuePagerMvp {
 
-    interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener {
+    interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
+            AssigneesMvp.SelectedAssigneesListener {
         void onSetupIssue();
 
         void showSuccessIssueActionMsg(boolean isClose);
@@ -32,6 +35,8 @@ interface IssuePagerMvp {
         void onUpdateTimeline();
 
         void onUpdateMenu();
+
+        void onShowAssignees(@NonNull List<UserModel> items);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -58,9 +63,13 @@ interface IssuePagerMvp {
 
         void onLoadLabels();
 
+        void onLoadAssignees();
+
         void onPutMilestones(@NonNull MilestoneModel milestone);
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
+
+        void onPutAssignees(@NonNull ArrayList<UserModel> users);
 
         String getLogin();
 

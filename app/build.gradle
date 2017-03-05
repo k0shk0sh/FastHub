@@ -26,6 +26,7 @@ android {
         buildConfigField "String", "GITHUB_SECRET", "\"${GITHUB_SECRET}\""
         buildConfigField "String", "REDIRECT_URL", "\"${REDIRECT_URL}\""
         buildConfigField "String", "REST_URL", '"https://api.github.com/"'
+        buildConfigField "int", "DB_VERSION", "2"
     }
     buildTypes {
         release {

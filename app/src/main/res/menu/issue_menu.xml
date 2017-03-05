@@ -10,10 +10,24 @@
         android:title="@string/action"
         app:showAsAction="always">
         <menu>
+
             <item
                 android:id="@+id/edit"
                 android:icon="@drawable/ic_edit"
                 android:title="@string/edit"/>
+
+            <item
+                android:id="@+id/lockIssue"
+                android:icon="@drawable/ic_lock"
+                android:title="@string/lock_issue"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/closeIssue"
+                android:icon="@drawable/ic_issues"
+                android:title="@string/close_issue"
+                app:showAsAction="never"/>
+
             <item
                 android:id="@+id/labels"
                 android:icon="@drawable/ic_label"
@@ -35,16 +49,6 @@
         android:icon="@drawable/ic_share"
         android:title="@string/share"
         app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/lockIssue"
-        android:title="@string/lock_issue"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/closeIssue"
-        android:title="@string/close_issue"
-        app:showAsAction="never"/>
 
 
 </menu>

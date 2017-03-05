@@ -66,7 +66,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
                 if (progress == 100) {
                     refresh.setRefreshing(false);
                 } else if (progress < 100) {
-
+                    refresh.setRefreshing(true);
                 }
             }
         });

@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.repos.labels;
+package com.fastaccess.ui.modules.repos.extras.assignees;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,10 +10,10 @@ import android.view.View;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.UserModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.ui.adapter.LabelsAdapter;
+import com.fastaccess.ui.AssigneesAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -32,22 +32,22 @@ import icepick.State;
  * Created by Kosh on 22 Feb 2017, 7:23 PM
  */
 
-public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresenter> implements LabelsMvp.View {
+public class AssigneesView extends BaseDialogFragment<AssigneesMvp.View, AssigneesPresenter> implements AssigneesMvp.View {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
-    @State HashMap<Integer, LabelModel> selectionMap;
-    private LabelsAdapter adapter;
-    private LabelsMvp.SelectedLabelsListener callback;
+    @State HashMap<Integer, UserModel> selectionMap;
+    private AssigneesAdapter adapter;
+    private AssigneesMvp.SelectedAssigneesListener callback;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
-        if (getParentFragment() instanceof LabelsMvp.SelectedLabelsListener) {
-            callback = (LabelsMvp.SelectedLabelsListener) getParentFragment();
-        } else if (context instanceof LabelsMvp.SelectedLabelsListener) {
-            callback = (LabelsMvp.SelectedLabelsListener) context;
+        if (getParentFragment() instanceof AssigneesMvp.SelectedAssigneesListener) {
+            callback = (AssigneesMvp.SelectedAssigneesListener) getParentFragment();
+        } else if (context instanceof AssigneesMvp.SelectedAssigneesListener) {
+            callback = (AssigneesMvp.SelectedAssigneesListener) context;
         } else {
-            throw new IllegalArgumentException("Parent Fragment or Activity must implement LabelsMvp.SelectedLabelsListener");
+            throw new IllegalArgumentException("Parent Fragment or Activity must implement AssigneesMvp.SelectedAssigneesListener");
         }
     }
 
@@ -56,8 +56,8 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
         callback = null;
     }
 
-    public static LabelsView newInstance(@NonNull List<LabelModel> models) {
-        LabelsView fragment = new LabelsView();
+    public static AssigneesView newInstance(@NonNull List<UserModel> models) {
+        AssigneesView fragment = new AssigneesView();
         fragment.setArguments(Bundler.start().putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models).end());
         return fragment;
     }
@@ -67,19 +67,19 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        title.setText(R.string.labels);
-        List<LabelModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
+        title.setText(R.string.assignees);
+        List<UserModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
         if (list != null) {
-            adapter = new LabelsAdapter(list, this);
+            adapter = new AssigneesAdapter(list, this);
             recycler.setAdapter(adapter);
         }
     }
 
-    @NonNull @Override public LabelsPresenter providePresenter() {
-        return new LabelsPresenter();
+    @NonNull @Override public AssigneesPresenter providePresenter() {
+        return new AssigneesPresenter();
     }
 
-    @Override public boolean isLabelSelected(int position) {
+    @Override public boolean isAssigneeSelected(int position) {
         return getSelectionMap().get(position) != null;
     }
 
@@ -89,7 +89,7 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
         } else {
             getSelectionMap().remove(position);
         }
-        adapter.notifyItemChanged(position);
+        adapter.notifyDataSetChanged();
     }
 
     @OnClick({R.id.cancel, R.id.ok}) public void onClick(View view) {
@@ -98,19 +98,19 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
                 dismiss();
                 break;
             case R.id.ok:
-                ArrayList<LabelModel> labels = Stream.of(selectionMap)
+                ArrayList<UserModel> labels = Stream.of(selectionMap)
                         .filter(value -> value.getValue() != null)
                         .map(Map.Entry::getValue)
                         .collect(Collectors.toCollection(ArrayList::new));
                 if (labels != null && !labels.isEmpty()) {
-                    callback.onSelectedLabels(labels);
+                    callback.onSelectedAssignees(labels);
                 }
                 dismiss();
                 break;
         }
     }
 
-    public HashMap<Integer, LabelModel> getSelectionMap() {
+    public HashMap<Integer, UserModel> getSelectionMap() {
         if (selectionMap == null) {
             selectionMap = new LinkedHashMap<>();
         }

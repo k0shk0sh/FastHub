@@ -3,6 +3,7 @@ package com.fastaccess.data.service;
 
 import android.support.annotation.NonNull;
 
+import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.CreateIssueModel;
@@ -87,4 +88,8 @@ public interface IssueService {
     @POST("repos/{owner}/{repo}/issues/{number}/labels")
     Observable<Pageable<LabelModel>> putLabels(@Path("owner") String owner, @Path("repo") String repo,
                                                @Path("number") int number, @Body @NonNull List<String> labels);
+
+    @POST("repos/{owner}/{repo}/issues/{number}/assignees")
+    Observable<IssueModel> putAssignees(@Path("owner") String owner, @Path("repo") String repo,
+                                        @Path("number") int number, @Body AssigneesRequestModel body);
 }

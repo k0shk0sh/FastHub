@@ -57,9 +57,11 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @OnClick(R.id.fab) void onAddComment() {
-        GistCommentsView view = (GistCommentsView) pager.getAdapter().instantiateItem(pager, 1);
-        if (view != null) {
-            view.onStartNewComment();
+        if (pager != null && pager.getAdapter() != null) {
+            GistCommentsView view = (GistCommentsView) pager.getAdapter().instantiateItem(pager, 1);
+            if (view != null) {
+                view.onStartNewComment();
+            }
         }
     }
 

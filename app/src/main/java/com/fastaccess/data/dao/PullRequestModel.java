@@ -10,7 +10,6 @@ import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.siimkinks.sqlitemagic.Delete;
-import com.siimkinks.sqlitemagic.PullRequestModelTable;
 import com.siimkinks.sqlitemagic.Select;
 import com.siimkinks.sqlitemagic.annotation.Column;
 import com.siimkinks.sqlitemagic.annotation.Id;
@@ -24,6 +23,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import rx.Completable;
 import rx.Observable;
+
+import static com.siimkinks.sqlitemagic.PullRequestModelTable.PULL_REQUEST_MODEL;
 
 /**
  * Created by Kosh on 08 Dec 2016, 8:51 PM
@@ -68,14 +69,15 @@ public class PullRequestModel implements Parcelable {
     @Column int reviewComments;
     @Column String repoId;
     @Column String login;
+    @Column UsersListModel assignees;
 
     public Completable save() {
         return persist().observe().toCompletable();
     }
 
     public static Completable save(@NonNull List<PullRequestModel> models, @NonNull String repoId, @NonNull String login) {
-        return Delete.from(PullRequestModelTable.PULL_REQUEST_MODEL)
-                .where(PullRequestModelTable.PULL_REQUEST_MODEL.REPO_ID.is(repoId))
+        return Delete.from(PULL_REQUEST_MODEL)
+                .where(PULL_REQUEST_MODEL.REPO_ID.is(repoId))
                 .observe()
                 .toCompletable()
                 .andThen(Observable.from(models)
@@ -88,19 +90,19 @@ public class PullRequestModel implements Parcelable {
     }
 
     public static Observable<List<PullRequestModel>> getPullRequests(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
-        return Select.from(PullRequestModelTable.PULL_REQUEST_MODEL)
-                .where(PullRequestModelTable.PULL_REQUEST_MODEL.REPO_ID.is(repoId)
-                        .and(PullRequestModelTable.PULL_REQUEST_MODEL.LOGIN.is(login))
-                        .and(PullRequestModelTable.PULL_REQUEST_MODEL.STATE.is(issueState)))
-                .orderBy(PullRequestModelTable.PULL_REQUEST_MODEL.UPDATED_AT.desc())
+        return Select.from(PULL_REQUEST_MODEL)
+                .where(PULL_REQUEST_MODEL.REPO_ID.is(repoId)
+                        .and(PULL_REQUEST_MODEL.LOGIN.is(login))
+                        .and(PULL_REQUEST_MODEL.STATE.is(issueState)))
+                .orderBy(PULL_REQUEST_MODEL.UPDATED_AT.desc())
                 .queryDeep()
                 .observe()
                 .runQuery();
     }
 
     public static Observable<PullRequestModel> getPullRequest(long id) {
-        return Select.from(PullRequestModelTable.PULL_REQUEST_MODEL)
-                .where(PullRequestModelTable.PULL_REQUEST_MODEL.ID.is(id))
+        return Select.from(PULL_REQUEST_MODEL)
+                .where(PULL_REQUEST_MODEL.ID.is(id))
                 .queryDeep()
                 .takeFirst()
                 .observe()
@@ -108,10 +110,10 @@ public class PullRequestModel implements Parcelable {
     }
 
     public static Observable<PullRequestModel> getPullRequest(int number, @NonNull String repoId, @NonNull String login) {
-        return Select.from(PullRequestModelTable.PULL_REQUEST_MODEL)
-                .where(PullRequestModelTable.PULL_REQUEST_MODEL.NUMBER.is(number)
-                        .and(PullRequestModelTable.PULL_REQUEST_MODEL.LOGIN.is(login))
-                        .and(PullRequestModelTable.PULL_REQUEST_MODEL.REPO_ID.is(repoId)))
+        return Select.from(PULL_REQUEST_MODEL)
+                .where(PULL_REQUEST_MODEL.NUMBER.is(number)
+                        .and(PULL_REQUEST_MODEL.LOGIN.is(login))
+                        .and(PULL_REQUEST_MODEL.REPO_ID.is(repoId)))
                 .queryDeep()
                 .takeFirst()
                 .observe()
@@ -177,6 +179,7 @@ public class PullRequestModel implements Parcelable {
         dest.writeInt(this.reviewComments);
         dest.writeString(this.repoId);
         dest.writeString(this.login);
+        dest.writeList(this.assignees);
     }
 
     protected PullRequestModel(Parcel in) {
@@ -223,6 +226,8 @@ public class PullRequestModel implements Parcelable {
         this.reviewComments = in.readInt();
         this.repoId = in.readString();
         this.login = in.readString();
+        this.assignees = new UsersListModel();
+        in.readList(this.assignees, this.assignees.getClass().getClassLoader());
     }
 
     public static final Creator<PullRequestModel> CREATOR = new Creator<PullRequestModel>() {

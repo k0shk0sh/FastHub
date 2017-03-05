@@ -226,4 +226,5 @@
     <string name="create_milestone">Create Milestone</string>
     <string name="error_creating_milestone">Error creating milestone</string>
     <string name="due_on">Due On</string>
+    <string name="no_assignees">No Assignees</string>
 </resources>

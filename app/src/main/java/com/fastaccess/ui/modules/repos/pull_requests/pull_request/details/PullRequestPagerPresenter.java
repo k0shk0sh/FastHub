@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
@@ -19,6 +20,7 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.helper.BundleConstant;
@@ -191,6 +193,17 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         );
     }
 
+    @Override public void onLoadAssignees() {
+        makeRestCall(RestProvider.getRepoService().getAssignees(login, repoId),
+                response -> {
+                    if (response != null && response.getItems() != null && !response.getItems().isEmpty()) {
+                        sendToView(view -> view.onShowAssignees(response.getItems()));
+                    } else {
+                        sendToView(view -> view.showMessage(R.string.error, R.string.no_assignees));
+                    }
+                });
+    }
+
     @Override public void onPutLabels(@NonNull ArrayList<LabelModel> labels) {
         makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
@@ -216,6 +229,25 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                     sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
                 });
 
+    }
+
+    @Override public void onPutAssignees(@NonNull ArrayList<UserModel> users) {
+        AssigneesRequestModel assigneesRequestModel = new AssigneesRequestModel();
+        ArrayList<String> assignees = new ArrayList<>();
+        Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
+        assigneesRequestModel.setAssignees(assignees);
+        makeRestCall(RestProvider.getPullRequestSerice().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+                issue -> {
+                    this.pullRequest = issue;
+                    pullRequest.setLogin(login);
+                    pullRequest.setRepoId(repoId);
+                    UsersListModel assignee = new UsersListModel();
+                    assignee.addAll(users);
+                    pullRequest.setAssignees(assignee);
+                    manageSubscription(pullRequest.save().subscribe());
+                    sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
+                }
+        );
     }
 
     @Override public void onMerge() {
