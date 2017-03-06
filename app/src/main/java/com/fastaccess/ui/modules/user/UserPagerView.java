@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -110,6 +111,10 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
     }
 
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        if (LoginModel.getUser().getLogin().equalsIgnoreCase(login)) {
+            menu.findItem(R.id.follow).setVisible(false);
+            return true;
+        }
         if (getPresenter().isSuccessResponse()) {
             MenuItemCompat.setActionView(menu.findItem(R.id.follow), null);
             menu.findItem(R.id.follow)
