@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.CommitModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -55,7 +56,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
     }
 
     @Override public void onWorkOffline(@NonNull String sha, @NonNull String repoId, @NonNull String login) {
-        manageSubscription(CommitModel.getCommit(sha, repoId, login)
+        manageSubscription(RxHelper.getObserver(CommitModel.getCommit(sha, repoId, login))
                 .subscribe(commit -> {
                     commitModel = commit;
                     sendToView(CommitPagerMvp.View::onSetup);

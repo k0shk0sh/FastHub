@@ -15,44 +15,35 @@ public class ParseDateFormat {
 
     private static final ParseDateFormat INSTANCE = new ParseDateFormat();
 
-    private static ParseDateFormat getInstance() {
-        return INSTANCE;
-    }
-
     private final Object lock = new Object();
+
     private final DateFormat dateFormat;
-    private final TimeZone timeZone;
 
     private ParseDateFormat() {
-        dateFormat = new SimpleDateFormat("HH:mm:ss", Locale.US);
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
         dateFormat.setTimeZone(TimeZone.getDefault());
-        timeZone = TimeZone.getDefault();
     }
 
-    public String format(Date date) {
+    @NonNull public String format(Date date) {
         synchronized (lock) {
             return dateFormat.format(date);
         }
     }
 
-    public static CharSequence getTimeAgo(@Nullable Date parsedDate) {
+    @NonNull public static CharSequence getTimeAgo(@Nullable Date parsedDate) {
         if (parsedDate != null) {
-            long toLocalTime = parsedDate.getTime() + getInstance().timeZone.getRawOffset() + getInstance().timeZone.getDSTSavings();
-            if (INSTANCE.timeZone.getID().equalsIgnoreCase("UTC")) {
-                toLocalTime = parsedDate.getTime();
-            }
-            return DateUtils.getRelativeTimeSpanString(toLocalTime, System.currentTimeMillis(), DateUtils.SECOND_IN_MILLIS);
+            long now = System.currentTimeMillis();
+            return DateUtils.getRelativeTimeSpanString(parsedDate.getTime(), now, DateUtils.SECOND_IN_MILLIS);
         }
         return "N/A";
     }
 
-    public static String toGithubDate(@NonNull Date date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-        return simpleDateFormat.format(date);
+    @NonNull public static String toGithubDate(@NonNull Date date) {
+        return getInstance().format(date);
     }
 
-    public static String prettifyDate(long timestamp) {
-        return new SimpleDateFormat("dd-MM-yyyy", Locale.US).format(new Date(timestamp));
+    @NonNull public static String prettifyDate(long timestamp) {
+        return new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH).format(new Date(timestamp));
     }
 
     @Nullable public static Date getDateFromString(@NonNull String date) {
@@ -62,5 +53,9 @@ public class ParseDateFormat {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @NonNull private static ParseDateFormat getInstance() {
+        return INSTANCE;
     }
 }

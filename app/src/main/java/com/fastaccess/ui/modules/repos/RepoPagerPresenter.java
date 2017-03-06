@@ -200,7 +200,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if (!InputHelper.isEmpty(login()) && !InputHelper.isEmpty(repoId())) {
-            manageSubscription(RepoModel.getRepo(repoId)
+            manageSubscription(RxHelper.getObserver(RepoModel.getRepo(repoId))
                     .subscribe(repoModel -> {
                         repo = repoModel;
                         sendToView(view -> {

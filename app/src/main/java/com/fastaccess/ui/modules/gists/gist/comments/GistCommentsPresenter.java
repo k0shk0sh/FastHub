@@ -1,7 +1,5 @@
 package com.fastaccess.ui.modules.gists.gist.comments;
 
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,11 +10,10 @@ import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.ui.adapter.CommentsAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
 
@@ -94,7 +91,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
-            manageSubscription(CommentsModel.getGistComments(gistId).subscribe(
+            manageSubscription(RxHelper.getObserver(CommentsModel.getGistComments(gistId)).subscribe(
                     localComments -> {
                         if (localComments != null && !localComments.isEmpty()) {
                             Logger.e(localComments.size());

@@ -50,7 +50,7 @@ public class RestProvider {
     private final static Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
-            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .setPrettyPrinting()
             .create();
 

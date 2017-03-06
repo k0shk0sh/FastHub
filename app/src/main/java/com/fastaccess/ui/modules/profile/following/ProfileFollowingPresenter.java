@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -79,7 +80,7 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (users.isEmpty()) {
-            manageSubscription(UserModel.getFollowing(login).subscribe(userModels -> {
+            manageSubscription(RxHelper.getObserver(UserModel.getFollowing(login)).subscribe(userModels -> {
                 users.addAll(userModels);
                 sendToView(ProfileFollowingMvp.View::onNotifyAdapter);
             }));

@@ -9,6 +9,7 @@ import com.fastaccess.data.dao.FileModel;
 import com.fastaccess.data.dao.MarkdownModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -69,7 +70,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
 
     @Override public void onWorkOffline() {
         if (downloadedStream == null) {
-            manageSubscription(FileModel.get(url)
+            manageSubscription(RxHelper.getObserver(FileModel.get(url))
                     .subscribe(fileModel -> {
                         if (fileModel != null) {
                             isImage = MarkDownProvider.isImage(fileModel.getFullUrl());

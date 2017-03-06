@@ -14,6 +14,7 @@ import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -90,7 +91,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
 
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty()) {
-            manageSubscription(EventsModel.getEvents().subscribe(modelList -> {
+            manageSubscription(RxHelper.getObserver(EventsModel.getEvents()).subscribe(modelList -> {
                 if (modelList != null) {
                     eventsModels.addAll(modelList);
                     sendToView(FeedsMvp.View::onNotifyAdapter);

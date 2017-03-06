@@ -13,6 +13,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -91,7 +92,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     @Override public void onWorkOffline() {
         if (pullRequests.isEmpty()) {
-            manageSubscription(PullRequestModel.getPullRequests(repoId, login, issueState)
+            manageSubscription(RxHelper.getObserver(PullRequestModel.getPullRequests(repoId, login, issueState))
                     .subscribe(pulls -> {
                         pullRequests.addAll(pulls);
                         sendToView(RepoPullRequestMvp.View::onNotifyAdapter);

@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.gists.gist.GistView;
@@ -72,7 +73,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
 
     @Override public void onWorkOffline() {
         if (gistsModels.isEmpty()) {
-            manageSubscription(GistsModel.getGists().subscribe(gistsModels1 -> {
+            manageSubscription(RxHelper.getObserver(GistsModel.getGists()).subscribe(gistsModels1 -> {
                 gistsModels.addAll(gistsModels1);
                 sendToView(GistsMvp.View::onNotifyAdapter);
             }));

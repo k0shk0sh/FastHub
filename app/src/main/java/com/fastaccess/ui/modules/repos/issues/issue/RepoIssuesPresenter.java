@@ -14,6 +14,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -91,7 +92,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
 
     @Override public void onWorkOffline() {
         if (issues.isEmpty()) {
-            manageSubscription(IssueModel.getIssues(repoId, login, issueState)
+            manageSubscription(RxHelper.getObserver(IssueModel.getIssues(repoId, login, issueState))
                     .subscribe(issueModel -> {
                         issues.addAll(issueModel);
                         sendToView(RepoIssuesMvp.View::onNotifyAdapter);

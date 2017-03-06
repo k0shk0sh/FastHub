@@ -9,6 +9,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.ReleasesModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -84,7 +85,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
 
     @Override public void onWorkOffline() {
         if (releases.isEmpty()) {
-            manageSubscription(ReleasesModel.get(repoId, login)
+            manageSubscription(RxHelper.getObserver(ReleasesModel.get(repoId, login))
                     .subscribe(releasesModels -> {
                         releases.addAll(releasesModels);
                         sendToView(RepoReleasesMvp.View::onNotifyAdapter);

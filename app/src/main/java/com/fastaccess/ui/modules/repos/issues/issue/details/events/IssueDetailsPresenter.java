@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.IssueEventAdapterModel;
 import com.fastaccess.data.dao.IssueEventModel;
 import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -45,7 +46,8 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
 
     @Override public void onWorkOffline() {
         if (events.isEmpty() || events.size() == 1) {
-            manageSubscription(IssueEventModel.get(issueModel.getRepoId(), issueModel.getLogin(), String.valueOf(issueModel.getNumber()))
+            manageSubscription(RxHelper.getObserver(IssueEventModel.get(issueModel.getRepoId(),
+                    issueModel.getLogin(), String.valueOf(issueModel.getNumber())))
                     .subscribe(
                             models -> {
                                 if (models != null) {

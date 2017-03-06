@@ -8,6 +8,7 @@ import android.view.View;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
@@ -89,7 +90,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RepoModel.getMyRepos(login).subscribe(repoModels -> {
+            manageSubscription(RxHelper.getObserver(RepoModel.getMyRepos(login)).subscribe(repoModels -> {
                 repos.addAll(repoModels);
                 sendToView(ProfileReposMvp.View::onNotifyAdapter);
             }));

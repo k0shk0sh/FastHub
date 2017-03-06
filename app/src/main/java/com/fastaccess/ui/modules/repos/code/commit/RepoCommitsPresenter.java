@@ -8,6 +8,7 @@ import android.view.View;
 import com.fastaccess.data.dao.CommitModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -88,7 +89,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
-            manageSubscription(CommitModel.getCommits(repoId, login)
+            manageSubscription(RxHelper.getObserver(CommitModel.getCommits(repoId, login))
                     .subscribe(models -> {
                         commits.addAll(models);
                         sendToView(RepoCommitsMvp.View::onNotifyAdapter);

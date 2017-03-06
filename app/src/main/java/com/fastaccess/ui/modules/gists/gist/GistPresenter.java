@@ -121,7 +121,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (gist == null) {
-            manageSubscription(GistsModel.getGist(gistId)
+            manageSubscription(RxHelper.getObserver(GistsModel.getGist(gistId))
                     .subscribe(gistsModel -> {
                         this.gist = gistsModel;
                         sendToView(GistMvp.View::onSetupDetails);

@@ -85,12 +85,13 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onWorkOffline(long issueNumber, @NonNull String repoId, @NonNull String login) {
         if (issueModel == null) {
-            manageSubscription(IssueModel.getIssueByNumber((int) issueNumber).subscribe(issueModel1 -> {
-                if (issueModel1 != null) {
-                    issueModel = issueModel1;
-                    sendToView(IssuePagerMvp.View::onSetupIssue);
-                }
-            }));
+            manageSubscription(RxHelper.getObserver(IssueModel.getIssueByNumber((int) issueNumber))
+                    .subscribe(issueModel1 -> {
+                        if (issueModel1 != null) {
+                            issueModel = issueModel1;
+                            sendToView(IssuePagerMvp.View::onSetupIssue);
+                        }
+                    }));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }

@@ -9,6 +9,7 @@ import android.view.View;
 import com.fastaccess.data.dao.CommentsModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -88,7 +89,7 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
 
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
-            manageSubscription(CommentsModel.getIssueComments(repoId(), login(), String.valueOf(number))
+            manageSubscription(RxHelper.getObserver(CommentsModel.getIssueComments(repoId(), login(), String.valueOf(number)))
                     .subscribe(models -> {
                         if (models != null) {
                             comments.addAll(models);

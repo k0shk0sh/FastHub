@@ -9,6 +9,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.data.dao.RepoPathsManager;
 import com.fastaccess.data.dao.types.FilesType;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -52,7 +53,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if ((repoId == null || login == null) || !files.isEmpty()) return;
-        manageSubscription(RepoFilesModel.getFiles(login, repoId).subscribe(
+        manageSubscription(RxHelper.getObserver(RepoFilesModel.getFiles(login, repoId)).subscribe(
                 models -> {
                     files.addAll(models);
                     sendToView(RepoFilesMvp.View::onNotifyAdapter);

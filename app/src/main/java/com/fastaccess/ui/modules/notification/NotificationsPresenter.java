@@ -55,7 +55,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageSubscription(NotificationThreadModel.getNotifications()
+            manageSubscription(RxHelper.getObserver(NotificationThreadModel.getNotifications())
                     .subscribe(models -> {
                         if (models != null) {
                             notifications.addAll(models);
