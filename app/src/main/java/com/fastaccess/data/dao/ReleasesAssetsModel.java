@@ -12,7 +12,7 @@ import lombok.Setter;
  * Created by Kosh on 31 Dec 2016, 1:28 PM
  */
 
-@Getter @Setter class ReleasesAssetsModel implements Parcelable {
+@Getter @Setter public class ReleasesAssetsModel implements Parcelable {
     private String url;
     private String browserDownloadUrl;
     private long id;

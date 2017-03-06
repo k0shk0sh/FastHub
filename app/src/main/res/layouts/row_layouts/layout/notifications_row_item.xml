@@ -37,6 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:maxLines="1"
+                    android:ellipsize="end"
                     android:textColor="@color/primary_text"
                     android:textStyle="bold"
                     tools:text="When one acquires music and afterlife, one is able to capture heaven."/>

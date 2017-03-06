@@ -6,15 +6,16 @@
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_border"
     android:foreground="?selectableItemBackgroundBorderless"
+    android:minHeight="?listPreferredItemHeightSmall"
     android:orientation="vertical"
-    android:padding="@dimen/spacing_xs_large"
-    android:minHeight="?listPreferredItemHeightSmall">
+    android:padding="@dimen/spacing_xs_large">
 
     <com.fastaccess.ui.widgets.FontTextView
         android:id="@+id/title"
         style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
         android:maxLines="3"
         tools:text="Yes, there is shangri-la, it disappears with manifestation."/>
 </FrameLayout>

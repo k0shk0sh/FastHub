@@ -30,6 +30,7 @@
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/spacing_xs_large"
             android:maxLines="3"
+            android:ellipsize="end"
             android:textColor="@color/primary_text"
             android:transitionName="@string/title_transition"
             tools:text="Bug Fixes."/>

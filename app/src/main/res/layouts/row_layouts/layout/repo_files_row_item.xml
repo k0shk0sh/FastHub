@@ -42,6 +42,7 @@
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:maxLines="3"
+                android:ellipsize="end"
                 android:textColor="@color/primary_text"
                 tools:text="File Name"/>
 

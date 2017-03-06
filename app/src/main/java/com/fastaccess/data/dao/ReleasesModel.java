@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.google.gson.annotations.SerializedName;
 import com.siimkinks.sqlitemagic.Delete;
 import com.siimkinks.sqlitemagic.ReleasesModelTable;
 import com.siimkinks.sqlitemagic.Select;
@@ -32,8 +33,8 @@ public class ReleasesModel implements Parcelable {
     @Column String htmlUrl;
     @Column String assetsUrl;
     @Column String uploadUrl;
-    @Column String tarballUrl;
-    @Column String zipBallUrl;
+    @SerializedName("tarball_url") @Column String tarballUrl;
+    @SerializedName("zipball_url") @Column String zipBallUrl;
     @Column @Id(autoIncrement = false) long id;
     @Column String tagName;
     @Column String targetCommitish;

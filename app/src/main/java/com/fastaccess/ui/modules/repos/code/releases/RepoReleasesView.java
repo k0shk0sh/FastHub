@@ -123,14 +123,24 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
     }
 
     @Override public void onDownload(@NonNull ReleasesModel item) {
+        ArrayList<SimpleUrlsModel> models = new ArrayList<>();
+        if (!InputHelper.isEmpty(item.getZipBallUrl())) {
+            models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), item.getZipBallUrl()));
+        }
+        if (!InputHelper.isEmpty(item.getTarballUrl())) {
+            models.add(new SimpleUrlsModel(getString(R.string.download_as_tar), item.getTarballUrl()));
+        }
+        if (item.getAssets() != null && !item.getAssets().isEmpty()) {
+            ArrayList<SimpleUrlsModel> mapped = Stream.of(item.getAssets())
+                    .filter(value -> value != null && value.getBrowserDownloadUrl() != null)
+                    .map(assetsModel -> new SimpleUrlsModel(assetsModel.getName(), assetsModel.getBrowserDownloadUrl()))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            if (mapped != null && !mapped.isEmpty()) {
+                models.addAll(mapped);
+            }
+        }
         ListDialogView<SimpleUrlsModel> dialogView = new ListDialogView<>();
-        dialogView.initArguments(getString(R.string.releases),
-                Stream.of(!InputHelper.isEmpty(item.getZipBallUrl()) ?
-                          new SimpleUrlsModel(getString(R.string.download_as_zip), item.getZipBallUrl()) : null,
-                        !InputHelper.isEmpty(item.getTarballUrl()) ?
-                        new SimpleUrlsModel(getString(R.string.download_as_tar), item.getTarballUrl()) : null)
-                        .filter(value -> value != null)
-                        .collect(Collectors.toCollection(ArrayList::new)));
+        dialogView.initArguments(getString(R.string.releases), models);
         dialogView.show(getChildFragmentManager(), "ListDialogView");
     }
 

@@ -39,6 +39,7 @@
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:layout_weight="1"
                 android:maxLines="1"
+                android:ellipsize="end"
                 android:textColor="@color/primary_text"
                 tools:text="When one acquires"/>
 
