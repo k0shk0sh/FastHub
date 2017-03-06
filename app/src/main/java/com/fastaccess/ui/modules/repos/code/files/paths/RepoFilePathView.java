@@ -17,6 +17,7 @@ import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -41,18 +42,19 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
     @BindView(R.id.branches) Spinner branches;
     @BindView(R.id.branchesProgress) ProgressBar branchesProgress;
 
-    @State String ref = "master";
+    @State String ref;
 
     private RepoFilePathsAdapter adapter;
     private RepoFilesView repoFilesView;
     private RepoPagerMvp.View repoCallback;
 
-    public static RepoFilePathView newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path) {
+    public static RepoFilePathView newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String defaultBranch) {
         RepoFilePathView view = new RepoFilePathView();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, path)
+                .put(BundleConstant.EXTRA_THREE, defaultBranch)
                 .end());
         return view;
     }
@@ -107,6 +109,10 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
     }
 
     @Override public void onSendData() {
+        Logger.e(ref, getPresenter().getDefaultBranch());
+        if (InputHelper.isEmpty(ref)) {
+            ref = getPresenter().getDefaultBranch();
+        }
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
                 Objects.toString(getPresenter().getPath(), ""), ref, false);
     }
@@ -140,10 +146,24 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         super.showErrorMessage(msgRes);
     }
 
-    @Override public void setBranchesData(@NonNull List<BranchesModel> branchesData) {
+    @Override public void setBranchesData(@NonNull List<BranchesModel> branchesData, boolean firstTime) {
         ArrayAdapter<BranchesModel> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, branchesData);
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         branches.setAdapter(adapter);
+        if (firstTime) {
+            if (!InputHelper.isEmpty(getPresenter().getDefaultBranch())) {
+                int index = -1;
+                for (int i = 0; i < branchesData.size(); i++) {
+                    if (branchesData.get(i).getName().equals(getPresenter().getDefaultBranch())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    branches.setSelection(index, true);
+                }
+            }
+        }
     }
 
     @Override protected int fragmentLayout() {
@@ -157,7 +177,7 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         }
-        setBranchesData(getPresenter().getBranches());
+        setBranchesData(getPresenter().getBranches(), false);
     }
 
     @NonNull @Override public RepoFilePathPresenter providePresenter() {

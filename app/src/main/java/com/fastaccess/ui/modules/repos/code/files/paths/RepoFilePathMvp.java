@@ -31,7 +31,7 @@ interface RepoFilePathMvp {
 
         void onBackPressed();
 
-        void setBranchesData(@NonNull List<BranchesModel> branches);
+        void setBranchesData(@NonNull List<BranchesModel> branches, boolean firstTime);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -48,6 +48,8 @@ interface RepoFilePathMvp {
         @NonNull ArrayList<RepoFilesModel> getPaths();
 
         @NonNull ArrayList<BranchesModel> getBranches();
+
+        String getDefaultBranch();
     }
 
 

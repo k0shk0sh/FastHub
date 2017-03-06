@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.view.View;
 
+import com.annimon.stream.Objects;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.BundleConstant;
@@ -28,12 +29,14 @@ public class RepoCodePagerView extends BaseFragment<RepoCodePagerMvp.View, RepoC
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
 
-    public static RepoCodePagerView newInstance(@NonNull String repoId, @NonNull String login, @NonNull String htmlLink) {
+    public static RepoCodePagerView newInstance(@NonNull String repoId, @NonNull String login,
+                                                @NonNull String htmlLink, @NonNull String defaultBranch) {
         RepoCodePagerView view = new RepoCodePagerView();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, htmlLink)
+                .put(BundleConstant.EXTRA_THREE, defaultBranch)
                 .end());
         return view;
     }
@@ -46,11 +49,12 @@ public class RepoCodePagerView extends BaseFragment<RepoCodePagerMvp.View, RepoC
         String repoId = getArguments().getString(BundleConstant.ID);
         String login = getArguments().getString(BundleConstant.EXTRA);
         String htmlLink = getArguments().getString(BundleConstant.EXTRA_TWO);
+        String defaultBranch = getArguments().getString(BundleConstant.EXTRA_THREE);
         if (InputHelper.isEmpty(repoId) || InputHelper.isEmpty(login) || InputHelper.isEmpty(htmlLink)) {
             throw new NullPointerException(String.format("Failed Initializing (%s) %s %s %s", getClass().getSimpleName(), repoId, login, htmlLink));
         }
         pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(),
-                FragmentPagerAdapterModel.buildForRepoCode(getContext(), repoId, login, htmlLink)));
+                FragmentPagerAdapterModel.buildForRepoCode(getContext(), repoId, login, htmlLink, Objects.toString(defaultBranch, "master"))));
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabs.setupWithViewPager(pager);
     }

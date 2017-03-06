@@ -87,7 +87,8 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
         popup.show();
     }
 
-    @Override public void onSetData(@NonNull String login, @NonNull String repoId, @NonNull String path, @NonNull String ref, boolean clear) {
+    @Override public void onSetData(@NonNull String login, @NonNull String repoId, @NonNull String path,
+                                    @NonNull String ref, boolean clear) {
         getPresenter().onInitDataAndRequest(login, repoId, path, ref, clear);
     }
 

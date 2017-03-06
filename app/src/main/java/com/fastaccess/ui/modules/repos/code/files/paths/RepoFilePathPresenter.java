@@ -23,6 +23,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
     private String repoId;
     private String login;
     private String path;
+    private String defaultBranch;
     private ArrayList<RepoFilesModel> paths = new ArrayList<>();
     private ArrayList<BranchesModel> branches = new ArrayList<>();
 
@@ -39,6 +40,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
             repoId = bundle.getString(BundleConstant.ID);
             login = bundle.getString(BundleConstant.EXTRA);
             path = Objects.toString(bundle.getString(BundleConstant.EXTRA_TWO), "");
+            defaultBranch = Objects.toString(bundle.getString(BundleConstant.EXTRA_THREE), "master");
             if (InputHelper.isEmpty(repoId) || InputHelper.isEmpty(login)) {
                 throw new NullPointerException(String.format("error, repoId(%s) or login(%s) is null", repoId, login));
             }
@@ -50,7 +52,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                                 branches.clear();
                                 branches.addAll(response.getItems());
                                 sendToView(view -> {
-                                    view.setBranchesData(branches);
+                                    view.setBranchesData(branches, true);
                                     view.hideProgress();
                                 });
                             }
@@ -79,5 +81,9 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
 
     @NonNull @Override public ArrayList<BranchesModel> getBranches() {
         return branches;
+    }
+
+    @Override public String getDefaultBranch() {
+        return defaultBranch;
     }
 }

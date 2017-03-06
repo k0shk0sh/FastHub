@@ -225,14 +225,16 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         }
         if (currentVisible == null) {
             fragmentManager.beginTransaction()
-                    .add(R.id.container, RepoCodePagerView.newInstance(repoId(), login(), getRepo().getUrl()), RepoCodePagerView.TAG)
+                    .add(R.id.container, RepoCodePagerView.newInstance(repoId(), login(), getRepo().getUrl(),
+                            getRepo().getDefaultBranch()), RepoCodePagerView.TAG)
                     .commit();
             return;
         }
         switch (type) {
             case RepoPagerMvp.CODE:
                 if (codePagerView == null) {
-                    onAddAndHide(fragmentManager, RepoCodePagerView.newInstance(repoId(), login(), getRepo().getHtmlUrl()), currentVisible);
+                    onAddAndHide(fragmentManager, RepoCodePagerView.newInstance(repoId(), login(),
+                            getRepo().getHtmlUrl(), getRepo().getDefaultBranch()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, codePagerView, currentVisible);
                 }

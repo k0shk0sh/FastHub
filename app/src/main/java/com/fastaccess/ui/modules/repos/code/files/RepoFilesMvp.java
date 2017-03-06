@@ -37,7 +37,8 @@ interface RepoFilesMvp {
 
         void onCallApi();
 
-        void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @NonNull String path, @NonNull String ref, boolean clear);
+        void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @NonNull String path,
+                                  @NonNull String ref, boolean clear);
 
         @Nullable ArrayList<RepoFilesModel> getCachedFiles(@NonNull String url, @NonNull String ref);
     }
