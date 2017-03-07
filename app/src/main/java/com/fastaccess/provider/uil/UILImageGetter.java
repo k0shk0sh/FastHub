@@ -6,7 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
-import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,7 +15,9 @@ import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListene
 
 import java.io.InputStream;
 
-public class UILImageGetter implements Html.ImageGetter {
+import in.uncod.android.bypass.Bypass;
+
+public class UILImageGetter implements Bypass.ImageGetter {
     private TextView container;
 
     public UILImageGetter(TextView view) {
