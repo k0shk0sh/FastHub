@@ -85,6 +85,7 @@ repositories {
 
 dependencies {
     ext {
+        butterKnifeVersion = '8.5.1'
         supportVerion = "25.2.0"
         firebase = "10.2.0"
         thirtyinchVersion = '0.8.0-rc2'
@@ -107,8 +108,8 @@ dependencies {
     compile 'com.firebase:firebase-jobdispatcher:0.5.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
     compile 'frankiesardo:icepick:3.1.0'
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.2'
@@ -120,7 +121,7 @@ dependencies {
     compile 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
     apt 'org.projectlombok:lombok:1.12.6'
     apt 'frankiesardo:icepick-processor:3.1.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    apt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     provided 'org.projectlombok:lombok:1.12.6'
 }
 
