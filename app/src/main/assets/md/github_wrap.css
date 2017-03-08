@@ -1,9 +1,10 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
-    padding: 15px;
+    padding: 0px !important;
     line-height: 1.5;
-    word-wrap: break-word
+    word-wrap: break-word;
+    overflow: none !important;
 }
 
 body::before {
@@ -186,7 +187,7 @@ body dl dd {
 body table {
     display: block;
     width: 100%;
-    overflow: auto
+    overflow: hidden
 }
 
 body table th {
@@ -338,16 +339,10 @@ body del code {
     text-decoration: inherit
 }
 
-body pre {
-    word-wrap: normal
-}
-
 body pre>code {
     padding: 0;
     margin: 0;
     font-size: 100%;
-    word-break: normal;
-    white-space: pre;
     background: transparent;
     border: 0
 }
@@ -358,12 +353,11 @@ body .highlight {
 
 body .highlight pre {
     margin-bottom: 0;
-    word-break: normal
 }
 
 body .highlight pre, body pre {
     padding: 16px;
-    overflow: auto;
+    overflow: hidden;
     font-size: 85%;
     line-height: 1.45;
     background-color: #f6f8fa;
@@ -375,9 +369,6 @@ body pre code, body pre tt {
     max-width: auto;
     padding: 0;
     margin: 0;
-    overflow: visible;
-    line-height: inherit;
-    word-wrap: normal;
     background-color: transparent;
     border: 0
 }
@@ -554,4 +545,43 @@ kbd {
 .badmono {
     font-family: sans-serif;
     font-weight: 700
+}
+
+* {
+    margin: 0 !important;
+    padding: 2px !important;
+    overflow: hidden;
+}
+
+pre {
+    word-wrap: break-all;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+    margin: 4px 0px 4px 0px !important;
+}
+
+pre code {
+    word-wrap: break-all !important;
+    white-space: pre-wrap !important;
+    white-space: -moz-pre-wrap !important;
+    white-space: -pre-wrap !important;
+    white-space: -o-pre-wrap !important;
+    word-wrap: break-word !important;
+}
+
+img {
+    max-width: 100% !important;
+}
+
+table {
+    word-wrap: break-all !important;
+    white-space: pre-wrap !important;
+    white-space: -moz-pre-wrap !important;
+    white-space: -pre-wrap !important;
+    white-space: -o-pre-wrap !important;
+    word-wrap: break-word !important;
+    margin: 4px 0px 4px 0px !important;
 }

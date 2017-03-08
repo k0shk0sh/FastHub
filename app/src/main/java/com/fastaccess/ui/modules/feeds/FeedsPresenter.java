@@ -44,6 +44,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             return;
         }
         setCurrentPage(page);
+        if (LoginModel.getUser() == null) return;// I can't understand how this could possibly be reached lol.
         makeRestCall(RestProvider.getUserService().getReceivedEvents(LoginModel.getUser().getLogin(), page),
                 response -> {
                     lastPage = response.getLast();

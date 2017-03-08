@@ -36,10 +36,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="36dp"
                         app:cardUseCompatPadding="true"
-                        app:contentPaddingBottom="@dimen/spacing_xs_large"
+                        app:contentPaddingBottom="@dimen/spacing_normal"
                         app:contentPaddingLeft="@dimen/spacing_xs_large"
                         app:contentPaddingRight="@dimen/spacing_xs_large"
-                        app:contentPaddingTop="@dimen/spacing_s_large">
+                        app:contentPaddingTop="@dimen/spacing_normal">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -52,8 +52,9 @@
                                 style="@style/Base.TextAppearance.AppCompat.Title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:layout_marginTop="@dimen/spacing_normal"
                                 android:gravity="center"
-                                android:paddingTop="@dimen/spacing_normal"
                                 android:textStyle="bold"
                                 android:transitionName="@string/title_transition"
                                 tools:text="Cum classis nocere"/>
@@ -63,8 +64,6 @@
                                 style="@style/Base.TextAppearance.AppCompat.Small"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/spacing_micro"
-                                android:layout_marginTop="@dimen/spacing_micro"
                                 tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
                         </LinearLayout>
 
@@ -84,6 +83,7 @@
                         android:layout_gravity="start|bottom|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:layout_marginTop="@dimen/spacing_micro"
                         android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         tools:text="Following\n40"/>
@@ -103,6 +103,7 @@
                         android:layout_gravity="end|bottom|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:layout_marginTop="@dimen/spacing_micro"
                         android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         tools:text="Followers\n140"/>
@@ -117,10 +118,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:cardUseCompatPadding="true"
-                    app:contentPaddingBottom="@dimen/spacing_xs_large"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
                     app:contentPaddingLeft="@dimen/spacing_xs_large"
                     app:contentPaddingRight="@dimen/spacing_xs_large"
-                    app:contentPaddingTop="@dimen/spacing_s_large">
+                    app:contentPaddingTop="@dimen/spacing_normal">
 
                     <LinearLayout
                         android:layout_width="match_parent"

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -99,11 +100,18 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
-        if (!InputHelper.isEmpty(source)) {
-            addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
-            this.content = source;
-            String page = GithubHelper.generateContent(source, baseUrl);
-            post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
+        setGithubContent(source, baseUrl, true);
+    }
+
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
+        Logger.e(TextUtils.equals(source, content));
+        if (!TextUtils.equals(source, content)) {
+            if (!InputHelper.isEmpty(source)) {
+                if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
+                this.content = source;
+                String page = GithubHelper.generateContent(source, baseUrl, wrap);
+                post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
+            }
         }
     }
 

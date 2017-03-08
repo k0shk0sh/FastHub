@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import net.grandcentrix.thirtyinch.TiView;
+import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
 import rx.Observable;
 import rx.Subscription;
@@ -18,15 +19,16 @@ import rx.functions.Action1;
 
 public interface BaseMvp {
     interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback {
-        void showProgress(@StringRes int resId);
 
-        void hideProgress();
+        @CallOnMainThread void showProgress(@StringRes int resId);
 
-        void showMessage(@StringRes int titleRes, @StringRes int msgRes);
+        @CallOnMainThread void hideProgress();
 
-        void showMessage(@NonNull String titleRes, @NonNull String msgRes);
+        @CallOnMainThread void showMessage(@StringRes int titleRes, @StringRes int msgRes);
 
-        void showErrorMessage(@NonNull String msgRes);
+        @CallOnMainThread void showMessage(@NonNull String titleRes, @NonNull String msgRes);
+
+        @CallOnMainThread void showErrorMessage(@NonNull String msgRes);
 
         boolean isLoggedIn();
     }

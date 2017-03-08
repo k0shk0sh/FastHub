@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommentsModel;
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -36,6 +37,7 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
     private CharSequence savedText;
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
+    @BindView(R.id.editorIconsHolder) View editorIconsHolder;
 
     @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
@@ -65,29 +67,31 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
     }
 
     @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.TEXT_CHANGED) void onEdited(CharSequence charSequence) {
-        if (viewCode.getTag() != null) {
-            return;
+        if (editText.isEnabled()) {
+            savedText = charSequence;
         }
-        savedText = charSequence;
     }
 
-    @OnClick(R.id.view) void onViewMarkDown(View v) {
+    @OnClick(R.id.view) void onViewMarkDown() {
         if (InputHelper.isEmpty(editText)) return;
-        if (v.getTag() == null) {
-            v.setTag("whatever");
+        if (editText.isEnabled()) {
+            editText.setEnabled(false);
             MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
             ViewHelper.hideKeyboard(editText);
+            AnimHelper.animateVisibility(editorIconsHolder, false);
         } else {
-            v.setTag(null);
             editText.setText(savedText);
             editText.setSelection(savedText.length());
+            editText.setEnabled(true);
+            ViewHelper.showKeyboard(editText);
+            AnimHelper.animateVisibility(editorIconsHolder, true);
         }
     }
 
     @OnClick({R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic,
             R.id.strikethrough, R.id.bullet, R.id.header, R.id.code, R.id.numbered,
             R.id.quote, R.id.link, R.id.image}) void onActions(View v) {
-        if (viewCode.getTag() != null) {
+        if (!editText.isEnabled()) {
             Snackbar.make(editText, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show();
             return;
         }

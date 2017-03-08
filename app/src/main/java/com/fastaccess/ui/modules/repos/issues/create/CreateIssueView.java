@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.MotionEvent;
-import android.widget.Button;
+import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.IssueModel;
@@ -35,7 +35,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
 
     @BindView(R.id.title) TextInputLayout title;
     @BindView(R.id.description) FontTextView description;
-    @BindView(R.id.createSecretGist) Button createIssue;
+    @BindView(R.id.submit) View submit;
 
     @State String repoId;
     @State String login;
@@ -153,10 +153,10 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
             if (bundle.getParcelable(BundleConstant.ITEM) != null) {
                 if (bundle.getParcelable(BundleConstant.ITEM) instanceof IssueModel) {
                     issue = bundle.getParcelable(BundleConstant.ITEM);
-                    createIssue.setText(R.string.update_issue);
+                    setTitle(getString(R.string.update_issue));
                 } else if (bundle.getParcelable(BundleConstant.ITEM) instanceof PullRequestModel) {
                     pullRequest = bundle.getParcelable(BundleConstant.ITEM);
-                    createIssue.setText(R.string.update_pull_request);
+                    setTitle(getString(R.string.update_pull_request));
                 }
             }
             if (issue != null) {
@@ -198,7 +198,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
         return false;
     }
 
-    @OnClick(R.id.createSecretGist) public void onClick() {
+    @OnClick(R.id.submit) public void onClick() {
         getPresenter().onSubmit(InputHelper.toString(title), savedText, login, repoId, issue, pullRequest);
     }
 }

@@ -34,7 +34,7 @@ public interface IssueService {
                                                          @Query("state") String state, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/issues/{number}")
-//    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.html")
     Observable<IssueModel> getIssue(@Path("owner") String owner, @Path("repo") String repo,
                                     @Path("number") int number);
 
@@ -61,7 +61,7 @@ public interface IssueService {
 
 
     @GET("repos/{owner}/{repo}/issues/{number}/comments")
-//    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.html")
     Observable<Pageable<CommentsModel>> getIssueComments(@Path("owner") String owner,
                                                          @Path("repo") String repo,
                                                          @Path("number") int number,

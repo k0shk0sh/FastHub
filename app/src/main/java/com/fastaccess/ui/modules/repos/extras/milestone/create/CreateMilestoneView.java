@@ -73,7 +73,11 @@ public class CreateMilestoneView extends BaseDialogFragment<CreateMilestoneMvp.V
             return;
         }
         toolbar.setTitle(R.string.create_milestone);
-        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationIcon(R.drawable.ic_clear);
+        toolbar.setOnMenuItemClickListener(item -> {
+            dismiss();
+            return true;
+        });
         toolbar.inflateMenu(R.menu.add_menu);
         toolbar.setOnMenuItemClickListener(item -> {
             getPresenter().onSubmit(InputHelper.toString(title), InputHelper.toString(dueOnEditText), login, repo);

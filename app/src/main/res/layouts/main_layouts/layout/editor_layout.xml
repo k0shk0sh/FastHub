@@ -34,16 +34,16 @@
         android:layout_height="4dp"
         android:background="@drawable/toolbar_shadow_up"/>
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:orientation="horizontal">
 
         <HorizontalScrollView
-            android:layout_width="0dp"
+            android:id="@+id/editorIconsHolder"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_weight="1"
+            android:layout_marginEnd="@dimen/spacing_xlarge"
             android:fadeScrollbars="true"
             android:scrollbarFadeDuration="500"
             android:scrollbarSize="1dp"
@@ -193,13 +193,13 @@
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_gravity="end|center"
             android:contentDescription="@string/preview"
             android:foreground="?selectableItemBackgroundBorderless"
             android:padding="@dimen/spacing_normal"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_eye"/>
-    </LinearLayout>
+    </FrameLayout>
 
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"

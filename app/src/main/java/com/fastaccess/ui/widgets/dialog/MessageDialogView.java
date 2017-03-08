@@ -8,9 +8,9 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,11 +24,14 @@ public class MessageDialogView extends BaseBottomSheetDialog {
     public static final String TAG = MessageDialogView.class.getSimpleName();
 
     public interface MessageDialogViewActionCallback {
+
         void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle);
 
         void onDialogDismissed();
+
     }
 
+    @BindView(R.id.prettifyWebView) PrettifyWebView prettifyWebView;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.message) FontTextView message;
 
@@ -67,7 +70,10 @@ public class MessageDialogView extends BaseBottomSheetDialog {
         String msg = bundle.getString("bundleMsg");
         if (bundle.getBoolean("isMarkDown")) {
             if (msg != null) {
-                MarkDownProvider.setMdText(message, msg);
+                message.setVisibility(View.GONE);
+                prettifyWebView.setVisibility(View.VISIBLE);
+                prettifyWebView.setNestedScrollingEnabled(false);
+                prettifyWebView.setGithubContent(msg, null, true);
                 return;
             }
         }
@@ -111,11 +117,5 @@ public class MessageDialogView extends BaseBottomSheetDialog {
                 .put("bundle", bundle)
                 .put("isMarkDown", isMarkDown)
                 .end();
-    }
-
-    public void initMessage() {
-        Bundle bundle = getArguments();
-        title.setText(bundle.getString("bundleTitle"));
-        message.setText(bundle.getString("bundleMsg"));
     }
 }

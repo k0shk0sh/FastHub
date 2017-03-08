@@ -13,9 +13,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import retrofit2.Response;
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * Created by Kosh on 20 Feb 2017, 8:46 PM
@@ -73,28 +71,16 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
 
     @Override public void onReadAll() {
         if (!notifications.isEmpty()) {
-            Observable<Response<Boolean>> observable = Observable.from(notifications)
+            manageSubscription(RxHelper.getObserver(Observable.from(notifications))
                     .filter(NotificationThreadModel::isUnread)
-                    .flatMap(new Func1<NotificationThreadModel, Observable<Response<Boolean>>>() {
-                        @Override public Observable<Response<Boolean>> call(NotificationThreadModel notificationThreadModel) {
-                            return RxHelper.getObserver(RestProvider.getNotificationService()
-                                    .markAsRead(String.valueOf(notificationThreadModel.getId())));
-                        }
-                    });
-            manageSubscription(observable.isEmpty().subscribe(isEmpty -> {
-                if (!isEmpty) {
-                    makeRestCall(observable, booleanResponse -> {
-                        if (booleanResponse.code() == 205) {
-                            if (!notifications.isEmpty()) {
-                                notifications.clear();
-                                manageSubscription(NotificationThreadModel.deleteTable().observe().subscribe());
+                    .subscribe(notificationThreadModel -> makeRestCall(RxHelper.getObserver(RestProvider.getNotificationService()
+                                    .markAsRead(String.valueOf(notificationThreadModel.getId()))),
+                            booleanResponse -> {
+                                notifications.remove(notificationThreadModel);
                                 sendToView(NotificationsMvp.View::onNotifyAdapter);
-                            }
-                        }
-                    });
-                }
-            }));
+                            }), throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage()))));
         }
+
     }
 
     @Override public void showAllNotifications(boolean showAll) {

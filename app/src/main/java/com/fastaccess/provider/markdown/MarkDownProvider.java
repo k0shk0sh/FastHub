@@ -2,22 +2,20 @@ package com.fastaccess.provider.markdown;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
-import com.commonsware.cwac.anddown.AndDown;
-import com.fastaccess.App;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.provider.uil.UILImageGetter;
+import com.zzhoujay.markdown.MarkDown;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
  */
 
 public class MarkDownProvider {
+
     private static final String[] IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg"};
 
     private static final String[] MARKDOWN_EXTENSIONS = {
@@ -31,38 +29,8 @@ public class MarkDownProvider {
     private MarkDownProvider() {}
 
     public static void setMdText(@NonNull TextView textView, @NonNull String value) {
-        String text = App.getInstance().getAndDown()
-                .markdownToHtml(value, AndDown.HOEDOWN_EXT_AUTOLINK |
-                        AndDown.HOEDOWN_EXT_TABLES |
-                        AndDown.HOEDOWN_EXT_QUOTE |
-                        AndDown.HOEDOWN_EXT_FENCED_CODE |
-                        AndDown.HOEDOWN_EXT_HIGHLIGHT |
-                        AndDown.HOEDOWN_EXT_NO_INTRA_EMPHASIS |
-                        AndDown.HOEDOWN_EXT_SPACE_HEADERS |
-                        AndDown.HOEDOWN_EXT_MATH |
-                        AndDown.HOEDOWN_EXT_SUPERSCRIPT |
-                        AndDown.HOEDOWN_EXT_DISABLE_INDENTED_CODE, 0);
-        //noinspection deprecation
-        textView.setText(Html.fromHtml(text, new UILImageGetter(textView), null));
+        textView.setText(MarkDown.fromMarkdown(value, null, textView));
     }
-
-//    public static RichText convertTextToMarkDown(@NonNull TextView textView, @NonNull String text) {
-//        RichText richText = RichText.fromMarkdown(text)
-//                .clickable(true)
-//                .fix(holder -> {
-//                    if (holder.isGif()) {
-//                        holder.setAutoFix(true);
-//                        holder.setAutoPlay(true);
-//                    }
-//
-//                })
-//                .urlClick(url -> {
-//                    ActivityHelper.startCustomTab((Activity) textView.getContext(), Uri.parse(url));
-//                    return true;
-//                });
-//        richText.into(textView);
-//        return richText;
-//    }
 
     public static void addList(@NonNull EditText editText, @NonNull String list) {
         String tag = list + " ";

@@ -37,8 +37,8 @@
                 android:layout_marginEnd="@dimen/spacing_xs_large"
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:layout_weight="1"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
                 android:textColor="@color/primary_text"
                 tools:text="When one acquires"/>
 
@@ -54,14 +54,11 @@
 
         </LinearLayout>
 
-        <com.fastaccess.ui.widgets.FontTextView
+        <com.prettifier.pretty.PrettifyWebView
             android:id="@+id/description"
-            style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:autoLink="all"
-            android:linksClickable="true"/>
+            android:layout_marginTop="@dimen/spacing_normal"/>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

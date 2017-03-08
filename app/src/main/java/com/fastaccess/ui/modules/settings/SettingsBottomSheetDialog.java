@@ -33,7 +33,7 @@ public class SettingsBottomSheetDialog extends BaseBottomSheetDialog {
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         toolbar.setTitle(R.string.settings);
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_drop_down);
+        toolbar.setNavigationIcon(R.drawable.ic_clear);
         toolbar.setNavigationOnClickListener(v -> dismiss());
         if (savedInstanceState == null) {
             getChildFragmentManager()

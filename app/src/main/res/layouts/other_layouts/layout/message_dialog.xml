@@ -16,27 +16,33 @@
         android:textStyle="bold"
         tools:text="How jolly. You loot like a mast."/>
 
+
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/message"
-            style="@style/TextAppearance.AppCompat.Medium"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autoLink="all"
-            android:paddingEnd="@dimen/spacing_xs_large"
-            android:paddingStart="@dimen/spacing_xs_large"
-            tools:text="Garnish each side of the quinoa with eleven pounds of avocado.
-            Garnish each side of the quinoa with eleven pounds of avocado.
-            Garnish each side of the quinoa with eleven pounds of avocado.
-            Garnish each side of the quinoa with eleven pounds of avocado.
-            Garnish each side of the quinoa with eleven pounds of avocado.
-            Garnish each side of the quinoa with eleven pounds of avocado.
-            Garnish each side of the quinoa with eleven pounds of avocado.
-            Garnish each side of the quinoa with eleven pounds of avocado."/>
+            android:orientation="vertical">
+
+            <com.prettifier.pretty.PrettifyWebView
+                android:id="@+id/prettifyWebView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/message"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoLink="all"
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:paddingStart="@dimen/spacing_xs_large"
+                tools:text="Hello World"/>
+        </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
 
