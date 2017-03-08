@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommentsModel;
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -36,6 +37,7 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
     private CharSequence savedText;
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
+    @BindView(R.id.editorIconsHolder) View editorIconsHolder;
 
     @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
@@ -76,11 +78,13 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
             editText.setEnabled(false);
             MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
             ViewHelper.hideKeyboard(editText);
+            AnimHelper.animateVisibility(editorIconsHolder, false);
         } else {
             editText.setText(savedText);
             editText.setSelection(savedText.length());
             editText.setEnabled(true);
             ViewHelper.showKeyboard(editText);
+            AnimHelper.animateVisibility(editorIconsHolder, true);
         }
     }
 

@@ -35,6 +35,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
 
     private IssueTimelineViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
+        itemView.setEnabled(false);
     }
 
     public static IssueTimelineViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
@@ -76,9 +77,12 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
                         .append(" ")
                         .bold(issueEventModel.getRename().getToValue());
             } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
+                itemView.setEnabled(true);
                 spannableBuilder
                         .append(" ")
-                        .url("This");
+                        .url(stateText.getResources().getString(R.string.this_value));
+            } else if (event == IssueEventType.closed && issueEventModel.getCommitUrl() != null) {
+                itemView.setEnabled(true);
             }
         } else {
             stateImage.setImageResource(R.drawable.ic_label);
