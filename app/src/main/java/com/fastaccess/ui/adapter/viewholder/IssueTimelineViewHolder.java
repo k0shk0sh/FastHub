@@ -11,7 +11,9 @@ import com.fastaccess.data.dao.IssueEventAdapterModel;
 import com.fastaccess.data.dao.IssueEventModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -35,7 +37,6 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
 
     private IssueTimelineViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
-        itemView.setEnabled(false);
     }
 
     public static IssueTimelineViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
@@ -55,9 +56,11 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
             stateImage.setImageResource(event.getIconResId());
             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                 LabelModel labelModel = issueEventModel.getLabel();
+                int color = Color.parseColor("#" + labelModel.getColor());
                 spannableBuilder
                         .append(" ")
-                        .background(labelModel.getName(), Color.parseColor("#" + labelModel.getColor()));
+                        .background(SpannableBuilder.builder().foreground("   " + labelModel.getName() + "   "
+                                , ViewHelper.generateTextColor(color)), color);
             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                 spannableBuilder
                         .append(" ")
@@ -77,12 +80,9 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
                         .append(" ")
                         .bold(issueEventModel.getRename().getToValue());
             } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
-                itemView.setEnabled(true);
                 spannableBuilder
                         .append(" ")
                         .url(stateText.getResources().getString(R.string.this_value));
-            } else if (event == IssueEventType.closed && issueEventModel.getCommitUrl() != null) {
-                itemView.setEnabled(true);
             }
         } else {
             stateImage.setImageResource(R.drawable.ic_label);
@@ -91,6 +91,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
         stateText.setText(spannableBuilder
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(issueEventModel.getCreatedAt())));
+        itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()));
     }
 
 

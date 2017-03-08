@@ -11,7 +11,9 @@ import com.fastaccess.data.dao.IssueEventModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.PullRequestAdapterModel;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -54,9 +56,11 @@ public class PullRequestTimelineViewHolder extends BaseViewHolder<PullRequestAda
             stateImage.setImageResource(event.getIconResId());
             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                 LabelModel labelModel = issueEventModel.getLabel();
+                int color = Color.parseColor("#" + labelModel.getColor());
                 spannableBuilder
                         .append(" ")
-                        .background(labelModel.getName(), Color.parseColor("#" + labelModel.getColor()));
+                        .background(SpannableBuilder.builder().foreground("   " + labelModel.getName() + "   "
+                                , ViewHelper.generateTextColor(color)), color);
             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                 spannableBuilder
                         .append(" ")
@@ -87,6 +91,7 @@ public class PullRequestTimelineViewHolder extends BaseViewHolder<PullRequestAda
         stateText.setText(spannableBuilder
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(issueEventModel.getCreatedAt())));
+        itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()));
     }
 
 

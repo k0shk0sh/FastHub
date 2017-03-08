@@ -16,7 +16,6 @@
         android:layout_alignParentTop="true"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/spacing_normal"
-        android:foreground="?selectableItemBackgroundBorderless"
         android:minHeight="24dp"
         android:minWidth="24dp"
         android:scaleType="centerCrop"
@@ -27,9 +26,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:foreground="?android:selectableItemBackground"
         android:layout_toEndOf="@+id/stateImage"
         android:background="@drawable/ic_timeline_arrow_left"
+        android:foreground="?android:selectableItemBackground"
         android:orientation="vertical">
 
         <LinearLayout
@@ -54,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:maxLines="3"
                 android:ellipsize="end"
+                android:maxLines="3"
                 tools:text="For a divided large loaf, add some champaign and cinnamon."/>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>
