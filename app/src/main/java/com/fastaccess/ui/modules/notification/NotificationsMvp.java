@@ -8,6 +8,8 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
+import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +22,7 @@ public interface NotificationsMvp {
 
         @NonNull OnLoadMore getLoadMore();
 
-        void onNotifyAdapter();
+      @CallOnMainThread void onNotifyAdapter();
 
         void onTypeChanged(boolean unread);
 

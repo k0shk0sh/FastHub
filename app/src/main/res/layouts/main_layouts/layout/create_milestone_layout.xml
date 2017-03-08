@@ -20,7 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_xs_large"
-            app:contentPadding="@dimen/spacing_xs_large">
+            app:contentPaddingBottom="@dimen/spacing_normal"
+            app:contentPaddingLeft="@dimen/spacing_xs_large"
+            app:contentPaddingRight="@dimen/spacing_xs_large"
+            app:contentPaddingTop="@dimen/spacing_normal">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -37,6 +40,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/title"
+                        android:inputType="textCapSentences"
                         android:maxLines="1"/>
 
                 </android.support.design.widget.TextInputLayout>
@@ -47,7 +51,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_xs_large"
-            app:contentPadding="@dimen/spacing_xs_large">
+            app:contentPaddingBottom="@dimen/spacing_normal"
+            app:contentPaddingLeft="@dimen/spacing_xs_large"
+            app:contentPaddingRight="@dimen/spacing_xs_large"
+            app:contentPaddingTop="@dimen/spacing_normal">
 
             <LinearLayout
                 android:layout_width="match_parent"

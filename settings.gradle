@@ -1,1 +1,1 @@
-include ':app', ':bypass'
+include ':app'

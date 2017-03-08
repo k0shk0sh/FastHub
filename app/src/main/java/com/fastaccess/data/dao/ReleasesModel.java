@@ -39,7 +39,7 @@ public class ReleasesModel implements Parcelable {
     @Column String tagName;
     @Column String targetCommitish;
     @Column String name;
-    @Column String body;
+    @SerializedName("body_html") @Column String body;
     @Column boolean draft;
     @Column boolean preRelease;
     @Column Date createdAt;

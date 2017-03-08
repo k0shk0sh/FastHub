@@ -9,14 +9,12 @@ import android.widget.TextView;
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
 
-import in.uncod.android.bypass.Bypass;
-
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
  */
 
 public class MarkDownProvider {
-    private final static Bypass bypass = new Bypass();
+
     private static final String[] IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg"};
 
     private static final String[] MARKDOWN_EXTENSIONS = {
@@ -30,7 +28,7 @@ public class MarkDownProvider {
     private MarkDownProvider() {}
 
     public static void setMdText(@NonNull TextView textView, @NonNull String value) {
-        textView.setText(bypass.markdownToSpannable(value.replaceAll("(`{3})(\\w+)", "```")));//remove the language name
+        textView.setText(value);
     }
 
     public static void addList(@NonNull EditText editText, @NonNull String list) {

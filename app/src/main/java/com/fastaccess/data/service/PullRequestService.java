@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.RepoFilesModel;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -30,6 +31,7 @@ public interface PullRequestService {
                                                            @Query("state") String state, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}")
+    @Headers("Accept: application/vnd.github.VERSION.html")
     Observable<PullRequestModel> getPullRequest(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
 
     @PUT("repos/{owner}/{repo}/pulls/{number}/merge")

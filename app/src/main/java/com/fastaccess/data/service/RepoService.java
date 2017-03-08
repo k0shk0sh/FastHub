@@ -75,6 +75,7 @@ public interface RepoService {
     Observable<Pageable<CommitModel>> getCommits(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/releases")
+    @Headers("Accept: application/vnd.github.VERSION.html")
     Observable<Pageable<ReleasesModel>> getReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/contributors")

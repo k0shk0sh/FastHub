@@ -18,10 +18,14 @@ public class GithubHelper {
     private static Pattern IMAGE_TAG_MATCHER = Pattern.compile("src=\"(.*?)\"");
 
     @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl) {
+        return generateContent(source, baseUrl, false);
+    }
+
+    @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
         if (baseUrl == null) {
-            return mergeContent(source);
+            return mergeContent(source, wrap);
         } else {
-            return mergeContent(validateImageBaseUrl(source, baseUrl));
+            return mergeContent(validateImageBaseUrl(source, baseUrl), wrap);
         }
     }
 
@@ -58,18 +62,18 @@ public class GithubHelper {
         return source;
     }
 
-    private static String mergeContent(@NonNull String source) {
+    private static String mergeContent(@NonNull String source, boolean wrap) {
         return "<html>\n" +
                 "\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>" +
-                "    <link rel=\"stylesheet\" type=\"text/css\" href=\"./github.css\">\n" +
+                "    <link rel=\"stylesheet\" type=\"text/css\" href=\"" + (wrap ? "./github_wrap.css" : "./github.css") + "\">\n" +
                 "</head>\n" +
                 "\n" +
                 "<body>\n" +
                 source +
-                "\n<script src=\"./intercept-touch.js\"></script>\n" +
+                "\n<script src=\"" + (!wrap ? "./intercept-touch.js" : "") + "\"></script>\n" +
                 "</body>\n" +
                 "\n" +
                 "</html>\n";

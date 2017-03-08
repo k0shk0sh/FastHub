@@ -63,6 +63,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        if (!isSecured()) {
+            if (!isLoggedIn()) {
+                startActivity(new Intent(this, LoginView.class));
+                finish();
+                return;
+            }
+        }
         super.onCreate(savedInstanceState);
         if (layout() != 0) {
             setContentView(layout());
@@ -74,12 +81,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             Icepick.restoreInstanceState(this, savedInstanceState);
         }
         setupToolbarAndStatusBar(toolbar);
-        if (!isSecured()) {
-            if (!isLoggedIn()) {
-                startActivity(new Intent(this, LoginView.class));
-                finish();
-            }
-        }
         if (adView != null) {
             boolean isAdsEnabled = PrefGetter.isAdsEnabled();
             if (isAdsEnabled) {
