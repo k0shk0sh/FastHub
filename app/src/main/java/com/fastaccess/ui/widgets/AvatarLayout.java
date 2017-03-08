@@ -85,6 +85,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
         avatar.setImageResource(R.drawable.ic_github_black);
+        setBackgroundColor(Color.TRANSPARENT);
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
