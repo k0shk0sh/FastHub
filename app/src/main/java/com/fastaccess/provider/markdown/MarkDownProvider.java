@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
+import com.zzhoujay.markdown.MarkDown;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
@@ -28,7 +29,7 @@ public class MarkDownProvider {
     private MarkDownProvider() {}
 
     public static void setMdText(@NonNull TextView textView, @NonNull String value) {
-        textView.setText(value);
+        textView.setText(MarkDown.fromMarkdown(value, null, textView));
     }
 
     public static void addList(@NonNull EditText editText, @NonNull String list) {
