@@ -29,7 +29,7 @@
                 android:foreground="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_normal"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_back"/>
+                android:src="@drawable/ic_clear"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/title"
