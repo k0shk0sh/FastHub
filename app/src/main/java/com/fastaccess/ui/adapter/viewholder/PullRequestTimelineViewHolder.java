@@ -13,10 +13,10 @@ import com.fastaccess.data.dao.PullRequestAdapterModel;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
+import com.fastaccess.ui.widgets.RoundBackgroundSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -59,8 +59,9 @@ public class PullRequestTimelineViewHolder extends BaseViewHolder<PullRequestAda
                 int color = Color.parseColor("#" + labelModel.getColor());
                 spannableBuilder
                         .append(" ")
-                        .background(SpannableBuilder.builder().foreground("   " + labelModel.getName() + "   "
-                                , ViewHelper.generateTextColor(color)), color);
+                        .background(SpannableBuilder.builder()
+                                .append("   " + labelModel.getName() + "    ",
+                                        new RoundBackgroundSpan(color, 4)), color);
             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                 spannableBuilder
                         .append(" ")

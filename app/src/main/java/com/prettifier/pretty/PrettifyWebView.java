@@ -100,7 +100,7 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
-        setGithubContent(source, baseUrl, true);
+        setGithubContent(source, baseUrl, false);
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
