@@ -123,29 +123,22 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.fastaccess.ui.widgets.FontButton
+                <android.support.design.widget.FloatingActionButton
                     android:id="@+id/createSecretGist"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/spacing_normal"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:text="@string/create_secret_gist"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="?colorAccent"/>
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_incognito"
+                    android:tint="@color/white"/>
 
-                <com.fastaccess.ui.widgets.FontButton
+                <android.support.design.widget.FloatingActionButton
                     android:id="@+id/createPublicGist"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/spacing_normal"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:text="@string/create_public_gist"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="?colorAccent"/>
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_brower"
+                    android:tint="@color/white"/>
+
             </LinearLayout>
         </LinearLayout>
 
