@@ -29,11 +29,11 @@
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/searchIcon"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_normal"
             android:scaleType="centerCrop"
-            android:padding="@dimen/spacing_xs_large"
             android:src="@drawable/ic_search"/>
 
         <com.fastaccess.ui.widgets.FontEditText
@@ -58,10 +58,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
-            android:scaleType="centerCrop"
             android:src="@drawable/ic_clear"
             tools:visibility="visible"
-            android:padding="@dimen/spacing_xs_large"
+            android:padding="@dimen/spacing_normal"
             android:visibility="invisible"/>
 
     </LinearLayout>

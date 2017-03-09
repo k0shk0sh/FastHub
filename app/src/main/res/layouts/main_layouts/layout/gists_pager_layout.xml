@@ -37,8 +37,8 @@
                     android:layout_gravity="center|end"
                     android:contentDescription="@string/star"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:scaleType="centerCrop"
+                    android:padding="@dimen/spacing_normal"
+                    
                     android:src="@drawable/ic_star"/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
@@ -48,8 +48,8 @@
                     android:layout_gravity="center|end"
                     android:contentDescription="@string/fork"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:scaleType="centerCrop"
+                    android:padding="@dimen/spacing_normal"
+                    
                     android:src="@drawable/ic_fork"/>
             </android.support.v7.widget.Toolbar>
 

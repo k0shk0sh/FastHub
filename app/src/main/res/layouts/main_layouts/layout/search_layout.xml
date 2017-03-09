@@ -53,14 +53,11 @@
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/clear"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:contentDescription="@string/clear"
                         android:background="?selectableItemBackgroundBorderless"
-                        android:paddingBottom="@dimen/spacing_xs_large"
-                        android:paddingEnd="@dimen/spacing_xs_large"
-                        android:paddingStart="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_xs_large"
+                        android:padding="@dimen/spacing_normal"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_clear"
                         android:visibility="invisible"/>
