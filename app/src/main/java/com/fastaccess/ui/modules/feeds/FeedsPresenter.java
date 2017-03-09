@@ -22,8 +22,6 @@ import com.fastaccess.ui.modules.repos.RepoPagerView;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
@@ -81,9 +79,9 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         sendToView(view -> view.showProgress(0));
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @NonNull @Override public ArrayList<EventsModel> getEvents() {

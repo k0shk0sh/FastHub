@@ -14,8 +14,6 @@ import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 27 Nov 2016, 3:43 PM
  */
@@ -27,7 +25,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
     private boolean isImage;
     private String url;
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();
         int code = RestProvider.getErrorCode(throwable);
         if (code == 404) {
@@ -35,12 +33,11 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         } else {
             if (code == 406) {
                 sendToView(view -> view.openUrl(url));
-                return null;
+                return;
             }
             onWorkOffline();
-            return super.onError(throwable, observable);
+            super.onError(throwable);
         }
-        return null;
     }
 
     @Override public void onHandleIntent(@Nullable Bundle intent) {
@@ -55,7 +52,6 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             if (isRepo) {
                 url = url.endsWith("/") ? (url + "readme") : (url + "/readme");
             }
-//            url = url.contains("/blobs/") ? url : url.endsWith("/") ? url : url + "/";
             onWorkOnline();
         }
     }

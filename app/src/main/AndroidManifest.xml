@@ -43,7 +43,6 @@
 
         <activity
             android:name=".ui.modules.user.UserPagerView"
-            android:excludeFromRecents="true"
             android:label="@string/user"
             android:parentActivityName=".ui.modules.main.MainView">
             <meta-data
@@ -53,7 +52,7 @@
 
         <activity
             android:name=".ui.modules.repos.RepoPagerView"
-            android:excludeFromRecents="true"
+
             android:label="@string/repo"
             android:parentActivityName=".ui.modules.main.MainView">
             <meta-data
@@ -63,7 +62,7 @@
 
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerView"
-            android:excludeFromRecents="true"
+
             android:label="@string/issue"
             android:parentActivityName=".ui.modules.repos.RepoPagerView">
             <meta-data
@@ -78,7 +77,7 @@
 
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
-            android:excludeFromRecents="true"
+
             android:label="@string/pull_request"
             android:parentActivityName=".ui.modules.repos.RepoPagerView">
             <meta-data
@@ -88,7 +87,7 @@
 
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerView"
-            android:excludeFromRecents="true"
+
             android:label="@string/commit"
             android:parentActivityName=".ui.modules.repos.RepoPagerView">
             <meta-data
@@ -99,7 +98,7 @@
         <activity
             android:name=".ui.modules.code.CodeViewerView"
             android:configChanges="keyboard|orientation|screenSize"
-            android:excludeFromRecents="true"
+
             android:label="@string/viewer"
             android:parentActivityName=".ui.modules.main.MainView">
             <meta-data
@@ -121,7 +120,7 @@
 
         <activity
             android:name=".ui.modules.gists.gist.GistView"
-            android:excludeFromRecents="true"
+
             android:label="@string/gist"
             android:parentActivityName=".ui.modules.main.MainView">
             <meta-data
@@ -133,7 +132,7 @@
 
         <activity
             android:name=".ui.modules.notification.NotificationActivityView"
-            android:excludeFromRecents="true"
+
             android:label="@string/notifictions"
             android:parentActivityName=".ui.modules.main.MainView">
             <meta-data
@@ -148,7 +147,7 @@
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:excludeFromRecents="true"
+
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay">
 

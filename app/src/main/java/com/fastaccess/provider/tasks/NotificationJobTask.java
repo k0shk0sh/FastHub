@@ -94,7 +94,7 @@ public class NotificationJobTask extends JobService {
             Intent intent = new Intent(this, NotificationActivityView.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent.FLAG_CANCEL_CURRENT);
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_announcement)
                     .setContentTitle(context.getString(R.string.notifictions))

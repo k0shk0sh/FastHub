@@ -62,7 +62,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/header_one"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_header_one"/>
 
@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/header_two"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_header_two"/>
 
@@ -82,7 +82,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/header_three"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_header_three"/>
 
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/bold"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_format_bold"/>
 
@@ -102,7 +102,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/italic"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_format_italic"/>
 
@@ -112,7 +112,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/strike_through"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_format_strikethrough"/>
 
@@ -122,7 +122,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/bullet"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_format_list_bulleted"/>
 
@@ -132,7 +132,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/numbered_list"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_list_numbers"/>
 
@@ -142,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/header"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_minus"/>
 
@@ -152,7 +152,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/code"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_code"/>
 
@@ -162,7 +162,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/quote"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_format_quote"/>
 
@@ -172,7 +172,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/link"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_insert_link"/>
 
@@ -182,7 +182,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/image"
                     android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_image"/>
             </LinearLayout>
@@ -196,7 +196,7 @@
             android:layout_gravity="end|center"
             android:contentDescription="@string/preview"
             android:foreground="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_xs_large"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_eye"/>
     </FrameLayout>

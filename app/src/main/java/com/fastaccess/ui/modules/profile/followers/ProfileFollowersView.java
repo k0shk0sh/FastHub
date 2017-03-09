@@ -10,7 +10,6 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -59,6 +58,7 @@ public class ProfileFollowersView extends BaseFragment<ProfileFollowersMvp.View,
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
+        recycler.addKeyLineDivider();
         if (getPresenter().getFollowers().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }

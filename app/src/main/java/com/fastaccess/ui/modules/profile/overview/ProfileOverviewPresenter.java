@@ -20,11 +20,11 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     private String login;
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         if (!InputHelper.isEmpty(login)) {
             onWorkOffline(login);
         }
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {

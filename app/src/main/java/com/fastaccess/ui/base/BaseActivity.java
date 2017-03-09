@@ -63,6 +63,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (layout() != 0) {
+            setContentView(layout());
+            ButterKnife.bind(this);
+        }
         if (!isSecured()) {
             if (!isLoggedIn()) {
                 startActivity(new Intent(this, LoginView.class));
@@ -70,12 +75,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 return;
             }
         }
-        super.onCreate(savedInstanceState);
-        if (layout() != 0) {
-            setContentView(layout());
-            ButterKnife.bind(this);
-        }
-
         Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);

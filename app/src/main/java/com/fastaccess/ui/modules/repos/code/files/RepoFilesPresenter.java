@@ -42,9 +42,9 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         onItemClick(position, v, item);
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @NonNull @Override public ArrayList<RepoFilesModel> getFiles() {

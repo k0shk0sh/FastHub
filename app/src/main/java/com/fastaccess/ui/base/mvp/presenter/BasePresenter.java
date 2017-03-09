@@ -39,7 +39,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         sendToView(v -> v.showProgress(R.string.in_progress));
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();
         GitHubErrorResponse errorResponse = RestProvider.getErrorResponse(throwable);
         Logger.e(errorResponse);
@@ -48,7 +48,6 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         } else {
             sendToView(v -> v.showErrorMessage(throwable.getMessage()));
         }
-        return null;
     }
 
     @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Action1<T> onNext) {
@@ -56,9 +55,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
                 RxHelper.getObserver(observable)
                         .doOnSubscribe(this::onSubscribed)
                         .doOnNext(onNext)
-                        .doOnCompleted(() -> apiCalled = true)
-                        .onErrorReturn(throwable -> onError(throwable, observable))
-                        .subscribe()
+                        .subscribe(onNext, this::onError, () -> apiCalled = true)
         );
     }
 }

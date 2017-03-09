@@ -57,6 +57,7 @@ public class ProfileGistsView extends BaseFragment<ProfileGistsMvp.View, Profile
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
+        recycler.addDivider();
         if (getPresenter().getGists().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }

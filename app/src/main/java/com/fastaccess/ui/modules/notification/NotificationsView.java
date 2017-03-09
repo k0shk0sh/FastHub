@@ -89,6 +89,7 @@ public class NotificationsView extends BaseFragment<NotificationsMvp.View, Notif
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
+        recycler.addDivider();
         if (savedInstanceState == null || !getPresenter().isApiCalled()) {
             onRefresh();
         }

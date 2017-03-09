@@ -36,8 +36,8 @@
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
                 android:ellipsize="end"
+                android:maxLines="3"
                 android:textColor="@color/primary_text"
                 android:transitionName="@string/title_transition"
                 tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
@@ -49,7 +49,6 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary_text"
                 tools:text="50 minutes ago"/>
-
         </LinearLayout>
     </LinearLayout>
 

@@ -27,9 +27,9 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
         return commitModel;
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline(sha, repoId, login);
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onActivityCreated(@Nullable Intent intent) {

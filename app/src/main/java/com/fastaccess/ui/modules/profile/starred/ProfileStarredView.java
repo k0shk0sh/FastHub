@@ -10,7 +10,6 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -59,6 +58,7 @@ public class ProfileStarredView extends BaseFragment<ProfileStarredMvp.View, Pro
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
+        recycler.addDivider();
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }

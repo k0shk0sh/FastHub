@@ -24,4 +24,5 @@
     <dimen name="header_icon_zie">64dp</dimen>
     <dimen name="icon_size">24dp</dimen>
     <dimen name="dimen.bbn_elevation_tablet">0dp</dimen>
+    <dimen name="divider_height">1px</dimen>
 </resources>

@@ -39,9 +39,9 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
         }
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onWorkOffline() {

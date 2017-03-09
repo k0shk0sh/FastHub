@@ -5,8 +5,6 @@ import android.support.annotation.NonNull;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 03 Dec 2016, 8:00 AM
  */
@@ -42,8 +40,8 @@ class UserPagerPresenter extends BasePresenter<UserPagerMvp.View> implements Use
                 });
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         sendToView(UserPagerMvp.View::onInvalidateMenuItem);
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 }

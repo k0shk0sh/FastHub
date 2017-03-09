@@ -40,7 +40,7 @@ public interface BaseMvp {
 
         void onSubscribed();
 
-        <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable);
+        void onError(@NonNull Throwable throwable);
 
         <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Action1<T> onNext);
     }

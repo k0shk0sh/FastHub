@@ -1,12 +1,15 @@
 package com.fastaccess.ui.widgets.recyclerview;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.fastaccess.R;
 import com.fastaccess.ui.widgets.StateLayout;
 
 
@@ -101,5 +104,19 @@ public class DynamicRecyclerView extends RecyclerView {
 
     public void showProgress(@NonNull StateLayout view) {
         view.showProgress();
+    }
+
+    public void addKeyLineDivider() {
+        Resources resources = getResources();
+        addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
+                resources.getDimensionPixelSize(R.dimen.keyline_1),
+                ContextCompat.getColor(getContext(), R.color.divider)));
+    }
+
+    public void addDivider() {
+        Resources resources = getResources();
+        addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
+                resources.getDimensionPixelSize(R.dimen.spacing_xs_large),
+                ContextCompat.getColor(getContext(), R.color.divider)));
     }
 }

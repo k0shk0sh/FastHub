@@ -54,6 +54,7 @@ public class SearchUsersView extends BaseFragment<SearchUsersMvp.View, SearchUse
         adapter = new UsersAdapter(getPresenter().getUsers());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addDivider();
         if (!InputHelper.isEmpty(searchQuery) && getPresenter().getUsers().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }

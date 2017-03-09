@@ -60,7 +60,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
                 spannableBuilder
                         .append(" ")
                         .background(SpannableBuilder.builder()
-                                .append("   " + labelModel.getName() + "    ",
+                                .append("  " + labelModel.getName() + "  ",
                                         new RoundBackgroundSpan(color, 4)), color);
             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                 spannableBuilder
