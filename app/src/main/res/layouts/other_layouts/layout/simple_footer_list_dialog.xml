@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/back"
-                android:foreground="?selectableItemBackgroundBorderless"
+                android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_normal"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_clear"/>
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:contentDescription="@string/done"
-                android:foreground="?selectableItemBackgroundBorderless"
+                android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_normal"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_done"/>

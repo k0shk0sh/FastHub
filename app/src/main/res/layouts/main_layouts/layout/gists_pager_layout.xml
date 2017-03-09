@@ -36,7 +36,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center|end"
                     android:contentDescription="@string/star"
-                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_star"/>
@@ -47,7 +47,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center|end"
                     android:contentDescription="@string/fork"
-                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:padding="@dimen/spacing_xs_large"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_fork"/>

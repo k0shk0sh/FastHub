@@ -63,7 +63,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:foreground="?selectableItemBackgroundBorderless"
+                    android:background="?selectableItemBackgroundBorderless"
                     android:padding="@dimen/spacing_normal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_download"/>
