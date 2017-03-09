@@ -33,23 +33,23 @@
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/startGist"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
-                    android:contentDescription="@string/star"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/star"
                     android:padding="@dimen/spacing_normal"
-                    
+                    android:scaleType="centerCrop"
                     android:src="@drawable/ic_star"/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/forkGist"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center|end"
-                    android:contentDescription="@string/fork"
                     android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/fork"
                     android:padding="@dimen/spacing_normal"
-                    
+                    android:scaleType="centerCrop"
                     android:src="@drawable/ic_fork"/>
             </android.support.v7.widget.Toolbar>
 

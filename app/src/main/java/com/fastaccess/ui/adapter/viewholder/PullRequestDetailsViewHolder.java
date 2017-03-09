@@ -45,6 +45,8 @@ public class PullRequestDetailsViewHolder extends BaseViewHolder<PullRequestAdap
         if (!InputHelper.isEmpty(issueModel.getBodyHtml())) {
             description.setNestedScrollingEnabled(false);
             description.setGithubContent(issueModel.getBodyHtml(), issueModel.getHtmlUrl(), true);
+        } else {
+            description.setGithubContent(itemView.getResources().getString(R.string.no_description_provided), null, true);
         }
     }
 }

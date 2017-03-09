@@ -137,17 +137,13 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         return false;
     }
 
-    @NonNull
-    @Override
-    public RepoPagerPresenter providePresenter() {
-
+    @NonNull @Override public RepoPagerPresenter providePresenter() {
         if (getIntent() == null) {
             throw new IllegalArgumentException("intent is null, WTF");
         }
         if (getIntent().getExtras() == null) {
             throw new IllegalArgumentException("no intent extras provided");
         }
-
         final Bundle extras = getIntent().getExtras();
         final String repoId = extras.getString(BundleConstant.ID);
         final String login = extras.getString(BundleConstant.EXTRA_TWO);
@@ -159,8 +155,6 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         setTitle("");
         Typeface myTypeface = TypeFaceHelper.getTypeface();
         bottomNavigation.setDefaultTypeface(myTypeface);
-        bottomNavigation.setDefaultSelectedIndex(0);
-
         fab.setImageResource(R.drawable.ic_add);
         fab.setImageTintList(ColorStateList.valueOf(Color.WHITE));
         showHideFab();
@@ -180,7 +174,6 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
 
     @Override public void onInitRepo() {
         if (getPresenter().getRepo() == null) {
-            finish();
             return;
         }
         bottomNavigation.setOnMenuItemClickListener(getPresenter());

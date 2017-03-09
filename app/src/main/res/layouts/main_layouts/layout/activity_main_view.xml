@@ -64,7 +64,7 @@
             android:orientation="vertical"
             android:paddingBottom="@dimen/spacing_xs_large">
 
-            <include layout="@layout/enable_ads_swift"/>
+            <include layout="@layout/enable_ads_switch"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 style="@style/TextAppearance.AppCompat.Title"

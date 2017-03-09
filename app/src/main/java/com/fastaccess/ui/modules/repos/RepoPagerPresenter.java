@@ -1,7 +1,5 @@
 package com.fastaccess.ui.modules.repos;
 
-import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,7 +10,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.helper.AppHelper;
-import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -38,18 +35,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     private final String repoId;
     private RepoModel repo;
 
-    @Override public void onError(@NonNull Throwable throwable) {
-        onWorkOffline();
-        super.onError(throwable);
-    }
-
-    public RepoPagerPresenter(final String repoId, final String login) {
+    RepoPagerPresenter(final String repoId, final String login) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId())) {
-            throw new IllegalArgumentException("aruments cannot be empty");
+            throw new IllegalArgumentException("arguments cannot be empty");
         }
         this.repoId = repoId;
         this.login = login;
-
         makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
                 repoModel -> {
                     this.repo = repoModel;
@@ -63,18 +54,16 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 });
     }
 
-    @Override
-    protected void onAttachView(@NonNull final RepoPagerMvp.View view) {
-        super.onAttachView(view);
+    @Override public void onError(@NonNull Throwable throwable) {
+        onWorkOffline();
+        super.onError(throwable);
+    }
 
+    @Override protected void onAttachView(@NonNull final RepoPagerMvp.View view) {
+        super.onAttachView(view);
         if (getRepo() != null) {
             view.onInitRepo();
         }
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable final Intent intent) {
-        // nothing to do
     }
 
     @NonNull @Override public String repoId() {

@@ -63,7 +63,6 @@ public interface RepoPagerMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BottomNavigation.OnMenuItemSelectionListener {
-        void onActivityCreated(@Nullable Intent intent);
 
         @NonNull String repoId();
 

@@ -163,16 +163,16 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                 if (!InputHelper.isEmpty(issue.getTitle())) {
                     if (title.getEditText() != null) title.getEditText().setText(issue.getTitle());
                 }
-                if (!InputHelper.isEmpty(issue.getBody())) {
-                    onSetCode(issue.getBody());
+                if (!InputHelper.isEmpty(issue.getHtmlUrl())) {
+                    onSetCode(issue.getHtmlUrl());
                 }
             }
             if (pullRequest != null) {
                 if (!InputHelper.isEmpty(pullRequest.getTitle())) {
                     if (title.getEditText() != null) title.getEditText().setText(pullRequest.getTitle());
                 }
-                if (!InputHelper.isEmpty(pullRequest.getBody())) {
-                    onSetCode(pullRequest.getBody());
+                if (!InputHelper.isEmpty(pullRequest.getHtmlUrl())) {
+                    onSetCode(pullRequest.getHtmlUrl());
                 }
             }
         }

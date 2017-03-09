@@ -108,6 +108,8 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         } else {
             if (item.getPayload() != null && item.getPayload().getIssue() != null) {
                 SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()));
+            } else if (item.getPayload() != null && item.getPayload().getPullRequest() != null) {
+                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()));
             } else {
                 RepoModel repoModel = item.getRepo();
                 String name = InputHelper.isEmpty(repoModel.getName()) ? repoModel.getFullName() : repoModel.getName();

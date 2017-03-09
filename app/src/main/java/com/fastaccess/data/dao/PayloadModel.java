@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.siimkinks.sqlitemagic.annotation.Column;
 import com.siimkinks.sqlitemagic.annotation.Id;
+import com.siimkinks.sqlitemagic.annotation.IgnoreColumn;
 import com.siimkinks.sqlitemagic.annotation.Table;
 
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class PayloadModel implements Parcelable {
     @Column String action;
     @Column(onDeleteCascade = true, handleRecursively = false) RepoModel forkee;
     @Column(onDeleteCascade = true, handleRecursively = false) IssueModel issue;
+    @IgnoreColumn private PullRequestModel pullRequest;
 
     @Override public int describeContents() { return 0; }
 
