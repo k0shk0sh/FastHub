@@ -137,8 +137,21 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         return false;
     }
 
-    @NonNull @Override public RepoPagerPresenter providePresenter() {
-        return new RepoPagerPresenter();
+    @NonNull
+    @Override
+    public RepoPagerPresenter providePresenter() {
+
+        if (getIntent() == null) {
+            throw new IllegalArgumentException("intent is null, WTF");
+        }
+        if (getIntent().getExtras() == null) {
+            throw new IllegalArgumentException("no intent extras provided");
+        }
+
+        final Bundle extras = getIntent().getExtras();
+        final String repoId = extras.getString(BundleConstant.ID);
+        final String login = extras.getString(BundleConstant.EXTRA_TWO);
+        return new RepoPagerPresenter(repoId, login);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -146,14 +159,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         setTitle("");
         Typeface myTypeface = TypeFaceHelper.getTypeface();
         bottomNavigation.setDefaultTypeface(myTypeface);
-        if (savedInstanceState == null) {
-            getPresenter().onActivityCreated(getIntent());
-            bottomNavigation.setDefaultSelectedIndex(0);
-        } else {
-            if (getPresenter().getRepo() != null) {
-                onInitRepo();
-            }
-        }
+        bottomNavigation.setDefaultSelectedIndex(0);
+
         fab.setImageResource(R.drawable.ic_add);
         fab.setImageTintList(ColorStateList.valueOf(Color.WHITE));
         showHideFab();

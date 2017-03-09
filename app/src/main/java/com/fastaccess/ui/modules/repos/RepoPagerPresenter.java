@@ -34,8 +34,8 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     private boolean isWatched;
     private boolean isStarred;
     private boolean isForked;
-    private String login;
-    private String repoId;
+    private final String login;
+    private final String repoId;
     private RepoModel repo;
 
     @Override public void onError(@NonNull Throwable throwable) {
@@ -43,27 +43,38 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         super.onError(throwable);
     }
 
-    @Override public void onActivityCreated(@Nullable Intent intent) {
-        if (intent != null && intent.getExtras() != null) {
-            Bundle bundle = intent.getExtras();
-            repoId = bundle.getString(BundleConstant.ID);
-            login = bundle.getString(BundleConstant.EXTRA_TWO);
-            if (!InputHelper.isEmpty(login()) && !InputHelper.isEmpty(repoId())) {
-                makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
-                        repoModel -> {
-                            this.repo = repoModel;
-                            manageSubscription(this.repo.persist().observe().subscribe());
-                            sendToView(view -> {
-                                view.onInitRepo();
-                                view.onNavigationChanged(RepoPagerMvp.CODE);
-                            });
-                            onCheckStarring();
-                            onCheckWatching();
-                        });
-                return;
-            }
+    public RepoPagerPresenter(final String repoId, final String login) {
+        if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId())) {
+            throw new IllegalArgumentException("aruments cannot be empty");
         }
-        sendToView(RepoPagerMvp.View::onFinishActivity);
+        this.repoId = repoId;
+        this.login = login;
+
+        makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
+                repoModel -> {
+                    this.repo = repoModel;
+                    manageSubscription(this.repo.persist().observe().subscribe());
+                    sendToView(view -> {
+                        view.onInitRepo();
+                        view.onNavigationChanged(RepoPagerMvp.CODE);
+                    });
+                    onCheckStarring();
+                    onCheckWatching();
+                });
+    }
+
+    @Override
+    protected void onAttachView(@NonNull final RepoPagerMvp.View view) {
+        super.onAttachView(view);
+
+        if (getRepo() != null) {
+            view.onInitRepo();
+        }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable final Intent intent) {
+        // nothing to do
     }
 
     @NonNull @Override public String repoId() {
