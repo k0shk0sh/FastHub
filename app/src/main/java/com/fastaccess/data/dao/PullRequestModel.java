@@ -125,7 +125,9 @@ public class PullRequestModel implements Parcelable {
         UserModel merger = (isMerge && pullRequest.getMergedBy() != null) ? pullRequest.getMergedBy() : pullRequest.getUser();
         String status = !isMerge ? context.getString(pullRequest.getState().getStatus()) : context.getString(R.string.merged);
         SpannableBuilder builder = SpannableBuilder.builder();
-        builder.append(merger.getLogin())
+        builder.bold("#" + pullRequest.getNumber())
+                .append(" ")
+                .append(merger.getLogin())
                 .append(" ")
                 .append(status)
                 .append(" ");

@@ -43,6 +43,8 @@ public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
             CharSequence data = ParseDateFormat.getTimeAgo(issueModel.getState() == IssueState.open
                                                            ? issueModel.getCreatedAt() : issueModel.getClosedAt());
             details.setText(SpannableBuilder.builder()
+                    .bold("#" + issueModel.getNumber())
+                    .append(" ")
                     .append(itemView.getResources().getString(issueModel.getState().getStatus()))
                     .append(" ")
                     .append(data));

@@ -75,7 +75,7 @@ public interface RepoService {
     Observable<Pageable<CommitModel>> getCommits(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/releases")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<ReleasesModel>> getReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/contributors")
@@ -89,10 +89,12 @@ public interface RepoService {
                                                           @NonNull @Path("sha") String ref, @Query("page") int page);
 
     @POST("repos/{owner}/{repo}/commits/{sha}/comments")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<CommentsModel> postCommitComment(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                 @NonNull @Path("sha") String ref, @Body CommentRequestModel model);
 
     @PATCH("repos/{owner}/{repo}/comments/{id}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<CommentsModel> editCommitComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,
                                                 @Body CommentRequestModel body);
 

@@ -12,6 +12,7 @@ import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -43,15 +44,19 @@ public interface GistService {
     Observable<GistsModel> getGist(@Path("id") String id);
 
     @GET("gists/{id}/comments")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<CommentsModel>> getGistComments(@NonNull @Path("id") String id, @Query("page") int page);
 
     @GET("gists/{gist_id}/comments/{id}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<CommentsModel> getGistComment(@Path("gist_id") String gistId, @Path("id") String id);
 
     @POST("gists/{gist_id}/comments")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<CommentsModel> createGistComment(@Path("gist_id") String gistId, @Body CommentRequestModel body);
 
     @PATCH("gists/{gist_id}/comments/{id}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<CommentsModel> editGistComment(@Path("gist_id") String gistId, @Path("id") long id, @Body CommentRequestModel body);
 
     @DELETE("gists/{gist_id}/comments/{id}")

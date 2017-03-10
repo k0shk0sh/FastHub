@@ -110,6 +110,7 @@ public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesP
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
+            onLoadMore.setParameter(((IssueState) getArguments().getSerializable(BundleConstant.EXTRA_TWO)));
         }
         return onLoadMore;
     }

@@ -173,27 +173,8 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
-            if (requestCode == BundleConstant.REQUEST_CODE) {
-                Bundle bundle = data.getExtras();
-                if (bundle != null) {
-                    boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
-                    CommentsModel commentsModel = bundle.getParcelable(BundleConstant.ITEM);
-                    if (isNew) {
-                        adapter.addItem(commentsModel);
-                        recycler.smoothScrollToPosition(adapter.getItemCount());
-                    } else {
-                        int position = adapter.getItem(commentsModel);
-                        if (position != -1) {
-                            adapter.swapItem(commentsModel, position);
-                            recycler.smoothScrollToPosition(position);
-                        } else {
-                            adapter.addItem(commentsModel);
-                            recycler.smoothScrollToPosition(adapter.getItemCount());
-                        }
-                    }
-                }
-            }
+        if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
+            onRefresh();
         }
     }
 

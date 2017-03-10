@@ -22,8 +22,6 @@ import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
  */
@@ -64,12 +62,12 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
-        setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoIssuesMvp.View::hideProgress);
             return;
         }
         if (repoId == null || login == null) return;
+        setCurrentPage(page);
         makeRestCall(RestProvider.getIssueService().getRepositoryIssues(login, repoId, issueState.name(), page),
                 issues -> {
                     if (getCurrentPage() == 1) {

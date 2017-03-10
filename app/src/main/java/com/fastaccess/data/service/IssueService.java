@@ -34,7 +34,7 @@ public interface IssueService {
                                                          @Query("state") String state, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/issues/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<IssueModel> getIssue(@Path("owner") String owner, @Path("repo") String repo,
                                     @Path("number") int number);
 
@@ -48,6 +48,7 @@ public interface IssueService {
                                        @Body IssueRequestModel issue);
 
     @PATCH("repos/{owner}/{repo}/issues/{number}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<IssueModel> editIssue(@Path("owner") String owner, @Path("repo") String repo,
                                      @Path("number") int number,
                                      @Body IssueRequestModel issue);
@@ -61,7 +62,7 @@ public interface IssueService {
 
 
     @GET("repos/{owner}/{repo}/issues/{number}/comments")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<CommentsModel>> getIssueComments(@Path("owner") String owner,
                                                          @Path("repo") String repo,
                                                          @Path("number") int number,
@@ -76,6 +77,7 @@ public interface IssueService {
                                                  @Path("number") int number, @Body CommentRequestModel body);
 
     @PATCH("repos/{owner}/{repo}/issues/comments/{id}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<CommentsModel> editIssueComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,
                                                @Body CommentRequestModel body);
 

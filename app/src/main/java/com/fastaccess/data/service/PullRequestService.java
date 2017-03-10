@@ -54,16 +54,18 @@ public interface PullRequestService {
                                                            @Path("number") long number);
 
     @PATCH("repos/{owner}/{repo}/pulls/{number}")
+    @Headers("Accept: application/vnd.github.VERSION.html")
     Observable<PullRequestModel> editPullRequest(@Path("owner") String owner, @Path("repo") String repo,
                                                  @Path("number") int number,
                                                  @Body IssueRequestModel issue);
 
     @PATCH("repos/{owner}/{repo}/issues/{number}")
+    @Headers("Accept: application/vnd.github.VERSION.html")
     Observable<PullRequestModel> editIssue(@Path("owner") String owner, @Path("repo") String repo,
                                            @Path("number") int number,
                                            @Body IssueRequestModel issue);
 
     @POST("repos/{owner}/{repo}/issues/{number}/assignees")
     Observable<PullRequestModel> putAssignees(@Path("owner") String owner, @Path("repo") String repo,
-                                        @Path("number") int number, @Body AssigneesRequestModel body);
+                                              @Path("number") int number, @Body AssigneesRequestModel body);
 }

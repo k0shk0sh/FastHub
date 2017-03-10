@@ -107,18 +107,14 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
 
     @Override public void onSuccessSubmission(IssueModel issueModel) {
         hideProgress();
-        Intent intent = new Intent();
-        intent.putExtras(Bundler.start().put(BundleConstant.ITEM, issueModel).end());
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_OK);
         finish();
         showMessage(R.string.success, R.string.successfully_submitted);
     }
 
     @Override public void onSuccessSubmission(PullRequestModel issueModel) {
         hideProgress();
-        Intent intent = new Intent();
-        intent.putExtras(Bundler.start().put(BundleConstant.ITEM, issueModel).end());
-        setResult(RESULT_OK, intent);
+        setResult(RESULT_OK);
         finish();
         showMessage(R.string.success, R.string.successfully_submitted);
     }
@@ -163,16 +159,16 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                 if (!InputHelper.isEmpty(issue.getTitle())) {
                     if (title.getEditText() != null) title.getEditText().setText(issue.getTitle());
                 }
-                if (!InputHelper.isEmpty(issue.getHtmlUrl())) {
-                    onSetCode(issue.getHtmlUrl());
+                if (!InputHelper.isEmpty(issue.getBody())) {
+                    onSetCode(issue.getBody());
                 }
             }
             if (pullRequest != null) {
                 if (!InputHelper.isEmpty(pullRequest.getTitle())) {
                     if (title.getEditText() != null) title.getEditText().setText(pullRequest.getTitle());
                 }
-                if (!InputHelper.isEmpty(pullRequest.getHtmlUrl())) {
-                    onSetCode(pullRequest.getHtmlUrl());
+                if (!InputHelper.isEmpty(pullRequest.getBody())) {
+                    onSetCode(pullRequest.getBody());
                 }
             }
         }
