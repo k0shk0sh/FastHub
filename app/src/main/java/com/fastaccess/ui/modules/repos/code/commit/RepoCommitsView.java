@@ -29,11 +29,12 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
     private OnLoadMore onLoadMore;
     private CommitsAdapter adapter;
 
-    public static RepoCommitsView newInstance(@NonNull String repoId, @NonNull String login) {
+    public static RepoCommitsView newInstance(@NonNull String repoId, @NonNull String login, @NonNull String branch) {
         RepoCommitsView view = new RepoCommitsView();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.EXTRA_TWO, branch)
                 .end());
         return view;
     }
@@ -92,6 +93,10 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
             onLoadMore = new OnLoadMore(getPresenter());
         }
         return onLoadMore;
+    }
+
+    @Override public void changeBranch(@NonNull String branch) {
+        getPresenter().onBranchChanged(branch);
     }
 
     @Override public void onRefresh() {

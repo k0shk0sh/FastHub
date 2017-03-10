@@ -3,11 +3,13 @@ package com.fastaccess.ui.modules.repos.code.commit;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.fastaccess.data.dao.CommitModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -15,8 +17,6 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -27,6 +27,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
     private ArrayList<CommitModel> commits = new ArrayList<>();
     private String login;
     private String repoId;
+    private String branch;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -63,7 +64,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService().getCommits(login, repoId, page),
+        makeRestCall(RestProvider.getRepoService().getCommits(login, repoId, branch, page),
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
@@ -78,6 +79,8 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
+        branch = bundle.getString(BundleConstant.EXTRA_TWO);
+        Logger.e(branch);
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
         }
@@ -96,6 +99,13 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     }));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
+        }
+    }
+
+    @Override public void onBranchChanged(@NonNull String branch) {
+        if (!TextUtils.equals(branch, this.branch)) {
+            this.branch = branch;
+            onCallApi(1, null);
         }
     }
 

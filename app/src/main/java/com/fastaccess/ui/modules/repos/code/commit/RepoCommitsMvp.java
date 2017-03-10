@@ -21,6 +21,8 @@ interface RepoCommitsMvp {
         void onNotifyAdapter();
 
         @NonNull OnLoadMore getLoadMore();
+
+        void changeBranch(@NonNull String branch);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -31,5 +33,7 @@ interface RepoCommitsMvp {
         @NonNull ArrayList<CommitModel> getCommits();
 
         void onWorkOffline();
+
+        void onBranchChanged(@NonNull String branch);
     }
 }

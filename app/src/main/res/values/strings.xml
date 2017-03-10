@@ -228,4 +228,14 @@
     <string name="due_on">Due On</string>
     <string name="no_assignees">No Assignees</string>
     <string name="this_value">This</string>
+    <string name="commits_reflected">Commits has been switched to the selected branch.</string>
+    <string name="general_settings">General Settings</string>
+    <string name="background_job_summary">Change the background notification task time</string>
+    <string name="background_job_title">Background Notification Sync</string>
+    <string name="every">Every</string>
+    <string name="behavior">Behavior</string>
+    <string name="recycler_view_animation_summary">Disable RecyclerView animation.</string>
+    <string name="recycler_view_animation_title">RecylerView Animation</string>
+    <string name="back_button_summary">Disable pressing the back button twice to exit FastHub.</string>
+    <string name="back_button_title">Back Button Behavior</string>
 </resources>

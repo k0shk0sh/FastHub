@@ -130,14 +130,25 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override public void onBackPressed() {
+        boolean clickTwichToExit = !PrefGetter.isTwiceBackButtonDisabled();
         if (drawerLayout != null) {
             if (getPresenter().canBackPress(drawerLayout)) {
-                if (canExit()) super.onBackPressed();
+                superOnBackPressed(clickTwichToExit);
             } else {
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         } else {
-            if (canExit()) super.onBackPressed();
+            superOnBackPressed(clickTwichToExit);
+        }
+    }
+
+    private void superOnBackPressed(boolean clickTwichToExit) {
+        if (clickTwichToExit) {
+            if (canExit()) {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
         }
     }
 

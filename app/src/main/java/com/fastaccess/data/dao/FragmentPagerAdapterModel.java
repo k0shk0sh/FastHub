@@ -69,7 +69,7 @@ public class FragmentPagerAdapterModel {
                                                                    @NonNull String defaultBranch) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.readme), ViewerView.newInstance(url, true)),
                 new FragmentPagerAdapterModel(context.getString(R.string.files), RepoFilePathView.newInstance(login, repoId, null, defaultBranch)),
-                new FragmentPagerAdapterModel(context.getString(R.string.commits), RepoCommitsView.newInstance(repoId, login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.commits), RepoCommitsView.newInstance(repoId, login, defaultBranch)),
                 new FragmentPagerAdapterModel(context.getString(R.string.releases), RepoReleasesView.newInstance(repoId, login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.contributors), RepoContributorsView.newInstance(repoId, login)))
                 .collect(Collectors.toList());

@@ -98,4 +98,8 @@ public class PrefGetter {
         }
         return 0;
     }
+
+    public static boolean isTwiceBackButtonDisabled() {
+        return PrefHelper.getBoolean("back_button");
+    }
 }
