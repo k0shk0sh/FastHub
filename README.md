@@ -30,22 +30,22 @@
 # FastHub made of:
 
 - Min SDK(21) but Appcompat is used all the way.
-- MVP architecture'd (using Thirtyinch lib) for the easiness of maintaining and following one structure throughout the project.
+- MVP architecture'd (using [ThirtyInch](https://github.com/grandcentrix/ThirtyInch) lib) for the easiness of maintaining and following one structure throughout the project.
 - Lambda expressions because __you know why__.
-- RxJava & RxAndroid for Retrofit & Background threads.
-- Retrofit for consuming rest api.
-- SqliteMagic for offline mode.
-- Stream API for dealing with `ArrayLists`.
+- [RxJava](https://github.com/ReactiveX/RxJava) & [RxAndroid](https://github.com/ReactiveX/RxAndroid) for Retrofit & Background threads.
+- [Retrofit](https://github.com/square/retrofit) for consuming rest api.
+- [SqliteMagic](https://github.com/SiimKinks/sqlitemagic) for offline mode.
+- [Stream API](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `ArrayLists`.
 - JobScheduler using Firebase JobDispatcher for notifications service.
-- ButterKnife for views binding.
-- Icepick for saving instance of objects.
-- Lombok for (getters/setters).
-- BottomNavigationView for `Fragments` navigation.
-- UIL for image loading.
-- AndDown for comments markdown highlighting.
-- Toasty for displaying error/success messages.
-- CircleImageView for avatar images.
-- MatrialTapTargetPrompt for displying guides throughout the app.
+- [ButterKnife](https://github.com/JakeWharton/butterknife) for views binding.
+- [Icepick](https://github.com/frankiesardo/icepick) for saving instance of objects.
+- [Lombok](https://projectlombok.github.io) for (getters/setters).
+- [Material-BottomNavigation](https://github.com/sephiroth74/Material-BottomNavigation) for `Fragments` navigation.
+- [Android-Universal-Image-Loader](https://github.com/nostra13/Android-Universal-Image-Loader) for image loading.
+- [MarkDown](https://github.com/zzhoujay/Markdown) for comments markdown highlighting.
+- [Toasty](https://github.com/GrenderG/Toasty) for displaying error/success messages.
+- [CircleImageView](https://github.com/hdodenhof/CircleImageView) for avatar images.
+- [MatrialTapTargetPrompt](https://github.com/sjwall/MaterialTapTargetPrompt) for displying guides throughout the app.
 - Firebase analytics, crash reporting, ads & messaging. (analytics & messaging not yet implemented.)
 - The mighty Android support libs.
 
