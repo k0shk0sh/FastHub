@@ -46,17 +46,19 @@ public class RepoCodePagerView extends BaseFragment<RepoCodePagerMvp.View, RepoC
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        String repoId = getArguments().getString(BundleConstant.ID);
-        String login = getArguments().getString(BundleConstant.EXTRA);
-        String htmlLink = getArguments().getString(BundleConstant.EXTRA_TWO);
-        String defaultBranch = getArguments().getString(BundleConstant.EXTRA_THREE);
-        if (InputHelper.isEmpty(repoId) || InputHelper.isEmpty(login) || InputHelper.isEmpty(htmlLink)) {
-            throw new NullPointerException(String.format("Failed Initializing (%s) %s %s %s", getClass().getSimpleName(), repoId, login, htmlLink));
+        if (getArguments() != null) {
+            String repoId = getArguments().getString(BundleConstant.ID);
+            String login = getArguments().getString(BundleConstant.EXTRA);
+            String htmlLink = getArguments().getString(BundleConstant.EXTRA_TWO);
+            String defaultBranch = getArguments().getString(BundleConstant.EXTRA_THREE);
+            if (InputHelper.isEmpty(repoId) || InputHelper.isEmpty(login) || InputHelper.isEmpty(htmlLink)) {
+                throw new NullPointerException();
+            }
+            pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(),
+                    FragmentPagerAdapterModel.buildForRepoCode(getContext(), repoId, login, htmlLink, Objects.toString(defaultBranch, "master"))));
+            tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabs.setupWithViewPager(pager);
         }
-        pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(),
-                FragmentPagerAdapterModel.buildForRepoCode(getContext(), repoId, login, htmlLink, Objects.toString(defaultBranch, "master"))));
-        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabs.setupWithViewPager(pager);
     }
 
     @NonNull @Override public RepoCodePagerPresenter providePresenter() {

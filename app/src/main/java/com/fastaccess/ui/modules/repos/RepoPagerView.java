@@ -153,6 +153,12 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
+        if (savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.container, new DummyFragment())//dummy fragment at the beginning to avoid committing later fragments after creation
+                    .commit();
+        }
         Typeface myTypeface = TypeFaceHelper.getTypeface();
         bottomNavigation.setDefaultTypeface(myTypeface);
         fab.setImageResource(R.drawable.ic_add);
@@ -164,7 +170,6 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         this.navType = navType;
         showHideFab();
         //noinspection WrongConstant
-        if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 

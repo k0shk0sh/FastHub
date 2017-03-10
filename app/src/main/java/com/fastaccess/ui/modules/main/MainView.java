@@ -123,7 +123,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             return true;
         } else if (item.getItemId() == R.id.notifications) {
             ViewHelper.tintDrawable(item.getIcon(), ContextCompat.getColor(this, R.color.primary_text));
-            startActivity(new Intent(this,NotificationActivityView.class));
+            startActivity(new Intent(this, NotificationActivityView.class));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -206,7 +206,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
                         .beginTransaction()
                         .replace(R.id.container, FeedsView.newInstance(), FeedsView.TAG)
                         .commit();
-                bottomNavigation.setDefaultSelectedIndex(0);
             }
             LoginModel userModel = LoginModel.getUser();
             if (userModel != null) {

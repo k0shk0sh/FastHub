@@ -1,4 +1,4 @@
-package com.fastaccess.provider.tasks;
+package com.fastaccess.provider.tasks.notification;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -35,7 +35,7 @@ import rx.schedulers.Schedulers;
  * Created by Kosh on 19 Feb 2017, 6:32 PM
  */
 
-public class NotificationJobTask extends JobService {
+public class NotificationSchedulerJobTask extends JobService {
     private final static String EVERY_30_MINS = "every_30_mins";
 
     @Override public boolean onStartJob(JobParameters job) {
@@ -74,7 +74,7 @@ public class NotificationJobTask extends JobService {
                 .setRecurring(true)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setTrigger(Trigger.executionWindow(10, duration))
-                .setService(NotificationJobTask.class);
+                .setService(NotificationSchedulerJobTask.class);
         dispatcher.mustSchedule(builder.build());
     }
 

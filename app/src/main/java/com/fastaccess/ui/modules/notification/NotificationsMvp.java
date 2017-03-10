@@ -36,8 +36,6 @@ public interface NotificationsMvp {
 
         @NonNull ArrayList<NotificationThreadModel> getNotifications();
 
-        void onReadAll();
-
         void showAllNotifications(boolean showAll);
     }
 }

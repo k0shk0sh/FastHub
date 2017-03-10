@@ -8,6 +8,7 @@ import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.tasks.notification.ReadNotificationService;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -28,14 +29,11 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
 
     @Override public void onItemClick(int position, View v, NotificationThreadModel item) {
         if (item.isUnread()) {
-            makeRestCall(RestProvider.getNotificationService()
-                            .markAsRead(String.valueOf(item.getId())),
-                    booleanResponse -> {
-                        item.setUnread(booleanResponse.code() == 205);
-                        item.persist().execute();
-                        notifications.remove(position);
-                        sendToView(NotificationsMvp.View::onNotifyAdapter);
-                    });
+            ReadNotificationService.start(v.getContext(), item.getId());
+            notifications.remove(position);
+            sendToView(NotificationsMvp.View::onNotifyAdapter);
+            item.setUnread(true);
+            item.persist().execute();
         }
         if (item.getSubject() != null && item.getSubject().getUrl() != null) {
             if (getView() != null) getView().onClick(item.getSubject().getUrl());
@@ -69,20 +67,6 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
         return notifications;
     }
 
-    @Override public void onReadAll() {
-        if (!notifications.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Observable.from(notifications))
-                    .filter(NotificationThreadModel::isUnread)
-                    .subscribe(notificationThreadModel -> makeRestCall(RxHelper.getObserver(RestProvider.getNotificationService()
-                                    .markAsRead(String.valueOf(notificationThreadModel.getId()))),
-                            booleanResponse -> {
-                                notifications.remove(notificationThreadModel);
-                                sendToView(NotificationsMvp.View::onNotifyAdapter);
-                            }), throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage()))));
-        }
-
-    }
-
     @Override public void showAllNotifications(boolean showAll) {
         this.showAll = showAll;
     }
@@ -113,8 +97,9 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
             return;
         }
         setCurrentPage(page);
-        Observable<Pageable<NotificationThreadModel>> observable = showAll ? RestProvider.getNotificationService().getAllNotifications(page)
-                                                                           : RestProvider.getNotificationService().getNotifications(page);
+        Observable<Pageable<NotificationThreadModel>> observable =
+                showAll ? RestProvider.getNotificationService().getAllNotifications(page)
+                        : RestProvider.getNotificationService().getNotifications(page);
         makeRestCall(observable, response -> {
             notifications.clear();
             if (response.getItems() != null) {

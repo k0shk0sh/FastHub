@@ -25,7 +25,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     private boolean apiCalled;
     private RxTiPresenterSubscriptionHandler subscriptionHandler = new RxTiPresenterSubscriptionHandler(this);
 
-    @Override public void manageSubscription(@Nullable Subscription subscription) {
+    @Override public void manageSubscription(@Nullable Subscription... subscription) {
         if (subscription != null) {
             subscriptionHandler.manageSubscription(subscription);
         }
@@ -54,7 +54,6 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         manageSubscription(
                 RxHelper.getObserver(observable)
                         .doOnSubscribe(this::onSubscribed)
-                        .doOnNext(onNext)
                         .subscribe(onNext, this::onError, () -> apiCalled = true)
         );
     }

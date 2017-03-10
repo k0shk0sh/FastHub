@@ -10,11 +10,14 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.scheme.StackBuilderSchemeParser;
+import com.fastaccess.provider.tasks.notification.ReadNotificationService;
 import com.fastaccess.ui.adapter.NotificationsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
@@ -122,7 +125,17 @@ public class NotificationsView extends BaseFragment<NotificationsMvp.View, Notif
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.readAll) {
-            getPresenter().onReadAll();
+            if (!getPresenter().getNotifications().isEmpty()) {
+                long[] ids = Stream.of(getPresenter().getNotifications())
+                        .filter(NotificationThreadModel::isUnread)
+                        .mapToLong(NotificationThreadModel::getId)
+                        .toArray();
+                if (ids != null && ids.length > 0) {
+                    getPresenter().getNotifications().clear();
+                    onNotifyAdapter();
+                    ReadNotificationService.start(getContext(), ids);
+                }
+            }
             return true;
         }
         return super.onOptionsItemSelected(item);

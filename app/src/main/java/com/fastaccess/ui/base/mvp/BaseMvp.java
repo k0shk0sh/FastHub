@@ -34,7 +34,7 @@ public interface BaseMvp {
     }
 
     interface FAPresenter {
-        void manageSubscription(@Nullable Subscription subscription);
+        void manageSubscription(@Nullable Subscription... subscription);
 
         boolean isApiCalled();
 

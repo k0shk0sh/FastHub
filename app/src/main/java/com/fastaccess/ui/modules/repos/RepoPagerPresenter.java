@@ -223,18 +223,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             sendToView(RepoPagerMvp.View::onFinishActivity);
             return;
         }
-        if (currentVisible == null) {
-            fragmentManager.beginTransaction()
-                    .add(R.id.container, RepoCodePagerView.newInstance(repoId(), login(), getRepo().getUrl(),
-                            getRepo().getDefaultBranch()), RepoCodePagerView.TAG)
-                    .commit();
-            return;
-        }
+        if (currentVisible == null) return;
         switch (type) {
             case RepoPagerMvp.CODE:
                 if (codePagerView == null) {
                     onAddAndHide(fragmentManager, RepoCodePagerView.newInstance(repoId(), login(),
-                            getRepo().getHtmlUrl(), getRepo().getDefaultBranch()), currentVisible);
+                            getRepo().getUrl(), getRepo().getDefaultBranch()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, codePagerView, currentVisible);
                 }
@@ -258,22 +252,22 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     }
 
     @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow, @NonNull Fragment toHide) {
-        toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()
                 .hide(toHide)
                 .show(toShow)
                 .commit();
+        toHide.onHiddenChanged(true);
         toShow.onHiddenChanged(false);
     }
 
     @Override public void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide) {
-        toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()
                 .hide(toHide)
                 .add(R.id.container, toAdd, toAdd.getClass().getSimpleName())
                 .commit();
+        toHide.onHiddenChanged(true);
         toAdd.onHiddenChanged(false);
     }
 

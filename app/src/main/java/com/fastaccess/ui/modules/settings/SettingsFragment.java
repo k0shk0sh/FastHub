@@ -5,7 +5,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.provider.tasks.NotificationJobTask;
+import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 
 /**
  * Created by Kosh on 02 Mar 2017, 7:51 PM
@@ -16,7 +16,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     @Override public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.fasthub_settings);
         findPreference("notificationTime").setOnPreferenceChangeListener((preference, newValue) -> {
-            NotificationJobTask.scheduleJob(getActivity().getApplicationContext(), PrefGetter.getNotificationTaskDuration(getActivity()
+            NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(), PrefGetter.getNotificationTaskDuration(getActivity()
                     .getApplicationContext()), true);
             return true;
         });
