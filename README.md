@@ -42,12 +42,12 @@
 - [Lombok](https://projectlombok.github.io) for (getters/setters).
 - [Material-BottomNavigation](https://github.com/sephiroth74/Material-BottomNavigation) for `Fragments` navigation.
 - [Android-Universal-Image-Loader](https://github.com/nostra13/Android-Universal-Image-Loader) for image loading.
-- [MarkDown](https://github.com/zzhoujay/Markdown) for comments markdown highlighting.
+- [MarkDown](https://github.com/zzhoujay/Markdown) for markdown editor highlighting.
 - [Toasty](https://github.com/GrenderG/Toasty) for displaying error/success messages.
 - [CircleImageView](https://github.com/hdodenhof/CircleImageView) for avatar images.
-- [MatrialTapTargetPrompt](https://github.com/sjwall/MaterialTapTargetPrompt) for displying guides throughout the app.
-- Firebase analytics, crash reporting, ads & messaging. (analytics & messaging not yet implemented.)
-- The mighty Android support libs.
+- [MatrialTapTargetPrompt](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying guides throughout the app.
+- Firebase analytics, crash reporting, ads.
+- The almighty Android support libs.
 
 > To download the app from here, please visit the releases page.
 
@@ -66,7 +66,7 @@ Copyright (C) 2017 Kosh.
 Licensed under the [GPL-3.0](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE)
 license (see the LICENSE file).
 
-# Screenshots
+# Screenshots (old ones, they will be changed soon)
 
 #### Mobile Portrait
 ![MainScreen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true "MainScreen")
