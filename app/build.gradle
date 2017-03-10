@@ -88,18 +88,18 @@ dependencies {
         butterKnifeVersion = '8.5.1'
         icepickVersion = '3.2.0'
         lombokVersion = '1.12.6'
-        supportVerion = "25.2.0"
+        supportVersion = "25.2.0"
         firebase = "10.2.0"
         thirtyinchVersion = '0.8.0-rc3'
         retrofit = '2.1.0'
     }
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:${supportVerion}"
-    compile "com.android.support:design:${supportVerion}"
-    compile "com.android.support:cardview-v7:${supportVerion}"
-    compile "com.android.support:recyclerview-v7:${supportVerion}"
-    compile "com.android.support:preference-v14:${supportVerion}"
-    compile "com.android.support:customtabs:${supportVerion}"
+    compile "com.android.support:appcompat-v7:${supportVersion}"
+    compile "com.android.support:design:${supportVersion}"
+    compile "com.android.support:cardview-v7:${supportVersion}"
+    compile "com.android.support:recyclerview-v7:${supportVersion}"
+    compile "com.android.support:preference-v14:${supportVersion}"
+    compile "com.android.support:customtabs:${supportVersion}"
     compile "com.google.firebase:firebase-ads:${firebase}"
     releaseCompile "com.google.firebase:firebase-crash:${firebase}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
