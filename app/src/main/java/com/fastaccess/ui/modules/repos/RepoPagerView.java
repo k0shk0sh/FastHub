@@ -70,10 +70,16 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login) {
+        return createIntent(context, repoId, login, RepoPagerMvp.CODE);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      @RepoPagerMvp.RepoNavigationType int navType) {
         Intent intent = new Intent(context, RepoPagerView.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, login)
+                .put(BundleConstant.EXTRA_TYPE, navType)
                 .end());
         return intent;
     }
@@ -147,7 +153,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         final Bundle extras = getIntent().getExtras();
         final String repoId = extras.getString(BundleConstant.ID);
         final String login = extras.getString(BundleConstant.EXTRA_TWO);
-        return new RepoPagerPresenter(repoId, login);
+        final int navTyp = extras.getInt(BundleConstant.EXTRA_TYPE);
+        return new RepoPagerPresenter(repoId, login, navTyp);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -170,6 +177,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         this.navType = navType;
         showHideFab();
         //noinspection WrongConstant
+        if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
+
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 

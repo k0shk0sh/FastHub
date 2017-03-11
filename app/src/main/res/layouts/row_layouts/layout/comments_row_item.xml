@@ -58,6 +58,6 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_micro"/>
+            android:layout_marginTop="@dimen/spacing_normal"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

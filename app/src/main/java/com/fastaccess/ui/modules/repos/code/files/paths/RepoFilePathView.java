@@ -76,7 +76,6 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
             onBackClicked();
             if (codePagerCallback != null) {
                 codePagerCallback.onBranchChanged(ref);
-                showMessage(R.string.commits, R.string.commits_reflected);
             }
         }
     }

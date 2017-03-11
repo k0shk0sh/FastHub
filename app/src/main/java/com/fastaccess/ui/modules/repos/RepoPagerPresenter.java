@@ -35,7 +35,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     private final String repoId;
     private RepoModel repo;
 
-    RepoPagerPresenter(final String repoId, final String login) {
+    RepoPagerPresenter(final String repoId, final String login, int navTyp) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId())) {
             throw new IllegalArgumentException("arguments cannot be empty");
         }
@@ -47,7 +47,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                     manageSubscription(this.repo.persist().observe().subscribe());
                     sendToView(view -> {
                         view.onInitRepo();
-                        view.onNavigationChanged(RepoPagerMvp.CODE);
+                        view.onNavigationChanged(navTyp);
                     });
                     onCheckStarring();
                     onCheckWatching();

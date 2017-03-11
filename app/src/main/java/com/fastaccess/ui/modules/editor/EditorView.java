@@ -21,6 +21,7 @@ import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.widgets.FontEditText;
 import com.fastaccess.ui.widgets.ForegroundImageView;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -161,5 +162,22 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onBackPressed() {
+        if (InputHelper.isEmpty(editText)) {
+            super.onBackPressed();
+        } else {
+            MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
+                    Bundler.start().put(BundleConstant.EXTRA, true).end())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
+        }
+    }
+
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk && bundle != null) {
+            finish();
+        }
     }
 }

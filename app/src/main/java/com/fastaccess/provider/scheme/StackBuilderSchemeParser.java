@@ -16,6 +16,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.modules.code.CodeViewerView;
 import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.modules.main.MainView;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
@@ -146,7 +147,7 @@ public class StackBuilderSchemeParser {
         }
         if (issueNumber < 1) return null;
         return TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
+                .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST))
                 .addNextIntent(PullRequestPagerView.createIntent(context, repo, owner, issueNumber));
     }
 
@@ -177,7 +178,7 @@ public class StackBuilderSchemeParser {
         }
         if (issueNumber < 1) return null;
         return TaskStackBuilder.create(context)
-                .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
+                .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
                 .addNextIntent(IssuePagerView.createIntent(context, repo, owner, issueNumber));
     }
 

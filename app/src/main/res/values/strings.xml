@@ -78,7 +78,7 @@
     <string name="error_closing_issue">Error in closing issue, Please try again later.</string>
     <string name="error_re_opening_issue">Error re-opening issue, Please try again later.</string>
     <string name="success_closed">Successfully closed issue.</string>
-    <string name="no_description_provided">No description provided.</string>
+    <string name="no_description_provided"><p>No description provided.</p></string>
     <string name="header_one">Header One</string>
     <string name="header_two">Header Two</string>
     <string name="header_three">Header Three</string>
@@ -238,4 +238,5 @@
     <string name="recycler_view_animation_title">RecylerView Animation</string>
     <string name="back_button_summary">Disable pressing the back button twice to exit FastHub.</string>
     <string name="back_button_title">Back Button Behavior</string>
+    <string name="unsaved_data_warning">Any usaved data will be discared.</string>
 </resources>

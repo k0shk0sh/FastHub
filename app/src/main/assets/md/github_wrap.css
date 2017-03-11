@@ -7,6 +7,8 @@ body {
     line-height: 1.5;
     word-wrap: break-word;
     overflow: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 body::before {
@@ -21,7 +23,7 @@ body::after {
 }
 
 body>:first-child {
-    margin-top: 0!important
+    margin-top: 2px !important
 }
 
 body>:last-child {
@@ -48,9 +50,9 @@ body .anchor:focus {
     outline: none
 }
 
-body p, body blockquote, body ul, body ol, body dl, body table, body pre {
+p, blockquote, ul, ol, dl, table, pre {
     margin-top: 0;
-    margin-bottom: 16px
+    margin-bottom: 4px
 }
 
 body hr {
@@ -93,9 +95,9 @@ body .loweralpha {
     list-style-type: lower-alpha
 }
 
-body h1, body h2, body h3, body h4, body h5, body h6 {
+h1, h2, h3, h4, h5, h6 {
     margin-top: 24px;
-    margin-bottom: 16px;
+    margin-bottom: 4px;
     font-weight: 600;
     line-height: 1.25
 }
@@ -181,9 +183,9 @@ body dl dt {
     font-weight: 700
 }
 
-body dl dd {
+dl dd {
     padding: 0 16px;
-    margin-bottom: 16px
+    margin-bottom: 4px
 }
 
 body table {
@@ -355,7 +357,7 @@ body pre>code {
     border: 0
 }
 
-body .highlight {
+.highlight {
     margin-bottom: 16px
 }
 
@@ -445,7 +447,7 @@ body .email-hidden-reply.expanded {
     display: block
 }
 
-body .email-quoted-reply, body .email-signature-reply {
+.email-quoted-reply, .email-signature-reply {
     padding: 0 15px;
     margin-bottom: 15px;
     color: #767676;
