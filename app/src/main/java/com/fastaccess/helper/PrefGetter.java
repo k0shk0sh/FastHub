@@ -102,4 +102,8 @@ public class PrefGetter {
     public static boolean isTwiceBackButtonDisabled() {
         return PrefHelper.getBoolean("back_button");
     }
+
+    public static boolean isRectdAvatar() {
+        return PrefHelper.getBoolean("rect_avatar");
+    }
 }

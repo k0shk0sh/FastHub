@@ -240,4 +240,6 @@
     <string name="back_button_title">Back Button Behavior</string>
     <string name="unsaved_data_warning">Any unsaved data will be discarded.</string>
     <string name="private_repo">Private</string>
+    <string name="rect_avatar_summary">Use rounded rectangle instead of circular avatar.</string>
+    <string name="rect_avatar_title">Rectangle Avatar</string>
 </resources>

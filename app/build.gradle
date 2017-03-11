@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: "com.neenbedankt.android-apt"
 apply plugin: 'com.siimkinks.sqlitemagic'
 apply plugin: 'com.google.firebase.firebase-crash'
 
@@ -108,7 +109,7 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
     compile 'com.firebase:firebase-jobdispatcher:0.5.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
+    compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
     compile "frankiesardo:icepick:${icepickVersion}"
     compile "com.jakewharton:butterknife:${butterKnifeVersion}"
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
@@ -120,9 +121,9 @@ dependencies {
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.2'
     compile 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
     compile 'com.zzhoujay.markdown:markdown:1.0.4'
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    apt "org.projectlombok:lombok:${lombokVersion}"
+    apt "frankiesardo:icepick-processor:${icepickVersion}"
+    apt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     provided "org.projectlombok:lombok:${lombokVersion}"
 }
 
