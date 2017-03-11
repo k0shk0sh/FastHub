@@ -59,9 +59,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
                 int color = Color.parseColor("#" + labelModel.getColor());
                 spannableBuilder
                         .append(" ")
-                        .background(SpannableBuilder.builder()
-                                .append("  " + labelModel.getName() + "  ",
-                                        new RoundBackgroundSpan(color, 4)), color);
+                        .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color, 5));
             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                 spannableBuilder
                         .append(" ")

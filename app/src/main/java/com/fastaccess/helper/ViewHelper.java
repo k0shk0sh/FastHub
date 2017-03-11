@@ -135,9 +135,11 @@ public class ViewHelper {
     }
 
     @ColorInt public static int generateTextColor(int color) {
-        return Color.rgb(255 - Color.red(color),
-                255 - Color.green(color),
-                255 - Color.blue(color));
+        int red = Color.red(color);
+        int green = Color.green(color);
+        int blue = Color.blue(color);
+        double lum = (((0.299 * red) + ((0.587 * green) + (0.114 * blue))));
+        return lum > 186 ? 0xFF000000 : 0xFFFFFFFF;
     }
 
 }
