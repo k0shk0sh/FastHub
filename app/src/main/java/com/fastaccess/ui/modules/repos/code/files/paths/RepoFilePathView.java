@@ -22,7 +22,6 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
-import com.fastaccess.ui.modules.repos.code.RepoCodePagerMvp;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesView;
 
 import java.util.List;
@@ -48,7 +47,6 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
     private RepoFilePathsAdapter adapter;
     private RepoFilesView repoFilesView;
     private RepoPagerMvp.View repoCallback;
-    private RepoCodePagerMvp.View codePagerCallback;
 
     public static RepoFilePathView newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String defaultBranch) {
         RepoFilePathView view = new RepoFilePathView();
@@ -74,9 +72,6 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
             ref = ((BranchesModel) branches.getItemAtPosition(position)).getName();
             getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, true);
             onBackClicked();
-            if (codePagerCallback != null) {
-                codePagerCallback.onBranchChanged(ref);
-            }
         }
     }
 
@@ -86,11 +81,6 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
             repoCallback = (RepoPagerMvp.View) context;
         } else if (getParentFragment() instanceof RepoPagerMvp.View) {
             repoCallback = (RepoPagerMvp.View) getParentFragment();
-        }
-        if (context instanceof RepoCodePagerMvp.View) {
-            codePagerCallback = (RepoCodePagerMvp.View) context;
-        } else if (getParentFragment() instanceof RepoCodePagerMvp.View) {
-            codePagerCallback = (RepoCodePagerMvp.View) getParentFragment();
         }
     }
 

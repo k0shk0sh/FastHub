@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.CommitModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -25,6 +25,7 @@ import java.util.ArrayList;
 class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements RepoCommitsMvp.Presenter {
 
     private ArrayList<CommitModel> commits = new ArrayList<>();
+    private ArrayList<BranchesModel> branches = new ArrayList<>();
     private String login;
     private String repoId;
     private String branch;
@@ -80,7 +81,21 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
-        Logger.e(branch);
+        if (branches.isEmpty()) {
+            makeRestCall(RestProvider.getRepoService()
+                            .getBranches(login, repoId)
+                            .doOnSubscribe(() -> sendToView(RepoCommitsMvp.View::showBranchesProgress)),
+                    response -> {
+                        if (response != null && response.getItems() != null) {
+                            branches.clear();
+                            branches.addAll(response.getItems());
+                            sendToView(view -> {
+                                view.setBranchesData(branches, true);
+                                view.hideBranchesProgress();
+                            });
+                        }
+                    });
+        }
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
         }
@@ -88,6 +103,10 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     @NonNull @Override public ArrayList<CommitModel> getCommits() {
         return commits;
+    }
+
+    @NonNull @Override public ArrayList<BranchesModel> getBranches() {
+        return branches;
     }
 
     @Override public void onWorkOffline() {
@@ -107,6 +126,10 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
             this.branch = branch;
             onCallApi(1, null);
         }
+    }
+
+    @Override public String getDefaultBranch() {
+        return branch;
     }
 
     @Override public void onItemClick(int position, View v, CommitModel item) {

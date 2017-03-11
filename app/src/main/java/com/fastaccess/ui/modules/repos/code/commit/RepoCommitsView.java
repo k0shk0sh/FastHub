@@ -1,22 +1,32 @@
 package com.fastaccess.ui.modules.repos.code.commit;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.AppCompatSpinner;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
+import butterknife.OnItemSelected;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -26,8 +36,11 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.branches) AppCompatSpinner branches;
+    @BindView(R.id.branchesProgress) ProgressBar branchesProgress;
     private OnLoadMore onLoadMore;
     private CommitsAdapter adapter;
+    private RepoPagerMvp.View repoCallback;
 
     public static RepoCommitsView newInstance(@NonNull String repoId, @NonNull String login, @NonNull String branch) {
         RepoCommitsView view = new RepoCommitsView();
@@ -39,6 +52,27 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
         return view;
     }
 
+    @OnItemSelected(R.id.branches) void onBranchSelected(int position) {
+        if (repoCallback.hasUserInteractedWithView()) {
+            String ref = ((BranchesModel) branches.getItemAtPosition(position)).getName();
+            getPresenter().onBranchChanged(ref);
+        }
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) context;
+        } else if (getParentFragment() instanceof RepoPagerMvp.View) {
+            repoCallback = (RepoPagerMvp.View) getParentFragment();
+        }
+    }
+
+    @Override public void onDetach() {
+        repoCallback = null;
+        super.onDetach();
+    }
+
     @Override public void onNotifyAdapter() {
 
         hideProgress();
@@ -46,7 +80,7 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.commit_with_branch_layout;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -66,6 +100,7 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
         } else if (getPresenter().getCommits().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        setBranchesData(getPresenter().getBranches(), false);
     }
 
     @NonNull @Override public RepoCommitsPresenter providePresenter() {
@@ -84,6 +119,7 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
 
     @Override public void showErrorMessage(@NonNull String msgRes) {
         hideProgress();
+        hideBranchesProgress();
         stateLayout.showReload(adapter.getItemCount());
         super.showErrorMessage(msgRes);
     }
@@ -95,8 +131,33 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
         return onLoadMore;
     }
 
-    @Override public void changeBranch(@NonNull String branch) {
-        getPresenter().onBranchChanged(branch);
+    @Override public void setBranchesData(@NonNull List<BranchesModel> branchesData, boolean firstTime) {
+        branchesProgress.setVisibility(View.GONE);
+        ArrayAdapter<BranchesModel> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, branchesData);
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
+        branches.setAdapter(adapter);
+        if (firstTime) {
+            if (!InputHelper.isEmpty(getPresenter().getDefaultBranch())) {
+                int index = -1;
+                for (int i = 0; i < branchesData.size(); i++) {
+                    if (branchesData.get(i).getName().equals(getPresenter().getDefaultBranch())) {
+                        index = i;
+                        break;
+                    }
+                }
+                if (index != -1) {
+                    branches.setSelection(index, true);
+                }
+            }
+        }
+    }
+
+    @Override public void showBranchesProgress() {
+        branchesProgress.setVisibility(View.VISIBLE);
+    }
+
+    @Override public void hideBranchesProgress() {
+        branchesProgress.setVisibility(View.GONE);
     }
 
     @Override public void onRefresh() {

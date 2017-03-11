@@ -10,12 +10,14 @@ import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.RoundBackgroundSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.text.NumberFormat;
 
+import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 
@@ -31,6 +33,9 @@ public class ReposViewHolder extends BaseViewHolder<RepoModel> {
     @BindView(R.id.forks) FontTextView forks;
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindString(R.string.forked) String forked;
+    @BindString(R.string.private_repo) String privateRepo;
+    @BindColor(R.color.material_indigo_700) int forkColor;
+    @BindColor(R.color.material_deep_purple_700) int privateColor;
     private boolean isStarred;
     private boolean withImage;
 
@@ -50,8 +55,16 @@ public class ReposViewHolder extends BaseViewHolder<RepoModel> {
     }
 
     @Override public void bind(@NonNull RepoModel repo) {
-        if (repo.isFork()) {
-            title.setText(SpannableBuilder.builder().bold(forked).append(" ").append(repo.getName()));
+        if (repo.isFork() && !isStarred) {
+            title.setText(SpannableBuilder.builder()
+                    .append(" " + forked + " ", new RoundBackgroundSpan(forkColor, 5))
+                    .append(" ")
+                    .append(repo.getName()));
+        } else if (repo.isPrivateX()) {
+            title.setText(SpannableBuilder.builder()
+                    .append(" " + privateRepo + " ", new RoundBackgroundSpan(forkColor, 5))
+                    .append(" ")
+                    .append(repo.getName()));
         } else {
             title.setText(!isStarred ? repo.getName() : repo.getFullName());
         }

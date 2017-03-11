@@ -1,7 +1,5 @@
 package com.fastaccess.ui.modules.repos.code;
 
-import android.support.annotation.NonNull;
-
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 /**
@@ -14,8 +12,6 @@ public interface RepoCodePagerMvp {
         boolean canPressBack();
 
         void onBackPressed();
-
-        void onBranchChanged(@NonNull String branch);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {}

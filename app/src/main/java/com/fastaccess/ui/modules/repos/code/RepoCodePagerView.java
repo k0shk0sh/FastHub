@@ -14,7 +14,6 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.repos.code.commit.RepoCommitsView;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathView;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
@@ -76,15 +75,6 @@ public class RepoCodePagerView extends BaseFragment<RepoCodePagerMvp.View, RepoC
         RepoFilePathView pathView = (RepoFilePathView) pager.getAdapter().instantiateItem(pager, 1);
         if (pathView != null) {
             pathView.onBackPressed();
-        }
-    }
-
-    @Override public void onBranchChanged(@NonNull String branch) {
-        if (pager != null && pager.getAdapter() != null) {
-            RepoCommitsView commitsView = (RepoCommitsView) pager.getAdapter().instantiateItem(pager, 2);
-            if (commitsView != null) {
-                commitsView.changeBranch(branch);
-            }
         }
     }
 }
