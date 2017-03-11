@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<animated-selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/following"
+        android:state_activated="true"
+        android:drawable="@drawable/ic_unfollow" />
+
+    <item
+        android:id="@+id/not_following"
+        android:drawable="@drawable/ic_follow" />
+
+    <transition
+        android:fromId="@id/following"
+        android:toId="@id/not_following"
+        android:drawable="@drawable/avd_unfollow" />
+
+    <transition
+        android:fromId="@id/not_following"
+        android:toId="@id/following"
+        android:drawable="@drawable/avd_follow" />
+
+</animated-selector>

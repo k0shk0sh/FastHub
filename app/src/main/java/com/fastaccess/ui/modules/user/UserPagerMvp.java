@@ -1,7 +1,5 @@
 package com.fastaccess.ui.modules.user;
 
-import android.support.annotation.NonNull;
-
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 
@@ -11,18 +9,8 @@ import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 
 public interface UserPagerMvp {
 
-    interface View extends BaseMvp.FAView, ProfilePagerMvp.View {
-        void onInvalidateMenuItem();
-    }
+    interface View extends BaseMvp.FAView, ProfilePagerMvp.View {}
 
-    interface Presenter extends BaseMvp.FAPresenter {
-        void onCheckFollowStatus(@NonNull String login);
-
-        boolean isSuccessResponse();
-
-        boolean isFollowing();
-
-        void onFollowMenuItemClicked(@NonNull String login);
-    }
+    interface Presenter extends BaseMvp.FAPresenter {}
 
 }

@@ -231,17 +231,20 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override public void onRepoWatched(boolean isWatched) {
-        watchRepo.tintDrawables(isWatched ? accentColor : Color.BLACK);
+        watchRepo.setTopDrawable(isWatched ? R.drawable.ic_eye_off : R.drawable.ic_eye);
+        watchRepo.tintDrawables(accentColor);
         onEnableDisableWatch(true);
     }
 
     @Override public void onRepoStarred(boolean isStarred) {
-        starRepo.tintDrawables(isStarred ? accentColor : Color.BLACK);
+        starRepo.setTopDrawable(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star);
+        starRepo.tintDrawables(accentColor);
         onEnableDisableStar(true);
     }
 
     @Override public void onRepoForked(boolean isForked) {
-        forkRepo.tintDrawables(isForked ? accentColor : Color.BLACK);
+        forkRepo.setTopDrawable(isForked ? R.drawable.ic_fork_filled : R.drawable.ic_fork);
+        forkRepo.tintDrawables(accentColor);
         onEnableDisableFork(true);
     }
 

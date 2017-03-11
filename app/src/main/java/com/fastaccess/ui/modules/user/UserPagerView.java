@@ -6,14 +6,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.MenuItemCompat;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.ProgressBar;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
-import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -75,16 +70,12 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
             return;
         }
         setTitle(login);
-        onInvalidateMenuItem();
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapterModel.buildForProfile(this, login));
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         pager.setAdapter(adapter);
         tabs.setupWithViewPager(pager);
-        if (savedInstanceState == null) {
-            getPresenter().onCheckFollowStatus(login);
-        }
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -93,42 +84,6 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
 
     @Override public void hideProgress() {
         super.hideProgress();
-    }
-
-    @Override public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.follow_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.follow) {
-            if (item.getActionView() == null) {
-                MenuItemCompat.setActionView(item, new ProgressBar(this));
-                getPresenter().onFollowMenuItemClicked(login);
-            }
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override public boolean onPrepareOptionsMenu(Menu menu) {
-        if (LoginModel.getUser().getLogin().equalsIgnoreCase(login)) {
-            menu.findItem(R.id.follow).setVisible(false);
-            return true;
-        }
-        if (getPresenter().isSuccessResponse()) {
-            MenuItemCompat.setActionView(menu.findItem(R.id.follow), null);
-            menu.findItem(R.id.follow)
-                    .setVisible(true)
-                    .setTitle(getPresenter().isFollowing() ? getString(R.string.unfollow) : getString(R.string.follow));
-
-        } else {
-            MenuItemCompat.setActionView(menu.findItem(R.id.follow), new ProgressBar(this));
-        }
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override public void onInvalidateMenuItem() {
-        supportInvalidateOptionsMenu();
     }
 
     @Override public void onNavigateToFollowers() {

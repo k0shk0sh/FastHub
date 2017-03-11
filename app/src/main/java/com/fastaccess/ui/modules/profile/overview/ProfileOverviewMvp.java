@@ -15,13 +15,26 @@ interface ProfileOverviewMvp {
 
     interface View extends BaseMvp.FAView {
         void onInitViews(@Nullable UserModel userModel);
+        void onInvalidateMenuItem();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
+
+
         void onFragmentCreated(@Nullable Bundle bundle);
 
         void onWorkOffline(@NonNull String login);
 
+        void onCheckFollowStatus(@NonNull String login);
+
+        boolean isSuccessResponse();
+
+        boolean isFollowing();
+
+        void onFollowButtonClicked(@NonNull String login);
+
         void onSendUserToView(@Nullable UserModel userModel);
+
+        @NonNull String getLogin();
     }
 }

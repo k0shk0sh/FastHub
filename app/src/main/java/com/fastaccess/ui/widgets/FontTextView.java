@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
@@ -45,6 +46,7 @@ public class FontTextView extends AppCompatTextView {
     @Override public void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
         tintDrawables(tintColor);
+//        setActivated(isActivated);
     }
 
     private void init(Context context, AttributeSet attributeSet) {
@@ -62,6 +64,7 @@ public class FontTextView extends AppCompatTextView {
     }
 
     public void tintDrawables(@ColorInt int color) {
+        if (color == tintColor) return;
         if (color != -1) {
             this.tintColor = color;
             Drawable[] drawables = getCompoundDrawablesRelative();
@@ -78,4 +81,7 @@ public class FontTextView extends AppCompatTextView {
         setTextColor(ViewHelper.textSelector(nColor, pColor));
     }
 
+    public void setTopDrawable(@DrawableRes int topDrawable) {
+        setCompoundDrawablesRelativeWithIntrinsicBounds(0, topDrawable, 0, 0);
+    }
 }

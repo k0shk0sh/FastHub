@@ -6,9 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.View;
+import android.widget.Button;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -40,6 +43,8 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
     @BindView(R.id.following) FontTextView following;
     @BindView(R.id.followers) FontTextView followers;
     @BindView(R.id.progress) View progress;
+    @BindView(R.id.followBtn) Button followBtn;
+
 
     @State UserModel userModel;
 
@@ -51,11 +56,14 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
         return view;
     }
 
-    @OnClick({R.id.following, R.id.followers}) void onClick(View view) {
+    @OnClick({R.id.following, R.id.followers, R.id.followBtn}) void onClick(View view) {
         if (view.getId() == R.id.followers) {
             profileCallback.onNavigateToFollowers();
-        } else {
+        } else if (view.getId() == R.id.following) {
             profileCallback.onNavigateToFollowing();
+        } else if (view.getId() == R.id.followBtn) {
+            getPresenter().onFollowButtonClicked(getPresenter().getLogin());
+            AnimHelper.animateVisibility(followBtn, false, View.INVISIBLE);
         }
     }
 
@@ -81,8 +89,15 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
-            if (userModel != null) onInitViews(userModel);
-            else getPresenter().onFragmentCreated(getArguments());
+            if (userModel != null) {
+                onInitViews(userModel);
+                onInvalidateMenuItem();
+            } else {
+                getPresenter().onFragmentCreated(getArguments());
+            }
+        }
+        if (LoginModel.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin())) {
+            followBtn.setVisibility(View.GONE);
         }
     }
 
@@ -110,6 +125,23 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
                 .append(getString(R.string.following))
                 .append("\n")
                 .bold(String.valueOf(userModel.getFollowing())));
+    }
+
+    @Override public void onInvalidateMenuItem() {
+        hideProgress();
+        if (getPresenter().isSuccessResponse()) {
+            AnimHelper.animateVisibility(followBtn, true, View.INVISIBLE, new AnimHelper.AnimationCallback() {
+                @Override public void onAnimationEnd() {
+                    followBtn.setActivated(getPresenter().isFollowing());
+                }
+
+                @Override public void onAnimationStart() {
+                    if (followBtn == null) return;
+                    followBtn.setText(getPresenter().isFollowing() ? getString(R.string.unfollow) : getString(R.string.follow));
+
+                }
+            });
+        }
     }
 
     @Override public void showProgress(@StringRes int resId) {

@@ -27,7 +27,7 @@ import java.util.List;
 
 public class AnimHelper {
 
-    interface AnimationCallback {
+    public interface AnimationCallback {
         void onAnimationEnd();
 
         void onAnimationStart();
@@ -35,12 +35,21 @@ public class AnimHelper {
 
     private static final Interpolator interpolator = new LinearInterpolator();
 
-    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show) {
-        animateVisibility(view, show, null);
+    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show, int visibility) {
+        animateVisibility(view, show, visibility, null);
     }
 
-    @SuppressWarnings("WeakerAccess") @UiThread
-    public static void animateVisibility(@Nullable final View view, final boolean show, @Nullable final AnimationCallback callback) {
+    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show) {
+        animateVisibility(view, show, View.GONE);
+    }
+
+    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show,
+                                                   @Nullable final AnimationCallback callback) {
+        animateVisibility(view, show, View.GONE, callback);
+    }
+
+    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show, int visibility,
+                                                   @Nullable final AnimationCallback callback) {
         if (view == null) {
             return;
         }
@@ -48,16 +57,17 @@ public class AnimHelper {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override public boolean onPreDraw() {
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
-                    animateSafeVisibility(show, view, callback);
+                    animateSafeVisibility(show, view, visibility, callback);
                     return true;
                 }
             });
         } else {
-            animateSafeVisibility(show, view, callback);
+            animateSafeVisibility(show, view, visibility, callback);
         }
     }
 
-    @UiThread private static void animateSafeVisibility(final boolean show, @NonNull final View view, @Nullable final AnimationCallback callback) {
+    @UiThread private static void animateSafeVisibility(final boolean show, @NonNull final View view, int visibility,
+                                                        @Nullable final AnimationCallback callback) {
         view.clearAnimation();
         if (view.getAnimation() != null) view.getAnimation().cancel();
         ViewPropertyAnimator animator = view.animate().setDuration(200).alpha(show ? 1F : 0F).setInterpolator(new AccelerateInterpolator())
@@ -75,7 +85,7 @@ public class AnimHelper {
                     @Override public void onAnimationEnd(@NonNull Animator animation) {
                         super.onAnimationEnd(animation);
                         if (!show) {
-                            view.setVisibility(View.GONE);
+                            view.setVisibility(visibility);
                             view.setScaleX(0);
                             view.setScaleY(0);
                         }
