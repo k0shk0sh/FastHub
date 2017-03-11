@@ -174,6 +174,15 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".ui.modules.about.FastHubAboutActivity"
+            android:parentActivityName=".ui.modules.main.MainView"
+            android:theme="@style/AppTheme.AboutActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainView" />
+        </activity>
+
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
             android:exported="false">
