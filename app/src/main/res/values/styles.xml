@@ -92,4 +92,11 @@
         <item name="behavior_peekHeight">220dp</item>
     </style>
 
+    <style name="AppTheme.AboutActivity" parent="Theme.Mal.Light.LightActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/aboutColorPrimary</item>
+        <item name="colorPrimaryDark">@color/aboutColorDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
 </resources>
