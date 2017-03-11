@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="General Setting">
+    <PreferenceCategory android:title="@string/general_settings">
 
         <ListPreference
             android:defaultValue="@string/thirty_minutes"
@@ -21,6 +21,13 @@
             android:key="recylerViewAnimation"
             android:summary="@string/recycler_view_animation_summary"
             android:title="@string/recycler_view_animation_title"/>
+
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="rect_avatar"
+            android:summary="@string/rect_avatar_summary"
+            android:title="@string/rect_avatar_title"/>
 
         <SwitchPreference
             android:defaultValue="false"

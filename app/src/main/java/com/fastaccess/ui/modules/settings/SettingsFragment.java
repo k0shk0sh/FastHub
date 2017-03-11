@@ -21,9 +21,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             return true;
         });
         findPreference("recylerViewAnimation").setOnPreferenceChangeListener((preference, newValue) -> {
-            if (getActivity() != null) getActivity().recreate();
+            restartActivity();
+            return true;
+        });
+        findPreference("rect_avatar").setOnPreferenceChangeListener((preference, newValue) -> {
+            restartActivity();
             return true;
         });
     }
+
+    private void restartActivity() {if (getActivity() != null) getActivity().recreate();}
 
 }

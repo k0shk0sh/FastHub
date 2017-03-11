@@ -44,7 +44,7 @@
 - [Android-Universal-Image-Loader](https://github.com/nostra13/Android-Universal-Image-Loader) for image loading.
 - [MarkDown](https://github.com/zzhoujay/Markdown) for markdown editor highlighting.
 - [Toasty](https://github.com/GrenderG/Toasty) for displaying error/success messages.
-- [CircleImageView](https://github.com/hdodenhof/CircleImageView) for avatar images.
+- [ShapedImageView](https://github.com/gavinliu/ShapedImageView) for avatar images.
 - [MatrialTapTargetPrompt](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying guides throughout the app.
 - Firebase analytics, crash reporting, ads.
 - The almighty Android support libs.

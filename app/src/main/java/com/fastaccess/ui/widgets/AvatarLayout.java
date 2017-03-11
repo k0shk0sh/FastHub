@@ -11,11 +11,11 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.modules.user.UserPagerView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import de.hdodenhof.circleimageview.CircleImageView;
+import cn.gavinliu.android.lib.shapedimageview.ShapedImageView;
 
 /**
  * Created by Kosh on 14 Nov 2016, 7:59 PM
@@ -33,8 +33,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
-    @BindView(R.id.avatar) CircleImageView avatar;
-    @BindView(R.id.avatarProgress) ProgressBar avatarProgress;
+    @BindView(R.id.avatar) ShapedImageView avatar;
     private String login;
     private Toast toast;
 
@@ -77,6 +76,9 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         inflate(getContext(), R.layout.avatar_layout, this);
         if (isInEditMode()) return;
         ButterKnife.bind(this);
+        if (PrefGetter.isRectdAvatar()) {
+            avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 20);
+        }
     }
 
     @Override public void onLoadingStarted(String imageUri, View view) {
