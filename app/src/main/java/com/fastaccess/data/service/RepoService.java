@@ -71,9 +71,9 @@ public interface RepoService {
     @NonNull @DELETE("user/subscriptions/{owner}/{repo}")
     Observable<Response<Boolean>> unwatchRepo(@Path("owner") String owner, @Path("repo") String repo);
 
-    @NonNull @GET("repos/{owner}/{repo}/commits/{branch}")
+    @NonNull @GET("repos/{owner}/{repo}/commits")
     Observable<Pageable<CommitModel>> getCommits(@Path("owner") String owner, @Path("repo") String repo,
-                                                 @NonNull @Path("branch") String branch, @Query("page") int page);
+                                                 @NonNull @Query("sha") String branch, @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/releases")
     @Headers("Accept: application/vnd.github.VERSION.full+json")
