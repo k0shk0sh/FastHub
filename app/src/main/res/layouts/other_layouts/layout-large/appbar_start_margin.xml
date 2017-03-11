@@ -6,28 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/bbn_bottom_navigation_width"
-    app:elevation="0dp"
     app:theme="@style/ToolbarStyleDark">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_scrollFlags="scroll|enterAlways">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="?colorPrimary"
-            android:theme="@style/ToolbarStyleDark"
-            app:popupTheme="@style/ToolbarStyleDark"
-            app:theme="@style/ToolbarStyleDark"/>
-    </LinearLayout>
-
-    <View
-        android:id="@+id/toolbarShadow"
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/toolbar_shadow"/>
+        android:layout_height="?actionBarSize"
+        android:background="?colorPrimary"
+        android:theme="@style/ToolbarStyleDark"
+        app:layout_scrollFlags="scroll|enterAlways"
+        app:popupTheme="@style/ToolbarStyleDark"
+        app:theme="@style/ToolbarStyleDark"/>
 </android.support.design.widget.AppBarLayout>

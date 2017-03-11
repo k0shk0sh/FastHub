@@ -11,11 +11,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
+        android:elevation="@dimen/spacing_micro"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:paddingEnd="@dimen/spacing_normal"
             android:paddingStart="@dimen/spacing_normal">
@@ -25,8 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/back"
                 android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/back"
                 android:padding="@dimen/spacing_normal"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_clear"/>
@@ -47,18 +48,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:contentDescription="@string/done"
                 android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/done"
                 android:padding="@dimen/spacing_normal"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_done"/>
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/toolbar_shadow"/>
     </LinearLayout>
 
 

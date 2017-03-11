@@ -7,28 +7,18 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:elevation="@dimen/spacing_micro"
+        android:paddingStart="@dimen/keyline_1"
+        app:tabGravity="center"
         android:background="?colorPrimary"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clipToPadding="false"
-            android:paddingStart="@dimen/keyline_1"
-            app:tabGravity="center"
-            app:tabSelectedTextColor="?colorAccent"
-            app:tabTextColor="@color/dark_gray"
-            tools:ignore="RtlSymmetry"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/toolbar_shadow"/>
-    </LinearLayout>
+        app:tabSelectedTextColor="?colorAccent"
+        app:tabTextColor="@color/dark_gray"
+        tools:ignore="RtlSymmetry"/>
 
     <com.fastaccess.ui.widgets.ViewPagerView
         android:id="@+id/pager"

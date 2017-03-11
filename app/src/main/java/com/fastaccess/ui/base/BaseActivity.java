@@ -7,6 +7,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
-    @Nullable @BindView(R.id.toolbarShadow) View shadowView;
+    @Nullable @BindView(R.id.appbar) AppBarLayout shadowView;
     @Nullable @BindView(R.id.adView) AdView adView;
     private Toast toast;
 
@@ -204,7 +205,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void hideShowShadow(boolean show) {
-        if (shadowView != null) shadowView.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (shadowView != null) shadowView.setElevation(show ? getResources().getDimension(R.dimen.spacing_micro) : 0);
     }
 
     protected void changeStatusBarColor(boolean isTransparent) {

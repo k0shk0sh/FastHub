@@ -10,8 +10,6 @@
         android:id="@+id/appbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        app:elevation="0dp"
         app:theme="@style/ToolbarStyleDark">
 
         <LinearLayout
@@ -38,12 +36,6 @@
                     app:backgroundTint="?colorAccent"/>
             </android.support.v7.widget.Toolbar>
         </LinearLayout>
-
-        <View
-            android:id="@+id/toolbarShadow"
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/toolbar_shadow"/>
     </android.support.design.widget.AppBarLayout>
 
     <fragment

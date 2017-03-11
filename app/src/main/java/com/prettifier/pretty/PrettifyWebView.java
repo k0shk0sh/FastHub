@@ -76,7 +76,6 @@ public class PrettifyWebView extends NestedWebView {
         settings.setAppCacheEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setDefaultTextEncodingName("utf-8");
-        settings.setJavaScriptEnabled(true);
         settings.setLoadsImagesAutomatically(true);
         settings.setBlockNetworkImage(false);
     }
@@ -104,8 +103,11 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
-        Logger.e(TextUtils.equals(source, content));
         if (!TextUtils.equals(source, content)) {
+            if (wrap) {
+                setScrollbarFadingEnabled(false);
+                setVerticalScrollBarEnabled(false);
+            }
             if (!InputHelper.isEmpty(source)) {
                 if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
                 this.content = source;

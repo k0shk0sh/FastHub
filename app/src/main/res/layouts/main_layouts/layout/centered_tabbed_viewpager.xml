@@ -6,26 +6,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
-        android:orientation="vertical">
-
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabGravity="center"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="?colorAccent"
-            app:tabTextColor="@color/dark_gray"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/toolbar_shadow"/>
-    </LinearLayout>
+        android:elevation="@dimen/spacing_micro"
+        app:tabGravity="center"
+        app:tabMode="fixed"
+        app:tabSelectedTextColor="?colorAccent"
+        app:tabTextColor="@color/dark_gray"/>
 
     <com.fastaccess.ui.widgets.ViewPagerView
         android:id="@+id/pager"

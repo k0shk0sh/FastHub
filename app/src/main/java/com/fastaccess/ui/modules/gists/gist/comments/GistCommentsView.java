@@ -56,6 +56,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
         gistId = getArguments().getString("gistId");
         recycler.setEmptyView(stateLayout, refresh);
         if (gistId == null) return;
+        recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
         adapter = new CommentsAdapter(getPresenter().getComments());

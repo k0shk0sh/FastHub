@@ -10,8 +10,7 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:elevation="0dp">
+        android:fitsSystemWindows="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,11 +33,6 @@
                 android:textColor="?colorAccent"/>
 
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/spacing_micro"
-            android:background="@drawable/toolbar_shadow"/>
     </android.support.design.widget.AppBarLayout>
 
 

@@ -60,6 +60,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         super.onCreate(savedInstanceState);
         refresh.setOnRefreshListener(this);
         webView.getSettings().setSaveFormData(false);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebChromeClient(new WebChromeClient() {
             @Override public void onProgressChanged(WebView view, int progress) {
                 super.onProgressChanged(view, progress);

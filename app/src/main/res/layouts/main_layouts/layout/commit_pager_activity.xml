@@ -13,9 +13,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/transparent"
-        android:theme="@style/ToolbarStyleDark"
-        app:elevation="0dp">
+        android:theme="@style/ToolbarStyleDark">
 
         <include layout="@layout/title_header_layout"/>
 
@@ -86,11 +84,6 @@
             android:background="?colorPrimary"
             app:tabSelectedTextColor="?colorAccent"
             app:tabTextColor="@color/dark_gray"/>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="4dp"
-            android:background="@drawable/toolbar_shadow"/>
     </android.support.design.widget.AppBarLayout>
 
     <com.fastaccess.ui.widgets.ViewPagerView

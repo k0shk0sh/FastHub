@@ -30,7 +30,6 @@ public class MilestoneView extends BaseFragment<MilestoneMvp.View, MilestonePres
     public static final String TAG = MilestoneView.class.getSimpleName();
 
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.toolbarShadow) View toolbarShadow;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
