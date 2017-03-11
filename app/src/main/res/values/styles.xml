@@ -102,4 +102,11 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+    <style name="LoginTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/material_indigo_700</item>
+        <item name="colorPrimaryDark">@color/material_indigo_900</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="colorControlNormal">?colorAccent</item>
+    </style>
+
 </resources>

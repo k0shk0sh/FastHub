@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EventsModel;
+import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -41,10 +42,16 @@ public class FeedsViewHolder extends BaseViewHolder<EventsModel> {
             avatar.setUrl(null, null);
         }
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
-        spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "n/a").append(" ");
+        spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");
         if (eventsModel.getType() != null)
-            spannableBuilder.bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase()).append(" ");
-        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "n/a");
+            spannableBuilder.bold(eventsModel.getPayload() != null ? eventsModel.getPayload().getAction() : "")
+                    .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
+        if (eventsModel.getType() != EventsType.WatchEvent) {
+            spannableBuilder
+                    .bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
+                    .append(" ");
+        }
+        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "N/A");
         title.setText(spannableBuilder);
         date.setText(ParseDateFormat.getTimeAgo(eventsModel.getCreatedAt()));
     }

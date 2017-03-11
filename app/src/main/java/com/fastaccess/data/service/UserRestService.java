@@ -3,6 +3,7 @@ package com.fastaccess.data.service;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.AccessTokenModel;
+import com.fastaccess.data.dao.AuthModel;
 import com.fastaccess.data.dao.EventsModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.Pageable;
@@ -10,6 +11,7 @@ import com.fastaccess.data.dao.RepoModel;
 import com.fastaccess.data.dao.UserModel;
 
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -32,6 +34,11 @@ public interface UserRestService {
                                                 @NonNull @Field("client_secret") String clientSecret,
                                                 @NonNull @Field("state") String state,
                                                 @NonNull @Field("redirect_uri") String redirectUrl);
+
+    @PUT("authorizations/clients/{clientId}") Observable<AccessTokenModel> login(@NonNull @Path("clientId") String clientId,
+                                                                                 @NonNull @Body AuthModel authModel);
+
+    @DELETE("authorizations/{id}") Observable<Response<Boolean>> deleteToken(@Path("id") long id);
 
     @GET("user") Observable<LoginModel> getUser();
 

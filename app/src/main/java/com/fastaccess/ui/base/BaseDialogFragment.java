@@ -103,6 +103,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     }
 
+    @Override public void onRequireLogin() {
+        callback.onRequireLogin();
+    }
+
     @Override public void onDestroyView() {
         super.onDestroyView();
         if (unbinder != null) unbinder.unbind();

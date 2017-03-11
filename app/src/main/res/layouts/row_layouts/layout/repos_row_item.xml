@@ -10,7 +10,6 @@
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
     android:stateListAnimator="@animator/raise_selector">
 
@@ -24,12 +23,14 @@
             android:id="@+id/avatarLayout"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginStart="@dimen/avatar_margin"
+            tools:visibility="visible"
             android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/spacing_xs_large"
             android:orientation="vertical">
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -37,8 +38,8 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
                 android:ellipsize="end"
+                android:maxLines="3"
                 android:textColor="@color/primary_text"
                 android:textStyle="bold"
                 tools:text="When one acquires music and afterlife, one is able to capture heaven."/>

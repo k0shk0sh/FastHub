@@ -10,7 +10,6 @@
     android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/cardview_selector"
     app:contentPaddingBottom="@dimen/spacing_normal"
-    app:contentPaddingLeft="@dimen/spacing_xs_large"
     app:contentPaddingRight="@dimen/spacing_xs_large"
     app:contentPaddingTop="@dimen/spacing_normal">
 
@@ -27,7 +26,9 @@
             <com.fastaccess.ui.widgets.AvatarLayout
                 android:id="@+id/avatarView"
                 android:layout_width="48dp"
-                android:layout_height="48dp"/>
+                android:layout_height="48dp"
+                android:layout_marginEnd="@dimen/avatar_margin"
+                android:layout_marginStart="@dimen/avatar_margin"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/name"
@@ -35,8 +36,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
-                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
@@ -58,6 +58,8 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_normal"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>

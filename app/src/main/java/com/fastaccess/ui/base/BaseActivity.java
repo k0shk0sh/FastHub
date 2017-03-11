@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.CookieManager;
 import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
@@ -182,6 +183,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             isProgressShowing = false;
             fragment.dismiss();
         }
+    }
+
+    @Override public void onRequireLogin() {
+        CookieManager.getInstance().removeAllCookies(null);
+        PrefGetter.clear();
+        LoginModel.deleteTable().execute();
+        recreate();
     }
 
     private void setupToolbarAndStatusBar(@Nullable Toolbar toolbar) {

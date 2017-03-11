@@ -35,8 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingStart="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
             android:paddingTop="@dimen/spacing_normal">
 
             <com.fastaccess.ui.widgets.AvatarLayout
@@ -44,7 +43,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/spacing_normal"/>
+                android:layout_marginEnd="@dimen/avatar_margin"
+                android:layout_marginStart="@dimen/avatar_margin"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/stateText"

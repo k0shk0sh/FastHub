@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -68,7 +69,9 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onFragmentCreated(view, savedInstanceState);
+        if (LoginModel.getUser() != null) {
+            onFragmentCreated(view, savedInstanceState);
+        }
     }
 
     @Override public void onDestroyView() {
@@ -98,6 +101,10 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public boolean isLoggedIn() {
         return callback.isLoggedIn();
+    }
+
+    @Override public void onRequireLogin() {
+        callback.onRequireLogin();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

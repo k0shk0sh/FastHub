@@ -28,7 +28,8 @@
             android:name=".ui.modules.login.LoginView"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -132,9 +133,9 @@
 
         <activity
             android:name=".ui.modules.notification.NotificationActivityView"
-
             android:label="@string/notifictions"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainView"
+            android:theme="@style/WhenLargeTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainView"/>
@@ -146,7 +147,6 @@
 
         <activity
             android:name=".ui.modules.about.FastHubAboutActivity"
-            android:parentActivityName=".ui.modules.main.MainView"
             android:theme="@style/AppTheme.AboutActivity"/>
 
         <activity

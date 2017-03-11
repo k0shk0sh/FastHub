@@ -1,50 +1,28 @@
 package com.fastaccess.ui.modules.login;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.AccessTokenModel;
+import com.fastaccess.data.dao.AuthModel;
 import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.provider.rest.LoginProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+
+import java.util.Arrays;
+
+import okhttp3.Credentials;
 
 /**
  * Created by Kosh on 09 Nov 2016, 9:43 PM
  */
 
 class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
-
-    @Nullable @Override public String getCode(@NonNull String url) {
-        Uri uri = Uri.parse(url);
-        if (uri != null && uri.toString().startsWith(BuildConfig.REDIRECT_URL)) {
-            String code = uri.getQueryParameter("code");
-            if (code != null) {
-                return code;
-            } else if (uri.getQueryParameter("error") != null) {
-                sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
-            }
-        }
-        return null;
-    }
-
-    @NonNull @Override public Uri getAuthorizationUrl() {
-        return new Uri.Builder()
-                .scheme("https")
-                .authority("github.com")
-                .appendPath("login")
-                .appendPath("oauth")
-                .appendPath("authorize")
-                .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
-                .appendQueryParameter("redirect_uri", BuildConfig.REDIRECT_URL)
-                .appendQueryParameter("scope", "user,repo,gist,notifications")
-                .appendQueryParameter("state", BuildConfig.APPLICATION_ID)
-                .build();
-    }
 
     @Override public void onGetToken(@NonNull String code) {
         makeRestCall(RestProvider.getLoginRestService().getAccessToken(code,
@@ -55,7 +33,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
 
     @Override public void onTokenResponse(@Nullable AccessTokenModel modelResponse) {
         if (modelResponse != null) {
-            String token = modelResponse.getAccessToken();
+            String token = modelResponse.getToken();
             if (!InputHelper.isEmpty(token)) {
                 PrefGetter.setToken(token);
                 makeRestCall(RestProvider.getUserService().getUser(), this::onUserResponse);
@@ -73,5 +51,28 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
+    }
+
+    @Override public void login(@NonNull String username, @NonNull String password) {
+        boolean usernameIsEmpty = InputHelper.isEmpty(username);
+        boolean passwordIsEmpty = InputHelper.isEmpty(password);
+        if (getView() == null) return;
+        getView().onEmptyUserName(usernameIsEmpty);
+        getView().onEmptyPassword(passwordIsEmpty);
+        if (!usernameIsEmpty && !passwordIsEmpty) {
+            String authToken = Credentials.basic(username, password);
+            AuthModel authModel = new AuthModel();
+            authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications"));
+            authModel.setNote(BuildConfig.APPLICATION_ID + "-" + authToken);//make it unique to FastHub.
+            authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
+            makeRestCall(LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID, authModel), tokenModel -> {
+                if (InputHelper.isEmpty(tokenModel.getToken())) {
+                    makeRestCall(LoginProvider.getLoginRestService(authToken).deleteToken(tokenModel.getId()),
+                            response -> login(username, password));
+                } else {
+                    onTokenResponse(tokenModel);
+                }
+            });
+        }
     }
 }

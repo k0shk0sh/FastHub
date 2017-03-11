@@ -9,7 +9,6 @@
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_micro"
     android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_micro"
     tools:showIn="@layout/repo_file_layout">
 
@@ -25,6 +24,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginStart="@dimen/avatar_margin"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/home"
             android:padding="@dimen/spacing_normal"
@@ -35,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:orientation="horizontal"
             app:layoutManager="@string/linear_layout_manager"
             tools:listitem="@layout/file_path_row_item"/>
@@ -53,6 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginStart="@dimen/avatar_margin"
             android:contentDescription="@string/switch_branch"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_branch"/>
@@ -62,8 +65,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_weight="1"
             android:spinnerMode="dialog"
             app:backgroundTint="?colorAccent"

@@ -10,18 +10,22 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/spacing_xs_large"
         android:orientation="horizontal"
-        android:padding="@dimen/spacing_xs_large">
+        android:paddingBottom="@dimen/spacing_xs_large"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingTop="@dimen/spacing_xs_large">
 
         <com.fastaccess.ui.widgets.AvatarLayout
             android:id="@+id/avatarLayout"
             android:layout_width="@dimen/header_icon_zie"
-            android:layout_height="@dimen/header_icon_zie"/>
+            android:layout_height="@dimen/header_icon_zie"
+            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginStart="@dimen/avatar_margin"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:orientation="vertical">
 
             <com.fastaccess.ui.widgets.FontTextView

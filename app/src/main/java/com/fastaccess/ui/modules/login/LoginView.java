@@ -1,21 +1,22 @@
 package com.fastaccess.ui.modules.login;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.webkit.WebChromeClient;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.support.annotation.StringRes;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
+import android.widget.ProgressBar;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.AnimHelper;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainView;
-import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by Kosh on 08 Feb 2017, 9:10 PM
@@ -24,8 +25,12 @@ import butterknife.BindView;
 public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> implements LoginMvp.View {
 
 
-    @BindView(R.id.webView) WebView webView;
-    @BindView(R.id.refresh) AppbarRefreshLayout refresh;
+    @BindView(R.id.usernameEditText) TextInputEditText usernameEditText;
+    @BindView(R.id.username) TextInputLayout username;
+    @BindView(R.id.passwordEditText) TextInputEditText passwordEditText;
+    @BindView(R.id.password) TextInputLayout password;
+    @BindView(R.id.login) FloatingActionButton login;
+    @BindView(R.id.progress) ProgressBar progress;
 
     @Override protected int layout() {
         return R.layout.login_layout;
@@ -47,8 +52,12 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         return new LoginPresenter();
     }
 
-    @Override public void onRefresh() {
-        webView.loadUrl(getPresenter().getAuthorizationUrl().toString());
+    @Override public void onEmptyUserName(boolean isEmpty) {
+        username.setError(isEmpty ? getString(R.string.required_field) : null);
+    }
+
+    @Override public void onEmptyPassword(boolean isEmpty) {
+        password.setError(isEmpty ? getString(R.string.required_field) : null);
     }
 
     @Override public void onSuccessfullyLoggedIn() {
@@ -57,44 +66,41 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         finish();
     }
 
-    @SuppressLint("SetJavaScriptEnabled") @Override protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refresh.setOnRefreshListener(this);
-        webView.getSettings().setSaveFormData(false);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.setWebChromeClient(new WebChromeClient() {
-            @Override public void onProgressChanged(WebView view, int progress) {
-                super.onProgressChanged(view, progress);
-                if (progress == 100) {
-                    refresh.setRefreshing(false);
-                } else if (progress < 100) {
-                    refresh.setRefreshing(true);
-                }
+    }
+
+    @OnClick(R.id.login) public void onClick() {
+        getPresenter().login(InputHelper.toString(username), InputHelper.toString(password));
+    }
+
+    @Override public void showErrorMessage(@NonNull String msgRes) {
+        hideProgress();
+        super.showErrorMessage(msgRes);
+    }
+
+    @Override public void showMessage(@StringRes int titleRes, @StringRes int msgRes) {
+        hideProgress();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    @Override public void showProgress(@StringRes int resId) {
+        AnimHelper.animateVisibility(login, false, new AnimHelper.AnimationCallback() {
+            @Override public void onAnimationEnd() {
+                AnimHelper.animateVisibility(progress, true);
             }
+
+            @Override public void onAnimationStart() {}
         });
+    }
 
+    @Override public void hideProgress() {
+        AnimHelper.animateVisibility(progress, false, new AnimHelper.AnimationCallback() {
+            @Override public void onAnimationEnd() {
+                AnimHelper.animateVisibility(login, true);
+            }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            webView.setWebViewClient(new WebViewClient() {
-                @Override public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                    String code = getPresenter().getCode(request.getUrl().toString());
-                    if (code != null) {
-                        getPresenter().onGetToken(code);
-                    }
-                    return false;
-                }
-            });
-        } else {
-            webView.setWebViewClient(new WebViewClient() {
-                @SuppressWarnings("deprecation") @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                    String code = getPresenter().getCode(url);
-                    if (code != null) {
-                        getPresenter().onGetToken(code);
-                    }
-                    return false;
-                }
-            });
-        }
-        onRefresh();
+            @Override public void onAnimationStart() {}
+        });
     }
 }

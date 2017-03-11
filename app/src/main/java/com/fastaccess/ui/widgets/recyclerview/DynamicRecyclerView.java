@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.StateLayout;
 
 
@@ -107,16 +108,18 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     public void addKeyLineDivider() {
-        Resources resources = getResources();
-        addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
-                resources.getDimensionPixelSize(R.dimen.keyline_1),
-                ContextCompat.getColor(getContext(), R.color.divider)));
+        if (!ViewHelper.isTablet(getContext())) {
+            Resources resources = getResources();
+            addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
+                    resources.getDimensionPixelSize(R.dimen.keyline_1), ContextCompat.getColor(getContext(), R.color.divider)));
+        }
     }
 
     public void addDivider() {
-        Resources resources = getResources();
-        addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
-                resources.getDimensionPixelSize(R.dimen.spacing_xs_large),
-                ContextCompat.getColor(getContext(), R.color.divider)));
+        if (!ViewHelper.isTablet(getContext())) {
+            Resources resources = getResources();
+            addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
+                    ContextCompat.getColor(getContext(), R.color.divider)));
+        }
     }
 }

@@ -31,6 +31,8 @@ public interface BaseMvp {
         @CallOnMainThread void showErrorMessage(@NonNull String msgRes);
 
         boolean isLoggedIn();
+
+        void onRequireLogin();
     }
 
     interface FAPresenter {

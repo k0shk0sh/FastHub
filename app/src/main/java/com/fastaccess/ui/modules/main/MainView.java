@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.CookieManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -182,10 +181,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override public void onLogout() {
-        CookieManager.getInstance().removeAllCookies(null);
-        PrefGetter.clear();
-        LoginModel.deleteTable().execute();
-        recreate();
+        onRequireLogin();
     }
 
     @Override public void openFasHubRepo() {

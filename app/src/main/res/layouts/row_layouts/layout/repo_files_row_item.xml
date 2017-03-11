@@ -9,7 +9,6 @@
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
     android:stateListAnimator="@animator/raise_selector">
 
@@ -23,6 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginStart="@dimen/avatar_margin"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/file"
             android:padding="@dimen/spacing_normal"
@@ -32,6 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -40,8 +42,6 @@
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
-                android:layout_marginStart="@dimen/spacing_xs_large"
                 android:ellipsize="end"
                 android:maxLines="3"
                 android:textColor="@color/primary_text"
@@ -53,8 +53,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
-                android:layout_marginStart="@dimen/spacing_xs_large"
                 tools:text="10KB"/>
         </LinearLayout>
 
