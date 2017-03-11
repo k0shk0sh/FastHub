@@ -63,7 +63,7 @@ public class PrettifyWebView extends NestedWebView {
         return super.onTouchEvent(event);
     }
 
-    @SuppressLint("SetJavaScriptEnabled") private void initView() {
+    private void initView() {
         if (isInEditMode()) return;
         setWebChromeClient(new ChromeClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -84,13 +84,14 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source) {
+    @SuppressLint("SetJavaScriptEnabled") public void setSource(@NonNull String source) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
+        settings.setJavaScriptEnabled(true);
         if (!InputHelper.isEmpty(source)) {
             this.content = source;
             String page = PrettifyHelper.generateContent(source);

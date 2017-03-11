@@ -238,5 +238,5 @@
     <string name="recycler_view_animation_title">RecylerView Animation</string>
     <string name="back_button_summary">Disable pressing the back button twice to exit FastHub.</string>
     <string name="back_button_title">Back Button Behavior</string>
-    <string name="unsaved_data_warning">Any usaved data will be discared.</string>
+    <string name="unsaved_data_warning">Any unsaved data will be discarded.</string>
 </resources>

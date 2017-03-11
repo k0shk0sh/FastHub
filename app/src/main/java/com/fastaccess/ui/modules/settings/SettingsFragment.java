@@ -20,6 +20,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                     .getApplicationContext()), true);
             return true;
         });
+        findPreference("recylerViewAnimation").setOnPreferenceChangeListener((preference, newValue) -> {
+            if (getActivity() != null) getActivity().recreate();
+            return true;
+        });
     }
 
 }

@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,7 +57,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         finish();
     }
 
-    @Override protected void onCreate(Bundle savedInstanceState) {
+    @SuppressLint("SetJavaScriptEnabled") @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         refresh.setOnRefreshListener(this);
         webView.getSettings().setSaveFormData(false);

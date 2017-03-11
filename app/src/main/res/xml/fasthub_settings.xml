@@ -5,7 +5,7 @@
 
         <ListPreference
             android:defaultValue="@string/thirty_minutes"
-            android:dialogTitle="Every"
+            android:dialogTitle="@string/every"
             android:entries="@array/notification_duration"
             android:entryValues="@array/notification_duration"
             android:key="notificationTime"
@@ -15,7 +15,7 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Behavior">
+    <PreferenceCategory android:title="@string/behavior">
         <SwitchPreference
             android:defaultValue="false"
             android:key="recylerViewAnimation"
