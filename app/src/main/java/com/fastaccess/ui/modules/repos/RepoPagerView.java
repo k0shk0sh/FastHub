@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -204,6 +206,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         date.setText(ParseDateFormat.getTimeAgo(repoModel.getCreatedAt()));
         size.setText(ParseDateFormat.getTimeAgo(repoModel.getUpdatedAt()));
         title.setText(repoModel.getFullName());
+        TextViewCompat.setTextAppearance(title, R.style.TextAppearance_AppCompat_Medium);
+        title.setTextColor(ContextCompat.getColor(this, R.color.primary_text));
         license.setVisibility(repoModel.getLicense() != null ? View.VISIBLE : View.GONE);
         if (repoModel.getLicense() != null) license.setText(repoModel.getLicense().getSpdxId());
         supportInvalidateOptionsMenu();
