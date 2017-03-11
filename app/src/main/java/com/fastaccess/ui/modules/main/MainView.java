@@ -27,11 +27,11 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.create.CreateGistView;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
-import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -178,7 +178,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override public void onSubmitFeedback() {
-        CreateIssueView.startForResult(this);
+        startActivity(new Intent(this, FastHubAboutActivity.class));
     }
 
     @Override public void onLogout() {

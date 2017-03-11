@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -28,7 +27,6 @@ import com.prettifier.pretty.helper.PrettifyHelper;
 
 
 public class PrettifyWebView extends NestedWebView {
-    private String content;
     private OnContentChangedListener onContentChangedListener;
     private boolean interceptTouch;
 
@@ -93,7 +91,6 @@ public class PrettifyWebView extends NestedWebView {
         settings.setDisplayZoomControls(false);
         settings.setJavaScriptEnabled(true);
         if (!InputHelper.isEmpty(source)) {
-            this.content = source;
             String page = PrettifyHelper.generateContent(source);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
         } else Log.e(getClass().getSimpleName(), "Source can't be null or empty.");
@@ -104,17 +101,14 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
-        if (!TextUtils.equals(source, content)) {
-            if (wrap) {
-                setScrollbarFadingEnabled(false);
-                setVerticalScrollBarEnabled(false);
-            }
-            if (!InputHelper.isEmpty(source)) {
-                if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
-                this.content = source;
-                String page = GithubHelper.generateContent(source, baseUrl, wrap);
-                post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
-            }
+        if (wrap) {
+            setScrollbarFadingEnabled(false);
+            setVerticalScrollBarEnabled(false);
+        }
+        if (!InputHelper.isEmpty(source)) {
+            if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
+            String page = GithubHelper.generateContent(source, baseUrl, wrap);
+            post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
         }
     }
 
@@ -128,13 +122,6 @@ public class PrettifyWebView extends NestedWebView {
         String html = "<html><head><style>img{display: inline; height: auto; max-width: 100%;}</style></head><body><img src=\"" + url +
                 "\"/></body></html>";
         loadData(html, "text/html", null);
-    }
-
-    public void refresh() {
-        if (content != null) {
-            loadUrl("about:blank");
-            setSource(content);
-        }
     }
 
     public void setInterceptTouch(boolean interceptTouch) {

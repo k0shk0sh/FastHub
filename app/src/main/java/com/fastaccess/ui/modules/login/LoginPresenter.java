@@ -41,7 +41,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
                 .appendPath("authorize")
                 .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
                 .appendQueryParameter("redirect_uri", BuildConfig.REDIRECT_URL)
-                .appendQueryParameter("scope", "user,repo,gist,delete_repo,notifications")
+                .appendQueryParameter("scope", "user,repo,gist,notifications")
                 .appendQueryParameter("state", BuildConfig.APPLICATION_ID)
                 .build();
     }

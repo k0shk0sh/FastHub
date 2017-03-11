@@ -274,8 +274,4 @@
     <color name="material_yellow_accent_400">#FFEA00</color>
     <color name="material_yellow_accent_700">#FFD600</color>
 
-
-    <color name="aboutColorPrimary">#FFFFFF</color>
-    <color name="aboutColorDark">#9E9E9E</color>
-    <color name="aboutColorIcon">#616161</color>
 </resources>

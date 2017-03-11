@@ -156,6 +156,7 @@
     <string name="logout">Logout</string>
     <string name="thank_you_for_feedback">Thanks for your feedback.</string>
     <string name="current_version">Current Version</string>
+    <string name="version">Version</string>
     <string name="support_development_enable_ads">Support development, enable Ads.</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -242,4 +243,15 @@
     <string name="private_repo">Private</string>
     <string name="rect_avatar_summary">Use rounded rectangle instead of circular avatar.</string>
     <string name="rect_avatar_title">Rectangle Avatar</string>
+    <string name="rate_app">Rate this app</string>
+    <string name="author">Author</string>
+    <string name="fork_github">Fork on GitHub</string>
+    <string name="send_email">Send an email</string>
+    <string name="email_address">kosh20111@gmail.com</string>
+    <string name="question_concerning_fasthub">Question concerning FastHub</string>
+    <string name="feedback">Feedback</string>
+    <string name="report_issue">Report an issue</string>
+    <string name="report_issue_here">Having an issue? Report it here</string>
+    <string name="about">About</string>
+    <string name="notification_settings">Notification Settings</string>
 </resources>

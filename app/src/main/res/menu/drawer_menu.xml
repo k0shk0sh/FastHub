@@ -10,9 +10,9 @@
             android:title="@string/app_name"/>
 
         <item
-            android:id="@+id/feedback"
-            android:icon="@drawable/ic_announcement"
-            android:title="@string/submit_feedback"/>
+            android:id="@+id/about"
+            android:icon="@drawable/ic_info_outline_white_48dp"
+            android:title="@string/about"/>
 
 
         <item

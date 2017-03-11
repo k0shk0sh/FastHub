@@ -93,10 +93,13 @@
     </style>
 
     <style name="AppTheme.AboutActivity" parent="Theme.Mal.Light.LightActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/aboutColorPrimary</item>
-        <item name="colorPrimaryDark">@color/aboutColorDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primary_dark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
 </resources>

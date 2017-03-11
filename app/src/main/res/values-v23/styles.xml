@@ -12,4 +12,10 @@
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
+
+    <style name="AppTheme.AboutActivity" parent="Theme.Mal.Light.LightActionBar">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
 </resources>

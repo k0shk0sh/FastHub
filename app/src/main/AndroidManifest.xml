@@ -145,6 +145,11 @@
             android:theme="@style/WhenLargeTheme"/>
 
         <activity
+            android:name=".ui.modules.about.FastHubAboutActivity"
+            android:parentActivityName=".ui.modules.main.MainView"
+            android:theme="@style/AppTheme.AboutActivity"/>
+
+        <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:noHistory="true"
@@ -172,15 +177,6 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
-        </activity>
-
-        <activity
-            android:name=".ui.modules.about.FastHubAboutActivity"
-            android:parentActivityName=".ui.modules.main.MainView"
-            android:theme="@style/AppTheme.AboutActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView" />
         </activity>
 
         <service

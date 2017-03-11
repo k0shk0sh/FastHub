@@ -82,7 +82,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (getView() != null) {
             getView().onCloseDrawer();
-            if (item.getItemId() == R.id.feedback) {
+            if (item.getItemId() == R.id.about) {
                 getView().onSubmitFeedback();
                 return true;
             } else if (item.getItemId() == R.id.logout) {

@@ -309,7 +309,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             menuItem.setVisible(true);
             menuItem.setTitle(repoModel.getParent().getFullName());
         }
-        menu.findItem(R.id.deleteRepo).setVisible(getPresenter().isRepoOwner());
+//        menu.findItem(R.id.deleteRepo).setVisible(getPresenter().isRepoOwner());
+        menu.findItem(R.id.deleteRepo).setVisible(false);//removing delete permission.
         return super.onPrepareOptionsMenu(menu);
     }
 
