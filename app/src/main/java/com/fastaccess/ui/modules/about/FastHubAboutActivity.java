@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.v4.content.ContextCompat;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.danielstone.materialaboutlibrary.ConvenienceBuilder;
@@ -75,5 +76,12 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
         if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
             Toasty.success(this, getString(R.string.thank_you_for_feedback), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return false;//override
     }
 }
