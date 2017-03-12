@@ -71,12 +71,17 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
 
             UUID uuid = UUID.randomUUID();
+            String fingerprint = BuildConfig.APPLICATION_ID + " - " + uuid;
 
             Observable<AccessTokenModel> loginCall =
-                LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID, uuid.toString(), authModel);
+                LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID,
+                    fingerprint,
+                    authModel);
 
             if (twoFactorCode != null && !twoFactorCode.isEmpty()) {
-                loginCall = LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID, uuid.toString(), authModel,
+                loginCall = LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID,
+                    fingerprint,
+                    authModel,
                     twoFactorCode);
             }
 
