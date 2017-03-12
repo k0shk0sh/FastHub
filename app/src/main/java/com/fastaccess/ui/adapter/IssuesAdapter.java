@@ -28,10 +28,10 @@ public class IssuesAdapter extends BaseRecyclerAdapter<IssueModel, IssuesViewHol
     }
 
     @Override protected IssuesViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return IssuesViewHolder.newInstance(parent, this);
+        return IssuesViewHolder.newInstance(parent, this, withAvatar);
     }
 
     @Override protected void onBindView(IssuesViewHolder holder, int position) {
-        holder.bind(getItem(position), withAvatar);
+        holder.bind(getItem(position));
     }
 }

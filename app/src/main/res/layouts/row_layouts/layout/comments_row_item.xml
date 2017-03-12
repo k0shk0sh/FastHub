@@ -27,7 +27,7 @@
                 android:id="@+id/avatarView"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:layout_marginEnd="@dimen/avatar_margin"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -58,7 +58,7 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_normal"/>
     </LinearLayout>

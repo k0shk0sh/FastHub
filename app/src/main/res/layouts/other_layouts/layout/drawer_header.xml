@@ -18,7 +18,7 @@
             android:id="@+id/avatarLayout"
             android:layout_width="@dimen/header_icon_zie"
             android:layout_height="@dimen/header_icon_zie"
-            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"/>
 
         <LinearLayout

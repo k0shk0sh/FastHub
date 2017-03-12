@@ -18,9 +18,6 @@ import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerView;
 
-import retrofit2.Response;
-import rx.Observable;
-
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 
 /**
@@ -96,73 +93,29 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onWatch() {
         if (getRepo() == null) return;
-        String login = getRepo().getOwner().getLogin();
-        String name = getRepo().getName();
-        Observable<Response<Boolean>> observable = RxHelper
-                .getObserver(!isWatched ? RestProvider.getRepoService().watchRepo(login, name)
-                                        : RestProvider.getRepoService().unwatchRepo(login, name));
-        manageSubscription(observable
-                .doOnSubscribe(() -> sendToView(view -> view.onEnableDisableWatch(false)))
-                .doOnNext(booleanResponse -> {
-                    if (!isWatched) {
-                        isWatched = booleanResponse.code() == 204;
-                    } else {
-                        isWatched = booleanResponse.code() != 204;
-                    }
-                    sendToView(view -> {
-                        view.onRepoWatched(isWatched);
-                        view.onChangeWatchedCount(isWatched);
-                    });
-                })
-                .onErrorReturn(throwable -> {
-                    sendToView(view -> view.onEnableDisableWatch(true));
-                    return null;
-                })
-                .subscribe());
+        isWatched = !isWatched;
+        sendToView(view -> {
+            view.onRepoWatched(isWatched);
+            view.onChangeWatchedCount(isWatched);
+        });
     }
 
     @Override public void onStar() {
         if (getRepo() == null) return;
-        String login = getRepo().getOwner().getLogin();
-        String name = getRepo().getName();
-        Observable<Response<Boolean>> observable = RxHelper
-                .getObserver(!isStarred ? RestProvider.getRepoService().starRepo(login, name)
-                                        : RestProvider.getRepoService().unstarRepo(login, name));
-        manageSubscription(observable
-                .doOnSubscribe(() -> sendToView(view -> view.onEnableDisableStar(false)))
-                .doOnNext(booleanResponse -> {
-                    if (!isStarred) {
-                        isStarred = booleanResponse.code() == 204;
-                    } else {
-                        isStarred = booleanResponse.code() != 204;
-                    }
-                    sendToView(view -> {
-                        view.onRepoStarred(isStarred);
-                        view.onChangeStarCount(isStarred);
-                    });
-                })
-                .onErrorReturn(throwable -> {
-                    sendToView(view -> view.onEnableDisableStar(true));
-                    return null;
-                })
-                .subscribe());
+        isStarred = !isStarred;
+        sendToView(view -> {
+            view.onRepoStarred(isStarred);
+            view.onChangeStarCount(isStarred);
+        });
     }
 
     @Override public void onFork() {
         if (!isForked && getRepo() != null) {
-            String login = login();
-            String name = repoId();
-            manageSubscription(RxHelper.getObserver(RestProvider.getRepoService().forkRepo(login, name))
-                    .doOnSubscribe(() -> sendToView(view -> view.onEnableDisableFork(false)))
-                    .doOnNext(repoModel -> sendToView(view -> {
-                        view.onRepoForked(isForked = repoModel != null);
-                        view.onChangeForkCount(isForked);
-                    }))
-                    .onErrorReturn(throwable -> {
-                        sendToView(view -> view.onEnableDisableFork(true));
-                        return null;
-                    })
-                    .subscribe());
+            isForked = true;
+            sendToView(view -> {
+                view.onRepoForked(isForked);
+                view.onChangeForkCount(isForked);
+            });
         }
     }
 

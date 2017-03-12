@@ -188,6 +188,7 @@
         </service>
 
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
+        <service android:name=".provider.tasks.git.GithubActionService"/>
     </application>
 
 </manifest>

@@ -24,7 +24,7 @@
             android:id="@+id/avatarLayout"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:layout_marginEnd="@dimen/avatar_margin"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"
             android:visibility="gone"
             tools:visibility="visible"/>

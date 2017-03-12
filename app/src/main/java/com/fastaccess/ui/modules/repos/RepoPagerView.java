@@ -27,6 +27,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
+import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
@@ -113,7 +114,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         }
     }
 
-    @OnClick({R.id.forkRepo, R.id.starRepo, R.id.watchRepo}) public void onClick(View view) {
+    @SuppressWarnings("ConstantConditions") @OnClick({R.id.forkRepo, R.id.starRepo, R.id.watchRepo}) public void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepo:
                 MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
@@ -121,10 +122,18 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                         .show(getSupportFragmentManager(), MessageDialogView.TAG);
                 break;
             case R.id.starRepo:
-                getPresenter().onStar();
+                if (getPresenter().login() != null && getPresenter().repoId() != null) {
+                    GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
+                            getPresenter().isStarred() ? GithubActionService.UNSTAR_REPO : GithubActionService.STAR_REPO);
+                    getPresenter().onStar();
+                }
                 break;
             case R.id.watchRepo:
-                getPresenter().onWatch();
+                if (getPresenter().login() != null && getPresenter().repoId() != null) {
+                    GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
+                            getPresenter().isWatched() ? GithubActionService.UNWATCH_REPO : GithubActionService.WATCH_REPO);
+                    getPresenter().onWatch();
+                }
                 break;
         }
     }
@@ -192,6 +201,9 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         if (getPresenter().getRepo() == null) {
             return;
         }
+        watchRepo.tintDrawables(accentColor);
+        starRepo.tintDrawables(accentColor);
+        forkRepo.tintDrawables(accentColor);
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         RepoModel repoModel = getPresenter().getRepo();
         hideProgress();
@@ -244,20 +256,17 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override public void onRepoWatched(boolean isWatched) {
-        watchRepo.setTopDrawable(isWatched ? R.drawable.ic_eye_off : R.drawable.ic_eye);
-        watchRepo.tintDrawables(accentColor);
+        watchRepo.setTopDrawable(isWatched ? R.drawable.ic_eye_off : R.drawable.ic_eye, accentColor);
         onEnableDisableWatch(true);
     }
 
     @Override public void onRepoStarred(boolean isStarred) {
-        starRepo.setTopDrawable(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star);
-        starRepo.tintDrawables(accentColor);
+        starRepo.setTopDrawable(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star, accentColor);
         onEnableDisableStar(true);
     }
 
     @Override public void onRepoForked(boolean isForked) {
-        forkRepo.setTopDrawable(isForked ? R.drawable.ic_fork_filled : R.drawable.ic_fork);
-        forkRepo.tintDrawables(accentColor);
+        forkRepo.setTopDrawable(isForked ? R.drawable.ic_fork_filled : R.drawable.ic_fork, accentColor);
         onEnableDisableFork(true);
     }
 
@@ -332,12 +341,17 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         return super.onOptionsItemSelected(item);
     }
 
-    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+    @SuppressWarnings("ConstantConditions") @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk && bundle != null) {
             boolean isDelete = bundle.getBoolean(BundleConstant.EXTRA_TWO);
             boolean fork = bundle.getBoolean(BundleConstant.EXTRA);
-            if (fork) getPresenter().onFork();
+            if (fork) {
+                if (getPresenter().login() != null && getPresenter().repoId() != null && !getPresenter().isForked()) {
+                    GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(), GithubActionService.FORK_REPO);
+                    getPresenter().onFork();
+                }
+            }
             if (isDelete) getPresenter().onDeleteRepo();
         }
     }

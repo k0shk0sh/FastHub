@@ -77,30 +77,13 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
     }
 
     @Override public void onStarGist() {
-        if (getGist() != null) {
-            makeRestCall(!isGistStarred ? RestProvider.getGistService().starGist(gistId)
-                                        : RestProvider.getGistService().unStarGist(gistId),
-                    booleanResponse -> {
-                        if (!isGistStarred) {
-                            isGistStarred = booleanResponse.code() == 204;
-                        } else {
-                            isGistStarred = booleanResponse.code() != 204;
-                        }
-                        sendToView(view -> view.onGistStarred(isGistStarred));
-                    });
-        }
+        isGistStarred = !isGistStarred;
+        sendToView(view -> view.onGistStarred(isGistStarred));
     }
 
     @Override public void onForkGist() {
-        if (getGist() != null) {
-            if (!isGistForked) {
-                makeRestCall(RestProvider.getGistService().forkGist(gistId),
-                        gistsModelResponse -> {
-                            isGistForked = gistsModelResponse.code() == 201;
-                            sendToView(view -> view.onGistForked(isGistForked));
-                        });
-            }
-        }
+        isGistForked = !isGistForked;
+        sendToView(view -> view.onGistForked(isGistForked));
     }
 
     @Override public boolean isForked() {

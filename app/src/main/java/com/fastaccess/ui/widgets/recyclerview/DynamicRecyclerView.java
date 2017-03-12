@@ -111,7 +111,7 @@ public class DynamicRecyclerView extends RecyclerView {
         if (!ViewHelper.isTablet(getContext())) {
             Resources resources = getResources();
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
-                    resources.getDimensionPixelSize(R.dimen.keyline_1), ContextCompat.getColor(getContext(), R.color.divider)));
+                    resources.getDimensionPixelSize(R.dimen.keyline_2), ContextCompat.getColor(getContext(), R.color.divider)));
         }
     }
 

@@ -254,4 +254,5 @@
     <string name="report_issue_here">Having an issue? Report it here</string>
     <string name="about">About</string>
     <string name="notification_settings">Notification Settings</string>
+    <string name="unauthorized_user">Unauthorized user.</string>
 </resources>

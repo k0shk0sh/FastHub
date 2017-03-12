@@ -8,6 +8,7 @@
     <dimen name="spacing_xlarge">48dp</dimen>
     <dimen name="spacing_huge">64dp</dimen>
     <dimen name="keyline_1">72dp</dimen>
+    <dimen name="keyline_2">76dp</dimen>
     <dimen name="fab_spacing">86dp</dimen> <!-- keyline + fab margin -->
     <dimen name="fab_margin">16dp</dimen>
     <integer name="num_columns">1</integer>
@@ -27,4 +28,5 @@
     <dimen name="bbn_top_shadow_height">@dimen/spacing_micro</dimen>
     <dimen name="divider_height">1px</dimen>
     <dimen name="avatar_margin">12dp</dimen>
+    <dimen name="avatar_margin_end">16dp</dimen>
 </resources>

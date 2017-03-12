@@ -64,7 +64,6 @@ public class FontTextView extends AppCompatTextView {
     }
 
     public void tintDrawables(@ColorInt int color) {
-        if (color == tintColor) return;
         if (color != -1) {
             this.tintColor = color;
             Drawable[] drawables = getCompoundDrawablesRelative();
@@ -81,7 +80,9 @@ public class FontTextView extends AppCompatTextView {
         setTextColor(ViewHelper.textSelector(nColor, pColor));
     }
 
-    public void setTopDrawable(@DrawableRes int topDrawable) {
-        setCompoundDrawablesRelativeWithIntrinsicBounds(0, topDrawable, 0, 0);
+    public void setTopDrawable(@DrawableRes int topDrawable, @ColorInt int color) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), topDrawable);
+        ViewHelper.tintDrawable(drawable, color);
+        setCompoundDrawablesRelativeWithIntrinsicBounds(null, drawable, null, null);
     }
 }

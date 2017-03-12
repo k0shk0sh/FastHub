@@ -77,7 +77,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         if (isInEditMode()) return;
         ButterKnife.bind(this);
         if (PrefGetter.isRectdAvatar()) {
-            avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 20);
+            avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 15);
         }
     }
 

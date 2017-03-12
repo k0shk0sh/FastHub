@@ -186,6 +186,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onRequireLogin() {
+        Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         CookieManager.getInstance().removeAllCookies(null);
         PrefGetter.clear();
         LoginModel.deleteTable().execute();

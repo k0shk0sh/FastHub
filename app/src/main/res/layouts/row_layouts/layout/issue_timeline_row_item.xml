@@ -43,7 +43,7 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/avatar_margin"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
             <com.fastaccess.ui.widgets.FontTextView

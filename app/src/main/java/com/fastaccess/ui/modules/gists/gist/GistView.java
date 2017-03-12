@@ -21,6 +21,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsView;
@@ -75,10 +76,18 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
         view.setEnabled(false);
         switch (view.getId()) {
             case R.id.startGist:
-                getPresenter().onStarGist();
+                if (getPresenter().getGist() != null) {
+                    GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
+                            getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST);
+                    getPresenter().onStarGist();
+                }
                 break;
             case R.id.forkGist:
-                getPresenter().onForkGist();
+                if (getPresenter().getGist() != null) {
+                    GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
+                            GithubActionService.FORK_GIST);
+                    getPresenter().onForkGist();
+                }
                 break;
         }
     }
@@ -161,12 +170,14 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @Override public void onGistStarred(boolean isStarred) {
-        startGist.tintDrawable(isStarred ? R.color.accent : R.color.black);
+        startGist.setImageResource(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star);
+        startGist.tintDrawable(R.color.accent);
         startGist.setEnabled(true);
     }
 
     @Override public void onGistForked(boolean isForked) {
-        forkGist.tintDrawable(isForked ? R.color.accent : R.color.black);
+        forkGist.setImageResource(isForked ? R.drawable.ic_fork_filled : R.drawable.ic_fork);
+        forkGist.tintDrawable(R.color.accent);
         forkGist.setEnabled(true);
     }
 

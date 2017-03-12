@@ -25,19 +25,26 @@ import butterknife.BindView;
 public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
 
     @BindView(R.id.title) FontTextView title;
-    @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.details) FontTextView details;
     @BindString(R.string.by) String by;
 
-    private IssuesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private boolean withAvatar;
+
+    private IssuesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean withAvatar) {
         super(itemView, adapter);
+        this.withAvatar = withAvatar;
     }
 
-    public static IssuesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new IssuesViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter);
+    public static IssuesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar) {
+        if (withAvatar) {
+            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true);
+        } else {
+            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false);
+        }
     }
 
-    public void bind(@NonNull IssueModel issueModel, boolean withAvatar) {
+    @Override public void bind(@NonNull IssueModel issueModel) {
         title.setText(issueModel.getTitle());
         if (issueModel.getState() != null) {
             CharSequence data = ParseDateFormat.getTimeAgo(issueModel.getState() == IssueState.open
@@ -49,11 +56,9 @@ public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
                     .append(" ")
                     .append(data));
         }
-        if (withAvatar) {
+        if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }
-
-    @Override public void bind(@NonNull IssueModel issueModel) {}
 }
