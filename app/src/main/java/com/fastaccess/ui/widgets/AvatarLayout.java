@@ -82,16 +82,15 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     }
 
     @Override public void onLoadingStarted(String imageUri, View view) {
-        setBackgroundResource(R.drawable.circle_shape);
+        setBackground(false);
     }
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-        avatar.setImageResource(R.drawable.ic_github_black);
-        setBackgroundColor(Color.TRANSPARENT);
+        setBackground(true);
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-        setBackgroundColor(Color.TRANSPARENT);
+        setBackground(true);
     }
 
     @Override public void onLoadingCancelled(String imageUri, View view) {}
@@ -103,6 +102,18 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
+        }
+    }
+
+    private void setBackground(boolean clear) {
+        if (clear) {
+            setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            if (PrefGetter.isRectdAvatar()) {
+                setBackgroundResource(R.drawable.rect_shape);
+            } else {
+                setBackgroundResource(R.drawable.circle_shape);
+            }
         }
     }
 }

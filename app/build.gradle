@@ -122,7 +122,6 @@ dependencies {
     compile 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
     compile 'com.zzhoujay.markdown:markdown:1.0.4'
     compile 'com.github.daniel-stoneuk:material-about-library:1.8.1'
-    compile 'com.mikepenz:community-material-typeface:1.7.22.1@aar'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"

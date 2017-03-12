@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.issues.issue;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.IssueModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -18,6 +18,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -28,21 +29,37 @@ import butterknife.BindView;
  * Created by Kosh on 03 Dec 2016, 3:56 PM
  */
 
-public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesPresenter> implements RepoIssuesMvp.View {
+public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesPresenter> implements RepoIssuesMvp.View {
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
 
-    public static RepoIssuesView newInstance(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
-        RepoIssuesView view = new RepoIssuesView();
+    private RepoIssuesPagerMvp.View pagerCallback;
+
+    public static RepoOpenedIssuesView newInstance(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
+        RepoOpenedIssuesView view = new RepoOpenedIssuesView();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, issueState)
                 .end());
         return view;
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoIssuesPagerMvp.View) {
+            pagerCallback = (RepoIssuesPagerMvp.View) getParentFragment();
+        } else if (context instanceof RepoIssuesPagerMvp.View) {
+            pagerCallback = (RepoIssuesPagerMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        pagerCallback = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter() {
@@ -59,9 +76,9 @@ public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesP
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, issues can't be proceeded.");
         }
+        recycler.setEmptyView(stateLayout, refresh);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
-        recycler.setEmptyView(stateLayout, refresh);
         adapter = new IssuesAdapter(getPresenter().getIssues(), true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
@@ -76,14 +93,9 @@ public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesP
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE && data != null) {
-            Bundle bundle = data.getExtras();
-            if (bundle != null) {
-                IssueModel issueModel = bundle.getParcelable(BundleConstant.ITEM);
-                if (issueModel != null) {
-                    adapter.addItem(issueModel, 0);
-                }
-            }
+        if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
+            onRefresh();
+            if (pagerCallback != null) pagerCallback.setCurrentItem(0);
         }
     }
 
@@ -110,8 +122,8 @@ public class RepoIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoIssuesP
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
-            onLoadMore.setParameter(((IssueState) getArguments().getSerializable(BundleConstant.EXTRA_TWO)));
         }
+        onLoadMore.setParameter(((IssueState) getArguments().getSerializable(BundleConstant.EXTRA_TWO)));
         return onLoadMore;
     }
 

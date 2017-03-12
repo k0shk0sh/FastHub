@@ -23,7 +23,8 @@ import com.fastaccess.ui.modules.repos.code.contributors.RepoContributorsView;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathView;
 import com.fastaccess.ui.modules.repos.code.prettifier.ViewerView;
 import com.fastaccess.ui.modules.repos.code.releases.RepoReleasesView;
-import com.fastaccess.ui.modules.repos.issues.issue.RepoIssuesView;
+import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesView;
+import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.events.IssueDetailsView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.RepoPullRequestView;
@@ -107,9 +108,9 @@ public class FragmentPagerAdapterModel {
     @NonNull public static List<FragmentPagerAdapterModel> buildForRepoIssue(@NonNull Context context, @NonNull String login,
                                                                              @NonNull String repoId) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.opened),
-                        RepoIssuesView.newInstance(repoId, login, IssueState.open)),
+                        RepoOpenedIssuesView.newInstance(repoId, login, IssueState.open)),
                 new FragmentPagerAdapterModel(context.getString(R.string.closed),
-                        RepoIssuesView.newInstance(repoId, login, IssueState.closed)))
+                        RepoClosedIssuesView.newInstance(repoId, login, IssueState.closed)))
                 .collect(Collectors.toList());
     }
 

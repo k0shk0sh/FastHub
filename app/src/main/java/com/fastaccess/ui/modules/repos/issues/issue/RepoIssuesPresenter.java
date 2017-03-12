@@ -58,6 +58,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     }
 
     @Override public void onCallApi(int page, @Nullable IssueState parameter) {
+        Logger.e(page, page, login, repoId);
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -66,10 +67,10 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             sendToView(RepoIssuesMvp.View::hideProgress);
             return;
         }
-        if (repoId == null || login == null) return;
         setCurrentPage(page);
         makeRestCall(RestProvider.getIssueService().getRepositoryIssues(login, repoId, issueState.name(), page),
                 issues -> {
+                    lastPage = issues.getLast();
                     if (getCurrentPage() == 1) {
                         getIssues().clear();
                         manageSubscription(IssueModel.save(issues.getItems(), repoId, login).subscribe());

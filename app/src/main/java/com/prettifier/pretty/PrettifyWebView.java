@@ -100,10 +100,12 @@ public class PrettifyWebView extends NestedWebView {
         setGithubContent(source, baseUrl, false);
     }
 
-    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
+    @SuppressLint("SetJavaScriptEnabled") public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
         if (wrap) {
             setScrollbarFadingEnabled(false);
             setVerticalScrollBarEnabled(false);
+        } else {
+            getSettings().setJavaScriptEnabled(true);
         }
         if (!InputHelper.isEmpty(source)) {
             if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
