@@ -34,6 +34,11 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     @BindView(R.id.login) FloatingActionButton login;
     @BindView(R.id.progress) ProgressBar progress;
 
+    @OnClick(R.id.login) public void onClick() {
+        getPresenter().login(InputHelper.toString(username),
+                InputHelper.toString(password), InputHelper.toString(twoFactor));
+    }
+
     @Override protected int layout() {
         return R.layout.login_layout;
     }
@@ -58,8 +63,8 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         username.setError(isEmpty ? getString(R.string.required_field) : null);
     }
 
-    @Override
-    public void onRequire2Fa() {
+    @Override public void onRequire2Fa() {
+        showMessage(R.string.error, R.string.two_fectors_otp_error);
         twoFactor.setVisibility(View.VISIBLE);
         hideProgress();
     }
@@ -76,11 +81,6 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
-
-    @OnClick(R.id.login) public void onClick() {
-        String twoFactorCode = InputHelper.isEmpty(twoFactor) ? null : InputHelper.toString(twoFactor);
-        getPresenter().login(InputHelper.toString(username), InputHelper.toString(password), twoFactorCode);
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {

@@ -83,9 +83,11 @@ public interface RepoService {
     Observable<Pageable<UserModel>> getContributors(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/commits/{sha}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<CommitModel> getCommit(@Path("owner") String owner, @Path("repo") String repo, @Path("sha") String sha);
 
     @NonNull @GET("repos/{owner}/{repo}/commits/{sha}/comments")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<CommentsModel>> getCommitComments(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                           @NonNull @Path("sha") String ref, @Query("page") int page);
 

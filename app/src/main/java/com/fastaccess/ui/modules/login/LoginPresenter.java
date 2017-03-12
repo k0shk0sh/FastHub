@@ -12,12 +12,11 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.LoginProvider;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.Arrays;
-
 import java.util.UUID;
+
 import okhttp3.Credentials;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
@@ -27,13 +26,6 @@ import rx.Observable;
  */
 
 class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
-
-    @Override public void onGetToken(@NonNull String code) {
-        makeRestCall(RestProvider.getLoginRestService().getAccessToken(code,
-                BuildConfig.GITHUB_CLIENT_ID, BuildConfig.GITHUB_SECRET,
-                BuildConfig.APPLICATION_ID, BuildConfig.REDIRECT_URL),
-                this::onTokenResponse);
-    }
 
     @Override public void onTokenResponse(@Nullable AccessTokenModel modelResponse) {
         if (modelResponse != null) {
@@ -69,22 +61,14 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications"));
             authModel.setNote(BuildConfig.APPLICATION_ID + "-" + authToken);//make it unique to FastHub.
             authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
-
             UUID uuid = UUID.randomUUID();
             String fingerprint = BuildConfig.APPLICATION_ID + " - " + uuid;
-
-            Observable<AccessTokenModel> loginCall =
-                LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID,
-                    fingerprint,
-                    authModel);
-
-            if (twoFactorCode != null && !twoFactorCode.isEmpty()) {
-                loginCall = LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID,
-                    fingerprint,
-                    authModel,
-                    twoFactorCode);
+            Observable<AccessTokenModel> loginCall = LoginProvider.getLoginRestService(authToken)
+                    .login(BuildConfig.GITHUB_CLIENT_ID, fingerprint, authModel);
+            if (!InputHelper.isEmpty(twoFactorCode)) {
+                loginCall = LoginProvider.getLoginRestService(authToken)
+                        .login(BuildConfig.GITHUB_CLIENT_ID, fingerprint, authModel, twoFactorCode);
             }
-
             makeRestCall(loginCall, tokenModel -> {
                 if (InputHelper.isEmpty(tokenModel.getToken())) {
                     makeRestCall(LoginProvider.getLoginRestService(authToken).deleteToken(tokenModel.getId()),
@@ -96,18 +80,20 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         }
     }
 
-    @Override
-    public void onError(@NonNull Throwable throwable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         if (RestProvider.getErrorCode(throwable) == 401) {
-            String twoFaToken = ((HttpException) throwable).response().headers().get("X-GitHub-OTP");
-            if (twoFaToken != null) {
-                sendToView(LoginMvp.View::onRequire2Fa);
-            } else {
-                sendToView(LoginMvp.View::onRequireLogin);
+            retrofit2.Response response = ((HttpException) throwable).response();
+            if (response != null && response.headers() != null) {
+                String twoFaToken = response.headers().get("X-GitHub-OTP");
+                if (twoFaToken != null) {
+                    sendToView(LoginMvp.View::onRequire2Fa);
+                    return;
+                } else {
+                    sendToView(LoginMvp.View::onRequireLogin);
+                    return;
+                }
             }
-            return;
-        } else {
-            super.onError(throwable);
         }
+        super.onError(throwable);
     }
 }

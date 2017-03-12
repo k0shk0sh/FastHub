@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 import lombok.Getter;
@@ -23,8 +24,7 @@ public class AuthModel implements Parcelable {
     private List<String> scopes;
     private String state;
     private String note;
-    @SerializedName("X-GitHub-OTP")
-    private String otpCode;
+    @SerializedName("X-GitHub-OTP") private String otpCode;
 
     @Override public int describeContents() { return 0; }
 

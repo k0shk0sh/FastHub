@@ -80,10 +80,10 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                 });
     }
 
-    @Override public void onFragmentCreated(@NonNull Bundle bundle) {
+    @Override public void onFragmentCreated(@NonNull Bundle bundle, IssueState issueState) {
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
-        issueState = (IssueState) bundle.getSerializable(BundleConstant.EXTRA_TWO);
+        this.issueState = issueState;
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
         }

@@ -101,7 +101,6 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
                 showAll ? RestProvider.getNotificationService().getAllNotifications(page)
                         : RestProvider.getNotificationService().getNotifications(page);
         makeRestCall(observable, response -> {
-            notifications.clear();
             if (response.getItems() != null) {
                 lastPage = response.getLast();
                 if (page == 1) {

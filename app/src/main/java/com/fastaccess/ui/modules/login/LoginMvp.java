@@ -26,8 +26,6 @@ interface LoginMvp {
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        void onGetToken(@NonNull String code);
-
         void onTokenResponse(@Nullable AccessTokenModel response);
 
         void onUserResponse(@Nullable LoginModel response);

@@ -256,4 +256,5 @@
     <string name="about">About</string>
     <string name="notification_settings">Notification Settings</string>
     <string name="unauthorized_user">Unauthorized user.</string>
+    <string name="two_fectors_otp_error">Two-Factor authentication OTP is required to login.</string>
 </resources>
