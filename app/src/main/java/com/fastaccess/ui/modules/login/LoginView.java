@@ -7,6 +7,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.view.View;
 import android.widget.ProgressBar;
 
 import com.fastaccess.R;
@@ -29,6 +30,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     @BindView(R.id.username) TextInputLayout username;
     @BindView(R.id.passwordEditText) TextInputEditText passwordEditText;
     @BindView(R.id.password) TextInputLayout password;
+    @BindView(R.id.twoFactor) TextInputLayout twoFactor;
     @BindView(R.id.login) FloatingActionButton login;
     @BindView(R.id.progress) ProgressBar progress;
 
@@ -56,6 +58,12 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         username.setError(isEmpty ? getString(R.string.required_field) : null);
     }
 
+    @Override
+    public void onRequire2Fa() {
+        twoFactor.setVisibility(View.VISIBLE);
+        hideProgress();
+    }
+
     @Override public void onEmptyPassword(boolean isEmpty) {
         password.setError(isEmpty ? getString(R.string.required_field) : null);
     }
@@ -71,7 +79,8 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     }
 
     @OnClick(R.id.login) public void onClick() {
-        getPresenter().login(InputHelper.toString(username), InputHelper.toString(password));
+        String twoFactorCode = InputHelper.isEmpty(twoFactor) ? null : InputHelper.toString(twoFactor);
+        getPresenter().login(InputHelper.toString(username), InputHelper.toString(password), twoFactorCode);
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {

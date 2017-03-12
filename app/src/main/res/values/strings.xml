@@ -160,6 +160,7 @@
     <string name="support_development_enable_ads">Support development, enable Ads.</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
+    <string name="twoFactor">2fa code</string>
     <string name="login">Login</string>
     <string name="gist_description">Gist Description</string>
     <string name="avatar_click_hint">Whenever there is a User avatar, you can click it to open the User\'s Profile</string>

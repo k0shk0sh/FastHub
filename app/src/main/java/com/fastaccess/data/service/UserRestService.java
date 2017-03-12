@@ -16,6 +16,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
@@ -37,6 +38,10 @@ public interface UserRestService {
 
     @PUT("authorizations/clients/{clientId}") Observable<AccessTokenModel> login(@NonNull @Path("clientId") String clientId,
                                                                                  @NonNull @Body AuthModel authModel);
+
+    @PUT("authorizations/clients/{clientId}") Observable<AccessTokenModel> login(@NonNull @Path("clientId") String clientId,
+                                                                                 @NonNull @Body AuthModel authModel,
+                                                                                 @NonNull @Header("X-GitHub-OTP") String otpCode);
 
     @DELETE("authorizations/{id}") Observable<Response<Boolean>> deleteToken(@Path("id") long id);
 
