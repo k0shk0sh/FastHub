@@ -15,6 +15,8 @@ interface LoginMvp {
 
     interface View extends BaseMvp.FAView {
 
+        void onRequire2Fa();
+
         void onEmptyUserName(boolean isEmpty);
 
         void onEmptyPassword(boolean isEmpty);
@@ -30,7 +32,6 @@ interface LoginMvp {
 
         void onUserResponse(@Nullable LoginModel response);
 
-
-        void login(@NonNull String username, @NonNull String password);
+        void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode);
     }
 }

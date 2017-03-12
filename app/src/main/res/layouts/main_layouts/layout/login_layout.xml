@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/material_indigo_700"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    >
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:id="@+id/loginForm">
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/mainCard"
@@ -32,7 +34,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:background="@color/material_indigo_700"
+                    android:background="?colorAccent"
                     android:gravity="center"
                     android:paddingBottom="@dimen/spacing_xlarge"
                     android:paddingEnd="@dimen/spacing_xs_large"
@@ -80,6 +82,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
+                            android:maxLines="1"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/twoFactor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/twoFactor"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/twoFactorEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
                             android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>
 

@@ -5,10 +5,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.LoginRestService;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
@@ -25,9 +25,7 @@ import com.fastaccess.provider.rest.interceptors.PaginationInterceptor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.lang.reflect.Modifier;
-
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -117,14 +115,14 @@ public class RestProvider {
         return -1;
     }
 
-    @NonNull public static UserRestService getLoginRestService() {
+    @NonNull public static LoginRestService getLoginRestService() {
         return new Retrofit.Builder()
                 .client(provideOkHttpClient(true))
                 .baseUrl("https://github.com/login/oauth/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
-                .create(UserRestService.class);
+                .create(LoginRestService.class);
     }
 
     @NonNull public static UserRestService getUserService() {
