@@ -11,11 +11,17 @@
 
 - Offline Mode.
 - Browse/Search Repos.
+- See your repos, private repos and forked ones (badged private & forked to ease differentiate between them).
+- Filter branches.
+- Filter commits base on branch.
 - Watch, Star and Fork Repos.
+- Edit Issue or Pull Request if you own the repo.
 - Close, Open, Label and Create Issues.
 - Close, Open and Label Pull Requests.
 - Lock & Unlock conversations on Issues and Pull Requests.
-- Comment on Issues, Pull Requests, Commits and Gists
+- Milestone & Create milestone.
+- Assign assignees to your Issues and Pull Requests.
+- Comment on Issues, Pull Requests, Commits and Gists.
 - Edit and Delete Comments.
 - Create/Delete Gists.
 - View Gists and their files.
@@ -24,6 +30,7 @@
 - Download releases and any sort of files.
 - Markdown and code highlighting support.
 - Receive notifications.
+- Mark all notifications as read.
 - Loads more...
 
 
