@@ -17,6 +17,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.Arrays;
 
+import java.util.UUID;
 import okhttp3.Credentials;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
@@ -69,11 +70,13 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             authModel.setNote(BuildConfig.APPLICATION_ID + "-" + authToken);//make it unique to FastHub.
             authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
 
+            UUID uuid = UUID.randomUUID();
+
             Observable<AccessTokenModel> loginCall =
-                LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID, authModel);
+                LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID, uuid.toString(), authModel);
 
             if (twoFactorCode != null && !twoFactorCode.isEmpty()) {
-                loginCall = LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID, authModel,
+                loginCall = LoginProvider.getLoginRestService(authToken).login(BuildConfig.GITHUB_CLIENT_ID, uuid.toString(), authModel,
                     twoFactorCode);
             }
 

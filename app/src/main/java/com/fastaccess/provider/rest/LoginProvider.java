@@ -3,6 +3,7 @@ package com.fastaccess.provider.rest;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.BuildConfig;
+import com.fastaccess.data.LoginRestService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
@@ -49,7 +50,7 @@ public class LoginProvider {
                 .build();
     }
 
-    @NonNull public static UserRestService getLoginRestService(@NonNull String authToken) {
-        return provideRetrofit(authToken).create(UserRestService.class);
+    @NonNull public static LoginRestService getLoginRestService(@NonNull String authToken) {
+        return provideRetrofit(authToken).create(LoginRestService.class);
     }
 }

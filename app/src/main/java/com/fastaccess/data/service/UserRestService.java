@@ -29,22 +29,6 @@ import rx.Observable;
 
 public interface UserRestService {
 
-    @FormUrlEncoded @POST("access_token")
-    Observable<AccessTokenModel> getAccessToken(@NonNull @Field("code") String code,
-                                                @NonNull @Field("client_id") String clientId,
-                                                @NonNull @Field("client_secret") String clientSecret,
-                                                @NonNull @Field("state") String state,
-                                                @NonNull @Field("redirect_uri") String redirectUrl);
-
-    @PUT("authorizations/clients/{clientId}") Observable<AccessTokenModel> login(@NonNull @Path("clientId") String clientId,
-                                                                                 @NonNull @Body AuthModel authModel);
-
-    @PUT("authorizations/clients/{clientId}") Observable<AccessTokenModel> login(@NonNull @Path("clientId") String clientId,
-                                                                                 @NonNull @Body AuthModel authModel,
-                                                                                 @NonNull @Header("X-GitHub-OTP") String otpCode);
-
-    @DELETE("authorizations/{id}") Observable<Response<Boolean>> deleteToken(@Path("id") long id);
-
     @GET("user") Observable<LoginModel> getUser();
 
     @GET("users/{username}") Observable<UserModel> getUser(@Path("username") @NonNull String username);
