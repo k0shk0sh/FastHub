@@ -24,7 +24,7 @@ public class ReadNotificationService extends IntentService {
     public static final int READ_ALL = 2;
 
     public static void start(@NonNull Context context, long id) {
-        Intent intent = new Intent(context, ReadNotificationService.class);
+        Intent intent = new Intent(context.getApplicationContext(), ReadNotificationService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, READ_SINGLE)
                 .put(BundleConstant.ID, id)
@@ -33,7 +33,7 @@ public class ReadNotificationService extends IntentService {
     }
 
     public static void start(@NonNull Context context, @NonNull long[] ids) {
-        Intent intent = new Intent(context, ReadNotificationService.class);
+        Intent intent = new Intent(context.getApplicationContext(), ReadNotificationService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, READ_ALL)
                 .put(BundleConstant.ID, ids)

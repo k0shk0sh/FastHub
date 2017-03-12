@@ -89,7 +89,10 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
                     sendToView(LoginMvp.View::onRequire2Fa);
                     return;
                 } else {
-                    sendToView(LoginMvp.View::onRequireLogin);
+                    sendToView(view -> {
+                        view.hideProgress();
+                        view.onRequireLogin();
+                    });
                     return;
                 }
             }

@@ -46,7 +46,7 @@ public class GithubActionService extends IntentService {
 
 
     public static void startForRepo(@NonNull Context context, @NonNull String login, @NonNull String repo, @GitActionType int type) {
-        Intent intent = new Intent(context, GithubActionService.class);
+        Intent intent = new Intent(context.getApplicationContext(), GithubActionService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, repo)
                 .put(BundleConstant.EXTRA, login)
@@ -56,7 +56,7 @@ public class GithubActionService extends IntentService {
     }
 
     public static void startForGist(@NonNull Context context, @NonNull String id, @GitActionType int type) {
-        Intent intent = new Intent(context, GithubActionService.class);
+        Intent intent = new Intent(context.getApplicationContext(), GithubActionService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, id)
                 .put(BundleConstant.EXTRA_TYPE, type)

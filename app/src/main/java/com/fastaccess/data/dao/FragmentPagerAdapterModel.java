@@ -108,9 +108,9 @@ public class FragmentPagerAdapterModel {
     @NonNull public static List<FragmentPagerAdapterModel> buildForRepoIssue(@NonNull Context context, @NonNull String login,
                                                                              @NonNull String repoId) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.opened),
-                        RepoOpenedIssuesView.newInstance(repoId, login, IssueState.open)),
+                        RepoOpenedIssuesView.newInstance(repoId, login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.closed),
-                        RepoClosedIssuesView.newInstance(repoId, login, IssueState.closed)))
+                        RepoClosedIssuesView.newInstance(repoId, login)))
                 .collect(Collectors.toList());
     }
 

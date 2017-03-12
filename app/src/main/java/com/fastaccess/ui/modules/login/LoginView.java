@@ -93,23 +93,18 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         super.showMessage(titleRes, msgRes);
     }
 
-    @Override public void showProgress(@StringRes int resId) {
-        AnimHelper.animateVisibility(login, false, new AnimHelper.AnimationCallback() {
-            @Override public void onAnimationEnd() {
-                AnimHelper.animateVisibility(progress, true);
-            }
+    @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
+        hideProgress();
+        super.showMessage(titleRes, msgRes);
+    }
 
-            @Override public void onAnimationStart() {}
-        });
+    @Override public void showProgress(@StringRes int resId) {
+        login.hide();
+        AnimHelper.animateVisibility(progress, true);
     }
 
     @Override public void hideProgress() {
-        AnimHelper.animateVisibility(progress, false, new AnimHelper.AnimationCallback() {
-            @Override public void onAnimationEnd() {
-                AnimHelper.animateVisibility(login, true);
-            }
-
-            @Override public void onAnimationStart() {}
-        });
+        progress.setVisibility(View.GONE);
+        login.show();
     }
 }
