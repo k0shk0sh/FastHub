@@ -201,6 +201,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         if (getPresenter().getRepo() == null) {
             return;
         }
+        license.tintDrawables(accentColor);
         watchRepo.tintDrawables(accentColor);
         starRepo.tintDrawables(accentColor);
         forkRepo.tintDrawables(accentColor);
