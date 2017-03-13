@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.login;
 
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -59,10 +60,10 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             String authToken = Credentials.basic(username, password);
             AuthModel authModel = new AuthModel();
             authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications"));
-            authModel.setNote(BuildConfig.APPLICATION_ID + "-" + authToken);//make it unique to FastHub.
+            authModel.setNote(BuildConfig.APPLICATION_ID + "-" + authToken + "-" + Build.MODEL);//make it unique to FastHub.
             authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
             UUID uuid = UUID.randomUUID();
-            String fingerprint = BuildConfig.APPLICATION_ID + " - " + uuid;
+            String fingerprint = BuildConfig.APPLICATION_ID + " - " + uuid + "-" + Build.MODEL;
             Observable<AccessTokenModel> loginCall = LoginProvider.getLoginRestService(authToken)
                     .login(BuildConfig.GITHUB_CLIENT_ID, fingerprint, authModel);
             if (!InputHelper.isEmpty(twoFactorCode)) {
