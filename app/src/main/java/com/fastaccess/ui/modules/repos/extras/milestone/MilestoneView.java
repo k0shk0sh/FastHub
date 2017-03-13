@@ -86,7 +86,7 @@ public class MilestoneView extends BaseFragment<MilestoneMvp.View, MilestonePres
         }
         toolbar.setTitle(R.string.milestone);
         toolbar.setOnMenuItemClickListener(item -> onAddMilestone());
-        toolbar.inflateMenu(R.menu.done_menu);
+        toolbar.inflateMenu(R.menu.add_menu);
         toolbar.setNavigationIcon(R.drawable.ic_clear);
         toolbar.setNavigationOnClickListener(v -> getActivity().finish());
         adapter = new MilestonesAdapter(getPresenter().getMilestones());
