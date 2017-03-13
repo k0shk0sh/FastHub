@@ -144,7 +144,7 @@
     <string name="error_creating_issue">Error creating Issue</string>
     <string name="create_issue">Create Issue</string>
     <string name="error_highlighting_editor">Please un-select highlighting to continue editing.</string>
-    <string name="notifictions">Notifications</string>
+    <string name="notifications">Notifications</string>
     <string name="unread_notification">You have unread notifications</string>
     <string name="open">Open</string>
     <string name="notification_type">Notification type</string>

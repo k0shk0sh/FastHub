@@ -97,7 +97,7 @@ public class NotificationSchedulerJobTask extends JobService {
                     PendingIntent.FLAG_CANCEL_CURRENT);
             Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_announcement)
-                    .setContentTitle(context.getString(R.string.notifictions))
+                    .setContentTitle(context.getString(R.string.notifications))
                     .setContentText(context.getString(R.string.unread_notification) + " (" + count + ")")
                     .setContentIntent(pendingIntent)
                     .setNumber((int) count)

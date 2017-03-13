@@ -134,7 +134,7 @@
 
         <activity
             android:name=".ui.modules.notification.NotificationActivityView"
-            android:label="@string/notifictions"
+            android:label="@string/notifications"
             android:parentActivityName=".ui.modules.main.MainView"
             android:theme="@style/WhenLargeTheme">
             <meta-data
