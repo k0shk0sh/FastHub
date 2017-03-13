@@ -257,5 +257,5 @@
     <string name="notification_settings">Notification</string>
     <string name="turn_off">Turn off</string>
     <string name="unauthorized_user">Unauthorized user</string>
-    <string name="two_factors_otp_error">Two factor OTP is required</string>
+    <string name="two_factors_otp_error">Two factors OTP is required</string>
 </resources>
