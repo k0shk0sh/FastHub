@@ -10,7 +10,6 @@
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
     android:stateListAnimator="@animator/raise_selector">
 
