@@ -1,0 +1,3 @@
+[submodule "app/src/main/res"]
+    path = app/src/main/res/
+    url = https://github.com/k0shk0sh/FastHub-translations
