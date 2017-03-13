@@ -196,7 +196,7 @@
     <string name="five_minutes">5 minutes</string>
     <string name="one_minute">1 minute</string>
     <string name="created_repo">Created</string>
-    <string name="commited">Committed</string>
+    <string name="committed">Committed</string>
     <string name="downloaded">Downloaded</string>
     <string name="followed">Followed</string>
     <string name="created_gist">Gist</string>
