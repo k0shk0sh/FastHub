@@ -13,6 +13,4 @@
         <item>@string/twenty_minutes</item>
         <item>@string/thirty_minutes</item>
     </string-array>
-    
-    <string name="turn_off">Turn off</string>
 </resources>

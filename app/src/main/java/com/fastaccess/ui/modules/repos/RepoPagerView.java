@@ -60,6 +60,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindView(R.id.watchRepo) FontTextView watchRepo;
     @BindView(R.id.license) FontTextView license;
     @BindColor(R.color.accent) int accentColor;
+    @BindColor(R.color.primary_text) int blackColor;
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.fab) FloatingActionButton fab;
     @State @RepoPagerMvp.RepoNavigationType int navType;
@@ -201,10 +202,6 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         if (getPresenter().getRepo() == null) {
             return;
         }
-        license.tintDrawables(accentColor);
-        watchRepo.tintDrawables(accentColor);
-        starRepo.tintDrawables(accentColor);
-        forkRepo.tintDrawables(accentColor);
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         RepoModel repoModel = getPresenter().getRepo();
         hideProgress();
@@ -257,17 +254,17 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override public void onRepoWatched(boolean isWatched) {
-        watchRepo.setTopDrawable(isWatched ? R.drawable.ic_eye_off : R.drawable.ic_eye, accentColor);
+        watchRepo.setTopDrawable(R.drawable.ic_eye, isWatched ? accentColor : blackColor);
         onEnableDisableWatch(true);
     }
 
     @Override public void onRepoStarred(boolean isStarred) {
-        starRepo.setTopDrawable(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star, accentColor);
+        starRepo.setTopDrawable(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star, isStarred ? accentColor : blackColor);
         onEnableDisableStar(true);
     }
 
     @Override public void onRepoForked(boolean isForked) {
-        forkRepo.setTopDrawable(isForked ? R.drawable.ic_fork_filled : R.drawable.ic_fork, accentColor);
+        forkRepo.setTopDrawable(R.drawable.ic_fork, isForked ? accentColor : blackColor);
         onEnableDisableFork(true);
     }
 

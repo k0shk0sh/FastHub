@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -158,10 +159,28 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
+            item.setEnabled(false);
             getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        if (menu.findItem(R.id.submit) != null) {
+            menu.findItem(R.id.submit).setEnabled(true);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override public void showProgress(@StringRes int resId) {
+        super.showProgress(resId);
+        supportInvalidateOptionsMenu();
+    }
+
+    @Override public void hideProgress() {
+        supportInvalidateOptionsMenu();
+        super.hideProgress();
     }
 
     @Override public void onBackPressed() {

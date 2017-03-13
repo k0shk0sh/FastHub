@@ -182,14 +182,14 @@
         \nScroll the Markdown editor icons for more options.</string>
     <string name="creation_date">Creation date</string>
     <string name="creation_date_hint">When the file was created</string>
-    <string name="last_updated_hint">When the file file was last updated</string>
+    <string name="last_updated_hint">When the file was last updated</string>
     <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
     <string name="mark_all_as_read">Mark all as read</string>
     <string name="all_notifications">All notifications</string>
     <string name="unread">Unread</string>
     <string name="all">All</string>
     <string name="delete_repo">Delete Repo</string>
-    <string name="delete_repo_warning">Deleting this repo can't be undone</string>
+    <string name="delete_repo_warning">Deleting this repo can\'t be undone</string>
     <string name="thirty_minutes">30 minutes</string>
     <string name="twenty_minutes">20 minutes</string>
     <string name="ten_minutes">10 minutes</string>
@@ -255,5 +255,7 @@
     <string name="report_issue_here">Having an issue? Report it here</string>
     <string name="about">About</string>
     <string name="notification_settings">Notification</string>
+    <string name="turn_off">Turn off</string>
     <string name="unauthorized_user">Unauthorized user</string>
+    <string name="two_factors_otp_error">Two factor OTP is required</string>
 </resources>

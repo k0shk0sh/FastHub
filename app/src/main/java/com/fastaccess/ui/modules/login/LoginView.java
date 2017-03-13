@@ -64,7 +64,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     }
 
     @Override public void onRequire2Fa() {
-        showMessage(R.string.error, R.string.two_fectors_otp_error);
+        showMessage(R.string.error, R.string.two_factors_otp_error);
         twoFactor.setVisibility(View.VISIBLE);
         hideProgress();
     }
