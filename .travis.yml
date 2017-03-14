@@ -55,7 +55,7 @@ before_install:
 # Scripts to run before test
 before_script:
   # Set up code coverage report
-  - ./gradlew build jacocoTestReport assembleAndroidTest --stacktrace
+  - ./gradlew build jacocoTestReport assembleAndroidTestDebuggingApp --stacktrace
   # Emulator management: create, start and wait
   - android list targets
   - echo no | android create avd --force -n test -t android-$EMULATOR_ANDROID_SDK --abi $EMULATOR_ABI
