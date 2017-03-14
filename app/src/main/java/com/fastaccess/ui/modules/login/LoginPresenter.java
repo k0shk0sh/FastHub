@@ -57,18 +57,18 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         getView().onEmptyUserName(usernameIsEmpty);
         getView().onEmptyPassword(passwordIsEmpty);
         if (!usernameIsEmpty && !passwordIsEmpty) {
+            UUID uuid = UUID.randomUUID();
             String authToken = Credentials.basic(username, password);
             AuthModel authModel = new AuthModel();
             authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications"));
-            authModel.setNote(BuildConfig.APPLICATION_ID + "-" + authToken + "-" + Build.MODEL);//make it unique to FastHub.
+            String uniqueToken = BuildConfig.APPLICATION_ID + "-" + authToken + "-" + Build.MODEL + "-" + uuid;
+            authModel.setNote(uniqueToken);//make it unique to FastHub.
             authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
-            UUID uuid = UUID.randomUUID();
-            String fingerprint = BuildConfig.APPLICATION_ID + " - " + uuid + "-" + Build.MODEL;
             Observable<AccessTokenModel> loginCall = LoginProvider.getLoginRestService(authToken)
-                    .login(BuildConfig.GITHUB_CLIENT_ID, fingerprint, authModel);
+                    .login(BuildConfig.GITHUB_CLIENT_ID, uniqueToken, authModel);
             if (!InputHelper.isEmpty(twoFactorCode)) {
                 loginCall = LoginProvider.getLoginRestService(authToken)
-                        .login(BuildConfig.GITHUB_CLIENT_ID, fingerprint, authModel, twoFactorCode);
+                        .login(BuildConfig.GITHUB_CLIENT_ID, uniqueToken, authModel, twoFactorCode);
             }
             makeRestCall(loginCall, tokenModel -> {
                 if (InputHelper.isEmpty(tokenModel.getToken())) {
@@ -91,8 +91,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
                     return;
                 } else {
                     sendToView(view -> {
-                        view.hideProgress();
-                        view.onRequireLogin();
+                        view.showMessage(R.string.error, R.string.failed_login);
                     });
                     return;
                 }

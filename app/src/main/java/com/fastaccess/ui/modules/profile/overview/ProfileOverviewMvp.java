@@ -15,11 +15,11 @@ interface ProfileOverviewMvp {
 
     interface View extends BaseMvp.FAView {
         void onInitViews(@Nullable UserModel userModel);
+
         void onInvalidateMenuItem();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
-
 
         void onFragmentCreated(@Nullable Bundle bundle);
 

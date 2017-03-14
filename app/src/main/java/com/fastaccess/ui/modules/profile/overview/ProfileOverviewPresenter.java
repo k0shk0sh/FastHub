@@ -22,7 +22,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     private boolean isFollowing;
     private String login;
 
-
     @Override public void onCheckFollowStatus(@NonNull String login) {
         if (!TextUtils.equals(login, LoginModel.getUser().getLogin()))
             makeRestCall(RestProvider.getUserService().getFollowStatus(login),
@@ -69,9 +68,11 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
             makeRestCall(RestProvider.getUserService().getUser(login),
                     userModel -> {
                         onSendUserToView(userModel);
-                        onCheckFollowStatus(login);
                         if (userModel != null) {
                             userModel.save();
+                            if (userModel.getType() != null && userModel.getType().equals("user")) {
+                                onCheckFollowStatus(login);
+                            }
                         }
                     });
         }
