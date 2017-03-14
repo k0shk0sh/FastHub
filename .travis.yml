@@ -13,7 +13,7 @@ jdk: oraclejdk8
 sudo: required
 
 script:
-  - ./gradlew clean buildDebuggingApp
+  - ./gradlew clean assembleDebuggingAppDebug
 
 after_success:
   # Upload code coverage report
