@@ -82,17 +82,17 @@ public class PrefGetter {
     public static int getNotificationTaskDuration(@NonNull Context context) {
         String s = PrefHelper.getString("notificationTime");
         if (!InputHelper.isEmpty(s)) {
-            if (s.equals(context.getString(R.string.thirty_minutes))) {
+            if (s.equalsIgnoreCase(context.getString(R.string.thirty_minutes))) {
                 return 30 * 60;
-            } else if (s.equals(context.getString(R.string.twenty_minutes))) {
+            } else if (s.equalsIgnoreCase(context.getString(R.string.twenty_minutes))) {
                 return 20 * 60;
-            } else if (s.equals(context.getString(R.string.ten_minutes))) {
+            } else if (s.equalsIgnoreCase(context.getString(R.string.ten_minutes))) {
                 return 10 * 60;
-            } else if (s.equals(context.getString(R.string.five_minutes))) {
+            } else if (s.equalsIgnoreCase(context.getString(R.string.five_minutes))) {
                 return 5 * 60;
-            } else if (s.equals(context.getString(R.string.one_minute))) {
+            } else if (s.equalsIgnoreCase(context.getString(R.string.one_minute))) {
                 return 60;
-            } else if (s.equals(context.getString(R.string.turn_off))) {
+            } else if (s.equalsIgnoreCase(context.getString(R.string.turn_off))) {
                 return -1;
             }
         }

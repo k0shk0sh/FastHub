@@ -145,6 +145,12 @@ public class PrettifyWebView extends NestedWebView {
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerView.startActivity(getContext(), url.toString());
         } else {
+            String lastSegment = url.getEncodedFragment();
+            Logger.e(lastSegment);
+            if (lastSegment != null) {
+                loadUrl("javascript:scrollTo(\"" + lastSegment + "\")");
+                return;
+            }
             SchemeParser.launchUri(getContext(), url);
         }
     }

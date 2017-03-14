@@ -213,13 +213,13 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         supportInvalidateOptionsMenu();
         PullRequestModel pullRequest = getPresenter().getPullRequest();
         setTitle(String.format("#%s", pullRequest.getNumber()));
+        boolean isMerge = !InputHelper.isEmpty(pullRequest.getMergedAt());
+        int status = !isMerge ? pullRequest.getState().getStatus() : R.string.merged;
+        date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()));
+        size.setVisibility(View.GONE);
         UserModel userModel = pullRequest.getUser();
         if (userModel != null) {
             title.setText(SpannableBuilder.builder().append(userModel.getLogin()).append("/").append(pullRequest.getTitle()));
-            size.setVisibility(View.GONE);
-            boolean isMerge = !InputHelper.isEmpty(pullRequest.getMergedAt());
-            int status = !isMerge ? pullRequest.getState().getStatus() : R.string.merged;
-            date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
         } else {
             title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
