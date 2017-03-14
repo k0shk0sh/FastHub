@@ -77,3 +77,4 @@ after_success:
   
 notifications:
   slack: fasthub:mjJWGD8UpgSgKawKa5OqMNlR
+  email: false
