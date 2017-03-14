@@ -75,3 +75,5 @@ after_success:
   # Upload code coverage report
   - bash <(curl -s https://codecov.io/bash)
   
+notifications:
+  slack: fasthub:mjJWGD8UpgSgKawKa5OqMNlR
