@@ -4,6 +4,7 @@ apply plugin: "com.neenbedankt.android-apt"
 apply plugin: 'com.siimkinks.sqlitemagic'
 apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'com.novoda.build-properties'
+apply plugin: "jacoco-android"
 
 buildProperties {
     notThere {

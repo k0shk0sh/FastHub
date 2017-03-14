@@ -14,6 +14,7 @@ buildscript {
         classpath 'com.siimkinks.sqlitemagic:sqlitemagic-plugin:0.11.0'
         classpath 'com.google.firebase:firebase-plugins:1.0.5'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
+        classpath "com.dicedmelon.gradle:jacoco-android:0.1.1"
     }
     configurations.classpath.exclude group: 'com.android.tools.external.lombok'
 }

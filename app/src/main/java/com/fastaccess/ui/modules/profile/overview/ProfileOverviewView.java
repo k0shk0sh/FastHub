@@ -90,8 +90,8 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
             getPresenter().onFragmentCreated(getArguments());
         } else {
             if (userModel != null) {
-                onInitViews(userModel);
                 onInvalidateMenuItem();
+                onInitViews(userModel);
             } else {
                 getPresenter().onFragmentCreated(getArguments());
             }
@@ -109,6 +109,7 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
         progress.setVisibility(View.GONE);
         if (userModel == null) return;
         this.userModel = userModel;
+        followBtn.setVisibility(!InputHelper.isEmpty(userModel.getType()) && userModel.getType().equalsIgnoreCase("user") ? View.VISIBLE : View.GONE);
         username.setText(userModel.getLogin());
         description.setText(userModel.getBio());
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
