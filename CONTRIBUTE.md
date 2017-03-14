@@ -19,7 +19,6 @@ Before you close the project, Please read the guide below to be able to login fr
 - Fork the project.
 - Clone it to your desktop.
 - Open the project from Android Studio.
-- Copy **gradle.properties** from folder **debuggingApp** to the root folder of the project.
 - Let it build & Start coding.
 
 ### Submitting PR
