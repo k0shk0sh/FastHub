@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
 [![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub)
 
-![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/feature_graphic.png?raw=true "Logo")
+![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
 # FastHub  
 
@@ -92,8 +92,8 @@ Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
 
 | Mobile Portrait | Mobile Landscape |
 |:-:|:-:|
-| ![Main Screen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true) | ![Main Screen Landscape](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main_landscape.png?raw=true) |
+| ![Main Screen](/.github/assets/mobile_main.png?raw=true) | ![Main Screen Landscape](/.github/assets/mobile_main_landscape.png?raw=true) |
 
 | Repo (Tablet) | Commit (Tablet) |
 |:-:|:-:|
-| ![Main Screen Repo](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true) | ![Main Screen Commit](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_commits.png?raw=true) |
+| ![Main Screen Repo](/.github/assets/tablet_repo.png?raw=true) | ![Main Screen Commit](/.github/assets/tablet_commits.png?raw=true) |
