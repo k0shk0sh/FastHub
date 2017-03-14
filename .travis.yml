@@ -10,9 +10,6 @@ android:
 
 jdk: oraclejdk8
 
-notifications:
-  email: false
-
 sudo: required
 
 script:
