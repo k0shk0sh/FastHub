@@ -1,0 +1,77 @@
+language: android
+
+#sudo: false # Use container based build mechanism
+
+env:
+  global:
+    - BUILD_TOOLS=25.0.2
+    - ANDROID_SDK=25
+    - GOOGLE_APIS=24
+    - ADB_INSTALL_TIMEOUT=5 # Emulator install timeout in minutes
+  matrix:
+    # Emulator configurations (ensure that the configuration is available using "android list sdk --no-ui --all --extended" and "android list targets")
+    #- EMULATOR_ANDROID_SDK=21 EMULATOR_ABI=armeabi-v7a # Commenting this out because Travis gets a timeout with that emulator
+    - EMULATOR_ANDROID_SDK=19 EMULATOR_ABI=armeabi-v7a
+
+# JDK version
+jdk:
+  - oraclejdk8
+
+# Android build system
+android:
+  # SDK components to load before test
+  components:
+    # Platform tools
+    - tools
+    - platform-tools
+    # Gradle build tools version
+    - build-tools-$BUILD_TOOLS
+    # Target SDK version
+    - android-$ANDROID_SDK
+    # Google Play services
+    - extra-google-google_play_services
+    - addon-google_apis-google-$GOOGLE_APIS
+    # Support libraries
+    - extra-google-m2repository
+    - extra-android-m2repository
+    # Emulators to run during tests
+    - sys-img-${ANDROID_EMULATOR_ABI}-android-$EMULATOR_ANDROID_SDK
+    - sys-img-${ANDROID_EMULATOR_ABI}-google_apis-$EMULATOR_ANDROID_SDK
+  licenses:
+    # Accept all licenses per default
+    - android-sdk-preview-license-.+
+    - android-sdk-license-.+
+    - google-gdk-license-.+
+
+# Installation routine
+# Scripts to run before installation
+before_install:
+  - android list sdk --no-ui --all --extended
+  - mkdir "${ANDROID_HOME}/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "${ANDROID_HOME}/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "${ANDROID_HOME}/licenses/android-sdk-preview-license"
+  - sleep 10
+  - chmod +x gradlew
+# Scripts to run before test
+before_script:
+  # Set up code coverage report
+  - ./gradlew build jacocoTestReport assembleAndroidTest --stacktrace
+  # Emulator management: create, start and wait
+  - android list targets
+  - echo no | android create avd --force -n test -t android-$EMULATOR_ANDROID_SDK --abi $EMULATOR_ABI
+  - emulator -avd test -no-audio -no-window &
+  - android-wait-for-emulator
+  - adb shell input keyevent 82 &
+# Scripts to run for test
+script:
+  # Generate code coverage tests ("travis_wait 20 <command>" is needed because Travis kills the build
+  # after 10mins without log output. More info:
+  # https://docs.travis-ci.com/user/common-build-problems/#Build-times-out-because-no-output-was-received )
+  - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
+  - travis_wait 20 ./gradlew connectedCheck --stacktrace
+  # Run android tests
+  - travis_wait 20 ./gradlew connectedAndroidTest --stacktrace
+after_success:
+  # Upload code coverage report
+  - bash <(curl -s https://codecov.io/bash)
+  
