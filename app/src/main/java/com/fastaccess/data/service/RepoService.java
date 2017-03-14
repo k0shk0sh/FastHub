@@ -14,6 +14,7 @@ import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.ReleasesModel;
 import com.fastaccess.data.dao.RepoFilesModel;
 import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.RepoSubscriptionModel;
 import com.fastaccess.data.dao.UserModel;
 
 import retrofit2.Response;
@@ -62,8 +63,8 @@ public interface RepoService {
     @NonNull @POST("/repos/{owner}/{repo}/forks")
     Observable<RepoModel> forkRepo(@NonNull @Path("owner") String login, @NonNull @Path("repo") String repoId);
 
-    @NonNull @GET("user/subscriptions/{owner}/{repo}")
-    Observable<Response<Boolean>> isWatchingRepo(@Path("owner") String owner, @Path("repo") String repo);
+    @NonNull @GET("repos/{owner}/{repo}/subscription")
+    Observable<RepoSubscriptionModel> isWatchingRepo(@Path("owner") String owner, @Path("repo") String repo);
 
     @NonNull @PUT("user/subscriptions/{owner}/{repo}")
     Observable<Response<Boolean>> watchRepo(@Path("owner") String owner, @Path("repo") String repo);

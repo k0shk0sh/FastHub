@@ -125,7 +125,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             String name = repoId();
             manageSubscription(RxHelper.getObserver(RestProvider.getRepoService().isWatchingRepo(login, name))
                     .doOnSubscribe(() -> sendToView(view -> view.onEnableDisableWatch(false)))
-                    .doOnNext(subscriptionModel -> sendToView(view -> view.onRepoWatched(isWatched = subscriptionModel.code() == 204)))
+                    .doOnNext(subscriptionModel -> sendToView(view -> view.onRepoWatched(isWatched = subscriptionModel.isSubscribed())))
                     .onErrorReturn(throwable -> {
                         isWatched = false;
                         sendToView(view -> view.onRepoWatched(isWatched));
