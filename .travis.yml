@@ -70,7 +70,7 @@ script:
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
   - travis_wait 20 ./gradlew connectedCheckDebuggingApp --stacktrace
   # Run android tests
-  - travis_wait 20 ./gradlew connectedAndroidTest --stacktrace
+  - travis_wait 20 ./gradlew connectedAndroidTestDebuggingApp --stacktrace
 after_success:
   # Upload code coverage report
   - bash <(curl -s https://codecov.io/bash)
