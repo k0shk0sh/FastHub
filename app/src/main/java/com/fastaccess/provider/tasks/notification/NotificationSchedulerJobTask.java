@@ -37,6 +37,7 @@ import rx.schedulers.Schedulers;
 
 public class NotificationSchedulerJobTask extends JobService {
     private final static String EVERY_30_MINS = "every_30_mins";
+    private final static int THIRTY_MINUTES = 30 * 60;
 
     @Override public boolean onStartJob(JobParameters job) {
         if (LoginModel.getUser() != null) {
@@ -56,7 +57,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     public static void scheduleJob(@NonNull Context context) {
         int duration = PrefGetter.getNotificationTaskDuration(context);
-        scheduleJob(context, duration == 0 ? (30 * 60) : duration, false);
+        scheduleJob(context, duration == 0 ? THIRTY_MINUTES : duration, false);
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
@@ -66,6 +67,7 @@ public class NotificationSchedulerJobTask extends JobService {
             dispatcher.cancel(EVERY_30_MINS);
             return;
         }
+        duration = duration <= 0 ? THIRTY_MINUTES : duration;
         Job.Builder builder = dispatcher
                 .newJobBuilder()
                 .setTag(EVERY_30_MINS)
