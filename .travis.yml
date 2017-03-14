@@ -68,7 +68,7 @@ script:
   # after 10mins without log output. More info:
   # https://docs.travis-ci.com/user/common-build-problems/#Build-times-out-because-no-output-was-received )
   - adb shell setprop dalvik.vm.dexopt-flags v=n,o=v
-  - travis_wait 20 ./gradlew connectedCheck --stacktrace
+  - travis_wait 20 ./gradlew connectedCheckDebuggingApp --stacktrace
   # Run android tests
   - travis_wait 20 ./gradlew connectedAndroidTest --stacktrace
 after_success:
