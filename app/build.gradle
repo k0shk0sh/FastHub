@@ -4,55 +4,45 @@ apply plugin: "com.neenbedankt.android-apt"
 apply plugin: 'com.siimkinks.sqlitemagic'
 apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'com.novoda.build-properties'
-
-buildProperties {
-    notThere {
-        file rootProject.file('debug_gradle.properties')
-    }
-    secrets {
-        file rootProject.file('gradle.properties')
-    }
-}
+apply plugin: "jacoco-android"
 
 android {
-    signingConfigs {
-        signing {
-            keyAlias buildProperties.secrets['android_key_alias'].or(buildProperties.notThere['android_key_alias']).string
-            keyPassword buildProperties.secrets['android_store_password'].or(buildProperties.notThere['android_store_password']).string
-            storeFile file('fastaccess-key')
-            storePassword buildProperties.secrets['android_store_password'].or(buildProperties.notThere['android_store_password']).string
-        }
-    }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
+
     defaultConfig {
         applicationId "com.fastaccess.github"
+
         minSdkVersion 21
         targetSdkVersion 25
+
         versionCode 111
         versionName "1.1.1"
-        signingConfig signingConfigs.signing
-        buildConfigString  "GITHUB_CLIENT_ID", buildProperties.secrets['github_client_id']
-                .or(buildProperties.notThere['github_client_id']).string
-        buildConfigString  "GITHUB_SECRET", buildProperties.secrets['github_secret']
-                .or(buildProperties.notThere['github_secret']).string
-        buildConfigString  "REDIRECT_URL", buildProperties.secrets['redirect_url']
-                .or(buildProperties.notThere['redirect_url']).string
-        buildConfigField "String",  "REST_URL", '"https://api.github.com/"'
-        buildConfigField "int", "DB_VERSION", "2"
+
+        buildConfigString "GITHUB_CLIENT_ID", GITHUB_CLIENT_ID
+        buildConfigString "GITHUB_SECRET", GITHUB_SECRET
+        buildConfigString "REDIRECT_URL", REDIRECT_URL
+        buildConfigString "REST_URL", REST_URL
+        buildConfigField "int", "DB_VERSION", DB_VERSION
     }
+
+    signingConfigs {
+        release {
+            keyAlias ANDROID_KEY_ALIAS
+            keyPassword ANDROID_KEY_PASSWORD
+            storeFile file(ANDROID_KEYSTORE_FILE_PATH)
+            storePassword ANDROID_KEYSTORE_PASSWORD
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
-    }
-
-
-    productFlavors {
-        debuggingApp {}
-        productionApp {}
     }
 
     sourceSets {
@@ -74,6 +64,7 @@ android {
         xmlReport true
         disable 'InvalidPackage'
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -86,15 +77,6 @@ android {
 
 retrolambda {
     oldJdk System.getenv("JAVA7_HOME")
-}
-
-repositories {
-    maven { url "https://clojars.org/repo/" }
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "http://dl.bintray.com/amulyakhare/maven" }
-    maven { url "https://jitpack.io" }
-    maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
-    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
 }
 
 dependencies {
