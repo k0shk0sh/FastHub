@@ -21,11 +21,13 @@ Before you close the project, Please read the guide below to be able to login fr
 
 ### Submitting PR
 
- > Please make sure your commit messages are meaningful.
+> Please make sure your commit messages are meaningful.
  
 - Create new Branch with the feature or fix you made.
 - Submit your PR with an explanation of what you did & why (~~if applicable~~).
 
-
-
 > I really appreciate your efforts on contributing to this project.
+
+# Contribute Translations
+
+In order to help translations, please take a look https://github.com/k0shk0sh/FastHub-translations repository.
