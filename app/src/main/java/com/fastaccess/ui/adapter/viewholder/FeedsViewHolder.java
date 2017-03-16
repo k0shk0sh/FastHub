@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.EventsModel;
+import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -21,7 +21,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class FeedsViewHolder extends BaseViewHolder<EventsModel> {
+public class FeedsViewHolder extends BaseViewHolder<Event> {
 
     @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.title) FontTextView title;
@@ -35,7 +35,7 @@ public class FeedsViewHolder extends BaseViewHolder<EventsModel> {
         return getView(viewGroup, R.layout.feeds_row_item);
     }
 
-    @Override public void bind(@NonNull EventsModel eventsModel) {
+    @Override public void bind(@NonNull Event eventsModel) {
         if (eventsModel.getActor() != null) {
             avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin());
         } else {

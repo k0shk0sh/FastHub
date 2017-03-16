@@ -12,4 +12,10 @@
         android:icon="@drawable/ic_brower"
         android:title="@string/open_in_browser"
         app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/copy"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy"
+        app:showAsAction="ifRoom"/>
+
 </menu>

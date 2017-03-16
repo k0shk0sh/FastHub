@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -22,7 +22,7 @@ import rx.Observable;
 
 class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> implements ProfileStarredMvp.Presenter {
 
-    private ArrayList<RepoModel> repos = new ArrayList<>();
+    private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -70,20 +70,20 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
                         getRepos().clear();
-                        manageSubscription(RepoModel.saveStarred(repoModelPageable.getItems(), parameter).subscribe());
+                        manageSubscription(Repo.saveStarred(repoModelPageable.getItems(), parameter).subscribe());
                     }
                     getRepos().addAll(repoModelPageable.getItems());
                     sendToView(ProfileStarredMvp.View::onNotifyAdapter);
                 });
     }
 
-    @NonNull @Override public ArrayList<RepoModel> getRepos() {
+    @NonNull @Override public ArrayList<Repo> getRepos() {
         return repos;
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(RepoModel.getStarred(login)).subscribe(repoModels -> {
+            manageSubscription(RxHelper.getObserver(Repo.getStarred(login)).subscribe(repoModels -> {
                 repos.addAll(repoModels);
                 Logger.e(repoModels);
                 sendToView(ProfileStarredMvp.View::onNotifyAdapter);
@@ -93,11 +93,11 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         }
     }
 
-    @Override public void onItemClick(int position, View v, RepoModel item) {
+    @Override public void onItemClick(int position, View v, Repo item) {
         RepoPagerView.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoModel item) {
+    @Override public void onItemLongClick(int position, View v, Repo item) {
         onItemClick(position, v, item);
     }
 }

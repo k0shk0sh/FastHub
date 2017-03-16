@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements RepoIssuesMvp.Presenter {
 
-    private ArrayList<IssueModel> issues = new ArrayList<>();
+    private ArrayList<Issue> issues = new ArrayList<>();
     private String login;
     private String repoId;
     private int page;
@@ -73,7 +73,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                     lastPage = issues.getLast();
                     if (getCurrentPage() == 1) {
                         getIssues().clear();
-                        manageSubscription(IssueModel.save(issues.getItems(), repoId, login).subscribe());
+                        manageSubscription(Issue.save(issues.getItems(), repoId, login).subscribe());
                     }
                     getIssues().addAll(Stream.of(issues.getItems()).filter(value -> value.getPullRequest() == null).collect(Collectors.toList()));
                     sendToView(RepoIssuesMvp.View::onNotifyAdapter);
@@ -91,7 +91,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
 
     @Override public void onWorkOffline() {
         if (issues.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(IssueModel.getIssues(repoId, login, issueState))
+            manageSubscription(RxHelper.getObserver(Issue.getIssues(repoId, login, issueState))
                     .subscribe(issueModel -> {
                         issues.addAll(issueModel);
                         sendToView(RepoIssuesMvp.View::onNotifyAdapter);
@@ -101,7 +101,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         }
     }
 
-    @NonNull @Override public ArrayList<IssueModel> getIssues() {
+    @NonNull @Override public ArrayList<Issue> getIssues() {
         return issues;
     }
 
@@ -113,7 +113,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         return login;
     }
 
-    @Override public void onItemClick(int position, View v, IssueModel item) {
+    @Override public void onItemClick(int position, View v, Issue item) {
         Logger.e(Bundler.start().put("item", item).end().size());
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
         if (parser != null) {
@@ -122,7 +122,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, IssueModel item) {
+    @Override public void onItemLongClick(int position, View v, Issue item) {
         onItemClick(position, v, item);
     }
 }

@@ -7,7 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.fastaccess.data.dao.BranchesModel;
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements RepoCommitsMvp.Presenter {
 
-    private ArrayList<CommitModel> commits = new ArrayList<>();
+    private ArrayList<Commit> commits = new ArrayList<>();
     private ArrayList<BranchesModel> branches = new ArrayList<>();
     private String login;
     private String repoId;
@@ -70,7 +70,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         getCommits().clear();
-                        manageSubscription(CommitModel.save(response.getItems(), repoId, login).subscribe());
+                        manageSubscription(Commit.save(response.getItems(), repoId, login).subscribe());
                     }
                     getCommits().addAll(response.getItems());
                     sendToView(RepoCommitsMvp.View::onNotifyAdapter);
@@ -101,7 +101,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         }
     }
 
-    @NonNull @Override public ArrayList<CommitModel> getCommits() {
+    @NonNull @Override public ArrayList<Commit> getCommits() {
         return commits;
     }
 
@@ -111,7 +111,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(CommitModel.getCommits(repoId, login))
+            manageSubscription(RxHelper.getObserver(Commit.getCommits(repoId, login))
                     .subscribe(models -> {
                         commits.addAll(models);
                         sendToView(RepoCommitsMvp.View::onNotifyAdapter);
@@ -132,11 +132,11 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         return branch;
     }
 
-    @Override public void onItemClick(int position, View v, CommitModel item) {
+    @Override public void onItemClick(int position, View v, Commit item) {
         CommitPagerView.createIntentForOffline(v.getContext(), item);
     }
 
-    @Override public void onItemLongClick(int position, View v, CommitModel item) {
+    @Override public void onItemLongClick(int position, View v, Commit item) {
         onItemClick(position, v, item);
     }
 }

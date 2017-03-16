@@ -5,9 +5,9 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -23,7 +23,7 @@ import rx.Observable;
 
 class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implements ProfileReposMvp.Presenter {
 
-    private ArrayList<RepoModel> repos = new ArrayList<>();
+    private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -56,7 +56,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
 
     @Override public void onCallApi(int page, @Nullable String parameter) {
         if (currentLoggedIn == null) {
-            currentLoggedIn = LoginModel.getUser().getLogin();
+            currentLoggedIn = Login.getUser().getLogin();
         }
         if (parameter == null) {
             throw new NullPointerException("Username is null");
@@ -77,20 +77,20 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
                         getRepos().clear();
-                        manageSubscription(RepoModel.saveMyRepos(repoModelPageable.getItems(), parameter).subscribe());
+                        manageSubscription(Repo.saveMyRepos(repoModelPageable.getItems(), parameter).subscribe());
                     }
                     getRepos().addAll(repoModelPageable.getItems());
                     sendToView(ProfileReposMvp.View::onNotifyAdapter);
                 });
     }
 
-    @NonNull @Override public ArrayList<RepoModel> getRepos() {
+    @NonNull @Override public ArrayList<Repo> getRepos() {
         return repos;
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(RepoModel.getMyRepos(login)).subscribe(repoModels -> {
+            manageSubscription(RxHelper.getObserver(Repo.getMyRepos(login)).subscribe(repoModels -> {
                 repos.addAll(repoModels);
                 sendToView(ProfileReposMvp.View::onNotifyAdapter);
             }));
@@ -99,11 +99,11 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
         }
     }
 
-    @Override public void onItemClick(int position, View v, RepoModel item) {
+    @Override public void onItemClick(int position, View v, Repo item) {
         RepoPagerView.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoModel item) {
+    @Override public void onItemLongClick(int position, View v, Repo item) {
         onItemClick(position, v, item);
     }
 }

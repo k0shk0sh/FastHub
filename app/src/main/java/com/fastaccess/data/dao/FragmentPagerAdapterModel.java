@@ -7,6 +7,10 @@ import android.support.v4.app.Fragment;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Commit;
+import com.fastaccess.data.dao.model.Gist;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsView;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListView;
@@ -84,7 +88,7 @@ public class FragmentPagerAdapterModel {
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context, @NonNull IssueModel issueModel) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context, @NonNull Issue issueModel) {
         String login = issueModel.getLogin();
         String repoId = issueModel.getRepoId();
         int number = issueModel.getNumber();
@@ -94,7 +98,7 @@ public class FragmentPagerAdapterModel {
     }
 
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForPullRequest(@NonNull Context context, @NonNull PullRequestModel pullRequest) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForPullRequest(@NonNull Context context, @NonNull PullRequest pullRequest) {
         String login = pullRequest.getLogin();
         String repoId = pullRequest.getRepoId();
         int number = pullRequest.getNumber();
@@ -123,7 +127,7 @@ public class FragmentPagerAdapterModel {
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForCommit(@NonNull Context context, @NonNull CommitModel commitModel) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForCommit(@NonNull Context context, @NonNull Commit commitModel) {
         String login = commitModel.getLogin();
         String repoId = commitModel.getRepoId();
         String sha = commitModel.getSha();
@@ -132,7 +136,7 @@ public class FragmentPagerAdapterModel {
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForGist(@NonNull Context context, @NonNull GistsModel gistsModel) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForGist(@NonNull Context context, @NonNull Gist gistsModel) {
 
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListView.newInstance(gistsModel.getFiles())),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), GistCommentsView.newInstance(gistsModel.getGistId())))

@@ -1,13 +1,13 @@
 package com.fastaccess.data.service;
 
 import com.fastaccess.data.dao.AssigneesRequestModel;
-import com.fastaccess.data.dao.CommitModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MergeResponseModel;
 import com.fastaccess.data.dao.Pageable;
-import com.fastaccess.data.dao.PullRequestModel;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.Commit;
+import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.RepoFile;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -27,12 +27,12 @@ import rx.Observable;
 public interface PullRequestService {
 
     @GET("repos/{owner}/{repo}/pulls")
-    Observable<Pageable<PullRequestModel>> getPullRequests(@Path("owner") String owner, @Path("repo") String repo,
-                                                           @Query("state") String state, @Query("page") int page);
+    Observable<Pageable<PullRequest>> getPullRequests(@Path("owner") String owner, @Path("repo") String repo,
+                                                      @Query("state") String state, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}")
     @Headers("Accept: application/vnd.github.VERSION.html")
-    Observable<PullRequestModel> getPullRequest(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
+    Observable<PullRequest> getPullRequest(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
 
     @PUT("repos/{owner}/{repo}/pulls/{number}/merge")
     Observable<MergeResponseModel> mergePullRequest(@Path("owner") String owner, @Path("repo") String repo,
@@ -40,14 +40,14 @@ public interface PullRequestService {
 
 
     @GET("repos/{owner}/{repo}/pulls/{number}/commits")
-    Observable<Pageable<CommitModel>> getPullRequestCommits(@Path("owner") String owner, @Path("repo") String repo,
-                                                            @Path("number") long number,
-                                                            @Query("page") int page);
+    Observable<Pageable<Commit>> getPullRequestCommits(@Path("owner") String owner, @Path("repo") String repo,
+                                                       @Path("number") long number,
+                                                       @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/files")
-    Observable<Pageable<RepoFilesModel>> getPullRequestFiles(@Path("owner") String owner, @Path("repo") String repo,
-                                                             @Path("number") long number,
-                                                             @Query("page") int page);
+    Observable<Pageable<RepoFile>> getPullRequestFiles(@Path("owner") String owner, @Path("repo") String repo,
+                                                       @Path("number") long number,
+                                                       @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/merge")
     Observable<Response<Boolean>> hasPullRequestBeenMerged(@Path("owner") String owner, @Path("repo") String repo,
@@ -55,17 +55,17 @@ public interface PullRequestService {
 
     @PATCH("repos/{owner}/{repo}/pulls/{number}")
     @Headers("Accept: application/vnd.github.VERSION.html")
-    Observable<PullRequestModel> editPullRequest(@Path("owner") String owner, @Path("repo") String repo,
-                                                 @Path("number") int number,
-                                                 @Body IssueRequestModel issue);
+    Observable<PullRequest> editPullRequest(@Path("owner") String owner, @Path("repo") String repo,
+                                            @Path("number") int number,
+                                            @Body IssueRequestModel issue);
 
     @PATCH("repos/{owner}/{repo}/issues/{number}")
     @Headers("Accept: application/vnd.github.VERSION.html")
-    Observable<PullRequestModel> editIssue(@Path("owner") String owner, @Path("repo") String repo,
-                                           @Path("number") int number,
-                                           @Body IssueRequestModel issue);
+    Observable<PullRequest> editIssue(@Path("owner") String owner, @Path("repo") String repo,
+                                      @Path("number") int number,
+                                      @Body IssueRequestModel issue);
 
     @POST("repos/{owner}/{repo}/issues/{number}/assignees")
-    Observable<PullRequestModel> putAssignees(@Path("owner") String owner, @Path("repo") String repo,
-                                              @Path("number") int number, @Body AssigneesRequestModel body);
+    Observable<PullRequest> putAssignees(@Path("owner") String owner, @Path("repo") String repo,
+                                         @Path("number") int number, @Body AssigneesRequestModel body);
 }

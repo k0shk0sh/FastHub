@@ -10,7 +10,7 @@ import android.view.View;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.ReleasesModel;
+import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -122,7 +122,7 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
         super.showErrorMessage(msgRes);
     }
 
-    @Override public void onDownload(@NonNull ReleasesModel item) {
+    @Override public void onDownload(@NonNull Release item) {
         ArrayList<SimpleUrlsModel> models = new ArrayList<>();
         if (!InputHelper.isEmpty(item.getZipBallUrl())) {
             models.add(new SimpleUrlsModel(getString(R.string.download_as_zip), item.getZipBallUrl()));
@@ -144,7 +144,7 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
         dialogView.show(getChildFragmentManager(), "ListDialogView");
     }
 
-    @Override public void onShowDetails(@NonNull ReleasesModel item) {
+    @Override public void onShowDetails(@NonNull Release item) {
         if (!InputHelper.isEmpty(item.getBody())) {
             MessageDialogView.newInstance(!InputHelper.isEmpty(item.getName()) ? item.getName() : item.getTagName(),
                     item.getBody(), true).show(getChildFragmentManager(), MessageDialogView.TAG);

@@ -3,9 +3,6 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.siimkinks.sqlitemagic.annotation.Column;
-import com.siimkinks.sqlitemagic.annotation.Table;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,12 +11,21 @@ import lombok.Setter;
  * Created by Kosh on 19 Feb 2017, 6:11 PM
  */
 
-@Getter @Setter @NoArgsConstructor @Table(persistAll = true)
+@Getter @Setter @NoArgsConstructor
 public class NotificationSubjectModel implements Parcelable {
-    @Column String title;
-    @Column String url;
-    @Column String type;
-    @Column String latestCommentUrl;
+    String title;
+    String url;
+    String type;
+    String latestCommentUrl;
+
+    @Override public String toString() {
+        return "NotificationSubjectModel{" +
+                ", title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                ", type='" + type + '\'' +
+                ", latestCommentUrl='" + latestCommentUrl + '\'' +
+                '}';
+    }
 
     @Override public int describeContents() { return 0; }
 
@@ -28,7 +34,6 @@ public class NotificationSubjectModel implements Parcelable {
         dest.writeString(this.url);
         dest.writeString(this.type);
         dest.writeString(this.latestCommentUrl);
-        dest.writeLong(this.id);
     }
 
     protected NotificationSubjectModel(Parcel in) {
@@ -36,22 +41,11 @@ public class NotificationSubjectModel implements Parcelable {
         this.url = in.readString();
         this.type = in.readString();
         this.latestCommentUrl = in.readString();
-        this.id = in.readLong();
     }
 
-    public static final Parcelable.Creator<NotificationSubjectModel> CREATOR = new Parcelable.Creator<NotificationSubjectModel>() {
+    public static final Creator<NotificationSubjectModel> CREATOR = new Creator<NotificationSubjectModel>() {
         @Override public NotificationSubjectModel createFromParcel(Parcel source) {return new NotificationSubjectModel(source);}
 
         @Override public NotificationSubjectModel[] newArray(int size) {return new NotificationSubjectModel[size];}
     };
-
-    @Override public String toString() {
-        return "NotificationSubjectModel{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", url='" + url + '\'' +
-                ", type='" + type + '\'' +
-                ", latestCommentUrl='" + latestCommentUrl + '\'' +
-                '}';
-    }
 }

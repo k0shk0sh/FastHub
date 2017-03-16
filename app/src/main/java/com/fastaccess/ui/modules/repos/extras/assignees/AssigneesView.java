@@ -10,7 +10,7 @@ import android.view.View;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.AssigneesAdapter;
@@ -36,7 +36,7 @@ public class AssigneesView extends BaseDialogFragment<AssigneesMvp.View, Assigne
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
-    @State HashMap<Integer, UserModel> selectionMap;
+    @State HashMap<Integer, User> selectionMap;
     private AssigneesAdapter adapter;
     private AssigneesMvp.SelectedAssigneesListener callback;
 
@@ -56,7 +56,7 @@ public class AssigneesView extends BaseDialogFragment<AssigneesMvp.View, Assigne
         callback = null;
     }
 
-    public static AssigneesView newInstance(@NonNull List<UserModel> models) {
+    public static AssigneesView newInstance(@NonNull List<User> models) {
         AssigneesView fragment = new AssigneesView();
         fragment.setArguments(Bundler.start().putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models).end());
         return fragment;
@@ -68,7 +68,7 @@ public class AssigneesView extends BaseDialogFragment<AssigneesMvp.View, Assigne
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         title.setText(R.string.assignees);
-        List<UserModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
+        List<User> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
         if (list != null) {
             adapter = new AssigneesAdapter(list, this);
             recycler.setAdapter(adapter);
@@ -98,7 +98,7 @@ public class AssigneesView extends BaseDialogFragment<AssigneesMvp.View, Assigne
                 dismiss();
                 break;
             case R.id.ok:
-                ArrayList<UserModel> labels = Stream.of(selectionMap)
+                ArrayList<User> labels = Stream.of(selectionMap)
                         .filter(value -> value.getValue() != null)
                         .map(Map.Entry::getValue)
                         .collect(Collectors.toCollection(ArrayList::new));
@@ -110,7 +110,7 @@ public class AssigneesView extends BaseDialogFragment<AssigneesMvp.View, Assigne
         }
     }
 
-    public HashMap<Integer, UserModel> getSelectionMap() {
+    public HashMap<Integer, User> getSelectionMap() {
         if (selectionMap == null) {
             selectionMap = new LinkedHashMap<>();
         }

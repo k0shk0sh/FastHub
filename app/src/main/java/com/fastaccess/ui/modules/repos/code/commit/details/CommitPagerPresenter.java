@@ -4,26 +4,24 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
  */
 
 class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements CommitPagerMvp.Presenter {
-    private CommitModel commitModel;
+    private Commit commitModel;
     private String sha;
     private String login;
     private String repoId;
 
-    @Nullable @Override public CommitModel getCommit() {
+    @Nullable @Override public Commit getCommit() {
         return commitModel;
     }
 
@@ -47,7 +45,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
                             commitModel.setRepoId(repoId);
                             commitModel.setLogin(login);
                             sendToView(CommitPagerMvp.View::onSetup);
-                            manageSubscription(commitModel.save().subscribe());
+                            manageSubscription(commitModel.save(commitModel).subscribe());
                         });
                 return;
             }
@@ -56,7 +54,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
     }
 
     @Override public void onWorkOffline(@NonNull String sha, @NonNull String repoId, @NonNull String login) {
-        manageSubscription(RxHelper.getObserver(CommitModel.getCommit(sha, repoId, login))
+        manageSubscription(RxHelper.getObserver(Commit.getCommit(sha, repoId, login))
                 .subscribe(commit -> {
                     commitModel = commit;
                     sendToView(CommitPagerMvp.View::onSetup);

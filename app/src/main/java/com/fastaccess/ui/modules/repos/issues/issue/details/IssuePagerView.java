@@ -14,10 +14,10 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -124,7 +124,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
-                IssueModel issueModel = bundle.getParcelable(BundleConstant.ITEM);
+                Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
                 if (issueModel != null) getPresenter().onUpdateIssue(issueModel);
             } else if (requestCode == MilestoneActivityView.CREATE_MILESTONE_RQ) {
                 Bundle bundle = data.getExtras();
@@ -149,7 +149,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             if (getPresenter().getIssue() != null) ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            IssueModel issueModel = getPresenter().getIssue();
+            Issue issueModel = getPresenter().getIssue();
             if (issueModel == null) return true;
             MessageDialogView.newInstance(
                     issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
@@ -214,9 +214,9 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             return;
         }
         supportInvalidateOptionsMenu();
-        IssueModel issueModel = getPresenter().getIssue();
+        Issue issueModel = getPresenter().getIssue();
         setTitle(String.format("#%s", issueModel.getNumber()));
-        UserModel userModel = issueModel.getUser();
+        User userModel = issueModel.getUser();
         title.setText(issueModel.getTitle());
         if (userModel != null) {
             size.setVisibility(View.GONE);
@@ -283,7 +283,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         supportInvalidateOptionsMenu();
     }
 
-    @Override public void onShowAssignees(@NonNull List<UserModel> items) {
+    @Override public void onShowAssignees(@NonNull List<User> items) {
         hideProgress();
         AssigneesView.newInstance(items)
                 .show(getSupportFragmentManager(), "AssigneesView");
@@ -301,7 +301,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onSelectedAssignees(@NonNull ArrayList<UserModel> users) {
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
         getPresenter().onPutAssignees(users);
     }
 

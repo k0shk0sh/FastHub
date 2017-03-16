@@ -7,7 +7,7 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -30,7 +30,7 @@ public class IssueDetailsView extends BaseFragment<IssueDetailsMvp.View, IssueDe
     private IssueTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
 
-    public static IssueDetailsView newInstance(@NonNull IssueModel issueModel) {
+    public static IssueDetailsView newInstance(@NonNull Issue issueModel) {
         IssueDetailsView view = new IssueDetailsView();
         view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());
         return view;

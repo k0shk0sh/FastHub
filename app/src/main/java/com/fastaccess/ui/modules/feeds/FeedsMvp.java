@@ -3,7 +3,7 @@ package com.fastaccess.ui.modules.feeds;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.EventsModel;
+import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 interface FeedsMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
             android.view.View.OnClickListener, ListDialogView.onSimpleItemSelection<SimpleUrlsModel>,
-            BaseRecyclerAdapter.GuideListener<EventsModel> {
+            BaseRecyclerAdapter.GuideListener<Event> {
 
         void onNotifyAdapter();
 
@@ -30,12 +30,12 @@ interface FeedsMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<EventsModel>,
+            BaseViewHolder.OnItemClickListener<Event>,
             BaseMvp.PaginationListener {
 
         void onCallApi(int page);
 
-        @NonNull ArrayList<EventsModel> getEvents();
+        @NonNull ArrayList<Event> getEvents();
 
         void onWorkOffline();
     }

@@ -3,8 +3,7 @@ package com.fastaccess.provider.rest;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.BuildConfig;
-import com.fastaccess.data.LoginRestService;
-import com.fastaccess.data.service.UserRestService;
+import com.fastaccess.data.service.LoginRestService;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
 import com.google.gson.FieldNamingPolicy;

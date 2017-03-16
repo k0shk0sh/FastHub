@@ -1,7 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
-apply plugin: "com.neenbedankt.android-apt"
-apply plugin: 'com.siimkinks.sqlitemagic'
 apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'com.novoda.build-properties'
 
@@ -17,10 +15,10 @@ buildProperties {
 android {
     signingConfigs {
         signing {
-            keyAlias buildProperties.secrets['android_key_alias'].or(buildProperties.notThere['android_key_alias']).string
-            keyPassword buildProperties.secrets['android_store_password'].or(buildProperties.notThere['android_store_password']).string
+            keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
+            keyPassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
             storeFile file('fastaccess-key')
-            storePassword buildProperties.secrets['android_store_password'].or(buildProperties.notThere['android_store_password']).string
+            storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
     compileSdkVersion 25
@@ -32,14 +30,12 @@ android {
         versionCode 111
         versionName "1.1.1"
         signingConfig signingConfigs.signing
-        buildConfigString  "GITHUB_CLIENT_ID", buildProperties.secrets['github_client_id']
-                .or(buildProperties.notThere['github_client_id']).string
-        buildConfigString  "GITHUB_SECRET", buildProperties.secrets['github_secret']
-                .or(buildProperties.notThere['github_secret']).string
-        buildConfigString  "REDIRECT_URL", buildProperties.secrets['redirect_url']
-                .or(buildProperties.notThere['redirect_url']).string
+        buildConfigString  "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
+        buildConfigString  "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
+        buildConfigString  "REDIRECT_URL", (buildProperties.secrets['redirect_url'] | buildProperties.notThere['redirect_url']).string
         buildConfigField "String",  "REST_URL", '"https://api.github.com/"'
         buildConfigField "int", "DB_VERSION", "2"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -136,12 +132,16 @@ dependencies {
     compile 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
     compile 'com.zzhoujay.markdown:markdown:1.0.4'
     compile 'com.github.daniel-stoneuk:material-about-library:1.8.1'
+    compile 'io.requery:requery:1.2.0'
+    compile 'io.requery:requery-android:1.2.0'
+    compile 'com.android.support:multidex:1.0.1'
+    annotationProcessor 'io.requery:requery-processor:1.2.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
-    apt "org.projectlombok:lombok:${lombokVersion}"
-    apt "frankiesardo:icepick-processor:${icepickVersion}"
-    apt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     provided "org.projectlombok:lombok:${lombokVersion}"
 }
 

@@ -14,7 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -64,7 +64,7 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
 
     }
 
-    public static void createIntentForOffline(@NonNull Context context, @NonNull CommitModel commitModel) {
+    public static void createIntentForOffline(@NonNull Context context, @NonNull Commit commitModel) {
         SchemeParser.launchUri(context, Uri.parse(commitModel.getHtmlUrl()));
     }
 
@@ -130,7 +130,7 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
             return;
         }
         supportInvalidateOptionsMenu();
-        CommitModel commit = getPresenter().getCommit();
+        Commit commit = getPresenter().getCommit();
         String login = commit.getAuthor() != null ? commit.getAuthor().getLogin() : commit.getGitCommit().getAuthor().getName();
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();

@@ -14,12 +14,12 @@ import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.PullsIssuesParser;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
@@ -40,13 +40,13 @@ import rx.Observable;
  */
 
 class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> implements PullRequestPagerMvp.Presenter {
-    private PullRequestModel pullRequest;
+    private PullRequest pullRequest;
     private int issueNumber;
     private String login;
     private String repoId;
     private boolean isCollaborator;
 
-    @Nullable @Override public PullRequestModel getPullRequest() {
+    @Nullable @Override public PullRequest getPullRequest() {
         return pullRequest;
     }
 
@@ -70,9 +70,9 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                             pullRequest.setRepoId(repoId);
                             pullRequest.setLogin(login);
                             sendToView(PullRequestPagerMvp.View::onSetupIssue);
-                            manageSubscription(pullRequest.save().subscribe());
+                            manageSubscription(pullRequest.save(pullRequest).subscribe());
                             manageSubscription(RxHelper.getObserver(RestProvider.getRepoService()
-                                    .isCollaborator(login, repoId, LoginModel.getUser().getLogin()))
+                                    .isCollaborator(login, repoId, Login.getUser().getLogin()))
                                     .subscribe(booleanResponse -> {
                                         isCollaborator = booleanResponse.code() == 204;
                                         sendToView(PullRequestPagerMvp.View::onUpdateMenu);
@@ -86,7 +86,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onWorkOffline() {
         if (pullRequest == null) {
-            manageSubscription(PullRequestModel.getPullRequest(issueNumber, repoId, login)
+            manageSubscription(PullRequest.getPullRequestByNumber(issueNumber, repoId, login)
                     .subscribe(pullRequestModel -> {
                         if (pullRequestModel != null) {
                             pullRequest = pullRequestModel;
@@ -98,8 +98,8 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public boolean isOwner() {
         if (getPullRequest() == null) return false;
-        UserModel userModel = getPullRequest() != null ? getPullRequest().getUser() : null;
-        LoginModel me = LoginModel.getUser();
+        User userModel = getPullRequest() != null ? getPullRequest().getUser() : null;
+        Login me = Login.getUser();
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(getPullRequest().getHtmlUrl());
         return (userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin()))
                 || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
@@ -107,7 +107,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public boolean isRepoOwner() {
         if (getPullRequest() == null) return false;
-        LoginModel me = LoginModel.getUser();
+        Login me = Login.getUser();
         return TextUtils.equals(login, me.getLogin());
     }
 
@@ -132,7 +132,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     @Override public void onLockUnlockConversations() {
-        PullRequestModel currentPullRequest = getPullRequest();
+        PullRequest currentPullRequest = getPullRequest();
         if (currentPullRequest == null) return;
         IssueService service = RestProvider.getIssueService();
         Observable<Response<Boolean>> observable = RxHelper
@@ -170,8 +170,8 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         }
     }
 
-    @NonNull @Override public SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context) {
-        return PullRequestModel.getMergeBy(pullRequest, context);
+    @NonNull @Override public SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context) {
+        return PullRequest.getMergeBy(pullRequest, context);
     }
 
     @Override public void onLoadLabels() {
@@ -213,7 +213,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                     LabelListModel listModel = new LabelListModel();
                     listModel.addAll(labels);
                     pullRequest.setLabels(listModel);
-                    manageSubscription(pullRequest.save().subscribe());
+                    manageSubscription(pullRequest.save(pullRequest).subscribe());
                 });
     }
 
@@ -225,13 +225,13 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                     this.pullRequest = pr;
                     pullRequest.setLogin(login);
                     pullRequest.setRepoId(repoId);
-                    manageSubscription(pr.save().subscribe());
+                    manageSubscription(pr.save(pullRequest).subscribe());
                     sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
                 });
 
     }
 
-    @Override public void onPutAssignees(@NonNull ArrayList<UserModel> users) {
+    @Override public void onPutAssignees(@NonNull ArrayList<User> users) {
         AssigneesRequestModel assigneesRequestModel = new AssigneesRequestModel();
         ArrayList<String> assignees = new ArrayList<>();
         Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
@@ -244,7 +244,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                     UsersListModel assignee = new UsersListModel();
                     assignee.addAll(users);
                     pullRequest.setAssignees(assignee);
-                    manageSubscription(pullRequest.save().subscribe());
+                    manageSubscription(pullRequest.save(pullRequest).subscribe());
                     sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
                 }
         );
@@ -253,9 +253,9 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onMerge() {
         if (isMergeable() && (isCollaborator() || isRepoOwner())) {//double the checking
             MergeRequestModel mergeRequestModel = new MergeRequestModel();
-//            mergeRequestModel.setBase(String.valueOf(getPullRequest().getBase().getId()));
-//            mergeRequestModel.setHead(String.valueOf(getPullRequest().getHead().getId()));
-//            mergeRequestModel.setSha(getPullRequest().getBase().getSha());
+//            mergeRequestModel.setBase(String.valueOf(getPullRequestByNumber().getBase().getId()));
+//            mergeRequestModel.setHead(String.valueOf(getPullRequestByNumber().getHead().getId()));
+//            mergeRequestModel.setSha(getPullRequestByNumber().getBase().getSha());
 //            mergeRequestModel.setCommitMessage("Hello World");
             manageSubscription(
                     RxHelper.getObserver(RestProvider.getPullRequestSerice().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
@@ -288,11 +288,11 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         return isCollaborator;
     }
 
-    @Override public void onUpdatePullRequest(@NonNull PullRequestModel pullRequestModel) {
+    @Override public void onUpdatePullRequest(@NonNull PullRequest pullRequestModel) {
         this.pullRequest = pullRequestModel;
         this.pullRequest.setLogin(login);
         this.pullRequest.setRepoId(repoId);
-        manageSubscription(pullRequest.save().subscribe());
+        manageSubscription(pullRequest.save(pullRequest).subscribe());
         sendToView(PullRequestPagerMvp.View::onSetupIssue);
     }
 }

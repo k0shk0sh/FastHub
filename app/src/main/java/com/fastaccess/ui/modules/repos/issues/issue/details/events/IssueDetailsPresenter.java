@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.IssueEventAdapterModel;
-import com.fastaccess.data.dao.IssueEventModel;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -16,8 +16,6 @@ import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 13 Dec 2016, 12:38 AM
@@ -28,7 +26,7 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<IssueEventAdapterModel> events = new ArrayList<>();
-    private IssueModel issueModel;
+    private Issue issueModel;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
@@ -46,7 +44,7 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
 
     @Override public void onWorkOffline() {
         if (events.isEmpty() || events.size() == 1) {
-            manageSubscription(RxHelper.getObserver(IssueEventModel.get(issueModel.getRepoId(),
+            manageSubscription(RxHelper.getObserver(IssueEvent.get(issueModel.getRepoId(),
                     issueModel.getLogin(), String.valueOf(issueModel.getNumber())))
                     .subscribe(
                             models -> {
@@ -67,7 +65,7 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
 
     @Override public void onItemClick(int position, View v, IssueEventAdapterModel item) {
         if (item.getType() != IssueEventAdapterModel.HEADER) {
-            IssueEventModel issueEventModel = item.getIssueEvent();
+            IssueEvent issueEventModel = item.getIssueEvent();
             if (issueEventModel.getCommitUrl() != null) {
                 SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
             }
@@ -112,7 +110,7 @@ class IssueDetailsPresenter extends BasePresenter<IssueDetailsMvp.View> implemen
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         getEvents().subList(1, getEvents().size()).clear();
-                        manageSubscription(IssueEventModel.save(response.getItems(), repoID, login, String.valueOf(number)).subscribe());
+                        manageSubscription(IssueEvent.save(response.getItems(), repoID, login, String.valueOf(number)).subscribe());
                     }
                     getEvents().addAll(IssueEventAdapterModel.addEvents(response.getItems()));
                     sendToView(IssueDetailsMvp.View::onNotifyAdapter);

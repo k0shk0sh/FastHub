@@ -206,7 +206,7 @@
     <string name="member">Member</string>
     <string name="public_event">Open-sourced</string>
     <string name="pr_comment_review">Pull Request comment</string>
-    <string name="pushed">Pushed</string>
+    <string name="pushed">Pushed to</string>
     <string name="team_event">Team</string>
     <string name="deleted">Deleted</string>
     <string name="unknown">Unknown</string>
@@ -258,4 +258,7 @@
     <string name="turn_off">Turn off</string>
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
+    <string name="no_issue">No issue</string>
+    <string name="copy">Copy</string>
+    <string name="success_copied">Copied</string>
 </resources>

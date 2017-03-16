@@ -18,7 +18,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -98,7 +98,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         return true;
     }
 
-    @OnClick(R.id.fab) public void onAddIssue() {
+    @OnClick(R.id.fab) void onAddIssue() {
         if (navType == RepoPagerMvp.ISSUES) {
             RepoIssuesPagerView pagerView = (RepoIssuesPagerView) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerView.TAG);
             if (pagerView != null) {
@@ -108,14 +108,14 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @OnClick(R.id.headerTitle) void onTitleClick() {
-        RepoModel repoModel = getPresenter().getRepo();
+        Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
             MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
     }
 
-    @SuppressWarnings("ConstantConditions") @OnClick({R.id.forkRepo, R.id.starRepo, R.id.watchRepo}) public void onClick(View view) {
+    @SuppressWarnings("ConstantConditions") @OnClick({R.id.forkRepo, R.id.starRepo, R.id.watchRepo}) void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepo:
                 MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
@@ -175,7 +175,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .add(R.id.container, new DummyFragment())//dummy fragment at the beginning to avoid committing later fragments after creation
+                    .add(R.id.container, new DummyFragment(), "DummyFragment")
                     .commit();
         }
         Typeface myTypeface = TypeFaceHelper.getTypeface();
@@ -203,7 +203,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             return;
         }
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
-        RepoModel repoModel = getPresenter().getRepo();
+        Repo repoModel = getPresenter().getRepo();
         hideProgress();
         forkRepo.setText(numberFormat.format(repoModel.getForksCount()));
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
@@ -310,7 +310,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
-        RepoModel repoModel = getPresenter().getRepo();
+        Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && repoModel.isFork() && repoModel.getParent() != null) {
             MenuItem menuItem = menu.findItem(R.id.originalRepo);
             menuItem.setVisible(true);
@@ -327,7 +327,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             return true;
         } else if (item.getItemId() == R.id.originalRepo) {
             if (getPresenter().getRepo() != null && getPresenter().getRepo().getParent() != null) {
-                RepoModel parent = getPresenter().getRepo().getParent();
+                Repo parent = getPresenter().getRepo().getParent();
                 RepoPagerView.startRepoPager(this, new NameParser(parent.getHtmlUrl()));
             }
             return true;

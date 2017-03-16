@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.FileModel;
+import com.fastaccess.data.dao.model.ViewerFile;
 import com.fastaccess.data.dao.MarkdownModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -66,7 +66,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
 
     @Override public void onWorkOffline() {
         if (downloadedStream == null) {
-            manageSubscription(RxHelper.getObserver(FileModel.get(url))
+            manageSubscription(RxHelper.getObserver(ViewerFile.get(url))
                     .subscribe(fileModel -> {
                         if (fileModel != null) {
                             isImage = MarkDownProvider.isImage(fileModel.getFullUrl());
@@ -100,7 +100,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url) : RestProvider.getRepoService().getFileAsStream(url),
                 content -> {
                     downloadedStream = content;
-                    FileModel fileModel = new FileModel();
+                    ViewerFile fileModel = new ViewerFile();
                     fileModel.setContent(downloadedStream);
                     fileModel.setFullUrl(url);
                     fileModel.setRepo(isRepo);
@@ -120,7 +120,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                                         downloadedStream = s;
                                         fileModel.setMarkdown(true);
                                         fileModel.setContent(downloadedStream);
-                                        manageSubscription(fileModel.save().subscribe());
+                                        manageSubscription(fileModel.save(fileModel).subscribe());
                                         sendToView(view -> view.onSetMdText(downloadedStream, url));
                                     });
                             return;
@@ -132,7 +132,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                             sendToView(view -> view.onSetCode(downloadedStream));
                         }
                     }
-                    manageSubscription(fileModel.save().subscribe());
+                    manageSubscription(fileModel.save(fileModel).subscribe());
                 });
     }
 

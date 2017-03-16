@@ -10,8 +10,8 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommentsModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.PrefGetter;
@@ -105,7 +105,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         return onLoadMore;
     }
 
-    @Override public void onEditComment(@NonNull CommentsModel item) {
+    @Override public void onEditComment(@NonNull Comment item) {
         Intent intent = new Intent(getContext(), EditorView.class);
         intent.putExtras(Bundler
                 .start()
@@ -126,9 +126,9 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
     @Override public void onHandleCommentDelete(@NonNull Response<Boolean> booleanResponse, long commId) {
         hideProgress();
         if (booleanResponse.code() == 204) {
-            CommentsModel commentsModel = new CommentsModel();
-            commentsModel.setId(commId);
-            adapter.removeItem(commentsModel);
+            Comment Comment = new Comment();
+            Comment.setId(commId);
+            adapter.removeItem(Comment);
         } else {
             showErrorMessage(getString(R.string.error_deleting_comment));
         }
@@ -146,7 +146,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         showProgress(0);
     }
 
-    @Override public void onTagUser(@Nullable UserModel user) {
+    @Override public void onTagUser(@Nullable User user) {
         Intent intent = new Intent(getContext(), EditorView.class);
         intent.putExtras(Bundler
                 .start()

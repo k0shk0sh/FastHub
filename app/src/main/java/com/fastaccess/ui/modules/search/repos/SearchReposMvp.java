@@ -3,7 +3,7 @@ package com.fastaccess.ui.modules.search.repos;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -26,10 +26,10 @@ interface SearchReposMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<RepoModel>,
+            BaseViewHolder.OnItemClickListener<Repo>,
             BaseMvp.PaginationListener<String> {
 
-        @NonNull ArrayList<RepoModel> getRepos();
+        @NonNull ArrayList<Repo> getRepos();
 
     }
 }

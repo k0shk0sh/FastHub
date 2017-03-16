@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.PullRequestModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
@@ -39,12 +39,12 @@ interface PullRequestPagerMvp {
 
         void onUpdateTimeline();
 
-        void onShowAssignees(@NonNull List<UserModel> items);
+        void onShowAssignees(@NonNull List<User> items);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        @Nullable PullRequestModel getPullRequest();
+        @Nullable PullRequest getPullRequest();
 
         void onActivityCreated(@Nullable Intent intent);
 
@@ -64,7 +64,7 @@ interface PullRequestPagerMvp {
 
         void onLockUnlockConversations();
 
-        @NonNull SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context);
+        @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
         void onMerge();
 
@@ -76,7 +76,7 @@ interface PullRequestPagerMvp {
 
         void onPutMilestones(@NonNull MilestoneModel milestone);
 
-        void onPutAssignees(@NonNull ArrayList<UserModel> users);
+        void onPutAssignees(@NonNull ArrayList<User> users);
 
         String getLogin();
 
@@ -84,7 +84,7 @@ interface PullRequestPagerMvp {
 
         boolean isCollaborator();
 
-        void onUpdatePullRequest(@NonNull PullRequestModel pullRequestModel);
+        void onUpdatePullRequest(@NonNull PullRequest pullRequestModel);
     }
 
 }

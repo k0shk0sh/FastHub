@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -25,12 +25,12 @@ interface RepoPullRequestMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<PullRequestModel>,
+            BaseViewHolder.OnItemClickListener<PullRequest>,
             BaseMvp.PaginationListener<IssueState> {
         void onFragmentCreated(@NonNull Bundle bundle);
 
         void onWorkOffline();
 
-        @NonNull ArrayList<PullRequestModel> getPullRequests();
+        @NonNull ArrayList<PullRequest> getPullRequests();
     }
 }

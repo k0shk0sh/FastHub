@@ -7,7 +7,7 @@ import android.view.View;
 
 import com.annimon.stream.Objects;
 import com.fastaccess.data.dao.BranchesModel;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -24,14 +24,14 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
     private String login;
     private String path;
     private String defaultBranch;
-    private ArrayList<RepoFilesModel> paths = new ArrayList<>();
+    private ArrayList<RepoFile> paths = new ArrayList<>();
     private ArrayList<BranchesModel> branches = new ArrayList<>();
 
-    @Override public void onItemClick(int position, View v, RepoFilesModel item) {
+    @Override public void onItemClick(int position, View v, RepoFile item) {
         if (!item.getPath().equalsIgnoreCase(path)) if (getView() != null) getView().onItemClicked(item, position);
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFilesModel item) {
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {
         onItemClick(position, v, item);
     }
 
@@ -75,7 +75,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
         return path;
     }
 
-    @NonNull @Override public ArrayList<RepoFilesModel> getPaths() {
+    @NonNull @Override public ArrayList<RepoFile> getPaths() {
         return paths;
     }
 

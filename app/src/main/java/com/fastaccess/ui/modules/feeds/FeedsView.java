@@ -10,7 +10,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.EventsModel;
+import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
@@ -119,7 +119,7 @@ public class FeedsView extends BaseFragment<FeedsMvp.View, FeedsPresenter> imple
         SchemeParser.launchUri(getContext(), Uri.parse(item.getItem()));
     }
 
-    @Override public void onShowGuide(@NonNull View itemView, @NonNull EventsModel model) {
+    @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {
         if (!PrefGetter.isUserIconGuideShowed()) {
             new MaterialTapTargetPrompt.Builder(getActivity())
                     .setTarget(itemView.findViewById(R.id.avatarLayout))

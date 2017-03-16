@@ -7,10 +7,10 @@ import android.view.View;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
-import com.fastaccess.data.dao.EventsModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Event;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.InputHelper;
@@ -27,7 +27,7 @@ import java.util.ArrayList;
  */
 
 class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Presenter {
-    private ArrayList<EventsModel> eventsModels = new ArrayList<>();
+    private ArrayList<Event> eventsModels = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -42,12 +42,12 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             return;
         }
         setCurrentPage(page);
-        if (LoginModel.getUser() == null) return;// I can't understand how this could possibly be reached lol.
-        makeRestCall(RestProvider.getUserService().getReceivedEvents(LoginModel.getUser().getLogin(), page),
+        if (Login.getUser() == null) return;// I can't understand how this could possibly be reached lol.
+        makeRestCall(RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page),
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        manageSubscription(EventsModel.save(response.getItems()).subscribe());
+                        manageSubscription(Event.save(response.getItems()).subscribe());
                         eventsModels.clear();
                     }
                     eventsModels.addAll(response.getItems());
@@ -84,13 +84,13 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         super.onError(throwable);
     }
 
-    @NonNull @Override public ArrayList<EventsModel> getEvents() {
+    @NonNull @Override public ArrayList<Event> getEvents() {
         return eventsModels;
     }
 
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(EventsModel.getEvents()).subscribe(modelList -> {
+            manageSubscription(RxHelper.getObserver(Event.getEvents()).subscribe(modelList -> {
                 if (modelList != null) {
                     eventsModels.addAll(modelList);
                     sendToView(FeedsMvp.View::onNotifyAdapter);
@@ -101,7 +101,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         }
     }
 
-    @Override public void onItemClick(int position, View v, EventsModel item) {
+    @Override public void onItemClick(int position, View v, Event item) {
         if (item.getType() == EventsType.ForkEvent) {
             NameParser parser = new NameParser(item.getPayload().getForkee().getHtmlUrl());
             RepoPagerView.startRepoPager(v.getContext(), parser);
@@ -111,7 +111,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             } else if (item.getPayload() != null && item.getPayload().getPullRequest() != null) {
                 SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()));
             } else {
-                RepoModel repoModel = item.getRepo();
+                Repo repoModel = item.getRepo();
                 String name = InputHelper.isEmpty(repoModel.getName()) ? repoModel.getFullName() : repoModel.getName();
                 if (name == null) return;
                 if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(name));
@@ -119,7 +119,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, EventsModel item) {
+    @Override public void onItemLongClick(int position, View v, Event item) {
         if (item.getType() == EventsType.ForkEvent) {
             if (getView() != null) {
                 getView().onOpenRepoChooser(Stream.of(new SimpleUrlsModel(item.getRepo().getName(), item.getRepo().getUrl()),

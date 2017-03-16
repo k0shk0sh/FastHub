@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.NotificationThreadModel;
+import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -18,7 +18,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class NotificationsViewHolder extends BaseViewHolder<NotificationThreadModel> {
+public class NotificationsViewHolder extends BaseViewHolder<Notification> {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
@@ -32,7 +32,7 @@ public class NotificationsViewHolder extends BaseViewHolder<NotificationThreadMo
         return new NotificationsViewHolder(getView(viewGroup, R.layout.notifications_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull NotificationThreadModel thread) {
+    @Override public void bind(@NonNull Notification thread) {
         if (thread.getSubject() != null) {
             notificationTitle.setText(thread.getSubject().getTitle());
         }

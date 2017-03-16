@@ -11,8 +11,6 @@ Before you close the project, Please read the guide below to be able to login fr
 - Make sure you have Android Studio 2.3 & above.
 - Import Android Studio Settings (to ensure same code formatting) from this link [Click here](https://raw.githubusercontent.com/k0shk0sh/FastHub/master/fasthub_as_settings.jar)
 - Install Lombok Plugin from Android Studio Plugins & enable Annotations Processors from (Android Studio Preference).
-- Install SqliteMagic Plugin from Android Studio Plugins.
-
 
 ### After above steps:
 

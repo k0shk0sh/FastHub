@@ -1,0 +1,215 @@
+package com.fastaccess.data.dao.model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
+import com.annimon.stream.LongStream;
+import com.annimon.stream.Stream;
+import com.fastaccess.App;
+import com.fastaccess.data.dao.FilesListModel;
+import com.fastaccess.data.dao.GithubFileModel;
+import com.fastaccess.data.dao.converters.GitHubFilesConverter;
+import com.fastaccess.data.dao.converters.UserConverter;
+import com.fastaccess.helper.InputHelper;
+import com.fastaccess.ui.widgets.SpannableBuilder;
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import io.requery.Column;
+import io.requery.Convert;
+import io.requery.Entity;
+import io.requery.Key;
+import io.requery.Persistable;
+import io.requery.rx.SingleEntityStore;
+import lombok.NoArgsConstructor;
+import rx.Completable;
+import rx.Observable;
+
+/**
+ * Created by Kosh on 16 Mar 2017, 7:32 PM
+ */
+
+@Entity @NoArgsConstructor public abstract class AbstractGist implements Parcelable {
+    @SerializedName("nooope") @Key long id;
+    String url;
+    String forksUrl;
+    String commitsUrl;
+    String gitPullUrl;
+    String gitPushUrl;
+    String htmlUrl;
+    boolean publicX;
+    Date createdAt;
+    Date updatedAt;
+    String description;
+    int comments;
+    String commentsUrl;
+    boolean truncated;
+    String ownerName;
+    @SerializedName("id") String gistId;
+    @Convert(GitHubFilesConverter.class) GithubFileModel files;
+    @Column(name = "user_column") @Convert(UserConverter.class) User user;
+    @Convert(UserConverter.class) User owner;
+
+    public Completable save(Gist modelEntity) {
+        return App.getInstance().getDataStore()
+                .upsert(modelEntity)
+                .toCompletable();
+    }
+
+    public static Completable save(@NonNull List<Gist> gists) {
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return singleEntityStore.delete(Gist.class)
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(singleEntityStore.insert(gists))
+                .toCompletable();
+    }
+
+    public static Completable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return singleEntityStore.delete(Gist.class)
+                .where(Gist.OWNER_NAME.equal(ownerName))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(Observable.from(gists)
+                        .map(gistsModel -> {
+                            gistsModel.setOwnerName(ownerName);
+                            return gistsModel.save(gistsModel);
+                        }))
+                .toCompletable();
+    }
+
+    @NonNull public static Observable<List<Gist>> getMyGists(@NonNull String ownerName) {
+        return App.getInstance()
+                .getDataStore()
+                .select(Gist.class)
+                .where(Gist.OWNER_NAME.equal(ownerName))
+                .get()
+                .toObservable()
+                .toList();
+    }
+
+    @NonNull public static Observable<List<Gist>> getGists() {
+        return App.getInstance()
+                .getDataStore()
+                .select(Gist.class)
+                .where(Gist.OWNER_NAME.isNull())
+                .get()
+                .toObservable()
+                .toList();
+    }
+
+    @Nullable public static Observable<Gist> getGist(@NonNull String gistId) {
+        return App.getInstance()
+                .getDataStore()
+                .select(Gist.class)
+                .where(Gist.GIST_ID.eq(gistId))
+                .get()
+                .toObservable();
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractGist that = (AbstractGist) o;
+        return url != null ? url.equals(that.url) : that.url == null;
+    }
+
+    @Override public int hashCode() {
+        return url != null ? url.hashCode() : 0;
+    }
+
+    @NonNull public List<FilesListModel> getFilesAsList() {
+        List<FilesListModel> models = new ArrayList<>();
+        if (files != null) {
+            models.addAll(files.values());
+        }
+        return models;
+    }
+
+    @NonNull public SpannableBuilder getDisplayTitle(boolean isFromProfile) {
+        SpannableBuilder spannableBuilder = SpannableBuilder.builder();
+        if (!isFromProfile) {
+            if (owner != null) {
+                spannableBuilder.bold(owner.getLogin());
+            } else if (user != null) {
+                spannableBuilder.bold(user.getLogin());
+            } else {
+                spannableBuilder.bold("Anonymous");
+            }
+        }
+        if (!InputHelper.isEmpty(description)) {
+            if (!InputHelper.isEmpty(spannableBuilder.toString())) {
+                spannableBuilder.append("/");
+            }
+            spannableBuilder.append(description);
+        }
+        if (InputHelper.isEmpty(spannableBuilder.toString())) {
+            if (isFromProfile) spannableBuilder.bold("N/A");
+        }
+        return spannableBuilder;
+    }
+
+    public long getSize() {
+        List<FilesListModel> models = getFilesAsList();
+        if (!models.isEmpty()) {
+            return Stream.of(models).flatMapToLong(filesListModel -> LongStream.of(filesListModel.getSize())).sum();
+        }
+        return 0;
+    }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.url);
+        dest.writeString(this.forksUrl);
+        dest.writeString(this.commitsUrl);
+        dest.writeString(this.gitPullUrl);
+        dest.writeString(this.gitPushUrl);
+        dest.writeString(this.htmlUrl);
+        dest.writeByte(this.publicX ? (byte) 1 : (byte) 0);
+        dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
+        dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
+        dest.writeString(this.description);
+        dest.writeInt(this.comments);
+        dest.writeString(this.commentsUrl);
+        dest.writeByte(this.truncated ? (byte) 1 : (byte) 0);
+        dest.writeString(this.ownerName);
+        dest.writeString(this.gistId);
+        dest.writeSerializable(this.files);
+        dest.writeParcelable(this.user, flags);
+        dest.writeParcelable(this.owner, flags);
+    }
+
+    protected AbstractGist(Parcel in) {
+        this.id = in.readLong();
+        this.url = in.readString();
+        this.forksUrl = in.readString();
+        this.commitsUrl = in.readString();
+        this.gitPullUrl = in.readString();
+        this.gitPushUrl = in.readString();
+        this.htmlUrl = in.readString();
+        this.publicX = in.readByte() != 0;
+        long tmpCreatedAt = in.readLong();
+        this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
+        long tmpUpdatedAt = in.readLong();
+        this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
+        this.description = in.readString();
+        this.comments = in.readInt();
+        this.commentsUrl = in.readString();
+        this.truncated = in.readByte() != 0;
+        this.ownerName = in.readString();
+        this.gistId = in.readString();
+        this.files = (GithubFileModel) in.readSerializable();
+        this.user = in.readParcelable(User.class.getClassLoader());
+        this.owner = in.readParcelable(User.class.getClassLoader());
+    }
+}

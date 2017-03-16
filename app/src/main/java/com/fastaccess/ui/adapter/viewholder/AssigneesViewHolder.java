@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.AssigneesAdapter;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -18,7 +18,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class AssigneesViewHolder extends BaseViewHolder<UserModel> {
+public class AssigneesViewHolder extends BaseViewHolder<User> {
 
     @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.title) FontTextView title;
@@ -41,7 +41,7 @@ public class AssigneesViewHolder extends BaseViewHolder<UserModel> {
         return new AssigneesViewHolder(getView(viewGroup, R.layout.feeds_row_item), onSelectAssignee);
     }
 
-    @Override public void bind(@NonNull UserModel user) {
+    @Override public void bind(@NonNull User user) {
         avatar.setUrl(user.getAvatarUrl(), user.getLogin());
         title.setText(user.getLogin());
         date.setVisibility(View.GONE);

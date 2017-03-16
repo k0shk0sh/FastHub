@@ -14,7 +14,7 @@ import android.widget.Spinner;
 import com.annimon.stream.Objects;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.BranchesModel;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -93,7 +93,7 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         adapter.notifyDataSetChanged();
     }
 
-    @Override public void onItemClicked(@NonNull RepoFilesModel model, int position) {
+    @Override public void onItemClicked(@NonNull RepoFile model, int position) {
         if (getRepoFilesView().isRefreshing()) return;
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref, false);
         if ((position + 1) < adapter.getItemCount()) {
@@ -102,7 +102,7 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         recycler.scrollToPosition(adapter.getItemCount() - 1);
     }
 
-    @Override public void onAppendPath(@NonNull RepoFilesModel model) {
+    @Override public void onAppendPath(@NonNull RepoFile model) {
         adapter.addItem(model);
         recycler.scrollToPosition(adapter.getItemCount() - 1); //smoothScrollToPosition(index) hides the recyclerview? MIND-BLOWING??.
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref, false);
@@ -126,7 +126,7 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         Logger.e(position, adapter.getItemCount());
         if (position > 0 && position <= adapter.getItemCount()) {
             if (position == 1) position = 0;
-            RepoFilesModel repoFilesModel = adapter.getItem(position);
+            RepoFile repoFilesModel = adapter.getItem(position);
             onItemClicked(repoFilesModel, position);
         } else {
             onBackClicked();

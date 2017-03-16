@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.ReleasesModel;
+import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -23,7 +23,7 @@ import rx.Observable;
 
 class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implements RepoReleasesMvp.Presenter {
 
-    private ArrayList<ReleasesModel> releases = new ArrayList<>();
+    private ArrayList<Release> releases = new ArrayList<>();
     private String login;
     private String repoId;
     private int page;
@@ -67,7 +67,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         getReleases().clear();
-                        manageSubscription(ReleasesModel.save(response.getItems(), repoId, login).subscribe());
+                        manageSubscription(Release.save(response.getItems(), repoId, login).subscribe());
                     }
                     getReleases().addAll(response.getItems());
                     sendToView(RepoReleasesMvp.View::onNotifyAdapter);
@@ -85,7 +85,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
 
     @Override public void onWorkOffline() {
         if (releases.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(ReleasesModel.get(repoId, login))
+            manageSubscription(RxHelper.getObserver(Release.get(repoId, login))
                     .subscribe(releasesModels -> {
                         releases.addAll(releasesModels);
                         sendToView(RepoReleasesMvp.View::onNotifyAdapter);
@@ -95,11 +95,11 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         }
     }
 
-    @NonNull @Override public ArrayList<ReleasesModel> getReleases() {
+    @NonNull @Override public ArrayList<Release> getReleases() {
         return releases;
     }
 
-    @Override public void onItemClick(int position, View v, ReleasesModel item) {
+    @Override public void onItemClick(int position, View v, Release item) {
         if (getView() == null) return;
         if (v.getId() == R.id.download) {
             getView().onDownload(item);
@@ -108,7 +108,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, ReleasesModel item) {
+    @Override public void onItemLongClick(int position, View v, Release item) {
         onItemClick(position, v, item);
     }
 }

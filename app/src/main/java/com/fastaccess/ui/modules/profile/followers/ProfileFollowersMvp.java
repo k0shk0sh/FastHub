@@ -4,7 +4,7 @@ package com.fastaccess.ui.modules.profile.followers;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -24,10 +24,10 @@ interface ProfileFollowersMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<UserModel>,
+            BaseViewHolder.OnItemClickListener<User>,
             BaseMvp.PaginationListener<String> {
 
-        @NonNull ArrayList<UserModel> getFollowers();
+        @NonNull ArrayList<User> getFollowers();
 
         void onWorkOffline(@NonNull String login);
     }

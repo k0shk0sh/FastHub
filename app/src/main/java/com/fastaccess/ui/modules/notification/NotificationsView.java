@@ -12,7 +12,7 @@ import android.view.View;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.NotificationThreadModel;
+import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -127,8 +127,8 @@ public class NotificationsView extends BaseFragment<NotificationsMvp.View, Notif
         if (item.getItemId() == R.id.readAll) {
             if (!getPresenter().getNotifications().isEmpty()) {
                 long[] ids = Stream.of(getPresenter().getNotifications())
-                        .filter(NotificationThreadModel::isUnread)
-                        .mapToLong(NotificationThreadModel::getId)
+                        .filter(Notification::isUnread)
+                        .mapToLong(Notification::getId)
                         .toArray();
                 if (ids != null && ids.length > 0) {
                     getPresenter().getNotifications().clear();

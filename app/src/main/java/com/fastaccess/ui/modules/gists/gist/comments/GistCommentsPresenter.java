@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.CommentsModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
@@ -17,14 +17,12 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
 class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implements GistCommentsMvp.Presenter {
-    private ArrayList<CommentsModel> comments = new ArrayList<>();
+    private ArrayList<Comment> comments = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -66,14 +64,14 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
                         getComments().clear();
-                        manageSubscription(CommentsModel.saveForGist(listResponse.getItems(), parameter).subscribe());
+                        manageSubscription(Comment.saveForGist(listResponse.getItems(), parameter).subscribe());
                     }
                     getComments().addAll(listResponse.getItems());
                     sendToView(GistCommentsMvp.View::onNotifyAdapter);
                 });
     }
 
-    @NonNull @Override public ArrayList<CommentsModel> getComments() {
+    @NonNull @Override public ArrayList<Comment> getComments() {
         return comments;
     }
 
@@ -91,7 +89,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(CommentsModel.getGistComments(gistId)).subscribe(
+            manageSubscription(RxHelper.getObserver(Comment.getGistComments(gistId)).subscribe(
                     localComments -> {
                         if (localComments != null && !localComments.isEmpty()) {
                             Logger.e(localComments.size());
@@ -105,9 +103,9 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         }
     }
 
-    @Override public void onItemClick(int position, View v, CommentsModel item) {
+    @Override public void onItemClick(int position, View v, Comment item) {
         if (item.getUser() != null) {
-            LoginModel userModel = LoginModel.getUser();
+            Login userModel = Login.getUser();
             if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
                 if (getView() != null) getView().onEditComment(item);
             } else {
@@ -116,8 +114,8 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommentsModel item) {
-        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), LoginModel.getUser().getLogin())) {
+    @Override public void onItemLongClick(int position, View v, Comment item) {
+        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), Login.getUser().getLogin())) {
             if (getView() != null) getView().onShowDeleteMsg(item.getId());
         } else {
             onItemClick(position, v, item);

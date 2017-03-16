@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.IssueEventAdapterModel;
-import com.fastaccess.data.dao.IssueEventModel;
+import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.InputHelper;
@@ -44,7 +44,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
     }
 
     @Override public void bind(@NonNull IssueEventAdapterModel model) {
-        IssueEventModel issueEventModel = model.getIssueEvent();
+        IssueEvent issueEventModel = model.getIssueEvent();
         IssueEventType event = issueEventModel.getEvent();
         SpannableBuilder spannableBuilder = SpannableBuilder.builder()
                 .bold(issueEventModel.getActor().getLogin());

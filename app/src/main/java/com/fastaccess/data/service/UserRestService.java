@@ -2,22 +2,15 @@ package com.fastaccess.data.service;
 
 import android.support.annotation.NonNull;
 
-import com.fastaccess.data.dao.AccessTokenModel;
-import com.fastaccess.data.dao.AuthModel;
-import com.fastaccess.data.dao.EventsModel;
-import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.Pageable;
-import com.fastaccess.data.dao.RepoModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.Event;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Repo;
+import com.fastaccess.data.dao.model.User;
 
 import retrofit2.Response;
-import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -29,26 +22,26 @@ import rx.Observable;
 
 public interface UserRestService {
 
-    @GET("user") Observable<LoginModel> getUser();
+    @GET("user") Observable<Login> getUser();
 
-    @GET("users/{username}") Observable<UserModel> getUser(@Path("username") @NonNull String username);
+    @GET("users/{username}") Observable<User> getUser(@Path("username") @NonNull String username);
 
     @GET("users/{username}/received_events")
-    Observable<Pageable<EventsModel>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
+    Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
 
     @GET("users/{username}/repos?sort=pushed&direction=desc")
-    Observable<Pageable<RepoModel>> getRepos(@Path("username") @NonNull String username, @Query("page") int page);
+    Observable<Pageable<Repo>> getRepos(@Path("username") @NonNull String username, @Query("page") int page);
 
-    @GET("/user/repos?sort=pushed&direction=desc") Observable<Pageable<RepoModel>> getRepos(@Query("page") int page);
+    @GET("/user/repos?sort=pushed&direction=desc") Observable<Pageable<Repo>> getRepos(@Query("page") int page);
 
-    @GET("users/{username}/starred") Observable<Pageable<RepoModel>>
+    @GET("users/{username}/starred") Observable<Pageable<Repo>>
     getStarred(@Path("username") @NonNull String username, @Query("page") int page);
 
     @GET("users/{username}/following")
-    Observable<Pageable<UserModel>> getFollowing(@Path("username") @NonNull String username, @Query("page") int page);
+    Observable<Pageable<User>> getFollowing(@Path("username") @NonNull String username, @Query("page") int page);
 
     @GET("users/{username}/followers")
-    Observable<Pageable<UserModel>> getFollowers(@Path("username") @NonNull String username, @Query("page") int page);
+    Observable<Pageable<User>> getFollowers(@Path("username") @NonNull String username, @Query("page") int page);
 
     @GET("user/following/{username}")
     Observable<Response<Boolean>> getFollowStatus(@Path("username") @NonNull String username);

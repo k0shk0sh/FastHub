@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -25,7 +25,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class ReposViewHolder extends BaseViewHolder<RepoModel> {
+public class ReposViewHolder extends BaseViewHolder<Repo> {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
@@ -54,7 +54,7 @@ public class ReposViewHolder extends BaseViewHolder<RepoModel> {
 
     }
 
-    @Override public void bind(@NonNull RepoModel repo) {
+    @Override public void bind(@NonNull Repo repo) {
         if (repo.isFork() && !isStarred) {
             title.setText(SpannableBuilder.builder()
                     .append(" " + forked + " ", new RoundBackgroundSpan(forkColor, 5))

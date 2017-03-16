@@ -9,7 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.GistsView;
@@ -51,7 +51,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 break;
             case MainMvp.PROFILE:
                 if (profileView == null) {
-                    onAddAndHide(fragmentManager, ProfilePagerView.newInstance(LoginModel.getUser().getLogin()), currentVisible);
+                    onAddAndHide(fragmentManager, ProfilePagerView.newInstance(Login.getUser().getLogin()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, profileView, currentVisible);
                 }

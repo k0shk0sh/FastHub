@@ -1,6 +1,5 @@
 package com.fastaccess.provider.tasks.notification;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -11,8 +10,8 @@ import android.support.v7.app.NotificationCompat;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LoginModel;
-import com.fastaccess.data.dao.NotificationThreadModel;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
@@ -40,7 +39,7 @@ public class NotificationSchedulerJobTask extends JobService {
     private final static int THIRTY_MINUTES = 30 * 60;
 
     @Override public boolean onStartJob(JobParameters job) {
-        if (LoginModel.getUser() != null) {
+        if (Login.getUser() != null) {
             RestProvider.getNotificationService()
                     .getNotifications(0)
                     .subscribeOn(Schedulers.io())
@@ -80,16 +79,16 @@ public class NotificationSchedulerJobTask extends JobService {
         dispatcher.mustSchedule(builder.build());
     }
 
-    private void onSave(@Nullable List<NotificationThreadModel> notificationThreadModels) {
+    private void onSave(@Nullable List<Notification> notificationThreadModels) {
         if (notificationThreadModels != null) {
-            NotificationThreadModel.save(notificationThreadModels)
+            Notification.save(notificationThreadModels)
                     .subscribe(() -> onNotifyUser(notificationThreadModels));
         }
     }
 
-    private void onNotifyUser(@NonNull List<NotificationThreadModel> notificationThreadModels) {
+    private void onNotifyUser(@NonNull List<Notification> notificationThreadModels) {
         long count = Stream.of(notificationThreadModels)
-                .filter(NotificationThreadModel::isUnread)
+                .filter(Notification::isUnread)
                 .count();
         if (count > 0) {
             Context context = getApplicationContext();
@@ -97,7 +96,7 @@ public class NotificationSchedulerJobTask extends JobService {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
                     PendingIntent.FLAG_CANCEL_CURRENT);
-            Notification notification = new NotificationCompat.Builder(context)
+            android.app.Notification notification = new NotificationCompat.Builder(context)
                     .setSmallIcon(R.drawable.ic_announcement)
                     .setContentTitle(context.getString(R.string.notifications))
                     .setContentText(context.getString(R.string.unread_notification) + " (" + count + ")")

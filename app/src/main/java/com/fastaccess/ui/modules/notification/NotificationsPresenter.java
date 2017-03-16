@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.NotificationThreadModel;
 import com.fastaccess.data.dao.Pageable;
+import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.tasks.notification.ReadNotificationService;
@@ -25,22 +25,22 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private boolean showAll;
-    private ArrayList<NotificationThreadModel> notifications = new ArrayList<>();
+    private ArrayList<Notification> notifications = new ArrayList<>();
 
-    @Override public void onItemClick(int position, View v, NotificationThreadModel item) {
+    @Override public void onItemClick(int position, View v, Notification item) {
         if (item.isUnread()) {
             ReadNotificationService.start(v.getContext(), item.getId());
             notifications.remove(position);
             sendToView(NotificationsMvp.View::onNotifyAdapter);
             item.setUnread(true);
-            item.persist().execute();
+            manageSubscription(item.save(item).subscribe());
         }
         if (item.getSubject() != null && item.getSubject().getUrl() != null) {
             if (getView() != null) getView().onClick(item.getSubject().getUrl());
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, NotificationThreadModel item) {
+    @Override public void onItemLongClick(int position, View v, Notification item) {
         onItemClick(position, v, item);
     }
 
@@ -51,7 +51,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(NotificationThreadModel.getNotifications())
+            manageSubscription(RxHelper.getObserver(Notification.getNotifications())
                     .subscribe(models -> {
                         if (models != null) {
                             notifications.addAll(models);
@@ -63,7 +63,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
         }
     }
 
-    @NonNull @Override public ArrayList<NotificationThreadModel> getNotifications() {
+    @NonNull @Override public ArrayList<Notification> getNotifications() {
         return notifications;
     }
 
@@ -97,7 +97,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
             return;
         }
         setCurrentPage(page);
-        Observable<Pageable<NotificationThreadModel>> observable =
+        Observable<Pageable<Notification>> observable =
                 showAll ? RestProvider.getNotificationService().getAllNotifications(page)
                         : RestProvider.getNotificationService().getNotifications(page);
         makeRestCall(observable, response -> {
@@ -105,7 +105,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
                 lastPage = response.getLast();
                 if (page == 1) {
                     notifications.clear();
-                    manageSubscription(NotificationThreadModel.save(response.getItems()).subscribe());
+                    manageSubscription(Notification.save(response.getItems()).subscribe());
                 }
                 notifications.addAll(response.getItems());
             }

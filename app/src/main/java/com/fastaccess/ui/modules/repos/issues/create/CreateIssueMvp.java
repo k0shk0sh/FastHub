@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.IssueModel;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 /**
@@ -21,15 +21,15 @@ public interface CreateIssueMvp {
 
         void onDescriptionError(boolean isEmptyDesc);
 
-        void onSuccessSubmission(IssueModel issueModel);
+        void onSuccessSubmission(Issue issueModel);
 
-        void onSuccessSubmission(PullRequestModel issueModel);
+        void onSuccessSubmission(PullRequest issueModel);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
         void onActivityForResult(int resultCode, int requestCode, Intent intent);
 
         void onSubmit(@NonNull String title, @NonNull CharSequence description, @NonNull String login,
-                      @NonNull String repo, @Nullable IssueModel issueModel, @Nullable PullRequestModel pullRequestModel);
+                      @NonNull String repo, @Nullable Issue issueModel, @Nullable PullRequest pullRequestModel);
     }
 }

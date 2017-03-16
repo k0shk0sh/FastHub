@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CreateIssueModel;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.IssueRequestModel;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -34,17 +34,17 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
 
     @Override public void onSubmit(@NonNull String title, @NonNull CharSequence description,
                                    @NonNull String login, @NonNull String repo,
-                                   @Nullable IssueModel issue, @Nullable PullRequestModel pullRequestModel) {
+                                   @Nullable Issue issue, @Nullable PullRequest pullRequestModel) {
         boolean isEmptyTitle = InputHelper.isEmpty(title);
         if (getView() != null) {
             getView().onTitleError(isEmptyTitle);
         }
         if (!isEmptyTitle) {
             if (issue == null && pullRequestModel == null) {
-                CreateIssueModel createIssueModel = new CreateIssueModel();
-                createIssueModel.setBody(InputHelper.toString(description));
-                createIssueModel.setTitle(title);
-                makeRestCall(RestProvider.getIssueService().createIssue(login, repo, createIssueModel),
+                CreateIssueModel createIssue = new CreateIssueModel();
+                createIssue.setBody(InputHelper.toString(description));
+                createIssue.setTitle(title);
+                makeRestCall(RestProvider.getIssueService().createIssue(login, repo, createIssue),
                         issueModel -> {
                             if (issueModel != null) {
                                 sendToView(view -> view.onSuccessSubmission(issueModel));

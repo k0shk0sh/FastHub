@@ -16,8 +16,8 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.PullRequestModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -121,7 +121,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         if (resultCode == RESULT_OK && data != null) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
-                PullRequestModel pullRequest = bundle.getParcelable(BundleConstant.ITEM);
+                PullRequest pullRequest = bundle.getParcelable(BundleConstant.ITEM);
                 if (pullRequest != null) getPresenter().onUpdatePullRequest(pullRequest);
             } else if (requestCode == MilestoneActivityView.CREATE_MILESTONE_RQ) {
                 Bundle bundle = data.getExtras();
@@ -144,7 +144,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
             if (getPresenter().getPullRequest() != null) ActivityHelper.shareUrl(this, getPresenter().getPullRequest().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            PullRequestModel issueModel = getPresenter().getPullRequest();
+            PullRequest issueModel = getPresenter().getPullRequest();
             if (issueModel == null) return true;
             MessageDialogView.newInstance(
                     issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
@@ -211,13 +211,13 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
             return;
         }
         supportInvalidateOptionsMenu();
-        PullRequestModel pullRequest = getPresenter().getPullRequest();
+        PullRequest pullRequest = getPresenter().getPullRequest();
         setTitle(String.format("#%s", pullRequest.getNumber()));
         boolean isMerge = !InputHelper.isEmpty(pullRequest.getMergedAt());
         int status = !isMerge ? pullRequest.getState().getStatus() : R.string.merged;
         date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()));
         size.setVisibility(View.GONE);
-        UserModel userModel = pullRequest.getUser();
+        User userModel = pullRequest.getUser();
         if (userModel != null) {
             title.setText(SpannableBuilder.builder().append(userModel.getLogin()).append("/").append(pullRequest.getTitle()));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
@@ -259,7 +259,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onSelectedAssignees(@NonNull ArrayList<UserModel> users) {
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
         getPresenter().onPutAssignees(users);
     }
 
@@ -289,7 +289,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         }
     }
 
-    @Override public void onShowAssignees(@NonNull List<UserModel> items) {
+    @Override public void onShowAssignees(@NonNull List<User> items) {
         hideProgress();
         AssigneesView.newInstance(items)
                 .show(getSupportFragmentManager(), "AssigneesView");

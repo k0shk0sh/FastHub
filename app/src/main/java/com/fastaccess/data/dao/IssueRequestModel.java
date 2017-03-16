@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class IssueRequestModel implements Parcelable {
     private List<String> labels;
     private String base;
 
-    public static IssueRequestModel clone(@NonNull IssueModel issue, boolean toClose) {
+    public static IssueRequestModel clone(@NonNull Issue issue, boolean toClose) {
         IssueRequestModel model = new IssueRequestModel();
         if (issue.getLabels() != null) {
             model.setLabels(Stream.of(issue.getLabels()).filter(value -> value.getName() != null)
@@ -43,7 +45,7 @@ public class IssueRequestModel implements Parcelable {
         return model;
     }
 
-    public static IssueRequestModel clone(@NonNull PullRequestModel issue, boolean toClose) {
+    public static IssueRequestModel clone(@NonNull PullRequest issue, boolean toClose) {
         IssueRequestModel model = new IssueRequestModel();
         if (issue.getLabels() != null) {
             model.setLabels(Stream.of(issue.getLabels()).filter(value -> value.getName() != null)

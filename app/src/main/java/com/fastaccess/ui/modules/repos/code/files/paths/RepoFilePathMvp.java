@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.BranchesModel;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -21,9 +21,9 @@ interface RepoFilePathMvp {
     interface View extends BaseMvp.FAView {
         void onNotifyAdapter();
 
-        void onItemClicked(@NonNull RepoFilesModel model, int position);
+        void onItemClicked(@NonNull RepoFile model, int position);
 
-        void onAppendPath(@NonNull RepoFilesModel model);
+        void onAppendPath(@NonNull RepoFile model);
 
         void onSendData();
 
@@ -35,7 +35,7 @@ interface RepoFilePathMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<RepoFilesModel> {
+            BaseViewHolder.OnItemClickListener<RepoFile> {
 
         void onFragmentCreated(@Nullable Bundle bundle);
 
@@ -45,7 +45,7 @@ interface RepoFilePathMvp {
 
         @Nullable String getPath();
 
-        @NonNull ArrayList<RepoFilesModel> getPaths();
+        @NonNull ArrayList<RepoFile> getPaths();
 
         @NonNull ArrayList<BranchesModel> getBranches();
 

@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.ReleasesModel;
+import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -25,19 +25,19 @@ interface RepoReleasesMvp {
 
         @NonNull OnLoadMore getLoadMore();
 
-        void onDownload(@NonNull ReleasesModel item);
+        void onDownload(@NonNull Release item);
 
-        void onShowDetails(@NonNull ReleasesModel item);
+        void onShowDetails(@NonNull Release item);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<ReleasesModel>,
+            BaseViewHolder.OnItemClickListener<Release>,
             BaseMvp.PaginationListener {
 
         void onFragmentCreated(@NonNull Bundle bundle);
 
         void onWorkOffline();
 
-        @NonNull ArrayList<ReleasesModel> getReleases();
+        @NonNull ArrayList<Release> getReleases();
     }
 }

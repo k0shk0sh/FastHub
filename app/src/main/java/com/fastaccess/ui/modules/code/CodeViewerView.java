@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.annimon.stream.Objects;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -83,14 +84,15 @@ public class CodeViewerView extends BaseActivity {
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (InputHelper.isEmpty(url)) return super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.download) {
-            if (!InputHelper.isEmpty(url)) {
-                RestProvider.downloadFile(this, url);
-            }
+            RestProvider.downloadFile(this, url);
             return true;
         } else if (item.getItemId() == R.id.browser) {
             ActivityHelper.forceOpenInBrowser(this, url);
             return true;
+        } else if (item.getItemId() == R.id.copy) {
+            AppHelper.copyToClipboard(this, url);
         }
         return super.onOptionsItemSelected(item);
     }

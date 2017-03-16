@@ -6,7 +6,7 @@ import android.widget.AutoCompleteTextView;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.SearchHistoryModel;
+import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -22,18 +22,18 @@ import java.util.ArrayList;
  * Created by Kosh on 08 Dec 2016, 8:20 PM
  */
 class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp.Presenter {
-    private ArrayList<SearchHistoryModel> hints = new ArrayList<>();
+    private ArrayList<SearchHistory> hints = new ArrayList<>();
 
     @Override protected void onAttachView(@NonNull SearchMvp.View view) {
         super.onAttachView(view);
-        manageSubscription(SearchHistoryModel.getHistory()
+        manageSubscription(SearchHistory.getHistory()
                 .subscribe(strings -> {
                     if (strings != null) hints.addAll(strings);
                     view.onNotifyAdapter(null);
                 }));
     }
 
-    @NonNull @Override public ArrayList<SearchHistoryModel> getHints() {
+    @NonNull @Override public ArrayList<SearchHistory> getHints() {
         return hints;
     }
 
@@ -54,8 +54,9 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
             code.onSetSearchQuery(query);
             boolean noneMatch = Stream.of(hints).noneMatch(value -> value.getText().equalsIgnoreCase(query));
             if (noneMatch) {
-                manageSubscription(new SearchHistoryModel(query).save().subscribe());
-                sendToView(view -> view.onNotifyAdapter(new SearchHistoryModel(query)));
+                SearchHistory searchHistory = new SearchHistory(query);
+                manageSubscription(searchHistory.save(searchHistory).subscribe());
+                sendToView(view -> view.onNotifyAdapter(new SearchHistory(query)));
             }
         }
     }

@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.CommentsModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  */
 
 class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> implements CommitCommentsMvp.Presenter {
-    private ArrayList<CommentsModel> comments = new ArrayList<>();
+    private ArrayList<Comment> comments = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -73,7 +73,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         sha = bundle.getString(BundleConstant.EXTRA_TWO);
     }
 
-    @NonNull @Override public ArrayList<CommentsModel> getComments() {
+    @NonNull @Override public ArrayList<Comment> getComments() {
         return comments;
     }
 
@@ -89,7 +89,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
 
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(CommentsModel.getCommitComments(repoId(), login(), sha))
+            manageSubscription(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha))
                     .subscribe(models -> {
                         if (models != null) {
                             comments.addAll(models);
@@ -113,10 +113,10 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         return sha;
     }
 
-    @Override public void onItemClick(int position, View v, CommentsModel item) {
+    @Override public void onItemClick(int position, View v, Comment item) {
         if (getView() != null) {
             if (item.getUser() != null) {
-                LoginModel login = LoginModel.getUser();
+                Login login = Login.getUser();
                 if (login != null && item.getUser().getLogin().equals(login.getLogin())) {
                     getView().onEditComment(item);
                 } else {
@@ -128,8 +128,8 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommentsModel item) {
-        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), LoginModel.getUser().getLogin())) {
+    @Override public void onItemLongClick(int position, View v, Comment item) {
+        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), Login.getUser().getLogin())) {
             if (getView() != null) getView().onShowDeleteMsg(item.getId());
         } else {
             onItemClick(position, v, item);

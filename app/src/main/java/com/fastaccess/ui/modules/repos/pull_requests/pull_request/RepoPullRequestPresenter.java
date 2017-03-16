@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
@@ -29,7 +29,7 @@ import rx.Observable;
 
 class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> implements RepoPullRequestMvp.Presenter {
 
-    private ArrayList<PullRequestModel> pullRequests = new ArrayList<>();
+    private ArrayList<PullRequest> pullRequests = new ArrayList<>();
     private String login;
     private String repoId;
     private int page;
@@ -74,7 +74,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         getPullRequests().clear();
-                        manageSubscription(PullRequestModel.save(response.getItems(), login, repoId).subscribe());
+                        manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
                     }
                     getPullRequests().addAll(response.getItems());
                     sendToView(RepoPullRequestMvp.View::onNotifyAdapter);
@@ -92,7 +92,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     @Override public void onWorkOffline() {
         if (pullRequests.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(PullRequestModel.getPullRequests(repoId, login, issueState))
+            manageSubscription(RxHelper.getObserver(PullRequest.getPullRequests(repoId, login, issueState))
                     .subscribe(pulls -> {
                         pullRequests.addAll(pulls);
                         sendToView(RepoPullRequestMvp.View::onNotifyAdapter);
@@ -102,11 +102,11 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         }
     }
 
-    @NonNull public ArrayList<PullRequestModel> getPullRequests() {
+    @NonNull public ArrayList<PullRequest> getPullRequests() {
         return pullRequests;
     }
 
-    @Override public void onItemClick(int position, View v, PullRequestModel item) {
+    @Override public void onItemClick(int position, View v, PullRequest item) {
         Logger.e(Bundler.start().put("item", item).end().size());
         PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
         if (parser != null) {
@@ -115,7 +115,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, PullRequestModel item) {
+    @Override public void onItemLongClick(int position, View v, PullRequest item) {
         onItemClick(position, v, item);
     }
 }

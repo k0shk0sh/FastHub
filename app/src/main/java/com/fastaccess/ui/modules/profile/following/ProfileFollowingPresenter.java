@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> implements ProfileFollowingMvp.Presenter {
 
-    private ArrayList<UserModel> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -65,20 +65,20 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         users.clear();
-                        manageSubscription(UserModel.saveFollowings(response.getItems(), parameter).subscribe());
+                        manageSubscription(User.saveUserFollowingList(response.getItems(), parameter).subscribe());
                     }
                     users.addAll(response.getItems());
                     sendToView(ProfileFollowingMvp.View::onNotifyAdapter);
                 });
     }
 
-    @NonNull @Override public ArrayList<UserModel> getFollowing() {
+    @NonNull @Override public ArrayList<User> getFollowing() {
         return users;
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(UserModel.getFollowing(login)).subscribe(userModels -> {
+            manageSubscription(RxHelper.getObserver(User.getUserFollowingList(login)).subscribe(userModels -> {
                 users.addAll(userModels);
                 sendToView(ProfileFollowingMvp.View::onNotifyAdapter);
             }));
@@ -87,7 +87,7 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
         }
     }
 
-    @Override public void onItemClick(int position, View v, UserModel item) {}
+    @Override public void onItemClick(int position, View v, User item) {}
 
-    @Override public void onItemLongClick(int position, View v, UserModel item) {}
+    @Override public void onItemLongClick(int position, View v, User item) {}
 }

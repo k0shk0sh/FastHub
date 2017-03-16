@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommentsModel;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -134,7 +134,7 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
         }
     }
 
-    @Override public void onSendResultAndFinish(@NonNull CommentsModel commentModel, boolean isNew) {
+    @Override public void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew) {
         hideProgress();
         Intent intent = new Intent();
         intent.putExtras(Bundler.start()

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.AccessTokenModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 /**
@@ -28,7 +28,7 @@ interface LoginMvp {
 
         void onTokenResponse(@Nullable AccessTokenModel response);
 
-        void onUserResponse(@Nullable LoginModel response);
+        void onUserResponse(@Nullable Login response);
 
         void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode);
     }

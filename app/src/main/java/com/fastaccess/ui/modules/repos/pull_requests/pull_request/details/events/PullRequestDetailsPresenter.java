@@ -7,9 +7,9 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.IssueEventAdapterModel;
-import com.fastaccess.data.dao.IssueEventModel;
+import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.PullRequestAdapterModel;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
@@ -27,7 +27,7 @@ class PullRequestDetailsPresenter extends BasePresenter<PullRequestDetailsMvp.Vi
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<PullRequestAdapterModel> events = new ArrayList<>();
-    private PullRequestModel pullRequest;
+    private PullRequest pullRequest;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
@@ -45,7 +45,7 @@ class PullRequestDetailsPresenter extends BasePresenter<PullRequestDetailsMvp.Vi
     @Override public void onItemClick(int position, View v, PullRequestAdapterModel item) {
         Logger.e(item.getType());
         if (item.getType() != IssueEventAdapterModel.HEADER) {
-            IssueEventModel pullEvent = item.getIssueEvent();
+            IssueEvent pullEvent = item.getIssueEvent();
             if (pullEvent.getCommitUrl() != null) {
                 SchemeParser.launchUri(v.getContext(), Uri.parse(pullEvent.getCommitUrl()));
             }

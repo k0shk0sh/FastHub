@@ -3,7 +3,7 @@ package com.fastaccess.ui.modules.gists;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -23,10 +23,10 @@ interface GistsMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<GistsModel>,
+            BaseViewHolder.OnItemClickListener<Gist>,
             BaseMvp.PaginationListener {
 
-        @NonNull ArrayList<GistsModel> getGists();
+        @NonNull ArrayList<Gist> getGists();
 
         void onWorkOffline();
     }

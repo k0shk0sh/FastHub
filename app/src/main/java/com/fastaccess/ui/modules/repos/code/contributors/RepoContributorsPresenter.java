@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> implements RepoContributorsMvp.Presenter {
 
-    private ArrayList<UserModel> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -59,7 +59,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         getUsers().clear();
-                        manageSubscription(UserModel.saveContributors(response.getItems(), repoId).subscribe());
+                        manageSubscription(User.saveUserContributorList(response.getItems(), repoId).subscribe());
                     }
                     getUsers().addAll(response.getItems());
                     sendToView(RepoContributorsMvp.View::onNotifyAdapter);
@@ -76,7 +76,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
 
     @Override public void onWorkOffline() {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(UserModel.getContributors(repoId))
+            manageSubscription(RxHelper.getObserver(User.getUserContributorList(repoId))
                     .subscribe(userModels -> {
                         users.addAll(userModels);
                         sendToView(RepoContributorsMvp.View::onNotifyAdapter);
@@ -86,11 +86,11 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
         }
     }
 
-    @NonNull @Override public ArrayList<UserModel> getUsers() {
+    @NonNull @Override public ArrayList<User> getUsers() {
         return users;
     }
 
-    @Override public void onItemClick(int position, View v, UserModel item) {}
+    @Override public void onItemClick(int position, View v, User item) {}
 
-    @Override public void onItemLongClick(int position, View v, UserModel item) {}
+    @Override public void onItemLongClick(int position, View v, User item) {}
 }

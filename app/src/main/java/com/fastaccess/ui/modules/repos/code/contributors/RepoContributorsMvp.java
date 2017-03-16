@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -24,13 +24,13 @@ interface RepoContributorsMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<UserModel>,
+            BaseViewHolder.OnItemClickListener<User>,
             BaseMvp.PaginationListener {
 
         void onFragmentCreated(@NonNull Bundle bundle);
 
         void onWorkOffline();
 
-        @NonNull ArrayList<UserModel> getUsers();
+        @NonNull ArrayList<User> getUsers();
     }
 }

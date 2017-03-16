@@ -3,9 +3,6 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.siimkinks.sqlitemagic.annotation.Column;
-import com.siimkinks.sqlitemagic.annotation.Table;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +11,11 @@ import lombok.Setter;
  * Created by Kosh on 08 Dec 2016, 9:05 PM
  */
 
-@Getter @Setter @NoArgsConstructor @Table(persistAll = true)
+@Getter @Setter @NoArgsConstructor
 public class LabelModel implements Parcelable {
-    @Column String url;
-    @Column String name;
-    @Column String color;
+    String url;
+    String name;
+    String color;
 
     @Override public int describeContents() { return 0; }
 

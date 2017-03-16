@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.CommentsModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -23,7 +23,7 @@ import rx.Observable;
  */
 
 class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implements IssueCommentsMvp.Presenter {
-    private ArrayList<CommentsModel> comments = new ArrayList<>();
+    private ArrayList<Comment> comments = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -68,7 +68,7 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
                         getComments().clear();
-                        manageSubscription(CommentsModel.saveForIssues(listResponse.getItems(), repoId(), login(),
+                        manageSubscription(Comment.saveForIssues(listResponse.getItems(), repoId(), login(),
                                 String.valueOf(number)).subscribe());
                     }
                     getComments().addAll(listResponse.getItems());
@@ -83,13 +83,13 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
         number = bundle.getInt(BundleConstant.EXTRA_TWO);
     }
 
-    @NonNull @Override public ArrayList<CommentsModel> getComments() {
+    @NonNull @Override public ArrayList<Comment> getComments() {
         return comments;
     }
 
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(CommentsModel.getIssueComments(repoId(), login(), String.valueOf(number)))
+            manageSubscription(RxHelper.getObserver(Comment.getIssueComments(repoId(), login(), String.valueOf(number)))
                     .subscribe(models -> {
                         if (models != null) {
                             comments.addAll(models);
@@ -123,10 +123,10 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
         return number;
     }
 
-    @Override public void onItemClick(int position, View v, CommentsModel item) {
+    @Override public void onItemClick(int position, View v, Comment item) {
         if (getView() != null) {
             if (item.getUser() != null) {
-                LoginModel userModel = LoginModel.getUser();
+                Login userModel = Login.getUser();
                 if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
                     getView().onEditComment(item);
                 } else {
@@ -138,8 +138,8 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommentsModel item) {
-        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), LoginModel.getUser().getLogin())) {
+    @Override public void onItemLongClick(int position, View v, Comment item) {
+        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), Login.getUser().getLogin())) {
             if (getView() != null) getView().onShowDeleteMsg(item.getId());
         } else {
             onItemClick(position, v, item);

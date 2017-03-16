@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -24,11 +24,11 @@ interface PullRequestCommitsMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<CommitModel>,
+            BaseViewHolder.OnItemClickListener<Commit>,
             BaseMvp.PaginationListener {
         void onFragmentCreated(@NonNull Bundle bundle);
 
-        @NonNull ArrayList<CommitModel> getCommits();
+        @NonNull ArrayList<Commit> getCommits();
 
         void onWorkOffline();
     }

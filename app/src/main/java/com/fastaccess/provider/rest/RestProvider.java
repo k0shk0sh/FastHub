@@ -5,10 +5,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.LoginRestService;
+import com.fastaccess.data.service.LoginRestService;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
@@ -25,7 +26,9 @@ import com.fastaccess.provider.rest.interceptors.PaginationInterceptor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
 import java.lang.reflect.Modifier;
+
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -45,7 +48,7 @@ public class RestProvider {
     private static Cache cache;
     public static final int PAGE_SIZE = 30;
 
-    private final static Gson gson = new GsonBuilder()
+    public final static Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
             .setDateFormat("yyyy-MM-dd HH:mm:ss")

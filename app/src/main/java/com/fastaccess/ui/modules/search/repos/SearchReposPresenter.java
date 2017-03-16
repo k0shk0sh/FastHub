@@ -5,7 +5,8 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
@@ -18,7 +19,7 @@ import java.util.ArrayList;
 
 class SearchReposPresenter extends BasePresenter<SearchReposMvp.View> implements SearchReposMvp.Presenter {
 
-    private ArrayList<RepoModel> repos = new ArrayList<>();
+    private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -63,15 +64,15 @@ class SearchReposPresenter extends BasePresenter<SearchReposMvp.View> implements
                 });
     }
 
-    @NonNull @Override public ArrayList<RepoModel> getRepos() {
+    @NonNull @Override public ArrayList<Repo> getRepos() {
         return repos;
     }
 
-    @Override public void onItemClick(int position, View v, RepoModel item) {
+    @Override public void onItemClick(int position, View v, Repo item) {
         RepoPagerView.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoModel item) {
+    @Override public void onItemLongClick(int position, View v, Repo item) {
         onItemClick(position, v, item);
     }
 }

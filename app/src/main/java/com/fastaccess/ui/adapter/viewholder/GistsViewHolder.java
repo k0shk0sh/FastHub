@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -19,7 +19,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class GistsViewHolder extends BaseViewHolder<GistsModel> {
+public class GistsViewHolder extends BaseViewHolder<Gist> {
 
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.title) FontTextView title;
@@ -41,7 +41,7 @@ public class GistsViewHolder extends BaseViewHolder<GistsModel> {
     }
 
 
-    @Override public void bind(@NonNull GistsModel item) {
+    @Override public void bind(@NonNull Gist item) {
         if (!isFromProfile) {
             String url = item.getOwner() != null ? item.getOwner().getAvatarUrl() : item.getUser() != null ? item.getUser().getAvatarUrl() : null;
             String login = item.getOwner() != null ? item.getOwner().getLogin() : item.getUser() != null ? item.getUser().getLogin() : null;

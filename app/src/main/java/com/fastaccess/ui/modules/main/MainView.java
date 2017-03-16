@@ -18,8 +18,8 @@ import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LoginModel;
-import com.fastaccess.data.dao.NotificationThreadModel;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
@@ -107,7 +107,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        if (isLoggedIn() && NotificationThreadModel.hasUnreadNotifications()) {
+        if (isLoggedIn() && Notification.hasUnreadNotifications()) {
             ViewHelper.tintDrawable(menu.findItem(R.id.notifications).getIcon(), ContextCompat.getColor(this, R.color.accent));
         }
         return super.onCreateOptionsMenu(menu);
@@ -214,7 +214,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
                         .replace(R.id.container, FeedsView.newInstance(), FeedsView.TAG)
                         .commit();
             }
-            LoginModel userModel = LoginModel.getUser();
+            Login userModel = Login.getUser();
             if (userModel != null) {
                 View view = navigationView.getHeaderView(0);
                 if (view != null) {

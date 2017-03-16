@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.CommentsModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -29,7 +29,7 @@ interface IssueCommentsMvp {
 
         @NonNull OnLoadMore getLoadMore();
 
-        void onEditComment(@NonNull CommentsModel item);
+        void onEditComment(@NonNull Comment item);
 
         void onStartNewComment();
 
@@ -39,16 +39,16 @@ interface IssueCommentsMvp {
 
         void onShowProgressDialog();
 
-        void onTagUser(@Nullable UserModel user);
+        void onTagUser(@Nullable User user);
 
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseMvp.PaginationListener<String>, BaseViewHolder.OnItemClickListener<CommentsModel> {
+            BaseMvp.PaginationListener<String>, BaseViewHolder.OnItemClickListener<Comment> {
 
         void onFragmentCreated(@Nullable Bundle bundle);
 
-        @NonNull ArrayList<CommentsModel> getComments();
+        @NonNull ArrayList<Comment> getComments();
 
         void onWorkOffline();
 

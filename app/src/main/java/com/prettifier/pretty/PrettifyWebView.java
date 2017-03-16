@@ -16,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.markdown.MarkDownProvider;
@@ -76,6 +77,21 @@ public class PrettifyWebView extends NestedWebView {
         settings.setDefaultTextEncodingName("utf-8");
         settings.setLoadsImagesAutomatically(true);
         settings.setBlockNetworkImage(false);
+        setOnLongClickListener((view) -> {
+            WebView.HitTestResult result = getHitTestResult();
+            if (hitLinkResult(result) && !InputHelper.isEmpty(result.getExtra())) {
+                AppHelper.copyToClipboard(getContext(), result.getExtra());
+            } else {
+                return true;
+            }
+
+            return false;
+        });
+    }
+
+    private boolean hitLinkResult(WebView.HitTestResult result) {
+        return result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE || result.getType() == HitTestResult.IMAGE_TYPE ||
+                result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE;
     }
 
     public void setOnContentChangedListener(@NonNull OnContentChangedListener onContentChangedListener) {

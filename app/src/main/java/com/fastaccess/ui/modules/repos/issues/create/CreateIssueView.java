@@ -11,8 +11,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.IssueModel;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -39,8 +39,8 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
 
     @State String repoId;
     @State String login;
-    @State IssueModel issue;
-    @State PullRequestModel pullRequest;
+    @State Issue issue;
+    @State PullRequest pullRequest;
     @State boolean isFeedback;
 
     private CharSequence savedText;
@@ -55,7 +55,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
     }
 
     public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
-                                      @Nullable IssueModel issueModel) {
+                                      @Nullable Issue issueModel) {
         if (issueModel != null) {
             Intent intent = new Intent(activity, CreateIssueView.class);
             intent.putExtras(Bundler.start()
@@ -68,7 +68,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
     }
 
     public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
-                                      @Nullable PullRequestModel pullRequestModel) {
+                                      @Nullable PullRequest pullRequestModel) {
         if (pullRequestModel != null) {
             Intent intent = new Intent(activity, CreateIssueView.class);
             intent.putExtras(Bundler.start()
@@ -105,14 +105,14 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
         description.setError(isEmptyDesc ? getString(R.string.required_field) : null);
     }
 
-    @Override public void onSuccessSubmission(IssueModel issueModel) {
+    @Override public void onSuccessSubmission(Issue issueModel) {
         hideProgress();
         setResult(RESULT_OK);
         finish();
         showMessage(R.string.success, R.string.successfully_submitted);
     }
 
-    @Override public void onSuccessSubmission(PullRequestModel issueModel) {
+    @Override public void onSuccessSubmission(PullRequest issueModel) {
         hideProgress();
         setResult(RESULT_OK);
         finish();
@@ -147,10 +147,10 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
             repoId = bundle.getString(BundleConstant.ID);
             isFeedback = bundle.getBoolean(BundleConstant.EXTRA_TWO);
             if (bundle.getParcelable(BundleConstant.ITEM) != null) {
-                if (bundle.getParcelable(BundleConstant.ITEM) instanceof IssueModel) {
+                if (bundle.getParcelable(BundleConstant.ITEM) instanceof Issue) {
                     issue = bundle.getParcelable(BundleConstant.ITEM);
                     setTitle(getString(R.string.update_issue));
-                } else if (bundle.getParcelable(BundleConstant.ITEM) instanceof PullRequestModel) {
+                } else if (bundle.getParcelable(BundleConstant.ITEM) instanceof PullRequest) {
                     pullRequest = bundle.getParcelable(BundleConstant.ITEM);
                     setTitle(getString(R.string.update_pull_request));
                 }

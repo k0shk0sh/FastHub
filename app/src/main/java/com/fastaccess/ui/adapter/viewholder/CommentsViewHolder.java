@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommentsModel;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -21,7 +21,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class CommentsViewHolder extends BaseViewHolder<CommentsModel> {
+public class CommentsViewHolder extends BaseViewHolder<Comment> {
 
     @BindView(R.id.avatarView) AvatarLayout avatar;
     @BindView(R.id.date) FontTextView date;
@@ -42,7 +42,7 @@ public class CommentsViewHolder extends BaseViewHolder<CommentsModel> {
         return new CommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull CommentsModel commentsModel) {
+    @Override public void bind(@NonNull Comment commentsModel) {
         if (commentsModel.getUser() != null) {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
         } else {

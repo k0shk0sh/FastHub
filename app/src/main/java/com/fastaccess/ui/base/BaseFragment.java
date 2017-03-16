@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -69,7 +69,7 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (LoginModel.getUser() != null) {
+        if (Login.getUser() != null) {
             onFragmentCreated(view, savedInstanceState);
         }
     }

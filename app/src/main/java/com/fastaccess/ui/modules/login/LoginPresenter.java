@@ -8,7 +8,7 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.AccessTokenModel;
 import com.fastaccess.data.dao.AuthModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.LoginProvider;
@@ -40,10 +40,10 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @Override public void onUserResponse(@Nullable LoginModel userModel) {
+    @Override public void onUserResponse(@Nullable Login userModel) {
         if (userModel != null) {
             userModel.setToken(PrefGetter.getToken());
-            userModel.save();
+            userModel.save(userModel);
             sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
             return;
         }

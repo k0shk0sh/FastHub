@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.IssueEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,25 +25,27 @@ public class IssueEventAdapterModel implements Parcelable {
     public static final int ROW = 2;
     private int type;
 
-    private IssueEventModel issueEvent;
-    private IssueModel issueModel;
+    private IssueEvent issueEvent;
+    private Issue issueModel;
 
-    private IssueEventAdapterModel(int type, IssueEventModel model) {
+    private IssueEventAdapterModel(int type, IssueEvent model) {
         this.type = type;
         this.issueEvent = model;
     }
 
-    public IssueEventAdapterModel(int type, IssueModel issueModel) {
+    public IssueEventAdapterModel(int type, Issue issueModel) {
         this.type = type;
         this.issueModel = issueModel;
     }
 
-    public static ArrayList<IssueEventAdapterModel> addEvents(@Nullable List<IssueEventModel> modelList) {
+    public static ArrayList<IssueEventAdapterModel> addEvents(@Nullable List<IssueEvent> modelList) {
         ArrayList<IssueEventAdapterModel> models = new ArrayList<>();
         if (modelList == null || modelList.isEmpty()) return models;
         Stream.of(modelList).forEach(issueEventModel -> models.add(new IssueEventAdapterModel(ROW, issueEventModel)));
         return models;
     }
+
+    public IssueEventAdapterModel() {}
 
     @Override public int describeContents() { return 0; }
 
@@ -51,12 +55,10 @@ public class IssueEventAdapterModel implements Parcelable {
         dest.writeParcelable(this.issueModel, flags);
     }
 
-    public IssueEventAdapterModel() {}
-
-    @SuppressWarnings("WeakerAccess") protected IssueEventAdapterModel(Parcel in) {
+    protected IssueEventAdapterModel(Parcel in) {
         this.type = in.readInt();
-        this.issueEvent = in.readParcelable(IssueEventModel.class.getClassLoader());
-        this.issueModel = in.readParcelable(IssueModel.class.getClassLoader());
+        this.issueEvent = in.readParcelable(IssueEvent.class.getClassLoader());
+        this.issueModel = in.readParcelable(Issue.class.getClassLoader());
     }
 
     public static final Creator<IssueEventAdapterModel> CREATOR = new Creator<IssueEventAdapterModel>() {

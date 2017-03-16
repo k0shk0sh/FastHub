@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.IssueEventAdapterModel;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -38,7 +38,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<IssueEventAdapterMode
     }
 
     @Override public void bind(@NonNull IssueEventAdapterModel model) {
-        IssueModel issueModel = model.getIssueModel();
+        Issue issueModel = model.getIssueModel();
         avatarView.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
         name.setText(issueModel.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));

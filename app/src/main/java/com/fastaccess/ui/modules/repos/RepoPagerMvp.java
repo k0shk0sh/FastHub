@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 import java.lang.annotation.Retention;
@@ -68,7 +68,7 @@ public interface RepoPagerMvp {
 
         @NonNull String login();
 
-        @Nullable RepoModel getRepo();
+        @Nullable Repo getRepo();
 
         boolean isWatched();
 

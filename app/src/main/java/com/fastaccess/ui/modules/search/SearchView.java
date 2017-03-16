@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
-import com.fastaccess.data.dao.SearchHistoryModel;
+import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
@@ -39,7 +39,7 @@ public class SearchView extends BaseActivity<SearchMvp.View, SearchPresenter> im
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.pager) ViewPagerView pager;
 
-    private ArrayAdapter<SearchHistoryModel> adapter;
+    private ArrayAdapter<SearchHistory> adapter;
 
     @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void onTextChange(Editable s) {
@@ -96,12 +96,12 @@ public class SearchView extends BaseActivity<SearchMvp.View, SearchPresenter> im
         searchEditText.setOnItemClickListener((parent, view, position, id) -> getPresenter().onSearchClicked(pager, searchEditText));
     }
 
-    @Override public void onNotifyAdapter(@Nullable SearchHistoryModel query) {
+    @Override public void onNotifyAdapter(@Nullable SearchHistory query) {
         if (query == null) getAdapter().notifyDataSetChanged();
         else getAdapter().add(query);
     }
 
-    private ArrayAdapter<SearchHistoryModel> getAdapter() {
+    private ArrayAdapter<SearchHistory> getAdapter() {
         if (adapter == null) adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getPresenter().getHints());
         return adapter;
     }

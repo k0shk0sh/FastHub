@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 class SearchUsersPresenter extends BasePresenter<SearchUsersMvp.View> implements SearchUsersMvp.Presenter {
 
-    private ArrayList<UserModel> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -62,13 +62,13 @@ class SearchUsersPresenter extends BasePresenter<SearchUsersMvp.View> implements
                 });
     }
 
-    @NonNull @Override public ArrayList<UserModel> getUsers() {
+    @NonNull @Override public ArrayList<User> getUsers() {
         return users;
     }
 
-    @Override public void onItemClick(int position, View v, UserModel item) {
+    @Override public void onItemClick(int position, View v, User item) {
 
     }
 
-    @Override public void onItemLongClick(int position, View v, UserModel item) {}
+    @Override public void onItemLongClick(int position, View v, User item) {}
 }

@@ -3,7 +3,7 @@ package com.fastaccess.ui;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.adapter.viewholder.AssigneesViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by Kosh on 11 Nov 2016, 2:07 PM
  */
 
-public class AssigneesAdapter extends BaseRecyclerAdapter<UserModel, AssigneesViewHolder, BaseViewHolder.OnItemClickListener<UserModel>> {
+public class AssigneesAdapter extends BaseRecyclerAdapter<User, AssigneesViewHolder, BaseViewHolder.OnItemClickListener<User>> {
 
     public interface OnSelectAssignee {
         boolean isAssigneeSelected(int position);
@@ -24,7 +24,7 @@ public class AssigneesAdapter extends BaseRecyclerAdapter<UserModel, AssigneesVi
 
     private OnSelectAssignee onSelectAssignee;
 
-    public AssigneesAdapter(@NonNull List<UserModel> data, OnSelectAssignee onSelectAssignee) {
+    public AssigneesAdapter(@NonNull List<User> data, OnSelectAssignee onSelectAssignee) {
         super(data);
         this.onSelectAssignee = onSelectAssignee;
     }

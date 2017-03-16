@@ -10,14 +10,14 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.AssigneesRequestModel;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
@@ -38,13 +38,13 @@ import rx.Observable;
  */
 
 class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements IssuePagerMvp.Presenter {
-    private IssueModel issueModel;
+    private Issue issueModel;
     private int issueNumber;
     private String login;
     private String repoId;
     private boolean isCollaborator;
 
-    @Nullable @Override public IssueModel getIssue() {
+    @Nullable @Override public Issue getIssue() {
         return issueModel;
     }
 
@@ -71,7 +71,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                             issueModel.setLogin(login);
                             sendToView(IssuePagerMvp.View::onSetupIssue);
                             manageSubscription(RxHelper.getObserver(RestProvider.getRepoService()
-                                    .isCollaborator(login, repoId, LoginModel.getUser().getLogin()))
+                                    .isCollaborator(login, repoId, Login.getUser().getLogin()))
                                     .subscribe(booleanResponse -> {
                                         isCollaborator = booleanResponse.code() == 204;
                                         sendToView(IssuePagerMvp.View::onUpdateMenu);
@@ -85,7 +85,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onWorkOffline(long issueNumber, @NonNull String repoId, @NonNull String login) {
         if (issueModel == null) {
-            manageSubscription(RxHelper.getObserver(IssueModel.getIssueByNumber((int) issueNumber))
+            manageSubscription(RxHelper.getObserver(Issue.getIssueByNumber((int) issueNumber))
                     .subscribe(issueModel1 -> {
                         if (issueModel1 != null) {
                             issueModel = issueModel1;
@@ -99,8 +99,8 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public boolean isOwner() {
         if (getIssue() == null) return false;
-        UserModel userModel = getIssue() != null ? getIssue().getUser() : null;
-        LoginModel me = LoginModel.getUser();
+        User userModel = getIssue() != null ? getIssue().getUser() : null;
+        Login me = Login.getUser();
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(getIssue().getHtmlUrl());
         return (userModel != null && userModel.getLogin().equalsIgnoreCase(me.getLogin()))
                 || (parser != null && parser.getLogin().equalsIgnoreCase(me.getLogin()));
@@ -108,7 +108,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public boolean isRepoOwner() {
         if (getIssue() == null) return false;
-        LoginModel me = LoginModel.getUser();
+        Login me = Login.getUser();
         return TextUtils.equals(login, me.getLogin());
     }
 
@@ -133,7 +133,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     @Override public void onOpenCloseIssue() {
-        IssueModel currentIssue = getIssue();
+        Issue currentIssue = getIssue();
         if (currentIssue != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue, true);
             manageSubscription(RxHelper.getObserver(RestProvider.getIssueService().editIssue(login, repoId,
@@ -157,7 +157,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     @Override public void onLockUnlockIssue() {
-        IssueModel currentIssue = getIssue();
+        Issue currentIssue = getIssue();
         if (currentIssue == null) return;
         String login = currentIssue.getUser().getLogin();
         String repoId = currentIssue.getRepoId();
@@ -214,7 +214,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                     this.issueModel = issue;
                     issueModel.setLogin(login);
                     issueModel.setRepoId(repoId);
-                    manageSubscription(issue.save().subscribe());
+                    manageSubscription(issue.save(issueModel).subscribe());
                     sendToView(IssuePagerMvp.View::onUpdateTimeline);
                 });
 
@@ -229,11 +229,11 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                     LabelListModel listModel = new LabelListModel();
                     listModel.addAll(labels);
                     issueModel.setLabels(listModel);
-                    manageSubscription(issueModel.save().subscribe());
+                    manageSubscription(issueModel.save(issueModel).subscribe());
                 });
     }
 
-    @Override public void onPutAssignees(@NonNull ArrayList<UserModel> users) {
+    @Override public void onPutAssignees(@NonNull ArrayList<User> users) {
         AssigneesRequestModel assigneesRequestModel = new AssigneesRequestModel();
         ArrayList<String> assignees = new ArrayList<>();
         Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
@@ -246,7 +246,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                     UsersListModel assignee = new UsersListModel();
                     assignee.addAll(users);
                     issueModel.setAssignees(assignee);
-                    manageSubscription(issueModel.save().subscribe());
+                    manageSubscription(issueModel.save(issueModel).subscribe());
                     sendToView(IssuePagerMvp.View::onUpdateTimeline);
                 }
         );
@@ -260,11 +260,11 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         return repoId;
     }
 
-    @Override public void onUpdateIssue(@NonNull IssueModel issue) {
+    @Override public void onUpdateIssue(@NonNull Issue issue) {
         this.issueModel = issue;
         this.issueModel.setLogin(login);
         this.issueModel.setRepoId(repoId);
-        manageSubscription(issueModel.save().subscribe());
+        manageSubscription(issueModel.save(issueModel).subscribe());
         sendToView(IssuePagerMvp.View::onSetupIssue);
     }
 }

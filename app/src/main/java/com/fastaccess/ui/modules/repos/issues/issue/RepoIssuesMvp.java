@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -27,14 +27,14 @@ interface RepoIssuesMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<IssueModel>,
+            BaseViewHolder.OnItemClickListener<Issue>,
             BaseMvp.PaginationListener<IssueState> {
 
         void onFragmentCreated(@NonNull Bundle bundle, IssueState issueState);
 
         void onWorkOffline();
 
-        @NonNull ArrayList<IssueModel> getIssues();
+        @NonNull ArrayList<Issue> getIssues();
 
         @NonNull String repoId();
 

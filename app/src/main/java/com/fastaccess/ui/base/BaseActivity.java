@@ -15,9 +15,10 @@ import android.view.View;
 import android.webkit.CookieManager;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -157,7 +158,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public boolean isLoggedIn() {
-        return !InputHelper.isEmpty(PrefGetter.getToken()) && LoginModel.getUser() != null;
+        return !InputHelper.isEmpty(PrefGetter.getToken()) && Login.getUser() != null;
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -189,7 +190,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         CookieManager.getInstance().removeAllCookies(null);
         PrefGetter.clear();
-        LoginModel.deleteTable().execute();
+        App.getInstance().getDataStore()
+                .delete(Login.class)
+                .get()
+                .toSingle()
+                .toBlocking()
+                .value();
         recreate();
     }
 

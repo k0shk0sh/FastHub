@@ -7,7 +7,7 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -31,7 +31,7 @@ public class PullRequestDetailsView extends BaseFragment<PullRequestDetailsMvp.V
     private PullRequestTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
 
-    public static PullRequestDetailsView newInstance(@NonNull PullRequestModel issueModel) {
+    public static PullRequestDetailsView newInstance(@NonNull PullRequest issueModel) {
         PullRequestDetailsView view = new PullRequestDetailsView();
         view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());
         return view;

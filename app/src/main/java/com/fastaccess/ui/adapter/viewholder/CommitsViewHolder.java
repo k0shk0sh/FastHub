@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -23,7 +23,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class CommitsViewHolder extends BaseViewHolder<CommitModel> {
+public class CommitsViewHolder extends BaseViewHolder<Commit> {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -37,7 +37,7 @@ public class CommitsViewHolder extends BaseViewHolder<CommitModel> {
         return new CommitsViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull CommitModel commit) {
+    @Override public void bind(@NonNull Commit commit) {
         title.setText(commit.getGitCommit().getMessage());
         String login = commit.getAuthor() != null ? commit.getAuthor().getLogin() : commit.getGitCommit().getAuthor().getName();
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;

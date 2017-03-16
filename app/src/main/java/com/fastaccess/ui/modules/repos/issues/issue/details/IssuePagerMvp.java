@@ -5,10 +5,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
@@ -36,12 +36,12 @@ interface IssuePagerMvp {
 
         void onUpdateMenu();
 
-        void onShowAssignees(@NonNull List<UserModel> items);
+        void onShowAssignees(@NonNull List<User> items);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        @Nullable IssueModel getIssue();
+        @Nullable Issue getIssue();
 
         void onActivityCreated(@Nullable Intent intent);
 
@@ -69,13 +69,13 @@ interface IssuePagerMvp {
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
 
-        void onPutAssignees(@NonNull ArrayList<UserModel> users);
+        void onPutAssignees(@NonNull ArrayList<User> users);
 
         String getLogin();
 
         String getRepoId();
 
-        void onUpdateIssue(@NonNull IssueModel issueModel);
+        void onUpdateIssue(@NonNull Issue issueModel);
     }
 
 }

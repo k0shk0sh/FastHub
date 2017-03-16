@@ -3,7 +3,8 @@ package com.fastaccess.ui.modules.notification;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.NotificationThreadModel;
+import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -29,12 +30,12 @@ public interface NotificationsMvp {
         void onClick(@NonNull String url);
     }
 
-    interface Presenter extends BaseViewHolder.OnItemClickListener<NotificationThreadModel>,
+    interface Presenter extends BaseViewHolder.OnItemClickListener<Notification>,
             BaseMvp.PaginationListener {
 
         void onWorkOffline();
 
-        @NonNull ArrayList<NotificationThreadModel> getNotifications();
+        @NonNull ArrayList<Notification> getNotifications();
 
         void showAllNotifications(boolean showAll);
     }

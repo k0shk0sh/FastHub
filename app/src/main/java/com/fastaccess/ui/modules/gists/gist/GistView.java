@@ -15,7 +15,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -157,7 +157,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
         hideProgress();
         if (getPresenter().getGist() != null) {
             Intent intent = new Intent();
-            GistsModel gistsModel = new GistsModel();
+            Gist gistsModel = new Gist();
             gistsModel.setUrl(getPresenter().getGist().getUrl());
             intent.putExtras(Bundler.start().put(BundleConstant.ITEM, gistsModel).end());
             setResult(RESULT_OK, intent);
@@ -183,7 +183,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override public void onSetupDetails() {
         hideProgress();
-        GistsModel gistsModel = getPresenter().getGist();
+        Gist gistsModel = getPresenter().getGist();
         if (gistsModel == null) {
             finish();
             return;

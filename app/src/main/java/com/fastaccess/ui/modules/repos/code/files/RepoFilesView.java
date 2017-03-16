@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -49,7 +49,7 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
         adapter.notifyDataSetChanged();
     }
 
-    @Override public void onItemClicked(@NonNull RepoFilesModel model) {
+    @Override public void onItemClicked(@NonNull RepoFile model) {
         if (refresh.isRefreshing()) return;
         if (model.getType() == FilesType.dir) {
             if (getParent() != null) {
@@ -68,7 +68,7 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
         }
     }
 
-    @Override public void onMenuClicked(@NonNull RepoFilesModel item, View v) {
+    @Override public void onMenuClicked(@NonNull RepoFile item, View v) {
         if (refresh.isRefreshing()) return;
         PopupMenu popup = new PopupMenu(getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();

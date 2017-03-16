@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.ReleasesModel;
+import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -23,7 +23,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class ReleasesViewHolder extends BaseViewHolder<ReleasesModel> {
+public class ReleasesViewHolder extends BaseViewHolder<Release> {
 
 
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -43,7 +43,7 @@ public class ReleasesViewHolder extends BaseViewHolder<ReleasesModel> {
         return new ReleasesViewHolder(getView(viewGroup, R.layout.releases_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull ReleasesModel item) {
+    @Override public void bind(@NonNull Release item) {
         title.setText(SpannableBuilder.builder().bold(!InputHelper.isEmpty(item.getName()) ? item.getName() : item.getTagName()));
         details.setText(SpannableBuilder.builder()
                 .append(item.getAuthor().getLogin())

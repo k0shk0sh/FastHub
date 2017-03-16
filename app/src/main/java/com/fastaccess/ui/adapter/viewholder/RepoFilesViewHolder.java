@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -20,7 +20,7 @@ import butterknife.BindView;
  * Created by Kosh on 15 Feb 2017, 10:29 PM
  */
 
-public class RepoFilesViewHolder extends BaseViewHolder<RepoFilesModel> {
+public class RepoFilesViewHolder extends BaseViewHolder<RepoFile> {
 
     @BindView(R.id.contentTypeImage) ForegroundImageView contentTypeImage;
     @BindView(R.id.title) FontTextView title;
@@ -37,7 +37,7 @@ public class RepoFilesViewHolder extends BaseViewHolder<RepoFilesModel> {
         return new RepoFilesViewHolder(getView(viewGroup, R.layout.repo_files_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull RepoFilesModel filesModel) {
+    @Override public void bind(@NonNull RepoFile filesModel) {
         contentTypeImage.setContentDescription(String.format("%s %s", filesModel.getName(), file));
         title.setText(filesModel.getName());
         if (filesModel.getType() != null && filesModel.getType().getIcon() != 0) {

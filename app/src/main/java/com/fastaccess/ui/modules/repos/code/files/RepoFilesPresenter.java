@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.RepoPathsManager;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.RxHelper;
@@ -22,14 +22,14 @@ import rx.Observable;
  */
 
 class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements RepoFilesMvp.Presenter {
-    private ArrayList<RepoFilesModel> files = new ArrayList<>();
+    private ArrayList<RepoFile> files = new ArrayList<>();
     private RepoPathsManager pathsModel = new RepoPathsManager();
     private String repoId;
     private String login;
     private String path;
     private String ref;
 
-    @Override public void onItemClick(int position, View v, RepoFilesModel item) {
+    @Override public void onItemClick(int position, View v, RepoFile item) {
         if (getView() == null) return;
         if (v.getId() != R.id.menu) {
             getView().onItemClicked(item);
@@ -38,7 +38,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFilesModel item) {
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {
         onItemClick(position, v, item);
     }
 
@@ -47,13 +47,13 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         super.onError(throwable);
     }
 
-    @NonNull @Override public ArrayList<RepoFilesModel> getFiles() {
+    @NonNull @Override public ArrayList<RepoFile> getFiles() {
         return files;
     }
 
     @Override public void onWorkOffline() {
         if ((repoId == null || login == null) || !files.isEmpty()) return;
-        manageSubscription(RxHelper.getObserver(RepoFilesModel.getFiles(login, repoId)).subscribe(
+        manageSubscription(RxHelper.getObserver(RepoFile.getFiles(login, repoId)).subscribe(
                 models -> {
                     files.addAll(models);
                     sendToView(RepoFilesMvp.View::onNotifyAdapter);
@@ -66,10 +66,10 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         makeRestCall(RestProvider.getRepoService().getRepoFiles(login, repoId, path, ref),
                 response -> {
                     files.clear();
-                    ArrayList<RepoFilesModel> repoFilesModels = Stream.of(response.getItems())
+                    ArrayList<RepoFile> repoFilesModels = Stream.of(response.getItems())
                             .sortBy(model -> model.getType() == FilesType.file)
                             .collect(com.annimon.stream.Collectors.toCollection(ArrayList::new));
-                    manageSubscription(RepoFilesModel.save(repoFilesModels, login, repoId).subscribe());
+                    manageSubscription(RepoFile.save(repoFilesModels, login, repoId).subscribe());
                     pathsModel.setFiles(ref, path, repoFilesModels);
                     files.addAll(repoFilesModels);
                     sendToView(RepoFilesMvp.View::onNotifyAdapter);
@@ -84,7 +84,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         this.repoId = repoId;
         this.ref = ref;
         this.path = path;
-        ArrayList<RepoFilesModel> cachedFiles = getCachedFiles(path, ref);
+        ArrayList<RepoFile> cachedFiles = getCachedFiles(path, ref);
         if (cachedFiles != null && !cachedFiles.isEmpty()) {
             files.clear();
             files.addAll(cachedFiles);
@@ -94,7 +94,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         }
     }
 
-    @Nullable @Override public ArrayList<RepoFilesModel> getCachedFiles(@NonNull String url, @NonNull String ref) {
+    @Nullable @Override public ArrayList<RepoFile> getCachedFiles(@NonNull String url, @NonNull String ref) {
         return pathsModel.getPaths(url, ref);
     }
 }

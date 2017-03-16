@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -22,7 +22,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
+public class IssuesViewHolder extends BaseViewHolder<Issue> {
 
     @BindView(R.id.title) FontTextView title;
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -44,7 +44,7 @@ public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
         }
     }
 
-    @Override public void bind(@NonNull IssueModel issueModel) {
+    @Override public void bind(@NonNull Issue issueModel) {
         title.setText(issueModel.getTitle());
         if (issueModel.getState() != null) {
             CharSequence data = ParseDateFormat.getTimeAgo(issueModel.getState() == IssueState.open

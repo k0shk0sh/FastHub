@@ -9,12 +9,13 @@ import android.view.View;
 import android.widget.Button;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LoginModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
@@ -45,8 +46,7 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
     @BindView(R.id.progress) View progress;
     @BindView(R.id.followBtn) Button followBtn;
 
-
-    @State UserModel userModel;
+    @State User userModel;
 
     private ProfilePagerMvp.View profileCallback;
 
@@ -96,7 +96,7 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
                 getPresenter().onFragmentCreated(getArguments());
             }
         }
-        if (LoginModel.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin())) {
+        if (isMeOrOrganization()) {
             followBtn.setVisibility(View.GONE);
         }
     }
@@ -105,11 +105,11 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
         return new ProfileOverviewPresenter();
     }
 
-    @Override public void onInitViews(@Nullable UserModel userModel) {
+    @Override public void onInitViews(@Nullable User userModel) {
         progress.setVisibility(View.GONE);
         if (userModel == null) return;
         this.userModel = userModel;
-        followBtn.setVisibility(!InputHelper.isEmpty(userModel.getType()) && userModel.getType().equalsIgnoreCase("user") ? View.VISIBLE : View.GONE);
+        followBtn.setVisibility(!isMeOrOrganization() ? View.VISIBLE : View.GONE);
         username.setText(userModel.getLogin());
         description.setText(userModel.getBio());
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
@@ -130,6 +130,7 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
 
     @Override public void onInvalidateMenuItem() {
         hideProgress();
+        if (isMeOrOrganization()) return;
         if (getPresenter().isSuccessResponse()) {
             AnimHelper.animateVisibility(followBtn, true, View.INVISIBLE, new AnimHelper.AnimationCallback() {
                 @Override public void onAnimationEnd() {
@@ -138,6 +139,7 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
 
                 @Override public void onAnimationStart() {
                     if (followBtn == null) return;
+                    Logger.e(getPresenter().isFollowing());
                     followBtn.setText(getPresenter().isFollowing() ? getString(R.string.unfollow) : getString(R.string.follow));
 
                 }
@@ -156,5 +158,10 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
     @Override public void showErrorMessage(@NonNull String msgRes) {
         hideProgress();
         super.showErrorMessage(msgRes);
+    }
+
+    private boolean isMeOrOrganization() {
+        return Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
+                (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
     }
 }

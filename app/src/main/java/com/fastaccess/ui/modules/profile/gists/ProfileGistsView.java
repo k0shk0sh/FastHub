@@ -10,7 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -108,7 +108,7 @@ public class ProfileGistsView extends BaseFragment<ProfileGistsMvp.View, Profile
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
             if (data != null && data.getExtras() != null) {
-                GistsModel gistsModel = data.getExtras().getParcelable(BundleConstant.ITEM);
+                Gist gistsModel = data.getExtras().getParcelable(BundleConstant.ITEM);
                 if (gistsModel != null && adapter != null) {
                     adapter.removeItem(gistsModel);
                 }

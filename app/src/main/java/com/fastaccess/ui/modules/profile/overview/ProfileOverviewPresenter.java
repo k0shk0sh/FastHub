@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
-import com.fastaccess.data.dao.LoginModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -23,7 +23,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     private String login;
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
-        if (!TextUtils.equals(login, LoginModel.getUser().getLogin()))
+        if (!TextUtils.equals(login, Login.getUser().getLogin()))
             makeRestCall(RestProvider.getUserService().getFollowStatus(login),
                     booleanResponse -> {
                         isSuccessResponse = true;
@@ -69,8 +69,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     userModel -> {
                         onSendUserToView(userModel);
                         if (userModel != null) {
-                            userModel.save();
-                            if (userModel.getType() != null && userModel.getType().equals("user")) {
+                            userModel.save(userModel);
+                            if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
                                 onCheckFollowStatus(login);
                             }
                         }
@@ -79,12 +79,14 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
-        UserModel userModel = UserModel.getUser(login);
-        if (userModel == null) return;
+        User userModel = User.getUser(login);
+        if (userModel == null) {
+            return;
+        }
         onSendUserToView(userModel);
     }
 
-    @Override public void onSendUserToView(@Nullable UserModel userModel) {
+    @Override public void onSendUserToView(@Nullable User userModel) {
         sendToView(view -> view.onInitViews(userModel));
     }
 

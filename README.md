@@ -61,7 +61,7 @@ _(To download the app from here, please look at the [latest release](https://git
 - **Lambda** expressions because _you know why :-)_
 - [**RxJava**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
-- [**SqliteMagic**](https://github.com/SiimKinks/sqlitemagic) for offline-mode
+- [**Requery**](https://github.com/requery/requery/) for offline-mode
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `ArrayLists`
 - **JobScheduler** using Firebase JobDispatcher for notifications service.
 - [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding

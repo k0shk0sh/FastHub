@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.View> implements PullRequestCommitsMvp.Presenter {
 
-    private ArrayList<CommitModel> commits = new ArrayList<>();
+    private ArrayList<Commit> commits = new ArrayList<>();
     private String login;
     private String repoId;
     private long number;
@@ -67,7 +67,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         getCommits().clear();
-                        manageSubscription(CommitModel.save(response.getItems(), repoId, login, number).subscribe());
+                        manageSubscription(Commit.save(response.getItems(), repoId, login, number).subscribe());
                     }
                     getCommits().addAll(response.getItems());
                     sendToView(PullRequestCommitsMvp.View::onNotifyAdapter);
@@ -83,13 +83,13 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         }
     }
 
-    @NonNull @Override public ArrayList<CommitModel> getCommits() {
+    @NonNull @Override public ArrayList<Commit> getCommits() {
         return commits;
     }
 
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(CommitModel.getCommits(repoId, login, number))
+            manageSubscription(RxHelper.getObserver(Commit.getCommits(repoId, login, number))
                     .subscribe(models -> {
                         commits.addAll(models);
                         sendToView(PullRequestCommitsMvp.View::onNotifyAdapter);
@@ -99,11 +99,11 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         }
     }
 
-    @Override public void onItemClick(int position, View v, CommitModel item) {
+    @Override public void onItemClick(int position, View v, Commit item) {
         CommitPagerView.createIntentForOffline(v.getContext(), item);
     }
 
-    @Override public void onItemLongClick(int position, View v, CommitModel item) {
+    @Override public void onItemLongClick(int position, View v, Commit item) {
         onItemClick(position, v, item);
     }
 }

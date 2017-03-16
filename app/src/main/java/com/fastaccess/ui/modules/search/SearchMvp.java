@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.widget.AutoCompleteTextView;
 
-import com.fastaccess.data.dao.SearchHistoryModel;
+import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 import java.util.ArrayList;
@@ -17,12 +17,12 @@ import java.util.ArrayList;
 interface SearchMvp {
 
     interface View extends BaseMvp.FAView {
-        void onNotifyAdapter(@Nullable SearchHistoryModel query);
+        void onNotifyAdapter(@Nullable SearchHistory query);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        @NonNull ArrayList<SearchHistoryModel> getHints();
+        @NonNull ArrayList<SearchHistory> getHints();
 
         void onSearchClicked(@NonNull ViewPager viewPager, @NonNull AutoCompleteTextView editText);
 

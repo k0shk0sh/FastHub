@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestAdapterModel;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -38,7 +38,7 @@ public class PullRequestDetailsViewHolder extends BaseViewHolder<PullRequestAdap
     }
 
     @Override public void bind(@NonNull PullRequestAdapterModel model) {
-        PullRequestModel issueModel = model.getPullRequest();
+        PullRequest issueModel = model.getPullRequest();
         avatarView.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
         name.setText(issueModel.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));

@@ -3,6 +3,7 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.model.Commit;
 import com.google.gson.annotations.SerializedName;
 
 import lombok.Getter;
@@ -17,9 +18,13 @@ import lombok.Setter;
 public class BranchesModel implements Parcelable {
 
     private String name;
-    private CommitModel commit;
+    private Commit commit;
     @SerializedName("protected") private boolean protectedBranch;
     private String protectionUrl;
+
+    @Override public String toString() {
+        return name;
+    }
 
     @Override public int describeContents() { return 0; }
 
@@ -32,18 +37,14 @@ public class BranchesModel implements Parcelable {
 
     protected BranchesModel(Parcel in) {
         this.name = in.readString();
-        this.commit = in.readParcelable(CommitModel.class.getClassLoader());
+        this.commit = in.readParcelable(Commit.class.getClassLoader());
         this.protectedBranch = in.readByte() != 0;
         this.protectionUrl = in.readString();
     }
 
-    public static final Parcelable.Creator<BranchesModel> CREATOR = new Parcelable.Creator<BranchesModel>() {
+    public static final Creator<BranchesModel> CREATOR = new Creator<BranchesModel>() {
         @Override public BranchesModel createFromParcel(Parcel source) {return new BranchesModel(source);}
 
         @Override public BranchesModel[] newArray(int size) {return new BranchesModel[size];}
     };
-
-    @Override public String toString() {
-        return name;
-    }
 }

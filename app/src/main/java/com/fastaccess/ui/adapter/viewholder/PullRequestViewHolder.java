@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -19,7 +19,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class PullRequestViewHolder extends BaseViewHolder<PullRequestModel> {
+public class PullRequestViewHolder extends BaseViewHolder<PullRequest> {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -34,14 +34,14 @@ public class PullRequestViewHolder extends BaseViewHolder<PullRequestModel> {
         return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter);
     }
 
-    public void bind(@NonNull PullRequestModel pullRequest, boolean withAvatar) {
+    public void bind(@NonNull PullRequest pullRequest, boolean withAvatar) {
         title.setText(pullRequest.getTitle());
-        details.setText(PullRequestModel.getMergeBy(pullRequest, details.getContext()));
+        details.setText(PullRequest.getMergeBy(pullRequest, details.getContext()));
         if (withAvatar) {
             avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }
 
-    @Override public void bind(@NonNull PullRequestModel issueModel) {}
+    @Override public void bind(@NonNull PullRequest issueModel) {}
 }

@@ -7,10 +7,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LoginModel;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -30,7 +31,8 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     private boolean isForked;
     private final String login;
     private final String repoId;
-    private RepoModel repo;
+    private Repo repo;
+    private int navTyp;
 
     RepoPagerPresenter(final String repoId, final String login, int navTyp) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId())) {
@@ -38,10 +40,16 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         }
         this.repoId = repoId;
         this.login = login;
+        this.navTyp = navTyp;
+        callApi(navTyp);
+    }
+
+    private void callApi(int navTyp) {
+        if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
         makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
                 repoModel -> {
                     this.repo = repoModel;
-                    manageSubscription(this.repo.persist().observe().subscribe());
+                    manageSubscription(this.repo.save(repo).subscribe());
                     sendToView(view -> {
                         view.onInitRepo();
                         view.onNavigationChanged(navTyp);
@@ -56,10 +64,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         super.onError(throwable);
     }
 
-    @Override protected void onAttachView(@NonNull final RepoPagerMvp.View view) {
+    @Override protected void onAttachView(final @NonNull RepoPagerMvp.View view) {
         super.onAttachView(view);
         if (getRepo() != null) {
             view.onInitRepo();
+        } else {
+            callApi(navTyp);
         }
     }
 
@@ -71,7 +81,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         return login;
     }
 
-    @Nullable @Override public RepoModel getRepo() {
+    @Nullable @Override public Repo getRepo() {
         return repo;
     }
 
@@ -88,7 +98,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     }
 
     @Override public boolean isRepoOwner() {
-        return (getRepo() != null && getRepo().getOwner() != null) && getRepo().getOwner().getLogin().equals(LoginModel.getUser().getLogin());
+        return (getRepo() != null && getRepo().getOwner() != null) && getRepo().getOwner().getLogin().equals(Login.getUser().getLogin());
     }
 
     @Override public void onWatch() {
@@ -153,13 +163,18 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if (!InputHelper.isEmpty(login()) && !InputHelper.isEmpty(repoId())) {
-            manageSubscription(RxHelper.getObserver(RepoModel.getRepo(repoId))
+            Logger.e(login, repoId);
+            manageSubscription(RxHelper.getObserver(Repo.getRepo(repoId))
                     .subscribe(repoModel -> {
                         repo = repoModel;
-                        sendToView(view -> {
-                            view.onInitRepo();
-                            view.onNavigationChanged(RepoPagerMvp.CODE);
-                        });
+                        if (repo != null) {
+                            sendToView(view -> {
+                                view.onInitRepo();
+                                view.onNavigationChanged(RepoPagerMvp.CODE);
+                            });
+                        } else {
+                            callApi(navTyp);
+                        }
                     }));
         } else {
             sendToView(RepoPagerMvp.View::onFinishActivity);
@@ -187,7 +202,10 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 }
                 break;
             case RepoPagerMvp.ISSUES:
-                if ((getRepo() != null && !getRepo().isHasIssues())) return;
+                if ((!getRepo().isHasIssues())) {
+                    sendToView(view -> view.showMessage(R.string.error, R.string.no_issue));
+                    return;
+                }
                 if (repoIssuesPagerView == null) {
                     onAddAndHide(fragmentManager, RepoIssuesPagerView.newInstance(repoId(), login()), currentVisible);
                 } else {
@@ -229,7 +247,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             makeRestCall(RestProvider.getRepoService().deleteRepo(login, repoId),
                     booleanResponse -> {
                         if (booleanResponse.code() == 204) {
-                            if (repo != null) repo.delete().execute();
+//                            if (repo != null) repo.delete().execute();
                             repo = null;
                             sendToView(RepoPagerMvp.View::onInitRepo);
                         }

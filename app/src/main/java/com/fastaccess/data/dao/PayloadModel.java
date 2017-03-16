@@ -3,10 +3,9 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.siimkinks.sqlitemagic.annotation.Column;
-import com.siimkinks.sqlitemagic.annotation.Id;
-import com.siimkinks.sqlitemagic.annotation.IgnoreColumn;
-import com.siimkinks.sqlitemagic.annotation.Table;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.Repo;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,27 +17,28 @@ import lombok.Setter;
  */
 
 
-@Getter @Setter @NoArgsConstructor @Table(persistAll = true)
+@Getter @Setter @NoArgsConstructor
 public class PayloadModel implements Parcelable {
 
-    @Id @Column long id;
-    @Column String action;
-    @Column(onDeleteCascade = true, handleRecursively = false) RepoModel forkee;
-    @Column(onDeleteCascade = true, handleRecursively = false) IssueModel issue;
-    @IgnoreColumn private PullRequestModel pullRequest;
+    String action;
+    Repo forkee;
+    Issue issue;
+    PullRequest pullRequest;
 
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
         dest.writeString(this.action);
         dest.writeParcelable(this.forkee, flags);
+        dest.writeParcelable(this.issue, flags);
+        dest.writeParcelable(this.pullRequest, flags);
     }
 
     protected PayloadModel(Parcel in) {
-        this.id = in.readLong();
         this.action = in.readString();
-        this.forkee = in.readParcelable(RepoModel.class.getClassLoader());
+        this.forkee = in.readParcelable(Repo.class.getClassLoader());
+        this.issue = in.readParcelable(Issue.class.getClassLoader());
+        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
     }
 
     public static final Creator<PayloadModel> CREATOR = new Creator<PayloadModel>() {

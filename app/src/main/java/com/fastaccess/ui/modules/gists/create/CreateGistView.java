@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -51,7 +51,7 @@ public class CreateGistView extends BaseActivity<CreateGistMvp.View, CreateGistP
         fileContent.setError(isEmptyDesc ? getString(R.string.required_field) : null);
     }
 
-    @Override public void onSuccessSubmission(GistsModel gistsModel) {
+    @Override public void onSuccessSubmission(Gist gistsModel) {
         hideProgress();
         finish();
         showMessage(R.string.success, R.string.successfully_submitted);

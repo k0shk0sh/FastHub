@@ -1,7 +1,8 @@
 package com.fastaccess.data.service;
 
-import com.fastaccess.data.dao.NotificationThreadModel;
+
 import com.fastaccess.data.dao.Pageable;
+import com.fastaccess.data.dao.model.Notification;
 
 import retrofit2.Response;
 import retrofit2.http.GET;
@@ -18,13 +19,13 @@ import rx.Observable;
 public interface NotificationService {
 
     @GET("notifications")
-    Observable<Pageable<NotificationThreadModel>> getNotifications(@Query("page") int page);
+    Observable<Pageable<Notification>> getNotifications(@Query("page") int page);
 
     @GET("notifications?all=true")
-    Observable<Pageable<NotificationThreadModel>> getAllNotifications(@Query("page") int page);
+    Observable<Pageable<Notification>> getAllNotifications(@Query("page") int page);
 
     @GET("/notifications/threads/{id}")
-    Observable<NotificationThreadModel> getNotification(@Path("id") String id);
+    Observable<Notification> getNotification(@Path("id") String id);
 
     @PATCH("notifications/threads/{id}") Observable<Response<Boolean>> markAsRead(@Path("id") String id);
 

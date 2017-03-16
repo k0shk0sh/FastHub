@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implements SearchIssuesMvp.Presenter {
 
-    private ArrayList<IssueModel> issues = new ArrayList<>();
+    private ArrayList<Issue> issues = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -64,11 +64,11 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
                 });
     }
 
-    @NonNull @Override public ArrayList<IssueModel> getIssues() {
+    @NonNull @Override public ArrayList<Issue> getIssues() {
         return issues;
     }
 
-    @Override public void onItemClick(int position, View v, IssueModel item) {
+    @Override public void onItemClick(int position, View v, Issue item) {
         if(item.getPullRequest() == null){
             PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
             if (parser != null) {
@@ -84,7 +84,7 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, IssueModel item) {
+    @Override public void onItemLongClick(int position, View v, Issue item) {
         onItemClick(position, v, item);
     }
 }
