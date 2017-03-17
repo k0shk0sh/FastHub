@@ -70,15 +70,28 @@ public abstract class AbstractUser implements Parcelable {
 
     public void save(User entity) {
         App.getInstance().getDataStore()
-                .insert(entity)
+                .delete(User.class)
+                .where(User.ID.eq(entity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(entity))
                 .toBlocking()
                 .value();
     }
 
     public Completable saveToCompletable(User entity) {
         return App.getInstance().getDataStore()
-                .insert(entity)
-                .toCompletable();
+                .delete(User.class)
+                .where(User.ID.eq(entity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(entity)
+                        .toCompletable()
+                );
     }
 
     @Nullable public static User getUser(String login) {

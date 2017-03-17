@@ -221,7 +221,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     protected void hideShowShadow(boolean show) {
         if (shadowView != null) {
-            shadowView.post(() -> shadowView.setElevation(show ? getResources().getDimension(R.dimen.spacing_micro) : 0));
+            shadowView.setElevation(show ? getResources().getDimension(R.dimen.spacing_micro) : 0.0f);
         }
     }
 

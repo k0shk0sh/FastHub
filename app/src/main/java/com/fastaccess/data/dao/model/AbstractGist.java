@@ -73,7 +73,8 @@ import rx.Observable;
                 .get()
                 .toSingle()
                 .toCompletable()
-                .andThen(singleEntityStore.insert(gists))
+                .andThen(Observable.from(gists)
+                        .map(gist -> gist.save(gist)))
                 .toCompletable();
     }
 

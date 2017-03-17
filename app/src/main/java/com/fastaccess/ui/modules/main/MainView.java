@@ -22,6 +22,7 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -90,12 +91,13 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @Override protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
+        Logger.e(navType);
+        hideShowShadow(navType != MainMvp.PROFILE);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
         onHideShowFab();
         enableAds.setChecked(PrefGetter.isAdsEnabled());
         AppHelper.cancelNotification(this);
-        hideShowShadow(navType != MainMvp.PROFILE);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -204,16 +206,16 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     private void onInit(@Nullable Bundle savedInstanceState) {
         if (isLoggedIn()) {
-            navigationView.setNavigationItemSelectedListener(getPresenter());
-            Typeface myTypeface = TypeFaceHelper.getTypeface();
-            bottomNavigation.setDefaultTypeface(myTypeface);
-            bottomNavigation.setOnMenuItemClickListener(getPresenter());
             if (savedInstanceState == null) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.container, FeedsView.newInstance(), FeedsView.TAG)
                         .commit();
             }
+            navigationView.setNavigationItemSelectedListener(getPresenter());
+            Typeface myTypeface = TypeFaceHelper.getTypeface();
+            bottomNavigation.setDefaultTypeface(myTypeface);
+            bottomNavigation.setOnMenuItemClickListener(getPresenter());
             Login userModel = Login.getUser();
             if (userModel != null) {
                 View view = navigationView.getHeaderView(0);
