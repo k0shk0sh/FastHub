@@ -28,6 +28,7 @@ import rx.Completable;
 import rx.Observable;
 
 import static com.fastaccess.data.dao.model.IssueEvent.CREATED_AT;
+import static com.fastaccess.data.dao.model.IssueEvent.ID;
 import static com.fastaccess.data.dao.model.IssueEvent.ISSUE_ID;
 import static com.fastaccess.data.dao.model.IssueEvent.LOGIN;
 import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
@@ -56,7 +57,15 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     String login;
 
     public Completable save(IssueEvent entity) {
-        return App.getInstance().getDataStore().upsert(entity).toCompletable();
+        return App.getInstance().getDataStore()
+                .delete(IssueEvent.class)
+                .where(ID.eq(entity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(entity)
+                        .toCompletable());
     }
 
     public static Completable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
@@ -133,4 +142,10 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         this.repoId = in.readString();
         this.login = in.readString();
     }
+
+    public static final Creator<IssueEvent> CREATOR = new Creator<IssueEvent>() {
+        @Override public IssueEvent createFromParcel(Parcel source) {return new IssueEvent(source);}
+
+        @Override public IssueEvent[] newArray(int size) {return new IssueEvent[size];}
+    };
 }

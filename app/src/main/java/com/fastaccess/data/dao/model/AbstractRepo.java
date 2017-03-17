@@ -114,8 +114,13 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     String starredUser;
     String reposOwner;
 
-    public Completable save(Repo entity) {
-        return App.getInstance().getDataStore().upsert(entity).toCompletable();
+    public Completable save(@NonNull Repo entity) {
+        return App.getInstance().getDataStore().delete(Repo.class)
+                .where(ID.eq(entity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore().insert(entity).toCompletable());
     }
 
     public static Observable<Repo> getRepo(@NonNull String name) {
@@ -346,4 +351,10 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         this.starredUser = in.readString();
         this.reposOwner = in.readString();
     }
+
+    public static final Creator<Repo> CREATOR = new Creator<Repo>() {
+        @Override public Repo createFromParcel(Parcel source) {return new Repo(source);}
+
+        @Override public Repo[] newArray(int size) {return new Repo[size];}
+    };
 }

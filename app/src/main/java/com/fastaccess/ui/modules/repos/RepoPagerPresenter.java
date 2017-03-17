@@ -34,18 +34,18 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     private Repo repo;
     private int navTyp;
 
-    RepoPagerPresenter(final String repoId, final String login, int navTyp) {
+    RepoPagerPresenter(final String repoId, final String login, @RepoPagerMvp.RepoNavigationType int navTyp) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId())) {
             throw new IllegalArgumentException("arguments cannot be empty");
         }
         this.repoId = repoId;
         this.login = login;
         this.navTyp = navTyp;
-        callApi(navTyp);
     }
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
+        Logger.e(navTyp);
         makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
                 repoModel -> {
                     this.repo = repoModel;
@@ -192,6 +192,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             return;
         }
         if (currentVisible == null) return;
+        Logger.e(currentVisible);
         switch (type) {
             case RepoPagerMvp.CODE:
                 if (codePagerView == null) {
@@ -223,6 +224,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     }
 
     @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow, @NonNull Fragment toHide) {
+        Logger.e(toShow, toHide);
         fragmentManager
                 .beginTransaction()
                 .hide(toHide)

@@ -59,7 +59,7 @@ public abstract class AbstractCommit implements Parcelable {
     public Completable save(Commit modelEntity) {
         return App.getInstance()
                 .getDataStore()
-                .upsert(modelEntity)
+                .insert(modelEntity)
                 .toCompletable();
     }
 
@@ -175,4 +175,10 @@ public abstract class AbstractCommit implements Parcelable {
         this.repo = in.readParcelable(Repo.class.getClassLoader());
         this.user = in.readParcelable(User.class.getClassLoader());
     }
+
+    public static final Creator<Commit> CREATOR = new Creator<Commit>() {
+        @Override public Commit createFromParcel(Parcel source) {return new Commit(source);}
+
+        @Override public Commit[] newArray(int size) {return new Commit[size];}
+    };
 }

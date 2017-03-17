@@ -33,6 +33,7 @@ public enum EventsType {
     ProjectCardEvent(R.string.card_event),
     ProjectColumnEvent(R.string.project_event),
     ProjectEvent(R.string.project_event);
+
     @StringRes int type;
 
     EventsType(@StringRes int type) {

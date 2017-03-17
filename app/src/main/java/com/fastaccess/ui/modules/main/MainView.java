@@ -45,7 +45,7 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
 public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
-    @MainMvp.NavigationType @State int navType = MainMvp.FEEDS;
+    @State @MainMvp.NavigationType int navType = MainMvp.FEEDS;
 
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
@@ -93,9 +93,9 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
         onHideShowFab();
-        hideShowShadow(navType != MainMvp.PROFILE);
         enableAds.setChecked(PrefGetter.isAdsEnabled());
         AppHelper.cancelNotification(this);
+        hideShowShadow(navType != MainMvp.PROFILE);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -152,9 +152,9 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
+        this.navType = navType;
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
-        this.navType = navType;
         hideShowShadow(navType != MainMvp.PROFILE);
         onHideShowFab();
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);

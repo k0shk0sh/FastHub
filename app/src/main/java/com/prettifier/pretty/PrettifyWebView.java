@@ -81,10 +81,8 @@ public class PrettifyWebView extends NestedWebView {
             WebView.HitTestResult result = getHitTestResult();
             if (hitLinkResult(result) && !InputHelper.isEmpty(result.getExtra())) {
                 AppHelper.copyToClipboard(getContext(), result.getExtra());
-            } else {
                 return true;
             }
-
             return false;
         });
     }

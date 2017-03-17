@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
 
+import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
@@ -21,13 +22,19 @@ import rx.Observable;
     @Key @Generated long id;
     boolean markdown;
     String content;
-    String fullUrl;
+    @Column(unique = true) String fullUrl;
     boolean repo;
 
     public Completable save(ViewerFile modelEntity) {
         return App.getInstance().getDataStore()
-                .upsert(modelEntity)
-                .toCompletable();
+                .delete(ViewerFile.class)
+                .where(ViewerFile.FULL_URL.eq(modelEntity.getFullUrl()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(modelEntity)
+                        .toCompletable());
     }
 
     public static Observable<ViewerFile> get(@NonNull String url) {
@@ -56,4 +63,10 @@ import rx.Observable;
         this.fullUrl = in.readString();
         this.repo = in.readByte() != 0;
     }
+
+    public static final Creator<ViewerFile> CREATOR = new Creator<ViewerFile>() {
+        @Override public ViewerFile createFromParcel(Parcel source) {return new ViewerFile(source);}
+
+        @Override public ViewerFile[] newArray(int size) {return new ViewerFile[size];}
+    };
 }

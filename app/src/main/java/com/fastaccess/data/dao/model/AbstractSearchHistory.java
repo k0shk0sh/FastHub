@@ -23,7 +23,7 @@ public abstract class AbstractSearchHistory implements Parcelable {
 
     public Completable save(SearchHistory entity) {
         return App.getInstance().getDataStore()
-                .upsert(entity)
+                .insert(entity)
                 .toCompletable();
     }
 
@@ -66,4 +66,9 @@ public abstract class AbstractSearchHistory implements Parcelable {
 
     protected AbstractSearchHistory(Parcel in) {this.text = in.readString();}
 
+    public static final Creator<SearchHistory> CREATOR = new Creator<SearchHistory>() {
+        @Override public SearchHistory createFromParcel(Parcel source) {return new SearchHistory(source);}
+
+        @Override public SearchHistory[] newArray(int size) {return new SearchHistory[size];}
+    };
 }

@@ -37,7 +37,15 @@ import rx.Observable;
     Date lastReadAt;
 
     public Completable save(Notification notification) {
-        return App.getInstance().getDataStore().upsert(notification).toCompletable();
+        return App.getInstance().getDataStore()
+                .delete(Notification.class)
+                .where(Notification.ID.eq(notification.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(notification)
+                        .toCompletable());
     }
 
     public static Completable save(@NonNull List<Notification> models) {
@@ -46,7 +54,8 @@ import rx.Observable;
                 .get()
                 .toSingle()
                 .toCompletable()
-                .andThen(dataSource.insert(models))
+                .andThen(Observable.from(models)
+                        .map(notification -> notification.save(notification)))
                 .toCompletable();
     }
 
@@ -98,4 +107,10 @@ import rx.Observable;
         long tmpLastReadAt = in.readLong();
         this.lastReadAt = tmpLastReadAt == -1 ? null : new Date(tmpLastReadAt);
     }
+
+    public static final Creator<Notification> CREATOR = new Creator<Notification>() {
+        @Override public Notification createFromParcel(Parcel source) {return new Notification(source);}
+
+        @Override public Notification[] newArray(int size) {return new Notification[size];}
+    };
 }

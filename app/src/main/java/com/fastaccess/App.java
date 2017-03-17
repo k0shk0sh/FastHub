@@ -45,7 +45,7 @@ public class App extends MultiDexApplication {
     public SingleEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 1);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 2);
             Configuration configuration = new ConfigurationBuilder(source, model)
                     .useDefaultLogging()
                     .build();

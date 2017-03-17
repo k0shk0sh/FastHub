@@ -79,4 +79,10 @@ import rx.Observable;
         this.payload = in.readParcelable(PayloadModel.class.getClassLoader());
         this.publicEvent = in.readByte() != 0;
     }
+
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override public Event createFromParcel(Parcel source) {return new Event(source);}
+
+        @Override public Event[] newArray(int size) {return new Event[size];}
+    };
 }

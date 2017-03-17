@@ -44,7 +44,7 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
 
     public Completable save(RepoFile entity) {
         return App.getInstance().getDataStore()
-                .upsert(entity)
+                .insert(entity)
                 .toCompletable();
     }
 
@@ -119,4 +119,10 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
         this.repoId = in.readString();
         this.login = in.readString();
     }
+
+    public static final Creator<RepoFile> CREATOR = new Creator<RepoFile>() {
+        @Override public RepoFile createFromParcel(Parcel source) {return new RepoFile(source);}
+
+        @Override public RepoFile[] newArray(int size) {return new RepoFile[size];}
+    };
 }

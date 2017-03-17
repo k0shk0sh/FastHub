@@ -22,6 +22,7 @@ import rx.Observable;
 
 import static com.fastaccess.data.dao.model.Comment.COMMIT_ID;
 import static com.fastaccess.data.dao.model.Comment.GIST_ID;
+import static com.fastaccess.data.dao.model.Comment.ID;
 import static com.fastaccess.data.dao.model.Comment.ISSUE_ID;
 import static com.fastaccess.data.dao.model.Comment.LOGIN;
 import static com.fastaccess.data.dao.model.Comment.PULL_REQUEST_ID;
@@ -51,7 +52,13 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     String pullRequestId;
 
     public Completable save(Comment modelEntity) {
-        return App.getInstance().getDataStore().upsert(modelEntity).toCompletable();
+        return App.getInstance().getDataStore()
+                .delete(Comment.class)
+                .where(ID.eq(modelEntity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore().insert(modelEntity).toCompletable());
     }
 
     public static Completable saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {
@@ -235,4 +242,10 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
         this.issueId = in.readString();
         this.pullRequestId = in.readString();
     }
+
+    public static final Creator<AbstractComment> CREATOR = new Creator<AbstractComment>() {
+        @Override public AbstractComment createFromParcel(Parcel source) {return new Comment(source);}
+
+        @Override public AbstractComment[] newArray(int size) {return new Comment[size];}
+    };
 }

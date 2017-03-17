@@ -53,11 +53,16 @@ public abstract class AbstractRelease implements Parcelable {
     @Convert(UserConverter.class) User author;
     @Convert(ReleasesAssetsConverter.class) ReleasesAssetsListModel assets;
 
-
     public Completable save(Release entity) {
         return App.getInstance().getDataStore()
-                .upsert(entity)
-                .toCompletable();
+                .delete(Release.class)
+                .where(ID.eq(entity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(entity)
+                        .toCompletable());
     }
 
     public static Completable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
@@ -104,7 +109,6 @@ public abstract class AbstractRelease implements Parcelable {
                 .toObservable()
                 .toList();
     }
-
 
     @Override public int describeContents() { return 0; }
 
@@ -154,4 +158,10 @@ public abstract class AbstractRelease implements Parcelable {
         this.assets = new ReleasesAssetsListModel();
         in.readList(this.assets, this.assets.getClass().getClassLoader());
     }
+
+    public static final Creator<Release> CREATOR = new Creator<Release>() {
+        @Override public Release createFromParcel(Parcel source) {return new Release(source);}
+
+        @Override public Release[] newArray(int size) {return new Release[size];}
+    };
 }

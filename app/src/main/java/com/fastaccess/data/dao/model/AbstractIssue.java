@@ -66,7 +66,15 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     @Convert(UserConverter.class) User closedBy;
 
     public Completable save(Issue entity) {
-        return App.getInstance().getDataStore().upsert(entity).toCompletable();
+        return App.getInstance().getDataStore()
+                .delete(Issue.class)
+                .where(ID.eq(entity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(entity)
+                        .toCompletable());
     }
 
     public static Completable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
@@ -175,5 +183,11 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
         this.closedBy = in.readParcelable(User.class.getClassLoader());
     }
+
+    public static final Creator<Issue> CREATOR = new Creator<Issue>() {
+        @Override public Issue createFromParcel(Parcel source) {return new Issue(source);}
+
+        @Override public Issue[] newArray(int size) {return new Issue[size];}
+    };
 
 }

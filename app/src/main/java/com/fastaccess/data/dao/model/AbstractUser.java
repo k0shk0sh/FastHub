@@ -70,14 +70,14 @@ public abstract class AbstractUser implements Parcelable {
 
     public void save(User entity) {
         App.getInstance().getDataStore()
-                .upsert(entity)
+                .insert(entity)
                 .toBlocking()
                 .value();
     }
 
     public Completable saveToCompletable(User entity) {
         return App.getInstance().getDataStore()
-                .upsert(entity)
+                .insert(entity)
                 .toCompletable();
     }
 
@@ -250,4 +250,10 @@ public abstract class AbstractUser implements Parcelable {
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
         this.repoId = in.readString();
     }
+
+    public static final Creator<AbstractUser> CREATOR = new Creator<AbstractUser>() {
+        @Override public AbstractUser createFromParcel(Parcel source) {return new User(source);}
+
+        @Override public AbstractUser[] newArray(int size) {return new User[size];}
+    };
 }

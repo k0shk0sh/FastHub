@@ -64,6 +64,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.fab) FloatingActionButton fab;
     @State @RepoPagerMvp.RepoNavigationType int navType;
+    @State String login;
+    @State String repoId;
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
     private boolean userInteracted;
 
@@ -163,10 +165,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             throw new IllegalArgumentException("no intent extras provided");
         }
         final Bundle extras = getIntent().getExtras();
-        final String repoId = extras.getString(BundleConstant.ID);
-        final String login = extras.getString(BundleConstant.EXTRA_TWO);
-        final int navTyp = extras.getInt(BundleConstant.EXTRA_TYPE);
-        return new RepoPagerPresenter(repoId, login, navTyp);
+        repoId = extras.getString(BundleConstant.ID);
+        login = extras.getString(BundleConstant.EXTRA_TWO);
+        navType = extras.getInt(BundleConstant.EXTRA_TYPE);
+        return new RepoPagerPresenter(repoId, login, navType);
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

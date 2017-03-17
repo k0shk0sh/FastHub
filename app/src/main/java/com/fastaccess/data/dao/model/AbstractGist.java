@@ -57,8 +57,14 @@ import rx.Observable;
 
     public Completable save(Gist modelEntity) {
         return App.getInstance().getDataStore()
-                .upsert(modelEntity)
-                .toCompletable();
+                .delete(Gist.class)
+                .where(Gist.ID.eq(modelEntity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(modelEntity)
+                        .toCompletable());
     }
 
     public static Completable save(@NonNull List<Gist> gists) {
@@ -212,4 +218,10 @@ import rx.Observable;
         this.user = in.readParcelable(User.class.getClassLoader());
         this.owner = in.readParcelable(User.class.getClassLoader());
     }
+
+    public static final Creator<Gist> CREATOR = new Creator<Gist>() {
+        @Override public Gist createFromParcel(Parcel source) {return new Gist(source);}
+
+        @Override public Gist[] newArray(int size) {return new Gist[size];}
+    };
 }

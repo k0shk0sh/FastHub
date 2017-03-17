@@ -52,7 +52,7 @@ import lombok.NoArgsConstructor;
 
     public void save(Login entity) {
         App.getInstance().getDataStore()
-                .upsert(entity)
+                .insert(entity)
                 .toBlocking()
                 .value();
     }
@@ -139,4 +139,10 @@ import lombok.NoArgsConstructor;
         this.token = in.readString();
         this.contributions = in.readInt();
     }
+
+    public static final Creator<Login> CREATOR = new Creator<Login>() {
+        @Override public Login createFromParcel(Parcel source) {return new Login(source);}
+
+        @Override public Login[] newArray(int size) {return new Login[size];}
+    };
 }

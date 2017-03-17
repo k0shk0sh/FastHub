@@ -85,7 +85,15 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
 
     public Completable save(PullRequest entity) {
-        return App.getInstance().getDataStore().upsert(entity).toCompletable();
+        return App.getInstance().getDataStore()
+                .delete(PullRequest.class)
+                .where(ID.eq(entity.getId()))
+                .get()
+                .toSingle()
+                .toCompletable()
+                .andThen(App.getInstance().getDataStore()
+                        .insert(entity)
+                        .toCompletable());
     }
 
     public static Completable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
@@ -247,4 +255,10 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
         this.head = in.readParcelable(Commit.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
     }
+
+    public static final Creator<PullRequest> CREATOR = new Creator<PullRequest>() {
+        @Override public PullRequest createFromParcel(Parcel source) {return new PullRequest(source);}
+
+        @Override public PullRequest[] newArray(int size) {return new PullRequest[size];}
+    };
 }

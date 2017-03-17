@@ -96,7 +96,6 @@ public class ActivityHelper {
                 .setType("text/*")
                 .setText(url)
                 .startChooser();
-
     }
 
     @SuppressWarnings("RestrictedApi")

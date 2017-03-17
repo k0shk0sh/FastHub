@@ -43,13 +43,20 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         }
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");
-        if (eventsModel.getType() != null)
-            spannableBuilder.bold(eventsModel.getPayload() != null ? eventsModel.getPayload().getAction() : "")
+        if (eventsModel.getType() != null) {
+            String action;
+            if (eventsModel.getType() == EventsType.WatchEvent) {
+                action = itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase();
+            } else {
+                action = eventsModel.getPayload() != null ? eventsModel.getPayload().getAction() : "";
+            }
+            spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
-        if (eventsModel.getType() != EventsType.WatchEvent) {
-            spannableBuilder
-                    .bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
-                    .append(" ");
+            if (eventsModel.getType() != EventsType.WatchEvent) {
+                spannableBuilder
+                        .bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
+                        .append(" ");
+            }
         }
         spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "N/A");
         title.setText(spannableBuilder);
