@@ -3,6 +3,7 @@ package com.fastaccess.provider.rest.handler;
 import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
+import java.net.SocketTimeoutException;
 
 import retrofit2.Call;
 import retrofit2.CallAdapter;
@@ -53,6 +54,9 @@ public class RxErrorHandlingCallAdapterFactory extends CallAdapter.Factory {
         }
 
         private RetrofitException asRetrofitException(Throwable throwable) {
+            if (throwable instanceof SocketTimeoutException) {
+                return RetrofitException.unexpectedError(throwable);
+            }
             if (throwable instanceof HttpException) {
                 HttpException httpException = (HttpException) throwable;
                 Response response = httpException.response();

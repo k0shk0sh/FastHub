@@ -39,7 +39,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
                 }
             }
         }
-        super.onError(throwable);
+        sendToView(view -> view.showErrorMessage(throwable.getMessage()));
     }
 
     @Override public void onTokenResponse(@Nullable AccessTokenModel modelResponse) {

@@ -148,11 +148,13 @@ public class RestProvider {
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {
-        RetrofitException error = (RetrofitException) throwable;
-        try {
-            return error.getErrorBodyAs(GitHubErrorResponse.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (throwable instanceof RetrofitException) {
+            RetrofitException error = (RetrofitException) throwable;
+            try {
+                return error.getErrorBodyAs(GitHubErrorResponse.class);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return null;
     }
