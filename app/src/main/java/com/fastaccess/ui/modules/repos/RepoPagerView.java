@@ -213,7 +213,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
         language.setVisibility(InputHelper.isEmpty(repoModel.getLanguage()) ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(repoModel.getLanguage())) language.setText(repoModel.getLanguage());
-        language.setTextColor(ColorGenerator.MATERIAL.getColor(repoModel.getId()));
+        language.setTextColor(ColorGenerator.MATERIAL.getColor(repoModel.getLanguage()));
         forkRepo.setText(numberFormat.format(repoModel.getForksCount()));
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
         watchRepo.setText(numberFormat.format(repoModel.getSubsCount()));

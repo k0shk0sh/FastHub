@@ -65,16 +65,6 @@
             android:layout_marginTop="@dimen/spacing_micro"
             android:orientation="horizontal">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/language"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingEnd="@dimen/spacing_normal"
-                android:visibility="gone"
-                tools:text="Java"
-                tools:visibility="visible"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/date"
@@ -92,6 +82,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 tools:text="50 minutes ago"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/language"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:visibility="gone"
+                tools:text="Java"
+                tools:visibility="visible"/>
 
 
         </LinearLayout>
