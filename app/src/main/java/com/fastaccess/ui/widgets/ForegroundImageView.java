@@ -22,19 +22,22 @@ public class ForegroundImageView extends AppCompatImageView {
     private Drawable foreground;
     private Toast toast;
 
+
     public ForegroundImageView(Context context) {
         this(context, null);
     }
 
     public ForegroundImageView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
-        setOnLongClickListener(view -> {
-            if (toast != null) toast.cancel();
-            toast = Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT);
-            toast.setGravity(Gravity.CENTER, 0, 0);
-            toast.show();
-            return true;
-        });
+        if (getContentDescription() != null) {
+            setOnLongClickListener(view -> {
+                if (toast != null) toast.cancel();
+                toast = Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+                return true;
+            });
+        }
     }
 
     public ForegroundImageView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -111,6 +114,10 @@ public class ForegroundImageView extends AppCompatImageView {
         if (foreground != null) {
             foreground.draw(canvas);
         }
+    }
+
+    public void tintDrawableColor(@ColorInt int colorRes) {
+        tintDrawableFromColor(colorRes);
     }
 
     public void tintDrawable(@ColorRes int colorRes) {

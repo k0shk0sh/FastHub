@@ -47,12 +47,13 @@
                 android:textColor="@color/primary_text"
                 tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
 
-            <ImageView
+            <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/detailsIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/description"
                 android:src="@drawable/ic_issues"
                 android:visibility="gone"
                 tools:visibility="visible"/>
@@ -60,7 +61,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="318dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
             android:orientation="horizontal">

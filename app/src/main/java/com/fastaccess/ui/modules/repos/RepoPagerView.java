@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.NameParser;
@@ -33,6 +34,7 @@ import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.color.ColorGenerator;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
@@ -66,6 +68,13 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.language) FontTextView language;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    @BindView(R.id.watchRepoImage) ForegroundImageView watchRepoImage;
+    @BindView(R.id.starRepoImage) ForegroundImageView starRepoImage;
+    @BindView(R.id.forkRepoImage) ForegroundImageView forkRepoImage;
+    @BindView(R.id.licenseLayout) LinearLayout licenseLayout;
+    @BindView(R.id.watchRepoLayout) LinearLayout watchRepoLayout;
+    @BindView(R.id.starRepoLayout) LinearLayout starRepoLayout;
+    @BindView(R.id.forkRepoLayout) LinearLayout forkRepoLayout;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -120,21 +129,21 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         }
     }
 
-    @SuppressWarnings("ConstantConditions") @OnClick({R.id.forkRepo, R.id.starRepo, R.id.watchRepo}) void onClick(View view) {
+    @SuppressWarnings("ConstantConditions") @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout}) void onClick(View view) {
         switch (view.getId()) {
-            case R.id.forkRepo:
+            case R.id.forkRepoLayout:
                 MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
                         Bundler.start().put(BundleConstant.EXTRA, true).end())
                         .show(getSupportFragmentManager(), MessageDialogView.TAG);
                 break;
-            case R.id.starRepo:
+            case R.id.starRepoLayout:
                 if (getPresenter().login() != null && getPresenter().repoId() != null) {
                     GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
                             getPresenter().isStarred() ? GithubActionService.UNSTAR_REPO : GithubActionService.STAR_REPO);
                     getPresenter().onStar();
                 }
                 break;
-            case R.id.watchRepo:
+            case R.id.watchRepoLayout:
                 if (getPresenter().login() != null && getPresenter().repoId() != null) {
                     GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
                             getPresenter().isWatched() ? GithubActionService.UNWATCH_REPO : GithubActionService.WATCH_REPO);
@@ -227,8 +236,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         title.setText(repoModel.getFullName());
         TextViewCompat.setTextAppearance(title, R.style.TextAppearance_AppCompat_Medium);
         title.setTextColor(ContextCompat.getColor(this, R.color.primary_text));
-        license.setVisibility(repoModel.getLicense() != null ? View.VISIBLE : View.GONE);
-        if (repoModel.getLicense() != null) license.setText(repoModel.getLicense().getSpdxId());
+        if (!InputHelper.isEmpty(repoModel.getLicense())) {
+            licenseLayout.setVisibility(View.VISIBLE);
+            license.setText(repoModel.getLicense().getSpdxId());
+        }
         supportInvalidateOptionsMenu();
         if (!PrefGetter.isRepoGuideShowed()) {// the mother of nesting. #dontjudgeme.
             new MaterialTapTargetPrompt.Builder(this)
@@ -263,30 +274,31 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override public void onRepoWatched(boolean isWatched) {
-        watchRepo.setTopDrawable(R.drawable.ic_eye, isWatched ? accentColor : blackColor);
+        watchRepoImage.tintDrawableColor(isWatched ? accentColor : blackColor);
         onEnableDisableWatch(true);
     }
 
     @Override public void onRepoStarred(boolean isStarred) {
-        starRepo.setTopDrawable(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star, isStarred ? accentColor : blackColor);
+        starRepoImage.setImageResource(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star);
+        starRepoImage.tintDrawableColor(isStarred ? accentColor : blackColor);
         onEnableDisableStar(true);
     }
 
     @Override public void onRepoForked(boolean isForked) {
-        forkRepo.setTopDrawable(R.drawable.ic_fork, isForked ? accentColor : blackColor);
+        forkRepoImage.tintDrawableColor(isForked ? accentColor : blackColor);
         onEnableDisableFork(true);
     }
 
     @Override public void onEnableDisableWatch(boolean isEnabled) {
-        watchRepo.setEnabled(isEnabled);
+        watchRepoLayout.setEnabled(isEnabled);
     }
 
     @Override public void onEnableDisableStar(boolean isEnabled) {
-        starRepo.setEnabled(isEnabled);
+        starRepoLayout.setEnabled(isEnabled);
     }
 
     @Override public void onEnableDisableFork(boolean isEnabled) {
-        forkRepo.setEnabled(isEnabled);
+        forkRepoLayout.setEnabled(isEnabled);
     }
 
     @Override public void onChangeWatchedCount(boolean isWatched) {

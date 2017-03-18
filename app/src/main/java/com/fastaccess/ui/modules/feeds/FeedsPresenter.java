@@ -7,11 +7,11 @@ import android.view.View;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.model.Login;
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Repo;
-import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -107,14 +107,14 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             RepoPagerView.startRepoPager(v.getContext(), parser);
         } else {
             if (item.getPayload() != null && item.getPayload().getIssue() != null) {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()));
+                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()), true);
             } else if (item.getPayload() != null && item.getPayload().getPullRequest() != null) {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()));
+                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()), true);
             } else {
                 Repo repoModel = item.getRepo();
                 String name = InputHelper.isEmpty(repoModel.getName()) ? repoModel.getFullName() : repoModel.getName();
                 if (name == null) return;
-                if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(name));
+                if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(name), true);
             }
         }
     }
