@@ -14,9 +14,9 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
-import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
@@ -25,6 +25,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
@@ -61,6 +62,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.detailsIcon) View detailsIcon;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
         Intent intent = new Intent(context, IssuePagerView.class);
@@ -73,7 +75,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     }
 
-    @OnClick(R.id.headerTitle) void onTitleClick() {
+    @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getIssue() != null && !InputHelper.isEmpty(getPresenter().getIssue().getTitle()))
             MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
@@ -218,6 +220,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         setTitle(String.format("#%s", issueModel.getNumber()));
         User userModel = issueModel.getUser();
         title.setText(issueModel.getTitle());
+        detailsIcon.setVisibility(InputHelper.isEmpty(issueModel.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
         if (userModel != null) {
             size.setVisibility(View.GONE);
             String username;

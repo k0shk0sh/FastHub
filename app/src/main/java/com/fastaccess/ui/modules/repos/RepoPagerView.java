@@ -33,6 +33,7 @@ import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.color.ColorGenerator;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.text.NumberFormat;
@@ -63,6 +64,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindColor(R.color.primary_text) int blackColor;
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.language) FontTextView language;
+    @BindView(R.id.detailsIcon) View detailsIcon;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -109,7 +112,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         }
     }
 
-    @OnClick(R.id.headerTitle) void onTitleClick() {
+    @OnClick(R.id.detailsIcon) void onTitleClick() {
         Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
             MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription())
@@ -207,6 +210,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
         hideProgress();
+        detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
+        language.setVisibility(View.VISIBLE);
+        language.setText(InputHelper.toNA(repoModel.getLanguage()));
+        language.setTextColor(ColorGenerator.MATERIAL.getColor(repoModel.getId()));
         forkRepo.setText(numberFormat.format(repoModel.getForksCount()));
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
         watchRepo.setText(numberFormat.format(repoModel.getSubsCount()));
@@ -215,8 +222,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         } else if (repoModel.getOrganization() != null) {
             avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin());
         }
-        date.setText(ParseDateFormat.getTimeAgo(repoModel.getCreatedAt()));
-        size.setText(ParseDateFormat.getTimeAgo(repoModel.getUpdatedAt()));
+        date.setText(ParseDateFormat.getTimeAgo(repoModel.getUpdatedAt()));
+        size.setVisibility(View.GONE);
         title.setText(repoModel.getFullName());
         TextViewCompat.setTextAppearance(title, R.style.TextAppearance_AppCompat_Medium);
         title.setTextColor(ContextCompat.getColor(this, R.color.primary_text));

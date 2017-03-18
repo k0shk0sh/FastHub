@@ -21,6 +21,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -50,6 +51,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.startGist) ForegroundImageView startGist;
     @BindView(R.id.forkGist) ForegroundImageView forkGist;
+    @BindView(R.id.detailsIcon) View detailsIcon;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String gistId) {
         Intent intent = new Intent(context, GistView.class);
@@ -66,7 +68,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
-    @OnClick(R.id.headerTitle) void onTitleClick() {
+    @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getGist() != null && !InputHelper.isEmpty(getPresenter().getGist().getDescription()))
             MessageDialogView.newInstance(getString(R.string.details), getPresenter().getGist().getDescription())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
@@ -194,6 +196,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
                        gistsModel.getUser() != null ? gistsModel.getUser().getLogin() : "";
         avatarLayout.setUrl(url, login);
         title.setText(gistsModel.getDisplayTitle(false));
+        detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
         date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()));
         size.setText(Formatter.formatFileSize(this, gistsModel.getSize()));
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForGist(this, gistsModel)));

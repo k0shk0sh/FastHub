@@ -11,9 +11,10 @@
     android:minHeight="?actionBarSize"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_xs_large"
-    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/avatar_margin"
     android:paddingTop="@dimen/spacing_xs_large"
     app:layout_scrollFlags="scroll|enterAlways"
+    tools:ignore="RtlSymmetry"
     tools:showIn="@layout/repo_pager_activity">
 
     <com.fastaccess.ui.widgets.AvatarLayout
@@ -29,21 +30,51 @@
         android:layout_gravity="top"
         android:orientation="vertical">
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/headerTitle"
-            style="@style/TextAppearance.AppCompat.Subhead"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="4"
-            android:textColor="@color/primary_text"
-            tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingTop="@dimen/spacing_micro">
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/headerTitle"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="@color/primary_text"
+                tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
+
+            <ImageView
+                android:id="@+id/detailsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="?selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_issues"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="318dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/language"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:visibility="gone"
+                tools:text="Java"
+                tools:visibility="visible"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/date"
@@ -51,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start|center"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:paddingEnd="@dimen/spacing_normal"
                 tools:text="50 minutes ago"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -60,8 +91,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/spacing_normal"
                 tools:text="50 minutes ago"/>
+
 
         </LinearLayout>
     </LinearLayout>

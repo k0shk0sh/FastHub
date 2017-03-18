@@ -19,11 +19,13 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.text.Layout;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
+import com.annimon.stream.IntStream;
 import com.fastaccess.R;
 
 import java.util.Arrays;
@@ -142,4 +144,14 @@ public class ViewHelper {
         return lum > 186 ? 0xFF000000 : 0xFFFFFFFF;
     }
 
+    public static boolean isEllipsed(@NonNull TextView textView) {
+        Layout layout = textView.getLayout();
+        if (layout != null) {
+            int lines = layout.getLineCount();
+            if (lines > 0) {
+                return IntStream.range(0, lines).anyMatch(line -> layout.getEllipsisCount(line) > 0);
+            }
+        }
+        return false;
+    }
 }

@@ -24,6 +24,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
@@ -61,6 +62,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @BindView(R.id.detailsIcon) View detailsIcon;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
         Intent intent = new Intent(context, PullRequestPagerView.class);
@@ -73,7 +75,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
 
     }
 
-    @OnClick(R.id.headerTitle) void onTitleClick() {
+    @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getPullRequest() != null && !InputHelper.isEmpty(getPresenter().getPullRequest().getTitle()))
             MessageDialogView.newInstance(getString(R.string.details), getPresenter().getPullRequest().getTitle())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
@@ -223,7 +225,6 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         PullRequest pullRequest = getPresenter().getPullRequest();
         setTitle(String.format("#%s", pullRequest.getNumber()));
         boolean isMerge = !InputHelper.isEmpty(pullRequest.getMergedAt());
-        int status = !isMerge ? pullRequest.getState().getStatus() : R.string.merged;
         date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()));
         size.setVisibility(View.GONE);
         User userModel = pullRequest.getUser();
@@ -233,6 +234,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         } else {
             title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
         }
+        detailsIcon.setVisibility(InputHelper.isEmpty(pullRequest.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForPullRequest(this, pullRequest)));
         tabs.setupWithViewPager(pager);
         if (!getPresenter().isLocked() || getPresenter().isOwner()) {

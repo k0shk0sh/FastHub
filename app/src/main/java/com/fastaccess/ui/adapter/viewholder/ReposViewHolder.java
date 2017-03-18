@@ -12,6 +12,7 @@ import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.RoundBackgroundSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
+import com.fastaccess.ui.widgets.color.ColorGenerator;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -31,6 +32,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
     @BindView(R.id.date) FontTextView date;
     @BindView(R.id.stars) FontTextView stars;
     @BindView(R.id.forks) FontTextView forks;
+    @BindView(R.id.language) FontTextView language;
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindString(R.string.forked) String forked;
     @BindString(R.string.private_repo) String privateRepo;
@@ -80,5 +82,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
         stars.setText(numberFormat.format(repo.getStargazersCount()));
         forks.setText(numberFormat.format(repo.getForks()));
         date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
+        language.setText(repo.getLanguage() != null && !repo.getLanguage().trim().isEmpty() ? repo.getLanguage() : "N/A");
+        language.setTextColor(ColorGenerator.MATERIAL.getColor(repo.getId()));
     }
 }

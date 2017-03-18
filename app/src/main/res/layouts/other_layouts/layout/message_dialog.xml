@@ -26,7 +26,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:minHeight="150dp"
             android:paddingEnd="@dimen/spacing_xs_large"
             android:paddingStart="@dimen/spacing_xs_large">
 
@@ -34,7 +33,9 @@
                 android:id="@+id/prettifyWebView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"/>
+                android:minHeight="200dp"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/message"

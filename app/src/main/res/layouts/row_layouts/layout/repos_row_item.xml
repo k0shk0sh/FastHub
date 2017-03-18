@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
@@ -25,8 +24,8 @@
             android:layout_height="48dp"
             android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"
-            tools:visibility="visible"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -50,6 +49,19 @@
                 android:layout_marginTop="@dimen/spacing_micro"
                 app:auto_gravity="start"
                 app:auto_orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/language"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:gravity="start|center"
+                    android:textColor="@color/secondary_text"
+                    app:drawableColor="@color/secondary_text"
+                    tools:text="Java"/>
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/stars"
@@ -85,7 +97,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/spacing_normal"
                     android:drawablePadding="@dimen/spacing_normal"
                     android:drawableStart="@drawable/ic_time_small"
                     android:gravity="start|center"

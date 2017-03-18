@@ -14,13 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -52,6 +53,7 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
     @BindView(R.id.addition) FontTextView addition;
     @BindView(R.id.deletion) FontTextView deletion;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.detailsIcon) View detailsIcon;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, @NonNull String sha) {
         Intent intent = new Intent(context, CommitPagerView.class);
@@ -68,7 +70,7 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
         SchemeParser.launchUri(context, Uri.parse(commitModel.getHtmlUrl()));
     }
 
-    @OnClick(R.id.headerTitle) void onTitleClick() {
+    @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
             MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
@@ -135,6 +137,8 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
         title.setText(commit.getGitCommit().getMessage());
+        boolean showIcon = commit.getGitCommit() != null && (!InputHelper.isEmpty(commit.getGitCommit().getMessage()));
+        detailsIcon.setVisibility(!showIcon ? View.GONE : ViewHelper.isEllipsed(title) ? View.VISIBLE : View.GONE);
         size.setVisibility(View.GONE);
         date.setText(ParseDateFormat.getTimeAgo(dateValue));
         avatarLayout.setUrl(avatar, login);
