@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_micro"
                 android:drawableStart="@drawable/ic_star_small"
                 android:gravity="start|center"
                 android:textColor="@color/secondary_text"
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_micro"
                 android:drawableStart="@drawable/ic_fork_small"
                 android:gravity="start|center"
                 android:textColor="@color/secondary_text"
@@ -72,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:drawablePadding="@dimen/spacing_micro"
                 android:drawableStart="@drawable/ic_time_small"
                 android:gravity="start|center"
                 android:textColor="@color/secondary_text"
@@ -89,7 +90,6 @@
                 android:gravity="start|center"
                 android:textColor="@color/secondary_text"
                 android:visibility="gone"
-                app:drawableColor="@color/secondary_text"
                 tools:text="TypeScript"
                 tools:visibility="visible"/>
 

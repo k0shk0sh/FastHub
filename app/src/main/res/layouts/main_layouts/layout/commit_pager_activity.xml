@@ -40,7 +40,7 @@
                     android:layout_gravity="center|end"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawablePadding="@dimen/spacing_micro"
                     android:drawableTop="@drawable/ic_file_multi"
                     android:gravity="center"
                     tools:text="100"/>
@@ -53,7 +53,7 @@
                     android:layout_gravity="center|end"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawablePadding="@dimen/spacing_micro"
                     android:drawableTop="@drawable/ic_add"
                     android:gravity="center"
                     android:scaleType="centerCrop"
@@ -67,7 +67,7 @@
                     android:layout_gravity="center|end"
                     android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawablePadding="@dimen/spacing_micro"
                     android:drawableTop="@drawable/ic_clear"
                     android:gravity="center"
                     tools:text="100"/>
