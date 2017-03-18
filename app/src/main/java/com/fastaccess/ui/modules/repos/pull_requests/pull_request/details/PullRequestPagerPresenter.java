@@ -45,6 +45,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     private String login;
     private String repoId;
     private boolean isCollaborator;
+    private boolean showToRepoBtn;
 
     @Nullable @Override public PullRequest getPullRequest() {
         return pullRequest;
@@ -60,6 +61,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             issueNumber = intent.getExtras().getInt(BundleConstant.ID);
             login = intent.getExtras().getString(BundleConstant.EXTRA);
             repoId = intent.getExtras().getString(BundleConstant.EXTRA_TWO);
+            showToRepoBtn = intent.getExtras().getBoolean(BundleConstant.EXTRA_THREE);
             if (pullRequest != null) {
                 sendToView(PullRequestPagerMvp.View::onSetupIssue);
                 return;
@@ -117,6 +119,10 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public boolean isMergeable() {
         return getPullRequest() != null && getPullRequest().isMergeable() && !getPullRequest().isMerged();
+    }
+
+    @Override public boolean showToRepoBtn() {
+        return showToRepoBtn;
     }
 
     @Override public void onHandleConfirmDialog(@Nullable Bundle bundle) {

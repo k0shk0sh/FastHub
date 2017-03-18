@@ -153,19 +153,19 @@ public class PrettifyWebView extends NestedWebView {
         }
     }
 
-    private void startActivity(Uri url) {
+    private void startActivity(@Nullable Uri url) {
         if (url == null) return;
         Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerView.startActivity(getContext(), url.toString());
         } else {
-            String lastSegment = url.getEncodedFragment();
-            Logger.e(lastSegment);
-            if (lastSegment != null) {
-                loadUrl("javascript:scrollTo(\"" + lastSegment + "\")");
+            String anchorLink = url.getEncodedFragment();
+            Logger.e(anchorLink);
+            if (anchorLink != null) {
+                loadUrl("javascript:scrollTo(\"" + anchorLink + "\")");
                 return;
             }
-            SchemeParser.launchUri(getContext(), url);
+            SchemeParser.launchUri(getContext(), url, true);
         }
     }
 

@@ -10,15 +10,15 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.AssigneesRequestModel;
-import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
-import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.UsersListModel;
+import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.helper.BundleConstant;
@@ -43,6 +43,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     private String login;
     private String repoId;
     private boolean isCollaborator;
+    private boolean showToRepoBtn;
 
     @Nullable @Override public Issue getIssue() {
         return issueModel;
@@ -59,6 +60,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             issueNumber = intent.getExtras().getInt(BundleConstant.ID);
             login = intent.getExtras().getString(BundleConstant.EXTRA);
             repoId = intent.getExtras().getString(BundleConstant.EXTRA_TWO);
+            showToRepoBtn = intent.getExtras().getBoolean(BundleConstant.EXTRA_THREE);
             if (issueModel != null) {
                 issueNumber = issueModel.getNumber();
                 sendToView(IssuePagerMvp.View::onSetupIssue);
@@ -118,6 +120,10 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public boolean isCollaborator() {
         return isCollaborator;
+    }
+
+    @Override public boolean showToRepoBtn() {
+        return showToRepoBtn;
     }
 
     @Override public void onHandleConfirmDialog(@Nullable Bundle bundle) {

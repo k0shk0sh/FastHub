@@ -25,8 +25,6 @@ import com.fastaccess.ui.modules.user.UserPagerView;
 
 import java.util.List;
 
-import static android.content.Intent.ACTION_VIEW;
-
 /**
  * Created by Kosh on 09 Dec 2016, 4:44 PM
  */
@@ -38,14 +36,12 @@ public class SchemeParser {
     private static final String API_AUTHORITY = "api.github.com";
     private static final String PROTOCOL_HTTPS = "https";
 
-    public static void launchUri(@NonNull Context context, @NonNull Intent data) {
-        if (data.getData() != null) {
-            launchUri(context, data.getData());
-        }
+    public static void launchUri(@NonNull Context context, @NonNull Uri data) {
+        launchUri(context, data, false);
     }
 
-    public static void launchUri(@NonNull Context context, @NonNull Uri data) {
-        Intent intent = convert(context, data);
+    public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
+        Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
             context.startActivity(intent);
         } else {
@@ -58,14 +54,7 @@ public class SchemeParser {
         }
     }
 
-    @Nullable private static Intent convert(@NonNull Context context, final Intent intent) {
-        if (intent == null) return null;
-        if (!ACTION_VIEW.equals(intent.getAction())) return null;
-        Uri data = intent.getData();
-        return convert(context, data);
-    }
-
-    @Nullable private static Intent convert(@NonNull Context context, Uri data) {
+    @Nullable private static Intent convert(@NonNull Context context, Uri data, boolean showRepoBtn) {
         if (data == null) return null;
         if (InputHelper.isEmpty(data.getHost()) || InputHelper.isEmpty(data.getScheme())) {
             String host = data.getHost();
@@ -85,10 +74,10 @@ public class SchemeParser {
             }
         }
 
-        return getIntentForURI(context, data);
+        return getIntentForURI(context, data, showRepoBtn);
     }
 
-    @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data) {
+    @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
         if (HOST_GISTS.equals(data.getHost())) {
             String gist = getGistId(data);
             if (gist != null) {
@@ -99,12 +88,12 @@ public class SchemeParser {
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY)) {
                 Intent userIntent = getUser(context, data);
-                Intent pullRequestIntent = getPullRequestIntent(context, data);
+                Intent pullRequestIntent = getPullRequestIntent(context, data, showRepoBtn);
                 Intent createIssueIntent = getCreateIssueIntent(context, data);
-                Intent issueIntent = getIssueIntent(context, data);
+                Intent issueIntent = getIssueIntent(context, data, showRepoBtn);
                 Intent repoIntent = getRepo(context, data);
-                Intent commit = getCommit(context, data);
-                Intent commits = getCommits(context, data);
+                Intent commit = getCommit(context, data, showRepoBtn);
+                Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
                 Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
                         createIssueIntent, issueIntent, repoIntent, blob);
@@ -119,7 +108,7 @@ public class SchemeParser {
         return null;
     }
 
-    @Nullable private static Intent getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static Intent getPullRequestIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String owner;
@@ -145,10 +134,10 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return PullRequestPagerView.createIntent(context, repo, owner, issueNumber);
+        return PullRequestPagerView.createIntent(context, repo, owner, issueNumber, showRepoBtn);
     }
 
-    @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String owner;
@@ -174,7 +163,7 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return IssuePagerView.createIntent(context, repo, owner, issueNumber);
+        return IssuePagerView.createIntent(context, repo, owner, issueNumber, showRepoBtn);
     }
 
     @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {
@@ -204,25 +193,25 @@ public class SchemeParser {
         return null;
     }
 
-    @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.isEmpty() || segments.size() < 4) return null;
         if (segments.get(3).equals("commits")) {
             String login = segments.get(1);
             String repoId = segments.get(2);
             String sha = segments.get(4);
-            return CommitPagerView.createIntent(context, repoId, login, sha);
+            return CommitPagerView.createIntent(context, repoId, login, sha, showRepoBtn);
         }
         return null;
     }
 
-    @Nullable private static Intent getCommit(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static Intent getCommit(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4 || !"commit".equals(segments.get(2))) return null;
         String login = segments.get(0);
         String repoId = segments.get(1);
         String sha = segments.get(3);
-        return CommitPagerView.createIntent(context, repoId, login, sha);
+        return CommitPagerView.createIntent(context, repoId, login, sha, showRepoBtn);
     }
 
     @Nullable private static String getGistId(@NonNull Uri uri) {

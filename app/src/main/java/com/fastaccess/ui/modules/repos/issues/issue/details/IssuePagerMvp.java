@@ -5,9 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
@@ -54,6 +54,8 @@ interface IssuePagerMvp {
         boolean isLocked();
 
         boolean isCollaborator();
+
+        boolean showToRepoBtn();
 
         void onHandleConfirmDialog(@Nullable Bundle bundle);
 

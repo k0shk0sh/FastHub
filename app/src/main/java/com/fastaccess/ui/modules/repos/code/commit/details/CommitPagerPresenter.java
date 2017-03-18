@@ -20,6 +20,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
     private String sha;
     private String login;
     private String repoId;
+    private boolean showToRepoBtn;
 
     @Nullable @Override public Commit getCommit() {
         return commitModel;
@@ -35,6 +36,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
             sha = intent.getExtras().getString(BundleConstant.ID);
             login = intent.getExtras().getString(BundleConstant.EXTRA);
             repoId = intent.getExtras().getString(BundleConstant.EXTRA_TWO);
+            showToRepoBtn = intent.getExtras().getBoolean(BundleConstant.EXTRA_THREE);
             if (commitModel != null) {
                 sendToView(CommitPagerMvp.View::onSetup);
                 return;
@@ -67,6 +69,10 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
 
     @Override public String getRepoId() {
         return repoId;
+    }
+
+    @Override public boolean showToRepoBtn() {
+        return showToRepoBtn;
     }
 
 }

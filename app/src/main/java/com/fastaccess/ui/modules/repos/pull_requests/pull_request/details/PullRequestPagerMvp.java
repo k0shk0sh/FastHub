@@ -59,6 +59,8 @@ interface PullRequestPagerMvp {
 
         boolean isMergeable();
 
+        boolean showToRepoBtn();
+
         void onHandleConfirmDialog(@Nullable Bundle bundle);
 
         void onOpenCloseIssue();

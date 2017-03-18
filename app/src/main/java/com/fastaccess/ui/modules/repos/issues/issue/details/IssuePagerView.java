@@ -16,6 +16,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
@@ -28,6 +29,7 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsView;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
@@ -65,11 +67,17 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     @BindView(R.id.detailsIcon) View detailsIcon;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
+        return createIntent(context, repoId, login, number, false);
+
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number, boolean showToRepoBtn) {
         Intent intent = new Intent(context, IssuePagerView.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
+                .put(BundleConstant.EXTRA_THREE, showToRepoBtn)
                 .end());
         return intent;
 
@@ -177,6 +185,13 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         } else if (item.getItemId() == R.id.assignees) {
             getPresenter().onLoadAssignees();
             return true;
+        } else if (item.getItemId() == R.id.toRepo) {
+            NameParser nameParser = new NameParser("");
+            nameParser.setName(getPresenter().getRepoId());
+            nameParser.setUsername(getPresenter().getLogin());
+            RepoPagerView.startRepoPager(this, nameParser);
+            finish();
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -189,6 +204,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         MenuItem assignees = menu.findItem(R.id.assignees);
         MenuItem edit = menu.findItem(R.id.edit);
         MenuItem editMenu = menu.findItem(R.id.editMenu);
+        menu.findItem(R.id.toRepo).setVisible(getPresenter().showToRepoBtn());
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();

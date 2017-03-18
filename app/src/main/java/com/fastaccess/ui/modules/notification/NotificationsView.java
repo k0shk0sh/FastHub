@@ -75,7 +75,7 @@ public class NotificationsView extends BaseFragment<NotificationsMvp.View, Notif
         if (getActivity().isTaskRoot()) {
             StackBuilderSchemeParser.launchUri(getContext(), Uri.parse(url));
         } else {
-            SchemeParser.launchUri(getContext(), Uri.parse(url));
+            SchemeParser.launchUri(getContext(), Uri.parse(url), true);
         }
     }
 

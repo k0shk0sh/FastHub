@@ -56,11 +56,17 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
     @BindView(R.id.detailsIcon) View detailsIcon;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, @NonNull String sha) {
+        return createIntent(context, repoId, login, sha, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      @NonNull String sha, boolean showRepoBtn) {
         Intent intent = new Intent(context, CommitPagerView.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, sha)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
+                .put(BundleConstant.EXTRA_THREE, showRepoBtn)
                 .end());
         return intent;
 
@@ -123,6 +129,11 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.toRepo).setVisible(getPresenter().showToRepoBtn());
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override public void onSetup() {

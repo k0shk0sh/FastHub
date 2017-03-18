@@ -30,6 +30,8 @@ interface CommitPagerMvp {
 
         String getRepoId();
 
+        boolean showToRepoBtn();
+
     }
 
 }
