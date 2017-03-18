@@ -58,6 +58,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     private long backPressTimer;
 
     @OnClick(R.id.enableAds) void onEnableAds(View view) {
+
         PrefGetter.setAdsEnabled(((FontSwitchView) view).isChecked());
         recreate();
     }
