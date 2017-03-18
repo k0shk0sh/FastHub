@@ -2,8 +2,10 @@ package com.prettifier.pretty.helper;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.webkit.MimeTypeMap;
 
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 
 import java.util.regex.Matcher;
@@ -59,10 +61,17 @@ public class GithubHelper {
         Matcher matcher = LINK_TAG_MATCHER.matcher(source);
         while (matcher.find()) {
             String href = matcher.group(1).trim();
-            if (href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
+            if (href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
                 continue;
             }
-            String link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href;
+            String link;
+            if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(href))) {
+                link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href;
+            } else {
+                String formattedLink = href.replaceFirst("./", "/");
+                link = "https://api.github.com/repos/" + owner + "/" + repoName +
+                        (formattedLink.startsWith("/") ? formattedLink : ("/" + formattedLink));
+            }
             source = source.replace("href=\"" + href + "\"", "href=\"" + link + "\"");
         }
         return source;

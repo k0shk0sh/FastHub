@@ -12,10 +12,12 @@ import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.modules.code.CodeViewerView;
 import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 import com.fastaccess.ui.modules.user.UserPagerView;
@@ -97,13 +99,14 @@ public class SchemeParser {
                     TextUtils.equals(authority, API_AUTHORITY)) {
                 Intent userIntent = getUser(context, data);
                 Intent pullRequestIntent = getPullRequestIntent(context, data);
+                Intent createIssueIntent = getCreateIssueIntent(context, data);
                 Intent issueIntent = getIssueIntent(context, data);
                 Intent repoIntent = getRepo(context, data);
                 Intent commit = getCommit(context, data);
                 Intent commits = getCommits(context, data);
                 Intent blob = getBlob(context, data);
                 Optional<Intent> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
-                        issueIntent, repoIntent, blob);
+                        createIssueIntent, issueIntent, repoIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
@@ -250,6 +253,22 @@ public class SchemeParser {
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
                 return CodeViewerView.createIntent(context, uri.toString());
             }
+        }
+        return null;
+    }
+
+    /**
+     * https://github.com/owner/repo/issues/new
+     */
+    @Nullable private static Intent getCreateIssueIntent(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        Logger.e(segments);
+        if (uri.getLastPathSegment() == null) return null;
+        if (segments == null || segments.size() < 3 || !uri.getLastPathSegment().equalsIgnoreCase("new")) return null;
+        if ("issues".equals(segments.get(2))) {
+            String owner = segments.get(0);
+            String repo = segments.get(1);
+            return CreateIssueView.getIntent(context, owner, repo);
         }
         return null;
     }

@@ -13,12 +13,14 @@ import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.modules.code.CodeViewerView;
 import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 import com.fastaccess.ui.modules.user.UserPagerView;
@@ -102,13 +104,14 @@ public class StackBuilderSchemeParser {
                     TextUtils.equals(authority, API_AUTHORITY)) {
                 TaskStackBuilder userIntent = getUser(context, data);
                 TaskStackBuilder pullRequestIntent = getPullRequestIntent(context, data);
+                TaskStackBuilder createIssueIntent = getCreateIssueIntent(context, data);
                 TaskStackBuilder issueIntent = getIssueIntent(context, data);
                 TaskStackBuilder repoIntent = getRepo(context, data);
                 TaskStackBuilder commit = getCommit(context, data);
                 TaskStackBuilder commits = getCommits(context, data);
                 TaskStackBuilder blob = getBlob(context, data);
                 Optional<TaskStackBuilder> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
-                        issueIntent, repoIntent, blob);
+                        createIssueIntent, issueIntent, repoIntent, blob);
                 Optional<TaskStackBuilder> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
@@ -270,6 +273,24 @@ public class StackBuilderSchemeParser {
                         .addParentStack(MainView.class)
                         .addNextIntent(CodeViewerView.createIntent(context, uri.toString()));
             }
+        }
+        return null;
+    }
+
+    /**
+     * https://github.com/owner/repo/issues/new
+     */
+    @Nullable private static TaskStackBuilder getCreateIssueIntent(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        Logger.e(segments);
+        if (uri.getLastPathSegment() == null) return null;
+        if (segments == null || segments.size() < 3 || !uri.getLastPathSegment().equalsIgnoreCase("new")) return null;
+        if ("issues".equals(segments.get(2))) {
+            String owner = segments.get(0);
+            String repo = segments.get(1);
+            return TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
+                    .addNextIntent(CreateIssueView.getIntent(context, owner, repo));
         }
         return null;
     }

@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.issues.create;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -78,6 +79,16 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                     .end());
             activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
         }
+    }
+
+    public static Intent getIntent(@NonNull Context context, @NonNull String login, @NonNull String repoId) {
+        Intent intent = new Intent(context, CreateIssueView.class);
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA_TWO, true)
+                .end());
+        return intent;
     }
 
     public static void startForResult(@NonNull Activity activity) {

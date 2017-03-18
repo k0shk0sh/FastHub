@@ -50,7 +50,7 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             comment.setNestedScrollingEnabled(false);
-            comment.setGithubContent(commentsModel.getBodyHtml(), commentsModel.getHtmlUrl(), true);
+            comment.setGithubContent(commentsModel.getBodyHtml(), null, true);
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
