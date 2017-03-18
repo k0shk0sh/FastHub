@@ -1,6 +1,7 @@
 package com.fastaccess.provider.rest;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.data.service.LoginRestService;
@@ -30,26 +31,26 @@ public class LoginProvider {
             .setPrettyPrinting()
             .create();
 
-    private static OkHttpClient provideOkHttpClient(@NonNull String authToken) {
+    private static OkHttpClient provideOkHttpClient(@NonNull String authToken, @Nullable String otp) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             client.addInterceptor(new HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
-        client.addInterceptor(new AuthenticationInterceptor(authToken));
+        client.addInterceptor(new AuthenticationInterceptor(authToken, otp));
         return client.build();
     }
 
-    private static Retrofit provideRetrofit(@NonNull String authToken) {
+    private static Retrofit provideRetrofit(@NonNull String authToken, @Nullable String otp) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.REST_URL)
-                .client(provideOkHttpClient(authToken))
+                .client(provideOkHttpClient(authToken, otp))
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
 
-    @NonNull public static LoginRestService getLoginRestService(@NonNull String authToken) {
-        return provideRetrofit(authToken).create(LoginRestService.class);
+    @NonNull public static LoginRestService getLoginRestService(@NonNull String authToken, @Nullable String otp) {
+        return provideRetrofit(authToken, otp).create(LoginRestService.class);
     }
 }

@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.login;
 
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -16,17 +15,32 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 import okhttp3.Credentials;
 import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
 
 /**
  * Created by Kosh on 09 Nov 2016, 9:43 PM
  */
 
 class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
+
+    @Override public void onError(@NonNull Throwable throwable) {
+        if (RestProvider.getErrorCode(throwable) == 401 && throwable instanceof HttpException) {
+            retrofit2.Response response = ((HttpException) throwable).response();
+            if (response != null && response.headers() != null) {
+                String twoFaToken = response.headers().get("X-GitHub-OTP");
+                if (twoFaToken != null) {
+                    sendToView(LoginMvp.View::onRequire2Fa);
+                    return;
+                } else {
+                    sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
+                    return;
+                }
+            }
+        }
+        super.onError(throwable);
+    }
 
     @Override public void onTokenResponse(@Nullable AccessTokenModel modelResponse) {
         if (modelResponse != null) {
@@ -57,46 +71,17 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         getView().onEmptyUserName(usernameIsEmpty);
         getView().onEmptyPassword(passwordIsEmpty);
         if (!usernameIsEmpty && !passwordIsEmpty) {
-            UUID uuid = UUID.randomUUID();
             String authToken = Credentials.basic(username, password);
             AuthModel authModel = new AuthModel();
             authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications"));
-            String uniqueToken = BuildConfig.APPLICATION_ID + "-" + authToken + "-" + Build.MODEL + "-" + uuid;
-            authModel.setNote(uniqueToken);//make it unique to FastHub.
+            authModel.setNote(BuildConfig.APPLICATION_ID);
             authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
-            Observable<AccessTokenModel> loginCall = LoginProvider.getLoginRestService(authToken)
-                    .login(BuildConfig.GITHUB_CLIENT_ID, uniqueToken, authModel);
+            authModel.setClientId(BuildConfig.GITHUB_CLIENT_ID);
+            authModel.setNoteUr(BuildConfig.REDIRECT_URL);
             if (!InputHelper.isEmpty(twoFactorCode)) {
-                loginCall = LoginProvider.getLoginRestService(authToken)
-                        .login(BuildConfig.GITHUB_CLIENT_ID, uniqueToken, authModel, twoFactorCode);
+                authModel.setOtpCode(twoFactorCode);
             }
-            makeRestCall(loginCall, tokenModel -> {
-                if (InputHelper.isEmpty(tokenModel.getToken())) {
-                    makeRestCall(LoginProvider.getLoginRestService(authToken).deleteToken(tokenModel.getId()),
-                            response -> login(username, password, null));
-                } else {
-                    onTokenResponse(tokenModel);
-                }
-            });
+            makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), this::onTokenResponse);
         }
-    }
-
-    @Override public void onError(@NonNull Throwable throwable) {
-        if (RestProvider.getErrorCode(throwable) == 401) {
-            retrofit2.Response response = ((HttpException) throwable).response();
-            if (response != null && response.headers() != null) {
-                String twoFaToken = response.headers().get("X-GitHub-OTP");
-                if (twoFaToken != null) {
-                    sendToView(LoginMvp.View::onRequire2Fa);
-                    return;
-                } else {
-                    sendToView(view -> {
-                        view.showMessage(R.string.error, R.string.failed_login);
-                    });
-                    return;
-                }
-            }
-        }
-        super.onError(throwable);
     }
 }

@@ -1,5 +1,7 @@
 package com.fastaccess.provider.rest.interceptors;
 
+import com.fastaccess.helper.InputHelper;
+
 import java.io.IOException;
 
 import lombok.AllArgsConstructor;
@@ -11,10 +13,14 @@ import okhttp3.Response;
 public class AuthenticationInterceptor implements Interceptor {
 
     private String authToken;
+    private String otp;
 
     @Override public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
         Request.Builder builder = original.newBuilder().header("Authorization", authToken);
+        if (!InputHelper.isEmpty(otp)) {
+            builder.addHeader("X-GitHub-OTP", otp.trim());
+        }
         Request request = builder.build();
         return chain.proceed(request);
     }
