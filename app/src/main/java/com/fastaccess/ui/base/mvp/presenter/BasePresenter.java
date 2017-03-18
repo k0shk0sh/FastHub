@@ -6,9 +6,9 @@ import android.support.annotation.StringRes;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.rest.handler.RetrofitException;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -47,11 +47,10 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
             return;
         }
         GitHubErrorResponse errorResponse = RestProvider.getErrorResponse(throwable);
-        Logger.e(errorResponse);
         if (errorResponse != null && errorResponse.getMessage() != null) {
             sendToView(v -> v.showErrorMessage(errorResponse.getMessage()));
         } else {
-            sendToView(v -> v.showErrorMessage(throwable.getMessage()));
+            sendToView(v -> v.showMessage(R.string.error, getPrettifiedErrorMessage(throwable)));
         }
     }
 
@@ -64,6 +63,23 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     @StringRes private int getPrettifiedErrorMessage(@Nullable Throwable throwable) {
-        return 0;
+        int resId = R.string.network_error;
+        RetrofitException exception = (RetrofitException) throwable;
+        if (exception != null) {
+            if (exception.getKind() != null) {
+                switch (exception.getKind()) {
+                    case NETWORK:
+                        resId = R.string.network_error;
+                        break;
+                    case HTTP:
+                        resId = R.string.request_error;
+                        break;
+                    case UNEXPECTED:
+                        resId = R.string.unexpected_error;
+                        break;
+                }
+            }
+        }
+        return resId;
     }
 }

@@ -6,33 +6,33 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.service.LoginRestService;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
+import com.fastaccess.data.service.LoginRestService;
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
+import com.fastaccess.provider.rest.handler.RetrofitException;
+import com.fastaccess.provider.rest.handler.RxErrorHandlingCallAdapterFactory;
 import com.fastaccess.provider.rest.interceptors.PaginationInterceptor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.IOException;
 import java.lang.reflect.Modifier;
 
 import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.HttpException;
@@ -54,14 +54,6 @@ public class RestProvider {
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .setPrettyPrinting()
             .create();
-
-    private static Cache provideCache() {
-        if (cache == null) {
-            int cacheSize = 20 * 1024 * 1024; //20MB
-            cache = new Cache(App.getInstance().getCacheDir(), cacheSize);
-        }
-        return cache;
-    }
 
     private static OkHttpClient provideOkHttpClient(boolean forLogin) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
@@ -87,7 +79,6 @@ public class RestProvider {
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
                 });
-//        client.cache(provideCache());//disable cache, since we are going offline.
         return client.build();
     }
 
@@ -96,18 +87,18 @@ public class RestProvider {
                 .baseUrl(BuildConfig.REST_URL)
                 .client(provideOkHttpClient(false))
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxErrorHandlingCallAdapterFactory.create())
                 .build();
     }
 
-    public static long downloadFile(@NonNull Context context, @NonNull String url) {
+    public static void downloadFile(@NonNull Context context, @NonNull String url) {
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDescription(url);
         request.setTitle(context.getString(R.string.downloading_file));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        return downloadManager.enqueue(request);
+        downloadManager.enqueue(request);
     }
 
     public static int getErrorCode(Throwable throwable) {
@@ -157,14 +148,11 @@ public class RestProvider {
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {
-        if (throwable instanceof HttpException) {
-            ResponseBody body = ((HttpException) throwable).response().errorBody();
-            if (body != null) {
-                try {
-                    Logger.e(body.string());
-                    return new Gson().fromJson(body.toString(), GitHubErrorResponse.class);
-                } catch (Exception ignored) {}
-            }
+        RetrofitException error = (RetrofitException) throwable;
+        try {
+            return error.getErrorBodyAs(GitHubErrorResponse.class);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return null;
     }

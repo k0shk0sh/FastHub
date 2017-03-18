@@ -147,10 +147,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         hideProgress();
         if (toast != null) toast.cancel();
         toast = titleRes.equals(getString(R.string.error))
-                ? Toasty.warning(getApplicationContext(), msgRes, Toast.LENGTH_LONG)
+                ? Toasty.error(getApplicationContext(), msgRes, Toast.LENGTH_LONG)
                 : Toasty.info(getApplicationContext(), msgRes, Toast.LENGTH_LONG);
         toast.show();
-
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {
