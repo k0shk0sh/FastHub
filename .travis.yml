@@ -13,10 +13,9 @@ jdk: oraclejdk8
 sudo: required
 
 script:
-  - ./gradlew clean assembleDebuggingAppDebug
+  - ./gradlew clean assembleDebug
 
 after_success:
-  # Upload code coverage report
   - bash <(curl -s https://codecov.io/bash)
 
 notifications:
