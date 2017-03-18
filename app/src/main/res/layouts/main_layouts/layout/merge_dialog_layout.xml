@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_xs_large"
+    android:layout_marginTop="@dimen/spacing_xs_large"
+    android:minWidth="300dp"
+    android:orientation="vertical"
+    android:padding="@dimen/spacing_xs_large">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/commit_message"
+            android:inputType="textMultiLine|textCapSentences"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="end"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <com.fastaccess.ui.widgets.FontButton
+            android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/cancel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/material_pink_700"/>
+
+        <com.fastaccess.ui.widgets.FontButton
+            android:id="@+id/ok"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/done"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="?colorAccent"/>
+
+    </LinearLayout>
+</LinearLayout>

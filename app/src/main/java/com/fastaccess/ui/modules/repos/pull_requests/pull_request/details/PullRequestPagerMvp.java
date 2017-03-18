@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullReqeustMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
 interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
-            AssigneesMvp.SelectedAssigneesListener {
+            AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback {
 
         void onSetupIssue();
 
@@ -66,7 +67,7 @@ interface PullRequestPagerMvp {
 
         @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
-        void onMerge();
+        void onMerge(String msg);
 
         void onLoadLabels();
 

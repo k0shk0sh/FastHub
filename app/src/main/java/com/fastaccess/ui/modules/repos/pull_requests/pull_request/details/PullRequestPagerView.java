@@ -32,6 +32,7 @@ import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivity
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.events.PullRequestDetailsView;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullRequestView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -170,6 +171,11 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         } else if (item.getItemId() == R.id.assignees) {
             getPresenter().onLoadAssignees();
             return true;
+        } else if (item.getItemId() == R.id.merge) {
+            if (getPresenter().getPullRequest() != null) {
+                String msg = getPresenter().getPullRequest().getTitle();
+                MergePullRequestView.newInstance(msg).show(getSupportFragmentManager(), "MergePullRequestView");
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -182,10 +188,13 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         MenuItem assignees = menu.findItem(R.id.assignees);
         MenuItem edit = menu.findItem(R.id.edit);
         MenuItem editMenu = menu.findItem(R.id.editMenu);
+        MenuItem merge = menu.findItem(R.id.merge);
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
         boolean isRepoOwner = getPresenter().isRepoOwner();
+        boolean isMergable = getPresenter().isMergeable();
+        merge.setVisible(isMergable && (isRepoOwner || isCollaborator));
         editMenu.setVisible(isOwner || isCollaborator || isRepoOwner);
         milestone.setVisible(isCollaborator || isRepoOwner);
         labels.setVisible(isCollaborator || isRepoOwner);
@@ -293,6 +302,10 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         hideProgress();
         AssigneesView.newInstance(items)
                 .show(getSupportFragmentManager(), "AssigneesView");
+    }
+
+    @Override public void onMerge(@NonNull String msg) {
+        getPresenter().onMerge(msg);
     }
 
     private void hideShowFab() {

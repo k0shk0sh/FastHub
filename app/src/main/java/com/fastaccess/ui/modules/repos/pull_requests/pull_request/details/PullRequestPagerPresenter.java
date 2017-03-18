@@ -14,13 +14,13 @@ import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.PullsIssuesParser;
-import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.UsersListModel;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.helper.BundleConstant;
@@ -250,19 +250,21 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         );
     }
 
-    @Override public void onMerge() {
+    @Override public void onMerge(@NonNull String msg) {
         if (isMergeable() && (isCollaborator() || isRepoOwner())) {//double the checking
+            if (getPullRequest() == null || getPullRequest().getHead() == null || getPullRequest().getHead().getSha() == null) return;
             MergeRequestModel mergeRequestModel = new MergeRequestModel();
-//            mergeRequestModel.setBase(String.valueOf(getPullRequestByNumber().getBase().getId()));
-//            mergeRequestModel.setHead(String.valueOf(getPullRequestByNumber().getHead().getId()));
-//            mergeRequestModel.setSha(getPullRequestByNumber().getBase().getSha());
-//            mergeRequestModel.setCommitMessage("Hello World");
+            mergeRequestModel.setSha(getPullRequest().getHead().getSha());
+            mergeRequestModel.setCommitMessage(msg);
             manageSubscription(
                     RxHelper.getObserver(RestProvider.getPullRequestSerice().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
                             .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
                             .doOnNext(mergeResponseModel -> {
                                 if (mergeResponseModel.isMerged()) {
-                                    sendToView(view -> view.showMessage(R.string.success, R.string.success_merge));
+                                    sendToView(view -> {
+                                        view.showMessage(R.string.success, R.string.success_merge);
+                                        view.onUpdateTimeline();
+                                    });
                                 } else {
                                     sendToView(view -> view.showErrorMessage(mergeResponseModel.getMessage()));
                                 }
