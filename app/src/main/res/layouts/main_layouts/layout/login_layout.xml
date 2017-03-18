@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                                                 xmlns:app="http://schemas.android.com/apk/res-auto"
-                                                 xmlns:tools="http://schemas.android.com/tools"
-                                                 android:layout_width="match_parent"
-                                                 android:layout_height="match_parent"
-                                                 android:background="@color/material_indigo_700"
-                                                 android:orientation="vertical"
-    >
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/material_indigo_700"
+    android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -28,6 +28,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
+
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/mainCard"
                     style="@style/TextAppearance.AppCompat.Title.Inverse"
@@ -36,10 +37,10 @@
                     android:layout_gravity="center"
                     android:background="?colorAccent"
                     android:gravity="center"
-                    android:paddingBottom="@dimen/spacing_xlarge"
+                    android:paddingBottom="@dimen/spacing_large"
                     android:paddingEnd="@dimen/spacing_xs_large"
                     android:paddingStart="@dimen/spacing_xs_large"
-                    android:paddingTop="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_large"
                     android:text="@string/sign_in_to_github"/>
 
                 <LinearLayout
