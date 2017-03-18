@@ -178,8 +178,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @Override public void onGistForked(boolean isForked) {
-        forkGist.setImageResource(isForked ? R.drawable.ic_fork_filled : R.drawable.ic_fork);
-        forkGist.tintDrawable(R.color.accent);
+        forkGist.tintDrawable(isForked ? R.color.accent : R.color.primary_text);
         forkGist.setEnabled(true);
     }
 
