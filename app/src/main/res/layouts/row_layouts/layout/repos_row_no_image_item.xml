@@ -39,19 +39,6 @@
             app:auto_orientation="horizontal">
 
             <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/language"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:gravity="start|center"
-                android:textColor="@color/secondary_text"
-                app:drawableColor="@color/secondary_text"
-                tools:text="Java"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/stars"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
@@ -85,12 +72,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:drawablePadding="@dimen/spacing_normal"
                 android:drawableStart="@drawable/ic_time_small"
                 android:gravity="start|center"
                 android:textColor="@color/secondary_text"
                 app:drawableColor="@color/secondary_text"
                 tools:text="50 minutes ago"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/language"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:gravity="start|center"
+                android:textColor="@color/secondary_text"
+                android:visibility="gone"
+                app:drawableColor="@color/secondary_text"
+                tools:text="TypeScript"
+                tools:visibility="visible"/>
 
         </com.fastaccess.ui.widgets.AutoLinearLayout>
     </LinearLayout>

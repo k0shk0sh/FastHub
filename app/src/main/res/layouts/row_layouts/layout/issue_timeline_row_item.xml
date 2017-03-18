@@ -54,7 +54,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:maxLines="3"
+                android:maxLines="5"
                 tools:text="For a divided large loaf, add some champaign and cinnamon."/>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>

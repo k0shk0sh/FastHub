@@ -2,6 +2,8 @@ package com.fastaccess.ui.widgets.color;
 
 import android.support.annotation.Nullable;
 
+import com.annimon.stream.Objects;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,9 +37,7 @@ public class ColorGenerator {
     }
 
     public int getColor(@Nullable Object key) {
-        if (key == null) {
-            key = "default";
-        }
+        key = Objects.toString(key, "default");
         return colors.get(Math.abs(key.hashCode()) % colors.size());
     }
 }

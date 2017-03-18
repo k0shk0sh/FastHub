@@ -143,6 +143,7 @@ import rx.Observable;
 
     @NonNull public SpannableBuilder getDisplayTitle(boolean isFromProfile) {
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
+        boolean addDescription = true;
         if (!isFromProfile) {
             if (owner != null) {
                 spannableBuilder.bold(owner.getLogin());
@@ -151,10 +152,19 @@ import rx.Observable;
             } else {
                 spannableBuilder.bold("Anonymous");
             }
+            List<FilesListModel> files = getFilesAsList();
+            if (!files.isEmpty()) {
+                FilesListModel filesListModel = files.get(0);
+                if (!InputHelper.isEmpty(filesListModel.getFilename()) && filesListModel.getFilename().trim().length() > 2) {
+                    spannableBuilder.append(" ").append("/").append(" ")
+                            .append(filesListModel.getFilename());
+                    addDescription = false;
+                }
+            }
         }
-        if (!InputHelper.isEmpty(description)) {
+        if (!InputHelper.isEmpty(description) && addDescription) {
             if (!InputHelper.isEmpty(spannableBuilder.toString())) {
-                spannableBuilder.append("/");
+                spannableBuilder.append(" ").append("/").append(" ");
             }
             spannableBuilder.append(description);
         }

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Repo;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -82,7 +83,10 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
         stars.setText(numberFormat.format(repo.getStargazersCount()));
         forks.setText(numberFormat.format(repo.getForks()));
         date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
-        language.setText(repo.getLanguage() != null && !repo.getLanguage().trim().isEmpty() ? repo.getLanguage() : "N/A");
-        language.setTextColor(ColorGenerator.MATERIAL.getColor(repo.getId()));
+        if (!InputHelper.isEmpty(repo.getLanguage())) {
+            language.setText(repo.getLanguage());
+            language.setTextColor(ColorGenerator.MATERIAL.getColor(repo.getLanguage()));
+            language.setVisibility(View.VISIBLE);
+        }
     }
 }
