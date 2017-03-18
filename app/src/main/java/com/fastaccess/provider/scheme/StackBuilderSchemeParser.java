@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
@@ -257,15 +258,21 @@ public class StackBuilderSchemeParser {
         String segmentTwo = segments.get(2);
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
             String fullUrl = uri.toString();
+            if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(fullUrl))) {
+                return null;
+            }
             if (uri.getAuthority().equalsIgnoreCase(HOST_DEFAULT)) {
-                fullUrl = "https://" + RAW_AUTHORITY + "/" + segments.get(0) + "/" + segments.get(1) + "/" +
-                        segments.get(segments.size() - 2) + "/" + uri.getLastPathSegment();
+                String owner = segments.get(0);
+                String repo = segments.get(1);
+                String branch = segments.get(3);
+                fullUrl = "https://" + RAW_AUTHORITY + "/" + owner + "/" + repo + "/" + branch;
+                for (int i = 4; i < segments.size(); i++) {
+                    fullUrl += "/" + segments.get(i);
+                }
             }
-            if (fullUrl != null) {
-                return TaskStackBuilder.create(context)
-                        .addParentStack(MainView.class)
-                        .addNextIntent(CodeViewerView.createIntent(context, fullUrl));
-            }
+            if (fullUrl != null) return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
+                    .addNextIntent(CodeViewerView.createIntent(context, fullUrl));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {

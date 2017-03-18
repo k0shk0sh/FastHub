@@ -8,12 +8,15 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.provider.rest.handler.RetrofitException;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
 
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
+
+import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -64,21 +67,12 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @StringRes private int getPrettifiedErrorMessage(@Nullable Throwable throwable) {
         int resId = R.string.network_error;
-        RetrofitException exception = (RetrofitException) throwable;
-        if (exception != null) {
-            if (exception.getKind() != null) {
-                switch (exception.getKind()) {
-                    case NETWORK:
-                        resId = R.string.network_error;
-                        break;
-                    case HTTP:
-                        resId = R.string.request_error;
-                        break;
-                    case UNEXPECTED:
-                        resId = R.string.unexpected_error;
-                        break;
-                }
-            }
+        if (throwable instanceof HttpException) {
+            resId = R.string.network_error;
+        } else if (throwable instanceof IOException) {
+            resId = R.string.request_error;
+        } else if (throwable instanceof TimeoutException) {
+            resId = R.string.unexpected_error;
         }
         return resId;
     }

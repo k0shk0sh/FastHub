@@ -67,6 +67,6 @@ public class ReadNotificationService extends IntentService {
         RestProvider.getNotificationService()
                 .markAsRead(String.valueOf(id))
                 .subscribeOn(Schedulers.io())
-                .subscribe();
+                .subscribe(booleanResponse -> {}, Throwable::printStackTrace);
     }
 }
