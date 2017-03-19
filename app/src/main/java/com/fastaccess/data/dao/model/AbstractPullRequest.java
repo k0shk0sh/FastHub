@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelListModel;
@@ -96,21 +97,19 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                         .toCompletable());
     }
 
-    public static Completable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(PullRequest.class)
+        singleEntityStore.delete(PullRequest.class)
                 .where(REPO_ID.equal(repoId)
                         .and(LOGIN.equal(login)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(pulRequest -> {
-                            pulRequest.setRepoId(repoId);
-                            pulRequest.setLogin(login);
-                            return pulRequest.save(pulRequest);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(pulRequest -> {
+                    pulRequest.setRepoId(repoId);
+                    pulRequest.setLogin(login);
+                    pulRequest.save(pulRequest).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     public static Observable<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,

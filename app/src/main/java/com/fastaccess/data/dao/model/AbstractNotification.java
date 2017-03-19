@@ -3,6 +3,7 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.NotificationSubjectModel;
 import com.fastaccess.data.dao.converters.NotificationSubjectConverter;
@@ -48,15 +49,13 @@ import rx.Observable;
                         .toCompletable());
     }
 
-    public static Completable save(@NonNull List<Notification> models) {
+    public static Observable<Object> save(@NonNull List<Notification> models) {
         SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-        return dataSource.delete(Notification.class)
+        dataSource.delete(Notification.class)
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(notification -> notification.save(notification)))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(notification -> notification.save(notification).toObservable().toBlocking().singleOrDefault(null)));
     }
 
     public static Observable<List<Notification>> getNotifications() {

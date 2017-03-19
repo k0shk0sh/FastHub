@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -68,24 +69,22 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
                         .toCompletable());
     }
 
-    public static Completable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
-                                   @NonNull String login, @NonNull String issueId) {
+    public static Observable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
+                                  @NonNull String login, @NonNull String issueId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(IssueEvent.class)
+        singleEntityStore.delete(IssueEvent.class)
                 .where(LOGIN.equal(login)
                         .and(REPO_ID.equal(repoId))
                         .and(ISSUE_ID.equal(issueId)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(issueEventModel -> {
-                            issueEventModel.setIssueId(issueId);
-                            issueEventModel.setLogin(login);
-                            issueEventModel.setRepoId(repoId);
-                            return issueEventModel.save(issueEventModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(issueEventModel -> {
+                    issueEventModel.setIssueId(issueId);
+                    issueEventModel.setLogin(login);
+                    issueEventModel.setRepoId(repoId);
+                    issueEventModel.save(issueEventModel).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     public static Observable<List<IssueEvent>> get(@NonNull String repoId, @NonNull String login,

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 
 import java.util.Date;
@@ -110,49 +111,43 @@ public abstract class AbstractUser implements Parcelable {
                 .firstOrNull();
     }
 
-    public static Completable saveUserFollowerList(@NonNull List<User> models, @NonNull String followingName) {
+    public static Observable saveUserFollowerList(@NonNull List<User> models, @NonNull String followingName) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(User.class)
+        singleEntityStore.delete(User.class)
                 .where(FOLLOWING_NAME.eq(followingName))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(userModel -> {
-                            userModel.setFollowingName(followingName);
-                            return userModel.saveToCompletable(userModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(userModel -> {
+                    userModel.setFollowingName(followingName);
+                    userModel.save(userModel);
+                }));
     }
 
-    public static Completable saveUserFollowingList(@NonNull List<User> models, @NonNull String followerName) {
+    public static Observable saveUserFollowingList(@NonNull List<User> models, @NonNull String followerName) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(User.class)
+        singleEntityStore.delete(User.class)
                 .where(FOLLOWER_NAME.eq(followerName))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(userModel -> {
-                            userModel.setFollowerName(followerName);
-                            return userModel.saveToCompletable(userModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(userModel -> {
+                    userModel.setFollowerName(followerName);
+                    userModel.save(userModel);
+                }));
     }
 
-    public static Completable saveUserContributorList(@NonNull List<User> models, @NonNull String repoId) {
+    public static Observable saveUserContributorList(@NonNull List<User> models, @NonNull String repoId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(User.class)
+        singleEntityStore.delete(User.class)
                 .where(REPO_ID.eq(repoId))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(userModel -> {
-                            userModel.setRepoId(repoId);
-                            return userModel.saveToCompletable(userModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(userModel -> {
+                    userModel.setRepoId(repoId);
+                    userModel.save(userModel);
+                }));
 
     }
 

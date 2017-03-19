@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LicenseModel;
 import com.fastaccess.data.dao.RepoPermissionsModel;
@@ -139,34 +140,30 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
                 .firstOrNull();
     }
 
-    public static Completable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
+    public static Observable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Repo.class)
+        singleEntityStore.delete(Repo.class)
                 .where(STARRED_USER.eq(starredUser))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(repoModel -> {
-                            repoModel.setStarredUser(starredUser);
-                            return repoModel.save(repoModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(repo -> {
+                    repo.setStarredUser(starredUser);
+                    repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
-    public static Completable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
+    public static Observable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Repo.class)
+        singleEntityStore.delete(Repo.class)
                 .where(REPOS_OWNER.eq(reposOwner))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(repoModel -> {
-                            repoModel.setReposOwner(reposOwner);
-                            return repoModel.save(repoModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(repo -> {
+                    repo.setReposOwner(reposOwner);
+                    repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     public static Observable<List<Repo>> getStarred(@NonNull String starredUser) {

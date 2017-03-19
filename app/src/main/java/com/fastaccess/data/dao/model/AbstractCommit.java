@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitListModel;
@@ -63,40 +64,36 @@ public abstract class AbstractCommit implements Parcelable {
                 .toCompletable();
     }
 
-    public static Completable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Commit.class)
+        singleEntityStore.delete(Commit.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(commitModel -> {
-                            commitModel.setRepoId(repoId);
-                            commitModel.setLogin(login);
-                            return commitModel.save(commitModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(commitModel -> {
+                    commitModel.setRepoId(repoId);
+                    commitModel.setLogin(login);
+                    commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
-    public static Completable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
+    public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Commit.class)
+        singleEntityStore.delete(Commit.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login))
                         .and(PULL_REQUEST_NUMBER.eq(number)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(commitModel -> {
-                            commitModel.setRepoId(repoId);
-                            commitModel.setLogin(login);
-                            commitModel.setPullRequestNumber(number);
-                            return commitModel.save(commitModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(commitModel -> {
+                    commitModel.setRepoId(repoId);
+                    commitModel.setLogin(login);
+                    commitModel.setPullRequestNumber(number);
+                    commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     public static Observable<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login) {

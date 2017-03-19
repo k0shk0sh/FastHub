@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.converters.UserConverter;
 
@@ -61,79 +62,72 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
                 .andThen(App.getInstance().getDataStore().insert(modelEntity).toCompletable());
     }
 
-    public static Completable saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {
+    public static Observable saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Comment.class)
+        singleEntityStore.delete(Comment.class)
                 .where(GIST_ID.equal(gistId))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(model -> {
-                            model.setGistId(gistId);
-                            return model.save(model);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(model -> {
+                    model.setGistId(gistId);
+                    model.save(model).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
-    public static Completable saveForCommits(@NonNull List<Comment> models, @NonNull String repoId,
-                                             @NonNull String login, @NonNull String commitId) {
+    public static Observable saveForCommits(@NonNull List<Comment> models, @NonNull String repoId,
+                                            @NonNull String login, @NonNull String commitId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Comment.class)
+        singleEntityStore.delete(Comment.class)
                 .where(COMMIT_ID.equal(commitId)
                         .and(REPO_ID.equal(repoId))
                         .and(LOGIN.equal(login)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(model -> {
-                            model.setLogin(login);
-                            model.setRepoId(repoId);
-                            model.setCommitId(commitId);
-                            return model.save(model);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(model -> {
+                    model.setLogin(login);
+                    model.setRepoId(repoId);
+                    model.setCommitId(commitId);
+                    model.save(model).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
-    public static Completable saveForIssues(@NonNull List<Comment> models, @NonNull String repoId,
-                                            @NonNull String login, @NonNull String issueId) {
+    public static Observable saveForIssues(@NonNull List<Comment> models, @NonNull String repoId,
+                                           @NonNull String login, @NonNull String issueId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Comment.class)
+        singleEntityStore.delete(Comment.class)
                 .where(ISSUE_ID.equal(issueId)
                         .and(REPO_ID.equal(repoId))
                         .and(LOGIN.equal(login)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(model -> {
-                            model.setLogin(login);
-                            model.setRepoId(repoId);
-                            model.setIssueId(issueId);
-                            return model.save(model);
-                        }))
-                .toCompletable();
+                .value();
+
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(model -> {
+                    model.setLogin(login);
+                    model.setRepoId(repoId);
+                    model.setIssueId(issueId);
+                    model.save(model).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
-    public static Completable saveForPullRequest(@NonNull List<Comment> models, @NonNull String repoId,
-                                                 @NonNull String login, @NonNull String pullRequestId) {
+    public static Observable saveForPullRequest(@NonNull List<Comment> models, @NonNull String repoId,
+                                                @NonNull String login, @NonNull String pullRequestId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Comment.class)
+        singleEntityStore.delete(Comment.class)
                 .where(PULL_REQUEST_ID.equal(pullRequestId)
                         .and(REPO_ID.equal(repoId))
                         .and(LOGIN.equal(login)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(model -> {
-                            model.setLogin(login);
-                            model.setRepoId(repoId);
-                            model.setPullRequestId(pullRequestId);
-                            return model.save(model);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(model -> {
+                    model.setLogin(login);
+                    model.setRepoId(repoId);
+                    model.setPullRequestId(pullRequestId);
+                    model.save(model).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     public static Observable<List<Comment>> getGistComments(@NonNull String gistId) {

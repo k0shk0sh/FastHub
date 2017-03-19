@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.ReleasesAssetsListModel;
 import com.fastaccess.data.dao.converters.ReleasesAssetsConverter;
@@ -65,20 +66,18 @@ public abstract class AbstractRelease implements Parcelable {
                         .toCompletable());
     }
 
-    public static Completable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Release.class)
+        singleEntityStore.delete(Release.class)
                 .where(REPO_ID.eq(login))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(releasesModel -> {
-                            releasesModel.setRepoId(repoId);
-                            releasesModel.setLogin(login);
-                            return releasesModel.save(releasesModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(releasesModel -> {
+                    releasesModel.setRepoId(repoId);
+                    releasesModel.setLogin(login);
+                    releasesModel.save(releasesModel).toObservable().toBlocking().singleOrDefault(null);
+                }));
 
     }
 

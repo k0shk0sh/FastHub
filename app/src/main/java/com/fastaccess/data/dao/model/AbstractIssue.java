@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -77,22 +78,19 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
                         .toCompletable());
     }
 
-    public static Completable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Issue.class)
+        singleEntityStore.delete(Issue.class)
                 .where(REPO_ID.equal(repoId)
                         .and(LOGIN.equal(login)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(issueModel -> {
-                            issueModel.setRepoId(repoId);
-                            issueModel.setLogin(login);
-                            return issueModel.save(issueModel);
-                        }))
-                .toCompletable();
-
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(issueModel -> {
+                    issueModel.setRepoId(repoId);
+                    issueModel.setLogin(login);
+                    issueModel.save(issueModel).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     public static Observable<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {

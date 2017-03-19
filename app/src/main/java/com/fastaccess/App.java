@@ -15,7 +15,6 @@ import io.requery.meta.EntityModel;
 import io.requery.rx.RxSupport;
 import io.requery.rx.SingleEntityStore;
 import io.requery.sql.Configuration;
-import io.requery.sql.ConfigurationBuilder;
 import io.requery.sql.EntityDataStore;
 import io.requery.sql.TableCreationMode;
 
@@ -46,9 +45,7 @@ public class App extends MultiDexApplication {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
             DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 1);
-            Configuration configuration = new ConfigurationBuilder(source, model)
-                    .useDefaultLogging()
-                    .build();
+            Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.DROP_CREATE);
             }

@@ -70,6 +70,7 @@ import rx.Observable;
     public static Completable save(@NonNull List<Gist> gists) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return singleEntityStore.delete(Gist.class)
+                .where(Gist.OWNER_NAME.isNull())
                 .get()
                 .toSingle()
                 .toCompletable()
@@ -78,19 +79,17 @@ import rx.Observable;
                 .toCompletable();
     }
 
-    public static Completable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
+    public static Observable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Gist.class)
+        singleEntityStore.delete(Gist.class)
                 .where(Gist.OWNER_NAME.equal(ownerName))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(gists)
-                        .map(gistsModel -> {
-                            gistsModel.setOwnerName(ownerName);
-                            return gistsModel.save(gistsModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(gists)
+                .forEach(gistsModel -> {
+                    gistsModel.setOwnerName(ownerName);
+                    gistsModel.save(gistsModel).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     @NonNull public static Observable<List<Gist>> getMyGists(@NonNull String ownerName) {

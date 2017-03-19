@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.types.FilesType;
 
@@ -48,21 +49,19 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
                 .toCompletable();
     }
 
-    public static Completable save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
+    public static Observable save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(RepoFile.class)
+        singleEntityStore.delete(RepoFile.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(models)
-                        .map(filesModel -> {
-                            filesModel.setRepoId(repoId);
-                            filesModel.setLogin(login);
-                            return filesModel.save(filesModel);
-                        }))
-                .toCompletable();
+                .value();
+        return Observable.create(subscriber -> Stream.of(models)
+                .forEach(filesModel -> {
+                    filesModel.setRepoId(repoId);
+                    filesModel.setLogin(login);
+                    filesModel.save(filesModel).toObservable().toBlocking().singleOrDefault(null);
+                }));
     }
 
     public static Observable<List<RepoFile>> getFiles(@NonNull String login, @NonNull String repoId) {
