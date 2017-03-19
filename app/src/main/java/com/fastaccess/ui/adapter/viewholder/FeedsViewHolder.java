@@ -15,6 +15,7 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
+import butterknife.BindString;
 import butterknife.BindView;
 
 /**
@@ -26,6 +27,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
     @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
+    @BindString(R.string.to) String to;
 
     public FeedsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -53,12 +55,20 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
             if (eventsModel.getType() != EventsType.WatchEvent) {
-                spannableBuilder
-                        .bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
-                        .append(" ");
+                if (eventsModel.getType() == EventsType.CreateEvent && eventsModel.getPayload().getRefType().equalsIgnoreCase("branch")) {
+                    spannableBuilder
+                            .bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
+                            .append(" ")
+                            .bold(eventsModel.getPayload().getRefType())
+                            .append(" ")
+                            .append(to).append(" ");
+                } else {
+                    spannableBuilder.bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
+                            .append(" ");
+                }
             }
         }
-        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "N/A");
+        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "");
         title.setText(spannableBuilder);
         date.setText(ParseDateFormat.getTimeAgo(eventsModel.getCreatedAt()));
     }

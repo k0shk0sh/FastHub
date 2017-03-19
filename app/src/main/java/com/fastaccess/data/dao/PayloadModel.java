@@ -20,10 +20,12 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class PayloadModel implements Parcelable {
 
-    String action;
-    Repo forkee;
-    Issue issue;
-    PullRequest pullRequest;
+    private String action;
+    private Repo forkee;
+    private Issue issue;
+    private PullRequest pullRequest;
+    private String ref;
+    private String refType;
 
     @Override public int describeContents() { return 0; }
 
