@@ -173,7 +173,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override public void onGistStarred(boolean isStarred) {
         startGist.setImageResource(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star);
-        startGist.tintDrawable(R.color.accent);
+        startGist.tintDrawable(isStarred ? R.color.accent : R.color.primary_text);
         startGist.setEnabled(true);
     }
 
