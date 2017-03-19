@@ -13,7 +13,6 @@ import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.types.EventsType;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -112,9 +111,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
                 SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()), true);
             } else {
                 Repo repoModel = item.getRepo();
-                String name = InputHelper.isEmpty(repoModel.getName()) ? repoModel.getFullName() : repoModel.getName();
-                if (name == null) return;
-                if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(name), true);
+                if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(repoModel.getName()), true);
             }
         }
     }

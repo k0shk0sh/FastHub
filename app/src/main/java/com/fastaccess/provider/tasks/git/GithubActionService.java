@@ -1,13 +1,16 @@
 package com.fastaccess.provider.tasks.git;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 
+import com.fastaccess.R;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.RestProvider;
@@ -31,6 +34,8 @@ public class GithubActionService extends IntentService {
     public static final int STAR_GIST = 6;
     public static final int UNSTAR_GIST = 7;
     public static final int FORK_GIST = 8;
+    private NotificationCompat.Builder notification;
+    private NotificationManager notificationManager;
 
     @IntDef({
             STAR_REPO,
@@ -105,81 +110,122 @@ public class GithubActionService extends IntentService {
 
     private void forkGist(@Nullable String id) {
         if (id != null) {
+            String msg = getString(R.string.forking, getString(R.string.gist));
             RestProvider.getGistService()
                     .forkGist(id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void forkRepo(@Nullable String id, @Nullable String login) {
         if (id != null && login != null) {
+            String msg = getString(R.string.forking, id);
             RestProvider.getRepoService()
                     .forkRepo(login, id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void starGist(@Nullable String id) {
         if (id != null) {
+            String msg = getString(R.string.staring, getString(R.string.gist));
             RestProvider.getGistService()
                     .starGist(id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void starRepo(@Nullable String id, @Nullable String login) {
         if (id != null && login != null) {
+            String msg = getString(R.string.staring, id);
             RestProvider.getRepoService()
                     .starRepo(login, id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void unStarGist(@Nullable String id) {
         if (id != null) {
+            String msg = getString(R.string.un_staring, getString(R.string.gist));
             RestProvider.getGistService()
                     .unStarGist(id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void unStarRepo(@Nullable String id, @Nullable String login) {
         if (id != null && login != null) {
+            String msg = getString(R.string.un_staring, id);
             RestProvider.getRepoService()
                     .unstarRepo(login, id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void unWatchRepo(@Nullable String id, @Nullable String login) {
         if (id != null && login != null) {
+            String msg = getString(R.string.un_watching, id);
             RestProvider.getRepoService()
                     .unwatchRepo(login, id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
     }
 
     private void watchRepo(@Nullable String id, @Nullable String login) {
         if (id != null && login != null) {
+            String msg = getString(R.string.watching, id);
             RestProvider.getRepoService()
                     .watchRepo(login, id)
+                    .doOnSubscribe(() -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
-                    }, Throwable::printStackTrace);
+                    }, throwable -> hideNotification(msg), () -> hideNotification(msg));
         }
+    }
+
+    private NotificationCompat.Builder getNotification(@NonNull String title) {
+        if (notification == null) {
+            notification = new NotificationCompat.Builder(this)
+                    .setSmallIcon(R.drawable.ic_sync)
+                    .setProgress(0, 100, true);
+        }
+        notification.setContentTitle(title);
+        return notification;
+    }
+
+    private NotificationManager getNotificationManager() {
+        if (notificationManager == null) {
+            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        }
+        return notificationManager;
+    }
+
+    private void showNotification(@NonNull String msg) {
+        getNotificationManager().notify(msg.hashCode(), getNotification(msg).build());
+    }
+
+    private void hideNotification(@NonNull String msg) {
+        getNotificationManager().cancel(msg.hashCode());
     }
 }
