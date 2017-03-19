@@ -20,6 +20,7 @@ import com.fastaccess.ui.modules.main.MainView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Kosh on 08 Feb 2017, 9:10 PM
@@ -39,6 +40,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     @OnClick(R.id.browserLogin) void onOpenBrowser() {
         Uri uri = getPresenter().getAuthorizationUrl();
         ActivityHelper.forceOpenInBrowser(this, uri);
+        Toasty.info(this, getString(R.string.open_in_browser)).show();
     }
 
     @OnClick(R.id.login) public void onClick() {
