@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.login;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -9,6 +11,7 @@ import com.fastaccess.data.dao.AccessTokenModel;
 import com.fastaccess.data.dao.AuthModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.LoginProvider;
 import com.fastaccess.provider.rest.RestProvider;
@@ -44,7 +47,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
 
     @Override public void onTokenResponse(@Nullable AccessTokenModel modelResponse) {
         if (modelResponse != null) {
-            String token = modelResponse.getToken();
+            String token = modelResponse.getToken() != null ? modelResponse.getToken() : modelResponse.getAccessToken();
             if (!InputHelper.isEmpty(token)) {
                 PrefGetter.setToken(token);
                 makeRestCall(RestProvider.getUserService().getUser(), this::onUserResponse);
@@ -52,6 +55,37 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             }
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
+    }
+
+    @NonNull @Override public Uri getAuthorizationUrl() {
+        return new Uri.Builder()
+                .scheme("https")
+                .authority("github.com")
+                .appendPath("login")
+                .appendPath("oauth")
+                .appendPath("authorize")
+                .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
+                .appendQueryParameter("redirect_uri", BuildConfig.REDIRECT_URL)
+                .appendQueryParameter("scope", "user,repo,gist,notifications")
+                .appendQueryParameter("state", BuildConfig.APPLICATION_ID)
+                .build();
+    }
+
+    @Override public void onHandleAuthIntent(@Nullable Intent intent) {
+        Logger.e(intent);
+        if (intent != null && intent.getData() != null) {
+            Uri uri = intent.getData();
+            Logger.e(uri.toString());
+            if (uri.toString().startsWith(BuildConfig.REDIRECT_URL)) {
+                String tokenCode = uri.getQueryParameter("code");
+                if (!InputHelper.isEmpty(tokenCode)) {
+                    makeRestCall(LoginProvider.getLoginRestService().getAccessToken(tokenCode, BuildConfig.GITHUB_CLIENT_ID,
+                            BuildConfig.GITHUB_SECRET, BuildConfig.APPLICATION_ID, BuildConfig.REDIRECT_URL), this::onTokenResponse);
+                } else {
+                    sendToView(view -> view.showMessage(R.string.error, R.string.error));
+                }
+            }
+        }
     }
 
     @Override public void onUserResponse(@Nullable Login userModel) {

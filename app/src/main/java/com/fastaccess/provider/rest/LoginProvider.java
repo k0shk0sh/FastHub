@@ -31,7 +31,7 @@ public class LoginProvider {
             .setPrettyPrinting()
             .create();
 
-    private static OkHttpClient provideOkHttpClient(@NonNull String authToken, @Nullable String otp) {
+    private static OkHttpClient provideOkHttpClient(@Nullable String authToken, @Nullable String otp) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             client.addInterceptor(new HttpLoggingInterceptor()
@@ -41,13 +41,23 @@ public class LoginProvider {
         return client.build();
     }
 
-    private static Retrofit provideRetrofit(@NonNull String authToken, @Nullable String otp) {
+    private static Retrofit provideRetrofit(@Nullable String authToken, @Nullable String otp) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.REST_URL)
                 .client(provideOkHttpClient(authToken, otp))
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
+    }
+
+    public static LoginRestService getLoginRestService() {
+        return new Retrofit.Builder()
+                .baseUrl("https://github.com/login/oauth/")
+                .client(provideOkHttpClient(null, null))
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build()
+                .create(LoginRestService.class);
     }
 
     @NonNull public static LoginRestService getLoginRestService(@NonNull String authToken, @Nullable String otp) {

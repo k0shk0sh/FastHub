@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.login;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -25,6 +27,10 @@ interface LoginMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
+
+        @NonNull Uri getAuthorizationUrl();
+
+        void onHandleAuthIntent(@Nullable Intent intent);
 
         void onTokenResponse(@Nullable AccessTokenModel response);
 

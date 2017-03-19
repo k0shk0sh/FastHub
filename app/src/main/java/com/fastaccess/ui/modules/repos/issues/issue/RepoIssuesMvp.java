@@ -30,7 +30,7 @@ interface RepoIssuesMvp {
             BaseViewHolder.OnItemClickListener<Issue>,
             BaseMvp.PaginationListener<IssueState> {
 
-        void onFragmentCreated(@NonNull Bundle bundle, IssueState issueState);
+        void onFragmentCreated(@NonNull Bundle bundle, @NonNull IssueState issueState);
 
         void onWorkOffline();
 

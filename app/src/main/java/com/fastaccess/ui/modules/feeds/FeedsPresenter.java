@@ -8,6 +8,7 @@ import android.view.View;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.model.Login;
@@ -105,13 +106,18 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             NameParser parser = new NameParser(item.getPayload().getForkee().getHtmlUrl());
             RepoPagerView.startRepoPager(v.getContext(), parser);
         } else {
-            if (item.getPayload() != null && item.getPayload().getIssue() != null) {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()), true);
-            } else if (item.getPayload() != null && item.getPayload().getPullRequest() != null) {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()), true);
-            } else {
-                Repo repoModel = item.getRepo();
-                if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(repoModel.getName()), true);
+            PayloadModel payloadModel = item.getPayload();
+            if (payloadModel != null) {
+                if (item.getPayload().getIssue() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()), true);
+                } else if (item.getPayload().getPullRequest() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()), true);
+                } else if (item.getPayload().getComment() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getComment().getHtmlUrl()), true);
+                } else {
+                    Repo repoModel = item.getRepo();
+                    if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(repoModel.getName()), true);
+                }
             }
         }
     }

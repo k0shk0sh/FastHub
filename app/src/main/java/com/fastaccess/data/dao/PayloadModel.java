@@ -3,6 +3,7 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.Repo;
@@ -26,6 +27,7 @@ public class PayloadModel implements Parcelable {
     private PullRequest pullRequest;
     private String ref;
     private String refType;
+    private Comment comment;
 
     @Override public int describeContents() { return 0; }
 

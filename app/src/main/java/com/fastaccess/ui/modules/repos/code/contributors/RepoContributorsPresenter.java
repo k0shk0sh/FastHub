@@ -74,6 +74,11 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
         }
     }
 
+    @Override public void onError(@NonNull Throwable throwable) {
+        onWorkOffline();
+        super.onError(throwable);
+    }
+
     @Override public void onWorkOffline() {
         if (users.isEmpty()) {
             manageSubscription(RxHelper.getObserver(User.getUserContributorList(repoId))

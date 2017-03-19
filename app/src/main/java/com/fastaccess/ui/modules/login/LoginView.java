@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.login;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseActivity;
@@ -33,6 +35,11 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     @BindView(R.id.twoFactor) TextInputLayout twoFactor;
     @BindView(R.id.login) FloatingActionButton login;
     @BindView(R.id.progress) ProgressBar progress;
+
+    @OnClick(R.id.browserLogin) void onOpenBrowser() {
+        Uri uri = getPresenter().getAuthorizationUrl();
+        ActivityHelper.forceOpenInBrowser(this, uri);
+    }
 
     @OnClick(R.id.login) public void onClick() {
         getPresenter().login(InputHelper.toString(username),
@@ -75,8 +82,10 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
 
     @Override public void onSuccessfullyLoggedIn() {
         hideProgress();
-        startActivity(new Intent(this, MainView.class));
-        finish();
+        Intent intent = new Intent(this, MainView.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finishAffinity();
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -106,5 +115,17 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     @Override public void hideProgress() {
         progress.setVisibility(View.GONE);
         login.show();
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        getPresenter().onHandleAuthIntent(intent);
+        setIntent(null);
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        getPresenter().onHandleAuthIntent(getIntent());
+        setIntent(null);
     }
 }

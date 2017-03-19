@@ -15,6 +15,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -25,6 +26,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -126,6 +128,13 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.share) {
             if (getPresenter().getCommit() != null) ActivityHelper.shareUrl(this, getPresenter().getCommit().getHtmlUrl());
+            return true;
+        } else if (item.getItemId() == R.id.toRepo) {
+            NameParser nameParser = new NameParser("");
+            nameParser.setName(getPresenter().getRepoId());
+            nameParser.setUsername(getPresenter().getLogin());
+            RepoPagerView.startRepoPager(this, nameParser);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

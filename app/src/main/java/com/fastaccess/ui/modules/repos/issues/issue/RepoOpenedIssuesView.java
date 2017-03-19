@@ -35,7 +35,6 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
-    private final IssueState issueState = IssueState.open;
     private RepoIssuesPagerMvp.View pagerCallback;
 
     public static RepoOpenedIssuesView newInstance(@NonNull String repoId, @NonNull String login) {
@@ -84,7 +83,7 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
-            getPresenter().onFragmentCreated(getArguments(), issueState);
+            getPresenter().onFragmentCreated(getArguments(), IssueState.open);
         } else if (getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
@@ -122,7 +121,7 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
         }
-        onLoadMore.setParameter(issueState);
+        onLoadMore.setParameter(IssueState.open);
         return onLoadMore;
     }
 

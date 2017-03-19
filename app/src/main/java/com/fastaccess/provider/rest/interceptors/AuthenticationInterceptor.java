@@ -17,7 +17,10 @@ public class AuthenticationInterceptor implements Interceptor {
 
     @Override public Response intercept(Chain chain) throws IOException {
         Request original = chain.request();
-        Request.Builder builder = original.newBuilder().header("Authorization", authToken);
+        Request.Builder builder = original.newBuilder();
+        if (!InputHelper.isEmpty(authToken)) {
+            builder.header("Authorization", authToken);
+        }
         if (!InputHelper.isEmpty(otp)) {
             builder.addHeader("X-GitHub-OTP", otp.trim());
         }

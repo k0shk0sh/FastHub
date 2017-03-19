@@ -30,7 +30,6 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
-    private final IssueState issueState = IssueState.closed;
 
     public static RepoClosedIssuesView newInstance(@NonNull String repoId, @NonNull String login) {
         RepoClosedIssuesView view = new RepoClosedIssuesView();
@@ -64,7 +63,7 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
-            getPresenter().onFragmentCreated(getArguments(), issueState);
+            getPresenter().onFragmentCreated(getArguments(), IssueState.closed);
         } else if (getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
@@ -93,7 +92,7 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
         }
-        onLoadMore.setParameter(issueState);
+        onLoadMore.setParameter(IssueState.closed);
         return onLoadMore;
     }
 
