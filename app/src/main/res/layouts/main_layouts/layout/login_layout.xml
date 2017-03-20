@@ -20,6 +20,7 @@
             android:layout_margin="@dimen/spacing_s_large"
             android:minHeight="350dp"
             android:minWidth="250dp"
+            app:cardBackgroundColor="@color/card_background"
             app:cardElevation="@dimen/spacing_normal">
 
             <LinearLayout
@@ -130,16 +131,16 @@
                         style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/spacing_normal"
                         android:background="@drawable/bottom_border"
                         android:gravity="center"
+                        android:paddingBottom="@dimen/spacing_normal"
                         android:text="@string/or_character"/>
 
                     <com.fastaccess.ui.widgets.FontTextView
                         style="@style/TextAppearance.AppCompat.Small"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/spacing_normal"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_normal"
                         android:gravity="center"
                         android:text="@string/login_using_your_default_browser"/>
 

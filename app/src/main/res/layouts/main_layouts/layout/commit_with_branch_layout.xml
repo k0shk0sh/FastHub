@@ -13,7 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/grid_spacing"
         android:background="@color/universal_primary_dark_color"
-        android:clickable="true"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/spacing_micro"
         android:paddingEnd="@dimen/spacing_xs_large"
@@ -25,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:contentDescription="@string/switch_branch"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_branch"/>
 
@@ -33,8 +33,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
             android:layout_weight="1"
             android:spinnerMode="dialog"
             app:backgroundTint="?colorAccent"

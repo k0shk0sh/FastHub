@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -40,5 +42,10 @@ public class AppHelper {
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), uri);
         clipboard.setPrimaryClip(clip);
         Toasty.success(context, context.getString(R.string.success_copied)).show();
+    }
+
+    public static boolean isNightMode(@NonNull Resources resources) {
+        int currentNightMode = resources.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
     }
 }

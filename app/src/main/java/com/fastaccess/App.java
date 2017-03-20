@@ -2,6 +2,7 @@ package com.fastaccess;
 
 import android.support.annotation.NonNull;
 import android.support.multidex.MultiDexApplication;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.preference.PreferenceManager;
 
 import com.fastaccess.data.dao.model.Models;
@@ -26,6 +27,10 @@ import io.requery.sql.TableCreationMode;
 public class App extends MultiDexApplication {
     private static App instance;
     private SingleEntityStore<Persistable> dataStore;
+
+    static {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+    }
 
     @Override public void onCreate() {
         super.onCreate();

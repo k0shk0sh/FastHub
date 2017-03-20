@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="AppTheme" parent="AppTheme.Base"/>
 
@@ -22,8 +22,9 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
-
         <item name="android:dialogTheme">@style/DialogTheme</item>
+        <item name="android:textColorTertiary">@color/secondary_text</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
     </style>
 
     <style name="WhenLargeTheme.Base" parent="Theme.AppCompat.DayNight.DialogWhenLarge">
@@ -46,6 +47,7 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:dialogTheme">@style/DialogTheme</item>
+        <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
@@ -74,19 +76,20 @@
 
 
     <style name="ToolbarStyle">
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlHighlight">?colorAccent</item>
-    </style>
-
-    <style name="ToolbarStyleDark">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/black</item>
         <item name="colorControlHighlight">?colorAccent</item>
     </style>
 
+    <style name="ToolbarStyleDark">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">?colorAccent</item>
+    </style>
+
     <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="background">@color/windowBackground</item>
     </style>
 
     <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">

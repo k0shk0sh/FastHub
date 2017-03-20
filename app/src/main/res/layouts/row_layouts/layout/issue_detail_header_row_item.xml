@@ -8,6 +8,7 @@
     android:layout_margin="@dimen/spacing_micro"
     android:clickable="true"
     android:foreground="?android:selectableItemBackground"
+    app:cardBackgroundColor="@color/card_background"
     app:contentPaddingBottom="@dimen/spacing_normal"
     app:contentPaddingRight="@dimen/spacing_xs_large"
     app:contentPaddingTop="@dimen/spacing_normal">

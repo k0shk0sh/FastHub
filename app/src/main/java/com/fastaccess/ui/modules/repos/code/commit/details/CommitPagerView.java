@@ -113,6 +113,7 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("");
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {

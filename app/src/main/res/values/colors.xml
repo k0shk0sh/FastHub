@@ -16,6 +16,8 @@
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="card_highlighter">@color/white</color>
+    <color name="card_background">@color/cardview_light_background</color>
     <color name="black_translucent">#80000000</color>
     <color name="drawer_activated_color">@color/primary_light</color>
     <color name="windowBackground">@color/primary_light</color>

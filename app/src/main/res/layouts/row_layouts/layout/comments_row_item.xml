@@ -9,6 +9,7 @@
     android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/cardview_selector"
+    app:cardBackgroundColor="@color/card_background"
     app:contentPaddingBottom="@dimen/spacing_normal"
     app:contentPaddingRight="@dimen/spacing_xs_large"
     app:contentPaddingTop="@dimen/spacing_normal">

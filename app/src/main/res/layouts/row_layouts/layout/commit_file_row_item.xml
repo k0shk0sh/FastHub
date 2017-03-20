@@ -9,6 +9,7 @@
     android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/cardview_selector"
+    app:cardBackgroundColor="@color/card_background"
     app:contentPaddingBottom="@dimen/spacing_normal"
     app:contentPaddingLeft="@dimen/spacing_xs_large"
     app:contentPaddingRight="@dimen/spacing_xs_large"
@@ -31,15 +32,15 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:maxLines="2"
                 android:ellipsize="end"
+                android:maxLines="2"
                 android:textColor="@color/primary_text"
                 tools:text="When one acquires"/>
 
             <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/toggle"
                 android:src="@drawable/ic_arrow_drop_down"/>
 
         </LinearLayout>

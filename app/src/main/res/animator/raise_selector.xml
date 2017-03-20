@@ -7,7 +7,7 @@
                 android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="backgroundColor"
                 android:valueFrom="@color/windowBackground"
-                android:valueTo="@color/white"
+                android:valueTo="@color/card_highlighter"
                 android:valueType="colorType"/>
 
             <objectAnimator
@@ -24,7 +24,7 @@
             <objectAnimator
                 android:duration="@android:integer/config_shortAnimTime"
                 android:propertyName="backgroundColor"
-                android:valueFrom="@color/white"
+                android:valueFrom="@color/card_highlighter"
                 android:valueTo="@color/windowBackground"
                 android:valueType="colorType"/>
 

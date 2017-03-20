@@ -22,16 +22,16 @@ public class PrettifyHelper {
                     "</html>";
 
 
-    @NonNull public static String generateContent(@NonNull String source) {
-        return String.format(HTML_CONTENT, getStyle(), getFormattedSource(source));
+    @NonNull public static String generateContent(@NonNull String source, boolean isDark) {
+        return String.format(HTML_CONTENT, getStyle(isDark), getFormattedSource(source));
     }
 
     @NonNull private static String getFormattedSource(@NonNull String source) {
         return source.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
     }
 
-    @NonNull private static String getStyle() {
-        return "prettify.css";
+    @NonNull private static String getStyle(boolean isDark) {
+        return !isDark ? "prettify.css" : "prettify_dark.css";
     }
 
 }

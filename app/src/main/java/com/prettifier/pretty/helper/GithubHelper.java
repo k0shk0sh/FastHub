@@ -25,15 +25,11 @@ public class GithubHelper {
             "}" +
             "</script>";
 
-    @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl) {
-        return generateContent(source, baseUrl, false);
-    }
-
-    @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
+    @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl, boolean wrap, boolean dark) {
         if (baseUrl == null) {
-            return mergeContent(source, wrap);
+            return mergeContent(source, wrap, dark);
         } else {
-            return mergeContent(validateImageBaseUrl(source, baseUrl), wrap);
+            return mergeContent(validateImageBaseUrl(source, baseUrl), wrap, dark);
         }
     }
 
@@ -77,13 +73,13 @@ public class GithubHelper {
         return source;
     }
 
-    private static String mergeContent(@NonNull String source, boolean wrap) {
+    private static String mergeContent(@NonNull String source, boolean wrap, boolean dark) {
         return "<html>\n" +
                 "\n" +
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>" +
-                "    <link rel=\"stylesheet\" type=\"text/css\" href=\"" + (wrap ? "./github_wrap.css" : "./github.css") + "\">\n" +
+                "    <link rel=\"stylesheet\" type=\"text/css\" href=\"" + getStyle(dark, wrap) + "\">\n" +
                 "</head>\n" +
                 "\n" +
                 "<body>\n" +
@@ -93,6 +89,10 @@ public class GithubHelper {
                 "</body>\n" +
                 "\n" +
                 "</html>\n";
+    }
+
+    private static String getStyle(boolean dark, boolean isWrap) {
+        return isWrap ? dark ? "./github_wrap_dark.css" : "./github_wrap.css" : dark ? "./github_dark.css" : "./github.css";
     }
 
 }

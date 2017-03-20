@@ -104,7 +104,7 @@ public class PrettifyWebView extends NestedWebView {
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()));
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
         }
     }
@@ -120,7 +120,7 @@ public class PrettifyWebView extends NestedWebView {
         }
         if (!InputHelper.isEmpty(source)) {
             if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
-            String page = GithubHelper.generateContent(source, baseUrl, wrap);
+            String page = GithubHelper.generateContent(source, baseUrl, wrap, AppHelper.isNightMode(getResources()));
             post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
         }
     }

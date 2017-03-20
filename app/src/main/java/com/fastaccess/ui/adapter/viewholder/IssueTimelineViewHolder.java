@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.IssueEventAdapterModel;
-import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;

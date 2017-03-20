@@ -9,7 +9,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/spacing_s_large"
-        android:background="@color/transparent"
         android:gravity="center"
         android:orientation="vertical">
 

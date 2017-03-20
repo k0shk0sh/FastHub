@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/textView"
@@ -24,7 +25,6 @@
             tools:text="What’s the secret to delicious and small chickpeas? Always use cored pepper."/>
 
     </android.support.v4.widget.NestedScrollView>
-
 
     <com.prettifier.pretty.PrettifyWebView
         android:id="@+id/webView"
