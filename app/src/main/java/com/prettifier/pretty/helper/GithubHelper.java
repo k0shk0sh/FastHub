@@ -20,8 +20,8 @@ public class GithubHelper {
     private static Pattern IMAGE_TAG_MATCHER = Pattern.compile("src=\"(.*?)\"");
     private final static String HASH_LINK_SCRIPT = "<script>\n" +
             "function scrollTo(hash) {\n" +
-            "    var element = document.getElementById('user-content-'+hash);\n" +
-            "    element.scrollIntoView();\n" +
+            "var element = document.getElementById(\"user-content-\" + hash);\n" +
+            "element.scrollIntoView();\n" +
             "}" +
             "</script>";
 
@@ -88,7 +88,7 @@ public class GithubHelper {
                 "\n" +
                 "<body>\n" +
                 source +
-                "\n<script src=\"" + (!wrap ? "./intercept-touch.js" : "") + "\"></script>\n" +
+                (!wrap ? "\n<script src=\"./intercept-touch.js\"></script>\n" : "") +
                 HASH_LINK_SCRIPT + "\n" +
                 "</body>\n" +
                 "\n" +

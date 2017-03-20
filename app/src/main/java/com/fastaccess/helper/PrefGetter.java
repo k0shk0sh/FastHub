@@ -103,7 +103,11 @@ public class PrefGetter {
         return PrefHelper.getBoolean("back_button");
     }
 
-    public static boolean isRectdAvatar() {
+    public static boolean isRectAvatar() {
         return PrefHelper.getBoolean("rect_avatar");
+    }
+
+    public static boolean isMarkAsReadEnabled() {
+        return PrefHelper.getBoolean("markNotificationAsRead");
     }
 }

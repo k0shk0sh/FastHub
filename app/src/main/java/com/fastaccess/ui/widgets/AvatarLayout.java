@@ -76,7 +76,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         inflate(getContext(), R.layout.avatar_layout, this);
         if (isInEditMode()) return;
         ButterKnife.bind(this);
-        if (PrefGetter.isRectdAvatar()) {
+        if (PrefGetter.isRectAvatar()) {
             avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 15);
         }
     }
@@ -109,7 +109,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         if (clear) {
             setBackgroundColor(Color.TRANSPARENT);
         } else {
-            if (PrefGetter.isRectdAvatar()) {
+            if (PrefGetter.isRectAvatar()) {
                 setBackgroundResource(R.drawable.rect_shape);
             } else {
                 setBackgroundResource(R.drawable.circle_shape);

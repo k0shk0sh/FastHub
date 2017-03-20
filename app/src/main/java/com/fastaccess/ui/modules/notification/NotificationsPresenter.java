@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.tasks.notification.ReadNotificationService;
@@ -28,7 +29,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     private ArrayList<Notification> notifications = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, Notification item) {
-        if (item.isUnread()) {
+        if (item.isUnread() && !PrefGetter.isMarkAsReadEnabled()) {
             ReadNotificationService.start(v.getContext(), item.getId());
             notifications.remove(position);
             sendToView(NotificationsMvp.View::onNotifyAdapter);

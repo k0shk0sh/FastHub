@@ -7,7 +7,6 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -62,7 +61,7 @@ public class PrettifyWebView extends NestedWebView {
         return super.onTouchEvent(event);
     }
 
-    private void initView() {
+    @SuppressLint("SetJavaScriptEnabled") private void initView() {
         if (isInEditMode()) return;
         setWebChromeClient(new ChromeClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -71,6 +70,7 @@ public class PrettifyWebView extends NestedWebView {
             setWebViewClient(new WebClientCompat());
         }
         WebSettings settings = getSettings();
+        settings.setJavaScriptEnabled(true);
         settings.setAppCachePath(getContext().getCacheDir().getPath());
         settings.setAppCacheEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
@@ -96,30 +96,27 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    @SuppressLint("SetJavaScriptEnabled") public void setSource(@NonNull String source) {
+    public void setSource(@NonNull String source) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);
-        settings.setJavaScriptEnabled(true);
         if (!InputHelper.isEmpty(source)) {
             String page = PrettifyHelper.generateContent(source);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
-        } else Log.e(getClass().getSimpleName(), "Source can't be null or empty.");
+        }
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
         setGithubContent(source, baseUrl, false);
     }
 
-    @SuppressLint("SetJavaScriptEnabled") public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
         if (wrap) {
             setScrollbarFadingEnabled(false);
             setVerticalScrollBarEnabled(false);
-        } else {
-            getSettings().setJavaScriptEnabled(true);
         }
         if (!InputHelper.isEmpty(source)) {
             if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");

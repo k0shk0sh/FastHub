@@ -12,10 +12,18 @@
             android:summary="@string/background_job_summary"
             android:title="@string/background_job_title"/>
 
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="markNotificationAsRead"
+            android:summary="@string/mark_notification_summary"
+            android:title="@string/mark_notification_title"/>
+
 
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/behavior">
+
+
         <SwitchPreference
             android:defaultValue="false"
             android:key="recylerViewAnimation"
