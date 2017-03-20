@@ -33,12 +33,23 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="@string/linear_layout_manager"
             tools:listitem="@layout/file_path_row_item"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/downloadRepoFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_download"/>
     </LinearLayout>
 
     <LinearLayout
@@ -64,7 +75,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_normal"
             android:layout_weight="1"
             android:spinnerMode="dialog"
             app:backgroundTint="?colorAccent"

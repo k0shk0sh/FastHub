@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
@@ -57,6 +59,21 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
                 .put(BundleConstant.EXTRA_THREE, defaultBranch)
                 .end());
         return view;
+    }
+
+    @OnClick(R.id.downloadRepoFiles) void onDownloadRepoFiles() {
+        if (InputHelper.isEmpty(ref)) {
+            ref = getPresenter().getDefaultBranch();
+        }
+        Uri uri = new Uri.Builder()
+                .scheme("https")
+                .authority("github.com")
+                .appendPath(getPresenter().getLogin())
+                .appendPath(getPresenter().getRepoId())
+                .appendPath("archive")
+                .appendPath(ref + ".zip")
+                .build();
+        RestProvider.downloadFile(getContext(), uri.toString());
     }
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {
