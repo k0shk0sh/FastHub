@@ -31,7 +31,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - See your public, private and forked Repos
   - Filter Branches and Commits
   - Watch, star and fork Repos
-  - Download releases and files
+  - Download releases, files and branches
 - **Issues and Pull Requests** 
   - Search Issues/PRs
   - Open/close Issues/PRs
