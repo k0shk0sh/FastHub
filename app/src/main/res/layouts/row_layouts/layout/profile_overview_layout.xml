@@ -124,6 +124,7 @@
                 android:paddingStart="@dimen/spacing_xs_large"
                 android:paddingTop="@dimen/spacing_normal"
                 android:text="@string/follow"
+                android:textColor="@color/white"
                 android:visibility="gone"
                 tools:visibility="visible"/>
 
