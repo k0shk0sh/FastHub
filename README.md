@@ -21,6 +21,7 @@ _(To download the app from here, please look at the [latest release](https://git
 # Features
 
 - **App**
+  - Two login types (Basic Auth) or via (Browser)
   - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
