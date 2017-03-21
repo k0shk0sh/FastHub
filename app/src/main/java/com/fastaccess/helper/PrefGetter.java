@@ -1,6 +1,7 @@
 package com.fastaccess.helper;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
@@ -129,13 +130,17 @@ public class PrefGetter {
     }
 
     @ThemeType public static int getThemeType(@NonNull Context context) {
+        return getThemeType(context.getResources());
+    }
+
+    @ThemeType public static int getThemeType(@NonNull Resources resources) {
         String appTheme = PrefHelper.getString("appTheme");
         if (!InputHelper.isEmpty(appTheme)) {
-            if (appTheme.equalsIgnoreCase(context.getString(R.string.auto_theme_mode))) {
+            if (appTheme.equalsIgnoreCase(resources.getString(R.string.auto_theme_mode))) {
                 return AUTO;
-            } else if (appTheme.equalsIgnoreCase(context.getString(R.string.dark_theme_mode))) {
+            } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.dark_theme_mode))) {
                 return DARK;
-            } else if (appTheme.equalsIgnoreCase(context.getString(R.string.light_theme_mode))) {
+            } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.light_theme_mode))) {
                 return LIGHT;
             } /* add future themes here */
         }

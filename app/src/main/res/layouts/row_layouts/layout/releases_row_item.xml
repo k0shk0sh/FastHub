@@ -31,44 +31,46 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/title"
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:maxLines="3"
-                android:textColor="@color/primary_text"
-                tools:text="When one acquires music and afterlife, one is able to capture heaven\nWhen one acquires music and afterlife, one is able to capture heaven\n."/>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/title"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="3"
+                    android:textColor="@color/primary_text"
+                    tools:text="When one acquires music and afterlife, one is able to capture heaven\nWhen one acquires music and afterlife, one is able to capture heaven\n."/>
+
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/details"
                     style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="1"
                     android:textColor="@color/secondary_text"
                     app:drawableColor="@color/secondary_text"
                     tools:text="1000"/>
-
-                <com.fastaccess.ui.widgets.ForegroundImageView
-                    android:id="@+id/download"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:background="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_normal"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_download"/>
             </LinearLayout>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/download"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/spacing_normal"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_download"/>
         </LinearLayout>
     </LinearLayout>
 

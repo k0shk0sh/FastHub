@@ -46,6 +46,6 @@ public class AppHelper {
 
     public static boolean isNightMode(@NonNull Resources resources) {
         int currentNightMode = resources.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        return currentNightMode == Configuration.UI_MODE_NIGHT_YES;
+        return currentNightMode == Configuration.UI_MODE_NIGHT_YES || PrefGetter.getThemeType(resources) == PrefGetter.DARK;
     }
 }

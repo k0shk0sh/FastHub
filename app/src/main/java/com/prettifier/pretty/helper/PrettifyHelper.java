@@ -31,7 +31,7 @@ public class PrettifyHelper {
     }
 
     @NonNull private static String getStyle(boolean isDark) {
-        return !isDark ? "prettify.css" : "prettify_darkG.css";
+        return !isDark ? "prettify.css" : "prettify_dark.css";
     }
 
 }
