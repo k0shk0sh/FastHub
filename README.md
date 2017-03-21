@@ -21,6 +21,7 @@ _(To download the app from here, please look at the [latest release](https://git
 # Features
 
 - **App**
+  - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
@@ -31,7 +32,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Filter Branches and Commits
   - Watch, star and fork Repos
   - Download releases and files
-- **Issues and Pull Requests**
+- **Issues and Pull Requests** 
   - Search Issues/PRs
   - Open/close Issues/PRs
   - Comment on Issues/PRs
@@ -40,6 +41,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Lock/unlock conversation in Issues/PRs
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
+  - Merge PRs
 - **Commits and Gists**
   - Search Code/Gists
   - View Gists and their files
@@ -101,7 +103,9 @@ Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
 # FastHub Logo
 
 **FastHub** logo is designed by 
-**Kevin Aguilar** 
+
+**Kevin Aguilar** [Google+](https://plus.google.com/+KevinAguilarC) [Twitter](https://twitter.com/kevttob)
+ 
 Designer at [221 Pixels](https://www.221pixels.com/)
+
 Laus Deo Semper
-[Google+](https://plus.google.com/+KevinAguilarC) [Twitter](https://twitter.com/kevttob)
