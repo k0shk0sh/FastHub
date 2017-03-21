@@ -1,5 +1,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true">
+    <item>
+
         <shape>
             <solid android:color="@color/primary"/>
         </shape>

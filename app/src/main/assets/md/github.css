@@ -1,7 +1,7 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 16px;
-    padding: 15px;
+    padding: 10px;
     line-height: 1.5;
     word-wrap: break-word
 }
@@ -37,7 +37,7 @@ body .absent {
 body .anchor {
     float: left;
     padding-right: 4px;
-    margin-left: -20px;
+    margin-left: -10px;
     line-height: 1
 }
 
@@ -47,7 +47,7 @@ body .anchor:focus {
 
 body p, body blockquote, body ul, body ol, body dl, body table, body pre {
     margin-top: 0;
-    margin-bottom: 16px
+    margin-bottom: 10px
 }
 
 body hr {
@@ -145,7 +145,7 @@ body h6 {
 }
 
 body ul, body ol {
-    padding-left: 2em
+    padding-left: 1em
 }
 
 body ul.no-list, body ol.no-list {
@@ -214,11 +214,11 @@ body img {
 }
 
 body img[align=right] {
-    padding-left: 20px
+    padding-left: 10px
 }
 
 body img[align=left] {
-    padding-right: 20px
+    padding-right: 10px
 }
 
 body .emoji {
@@ -262,7 +262,7 @@ body span.align-center {
 
 body span.align-center>span {
     display: block;
-    margin: 13px auto 0;
+    margin: 8px auto 0;
     overflow: hidden;
     text-align: center
 }
@@ -280,7 +280,7 @@ body span.align-right {
 
 body span.align-right>span {
     display: block;
-    margin: 13px 0 0;
+    margin: 8px 0 0;
     overflow: hidden;
     text-align: right
 }
@@ -293,32 +293,32 @@ body span.align-right span img {
 body span.float-left {
     display: block;
     float: left;
-    margin-right: 13px;
+    margin-right: 8px;
     overflow: hidden
 }
 
 body span.float-left span {
-    margin: 13px 0 0
+    margin: 8px 0 0
 }
 
 body span.float-right {
     display: block;
     float: right;
-    margin-left: 13px;
+    margin-left: 8px;
     overflow: hidden
 }
 
 body span.float-right>span {
     display: block;
-    margin: 13px auto 0;
+    margin: 8px auto 0;
     overflow: hidden;
     text-align: right
 }
 
 body code, body tt {
     padding: 0;
-    padding-top: .2em;
-    padding-bottom: .2em;
+    padding-top: .1em;
+    padding-bottom: .1em;
     margin: 0;
     font-size: 85%;
     background-color: rgba(0, 0, 0, 0.04);
@@ -326,7 +326,7 @@ body code, body tt {
 }
 
 body code::before, body code::after, body tt::before, body tt::after {
-    letter-spacing: -.2em;
+    letter-spacing: -.1em;
     content: "\00a0"
 }
 
@@ -353,7 +353,7 @@ body pre>code {
 }
 
 body .highlight {
-    margin-bottom: 16px
+    margin-bottom: 10px
 }
 
 body .highlight pre {
@@ -362,7 +362,7 @@ body .highlight pre {
 }
 
 body .highlight pre, body pre {
-    padding: 16px;
+    padding: 10px;
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
@@ -443,8 +443,8 @@ body .email-hidden-reply.expanded {
 }
 
 body .email-quoted-reply, body .email-signature-reply {
-    padding: 0 15px;
-    margin-bottom: 15px;
+    padding: 0 10px;
+    margin-bottom: 10px;
     color: #767676;
     border-left: 4px solid #ddd
 }

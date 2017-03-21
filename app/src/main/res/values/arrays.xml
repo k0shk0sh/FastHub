@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="notification_types">
+        <item>@string/unread</item>
+        <item>@string/all</item>
+    </string-array>
+
+    <string-array name="notification_duration">
+        <item>@string/turn_off</item>
+        <item>@string/one_minute</item>
+        <item>@string/five_minutes</item>
+        <item>@string/ten_minutes</item>
+        <item>@string/twenty_minutes</item>
+        <item>@string/thirty_minutes</item>
+    </string-array>
+
+    <string-array name="theme_modes">
+        <item>@string/auto_theme_mode</item>
+        <item>@string/light_theme_mode</item>
+        <item>@string/dark_theme_mode</item>
+    </string-array>
+</resources>

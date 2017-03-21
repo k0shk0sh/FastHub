@@ -25,6 +25,10 @@
     <color name="dark_bluish">#111C2C</color>
     <color name="carrot">@color/material_amber_800</color>
     <color name="dark_gray">#FF616161</color>
+    <color name="patch_addition_color">#CCFFCC</color>
+    <color name="patch_deletion_color">#FFDDDD</color>
+    <color name="patch_ref_color">#EEEEEE</color>
+
     <color name="material_amber_100">#FFECB3</color>
     <color name="material_amber_200">#FFE082</color>
     <color name="material_amber_300">#FFD54F</color>

@@ -18,6 +18,7 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
+import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 
@@ -39,6 +40,10 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     @BindString(R.string.addition) String additionText;
     @BindString(R.string.delete) String deletionText;
     @BindString(R.string.status) String statusText;
+    @BindColor(R.color.patch_addition_color) int patchAdditionColor;
+    @BindColor(R.color.patch_deletion_color) int patchDeletionColor;
+    @BindColor(R.color.patch_ref_color) int patchRefColor;
+
     private String pathText;
     private CommitFilesAdapter.OnTogglePatch onTogglePatch;
 
@@ -106,11 +111,11 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
                     char firstChar = token.charAt(0);
                     int color = Color.TRANSPARENT;
                     if (firstChar == '+') {
-                        color = Color.parseColor("#CCFFCC");
+                        color = patchAdditionColor;
                     } else if (firstChar == '-') {
-                        color = Color.parseColor("#FFDDDD");
+                        color = patchDeletionColor;
                     } else if (token.startsWith("@@")) {
-                        color = Color.parseColor("#EEEEEE");
+                        color = patchRefColor;
                     }
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {

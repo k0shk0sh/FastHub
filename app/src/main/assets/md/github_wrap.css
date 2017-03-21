@@ -42,7 +42,7 @@ body .absent {
 body .anchor {
     float: left;
     padding-right: 4px;
-    margin-left: -20px;
+    margin-left: -10px;
     line-height: 1
 }
 
@@ -96,8 +96,8 @@ body .loweralpha {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    margin-top: 24px;
-    margin-bottom: 4px;
+    margin-top: 16px;
+    margin-bottom: 8px;
     font-weight: 600;
     line-height: 1.25
 }
@@ -121,13 +121,13 @@ body h1 tt, body h1 code, body h2 tt, body h2 code, body h3 tt, body h3 code, bo
 }
 
 body h1 {
-    padding-bottom: .3em;
+    padding-bottom: .2em;
     font-size: 2em;
     border-bottom: 1px solid #eee
 }
 
 body h2 {
-    padding-bottom: .3em;
+    padding-bottom: .2em;
     font-size: 1.5em;
     border-bottom: 1px solid #eee
 }
@@ -150,7 +150,7 @@ body h6 {
 }
 
 body ul, body ol {
-    padding-left: 2em
+    padding-left: 1em
 }
 
 body ul.no-list, body ol.no-list {
@@ -164,11 +164,11 @@ body ul ul, body ul ol, body ol ol, body ol ul {
 }
 
 body li>p {
-    margin-top: 16px
+    margin-top: 8px
 }
 
 body li+li {
-    margin-top: .25em
+    margin-top: .20em
 }
 
 body dl {
@@ -177,14 +177,14 @@ body dl {
 
 body dl dt {
     padding: 0;
-    margin-top: 16px;
+    margin-top: 8px;
     font-size: 1em;
     font-style: italic;
     font-weight: 700
 }
 
 dl dd {
-    padding: 0 16px;
+    padding: 0 8px;
     margin-bottom: 4px
 }
 
@@ -199,7 +199,7 @@ body table th {
 }
 
 body table th, body table td {
-    padding: 6px 13px;
+    padding: 6px 10px;
     border: 1px solid #ddd
 }
 
@@ -219,11 +219,11 @@ body img {
 }
 
 body img[align=right] {
-    padding-left: 20px
+    padding-left: 10px
 }
 
 body img[align=left] {
-    padding-right: 20px
+    padding-right: 10px
 }
 
 body .emoji {
@@ -242,7 +242,7 @@ body span.frame>span {
     float: left;
     width: auto;
     padding: 7px;
-    margin: 13px 0 0;
+    margin: 8px 0 0;
     overflow: hidden;
     border: 1px solid #ddd
 }
@@ -267,7 +267,7 @@ body span.align-center {
 
 body span.align-center>span {
     display: block;
-    margin: 13px auto 0;
+    margin: 8px auto 0;
     overflow: hidden;
     text-align: center
 }
@@ -285,7 +285,7 @@ body span.align-right {
 
 body span.align-right>span {
     display: block;
-    margin: 13px 0 0;
+    margin: 8px 0 0;
     overflow: hidden;
     text-align: right
 }
@@ -298,24 +298,24 @@ body span.align-right span img {
 body span.float-left {
     display: block;
     float: left;
-    margin-right: 13px;
+    margin-right: 8px;
     overflow: hidden
 }
 
 body span.float-left span {
-    margin: 13px 0 0
+    margin: 8px 0 0
 }
 
 body span.float-right {
     display: block;
     float: right;
-    margin-left: 13px;
+    margin-left: 8px;
     overflow: hidden
 }
 
 body span.float-right>span {
     display: block;
-    margin: 13px auto 0;
+    margin: 8px auto 0;
     overflow: hidden;
     text-align: right
 }
@@ -358,7 +358,7 @@ body pre>code {
 }
 
 .highlight {
-    margin-bottom: 16px
+    margin-bottom: 10px
 }
 
 body .highlight pre {

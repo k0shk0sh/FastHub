@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
@@ -63,6 +65,9 @@ public class PrettifyWebView extends NestedWebView {
 
     @SuppressLint("SetJavaScriptEnabled") private void initView() {
         if (isInEditMode()) return;
+        if (AppHelper.isNightMode(getResources())) {
+            setBackgroundColor(ContextCompat.getColor(getContext(), R.color.windowBackground));
+        }
         setWebChromeClient(new ChromeClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             setWebViewClient(new WebClient());

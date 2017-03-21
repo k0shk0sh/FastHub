@@ -16,8 +16,6 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
@@ -30,7 +28,6 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
     private String repoId;
     private String login;
     private int number;
-
 
     @Override public int getCurrentPage() {
         return page;
@@ -67,11 +64,11 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        getComments().clear();
+                        comments.clear();
                         manageSubscription(Comment.saveForIssues(listResponse.getItems(), repoId(), login(),
                                 String.valueOf(number)).subscribe());
                     }
-                    getComments().addAll(listResponse.getItems());
+                    comments.addAll(listResponse.getItems());
                     sendToView(IssueCommentsMvp.View::onNotifyAdapter);
                 });
     }

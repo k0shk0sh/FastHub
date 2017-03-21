@@ -1,15 +1,32 @@
 package com.fastaccess.helper;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.R;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Created by Kosh on 10 Nov 2016, 3:43 PM
  */
 
 public class PrefGetter {
+
+    public static final int AUTO = 0;
+    public static final int LIGHT = 1;
+    public static final int DARK = 2;
+
+    @IntDef({
+            AUTO,
+            LIGHT,
+            DARK,
+    })
+    @Retention(RetentionPolicy.SOURCE) @interface ThemeType {}
+
+
     private static final String ADS = "enable_ads";
     private static final String TOKEN = "token";
     private static final String USER_ICON_GUIDE = "user_icon_guide";
@@ -109,5 +126,19 @@ public class PrefGetter {
 
     public static boolean isMarkAsReadEnabled() {
         return PrefHelper.getBoolean("markNotificationAsRead");
+    }
+
+    @ThemeType public static int getThemeType(@NonNull Context context) {
+        String appTheme = PrefHelper.getString("appTheme");
+        if (!InputHelper.isEmpty(appTheme)) {
+            if (appTheme.equalsIgnoreCase(context.getString(R.string.auto_theme_mode))) {
+                return AUTO;
+            } else if (appTheme.equalsIgnoreCase(context.getString(R.string.dark_theme_mode))) {
+                return DARK;
+            } else if (appTheme.equalsIgnoreCase(context.getString(R.string.light_theme_mode))) {
+                return LIGHT;
+            } /* add future themes here */
+        }
+        return LIGHT;
     }
 }

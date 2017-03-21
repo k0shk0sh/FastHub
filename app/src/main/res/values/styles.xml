@@ -68,11 +68,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="SplashTheme" parent="AppTheme">
-        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
-    </style>
-
-
     <style name="ToolbarStyle">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
@@ -108,6 +103,14 @@
         <item name="colorPrimaryDark">@color/material_indigo_900</item>
         <item name="colorAccent">@color/accent</item>
         <item name="colorControlNormal">?colorAccent</item>
+    </style>
+
+    <style name="TimeLineBackground">
+        <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+    </style>
+
+    <style name="SplashTheme" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
     </style>
 
 </resources>

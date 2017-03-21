@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/windowBackground"
+    android:background="@color/card_background"
     android:orientation="vertical">
 
     <com.fastaccess.ui.widgets.FontTextView

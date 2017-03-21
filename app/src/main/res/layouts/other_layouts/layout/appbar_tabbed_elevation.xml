@@ -12,7 +12,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="?colorPrimary"
+        android:background="@color/primary"
         android:theme="@style/ToolbarStyle"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ToolbarStyleDark"

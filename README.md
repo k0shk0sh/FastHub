@@ -97,3 +97,11 @@ Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
 | Repo (Tablet) | Commit (Tablet) |
 |:-:|:-:|
 | ![Main Screen Repo](/.github/assets/tablet_repo.png?raw=true) | ![Main Screen Commit](/.github/assets/tablet_commits.png?raw=true) |
+
+# FastHub Logo
+
+**FastHub** logo is designed by 
+**Kevin Aguilar** 
+Designer at [221 Pixels](https://www.221pixels.com/)
+Laus Deo Semper
+[Google+](https://plus.google.com/+KevinAguilarC) [Twitter](https://twitter.com/kevttob)

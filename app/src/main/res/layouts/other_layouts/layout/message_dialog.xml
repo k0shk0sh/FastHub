@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/windowBackground"
+    android:background="@color/card_background"
     android:orientation="vertical">
 
     <com.fastaccess.ui.widgets.FontTextView
@@ -35,8 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:minHeight="200dp"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+                android:visibility="gone"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/message"
@@ -44,6 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
+                android:textColor="@color/secondary_text"
                 tools:text="Hello World"/>
         </LinearLayout>
 

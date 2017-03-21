@@ -48,7 +48,7 @@ body .absent {
 body .anchor {
     float: left;
     padding-right: 4px;
-    margin-left: -20px;
+    margin-left: -10px;
     line-height: 1
 }
 
@@ -70,7 +70,7 @@ body hr {
 }
 
 body blockquote {
-    padding: 0 1em;
+    padding: 0 .1em;
     color: #777;
     border-left: .25em solid #ddd
 }
@@ -157,7 +157,7 @@ body h6 {
 }
 
 body ul, body ol {
-    padding-left: 2em
+    padding-left: 1em
 }
 
 body ul.no-list, body ol.no-list {
@@ -226,11 +226,11 @@ body img {
 }
 
 body img[align=right] {
-    padding-left: 20px
+    padding-left: 10px
 }
 
 body img[align=left] {
-    padding-right: 20px
+    padding-right: 10px
 }
 
 body .emoji {
@@ -305,32 +305,32 @@ body span.align-right span img {
 body span.float-left {
     display: block;
     float: left;
-    margin-right: 13px;
+    margin-right: 8px;
     overflow: hidden
 }
 
 body span.float-left span {
-    margin: 13px 0 0
+    margin: 8px 0 0
 }
 
 body span.float-right {
     display: block;
     float: right;
-    margin-left: 13px;
+    margin-left: 8px;
     overflow: hidden
 }
 
 body span.float-right>span {
     display: block;
-    margin: 13px auto 0;
+    margin: 8px auto 0;
     overflow: hidden;
     text-align: right
 }
 
 body code, body tt {
     padding: 0;
-    padding-top: .2em;
-    padding-bottom: .2em;
+    padding-top: .1em;
+    padding-bottom: .1em;
     margin: 0;
     font-size: 85%;
     background-color: rgba(84, 84, 84, 0.04);
@@ -338,7 +338,7 @@ body code, body tt {
 }
 
 body code::before, body code::after, body tt::before, body tt::after {
-    letter-spacing: -.2em;
+    letter-spacing: -.1em;
     content: "\00a0"
 }
 
@@ -455,65 +455,66 @@ body .email-hidden-reply.expanded {
 }
 
 .email-quoted-reply, .email-signature-reply {
-    padding: 0 15px;
-    margin-bottom: 15px;
+    padding: 0 10px;
+    margin-bottom: 10px;
     color: #c0c0c0;
     border-left: 4px solid #656d78
 }
 
+
 .pl-c {
-    color: #E0E0E0
+    color: #969896
 }
 
 .pl-c1, .pl-s .pl-v {
-    color: #2196F3
+    color: #0086b3
 }
 
 .pl-e, .pl-en {
-    color: #AB47BC
+    color: #795da3
 }
 
 .pl-smi, .pl-s .pl-s1 {
-    color: #C2185B
+    color: #78909C
 }
 
 .pl-ent {
-    color: #4CAF50
+    color: #388E3C
 }
 
 .pl-k {
-    color: #d32f2f
+    color: #a71d5d
 }
 
 .pl-s, .pl-pds, .pl-s .pl-pse .pl-s1, .pl-sr, .pl-sr .pl-cce, .pl-sr .pl-sre, .pl-sr .pl-sra {
-    color: #2196F3
+    color: #1976D2
 }
 
 .pl-v {
-    color: #F57C00
+    color: #ed6a43
 }
 
 .pl-id {
-    color: #E64A19
+    color: #b52a1d
 }
 
 .pl-ii {
     color: #f8f8f8;
-    background-color: #d32f2f
+    background-color: #b52a1d
 }
 
 .pl-sr .pl-cce {
     font-weight: 700;
-    color: #4CAF50
+    color: #388E3C
 }
 
 .pl-ml {
-    color: #ef5350
+    color: #7f8c8d;
 }
 
 .pl-mh, .pl-mh .pl-en, .pl-ms {
     font-weight: 700;
-    color: #2196F3
+    color: #1976D2
 }
 
 .pl-mq {
@@ -522,31 +523,31 @@ body .email-hidden-reply.expanded {
 
 .pl-mi {
     font-style: italic;
-    color: #333
+    color: #78909C
 }
 
 .pl-mb {
     font-weight: 700;
-    color: #333
+    color: #78909C
 }
 
 .pl-md {
-    color: #ef5350;
-    background-color: #656d78
+    color: #bd2c00;
+    background-color: #ffecec
 }
 
 .pl-mi1 {
-    color: #4CAF50;
-    background-color: #656d78
+    color: #55a532;
+    background-color: #eaffea
 }
 
 .pl-mdr {
     font-weight: 700;
-    color: #AB47BC
+    color: #795da3
 }
 
 .pl-mo {
-    color: #2196F3
+    color: #1976D2
 }
 
 kbd {

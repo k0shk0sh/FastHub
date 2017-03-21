@@ -13,6 +13,7 @@ import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.fastaccess.R;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
@@ -36,6 +37,12 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
         appCardBuilder.addItem(ConvenienceBuilder.createRateActionItem(context, ContextCompat.getDrawable(context, R.drawable.ic_star_filled),
                 getString(R.string.rate_app), null));
 
+        appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text(R.string.report_issue)
+                .subText(R.string.report_issue_here)
+                .icon(ContextCompat.getDrawable(context, R.drawable.ic_bug))
+                .setOnClickListener(b -> CreateIssueView.startForResult(this))
+                .build());
 
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();
         authorCardBuilder.title(R.string.author);
@@ -54,17 +61,26 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
         authorCardBuilder.addItem(ConvenienceBuilder.createEmailItem(context, ContextCompat.getDrawable(context, R.drawable.ic_email),
                 getString(R.string.send_email), true, getString(R.string.email_address), getString(R.string.question_concerning_fasthub)));
 
-        MaterialAboutCard.Builder supportDevCard = new MaterialAboutCard.Builder();
-        supportDevCard.title(getString(R.string.feedback));
-        supportDevCard.addItem(new MaterialAboutActionItem.Builder()
-                .text(R.string.report_issue)
-                .subText(R.string.report_issue_here)
-                .icon(ContextCompat.getDrawable(context, R.drawable.ic_bug))
-                .setOnClickListener(b -> CreateIssueView.startForResult(this))
+        MaterialAboutCard.Builder logoAuthor = new MaterialAboutCard.Builder();
+        logoAuthor.title(getString(R.string.logo_designer, "Kevin Aguilar"));
+        logoAuthor.addItem(new MaterialAboutActionItem.Builder()
+                .text(R.string.google_plus)
+                .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
+                .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://plus.google.com/+KevinAguilarC"))
+                .build());
+        logoAuthor.addItem(new MaterialAboutActionItem.Builder()
+                .text(R.string.twitter)
+                .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
+                .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://twitter.com/kevttob"))
+                .build());
+        logoAuthor.addItem(new MaterialAboutActionItem.Builder()
+                .text("221 Pixels")
+                .icon(ContextCompat.getDrawable(context, R.drawable.ic_brower))
+                .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://www.221pixels.com/"))
                 .build());
 
 
-        return new MaterialAboutList(appCardBuilder.build(), authorCardBuilder.build(), supportDevCard.build());
+        return new MaterialAboutList(appCardBuilder.build(), authorCardBuilder.build(), logoAuthor.build());
     }
 
     @Override protected CharSequence getActivityTitle() {

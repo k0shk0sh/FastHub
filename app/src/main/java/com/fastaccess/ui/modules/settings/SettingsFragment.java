@@ -28,6 +28,10 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             restartActivity();
             return true;
         });
+        findPreference("appTheme").setOnPreferenceChangeListener((preference, newValue) -> {
+            restartActivity();
+            return true;
+        });
     }
 
     private void restartActivity() {if (getActivity() != null) getActivity().recreate();}

@@ -22,12 +22,12 @@
         tools:src="@drawable/ic_issue_opened"/>
 
     <android.support.design.internal.ForegroundLinearLayout
+        style="@style/TimeLineBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/stateImage"
-        android:background="@drawable/ic_timeline_arrow_left"
         android:foreground="?android:selectableItemBackground"
         android:orientation="vertical">
 
