@@ -91,14 +91,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-        int themeMode = PrefGetter.getThemeType(getApplicationContext());
-        if (themeMode == PrefGetter.LIGHT) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else if (themeMode == PrefGetter.DARK) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
-        }
         setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         Logger.e(navType);
