@@ -6,10 +6,10 @@ Before you close the project, Please read the guide below to be able to login fr
 
 [GitHub Guide](https://auth0.com/docs/connections/social/github)
 
-    - Please updadate debug_gradle.properties file and change below:
-        - github_client_id= your  gihub clientId
-        - github_secret= your github secret
-        - redirect_url= (redirect_url must match the url defined in `AndroidManefist` under `LoginView`)
+- Please updadate debug_gradle.properties file and change below:
+    - github_client_id= your  gihub clientId
+    - github_secret= your github secret
+    - redirect_url= (redirect_url must match the url defined in `AndroidManefist` under `LoginView`)
 
 ### Before you import the project to Android Studio:
 
