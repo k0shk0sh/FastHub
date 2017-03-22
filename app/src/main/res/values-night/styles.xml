@@ -1,24 +1,9 @@
 <resources>
 
-    <style name="ToolbarStyle">
-        <item name="android:textColorPrimary">@color/black</item>
-        <item name="colorControlNormal">@color/black</item>
-        <item name="colorControlHighlight">?colorAccent</item>
-    </style>
-
     <style name="ToolbarStyleDark">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">?colorAccent</item>
-    </style>
-
-    <style name="AppBottomSheetDialogTheme" parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
-        <item name="background">@color/windowBackground</item>
-    </style>
-
-    <style name="AppModalStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="behavior_peekHeight">220dp</item>
     </style>
 
     <style name="TimeLineBackground">

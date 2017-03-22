@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/bbn_bottom_navigation_width"
-    app:theme="@style/ToolbarStyleDark"
-    android:stateListAnimator="@null">
+    android:stateListAnimator="@null"
+    app:theme="@style/ToolbarStyleDark">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:background="?colorPrimary"
         android:theme="@style/ToolbarStyleDark"
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ToolbarStyleDark"

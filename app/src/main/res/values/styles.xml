@@ -1,15 +1,5 @@
 <resources>
 
-    <style name="AppTheme" parent="AppTheme.Base"/>
-
-    <style name="WhenLargeTheme" parent="WhenLargeTheme.Base"/>
-
-    <style name="ToolbarStyle">
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlHighlight">?colorAccent</item>
-    </style>
-
     <style name="ToolbarStyleDark">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/black</item>

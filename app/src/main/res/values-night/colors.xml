@@ -2,10 +2,11 @@
 <resources>
     <color name="primary">#2D3035</color>
     <color name="primary_dark">#26282C</color>
-    <color name="accent">#00E5FF</color>
+    <color name="accent">@color/material_blue_500</color>
     <color name="windowBackground">#22252A</color>
     <color name="primary_text">#fff</color>
-    <color name="secondary_text">@color/material_blue_grey_200</color>
+    <color name="secondary_text">@color/material_grey_500</color>
+    <color name="text_tertiary">@color/material_grey_300</color>
     <color name="card_highlighter">@color/primary_dark</color>
     <color name="card_background">@color/primary</color>
     <color name="dark_gray">@color/secondary_text</color>
