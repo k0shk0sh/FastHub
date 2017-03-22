@@ -36,7 +36,7 @@ import rx.schedulers.Schedulers;
 
 public class NotificationSchedulerJobTask extends JobService {
     private final static String EVERY_30_MINS = "every_30_mins";
-    private final static int THIRTY_MINUTES = 30 * 60;
+    private final static int THIRTY_MINUTES = 30 * 60;//in seconds
 
     @Override public boolean onStartJob(JobParameters job) {
         if (Login.getUser() != null) {
