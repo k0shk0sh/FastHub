@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -30,6 +32,7 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<IssueState> onLoadMore;
     private PullRequestAdapter adapter;
+    private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static RepoPullRequestView newInstance(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
         RepoPullRequestView view = new RepoPullRequestView();
@@ -41,7 +44,22 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
         return view;
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        tabsBadgeListener = null;
+        super.onDetach();
+    }
+
+    @Override public void onNotifyAdapter(int totalCount) {
+        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(getPresenter().getIssueState() == IssueState.open ? 0 : 1, totalCount);
         Logger.e();
         hideProgress();
         adapter.notifyDataSetChanged();

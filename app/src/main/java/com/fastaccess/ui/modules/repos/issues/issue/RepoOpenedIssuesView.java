@@ -14,10 +14,10 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -36,6 +36,7 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
     private RepoIssuesPagerMvp.View pagerCallback;
+    private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static RepoOpenedIssuesView newInstance(@NonNull String repoId, @NonNull String login) {
         RepoOpenedIssuesView view = new RepoOpenedIssuesView();
@@ -53,15 +54,21 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         } else if (context instanceof RepoIssuesPagerMvp.View) {
             pagerCallback = (RepoIssuesPagerMvp.View) context;
         }
+        if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) context;
+        }
     }
 
     @Override public void onDetach() {
         pagerCallback = null;
+        tabsBadgeListener = null;
         super.onDetach();
     }
 
-    @Override public void onNotifyAdapter() {
-        Logger.e();
+    @Override public void onNotifyAdapter(int totalCount) {
+        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(0, totalCount);
         hideProgress();
         adapter.notifyDataSetChanged();
     }

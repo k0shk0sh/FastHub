@@ -47,7 +47,7 @@ public class App extends MultiDexApplication {
             DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 1);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
-                source.setTableCreationMode(TableCreationMode.DROP_CREATE);
+                source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);
             }
             dataStore = RxSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }

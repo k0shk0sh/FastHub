@@ -41,7 +41,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     @Key long id;
     String name;
     String fullName;
-    boolean privateX;
+    @SerializedName("private") boolean privateX;
     String htmlUrl;
     String description;
     boolean fork;

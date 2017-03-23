@@ -19,7 +19,7 @@ import java.util.ArrayList;
 interface RepoIssuesMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
-        void onNotifyAdapter();
+        void onNotifyAdapter(int totalCount);
 
         @NonNull OnLoadMore<IssueState> getLoadMore();
 

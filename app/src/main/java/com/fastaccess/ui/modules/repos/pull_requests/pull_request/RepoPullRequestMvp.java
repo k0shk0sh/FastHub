@@ -19,7 +19,7 @@ import java.util.ArrayList;
 interface RepoPullRequestMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
-        void onNotifyAdapter();
+        void onNotifyAdapter(int totalCount);
 
         @NonNull OnLoadMore<IssueState> getLoadMore();
     }
@@ -32,5 +32,7 @@ interface RepoPullRequestMvp {
         void onWorkOffline();
 
         @NonNull ArrayList<PullRequest> getPullRequests();
+
+        @NonNull IssueState getIssueState();
     }
 }

@@ -33,6 +33,9 @@ public interface IssueService {
     Observable<Pageable<Issue>> getRepositoryIssues(@Path("owner") String owner, @Path("repo") String repo,
                                                     @Query("state") String state, @Query("page") int page);
 
+    @GET("search/issues") Observable<Pageable<Issue>> getIssuesWithCount(@NonNull @Query(value = "q", encoded = true) String query,
+                                                                         @Query("page") int page);
+
     @GET("repos/{owner}/{repo}/issues/{number}")
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Issue> getIssue(@Path("owner") String owner, @Path("repo") String repo,
@@ -70,16 +73,16 @@ public interface IssueService {
 
     @GET("repos/{owner}/{repo}/issues/{number}/comments/{id}")
     Observable<Comment> getIssueComment(@Path("owner") String owner, @Path("repo") String repo,
-                                                    @Path("number") int number, @Path("id") long id);
+                                        @Path("number") int number, @Path("id") long id);
 
     @POST("repos/{owner}/{repo}/issues/{number}/comments")
     Observable<Comment> createIssueComment(@Path("owner") String owner, @Path("repo") String repo,
-                                                       @Path("number") int number, @Body CommentRequestModel body);
+                                           @Path("number") int number, @Body CommentRequestModel body);
 
     @PATCH("repos/{owner}/{repo}/issues/comments/{id}")
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Comment> editIssueComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,
-                                                     @Body CommentRequestModel body);
+                                         @Body CommentRequestModel body);
 
     @DELETE("repos/{owner}/{repo}/issues/comments/{id}")
     Observable<Response<Boolean>> deleteIssueComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);
@@ -94,4 +97,6 @@ public interface IssueService {
     @POST("repos/{owner}/{repo}/issues/{number}/assignees")
     Observable<Issue> putAssignees(@Path("owner") String owner, @Path("repo") String repo,
                                    @Path("number") int number, @Body AssigneesRequestModel body);
+
+
 }

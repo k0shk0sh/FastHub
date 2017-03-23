@@ -262,7 +262,7 @@
     <string name="copy">Copy</string>
     <string name="success_copied">Copied</string>
     <string name="commit_message">Commit message</string>
-    <string name="network_error">Error occurred while communicating to the server, please check your network</string>
+    <string name="network_error">Error occurred while communicating to the server</string>
     <string name="unexpected_error">Unexpected error while requesting API</string>
     <string name="request_error">Error requesting server, please try again later</string>
     <string name="marking_as_read">Marking notification as read</string>

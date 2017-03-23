@@ -5,13 +5,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.view.View;
+import android.widget.TextView;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
@@ -52,5 +55,17 @@ public class RepoPullRequestPagerView extends BaseFragment<RepoPullRequestPagerM
 
     @NonNull @Override public RepoPullRequestPagerPresenter providePresenter() {
         return new RepoPullRequestPagerPresenter();
+    }
+
+    @Override public void onSetBadge(int tabIndex, int count) {
+        if (tabs != null) {
+            TextView tv = ViewHelper.getTabTextView(tabs, tabIndex);
+            tv.setText(SpannableBuilder.builder()
+                    .append(tabIndex == 0 ? getString(R.string.opened) : getString(R.string.closed))
+                    .append("   ")
+                    .append("(")
+                    .bold(String.valueOf(count))
+                    .append(")"));
+        }
     }
 }

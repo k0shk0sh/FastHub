@@ -65,7 +65,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
                     .append(repo.getName()));
         } else if (repo.isPrivateX()) {
             title.setText(SpannableBuilder.builder()
-                    .append(" " + privateRepo + " ", new RoundBackgroundSpan(forkColor, 5))
+                    .append(" " + privateRepo + " ", new RoundBackgroundSpan(privateColor, 5))
                     .append(" ")
                     .append(repo.getName()));
         } else {

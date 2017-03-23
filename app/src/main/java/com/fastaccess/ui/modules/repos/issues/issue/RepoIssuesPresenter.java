@@ -5,16 +5,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.annimon.stream.Collectors;
-import com.annimon.stream.Stream;
-import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -68,19 +67,20 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService().getRepositoryIssues(login, repoId, issueState.name(), page),
+        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(RepoQueryProvider
+                        .getIssuesPullRequerQuery(login, repoId, issueState, false), page),
                 issues -> {
                     lastPage = issues.getLast();
                     if (getCurrentPage() == 1) {
                         getIssues().clear();
                         manageSubscription(Issue.save(issues.getItems(), repoId, login).subscribe());
                     }
-                    getIssues().addAll(Stream.of(issues.getItems()).filter(value -> value.getPullRequest() == null).collect(Collectors.toList()));
-                    sendToView(RepoIssuesMvp.View::onNotifyAdapter);
+                    getIssues().addAll(issues.getItems());
+                    sendToView(view -> view.onNotifyAdapter(issues.getTotalCount()));
                 });
     }
 
-    @Override public void onFragmentCreated(@NonNull Bundle bundle, IssueState issueState) {
+    @Override public void onFragmentCreated(@NonNull Bundle bundle, @NonNull IssueState issueState) {
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
         this.issueState = issueState;
@@ -94,7 +94,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             manageSubscription(RxHelper.getObserver(Issue.getIssues(repoId, login, issueState))
                     .subscribe(issueModel -> {
                         issues.addAll(issueModel);
-                        sendToView(RepoIssuesMvp.View::onNotifyAdapter);
+                        sendToView(view -> view.onNotifyAdapter(issues.size()));
                     }));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

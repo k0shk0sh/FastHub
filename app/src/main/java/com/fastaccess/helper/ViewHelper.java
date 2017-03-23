@@ -19,10 +19,12 @@ import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TabLayout;
 import android.text.Layout;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
@@ -37,8 +39,16 @@ import java.util.Arrays;
 public class ViewHelper {
 
     public static int getPrimaryDarkColor(Context context) {
+        return getAttr(context, R.attr.colorPrimaryDark);
+    }
+
+    public static int getPrimaryTextColor(@NonNull Context context) {
+        return getAttr(context, android.R.attr.textColorPrimary);
+    }
+
+    public static int getAttr(Context context, int attr) {
         TypedValue typedValue = new TypedValue();
-        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{R.attr.colorPrimaryDark});
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{attr});
         int color = a.getColor(0, 0);
         a.recycle();
         return color;
@@ -153,5 +163,10 @@ public class ViewHelper {
             }
         }
         return false;
+    }
+
+    public static TextView getTabTextView(@NonNull TabLayout tabs, int tabIndex) {
+        return (TextView) (((LinearLayout) ((LinearLayout) tabs.getChildAt(0)).getChildAt(tabIndex)).getChildAt(1));
+
     }
 }

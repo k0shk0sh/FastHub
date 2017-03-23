@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.repos;
 
-import android.content.Intent;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -97,5 +96,9 @@ public interface RepoPagerMvp {
         void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide);
 
         void onDeleteRepo();
+    }
+
+    interface TabsBadgeListener {
+        void onSetBadge(int tabIndex, int count);
     }
 }

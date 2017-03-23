@@ -1,5 +1,7 @@
 package com.fastaccess.data.service;
 
+import android.support.annotation.NonNull;
+
 import com.fastaccess.data.dao.AssigneesRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.MergeRequestModel;
@@ -29,6 +31,10 @@ public interface PullRequestService {
     @GET("repos/{owner}/{repo}/pulls")
     Observable<Pageable<PullRequest>> getPullRequests(@Path("owner") String owner, @Path("repo") String repo,
                                                       @Query("state") String state, @Query("page") int page);
+
+    @GET("search/issues")
+    Observable<Pageable<PullRequest>> getPullsWithCount(@NonNull @Query(value = "q", encoded = true) String query,
+                                                        @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}")
     @Headers("Accept: application/vnd.github.VERSION.html")

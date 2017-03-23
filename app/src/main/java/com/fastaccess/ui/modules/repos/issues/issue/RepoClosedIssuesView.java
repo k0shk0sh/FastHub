@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.repos.issues.issue;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,10 +12,10 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -30,6 +31,7 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
+    private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static RepoClosedIssuesView newInstance(@NonNull String repoId, @NonNull String login) {
         RepoClosedIssuesView view = new RepoClosedIssuesView();
@@ -40,10 +42,24 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         return view;
     }
 
-    @Override public void onNotifyAdapter() {
-        Logger.e();
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        tabsBadgeListener = null;
+        super.onDetach();
+    }
+
+    @Override public void onNotifyAdapter(int totalCount) {
         hideProgress();
         adapter.notifyDataSetChanged();
+        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(1, totalCount);
     }
 
     @Override protected int fragmentLayout() {

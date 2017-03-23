@@ -6,22 +6,21 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -69,16 +68,16 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestSerice().getPullRequests(login, repoId, issueState.name(), page),
-                response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        getPullRequests().clear();
-                        manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
-                    }
-                    getPullRequests().addAll(response.getItems());
-                    sendToView(RepoPullRequestMvp.View::onNotifyAdapter);
-                });
+        makeRestCall(RestProvider.getPullRequestSerice().getPullsWithCount(RepoQueryProvider.getIssuesPullRequerQuery(login, repoId, issueState,
+                true), page), response -> {
+            lastPage = response.getLast();
+            if (getCurrentPage() == 1) {
+                getPullRequests().clear();
+                manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
+            }
+            getPullRequests().addAll(response.getItems());
+            sendToView(view -> view.onNotifyAdapter(response.getTotalCount()));
+        });
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
@@ -95,7 +94,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
             manageSubscription(RxHelper.getObserver(PullRequest.getPullRequests(repoId, login, issueState))
                     .subscribe(pulls -> {
                         pullRequests.addAll(pulls);
-                        sendToView(RepoPullRequestMvp.View::onNotifyAdapter);
+                        sendToView(view -> view.onNotifyAdapter(pullRequests.size()));
                     }));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
@@ -104,6 +103,10 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     @NonNull public ArrayList<PullRequest> getPullRequests() {
         return pullRequests;
+    }
+
+    @NonNull @Override public IssueState getIssueState() {
+        return issueState;
     }
 
     @Override public void onItemClick(int position, View v, PullRequest item) {
