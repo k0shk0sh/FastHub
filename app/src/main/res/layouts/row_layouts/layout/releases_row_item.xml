@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
@@ -47,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="3"
-                    android:textColor="@color/primary_text"
+                    android:textColor="?android:textColorPrimary"
                     tools:text="When one acquires music and afterlife, one is able to capture heaven\nWhen one acquires music and afterlife, one is able to capture heaven\n."/>
 
 
@@ -57,8 +56,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:textColor="@color/secondary_text"
-                    app:drawableColor="@color/secondary_text"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:drawableColor="?android:attr/textColorSecondary"
                     tools:text="1000"/>
             </LinearLayout>
 

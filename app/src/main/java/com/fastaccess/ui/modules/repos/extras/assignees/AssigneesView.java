@@ -67,6 +67,7 @@ public class AssigneesView extends BaseDialogFragment<AssigneesMvp.View, Assigne
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        recycler.addKeyLineDivider();
         title.setText(R.string.assignees);
         List<User> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
         if (list != null) {

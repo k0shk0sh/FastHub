@@ -2,7 +2,7 @@
 
 ### Registering GitHub Account
 
-Before you close the project, Please read the guide below to be able to login from FastHub.
+Before you clone the project, Please read the guide below to be able to login from FastHub.
 
 [GitHub Guide](https://auth0.com/docs/connections/social/github)
 

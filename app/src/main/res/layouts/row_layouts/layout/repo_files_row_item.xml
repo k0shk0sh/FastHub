@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
@@ -44,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="3"
-                android:textColor="@color/primary_text"
+                android:textColor="?android:textColorPrimary"
                 tools:text="File Name"/>
 
             <com.fastaccess.ui.widgets.FontTextView

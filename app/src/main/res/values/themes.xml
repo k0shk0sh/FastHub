@@ -27,9 +27,11 @@
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:dialogTheme">@style/DialogTheme</item>
+        <item name="iconColor">@color/primary_text</item>
     </style>
 
     <style name="WhenLargeTheme.Base" parent="Theme.AppCompat.DayNight.DialogWhenLarge">
+        <item name="iconColor">@color/primary_text</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowBackground">@color/windowBackground</item>
@@ -75,6 +77,7 @@
 
     <style name="DialogTheme" parent="Theme.AppCompat.DayNight.Dialog.Alert">
         <item name="android:windowBackground">@color/windowBackground</item>
+        <item name="iconColor">@color/primary_text</item>
     </style>
 
     <style name="SplashTheme" parent="AppTheme">

@@ -14,7 +14,6 @@ import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
 
@@ -36,7 +35,7 @@ public class ActivityHelper {
 
     public static void startCustomTab(@NonNull Activity context, @NonNull Uri url) {
         CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        builder.setToolbarColor(ContextCompat.getColor(context, R.color.primary));
+        builder.setToolbarColor(ViewHelper.getPrimaryColor(context));
         builder.setShowTitle(false);
         CustomTabsIntent tabsIntent = builder.build();
         tabsIntent.launchUrl(context, url);

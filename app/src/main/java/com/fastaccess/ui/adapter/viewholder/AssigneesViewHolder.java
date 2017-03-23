@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.AssigneesAdapter;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -23,7 +24,6 @@ public class AssigneesViewHolder extends BaseViewHolder<User> {
     @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
-    @BindColor(R.color.windowBackground) int windowBackground;
     @BindColor(R.color.light_gray) int lightGray;
     private AssigneesAdapter.OnSelectAssignee onSelectAssignee;
 
@@ -45,6 +45,7 @@ public class AssigneesViewHolder extends BaseViewHolder<User> {
         avatar.setUrl(user.getAvatarUrl(), user.getLogin());
         title.setText(user.getLogin());
         date.setVisibility(View.GONE);
-        itemView.setBackgroundColor(onSelectAssignee.isAssigneeSelected(getAdapterPosition()) ? lightGray : windowBackground);
+        itemView.setBackgroundColor(onSelectAssignee.isAssigneeSelected(getAdapterPosition()) ? lightGray : ViewHelper.getWindowBackground(itemView
+                .getContext()));
     }
 }

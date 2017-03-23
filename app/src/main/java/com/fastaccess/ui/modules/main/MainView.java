@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
@@ -111,7 +110,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         if (isLoggedIn() && Notification.hasUnreadNotifications()) {
-            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).getIcon(), ContextCompat.getColor(this, R.color.accent));
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).getIcon(), ViewHelper.getAccentColor(this));
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -124,7 +123,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             startActivity(new Intent(this, SearchView.class));
             return true;
         } else if (item.getItemId() == R.id.notifications) {
-            ViewHelper.tintDrawable(item.getIcon(), ContextCompat.getColor(this, R.color.primary_text));
+            ViewHelper.tintDrawable(item.getIcon(), ViewHelper.getPrimaryTextColor(this));
             startActivity(new Intent(this, NotificationActivityView.class));
             return true;
         }

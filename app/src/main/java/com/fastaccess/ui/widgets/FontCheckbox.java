@@ -1,13 +1,10 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
-import android.support.annotation.ColorRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 
 import com.fastaccess.helper.TypeFaceHelper;
-import com.fastaccess.helper.ViewHelper;
 
 
 /**
@@ -33,11 +30,5 @@ public class FontCheckbox extends AppCompatCheckBox {
     private void init() {
         if (isInEditMode()) return;
         TypeFaceHelper.applyTypeface(this);
-    }
-
-    public void setTextColor(@ColorRes int normalColor, @ColorRes int pressedColor) {
-        int nColor = ContextCompat.getColor(getContext(), normalColor);
-        int pColor = ContextCompat.getColor(getContext(), pressedColor);
-        setTextColor(ViewHelper.textSelector(nColor, pColor));
     }
 }

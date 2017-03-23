@@ -25,7 +25,6 @@ public class NotificationActivityView extends BaseActivity {
     private NotificationsView notificationsView;
     private boolean userSelectedSpinner = false;
 
-
     @Override protected int layout() {
         return R.layout.notification_activity_layout;
     }

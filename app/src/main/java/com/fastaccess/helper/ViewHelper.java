@@ -42,11 +42,27 @@ public class ViewHelper {
         return getAttr(context, R.attr.colorPrimaryDark);
     }
 
+    public static int getPrimaryColor(Context context) {
+        return getAttr(context, R.attr.colorPrimary);
+    }
+
     public static int getPrimaryTextColor(@NonNull Context context) {
         return getAttr(context, android.R.attr.textColorPrimary);
     }
 
-    public static int getAttr(Context context, int attr) {
+    public static int getAccentColor(@NonNull Context context) {
+        return getAttr(context, R.attr.colorAccent);
+    }
+
+    public static int getIconColor(@NonNull Context context) {
+        return getAttr(context, R.attr.iconColor);
+    }
+
+    public static int getWindowBackground(@NonNull Context context) {
+        return getAttr(context, android.R.attr.windowBackground);
+    }
+
+    private static int getAttr(Context context, int attr) {
         TypedValue typedValue = new TypedValue();
         TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{attr});
         int color = a.getColor(0, 0);
@@ -58,9 +74,8 @@ public class ViewHelper {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, dp, context.getResources().getDisplayMetrics());
     }
 
-    public static Drawable tintDrawable(@NonNull Drawable drawable, @ColorInt int color) {
+    public static void tintDrawable(@NonNull Drawable drawable, @ColorInt int color) {
         drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
-        return drawable;
     }
 
     public static Drawable getDrawableSelector(int normalColor, int pressedColor) {

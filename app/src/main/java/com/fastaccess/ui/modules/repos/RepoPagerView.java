@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +27,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
@@ -40,7 +40,6 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.text.NumberFormat;
 
-import butterknife.BindColor;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
@@ -62,8 +61,6 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindView(R.id.starRepo) FontTextView starRepo;
     @BindView(R.id.watchRepo) FontTextView watchRepo;
     @BindView(R.id.license) FontTextView license;
-    @BindColor(R.color.accent) int accentColor;
-    @BindColor(R.color.primary_text) int blackColor;
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.language) FontTextView language;
@@ -78,8 +75,11 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
+
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
     private boolean userInteracted;
+    private int accentColor;
+    private int iconColor;
 
     public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
         if (!InputHelper.isEmpty(nameParser.getName()) && !InputHelper.isEmpty(nameParser.getUsername())) {
@@ -186,6 +186,8 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle("");
+        accentColor = ViewHelper.getAccentColor(this);
+        iconColor = ViewHelper.getIconColor(this);
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
@@ -235,7 +237,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         size.setVisibility(View.GONE);
         title.setText(repoModel.getFullName());
         TextViewCompat.setTextAppearance(title, R.style.TextAppearance_AppCompat_Medium);
-        title.setTextColor(ContextCompat.getColor(this, R.color.primary_text));
+        title.setTextColor(ViewHelper.getPrimaryTextColor(this));
         if (!InputHelper.isEmpty(repoModel.getLicense())) {
             licenseLayout.setVisibility(View.VISIBLE);
             license.setText(repoModel.getLicense().getSpdxId());
@@ -243,7 +245,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         supportInvalidateOptionsMenu();
         if (!PrefGetter.isRepoGuideShowed()) {// the mother of nesting. #dontjudgeme.
             new MaterialTapTargetPrompt.Builder(this)
-                    .setTarget(watchRepo)
+                    .setTarget(watchRepoLayout)
                     .setPrimaryText(R.string.watch)
                     .setSecondaryText(R.string.watch_hint)
                     .setCaptureTouchEventOutsidePrompt(true)
@@ -252,7 +254,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
 
                         @Override public void onHidePromptComplete() {
                             new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
-                                    .setTarget(starRepo)
+                                    .setTarget(starRepoLayout)
                                     .setPrimaryText(R.string.star)
                                     .setSecondaryText(R.string.star_hint)
                                     .setCaptureTouchEventOutsidePrompt(true)
@@ -261,7 +263,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
 
                                         @Override public void onHidePromptComplete() {
                                             new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
-                                                    .setTarget(forkRepo)
+                                                    .setTarget(forkRepoLayout)
                                                     .setPrimaryText(R.string.fork)
                                                     .setSecondaryText(R.string.fork_repo_hint)
                                                     .setCaptureTouchEventOutsidePrompt(true)
@@ -274,18 +276,18 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override public void onRepoWatched(boolean isWatched) {
-        watchRepoImage.tintDrawableColor(isWatched ? accentColor : blackColor);
+        watchRepoImage.tintDrawableColor(isWatched ? accentColor : iconColor);
         onEnableDisableWatch(true);
     }
 
     @Override public void onRepoStarred(boolean isStarred) {
         starRepoImage.setImageResource(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star);
-        starRepoImage.tintDrawableColor(isStarred ? accentColor : blackColor);
+        starRepoImage.tintDrawableColor(isStarred ? accentColor : iconColor);
         onEnableDisableStar(true);
     }
 
     @Override public void onRepoForked(boolean isForked) {
-        forkRepoImage.tintDrawableColor(isForked ? accentColor : blackColor);
+        forkRepoImage.tintDrawableColor(isForked ? accentColor : iconColor);
         onEnableDisableFork(true);
     }
 

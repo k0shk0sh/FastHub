@@ -5,9 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DrawableRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
@@ -72,17 +69,5 @@ public class FontTextView extends AppCompatTextView {
                 ViewHelper.tintDrawable(drawable, color);
             }
         }
-    }
-
-    public void setTextColor(@ColorRes int normalColor, @ColorRes int pressedColor) {
-        int nColor = ContextCompat.getColor(getContext(), normalColor);
-        int pColor = ContextCompat.getColor(getContext(), pressedColor);
-        setTextColor(ViewHelper.textSelector(nColor, pColor));
-    }
-
-    public void setTopDrawable(@DrawableRes int topDrawable, @ColorInt int color) {
-        Drawable drawable = ContextCompat.getDrawable(getContext(), topDrawable);
-        ViewHelper.tintDrawable(drawable, color);
-        setCompoundDrawablesRelativeWithIntrinsicBounds(null, drawable, null, null);
     }
 }

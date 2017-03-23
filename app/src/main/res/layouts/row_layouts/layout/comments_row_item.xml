@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spacing_micro"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/cardview_selector"
     app:cardBackgroundColor="@color/card_background"
@@ -41,7 +40,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/primary_text"
+                android:textColor="?android:textColorPrimary"
                 tools:text="When one acquires"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -51,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:maxLines="1"
-                android:textColor="@color/secondary_text"
+                android:textColor="?android:attr/textColorSecondary"
                 tools:text="50 minutes ago"/>
         </LinearLayout>
 

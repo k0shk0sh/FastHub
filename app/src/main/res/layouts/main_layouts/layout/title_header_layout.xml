@@ -44,7 +44,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="@color/primary_text"
+                android:textColor="?android:textColorPrimary"
                 tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
 
             <com.fastaccess.ui.widgets.ForegroundImageView

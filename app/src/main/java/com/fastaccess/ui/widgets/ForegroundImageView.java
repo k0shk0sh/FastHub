@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -118,10 +117,6 @@ public class ForegroundImageView extends AppCompatImageView {
 
     public void tintDrawableColor(@ColorInt int colorRes) {
         tintDrawableFromColor(colorRes);
-    }
-
-    public void tintDrawable(@ColorRes int colorRes) {
-        tintDrawableFromColor(ContextCompat.getColor(getContext(), colorRes));
     }
 
     public void tintDrawableFromColor(@ColorInt int color) {

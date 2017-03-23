@@ -52,6 +52,8 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
     @BindView(R.id.startGist) ForegroundImageView startGist;
     @BindView(R.id.forkGist) ForegroundImageView forkGist;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    private int accentColor;
+    private int iconColor;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String gistId) {
         Intent intent = new Intent(context, GistView.class);
@@ -116,6 +118,8 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        accentColor = ViewHelper.getAccentColor(this);
+        iconColor = ViewHelper.getIconColor(this);
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
@@ -173,12 +177,12 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override public void onGistStarred(boolean isStarred) {
         startGist.setImageResource(isStarred ? R.drawable.ic_star_filled : R.drawable.ic_star);
-        startGist.tintDrawable(isStarred ? R.color.accent : R.color.primary_text);
+        startGist.tintDrawableColor(isStarred ? accentColor : iconColor);
         startGist.setEnabled(true);
     }
 
     @Override public void onGistForked(boolean isForked) {
-        forkGist.tintDrawable(isForked ? R.color.accent : R.color.primary_text);
+        forkGist.tintDrawableColor(isForked ? accentColor : iconColor);
         forkGist.setEnabled(true);
     }
 

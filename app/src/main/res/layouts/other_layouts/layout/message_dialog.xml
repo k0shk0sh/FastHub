@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/spacing_xs_large"
-        android:textColor="@color/primary_text"
+        android:textColor="?android:textColorPrimary"
         android:textStyle="bold"
         tools:text="How jolly. You loot like a mast."/>
 
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="all"
-                android:textColor="@color/secondary_text"
+                android:textColor="?android:attr/textColorSecondary"
                 tools:text="Hello World"/>
         </LinearLayout>
 

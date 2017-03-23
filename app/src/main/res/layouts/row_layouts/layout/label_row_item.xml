@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
@@ -15,7 +14,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/colorImage"
@@ -29,9 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/spacing_xs_large"
-            android:maxLines="3"
             android:ellipsize="end"
-            android:textColor="@color/primary_text"
+            android:maxLines="3"
+            android:textColor="?android:textColorPrimary"
             android:transitionName="@string/title_transition"
             tools:text="Bug Fixes."/>
 

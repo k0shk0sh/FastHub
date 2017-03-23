@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spacing_micro"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/cardview_selector"
     app:cardBackgroundColor="@color/card_background"
@@ -34,7 +33,7 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:textColor="@color/primary_text"
+                android:textColor="?android:textColorPrimary"
                 tools:text="When one acquires"/>
 
             <com.fastaccess.ui.widgets.ForegroundImageView

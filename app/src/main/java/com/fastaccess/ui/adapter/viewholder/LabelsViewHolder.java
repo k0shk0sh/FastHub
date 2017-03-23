@@ -13,7 +13,6 @@ import com.fastaccess.ui.adapter.LabelsAdapter;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
-import butterknife.BindColor;
 import butterknife.BindView;
 
 /**
@@ -25,7 +24,6 @@ public class LabelsViewHolder extends BaseViewHolder<LabelModel> {
 
     @BindView(R.id.colorImage) AppCompatImageView colorImage;
     @BindView(R.id.name) FontTextView name;
-    @BindColor(R.color.primary_text) int primaryTextColor;
     private LabelsAdapter.OnSelectLabel onSelectLabel;
 
     @Override public void onClick(View v) {
@@ -49,7 +47,7 @@ public class LabelsViewHolder extends BaseViewHolder<LabelModel> {
         if (onSelectLabel.isLabelSelected(getAdapterPosition())) {
             name.setTextColor(ViewHelper.generateTextColor(color));
         } else {
-            name.setTextColor(primaryTextColor);
+            name.setTextColor(ViewHelper.getPrimaryTextColor(itemView.getContext()));
         }
         itemView.setBackgroundColor(onSelectLabel.isLabelSelected(getAdapterPosition()) ? color : 0);
     }

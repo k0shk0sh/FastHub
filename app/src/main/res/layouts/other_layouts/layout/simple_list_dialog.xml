@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/card_background"
+    android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
     <com.fastaccess.ui.widgets.FontTextView
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:minWidth="250dp"
         android:padding="@dimen/spacing_xs_large"
-        android:textColor="@color/primary_text"
+        android:textColor="?android:textColorPrimary"
         android:textStyle="bold"
         tools:text="How jolly. You loot like a mast."/>
 
