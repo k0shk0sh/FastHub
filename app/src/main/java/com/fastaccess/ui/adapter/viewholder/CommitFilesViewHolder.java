@@ -1,6 +1,7 @@
 package com.fastaccess.ui.adapter.viewholder;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
@@ -27,8 +28,6 @@ import butterknife.BindView;
  */
 
 public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
-
-
     @BindView(R.id.name) FontTextView name;
     @BindView(R.id.patch) FontTextView patch;
     @BindView(R.id.changes) FontTextView changes;
@@ -94,6 +93,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
                 .append(statusText)
                 .append("\n")
                 .bold(String.valueOf(commit.getStatus())));
+
         onToggle(onTogglePatch.isCollapsed(getAdapterPosition()));
     }
 
@@ -124,6 +124,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
                     }
                     builder.append(spannableDiff);
                 }
+                patch.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
                 patch.setText(builder);
             }
         }
