@@ -9,6 +9,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.GithubFileModel;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
@@ -84,7 +85,9 @@ public class GistFilesListView extends BaseFragment<GistFilesListMvp.View, GistF
         if (isOk && bundle != null) {
             String url = bundle.getString(BundleConstant.EXTRA);
             if (!InputHelper.isEmpty(url)) {
-                RestProvider.downloadFile(getContext(), url);
+                if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
+                    RestProvider.downloadFile(getContext(), url);
+                }
             }
         }
     }

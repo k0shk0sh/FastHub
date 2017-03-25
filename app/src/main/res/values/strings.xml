@@ -311,4 +311,6 @@
     <string name="no_open_pull_requests">No open pull requests</string>
     <string name="no_closed_pull_request">No closed pull requests</string>
     <string name="no_search_results">No search results</string>
+    <string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
+        store the files in your download directory</string>
 </resources>

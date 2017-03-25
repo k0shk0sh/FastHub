@@ -12,6 +12,7 @@ import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Release;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -164,6 +165,8 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
 
     @Override public void onItemSelected(SimpleUrlsModel item) {
         Logger.e(item, item.getUrl());
-        RestProvider.downloadFile(getContext(), item.getUrl());
+        if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
+            RestProvider.downloadFile(getContext(), item.getUrl());
+        }
     }
 }

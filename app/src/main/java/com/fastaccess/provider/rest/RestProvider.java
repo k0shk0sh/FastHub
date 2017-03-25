@@ -3,12 +3,15 @@ package com.fastaccess.provider.rest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
+import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.data.service.NotificationService;
@@ -93,10 +96,26 @@ public class RestProvider {
     }
 
     public static void downloadFile(@NonNull Context context, @NonNull String url) {
+        if (InputHelper.isEmpty(url)) return;
+        Uri uri = Uri.parse(url);
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setTitle(new File(url).getName());
-        request.setDescription(url);
+        DownloadManager.Request request = new DownloadManager.Request(uri);
+        File direct = new File(Environment.getExternalStorageDirectory() + File.separator + context.getString(R.string.app_name));
+        if (!direct.exists()) {
+            direct.mkdirs();
+        }
+        String fileName = "";
+        NameParser nameParser = new NameParser(url);
+        if (nameParser.getUsername() != null) {
+            fileName += nameParser.getUsername() + "_";
+        }
+        if (nameParser.getName() != null) {
+            fileName += nameParser.getName() + "_";
+        }
+        fileName += new File(url).getName();
+        request.setDestinationInExternalPublicDir(context.getString(R.string.app_name), fileName);
+        request.setTitle(fileName);
+        request.setDescription(context.getString(R.string.downloading_file));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         downloadManager.enqueue(request);

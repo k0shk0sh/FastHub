@@ -82,7 +82,9 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
                     ActivityHelper.shareUrl(v.getContext(), item.getHtmlUrl());
                     break;
                 case R.id.download:
-                    RestProvider.downloadFile(getContext(), item.getDownloadUrl());
+                    if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
+                        RestProvider.downloadFile(getContext(), item.getDownloadUrl());
+                    }
                     break;
             }
             return true;
@@ -159,7 +161,9 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
         if (isOk && bundle != null) {
             String url = bundle.getString(BundleConstant.EXTRA);
             if (!InputHelper.isEmpty(url)) {
-                RestProvider.downloadFile(getContext(), url);
+                if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
+                    RestProvider.downloadFile(getContext(), url);
+                }
             }
         }
     }

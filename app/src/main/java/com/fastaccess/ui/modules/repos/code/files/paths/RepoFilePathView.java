@@ -16,6 +16,7 @@ import com.annimon.stream.Objects;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.RepoFile;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -73,7 +74,9 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
                 .appendPath("archive")
                 .appendPath(ref + ".zip")
                 .build();
-        RestProvider.downloadFile(getContext(), uri.toString());
+        if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
+            RestProvider.downloadFile(getContext(), uri.toString());
+        }
     }
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {

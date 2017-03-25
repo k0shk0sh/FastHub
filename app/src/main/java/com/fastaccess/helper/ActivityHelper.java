@@ -1,25 +1,31 @@
 package com.fastaccess.helper;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.util.Pair;
 import android.view.View;
+import android.widget.Toast;
 
 import com.fastaccess.R;
 
 import java.util.List;
+
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Kosh on 12/12/15 10:51 PM
@@ -108,5 +114,37 @@ public class ActivityHelper {
             }
         }
         return null;
+    }
+
+    private static boolean isPermissionGranted(@NonNull Context context, @NonNull String permission) {
+        return ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private static boolean isExplanationNeeded(@NonNull Activity context, @NonNull String permissionName) {
+        return ActivityCompat.shouldShowRequestPermissionRationale(context, permissionName);
+    }
+
+    private static boolean isReadWritePermissionIsGranted(@NonNull Context context) {
+        return isPermissionGranted(context, Manifest.permission.READ_EXTERNAL_STORAGE)
+                && isPermissionGranted(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    }
+
+    private static void requestReadWritePermission(@NonNull Activity context) {
+        ActivityCompat.requestPermissions(context, new String[]{
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        }, 1);
+    }
+
+    public static boolean checkAndRequestReadWritePermission(@NonNull Activity activity) {
+        if (!isReadWritePermissionIsGranted(activity)) {
+            requestReadWritePermission(activity);
+            return false;
+        } else if (isExplanationNeeded(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
+                || isExplanationNeeded(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Toasty.error(activity, activity.getString(R.string.read_write_permission_explanation), Toast.LENGTH_LONG).show();
+            return false;
+        }
+        return true;
     }
 }

@@ -86,7 +86,9 @@ public class CodeViewerView extends BaseActivity {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (InputHelper.isEmpty(url)) return super.onOptionsItemSelected(item);
         if (item.getItemId() == R.id.download) {
-            RestProvider.downloadFile(this, url);
+            if (ActivityHelper.checkAndRequestReadWritePermission(this)) {
+                RestProvider.downloadFile(this, url);
+            }
             return true;
         } else if (item.getItemId() == R.id.browser) {
             ActivityHelper.forceOpenInBrowser(this, url);
