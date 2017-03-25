@@ -81,8 +81,8 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private void onSave(@Nullable List<Notification> notificationThreadModels) {
         if (notificationThreadModels != null) {
-            Notification.save(notificationThreadModels)
-                    .subscribe(o -> onNotifyUser(notificationThreadModels));
+            Notification.save(notificationThreadModels).subscribe();
+            onNotifyUser(notificationThreadModels);
         }
     }
 

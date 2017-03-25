@@ -69,6 +69,7 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
+        recycler.addDivider();
         adapter = new ReleasesAdapter(getPresenter().getReleases());
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());

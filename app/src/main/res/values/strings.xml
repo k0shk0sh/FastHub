@@ -312,5 +312,8 @@
     <string name="no_closed_pull_request">No closed pull requests</string>
     <string name="no_search_results">No search results</string>
     <string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
-        store the files in your download directory</string>
+        store the files in your sdcard to be able to view theme</string>
+    <string name="public_gists">Public Gists</string>
+    <string name="enable_ads">Enable Ads</string>
+    <string name="no_issues">No issues</string>
 </resources>

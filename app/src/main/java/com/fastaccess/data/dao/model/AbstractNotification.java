@@ -54,8 +54,10 @@ import rx.Observable;
         dataSource.delete(Notification.class)
                 .get()
                 .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(notification -> notification.save(notification).toObservable().toBlocking().singleOrDefault(null)));
+        return Observable.create(subscriber -> {
+            Stream.of(models).forEach(notification -> notification.save(notification).toObservable().toBlocking().singleOrDefault(null));
+            subscriber.onCompleted();
+        });
     }
 
     public static Observable<List<Notification>> getNotifications() {

@@ -11,8 +11,8 @@ import android.view.MenuItem;
 import com.fastaccess.R;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsView;
-import com.fastaccess.ui.modules.gists.GistsView;
-import com.fastaccess.ui.modules.pinned.PinnedReposView;
+import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerView;
+import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerView;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -31,8 +31,8 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
     @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
         FeedsView homeView = (FeedsView) getFragmentByTag(fragmentManager, FeedsView.TAG);
-        GistsView gistsView = (GistsView) getFragmentByTag(fragmentManager, GistsView.TAG);
-        PinnedReposView pinnedReposView = (PinnedReposView) getFragmentByTag(fragmentManager, PinnedReposView.TAG);
+        MyPullsPagerView pullRequestView = (MyPullsPagerView) getFragmentByTag(fragmentManager, MyPullsPagerView.TAG);
+        MyIssuesPagerView issuesView = (MyIssuesPagerView) getFragmentByTag(fragmentManager, MyIssuesPagerView.TAG);
         switch (type) {
             case MainMvp.FEEDS:
                 if (homeView == null) {
@@ -41,18 +41,18 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                     onShowHideFragment(fragmentManager, homeView, currentVisible);
                 }
                 break;
-            case MainMvp.GISTS:
-                if (gistsView == null) {
-                    onAddAndHide(fragmentManager, GistsView.newInstance(), currentVisible);
+            case MainMvp.PULL_REQUESTS:
+                if (pullRequestView == null) {
+                    onAddAndHide(fragmentManager, MyPullsPagerView.newInstance(), currentVisible);
                 } else {
-                    onShowHideFragment(fragmentManager, gistsView, currentVisible);
+                    onShowHideFragment(fragmentManager, pullRequestView, currentVisible);
                 }
                 break;
-            case MainMvp.PINNED:
-                if (pinnedReposView == null) {
-                    onAddAndHide(fragmentManager, PinnedReposView.newInstance(), currentVisible);
+            case MainMvp.ISSUES:
+                if (issuesView == null) {
+                    onAddAndHide(fragmentManager, MyIssuesPagerView.newInstance(), currentVisible);
                 } else {
-                    onShowHideFragment(fragmentManager, pinnedReposView, currentVisible);
+                    onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }
                 break;
         }
@@ -81,10 +81,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         if (getView() != null) {
             getView().onCloseDrawer();
-            if (item.getItemId() == R.id.about) {
-                getView().onSubmitFeedback();
-                return true;
-            } else if (item.getItemId() == R.id.logout) {
+            if (item.getItemId() == R.id.logout) {
                 getView().onLogout();
                 return true;
             } else if (item.getItemId() == R.id.fhRepo) {
@@ -93,6 +90,15 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 getView().onOpenSettings();
             } else if (item.getItemId() == R.id.supportDev) {
                 getView().onSupportDevelopment();
+            } else if (item.getItemId() == R.id.enableAds) {
+                getView().onEnableAds();
+                return true;
+            } else if (item.getItemId() == R.id.gists) {
+                getView().onOpenGists();
+                return true;
+            } else if (item.getItemId() == R.id.pinnedMenu) {
+                getView().onOpenPinnedRepos();
+                return true;
             }
         }
         return false;

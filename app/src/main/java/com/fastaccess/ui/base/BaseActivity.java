@@ -85,17 +85,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             Icepick.restoreInstanceState(this, savedInstanceState);
         }
         setupToolbarAndStatusBar(toolbar);
-        if (adView != null) {
-            boolean isAdsEnabled = PrefGetter.isAdsEnabled();
-            if (isAdsEnabled) {
-                adView.setVisibility(View.VISIBLE);
-                MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(getString(R.string.test_device_id))
-                        .build();
-                adView.loadAd(adRequest);
-            }
-        }
+        showHideAds();
     }
 
     @Override protected void onResume() {
@@ -217,6 +207,23 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(res);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    protected void showHideAds() {
+        if (adView != null) {
+            boolean isAdsEnabled = PrefGetter.isAdsEnabled();
+            if (isAdsEnabled) {
+                adView.setVisibility(View.VISIBLE);
+                MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice(getString(R.string.test_device_id))
+                        .build();
+                adView.loadAd(adRequest);
+            } else {
+                adView.destroy();
+                adView.setVisibility(View.GONE);
+            }
         }
     }
 

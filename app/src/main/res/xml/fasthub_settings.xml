@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
     <PreferenceCategory android:title="@string/notification_settings">
 
@@ -51,6 +53,23 @@
             android:summary="@string/back_button_summary"
             android:title="@string/back_button_title"/>
 
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/about">
+
+        <Preference
+            android:key="about"
+            android:title="@string/about">
+            <intent
+                android:targetClass="com.fastaccess.ui.modules.about.FastHubAboutActivity"
+                android:targetPackage="com.fastaccess.github"/>
+        </Preference>
+
+        <Preference
+            android:key="currentVersion"
+            android:title="@string/app_name"
+            app:summary="@string/current_version"/>
     </PreferenceCategory>
 
 

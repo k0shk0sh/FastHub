@@ -51,7 +51,5 @@ public class ReleasesViewHolder extends BaseViewHolder<Release> {
                 .append(item.isDraft() ? drafted : released)
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(item.getCreatedAt())));
-        avatarLayout.setUrl(item.getAuthor().getAvatarUrl(), item.getAuthor().getLogin());
-        avatarLayout.setVisibility(View.VISIBLE);
     }
 }

@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -15,7 +14,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
@@ -25,48 +23,28 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
-import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
-import com.fastaccess.ui.modules.gists.create.CreateGistView;
+import com.fastaccess.ui.modules.gists.PublicGistsActivity;
 import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
+import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 import com.fastaccess.ui.widgets.AvatarLayout;
-import com.fastaccess.ui.widgets.FontSwitchView;
-import com.fastaccess.ui.widgets.FontTextView;
-import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
 public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
     @State @MainMvp.NavigationType int navType = MainMvp.FEEDS;
-
-    @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.navigation) NavigationView navigationView;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
-    @BindView(R.id.versionText) FontTextView versionText;
-    @BindView(R.id.enableAds) FontSwitchView enableAds;
 
     private long backPressTimer;
-
-    @OnClick(R.id.enableAds) void onEnableAds(View view) {
-
-        PrefGetter.setAdsEnabled(((FontSwitchView) view).isChecked());
-        recreate();
-    }
-
-    @OnClick(R.id.fab) void onClick() {
-        if (navType == MainMvp.GISTS) {
-            startActivity(new Intent(this, CreateGistView.class));
-        }
-    }
 
     @NonNull @Override public MainPresenter providePresenter() {
         return new MainPresenter();
@@ -90,10 +68,10 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        navigationView.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
+        hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
-        onHideShowFab();
-        enableAds.setChecked(PrefGetter.isAdsEnabled());
         AppHelper.cancelNotification(this);
     }
 
@@ -107,7 +85,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
         if (isLoggedIn() && Notification.hasUnreadNotifications()) {
-            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).getIcon(), ViewHelper.getAccentColor(this));
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
         }
         return super.onCreateOptionsMenu(menu);
     }
@@ -120,7 +98,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             startActivity(new Intent(this, SearchView.class));
             return true;
         } else if (item.getItemId() == R.id.notifications) {
-            ViewHelper.tintDrawable(item.getIcon(), ViewHelper.getPrimaryTextColor(this));
+            item.setIcon(R.drawable.ic_notifications_none);
             startActivity(new Intent(this, NotificationActivityView.class));
             return true;
         }
@@ -144,7 +122,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         this.navType = navType;
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
-        onHideShowFab();
+        hideShowShadow(navType == MainMvp.FEEDS);
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 
@@ -154,18 +132,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public void onCloseDrawer() {
         if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
-    }
-
-    @Override public void onHideShowFab() {
-        if (navType == MainMvp.GISTS) {
-            fab.show();
-        } else {
-            fab.hide();
-        }
-    }
-
-    @Override public void onSubmitFeedback() {
-        startActivity(new Intent(this, FastHubAboutActivity.class));
     }
 
     @Override public void onLogout() {
@@ -182,6 +148,21 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public void onSupportDevelopment() {
         new DonationView().show(getSupportFragmentManager(), "DonationView");
+    }
+
+    @Override public void onEnableAds() {
+        boolean isEnabled = !PrefGetter.isAdsEnabled();
+        PrefGetter.setAdsEnabled(isEnabled);
+        showHideAds();
+        navigationView.getMenu().findItem(R.id.enableAds).setChecked(isEnabled);
+    }
+
+    @Override public void onOpenGists() {
+        PublicGistsActivity.startActivity(this);
+    }
+
+    @Override public void onOpenPinnedRepos() {
+        PinnedReposActivity.startActivity(this);
     }
 
     private void superOnBackPressed(boolean didClickTwice) {
@@ -225,11 +206,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
                     ((TextView) view.findViewById(R.id.email)).setText(userModel.getLogin());
                 }
             }
-            versionText.setText(SpannableBuilder.builder()
-                    .append(getString(R.string.current_version))
-                    .append("(")
-                    .bold(BuildConfig.VERSION_NAME)
-                    .append(")"));
         }
     }
 }

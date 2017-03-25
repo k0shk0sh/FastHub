@@ -5,9 +5,11 @@ import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.widget.Toast;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import es.dmoral.toasty.Toasty;
 
@@ -23,6 +25,11 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         findPreference("recylerViewAnimation").setOnPreferenceChangeListener(this);
         findPreference("rect_avatar").setOnPreferenceChangeListener(this);
         findPreference("appTheme").setOnPreferenceChangeListener(this);
+        findPreference("currentVersion").setSummary(SpannableBuilder.builder()
+                .append(getString(R.string.current_version))
+                .append("(")
+                .bold(BuildConfig.VERSION_NAME)
+                .append(")"));
     }
 
     @Override public boolean onPreferenceChange(Preference preference, Object newValue) {

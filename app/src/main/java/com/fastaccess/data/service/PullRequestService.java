@@ -36,6 +36,9 @@ public interface PullRequestService {
     Observable<Pageable<PullRequest>> getPullsWithCount(@NonNull @Query(value = "q", encoded = true) String query,
                                                         @Query("page") int page);
 
+    @GET("user/issues")
+    Observable<Pageable<PullRequest>> getUserPullRequests(@Query("page") int page, @Query("state") @NonNull String state);
+
     @GET("repos/{owner}/{repo}/pulls/{number}")
     @Headers("Accept: application/vnd.github.VERSION.html")
     Observable<PullRequest> getPullRequest(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);

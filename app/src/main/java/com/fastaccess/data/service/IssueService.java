@@ -36,6 +36,9 @@ public interface IssueService {
     @GET("search/issues") Observable<Pageable<Issue>> getIssuesWithCount(@NonNull @Query(value = "q", encoded = true) String query,
                                                                          @Query("page") int page);
 
+    @GET("user/issues")
+    Observable<Pageable<Issue>> getUserIssues(@Query("page") int page, @Query("state") @NonNull String state);
+
     @GET("repos/{owner}/{repo}/issues/{number}")
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Issue> getIssue(@Path("owner") String owner, @Path("repo") String repo,

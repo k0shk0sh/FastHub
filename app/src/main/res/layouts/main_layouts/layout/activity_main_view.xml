@@ -51,38 +51,9 @@
         android:clipToPadding="false"
         android:fitsSystemWindows="true"
         android:focusable="true"
-        android:paddingBottom="76dp"
         app:headerLayout="@layout/drawer_header"
         app:itemIconTint="?colorAccent"
         app:itemTextColor="?colorAccent"
-        app:menu="@menu/drawer_menu">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="-76dp"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing_xs_large">
-
-            <include layout="@layout/enable_ads_switch"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_micro"
-                android:gravity="center"
-                android:text="@string/app_name"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/versionText"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"/>
-
-        </LinearLayout>
-    </android.support.design.widget.NavigationView>
+        app:menu="@menu/drawer_menu"/>
 
 </android.support.v4.widget.DrawerLayout>

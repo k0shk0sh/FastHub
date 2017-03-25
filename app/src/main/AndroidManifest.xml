@@ -151,6 +151,15 @@
             android:theme="@style/AppTheme.AboutActivity"/>
 
         <activity
+            android:name=".ui.modules.pinned.PinnedReposActivity"
+            android:label="@string/pinned"/>
+
+        <activity
+            android:name=".ui.modules.gists.PublicGistsActivity"
+            android:label="@string/public_gists"/>
+
+
+        <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:noHistory="true"

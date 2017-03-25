@@ -14,6 +14,8 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsView;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListView;
+import com.fastaccess.ui.modules.main.issues.MyIssuesView;
+import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestView;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersView;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingView;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsView;
@@ -143,4 +145,15 @@ public class FragmentPagerAdapterModel {
                 .collect(Collectors.toList());
     }
 
+    public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open), MyIssuesView.newInstance(IssueState.open))
+                , new FragmentPagerAdapterModel(context.getString(R.string.closed), MyIssuesView.newInstance(IssueState.closed)))
+                .collect(Collectors.toList());
+    }
+
+    public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open), MyPullRequestView.newInstance(IssueState.open))
+                , new FragmentPagerAdapterModel(context.getString(R.string.closed), MyPullRequestView.newInstance(IssueState.closed)))
+                .collect(Collectors.toList());
+    }
 }

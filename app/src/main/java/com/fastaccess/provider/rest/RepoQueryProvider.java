@@ -15,4 +15,10 @@ public class RepoQueryProvider {
                 "+" + "repo:" + owner + "/" +
                 repo + "+" + "is:" + issueState.name();
     }
+
+    @NonNull public static String getMyIssuesPullRequerQuery(@NonNull String username, @NonNull IssueState issueState, boolean isPr) {
+        return "type:" + (isPr ? "pr" : "issue") +
+                "+" + "author:" + username + "+" +
+                "is:" + issueState.name();
+    }
 }

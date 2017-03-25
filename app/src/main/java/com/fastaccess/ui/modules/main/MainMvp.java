@@ -21,13 +21,13 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 interface MainMvp {
 
     int FEEDS = 0;
-    int GISTS = 1;
-    int PINNED = 2;
+    int PULL_REQUESTS = 1;
+    int ISSUES = 2;
 
     @IntDef({
             FEEDS,
-            GISTS,
-            PINNED,
+            PULL_REQUESTS,
+            ISSUES,
     })
     @Retention(RetentionPolicy.SOURCE) @interface NavigationType {}
 
@@ -39,10 +39,6 @@ interface MainMvp {
 
         void onCloseDrawer();
 
-        void onHideShowFab();
-
-        void onSubmitFeedback();
-
         void onLogout();
 
         void openFasHubRepo();
@@ -50,6 +46,12 @@ interface MainMvp {
         void onOpenSettings();
 
         void onSupportDevelopment();
+
+        void onEnableAds();
+
+        void onOpenGists();
+
+        void onOpenPinnedRepos();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, NavigationView.OnNavigationItemSelectedListener,
