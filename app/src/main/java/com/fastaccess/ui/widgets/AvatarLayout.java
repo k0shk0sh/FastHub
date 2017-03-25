@@ -34,15 +34,15 @@ import cn.gavinliu.android.lib.shapedimageview.ShapedImageView;
 public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
     @BindView(R.id.avatar) ShapedImageView avatar;
-    private String login;
+    @Nullable private String login;
     private Toast toast;
 
-    @OnClick(R.id.avatar) void onClick(View view) {
+    @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
         UserPagerView.startActivity(view.getContext(), login);
     }
 
-    @OnLongClick(R.id.avatar) boolean onLongClick(View view) {
+    @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return false;
         if (toast != null) toast.cancel();
         toast = Toast.makeText(getContext(), view.getContentDescription(), Toast.LENGTH_SHORT);

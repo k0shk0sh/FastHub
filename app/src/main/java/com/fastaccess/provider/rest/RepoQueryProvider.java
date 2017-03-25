@@ -11,18 +11,8 @@ import com.fastaccess.data.dao.types.IssueState;
 public class RepoQueryProvider {
     @NonNull public static String getIssuesPullRequerQuery(@NonNull String owner, @NonNull String repo,
                                                            @NonNull IssueState issueState, boolean isPr) {
-        return new StringBuilder()
-                .append("+")
-                .append("type:")
-                .append(isPr ? "pr" : "issue")
-                .append("+")
-                .append("repo:")
-                .append(owner)
-                .append("/")
-                .append(repo)
-                .append("+")
-                .append("is:")
-                .append(issueState.name())
-                .toString();
+        return "+" + "type:" + (isPr ? "pr" : "issue") +
+                "+" + "repo:" + owner + "/" +
+                repo + "+" + "is:" + issueState.name();
     }
 }

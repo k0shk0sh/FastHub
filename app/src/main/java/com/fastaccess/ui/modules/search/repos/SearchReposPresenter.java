@@ -6,7 +6,6 @@ import android.view.View;
 
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Repo;
-import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerView;

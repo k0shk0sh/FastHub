@@ -16,7 +16,6 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.EditorView;
-import com.fastaccess.ui.widgets.FontButton;
 
 import butterknife.BindView;
 import butterknife.OnClick;

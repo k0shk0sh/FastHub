@@ -15,8 +15,6 @@ import com.fastaccess.ui.modules.repos.RepoPagerView;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
  */

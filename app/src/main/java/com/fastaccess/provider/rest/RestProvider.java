@@ -8,11 +8,9 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
-import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
-import com.fastaccess.data.service.LoginRestService;
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.RepoService;
@@ -26,6 +24,7 @@ import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.File;
 import java.lang.reflect.Modifier;
 
 import okhttp3.Cache;
@@ -36,7 +35,6 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.HttpException;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by Kosh on 08 Feb 2017, 8:37 PM
@@ -62,7 +60,7 @@ public class RestProvider {
         return cache;
     }
 
-    private static OkHttpClient provideOkHttpClient(boolean forLogin) {
+    private static OkHttpClient provideOkHttpClient() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             client.addInterceptor(new HttpLoggingInterceptor()
@@ -75,13 +73,8 @@ public class RestProvider {
                     if (!InputHelper.isEmpty(PrefGetter.getToken())) {
                         requestBuilder.header("Authorization", "token " + PrefGetter.getToken());
                     }
-                    if (!forLogin) {
-                        requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
-                                .addHeader("Content-type", "application/vnd.github.v3+json");
-                    } else {
-                        requestBuilder.addHeader("Accept", "application/json")
-                                .addHeader("Content-type", "application/json");
-                    }
+                    requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
+                            .addHeader("Content-type", "application/vnd.github.v3+json");
                     requestBuilder.method(original.method(), original.body());
                     Request request = requestBuilder.build();
                     return chain.proceed(request);
@@ -93,20 +86,20 @@ public class RestProvider {
     private static Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.REST_URL)
-                .client(provideOkHttpClient(false))
+                .client(provideOkHttpClient())
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
     }
 
-    public static long downloadFile(@NonNull Context context, @NonNull String url) {
+    public static void downloadFile(@NonNull Context context, @NonNull String url) {
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setTitle(new File(url).getName());
         request.setDescription(url);
-        request.setTitle(context.getString(R.string.downloading_file));
         request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE | DownloadManager.Request.NETWORK_WIFI);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        return downloadManager.enqueue(request);
+        downloadManager.enqueue(request);
     }
 
     public static int getErrorCode(Throwable throwable) {
@@ -115,16 +108,6 @@ public class RestProvider {
 
         }
         return -1;
-    }
-
-    @NonNull public static LoginRestService getLoginRestService() {
-        return new Retrofit.Builder()
-                .client(provideOkHttpClient(true))
-                .baseUrl("https://github.com/login/oauth/")
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build()
-                .create(LoginRestService.class);
     }
 
     @NonNull public static UserRestService getUserService() {

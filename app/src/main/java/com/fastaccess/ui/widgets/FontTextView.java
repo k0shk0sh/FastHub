@@ -5,6 +5,8 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
@@ -23,15 +25,15 @@ public class FontTextView extends AppCompatTextView {
 
     @State int tintColor = -1;
 
-    public FontTextView(Context context) {
+    public FontTextView(@NonNull Context context) {
         this(context, null);
     }
 
-    public FontTextView(Context context, AttributeSet attrs) {
+    public FontTextView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public FontTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FontTextView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context, attrs);
     }
@@ -46,7 +48,7 @@ public class FontTextView extends AppCompatTextView {
 //        setActivated(isActivated);
     }
 
-    private void init(Context context, AttributeSet attributeSet) {
+    private void init(@NonNull Context context, @Nullable AttributeSet attributeSet) {
         if (attributeSet != null) {
             TypedArray tp = context.obtainStyledAttributes(attributeSet, R.styleable.FontTextView);
             try {

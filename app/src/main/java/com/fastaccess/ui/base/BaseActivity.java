@@ -67,14 +67,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-        int themeMode = PrefGetter.getThemeType(getApplicationContext());
-        if (themeMode == PrefGetter.LIGHT) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        } else if (themeMode == PrefGetter.DARK) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_AUTO);
-        }
+        setupTheme();
         super.onCreate(savedInstanceState);
         if (layout() != 0) {
             setContentView(layout());
@@ -237,5 +230,17 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (!isTransparent) {
             getWindow().setStatusBarColor(ViewHelper.getPrimaryDarkColor(this));
         }
+    }
+
+    private void setupTheme() {
+        int themeMode = PrefGetter.getThemeType(getApplicationContext());
+        int mode = AppCompatDelegate.MODE_NIGHT_AUTO;
+        if (themeMode == PrefGetter.LIGHT) {
+            mode = AppCompatDelegate.MODE_NIGHT_NO;
+        } else if (themeMode == PrefGetter.DARK) {
+            mode = AppCompatDelegate.MODE_NIGHT_YES;
+        }
+        AppCompatDelegate.setDefaultNightMode(mode);
+        setTheme(R.style.AppTheme);
     }
 }

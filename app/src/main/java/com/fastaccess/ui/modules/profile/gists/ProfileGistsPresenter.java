@@ -11,8 +11,6 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */

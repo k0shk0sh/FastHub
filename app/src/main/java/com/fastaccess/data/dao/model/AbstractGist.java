@@ -3,7 +3,6 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import com.annimon.stream.LongStream;
 import com.annimon.stream.Stream;
@@ -112,7 +111,7 @@ import rx.Observable;
                 .toList();
     }
 
-    @Nullable public static Observable<Gist> getGist(@NonNull String gistId) {
+    public static Observable<Gist> getGist(@NonNull String gistId) {
         return App.getInstance()
                 .getDataStore()
                 .select(Gist.class)

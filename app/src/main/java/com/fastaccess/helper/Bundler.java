@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Bundler {
 
-    private Bundle bundle;
+    private final Bundle bundle;
 
     private Bundler() {
         bundle = new Bundle();

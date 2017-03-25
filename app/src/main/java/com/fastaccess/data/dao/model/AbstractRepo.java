@@ -27,8 +27,8 @@ import lombok.NoArgsConstructor;
 import rx.Completable;
 import rx.Observable;
 
+import static com.fastaccess.data.dao.model.Repo.FULL_NAME;
 import static com.fastaccess.data.dao.model.Repo.ID;
-import static com.fastaccess.data.dao.model.Repo.NAME;
 import static com.fastaccess.data.dao.model.Repo.REPOS_OWNER;
 import static com.fastaccess.data.dao.model.Repo.STARRED_USER;
 import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
@@ -124,10 +124,10 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
                 .andThen(App.getInstance().getDataStore().insert(entity).toCompletable());
     }
 
-    public static Observable<Repo> getRepo(@NonNull String name) {
+    public static Observable<Repo> getRepo(@NonNull String name, @NonNull String login) {
         return App.getInstance().getDataStore()
                 .select(Repo.class)
-                .where(NAME.eq(name))
+                .where(FULL_NAME.eq(login + "/" + name))
                 .get()
                 .toObservable();
     }

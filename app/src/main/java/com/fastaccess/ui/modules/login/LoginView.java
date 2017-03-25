@@ -91,6 +91,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.LoginTheme);
         super.onCreate(savedInstanceState);
     }
 

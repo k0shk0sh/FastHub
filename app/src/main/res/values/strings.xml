@@ -285,4 +285,7 @@
     <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Website</string>
     <string name="twitter" translatable="false">Twitter</string>
+    <string name="support_development">Support Development</string>
+    <string name="success_purchase_message">Thanks for being extremely awesome!</string>
+    <string name="change_theme_warning">If the theme didn\'t apply properly, please kill and open the app manually.</string>
 </resources>

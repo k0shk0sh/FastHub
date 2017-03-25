@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
 
@@ -12,18 +13,18 @@ import com.fastaccess.helper.TypeFaceHelper;
  */
 public class FontSwitchView extends SwitchCompat {
 
-    public FontSwitchView(Context context) {
+    public FontSwitchView(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public FontSwitchView(Context context, AttributeSet attrs) {
+    public FontSwitchView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
 
     }
 
-    public FontSwitchView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FontSwitchView(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

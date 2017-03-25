@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 
@@ -12,17 +13,17 @@ import com.fastaccess.helper.TypeFaceHelper;
  */
 public class FontButton extends AppCompatButton {
 
-    public FontButton(Context context) {
+    public FontButton(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public FontButton(Context context, AttributeSet attrs) {
+    public FontButton(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public FontButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FontButton(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

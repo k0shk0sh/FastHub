@@ -74,7 +74,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://twitter.com/kevttob"))
                 .build());
         logoAuthor.addItem(new MaterialAboutActionItem.Builder()
-                .text("221 Pixels")
+                .text(R.string.website)
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_brower))
                 .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://www.221pixels.com/"))
                 .build());

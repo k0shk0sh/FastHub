@@ -69,7 +69,7 @@ public class Logger {
     private static String getCurrentClassName() {
         try {
             String className = Thread.currentThread().getStackTrace()[4].getClassName();
-            String[] temp = className.split("[\\.]");
+            String[] temp = className.split("[.]");
             className = temp[temp.length - 1];
             return className;
         } catch (Exception ignored) {}

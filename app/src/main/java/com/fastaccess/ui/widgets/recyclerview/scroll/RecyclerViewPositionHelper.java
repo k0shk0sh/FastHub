@@ -1,5 +1,7 @@
 package com.fastaccess.ui.widgets.recyclerview.scroll;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,15 +10,15 @@ import android.view.View;
  * Created by Kosh on 8/2/2015. copyrights are reserved @Innov8tif
  */
 class RecyclerViewPositionHelper {
-    private final RecyclerView recyclerView;
+    @NonNull private final RecyclerView recyclerView;
     private final RecyclerView.LayoutManager layoutManager;
 
-    private RecyclerViewPositionHelper(RecyclerView recyclerView) {
+    private RecyclerViewPositionHelper(@NonNull RecyclerView recyclerView) {
         this.recyclerView = recyclerView;
         this.layoutManager = recyclerView.getLayoutManager();
     }
 
-    static RecyclerViewPositionHelper createHelper(RecyclerView recyclerView) {
+    static RecyclerViewPositionHelper createHelper(@Nullable RecyclerView recyclerView) {
         if (recyclerView == null) {
             throw new NullPointerException("Recycler View is null");
         }
@@ -47,7 +49,7 @@ class RecyclerViewPositionHelper {
         return child == null ? RecyclerView.NO_POSITION : recyclerView.getChildAdapterPosition(child);
     }
 
-    private View findOneVisibleChild(int fromIndex, int toIndex, boolean completelyVisible, boolean acceptPartiallyVisible) {
+    @Nullable private View findOneVisibleChild(int fromIndex, int toIndex, boolean completelyVisible, boolean acceptPartiallyVisible) {
         OrientationHelper helper;
         if (layoutManager.canScrollVertically()) {
             helper = OrientationHelper.createVerticalHelper(layoutManager);

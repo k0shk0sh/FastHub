@@ -22,7 +22,7 @@ public class AssigneesAdapter extends BaseRecyclerAdapter<User, AssigneesViewHol
         void onToggleSelection(int position, boolean select);
     }
 
-    private OnSelectAssignee onSelectAssignee;
+    private final OnSelectAssignee onSelectAssignee;
 
     public AssigneesAdapter(@NonNull List<User> data, OnSelectAssignee onSelectAssignee) {
         super(data);

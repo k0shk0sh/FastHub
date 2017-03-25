@@ -5,6 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
 
     <application
         android:name=".App"
@@ -13,11 +14,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/SplashTheme"
         tools:replace="android:allowBackup">
-        <activity
-            android:name="com.fastaccess.ui.modules.main.MainView"
-            android:theme="@style/SplashTheme">
+        <activity android:name="com.fastaccess.ui.modules.main.MainView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -54,7 +53,6 @@
 
         <activity
             android:name=".ui.modules.repos.RepoPagerView"
-
             android:label="@string/repo"
             android:parentActivityName=".ui.modules.main.MainView">
             <meta-data

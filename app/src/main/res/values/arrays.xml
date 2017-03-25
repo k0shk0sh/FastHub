@@ -19,4 +19,11 @@
         <item>@string/light_theme_mode</item>
         <item>@string/dark_theme_mode</item>
     </string-array>
+
+    <string-array name="donation_products" translatable="false">
+        <item>2.00$</item>
+        <item>5.00$</item>
+        <item>10.00$</item>
+        <item>20.00$</item>
+    </string-array>
 </resources>

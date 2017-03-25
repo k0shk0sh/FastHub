@@ -11,7 +11,7 @@
 
         <item
             android:id="@+id/about"
-            android:icon="@drawable/ic_info_outline_white_48dp"
+            android:icon="@drawable/ic_issues"
             android:title="@string/about"/>
 
 
@@ -19,12 +19,15 @@
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings"/>
+        <item
+            android:id="@+id/supportDev"
+            android:icon="@drawable/ic_heart"
+            android:title="@string/support_development"/>
 
         <item
             android:id="@+id/logout"
             android:icon="@drawable/ic_logout"
             android:title="@string/logout"/>
-
     </group>
 
 </menu>

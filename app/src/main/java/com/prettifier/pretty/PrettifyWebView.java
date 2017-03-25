@@ -65,6 +65,7 @@ public class PrettifyWebView extends NestedWebView {
     @SuppressLint("SetJavaScriptEnabled") private void initView() {
         if (isInEditMode()) return;
         if (AppHelper.isNightMode(getResources())) {
+            Logger.e(ViewHelper.getWindowBackground(getContext()));
             setBackgroundColor(ViewHelper.getWindowBackground(getContext()));
         }
         setWebChromeClient(new ChromeClient());

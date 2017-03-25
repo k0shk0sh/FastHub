@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.inputmethod.EditorInfo;
@@ -12,18 +13,18 @@ import com.fastaccess.helper.TypeFaceHelper;
  */
 public class FontEditText extends AppCompatEditText {
 
-    public FontEditText(Context context) {
+    public FontEditText(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public FontEditText(Context context, AttributeSet attrs) {
+    public FontEditText(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
 
     }
 
-    public FontEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FontEditText(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

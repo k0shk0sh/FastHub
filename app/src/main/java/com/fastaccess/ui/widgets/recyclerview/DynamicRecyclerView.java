@@ -40,15 +40,15 @@ public class DynamicRecyclerView extends RecyclerView {
         }
     };
 
-    public DynamicRecyclerView(Context context) {
+    public DynamicRecyclerView(@NonNull Context context) {
         this(context, null);
     }
 
-    public DynamicRecyclerView(Context context, AttributeSet attrs) {
+    public DynamicRecyclerView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public DynamicRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public DynamicRecyclerView(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         if (isInEditMode()) return;
         addItemDecoration(BottomPaddingDecoration.with(context));

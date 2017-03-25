@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatAutoCompleteTextView;
 import android.util.AttributeSet;
 import android.view.inputmethod.EditorInfo;
@@ -12,18 +13,18 @@ import com.fastaccess.helper.TypeFaceHelper;
  */
 public class FontAutoCompleteEditText extends AppCompatAutoCompleteTextView {
 
-    public FontAutoCompleteEditText(Context context) {
+    public FontAutoCompleteEditText(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public FontAutoCompleteEditText(Context context, AttributeSet attrs) {
+    public FontAutoCompleteEditText(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
 
     }
 
-    public FontAutoCompleteEditText(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FontAutoCompleteEditText(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

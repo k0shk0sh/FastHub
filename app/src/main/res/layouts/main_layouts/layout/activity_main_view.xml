@@ -50,6 +50,7 @@
         android:clickable="true"
         android:clipToPadding="false"
         android:fitsSystemWindows="true"
+        android:focusable="true"
         android:paddingBottom="76dp"
         app:headerLayout="@layout/drawer_header"
         app:itemIconTint="?colorAccent"

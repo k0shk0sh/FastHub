@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 
@@ -12,17 +13,17 @@ import com.fastaccess.helper.TypeFaceHelper;
  */
 public class FontRadioButton extends AppCompatRadioButton {
 
-    public FontRadioButton(Context context) {
+    public FontRadioButton(@NonNull Context context) {
         super(context);
         init();
     }
 
-    public FontRadioButton(Context context, AttributeSet attrs) {
+    public FontRadioButton(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public FontRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
+    public FontRadioButton(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }

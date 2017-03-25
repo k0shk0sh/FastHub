@@ -4,6 +4,7 @@ package com.fastaccess.ui.widgets.recyclerview;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
@@ -14,7 +15,7 @@ import android.view.View;
  */
 class InsetDividerDecoration extends RecyclerView.ItemDecoration {
 
-    private final Paint paint;
+    @NonNull private final Paint paint;
     private final int inset;
     private final int height;
 
@@ -27,7 +28,7 @@ class InsetDividerDecoration extends RecyclerView.ItemDecoration {
         paint.setStrokeWidth(divider);
     }
 
-    @Override public void onDrawOver(Canvas canvas, RecyclerView parent, RecyclerView.State state) {
+    @Override public void onDrawOver(@NonNull Canvas canvas, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
         int childCount = parent.getChildCount();
         if (childCount < 2) return;
         RecyclerView.LayoutManager lm = parent.getLayoutManager();

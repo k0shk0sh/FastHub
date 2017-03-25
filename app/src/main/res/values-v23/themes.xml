@@ -13,9 +13,13 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="AppTheme.AboutActivity" parent="Theme.Mal.Light.LightActionBar">
+    <style name="AppTheme.AboutActivity" parent="AppTheme.Base">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="mal_lightActionBar">true</item>
+        <item name="mal_popupOverlay">@style/Theme.Mal.Light.PopupOverlay</item>
+        <item name="mal_color_primary">@color/primary_text</item>
+        <item name="mal_color_secondary">@color/secondary_text</item>
     </style>
 </resources>

@@ -7,10 +7,8 @@
     <color name="primary_text">#fff</color>
     <color name="secondary_text">@color/material_grey_500</color>
     <color name="text_tertiary">@color/material_grey_300</color>
-    <color name="card_highlighter">@color/primary_dark</color>
-    <color name="card_background">@color/primary</color>
-    <color name="dark_gray">@color/secondary_text</color>
-    <color name="universal_primary_dark_color">@color/windowBackground</color>
+    <color name="card_background">#2D3035</color>
+    <color name="dark_gray">@color/material_grey_500</color>
     <color name="patch_addition_color">@color/material_green_900</color>
     <color name="patch_deletion_color">@color/material_red_900</color>
     <color name="patch_ref_color">@color/material_blue_grey_500</color>

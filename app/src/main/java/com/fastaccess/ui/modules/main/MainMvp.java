@@ -48,6 +48,8 @@ interface MainMvp {
         void openFasHubRepo();
 
         void onOpenSettings();
+
+        void onSupportDevelopment();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, NavigationView.OnNavigationItemSelectedListener,

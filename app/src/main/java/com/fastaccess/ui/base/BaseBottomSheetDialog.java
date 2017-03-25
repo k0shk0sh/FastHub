@@ -29,7 +29,7 @@ import icepick.Icepick;
 @SuppressWarnings("RestrictedApi") public abstract class BaseBottomSheetDialog extends BottomSheetDialogFragment {
 
     protected BottomSheetBehavior<View> bottomSheetBehavior;
-    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+    private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override public void onStateChanged(@NonNull View bottomSheet, int newState) {
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                 isAlreadyHidden = true;

@@ -27,7 +27,7 @@ import rx.functions.Action1;
 
 public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> implements BaseMvp.FAPresenter {
     private boolean apiCalled;
-    private RxTiPresenterSubscriptionHandler subscriptionHandler = new RxTiPresenterSubscriptionHandler(this);
+    private final RxTiPresenterSubscriptionHandler subscriptionHandler = new RxTiPresenterSubscriptionHandler(this);
 
     @Override public void manageSubscription(@Nullable Subscription... subscription) {
         if (subscription != null) {

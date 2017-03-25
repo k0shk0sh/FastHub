@@ -21,7 +21,6 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -29,6 +28,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.create.CreateGistView;
+import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.search.SearchView;
@@ -89,9 +89,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
-        Logger.e(navType);
         hideShowShadow(navType != MainMvp.PROFILE);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
@@ -115,7 +113,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override public boolean onOptionsItemSelected(MenuItem item) {
+    @Override public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onOpenDrawer();
             return true;
@@ -140,16 +138,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             }
         } else {
             superOnBackPressed(clickTwichToExit);
-        }
-    }
-
-    private void superOnBackPressed(boolean clickTwichToExit) {
-        if (clickTwichToExit) {
-            if (canExit()) {
-                super.onBackPressed();
-            }
-        } else {
-            super.onBackPressed();
         }
     }
 
@@ -192,6 +180,20 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public void onOpenSettings() {
         SettingsBottomSheetDialog.show(getSupportFragmentManager());
+    }
+
+    @Override public void onSupportDevelopment() {
+        new DonationView().show(getSupportFragmentManager(), "DonationView");
+    }
+
+    private void superOnBackPressed(boolean didClickTwice) {
+        if (didClickTwice) {
+            if (canExit()) {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private boolean canExit() {

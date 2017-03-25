@@ -18,6 +18,7 @@
         android:color="?colorPrimary"
         android:icon="@drawable/ic_gists"
         android:title="@string/gists"/>
+
     <item
         android:id="@+id/profile"
         android:color="?colorPrimary"

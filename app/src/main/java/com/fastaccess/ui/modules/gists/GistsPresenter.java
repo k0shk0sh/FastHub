@@ -12,8 +12,6 @@ import com.fastaccess.ui.modules.gists.gist.GistView;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */

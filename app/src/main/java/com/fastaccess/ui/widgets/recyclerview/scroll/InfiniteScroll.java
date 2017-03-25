@@ -1,5 +1,6 @@
 package com.fastaccess.ui.widgets.recyclerview.scroll;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 /**
@@ -20,7 +21,7 @@ import android.support.v7.widget.RecyclerView;
 
     public InfiniteScroll() {}
 
-    @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    @Override public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
         visibleItemCount = recyclerView.getChildCount();

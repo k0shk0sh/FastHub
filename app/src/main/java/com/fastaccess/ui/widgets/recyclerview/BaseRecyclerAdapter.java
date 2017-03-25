@@ -62,7 +62,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         return viewHolder(parent, viewType);
     }
 
-    @Override public void onBindViewHolder(VH holder, int position) {
+    @Override public void onBindViewHolder(@NonNull VH holder, int position) {
         animate(holder, position);
         onBindView(holder, position);
         onShowGuide(holder, position);
@@ -80,14 +80,14 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         }
     }
 
-    private void animate(VH holder, int position) {
+    private void animate(@NonNull VH holder, int position) {
         if (isEnableAnimation() && position > lastKnowingPosition) {
             AnimHelper.startBeatsAnimation(holder.itemView);
             lastKnowingPosition = position;
         }
     }
 
-    public void insertItems(List<M> items) {
+    public void insertItems(@NonNull List<M> items) {
         data.clear();
         addItems(items);
     }
@@ -104,7 +104,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         notifyItemRangeInserted(getItemCount() - 1, getItemCount());
     }
 
-    @SuppressWarnings("WeakerAccess") public void addItems(List<M> items) {
+    @SuppressWarnings("WeakerAccess") public void addItems(@NonNull List<M> items) {
         data.addAll(items);
         notifyDataSetChanged();
     }
@@ -120,7 +120,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         removeItem(position);
     }
 
-    public void removeItems(List<M> items) {
+    public void removeItems(@NonNull List<M> items) {
 //        int prevSize = data.size();
         data.removeAll(items);
         notifyDataSetChanged();

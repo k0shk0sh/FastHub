@@ -51,7 +51,7 @@ public class MessageDialogView extends BaseBottomSheetDialog {
         callback = null;
     }
 
-    @OnClick({R.id.cancel, R.id.ok}) public void onClick(View view) {
+    @OnClick({R.id.cancel, R.id.ok}) public void onClick(@NonNull View view) {
         if (callback != null) {
             isAlreadyHidden = true;
             callback.onMessageDialogActionClicked(view.getId() == R.id.ok, getArguments().getBundle("bundle"));

@@ -25,7 +25,7 @@ public class AssigneesViewHolder extends BaseViewHolder<User> {
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
     @BindColor(R.color.light_gray) int lightGray;
-    private AssigneesAdapter.OnSelectAssignee onSelectAssignee;
+    private final AssigneesAdapter.OnSelectAssignee onSelectAssignee;
 
     @Override public void onClick(View v) {
         int position = getAdapterPosition();

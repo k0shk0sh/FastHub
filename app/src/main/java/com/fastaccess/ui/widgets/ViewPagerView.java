@@ -2,6 +2,8 @@ package com.fastaccess.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
@@ -23,7 +25,7 @@ public class ViewPagerView extends ViewPager {
         super(context);
     }
 
-    public ViewPagerView(Context context, AttributeSet attrs) {
+    public ViewPagerView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         int[] attrsArray = {enabled};
         TypedArray array = context.obtainStyledAttributes(attrs, attrsArray);
@@ -40,7 +42,7 @@ public class ViewPagerView extends ViewPager {
         requestLayout();
     }
 
-    @Override public void setAdapter(PagerAdapter adapter) {
+    @Override public void setAdapter(@Nullable PagerAdapter adapter) {
         super.setAdapter(adapter);
         if (isInEditMode()) return;
         if (adapter != null) {

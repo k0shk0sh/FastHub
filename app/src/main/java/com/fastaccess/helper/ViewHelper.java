@@ -15,10 +15,8 @@ import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.text.Layout;
 import android.util.TypedValue;
@@ -38,51 +36,51 @@ import java.util.Arrays;
  */
 public class ViewHelper {
 
-    public static int getPrimaryDarkColor(Context context) {
-        return getAttr(context, R.attr.colorPrimaryDark);
+    @ColorInt public static int getPrimaryDarkColor(@NonNull Context context) {
+        return getColorAttr(context, R.attr.colorPrimaryDark);
     }
 
-    public static int getPrimaryColor(Context context) {
-        return getAttr(context, R.attr.colorPrimary);
+    @ColorInt public static int getPrimaryColor(@NonNull Context context) {
+        return getColorAttr(context, R.attr.colorPrimary);
     }
 
-    public static int getPrimaryTextColor(@NonNull Context context) {
-        return getAttr(context, android.R.attr.textColorPrimary);
+    @ColorInt public static int getPrimaryTextColor(@NonNull Context context) {
+        return getColorAttr(context, android.R.attr.textColorPrimary);
     }
 
-    public static int getAccentColor(@NonNull Context context) {
-        return getAttr(context, R.attr.colorAccent);
+    @ColorInt public static int getAccentColor(@NonNull Context context) {
+        return getColorAttr(context, R.attr.colorAccent);
     }
 
-    public static int getIconColor(@NonNull Context context) {
-        return getAttr(context, R.attr.iconColor);
+    @ColorInt public static int getIconColor(@NonNull Context context) {
+        return getPrimaryTextColor(context);
     }
 
-    public static int getWindowBackground(@NonNull Context context) {
-        return getAttr(context, android.R.attr.windowBackground);
+    @ColorInt public static int getWindowBackground(@NonNull Context context) {
+        return getColorAttr(context, android.R.attr.windowBackground);
     }
 
-    private static int getAttr(Context context, int attr) {
-        TypedValue typedValue = new TypedValue();
-        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{attr});
-        int color = a.getColor(0, 0);
-        a.recycle();
+    @ColorInt private static int getColorAttr(@NonNull Context context, int attr) {
+        Resources.Theme theme = context.getTheme();
+        TypedArray typedArray = theme.obtainStyledAttributes(new int[]{attr});
+        final int color = typedArray.getColor(0, Color.LTGRAY);
+        typedArray.recycle();
         return color;
     }
 
-    public static int toPx(Context context, int dp) {
+    public static int toPx(@NonNull Context context, int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_PX, dp, context.getResources().getDisplayMetrics());
     }
 
     public static void tintDrawable(@NonNull Drawable drawable, @ColorInt int color) {
-        drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_ATOP);
+        drawable.mutate().setColorFilter(color, PorterDuff.Mode.SRC_IN);
     }
 
     public static Drawable getDrawableSelector(int normalColor, int pressedColor) {
         return new RippleDrawable(ColorStateList.valueOf(pressedColor), getRippleMask(normalColor), getRippleMask(normalColor));
     }
 
-    private static Drawable getRippleMask(int color) {
+    @Nullable private static Drawable getRippleMask(int color) {
         float[] outerRadii = new float[8];
         Arrays.fill(outerRadii, 3);
         RoundRectShape r = new RoundRectShape(outerRadii, null, null);
@@ -91,7 +89,7 @@ public class ViewHelper {
         return shapeDrawable;
     }
 
-    private static StateListDrawable getStateListDrawable(int normalColor, int pressedColor) {
+    @NonNull private static StateListDrawable getStateListDrawable(int normalColor, int pressedColor) {
         StateListDrawable states = new StateListDrawable();
         states.addState(new int[]{android.R.attr.state_pressed}, new ColorDrawable(pressedColor));
         states.addState(new int[]{android.R.attr.state_focused}, new ColorDrawable(pressedColor));
@@ -120,24 +118,19 @@ public class ViewHelper {
         );
     }
 
-    private static boolean isTablet(Resources resources) {
+    private static boolean isTablet(@NonNull Resources resources) {
         return (resources.getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static boolean isTablet(Context context) {
+    public static boolean isTablet(@NonNull Context context) {
         return isTablet(context.getResources());
     }
 
-    private static void setTextViewMenuCounter(@NonNull NavigationView navigationView, @IdRes int itemId, int count) {
-        TextView view = (TextView) navigationView.getMenu().findItem(itemId).getActionView();
-        view.setText(String.format("%s", count));
-    }
-
-    public static boolean isLandscape(Resources resources) {
+    public static boolean isLandscape(@NonNull Resources resources) {
         return resources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
-    @SuppressWarnings("WeakerAccess") public static Rect getLayoutPosition(@NonNull View view) {
+    @NonNull @SuppressWarnings("WeakerAccess") public static Rect getLayoutPosition(@NonNull View view) {
         Rect myViewRect = new Rect();
         view.getGlobalVisibleRect(myViewRect);
         return myViewRect;
@@ -180,7 +173,7 @@ public class ViewHelper {
         return false;
     }
 
-    public static TextView getTabTextView(@NonNull TabLayout tabs, int tabIndex) {
+    @NonNull public static TextView getTabTextView(@NonNull TabLayout tabs, int tabIndex) {
         return (TextView) (((LinearLayout) ((LinearLayout) tabs.getChildAt(0)).getChildAt(tabIndex)).getChildAt(1));
 
     }

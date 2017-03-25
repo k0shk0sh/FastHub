@@ -93,7 +93,7 @@ dependencies {
         butterKnifeVersion = '8.5.1'
         icepickVersion = '3.2.0'
         lombokVersion = '1.12.6'
-        supportVersion = "25.2.0"
+        supportVersion = "25.3.0"
         firebase = "10.2.0"
         thirtyinchVersion = '0.8.0-rc3'
         retrofit = '2.1.0'
@@ -130,6 +130,7 @@ dependencies {
     compile 'io.requery:requery:1.2.0'
     compile 'io.requery:requery-android:1.2.0'
     compile 'com.android.support:multidex:1.0.1'
+    compile 'com.github.VasyaFromRussia:pago:d4fa358611'
     annotationProcessor 'io.requery:requery-processor:1.2.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"

@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChildHelper;
@@ -15,19 +16,19 @@ public class NestedCoordinatorLayout extends CoordinatorLayout implements Nested
 
     private NestedScrollingChildHelper mChildHelper;
 
-    public NestedCoordinatorLayout(Context context) {
+    public NestedCoordinatorLayout(@NonNull Context context) {
         super(context);
         mChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
     }
 
-    public NestedCoordinatorLayout(Context context, AttributeSet attrs) {
+    public NestedCoordinatorLayout(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         mChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
     }
 
-    public NestedCoordinatorLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NestedCoordinatorLayout(@NonNull Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
