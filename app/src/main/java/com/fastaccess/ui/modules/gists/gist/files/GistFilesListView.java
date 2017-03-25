@@ -69,7 +69,7 @@ public class GistFilesListView extends BaseFragment<GistFilesListMvp.View, GistF
         if (item.getRawUrl() != null) {
             if (item.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(item.getRawUrl())) {
                 MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
-                        Bundler.start().put(BundleConstant.EXTRA, item.getRawUrl()).end())
+                        Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).put(BundleConstant.EXTRA, item.getRawUrl()).end())
                         .show(getChildFragmentManager(), "MessageDialogView");
             } else {
                 CodeViewerView.startActivity(getContext(), item.getRawUrl());

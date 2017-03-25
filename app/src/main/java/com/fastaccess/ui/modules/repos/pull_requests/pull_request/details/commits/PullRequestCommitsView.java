@@ -54,6 +54,7 @@ public class PullRequestCommitsView extends BaseFragment<PullRequestCommitsMvp.V
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, PullRequestCommitsView can't be proceeded.");
         }
+        stateLayout.setEmptyText(R.string.no_commits);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

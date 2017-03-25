@@ -47,6 +47,7 @@ public class SearchUsersView extends BaseFragment<SearchUsersMvp.View, SearchUse
         if (savedInstanceState == null) {
             stateLayout.hideProgress();
         }
+        stateLayout.setEmptyText(R.string.no_search_results);
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);

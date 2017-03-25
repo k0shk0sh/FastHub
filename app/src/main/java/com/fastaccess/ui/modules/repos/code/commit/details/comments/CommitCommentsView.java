@@ -53,6 +53,7 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) getPresenter().onFragmentCreated(getArguments());
+        stateLayout.setEmptyText(R.string.no_comments);
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
@@ -137,6 +138,7 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
         MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
                 Bundler.start()
                         .put(BundleConstant.EXTRA, id)
+                        .put(BundleConstant.YES_NO_EXTRA, true)
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }

@@ -42,6 +42,7 @@ public class IssueDetailsView extends BaseFragment<IssueDetailsMvp.View, IssueDe
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) getPresenter().onFragmentCreated(getArguments());
+        stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);

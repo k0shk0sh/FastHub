@@ -221,7 +221,7 @@
     <string name="edit">Edit</string>
     <string name="update_issue">Update Issue</string>
     <string name="update_pull_request">Update Pull Request</string>
-    <string name="no_milestones">No Milestones</string>
+    <string name="no_milestones">No milestones</string>
     <string name="add">Add</string>
     <string name="done">Done</string>
     <string name="home">Home</string>
@@ -288,4 +288,27 @@
     <string name="support_development">Support Development</string>
     <string name="success_purchase_message">Thanks for being extremely awesome!</string>
     <string name="change_theme_warning">If the theme didn\'t apply properly, please kill and open the app manually.</string>
+    <string name="pin">Pin</string>
+    <string name="pinned">Pinned</string>
+    <string name="unpin">Unpin</string>
+    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_feeds">No feeds</string>
+    <string name="no_gists">No gists</string>
+    <string name="no_comments">No comments</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="no_followers">No followers</string>
+    <string name="no_followings">No followings</string>
+    <string name="no_repos">No repositories</string>
+    <string name="no_starred_repos">No stared repositories</string>
+    <string name="no_commits">No commits</string>
+    <string name="no_contributors">No contributors</string>
+    <string name="no_releases">No releases</string>
+    <string name="no_closed_issues">No closed issues</string>
+    <string name="no_opened_issues">No open issues</string>
+    <string name="no_events">No events</string>
+    <string name="no_open_pull_requests">No open pull requests</string>
+    <string name="no_closed_pull_request">No closed pull requests</string>
+    <string name="no_search_results">No search results</string>
 </resources>

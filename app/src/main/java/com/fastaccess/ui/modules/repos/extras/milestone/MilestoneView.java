@@ -84,6 +84,7 @@ public class MilestoneView extends BaseFragment<MilestoneMvp.View, MilestonePres
         if (login == null || repo == null) {
             return;
         }
+        stateLayout.setEmptyText(R.string.no_milestones);
         toolbar.setTitle(R.string.milestone);
         toolbar.setOnMenuItemClickListener(item -> onAddMilestone());
         toolbar.inflateMenu(R.menu.add_menu);

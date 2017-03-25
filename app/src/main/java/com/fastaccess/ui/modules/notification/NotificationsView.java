@@ -87,6 +87,7 @@ public class NotificationsView extends BaseFragment<NotificationsMvp.View, Notif
         adapter = new NotificationsAdapter(getPresenter().getNotifications());
         adapter.setListener(getPresenter());
         refresh.setOnRefreshListener(this);
+        stateLayout.setEmptyText(R.string.no_notifications);
         stateLayout.setOnReloadListener(v -> onRefresh());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setEmptyView(stateLayout, refresh);

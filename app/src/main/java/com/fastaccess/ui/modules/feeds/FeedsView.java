@@ -10,8 +10,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.SimpleUrlsModel;
+import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -50,6 +50,7 @@ public class FeedsView extends BaseFragment<FeedsMvp.View, FeedsPresenter> imple
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        stateLayout.setEmptyText(R.string.no_feeds);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

@@ -73,6 +73,8 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, issues can't be proceeded.");
         }
+        stateLayout.setEmptyText(getPresenter().getIssueState() == IssueState.open
+                                 ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

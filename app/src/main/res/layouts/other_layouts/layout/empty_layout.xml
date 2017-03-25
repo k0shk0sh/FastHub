@@ -14,11 +14,11 @@
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/empty_text"
-            style="@style/TextAppearance.AppCompat.Title"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xs_large"
             android:gravity="center"
+            android:padding="@dimen/spacing_xs_large"
             android:text="@string/no_data"
             android:textColor="?colorAccent"/>
 

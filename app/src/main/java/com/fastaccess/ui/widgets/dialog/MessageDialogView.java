@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
+import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.prettifier.pretty.PrettifyWebView;
 
@@ -34,6 +36,8 @@ public class MessageDialogView extends BaseBottomSheetDialog {
     @BindView(R.id.prettifyWebView) PrettifyWebView prettifyWebView;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.message) FontTextView message;
+    @BindView(R.id.cancel) FontButton cancel;
+    @BindView(R.id.ok) FontButton ok;
 
     @Nullable private MessageDialogViewActionCallback callback;
 
@@ -75,6 +79,14 @@ public class MessageDialogView extends BaseBottomSheetDialog {
                 prettifyWebView.setGithubContent(msg, null, true);
                 prettifyWebView.setNestedScrollingEnabled(false);
                 return;
+            }
+        }
+        if (bundle.getBundle("bundle") != null) {
+            @SuppressWarnings("ConstantConditions")
+            boolean yesNo = bundle.getBundle("bundle").getBoolean(BundleConstant.YES_NO_EXTRA);
+            if (yesNo) {
+                ok.setText(R.string.yes);
+                cancel.setText(R.string.no);
             }
         }
         message.setText(msg);

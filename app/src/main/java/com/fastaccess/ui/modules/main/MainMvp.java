@@ -22,12 +22,12 @@ interface MainMvp {
 
     int FEEDS = 0;
     int GISTS = 1;
-    int PROFILE = 2;
+    int PINNED = 2;
 
     @IntDef({
             FEEDS,
             GISTS,
-            PROFILE,
+            PINNED,
     })
     @Retention(RetentionPolicy.SOURCE) @interface NavigationType {}
 

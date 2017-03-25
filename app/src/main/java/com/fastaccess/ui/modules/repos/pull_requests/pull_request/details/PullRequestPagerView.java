@@ -166,7 +166,9 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
             MessageDialogView.newInstance(
                     getPresenter().isLocked() ? getString(R.string.unlock_issue) : getString(R.string.lock_issue),
                     getPresenter().isLocked() ? getString(R.string.unlock_issue_details) : getString(R.string.lock_issue_details),
-                    Bundler.start().put(BundleConstant.EXTRA_TWO, true).end())
+                    Bundler.start().put(BundleConstant.EXTRA_TWO, true)
+                            .put(BundleConstant.YES_NO_EXTRA, true)
+                            .end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.labels) {

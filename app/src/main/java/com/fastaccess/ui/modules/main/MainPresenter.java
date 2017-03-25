@@ -9,11 +9,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsView;
 import com.fastaccess.ui.modules.gists.GistsView;
-import com.fastaccess.ui.modules.profile.ProfilePagerView;
+import com.fastaccess.ui.modules.pinned.PinnedReposView;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -33,7 +32,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         Fragment currentVisible = getVisibleFragment(fragmentManager);
         FeedsView homeView = (FeedsView) getFragmentByTag(fragmentManager, FeedsView.TAG);
         GistsView gistsView = (GistsView) getFragmentByTag(fragmentManager, GistsView.TAG);
-        ProfilePagerView profileView = (ProfilePagerView) getFragmentByTag(fragmentManager, ProfilePagerView.TAG);
+        PinnedReposView pinnedReposView = (PinnedReposView) getFragmentByTag(fragmentManager, PinnedReposView.TAG);
         switch (type) {
             case MainMvp.FEEDS:
                 if (homeView == null) {
@@ -49,11 +48,11 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                     onShowHideFragment(fragmentManager, gistsView, currentVisible);
                 }
                 break;
-            case MainMvp.PROFILE:
-                if (profileView == null) {
-                    onAddAndHide(fragmentManager, ProfilePagerView.newInstance(Login.getUser().getLogin()), currentVisible);
+            case MainMvp.PINNED:
+                if (pinnedReposView == null) {
+                    onAddAndHide(fragmentManager, PinnedReposView.newInstance(), currentVisible);
                 } else {
-                    onShowHideFragment(fragmentManager, profileView, currentVisible);
+                    onShowHideFragment(fragmentManager, pinnedReposView, currentVisible);
                 }
                 break;
         }

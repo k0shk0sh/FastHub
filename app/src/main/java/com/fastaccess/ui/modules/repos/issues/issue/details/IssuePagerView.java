@@ -163,14 +163,17 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             if (issueModel == null) return true;
             MessageDialogView.newInstance(
                     issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
-                    getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true).end())
+                    getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true)
+                            .put(BundleConstant.YES_NO_EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.lockIssue) {
             MessageDialogView.newInstance(
                     getPresenter().isLocked() ? getString(R.string.unlock_issue) : getString(R.string.lock_issue),
                     getPresenter().isLocked() ? getString(R.string.unlock_issue_details) : getString(R.string.lock_issue_details),
-                    Bundler.start().put(BundleConstant.EXTRA_TWO, true).end())
+                    Bundler.start().put(BundleConstant.EXTRA_TWO, true)
+                            .put(BundleConstant.YES_NO_EXTRA, true)
+                            .end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.labels) {

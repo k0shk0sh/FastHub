@@ -10,8 +10,8 @@ import android.view.View;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.data.dao.SimpleUrlsModel;
+import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -64,6 +64,7 @@ public class RepoReleasesView extends BaseFragment<RepoReleasesMvp.View, RepoRel
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, issues can't be proceeded.");
         }
+        stateLayout.setEmptyText(R.string.no_releases);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

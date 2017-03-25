@@ -43,6 +43,7 @@ public class PullRequestDetailsView extends BaseFragment<PullRequestDetailsMvp.V
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (savedInstanceState == null) getPresenter().onFragmentCreated(getArguments());
+        stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);

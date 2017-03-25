@@ -50,6 +50,7 @@ public class ProfileFollowingView extends BaseFragment<ProfileFollowingMvp.View,
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, username is required");
         }
+        stateLayout.setEmptyText(R.string.no_followings);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

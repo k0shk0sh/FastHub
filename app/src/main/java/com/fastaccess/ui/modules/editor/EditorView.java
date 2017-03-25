@@ -188,7 +188,7 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
             super.onBackPressed();
         } else {
             MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
-                    Bundler.start().put(BundleConstant.EXTRA, true).end())
+                    Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
     }

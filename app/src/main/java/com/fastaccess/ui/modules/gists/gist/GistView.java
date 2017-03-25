@@ -142,7 +142,9 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
         } else if (item.getItemId() == R.id.deleteGist) {
             MessageDialogView.newInstance(
                     getString(R.string.delete_gist), getString(R.string.confirm_message),
-                    Bundler.start().put(BundleConstant.EXTRA, true).end())
+                    Bundler.start()
+                            .put(BundleConstant.YES_NO_EXTRA, true)
+                            .put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         }

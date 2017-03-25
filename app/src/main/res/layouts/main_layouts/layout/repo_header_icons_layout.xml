@@ -7,7 +7,8 @@
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="horizontal"
-    android:padding="@dimen/spacing_normal"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingTop="@dimen/spacing_normal"
     tools:showIn="@layout/header_title_with_toolbar">
 
     <LinearLayout
@@ -114,6 +115,32 @@
             android:maxLength="6"
             android:maxLines="1"
             tools:text="Apache"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/pinLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_normal"
+        android:background="?selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/pinImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_pin"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/pinText"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/pin"/>
 
     </LinearLayout>
 

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
@@ -72,6 +73,9 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @BindView(R.id.watchRepoLayout) LinearLayout watchRepoLayout;
     @BindView(R.id.starRepoLayout) LinearLayout starRepoLayout;
     @BindView(R.id.forkRepoLayout) LinearLayout forkRepoLayout;
+    @BindView(R.id.pinImage) ForegroundImageView pinImage;
+    @BindView(R.id.pinLayout) LinearLayout pinLayout;
+    @BindView(R.id.pinText) FontTextView pinText;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -129,11 +133,13 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         }
     }
 
-    @SuppressWarnings("ConstantConditions") @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout}) void onClick(View view) {
+    @SuppressWarnings("ConstantConditions") @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout})
+    void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
-                        Bundler.start().put(BundleConstant.EXTRA, true).end())
+                        Bundler.start().put(BundleConstant.EXTRA, true)
+                                .put(BundleConstant.YES_NO_EXTRA, true).end())
                         .show(getSupportFragmentManager(), MessageDialogView.TAG);
                 break;
             case R.id.starRepoLayout:
@@ -149,6 +155,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                             getPresenter().isWatched() ? GithubActionService.UNWATCH_REPO : GithubActionService.WATCH_REPO);
                     getPresenter().onWatch();
                 }
+                break;
+            case R.id.pinLayout:
+                pinLayout.setEnabled(false);
+                getPresenter().onPinUnpinRepo();
                 break;
         }
     }
@@ -221,6 +231,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
         hideProgress();
+        onRepoPinned(AbstractPinnedRepos.isPinned(repoModel.getFullName()));
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
         language.setVisibility(InputHelper.isEmpty(repoModel.getLanguage()) ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(repoModel.getLanguage())) language.setText(repoModel.getLanguage());
@@ -291,6 +302,11 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         onEnableDisableFork(true);
     }
 
+    @Override public void onRepoPinned(boolean isPinned) {
+        pinImage.setImageResource(isPinned ? R.drawable.ic_pin_filled : R.drawable.ic_pin);
+        pinLayout.setEnabled(true);
+    }
+
     @Override public void onEnableDisableWatch(boolean isEnabled) {
         watchRepoLayout.setEnabled(isEnabled);
     }
@@ -356,7 +372,9 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             return true;
         } else if (item.getItemId() == R.id.deleteRepo) {
             MessageDialogView.newInstance(getString(R.string.delete_repo), getString(R.string.delete_repo_warning),
-                    Bundler.start().put(BundleConstant.EXTRA_TWO, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
+                    Bundler.start().put(BundleConstant.EXTRA_TWO, true)
+                            .put(BundleConstant.YES_NO_EXTRA, true)
+                            .end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -399,4 +417,6 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             fab.hide();
         }
     }
+
+    @OnClick(R.id.pinLayout) public void onViewClicked() {}
 }

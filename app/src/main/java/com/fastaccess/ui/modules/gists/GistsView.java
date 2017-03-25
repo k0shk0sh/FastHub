@@ -42,7 +42,7 @@ public class GistsView extends BaseFragment<GistsMvp.View, GistsPresenter> imple
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-
+        stateLayout.setEmptyText(R.string.no_gists);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new GistsAdapter(getPresenter().getGists());
         adapter.setListener(getPresenter());

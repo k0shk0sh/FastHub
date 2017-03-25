@@ -52,6 +52,7 @@ public class RepoContributorsView extends BaseFragment<RepoContributorsMvp.View,
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, issues can't be proceeded.");
         }
+        stateLayout.setEmptyText(R.string.no_contributors);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

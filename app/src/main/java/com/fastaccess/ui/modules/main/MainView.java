@@ -90,7 +90,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideShowShadow(navType != MainMvp.PROFILE);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
         onHideShowFab();
@@ -145,7 +144,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         this.navType = navType;
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
-        hideShowShadow(navType != MainMvp.PROFILE);
         onHideShowFab();
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }

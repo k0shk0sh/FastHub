@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.AppHelper;
@@ -45,7 +46,6 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
-        Logger.e(navTyp);
         makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
                 repoModel -> {
                     this.repo = repoModel;
@@ -255,6 +255,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                         }
                     });
         }
+    }
+
+    @Override public void onPinUnpinRepo() {
+        if (getRepo() == null) return;
+        boolean isPinned = AbstractPinnedRepos.pinUpin(getRepo());
+        sendToView(view -> view.onRepoPinned(isPinned));
     }
 
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {

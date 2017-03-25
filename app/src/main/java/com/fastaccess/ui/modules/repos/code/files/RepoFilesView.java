@@ -60,7 +60,9 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
             if (InputHelper.isEmpty(url)) return;
             if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(url)) {
                 MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
-                        Bundler.start().put(BundleConstant.EXTRA, model.getDownloadUrl()).end())
+                        Bundler.start().put(BundleConstant.EXTRA, model.getDownloadUrl())
+                                .put(BundleConstant.YES_NO_EXTRA, true)
+                                .end())
                         .show(getChildFragmentManager(), "MessageDialogView");
             } else {
                 CodeViewerView.startActivity(getContext(), url);
@@ -102,6 +104,7 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        stateLayout.setEmptyText(R.string.no_files);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(v -> onRefresh());
         recycler.setEmptyView(stateLayout, refresh);

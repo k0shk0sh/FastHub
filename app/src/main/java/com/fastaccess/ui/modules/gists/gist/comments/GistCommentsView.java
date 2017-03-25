@@ -56,6 +56,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
         gistId = getArguments().getString("gistId");
         recycler.setEmptyView(stateLayout, refresh);
         if (gistId == null) return;
+        stateLayout.setEmptyText(R.string.no_comments);
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
@@ -144,6 +145,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
                 Bundler.start()
                         .put(BundleConstant.EXTRA, id)
                         .put(BundleConstant.ID, gistId)
+                        .put(BundleConstant.YES_NO_EXTRA, true)
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }

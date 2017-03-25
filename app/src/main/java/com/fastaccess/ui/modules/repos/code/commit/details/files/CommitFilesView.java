@@ -52,6 +52,7 @@ public class CommitFilesView extends BaseFragment<CommitFilesMvp.View, CommitFil
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         refresh.setEnabled(false);
+        stateLayout.setEmptyText(R.string.no_files);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this);
         recycler.setAdapter(adapter);

@@ -20,9 +20,9 @@
         android:title="@string/gists"/>
 
     <item
-        android:id="@+id/profile"
+        android:id="@+id/pinned"
         android:color="?colorPrimary"
-        android:icon="@drawable/ic_profile"
-        android:title="@string/profile"/>
+        android:icon="@drawable/ic_heart_full"
+        android:title="@string/pinned"/>
 
 </menu>

@@ -50,6 +50,7 @@ public class ProfileReposView extends BaseFragment<ProfileReposMvp.View, Profile
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, username is required");
         }
+        stateLayout.setEmptyText(R.string.no_repos);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

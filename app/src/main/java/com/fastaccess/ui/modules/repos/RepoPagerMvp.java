@@ -46,6 +46,8 @@ public interface RepoPagerMvp {
 
         void onRepoForked(boolean isForked);
 
+        void onRepoPinned(boolean isPinned);
+
         void onEnableDisableWatch(boolean isEnabled);
 
         void onEnableDisableStar(boolean isEnabled);
@@ -57,6 +59,7 @@ public interface RepoPagerMvp {
         void onChangeStarCount(boolean isStarred);
 
         void onChangeForkCount(boolean isForked);
+
 
         boolean hasUserInteractedWithView();
     }
@@ -96,6 +99,8 @@ public interface RepoPagerMvp {
         void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide);
 
         void onDeleteRepo();
+
+        void onPinUnpinRepo();
     }
 
     interface TabsBadgeListener {

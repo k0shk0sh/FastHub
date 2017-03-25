@@ -50,6 +50,7 @@ public class SearchCodeView extends BaseFragment<SearchCodeMvp.View, SearchCodeP
         if (savedInstanceState == null) {
             stateLayout.hideProgress();
         }
+        stateLayout.setEmptyText(R.string.no_search_results);
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);

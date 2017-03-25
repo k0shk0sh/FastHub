@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 window.onload = function() {
     addTouchEvents(document.getElementsByTagName("pre"));
     addTouchEvents(document.getElementsByTagName("table"));
-    addEventListener(document.getElementsByClassName("highlight"));
 };
 
 function addTouchEvents(elements) {

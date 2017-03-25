@@ -50,6 +50,7 @@ public class ProfileStarredView extends BaseFragment<ProfileStarredMvp.View, Pro
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, username is required");
         }
+        stateLayout.setEmptyText(R.string.no_starred_repos);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

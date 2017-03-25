@@ -48,6 +48,7 @@ public class SearchIssuesView extends BaseFragment<SearchIssuesMvp.View, SearchI
         if (savedInstanceState == null) {
             stateLayout.hideProgress();
         }
+        stateLayout.setEmptyText(R.string.no_search_results);
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
