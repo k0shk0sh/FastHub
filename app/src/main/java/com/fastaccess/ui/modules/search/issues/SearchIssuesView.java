@@ -77,9 +77,18 @@ public class SearchIssuesView extends BaseFragment<SearchIssuesMvp.View, SearchI
     }
 
     @Override public void showErrorMessage(@NonNull String message) {
+        showReload();
+        super.showErrorMessage(message);
+    }
+
+    @Override public void showMessage(int titleRes, int msgRes) {
+        showReload();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
-        super.showErrorMessage(message);
     }
 
     @Override public void onSetSearchQuery(@NonNull String query) {

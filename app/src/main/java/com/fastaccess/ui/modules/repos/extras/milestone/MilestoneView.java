@@ -111,10 +111,19 @@ public class MilestoneView extends BaseFragment<MilestoneMvp.View, MilestonePres
         stateLayout.hideProgress();
     }
 
-    @Override public void showErrorMessage(@NonNull String msgRes) {
+    @Override public void showErrorMessage(@NonNull String message) {
+        showReload();
+        super.showErrorMessage(message);
+    }
+
+    @Override public void showMessage(int titleRes, int msgRes) {
+        showReload();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
-        super.showErrorMessage(msgRes);
     }
 
     @NonNull @Override public MilestonePresenter providePresenter() {

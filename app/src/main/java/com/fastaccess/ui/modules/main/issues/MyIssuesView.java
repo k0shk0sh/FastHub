@@ -78,9 +78,18 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
     }
 
     @Override public void showErrorMessage(@NonNull String message) {
+        showReload();
+        super.showErrorMessage(message);
+    }
+
+    @Override public void showMessage(int titleRes, int msgRes) {
+        showReload();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
-        super.showErrorMessage(message);
     }
 
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {

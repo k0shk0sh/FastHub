@@ -95,6 +95,11 @@ public class ViewerView extends BaseFragment<ViewerMvp.View, ViewerPresenter> im
         super.showErrorMessage(msgRes);
     }
 
+    @Override public void showMessage(int titleRes, int msgRes) {
+        stateLayout.hideProgress();
+        super.showMessage(titleRes, msgRes);
+    }
+
     @Override protected int fragmentLayout() {
         return R.layout.general_viewer_layout;
     }

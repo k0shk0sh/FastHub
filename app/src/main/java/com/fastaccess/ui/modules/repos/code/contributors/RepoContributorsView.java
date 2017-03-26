@@ -82,10 +82,19 @@ public class RepoContributorsView extends BaseFragment<RepoContributorsMvp.View,
         stateLayout.hideProgress();
     }
 
-    @Override public void showErrorMessage(@NonNull String msgRes) {
+    @Override public void showErrorMessage(@NonNull String message) {
+        showReload();
+        super.showErrorMessage(message);
+    }
+
+    @Override public void showMessage(int titleRes, int msgRes) {
+        showReload();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
-        super.showErrorMessage(msgRes);
     }
 
     @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {

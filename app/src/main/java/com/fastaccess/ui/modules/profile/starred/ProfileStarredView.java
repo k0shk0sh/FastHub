@@ -69,7 +69,6 @@ public class ProfileStarredView extends BaseFragment<ProfileStarredMvp.View, Pro
         return new ProfileStarredPresenter();
     }
 
-
     @Override public void showProgress(@StringRes int resId) {
 
         stateLayout.showProgress();
@@ -80,12 +79,20 @@ public class ProfileStarredView extends BaseFragment<ProfileStarredMvp.View, Pro
         stateLayout.hideProgress();
     }
 
-    @Override public void showErrorMessage(@NonNull String msgRes) {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-        super.showErrorMessage(msgRes);
+    @Override public void showErrorMessage(@NonNull String message) {
+        showReload();
+        super.showErrorMessage(message);
     }
 
+    @Override public void showMessage(int titleRes, int msgRes) {
+        showReload();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
+    }
 
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {

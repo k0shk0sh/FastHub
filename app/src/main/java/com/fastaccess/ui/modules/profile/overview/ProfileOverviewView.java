@@ -155,9 +155,18 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
         progress.setVisibility(View.GONE);
     }
 
-    @Override public void showErrorMessage(@NonNull String msgRes) {
+    @Override public void showErrorMessage(@NonNull String message) {
+        onHideProgress();
+        super.showErrorMessage(message);
+    }
+
+    @Override public void showMessage(int titleRes, int msgRes) {
+        onHideProgress();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void onHideProgress() {
         hideProgress();
-        super.showErrorMessage(msgRes);
     }
 
     private boolean isMeOrOrganization() {

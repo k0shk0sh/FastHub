@@ -107,7 +107,7 @@ public class NotificationSchedulerJobTask extends JobService {
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
                 R.mipmap.ic_launcher);
         int primaryColor = ViewHelper.getPrimaryColor(context);
-        android.app.Notification grouped = getNotification(getString(R.string.notifications), getString(R.string.no_unread_notifications))
+        android.app.Notification grouped = getNotification(getString(R.string.notifications), getString(R.string.unread_notification))
                 .setLargeIcon(largeIcon)
                 .setGroup(NOTIFICATION_GROUP_ID)
                 .setGroupSummary(true)
