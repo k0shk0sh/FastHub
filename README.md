@@ -93,11 +93,11 @@ Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
 
 # Screenshots
 
-| Mobile Portrait | Mobile Landscape |
+| Mobile Light | Mobile Dark |
 |:-:|:-:|
 | ![Main Screen Light](/.github/assets/mobile_light.png?raw=true) | ![Main Screen Dark](/.github/assets/mobile_night.png?raw=true) |
 
-| Repo (Tablet) | Commit (Tablet) |
+| Tablet Light | Tablet Dark |
 |:-:|:-:|
 | ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
 
