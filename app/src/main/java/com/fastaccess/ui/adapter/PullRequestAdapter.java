@@ -29,10 +29,10 @@ public class PullRequestAdapter extends BaseRecyclerAdapter<PullRequest, PullReq
     }
 
     @Override protected PullRequestViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return PullRequestViewHolder.newInstance(parent, this);
+        return PullRequestViewHolder.newInstance(parent, this, withAvatar);
     }
 
     @Override protected void onBindView(PullRequestViewHolder holder, int position) {
-        holder.bind(getItem(position), withAvatar);
+        holder.bind(getItem(position));
     }
 }

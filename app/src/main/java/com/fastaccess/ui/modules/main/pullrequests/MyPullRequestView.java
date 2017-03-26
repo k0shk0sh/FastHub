@@ -113,8 +113,9 @@ public class MyPullRequestView extends BaseFragment<MyPullRequestsMvp.View, MyPu
         recycler.setEmptyView(stateLayout, refresh);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
-        adapter = new PullRequestAdapter(getPresenter().getPullRequests(), true);
+        adapter = new PullRequestAdapter(getPresenter().getPullRequests());
         adapter.setListener(getPresenter());
+        recycler.addDivider();
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());

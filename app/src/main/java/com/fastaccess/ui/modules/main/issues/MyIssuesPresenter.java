@@ -33,7 +33,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
         if (parser != null) {
             v.getContext().startActivity(IssuePagerView.createIntent(v.getContext(), parser.getRepoId(),
-                    parser.getLogin(), parser.getNumber()));
+                    parser.getLogin(), parser.getNumber(), true));
         }
     }
 

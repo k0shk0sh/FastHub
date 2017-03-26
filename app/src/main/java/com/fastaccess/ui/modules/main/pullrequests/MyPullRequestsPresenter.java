@@ -33,7 +33,7 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
         Logger.e(Bundler.start().put("item", item).end().size());
         PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
         if (parser != null) {
-            Intent intent = PullRequestPagerView.createIntent(v.getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber());
+            Intent intent = PullRequestPagerView.createIntent(v.getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber(), true);
             v.getContext().startActivity(intent);
         }
     }

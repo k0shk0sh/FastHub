@@ -7,14 +7,19 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.gists.create.CreateGistView;
+import com.fastaccess.ui.modules.profile.gists.ProfileGistsView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import icepick.State;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:28 PM
@@ -22,9 +27,13 @@ import butterknife.OnClick;
 
 public class PublicGistsActivity extends BaseActivity {
 
-    public static void startActivity(@NonNull Context context) {
-        context.startActivity(new Intent(context, PublicGistsActivity.class));
+    public static void startActivity(@NonNull Context context, boolean myGists) {
+        Intent intent = new Intent(context, PublicGistsActivity.class);
+        intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, myGists).end());
+        context.startActivity(intent);
     }
+
+    @State boolean myGists;
 
     @BindView(R.id.fab) FloatingActionButton fab;
 
@@ -51,11 +60,14 @@ public class PublicGistsActivity extends BaseActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
+            myGists = getIntent().getExtras().getBoolean(BundleConstant.EXTRA);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainer, GistsView.newInstance(), GistsView.TAG)
+                    .replace(R.id.fragmentContainer, myGists ? ProfileGistsView.newInstance(Login.getUser().getLogin())
+                                                             : GistsView.newInstance(), GistsView.TAG)
                     .commit();
         }
+        setTitle(myGists ? R.string.my_gists : R.string.public_gists);
         fab.show();
     }
 

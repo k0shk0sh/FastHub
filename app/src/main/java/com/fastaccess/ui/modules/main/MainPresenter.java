@@ -94,7 +94,10 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 getView().onEnableAds();
                 return true;
             } else if (item.getItemId() == R.id.gists) {
-                getView().onOpenGists();
+                getView().onOpenGists(false);
+                return true;
+            } else if (item.getItemId() == R.id.myGists) {
+                getView().onOpenGists(true);
                 return true;
             } else if (item.getItemId() == R.id.pinnedMenu) {
                 getView().onOpenPinnedRepos();

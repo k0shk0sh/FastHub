@@ -12,7 +12,6 @@ import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 import butterknife.BindView;
 import io.octo.bear.pago.Pago;
@@ -67,7 +66,7 @@ public class DonationView extends BaseDialogFragment<DonationMvp.View, DonationP
             default:
                 productKey = getString(R.string.donation_product_1);
         }
-        subscription = getPago().purchaseProduct(productKey, UUID.randomUUID().toString())
+        subscription = getPago().purchaseProduct(productKey, item)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(order -> {

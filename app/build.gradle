@@ -130,7 +130,7 @@ dependencies {
     compile 'io.requery:requery:1.2.0'
     compile 'io.requery:requery-android:1.2.0'
     compile 'com.android.support:multidex:1.0.1'
-    compile 'com.github.VasyaFromRussia:pago:d4fa358611'
+    compile project(':pago')
     annotationProcessor 'io.requery:requery-processor:1.2.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"

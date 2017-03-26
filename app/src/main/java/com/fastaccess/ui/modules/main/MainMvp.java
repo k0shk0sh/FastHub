@@ -49,7 +49,7 @@ interface MainMvp {
 
         void onEnableAds();
 
-        void onOpenGists();
+        void onOpenGists(boolean myGists);
 
         void onOpenPinnedRepos();
     }

@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
-import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
@@ -157,8 +156,8 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         navigationView.getMenu().findItem(R.id.enableAds).setChecked(isEnabled);
     }
 
-    @Override public void onOpenGists() {
-        PublicGistsActivity.startActivity(this);
+    @Override public void onOpenGists(boolean myGists) {
+        PublicGistsActivity.startActivity(this, myGists);
     }
 
     @Override public void onOpenPinnedRepos() {

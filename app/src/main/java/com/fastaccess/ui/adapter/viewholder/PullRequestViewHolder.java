@@ -22,26 +22,29 @@ import butterknife.BindView;
 public class PullRequestViewHolder extends BaseViewHolder<PullRequest> {
 
     @BindView(R.id.title) FontTextView title;
-    @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.details) FontTextView details;
     @BindString(R.string.by) String by;
+    private boolean withAvatar;
 
-    private PullRequestViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private PullRequestViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean withAvatar) {
         super(itemView, adapter);
+        this.withAvatar = withAvatar;
     }
 
-    public static PullRequestViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter);
+    public static PullRequestViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar) {
+        if (withAvatar) {
+            return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true);
+        }
+        return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false);
     }
 
-    public void bind(@NonNull PullRequest pullRequest, boolean withAvatar) {
+    @Override public void bind(@NonNull PullRequest pullRequest) {
         title.setText(pullRequest.getTitle());
         details.setText(PullRequest.getMergeBy(pullRequest, details.getContext()));
-        if (withAvatar) {
+        if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }
-
-    @Override public void bind(@NonNull PullRequest issueModel) {}
 }
