@@ -16,6 +16,7 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import io.octo.bear.pago.Pago;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -28,6 +29,7 @@ public class DonationView extends BaseDialogFragment<DonationMvp.View, DonationP
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     private Pago pago;
+    private Subscription subscription;
 
     @Override protected int fragmentLayout() {
         return R.layout.simple_list_dialog;
@@ -65,17 +67,23 @@ public class DonationView extends BaseDialogFragment<DonationMvp.View, DonationP
             default:
                 productKey = getString(R.string.donation_product_1);
         }
-        getPresenter().manageSubscription(getPago()
-                .purchaseProduct(productKey, UUID.randomUUID().toString())
+        subscription = getPago().purchaseProduct(productKey, UUID.randomUUID().toString())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(order -> {
                     showMessage(R.string.success, R.string.success_purchase_message);
                     dismiss();
-                }, throwable -> showErrorMessage(throwable.getMessage())));
+                }, throwable -> showErrorMessage(throwable.getMessage()));
     }
 
     @Override public void onItemLongClick(int position, View v, String item) {
         onItemClick(position, v, item);
+    }
+
+    @Override public void onDestroyView() {
+        if (subscription != null && subscription.isUnsubscribed()) {
+            subscription.unsubscribe();
+        }
+        super.onDestroyView();
     }
 }

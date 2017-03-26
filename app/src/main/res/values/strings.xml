@@ -316,4 +316,5 @@
     <string name="public_gists">Public Gists</string>
     <string name="enable_ads">Enable Ads</string>
     <string name="no_issues">No issues</string>
+    <string name="no_unread_notifications">No unread notifications.</string>
 </resources>

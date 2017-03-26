@@ -67,12 +67,12 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
+        setTheme(R.style.AppTheme);
         super.onCreate(savedInstanceState);
         navigationView.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
-        AppHelper.cancelNotification(this);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -98,7 +98,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
             startActivity(new Intent(this, SearchView.class));
             return true;
         } else if (item.getItemId() == R.id.notifications) {
-            item.setIcon(R.drawable.ic_notifications_none);
+            ViewHelper.tintDrawable(item.setIcon(R.drawable.ic_notifications_none).getIcon(), ViewHelper.getIconColor(this));
             startActivity(new Intent(this, NotificationActivityView.class));
             return true;
         }

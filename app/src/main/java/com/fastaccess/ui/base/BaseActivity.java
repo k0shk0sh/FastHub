@@ -248,6 +248,5 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             mode = AppCompatDelegate.MODE_NIGHT_YES;
         }
         AppCompatDelegate.setDefaultNightMode(mode);
-        setTheme(R.style.AppTheme);
     }
 }

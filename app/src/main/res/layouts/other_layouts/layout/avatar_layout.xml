@@ -12,6 +12,6 @@
         android:scaleType="centerCrop"
         android:src="@color/primary"
         app:shape_mode="circle"
-        tools:layout_height="40dp"
-        tools:layout_width="40dp"/>
+        tools:layout_height="@dimen/large_icon_zie"
+        tools:layout_width="@dimen/large_icon_zie"/>
 </merge>

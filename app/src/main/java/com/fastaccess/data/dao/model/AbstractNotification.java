@@ -95,6 +95,17 @@ import rx.Observable;
         dest.writeLong(this.lastReadAt != null ? this.lastReadAt.getTime() : -1);
     }
 
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notification that = (Notification) o;
+        return repository != null && that.repository != null && repository.getId() == that.repository.getId();
+    }
+
+    @Override public int hashCode() {
+        return repository != null ? (int) repository.getId() : 0;
+    }
+
     protected AbstractNotification(Parcel in) {
         this.id = in.readLong();
         this.repository = in.readParcelable(Repo.class.getClassLoader());

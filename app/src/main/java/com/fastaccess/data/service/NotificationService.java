@@ -1,7 +1,10 @@
 package com.fastaccess.data.service;
 
 
+import android.support.annotation.NonNull;
+
 import com.fastaccess.data.dao.Pageable;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Notification;
 
 import retrofit2.Response;
@@ -10,6 +13,7 @@ import retrofit2.http.PATCH;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -30,4 +34,6 @@ public interface NotificationService {
     @PATCH("notifications/threads/{id}") Observable<Response<Boolean>> markAsRead(@Path("id") String id);
 
     @PUT("notifications") Observable<Response<Boolean>> markAllNotificationsAsRead();
+
+    @GET() Observable<Comment> getComment(@Url @NonNull String commentUrl);
 }

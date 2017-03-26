@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,9 +12,12 @@ import android.support.v4.app.NotificationCompat;
 
 import com.annimon.stream.LongStream;
 import com.fastaccess.R;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 
 import rx.schedulers.Schedulers;
 
@@ -25,6 +29,7 @@ public class ReadNotificationService extends IntentService {
 
     public static final int READ_SINGLE = 1;
     public static final int READ_ALL = 2;
+    public static final int OPEN_NOTIFICATIO = 3;
     private NotificationCompat.Builder notification;
     private NotificationManager notificationManager;
 
@@ -35,6 +40,16 @@ public class ReadNotificationService extends IntentService {
                 .put(BundleConstant.ID, id)
                 .end());
         context.startService(intent);
+    }
+
+    public static Intent start(@NonNull Context context, long id, @NonNull String url) {
+        Intent intent = new Intent(context.getApplicationContext(), ReadNotificationService.class);
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA_TYPE, OPEN_NOTIFICATIO)
+                .put(BundleConstant.EXTRA, url)
+                .put(BundleConstant.ID, id)
+                .end());
+        return intent;
     }
 
     public static void start(@NonNull Context context, @NonNull long[] ids) {
@@ -58,7 +73,19 @@ public class ReadNotificationService extends IntentService {
                 markSingleAsRead(bundle.getLong(BundleConstant.ID));
             } else if (type == READ_ALL) {
                 markMultiAsRead(bundle.getLongArray(BundleConstant.ID));
+            } else if (type == OPEN_NOTIFICATIO) {
+                openNotification(bundle.getLong(BundleConstant.ID), bundle.getString(BundleConstant.EXTRA));
             }
+        }
+    }
+
+    private void openNotification(long id, @Nullable String url) {
+        if (id > 0 && url != null) {
+            AppHelper.cancelNotification(this, (int) id);
+            if (!PrefGetter.isMarkAsReadEnabled()) {
+                markSingleAsRead(id);
+            }
+            SchemeParser.launchUri(this, Uri.parse(url), true);
         }
     }
 

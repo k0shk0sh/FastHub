@@ -4,18 +4,22 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -37,6 +41,7 @@ import rx.schedulers.Schedulers;
 public class NotificationSchedulerJobTask extends JobService {
     private final static String EVERY_30_MINS = "every_30_mins";
     private final static int THIRTY_MINUTES = 30 * 60;//in seconds
+    private static final String NOTIFICATION_GROUP_ID = "FastHub";
 
     @Override public boolean onStartJob(JobParameters job) {
         if (Login.getUser() != null) {
@@ -44,7 +49,11 @@ public class NotificationSchedulerJobTask extends JobService {
                     .getNotifications(0)
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
-                        if (item != null) onSave(item.getItems());
+                        if (item != null) {
+                            onSave(item.getItems());
+                        } else {
+                            AppHelper.cancelNotification(this, BundleConstant.REQUEST_CODE);
+                        }
                     }, Throwable::printStackTrace);
         }
         return false;
@@ -90,21 +99,73 @@ public class NotificationSchedulerJobTask extends JobService {
         long count = Stream.of(notificationThreadModels)
                 .filter(Notification::isUnread)
                 .count();
-        if (count > 0) {
-            Context context = getApplicationContext();
-            Intent intent = new Intent(this, NotificationActivityView.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent,
-                    PendingIntent.FLAG_CANCEL_CURRENT);
-            android.app.Notification notification = new NotificationCompat.Builder(context)
-                    .setSmallIcon(R.drawable.ic_announcement)
-                    .setContentTitle(context.getString(R.string.notifications))
-                    .setContentText(context.getString(R.string.unread_notification) + " (" + count + ")")
-                    .setContentIntent(pendingIntent)
-                    .setNumber((int) count)
-                    .addAction(R.drawable.ic_github, context.getString(R.string.open), pendingIntent)
-                    .build();
-            ((NotificationManager) context.getSystemService(NOTIFICATION_SERVICE)).notify(BundleConstant.REQUEST_CODE, notification);
+        if (count == 0) {
+            AppHelper.cancelNotification(this, BundleConstant.REQUEST_CODE);
+            return;
         }
+        Context context = getApplicationContext();
+        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
+                R.mipmap.ic_launcher);
+        int primaryColor = ViewHelper.getPrimaryColor(context);
+        android.app.Notification grouped = getNotification(getString(R.string.notifications), getString(R.string.no_unread_notifications))
+                .setLargeIcon(largeIcon)
+                .setGroup(NOTIFICATION_GROUP_ID)
+                .setGroupSummary(true)
+                .setColor(primaryColor)
+                .setAutoCancel(true)
+                .build();
+        showNotification(BundleConstant.REQUEST_CODE, grouped);
+        Stream.of(notificationThreadModels)
+                .filter(Notification::isUnread)
+                .forEach(thread -> {
+                    if (!InputHelper.isEmpty(thread.getSubject().getLatestCommentUrl())) {
+                        RestProvider.getNotificationService().getComment(thread.getSubject().getLatestCommentUrl())
+                                .subscribeOn(Schedulers.io())
+                                .subscribe(comment -> {
+                                    android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(),
+                                            thread.getRepository().getFullName())
+                                            .setStyle(new NotificationCompat.BigTextStyle()
+                                                    .bigText(comment.getBody()))
+                                            .setLargeIcon(largeIcon)
+                                            .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                                            .setGroup(NOTIFICATION_GROUP_ID)
+                                            .setColor(primaryColor)
+                                            .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(),
+                                                    thread.getSubject().getUrl()))
+                                            .build();
+                                    showNotification((int) thread.getId(), toAdd);
+                                }, Throwable::printStackTrace);
+                    } else {
+                        android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(),
+                                thread.getRepository().getFullName())
+                                .setLargeIcon(largeIcon)
+                                .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                                .setGroup(NOTIFICATION_GROUP_ID)
+                                .setColor(primaryColor)
+                                .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(), thread
+                                        .getSubject().getUrl()))
+                                .build();
+                        showNotification((int) thread.getId(), toAdd);
+                    }
+                });
     }
+
+    private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
+        return new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_announcement)
+                .setContentTitle(title)
+                .setContentText(message);
+    }
+
+    private void showNotification(int id, android.app.Notification notification) {
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(id, notification);
+    }
+
+    private PendingIntent getPendingIntent(long id, @NonNull String url) {
+        Intent intent = ReadNotificationService.start(this, id, url);
+        return PendingIntent.getService(this, (int) id, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
 }

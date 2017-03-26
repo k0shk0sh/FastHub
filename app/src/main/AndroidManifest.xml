@@ -16,9 +16,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/SplashTheme"
+        android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name="com.fastaccess.ui.modules.main.MainView">
+        <activity
+            android:name="com.fastaccess.ui.modules.main.MainView"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

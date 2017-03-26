@@ -33,8 +33,11 @@ public class AppHelper {
     }
 
     public static void cancelNotification(@NonNull Context context) {
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(BundleConstant.REQUEST_CODE);
+        cancelNotification(context, BundleConstant.REQUEST_CODE);
+    }
 
+    public static void cancelNotification(@NonNull Context context, int id) {
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(id);
     }
 
     public static void copyToClipboard(@NonNull Context context, @NonNull String uri) {

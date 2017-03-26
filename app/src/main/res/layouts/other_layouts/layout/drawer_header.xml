@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spacing_xs_large"
+    android:gravity="bottom"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_xs_large"
+    android:paddingBottom="@dimen/spacing_s_large"
     android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_xs_large">
+    android:paddingTop="@dimen/spacing_large">
 
     <com.fastaccess.ui.widgets.AvatarLayout
         android:id="@+id/avatarLayout"
