@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
+    android:id="@+id/messageLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,75 +8,89 @@
     android:background="@color/card_background"
     android:orientation="vertical">
 
-    <com.fastaccess.ui.widgets.FontTextView
-        android:id="@+id/title"
-        style="@style/TextAppearance.AppCompat.Title"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_xs_large"
-        android:textColor="?android:textColorPrimary"
-        android:textStyle="bold"
-        tools:text="How jolly. You loot like a mast."/>
+        android:orientation="vertical">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/title"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_xs_large"
+            android:textColor="?android:textColorPrimary"
+            android:textStyle="bold"
+            tools:text="How jolly. You loot like a mast."/>
 
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:paddingStart="@dimen/spacing_xs_large">
+
+                <com.prettifier.pretty.PrettifyWebView
+                    android:id="@+id/prettifyWebView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:minHeight="200dp"
+                    android:visibility="gone"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/message"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:autoLink="all"
+                    android:textColor="?android:attr/textColorSecondary"
+                    tools:text="Hello World"/>
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingEnd="@dimen/spacing_xs_large"
-            android:paddingStart="@dimen/spacing_xs_large">
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal">
 
-            <com.prettifier.pretty.PrettifyWebView
-                android:id="@+id/prettifyWebView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:minHeight="200dp"
-                android:visibility="gone"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/message"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="match_parent"
+            <com.fastaccess.ui.widgets.FontButton
+                android:id="@+id/cancel"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoLink="all"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="Hello World"/>
+                android:layout_gravity="end"
+                android:text="@string/cancel"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/material_pink_700"/>
+
+            <com.fastaccess.ui.widgets.FontButton
+                android:id="@+id/ok"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/ok"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="?colorAccent"/>
+
         </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="end"
-        android:paddingBottom="@dimen/spacing_normal"
-        android:paddingTop="@dimen/spacing_normal">
-
-        <com.fastaccess.ui.widgets.FontButton
-            android:id="@+id/cancel"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="@string/cancel"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@color/material_pink_700"/>
-
-        <com.fastaccess.ui.widgets.FontButton
-            android:id="@+id/ok"
-            style="@style/Widget.AppCompat.Button.Borderless.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="@string/ok"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="?colorAccent"/>
-
     </LinearLayout>
-</LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/webProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end|center"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+</FrameLayout>

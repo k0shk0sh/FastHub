@@ -26,6 +26,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.changelog.ChangelogView;
 import com.fastaccess.ui.modules.login.LoginView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
@@ -86,6 +87,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         setupToolbarAndStatusBar(toolbar);
         showHideAds();
+        if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
+            new ChangelogView().show(getSupportFragmentManager(), "ChangelogView");
+        }
     }
 
     @Override protected void onResume() {

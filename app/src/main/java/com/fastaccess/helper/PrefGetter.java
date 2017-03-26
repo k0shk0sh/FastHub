@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 
 import java.lang.annotation.Retention;
@@ -27,7 +28,7 @@ public class PrefGetter {
     })
     @Retention(RetentionPolicy.SOURCE) @interface ThemeType {}
 
-
+    private static final String WHATS_NEW_VERSION = "whats_new";
     private static final String ADS = "enable_ads";
     private static final String TOKEN = "token";
     private static final String USER_ICON_GUIDE = "user_icon_guide";
@@ -145,5 +146,13 @@ public class PrefGetter {
             } /* add future themes here */
         }
         return LIGHT;
+    }
+
+    public static void setWhatsNewVersion() {
+        PrefHelper.set(WHATS_NEW_VERSION, BuildConfig.VERSION_CODE);
+    }
+
+    public static boolean showWhatsNew() {
+        return PrefHelper.getInt(WHATS_NEW_VERSION) != BuildConfig.VERSION_CODE;
     }
 }

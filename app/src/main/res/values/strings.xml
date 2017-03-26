@@ -319,4 +319,5 @@
     <string name="no_issues">No issues</string>
     <string name="no_unread_notifications">No unread notifications.</string>
     <string name="my_gists">My Gists</string>
+    <string name="changelog">Changelog</string>
 </resources>

@@ -12,6 +12,7 @@
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
         android:elevation="@dimen/spacing_micro"
+        app:tabGravity="fill"
         app:tabSelectedTextColor="?colorAccent"
         app:tabTextColor="@color/dark_gray"/>
 
