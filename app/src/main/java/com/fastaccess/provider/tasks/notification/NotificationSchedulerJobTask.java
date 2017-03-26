@@ -125,7 +125,8 @@ public class NotificationSchedulerJobTask extends JobService {
                                     android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(),
                                             thread.getRepository().getFullName())
                                             .setStyle(new NotificationCompat.BigTextStyle()
-                                                    .bigText(comment.getBody()))
+                                                    .bigText(comment.getBody())
+                                                    .setBigContentTitle(comment.getUser() != null ? comment.getUser().getLogin() : ""))
                                             .setLargeIcon(largeIcon)
                                             .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                                             .setGroup(NOTIFICATION_GROUP_ID)

@@ -278,6 +278,20 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                                                     .setPrimaryText(R.string.fork)
                                                     .setSecondaryText(R.string.fork_repo_hint)
                                                     .setCaptureTouchEventOutsidePrompt(true)
+                                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+                                                            new MaterialTapTargetPrompt.Builder(RepoPagerView.this)
+                                                                    .setTarget(pinLayout)
+                                                                    .setPrimaryText(R.string.pin)
+                                                                    .setSecondaryText(R.string.pin_repo_hint)
+                                                                    .setCaptureTouchEventOutsidePrompt(true)
+                                                                    .show();
+                                                        }
+
+                                                        @Override public void onHidePromptComplete() {
+
+                                                        }
+                                                    })
                                                     .show();
                                         }
                                     }).show();

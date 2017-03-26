@@ -174,6 +174,7 @@
     <string name="watch">Watch</string>
     <string name="watch_hint">Watch/unwatch repo</string>
     <string name="fork_repo_hint" translatable="false">Fork repo</string>
+    <string name="pin_repo_hint">Pin repos to access them faster from the NavigationDrawer.</string>
     <string name="no_url">No URL found</string>
     <string name="last_updated">Last updated</string>
     <string name="preview">Preview</string>
