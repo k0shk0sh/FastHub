@@ -91,15 +91,15 @@ Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
 > Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html) license.
 > (See the [LICENSE](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE) file for the whole license text.)
 
-# Screenshots _(old ones, they will be updated soon)_
+# Screenshots
 
 | Mobile Portrait | Mobile Landscape |
 |:-:|:-:|
-| ![Main Screen](/.github/assets/mobile_main.png?raw=true) | ![Main Screen Landscape](/.github/assets/mobile_main_landscape.png?raw=true) |
+| ![Main Screen Light](/.github/assets/mobile_light.png?raw=true) | ![Main Screen Dark](/.github/assets/mobile_night.png?raw=true) |
 
 | Repo (Tablet) | Commit (Tablet) |
 |:-:|:-:|
-| ![Main Screen Repo](/.github/assets/tablet_repo.png?raw=true) | ![Main Screen Commit](/.github/assets/tablet_commits.png?raw=true) |
+| ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
 
 # FastHub Logo
 

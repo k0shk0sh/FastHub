@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
@@ -50,9 +49,7 @@ public class ChangelogView extends BaseBottomSheetDialog {
         super.onViewCreated(view, savedInstanceState);
         messageLayout.setBackgroundColor(Color.WHITE);
         if (savedInstanceState == null) {
-            if (!BuildConfig.DEBUG) {
-                PrefGetter.setWhatsNewVersion();
-            }
+            PrefGetter.setWhatsNewVersion();
         }
         webProgress.setVisibility(View.VISIBLE);
         cancel.setVisibility(View.GONE);
