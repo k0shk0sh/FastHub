@@ -8,8 +8,6 @@ import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.types.IssueState;
-import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -29,7 +27,6 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
     private int lastPage = Integer.MAX_VALUE;
 
     @Override public void onItemClick(int position, View v, Issue item) {
-        Logger.e(Bundler.start().put("item", item).end().size());
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
         if (parser != null) {
             v.getContext().startActivity(IssuePagerView.createIntent(v.getContext(), parser.getRepoId(),

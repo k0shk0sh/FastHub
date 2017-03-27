@@ -98,11 +98,6 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public CommitCommentsPresenter providePresenter() {
         return new CommitCommentsPresenter();
     }
@@ -190,5 +185,10 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
         if (isOk) {
             getPresenter().onHandleDeletion(bundle);
         }
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

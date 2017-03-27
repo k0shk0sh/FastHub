@@ -67,8 +67,7 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         super.onDetach();
     }
 
-    @Override public void onNotifyAdapter(int totalCount) {
-        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(0, totalCount);
+    @Override public void onNotifyAdapter() {
         hideProgress();
         adapter.notifyDataSetChanged();
     }
@@ -129,11 +128,6 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
@@ -146,11 +140,20 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         CreateIssueView.startForResult(this, getPresenter().login(), getPresenter().repoId());
     }
 
+    @Override public void onUpdateCount(int totalCount) {
+        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(0, totalCount);
+    }
+
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, null);
+        getPresenter().onCallApi(1, IssueState.open);
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

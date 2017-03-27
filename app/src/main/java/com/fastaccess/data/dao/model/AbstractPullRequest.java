@@ -18,6 +18,7 @@ import com.fastaccess.data.dao.converters.PullRequestConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.converters.UsersConverter;
 import com.fastaccess.data.dao.types.IssueState;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
@@ -98,18 +99,20 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     }
 
     public static Observable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(PullRequest.class)
-                .where(REPO_ID.equal(repoId)
-                        .and(LOGIN.equal(login)))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(pulRequest -> {
-                    pulRequest.setRepoId(repoId);
-                    pulRequest.setLogin(login);
-                    pulRequest.save(pulRequest).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(PullRequest.class)
+                    .where(REPO_ID.equal(repoId)
+                            .and(LOGIN.equal(login)))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(pulRequest -> {
+                        pulRequest.setRepoId(repoId);
+                        pulRequest.setLogin(login);
+                        pulRequest.save(pulRequest).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     public static Observable<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,
@@ -144,24 +147,30 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     }
 
     @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context) {
-        boolean isMerge = pullRequest.isMerged();
-        User merger = (isMerge && pullRequest.getMergedBy() != null) ? pullRequest.getMergedBy() : pullRequest.getUser();
-        String status = !isMerge ? context.getString(pullRequest.getState().getStatus()) : context.getString(R.string.merged);
-        SpannableBuilder builder = SpannableBuilder.builder();
-        builder.bold("#" + pullRequest.getNumber())
-                .append(" ")
-                .append(merger.getLogin())
-                .append(" ")
-                .append(status)
-                .append(" ");
+        boolean isMerge = pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.mergedAt);
         if (isMerge) {
-            builder.append(ParseDateFormat.getTimeAgo(pullRequest.getMergedAt()));
+            User merger = pullRequest.getMergedBy();
+            return SpannableBuilder.builder()
+                    .bold("#" + pullRequest.getNumber())
+                    .append(" ")
+                    .append(merger != null ? merger.getLogin() + " " : "")
+                    .bold(context.getString(R.string.merged))
+                    .append(" ")
+                    .append(ParseDateFormat.getTimeAgo(pullRequest.getMergedAt()));
         } else {
-            builder.append(ParseDateFormat.getTimeAgo(
-                    pullRequest.getState() == IssueState.closed
-                    ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+            User user = pullRequest.getUser();
+            String status = context.getString(pullRequest.getState().getStatus());
+            return SpannableBuilder.builder()
+                    .bold("#" + pullRequest.getNumber())
+                    .append(" ")
+                    .append(user.getLogin())
+                    .append(" ")
+                    .bold(status)
+                    .append(" ")
+                    .append(ParseDateFormat.getTimeAgo(
+                            pullRequest.getState() == IssueState.closed
+                            ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
         }
-        return builder;
     }
 
     @Override public int describeContents() { return 0; }

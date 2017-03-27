@@ -162,9 +162,7 @@ public class PrettifyWebView extends NestedWebView {
             CodeViewerView.startActivity(getContext(), url.toString());
         } else {
             String anchorLink = url.getEncodedFragment();
-            Logger.e(anchorLink);
-            if (anchorLink != null) {
-                loadUrl("javascript:scrollTo(\"" + anchorLink + "\")");
+            if (anchorLink != null && anchorLink.startsWith("#")) {
                 return;
             }
             SchemeParser.launchUri(getContext(), url, true);

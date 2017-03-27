@@ -11,11 +11,9 @@ import android.widget.Button;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
-import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
@@ -63,7 +61,7 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
             profileCallback.onNavigateToFollowing();
         } else if (view.getId() == R.id.followBtn) {
             getPresenter().onFollowButtonClicked(getPresenter().getLogin());
-            AnimHelper.animateVisibility(followBtn, false, View.INVISIBLE);
+            followBtn.setEnabled(false);
         }
     }
 
@@ -132,18 +130,9 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
         hideProgress();
         if (isMeOrOrganization()) return;
         if (getPresenter().isSuccessResponse()) {
-            AnimHelper.animateVisibility(followBtn, true, View.INVISIBLE, new AnimHelper.AnimationCallback() {
-                @Override public void onAnimationEnd() {
-                    followBtn.setActivated(getPresenter().isFollowing());
-                }
-
-                @Override public void onAnimationStart() {
-                    if (followBtn == null) return;
-                    Logger.e(getPresenter().isFollowing());
-                    followBtn.setText(getPresenter().isFollowing() ? getString(R.string.unfollow) : getString(R.string.follow));
-
-                }
-            });
+            followBtn.setEnabled(true);
+            followBtn.setActivated(getPresenter().isFollowing());
+            followBtn.setText(getPresenter().isFollowing() ? getString(R.string.unfollow) : getString(R.string.follow));
         }
     }
 

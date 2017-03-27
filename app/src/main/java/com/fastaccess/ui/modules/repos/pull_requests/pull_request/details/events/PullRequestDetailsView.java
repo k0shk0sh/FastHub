@@ -33,7 +33,7 @@ public class PullRequestDetailsView extends BaseFragment<PullRequestDetailsMvp.V
 
     public static PullRequestDetailsView newInstance(@NonNull PullRequest issueModel) {
         PullRequestDetailsView view = new PullRequestDetailsView();
-        view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());
+        view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());//TODO fix this
         return view;
     }
 

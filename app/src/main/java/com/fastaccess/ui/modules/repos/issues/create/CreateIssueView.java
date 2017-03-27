@@ -62,7 +62,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.ITEM, issueModel)
+                    .put(BundleConstant.ITEM, issueModel)//TODO remove this pass only required data.
                     .end());
             activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
         }
@@ -75,7 +75,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.ITEM, pullRequestModel)
+                    .put(BundleConstant.ITEM, pullRequestModel)//TODO remove this, pass only required data
                     .end());
             activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
         }

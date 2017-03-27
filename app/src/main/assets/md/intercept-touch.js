@@ -7,6 +7,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 window.onload = function() {
     addTouchEvents(document.getElementsByTagName("pre"));
     addTouchEvents(document.getElementsByTagName("table"));
+    var hash = window.location.hash.substr(1);
+    if (hash != ""){
+        scrollTo(hash);
+    }
 };
 
 function addTouchEvents(elements) {
@@ -23,3 +27,19 @@ function touchStart(event) {
 function touchEnd(event) {
     Android.stopIntercept();
 }
+
+function scrollTo(hash) {
+    var element = document.getElementById("user-content-" + hash);
+    element.scrollIntoView();
+}
+
+window.onclick = function(e) {
+    if (e.target.localName == 'a') {
+        var href = e.target;
+        href = href.toString().replace("file:///android_asset/md/","");
+        console.log(href);
+        if (href.indexOf("#") === 0) {
+            scrollTo(href.replace("#",""));
+        }
+    }
+};

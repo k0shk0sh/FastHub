@@ -133,7 +133,8 @@ public class FragmentPagerAdapterModel {
         String login = commitModel.getLogin();
         String repoId = commitModel.getRepoId();
         String sha = commitModel.getSha();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesView.newInstance(commitModel.getFiles()))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesView.newInstance(commitModel.getSha(),
+                commitModel.getFiles()))
                 , new FragmentPagerAdapterModel(context.getString(R.string.comments), CommitCommentsView.newInstance(login, repoId, sha)))
                 .collect(Collectors.toList());
     }

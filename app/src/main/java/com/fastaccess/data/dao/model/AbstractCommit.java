@@ -65,35 +65,39 @@ public abstract class AbstractCommit implements Parcelable {
     }
 
     public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(Commit.class)
-                .where(REPO_ID.eq(repoId)
-                        .and(LOGIN.eq(login)))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(commitModel -> {
-                    commitModel.setRepoId(repoId);
-                    commitModel.setLogin(login);
-                    commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Commit.class)
+                    .where(REPO_ID.eq(repoId)
+                            .and(LOGIN.eq(login)))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(commitModel -> {
+                        commitModel.setRepoId(repoId);
+                        commitModel.setLogin(login);
+                        commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(Commit.class)
-                .where(REPO_ID.eq(repoId)
-                        .and(LOGIN.eq(login))
-                        .and(PULL_REQUEST_NUMBER.eq(number)))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(commitModel -> {
-                    commitModel.setRepoId(repoId);
-                    commitModel.setLogin(login);
-                    commitModel.setPullRequestNumber(number);
-                    commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Commit.class)
+                    .where(REPO_ID.eq(repoId)
+                            .and(LOGIN.eq(login))
+                            .and(PULL_REQUEST_NUMBER.eq(number)))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(commitModel -> {
+                        commitModel.setRepoId(repoId);
+                        commitModel.setLogin(login);
+                        commitModel.setPullRequestNumber(number);
+                        commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     public static Observable<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login) {

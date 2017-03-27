@@ -50,11 +50,11 @@ import rx.Observable;
     }
 
     public static Observable<Object> save(@NonNull List<Notification> models) {
-        SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-        dataSource.delete(Notification.class)
-                .get()
-                .value();
         return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
+            dataSource.delete(Notification.class)
+                    .get()
+                    .value();
             Stream.of(models).forEach(notification -> notification.save(notification).toObservable().toBlocking().singleOrDefault(null));
             subscriber.onCompleted();
         });

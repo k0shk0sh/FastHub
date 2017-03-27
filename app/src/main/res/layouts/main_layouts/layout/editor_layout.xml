@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true"
-        android:clipToPadding="false">
+        android:clipToPadding="false"
+        android:fillViewport="true">
 
         <com.fastaccess.ui.widgets.FontEditText
             android:id="@+id/editText"
@@ -22,7 +22,7 @@
             android:background="@color/transparent"
             android:gravity="top|start"
             android:hint="@string/type_here"
-            android:inputType="textMultiLine"
+            android:inputType="textMultiLine|textCapSentences"
             android:minLines="5"
             android:padding="@dimen/spacing_xs_large"
             android:scrollbars="vertical"

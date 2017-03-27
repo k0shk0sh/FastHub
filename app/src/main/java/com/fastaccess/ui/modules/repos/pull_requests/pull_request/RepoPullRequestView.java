@@ -12,7 +12,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -58,9 +57,7 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
         super.onDetach();
     }
 
-    @Override public void onNotifyAdapter(int totalCount) {
-        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(getPresenter().getIssueState() == IssueState.open ? 0 : 1, totalCount);
-        Logger.e();
+    @Override public void onNotifyAdapter() {
         hideProgress();
         adapter.notifyDataSetChanged();
     }
@@ -73,8 +70,6 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, issues can't be proceeded.");
         }
-        stateLayout.setEmptyText(getPresenter().getIssueState() == IssueState.open
-                                 ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
@@ -88,6 +83,8 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
         } else if (getPresenter().getPullRequests().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        stateLayout.setEmptyText(getPresenter().getIssueState() == IssueState.open
+                                 ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
     }
 
     @NonNull @Override public RepoPullRequestPresenter providePresenter() {
@@ -114,23 +111,32 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
         }
+        onLoadMore.setParameter(getIssueState());
         return onLoadMore;
     }
 
+    @Override public void onUpdateCount(int totalCount) {
+        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(getPresenter().getIssueState() == IssueState.open ? 0 : 1, totalCount);
+    }
+
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, null);
+        getPresenter().onCallApi(1, getIssueState());
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    private IssueState getIssueState() {
+        return ((IssueState) getArguments().getSerializable(BundleConstant.EXTRA_TWO));
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

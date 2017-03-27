@@ -67,17 +67,19 @@ public abstract class AbstractRelease implements Parcelable {
     }
 
     public static Observable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(Release.class)
-                .where(REPO_ID.eq(login))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(releasesModel -> {
-                    releasesModel.setRepoId(repoId);
-                    releasesModel.setLogin(login);
-                    releasesModel.save(releasesModel).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Release.class)
+                    .where(REPO_ID.eq(login))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(releasesModel -> {
+                        releasesModel.setRepoId(repoId);
+                        releasesModel.setLogin(login);
+                        releasesModel.save(releasesModel).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
 
     }
 

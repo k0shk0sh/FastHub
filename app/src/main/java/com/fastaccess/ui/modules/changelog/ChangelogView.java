@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.changelog;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,7 +46,6 @@ public class ChangelogView extends BaseBottomSheetDialog {
 
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        messageLayout.setBackgroundColor(Color.WHITE);
         if (savedInstanceState == null) {
             PrefGetter.setWhatsNewVersion();
         }

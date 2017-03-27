@@ -50,18 +50,20 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
     }
 
     public static Observable save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(RepoFile.class)
-                .where(REPO_ID.eq(repoId)
-                        .and(LOGIN.eq(login)))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(filesModel -> {
-                    filesModel.setRepoId(repoId);
-                    filesModel.setLogin(login);
-                    filesModel.save(filesModel).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(RepoFile.class)
+                    .where(REPO_ID.eq(repoId)
+                            .and(LOGIN.eq(login)))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(filesModel -> {
+                        filesModel.setRepoId(repoId);
+                        filesModel.setLogin(login);
+                        filesModel.save(filesModel).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     public static Observable<List<RepoFile>> getFiles(@NonNull String login, @NonNull String repoId) {

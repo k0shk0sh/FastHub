@@ -67,28 +67,29 @@ import rx.Observable;
     }
 
     public static Completable save(@NonNull List<Gist> gists) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return singleEntityStore.delete(Gist.class)
-                .where(Gist.OWNER_NAME.isNull())
-                .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(Observable.from(gists)
-                        .map(gist -> gist.save(gist)))
-                .toCompletable();
+        return Completable.fromAction(() -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Gist.class)
+                    .where(Gist.OWNER_NAME.isNull())
+                    .get()
+                    .value();
+            Stream.of(gists).forEach(gist -> gist.save(gist));
+        });
     }
 
     public static Observable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(Gist.class)
-                .where(Gist.OWNER_NAME.equal(ownerName))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(gists)
-                .forEach(gistsModel -> {
-                    gistsModel.setOwnerName(ownerName);
-                    gistsModel.save(gistsModel).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Gist.class)
+                    .where(Gist.OWNER_NAME.equal(ownerName))
+                    .get()
+                    .value();
+            Stream.of(gists)
+                    .forEach(gistsModel -> {
+                        gistsModel.setOwnerName(ownerName);
+                        gistsModel.save(gistsModel).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     @NonNull public static Observable<List<Gist>> getMyGists(@NonNull String ownerName) {
@@ -140,6 +141,10 @@ import rx.Observable;
     }
 
     @NonNull public SpannableBuilder getDisplayTitle(boolean isFromProfile) {
+        return getDisplayTitle(isFromProfile, false);
+    }
+
+    @NonNull public SpannableBuilder getDisplayTitle(boolean isFromProfile, boolean gistView) {
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         boolean addDescription = true;
         if (!isFromProfile) {
@@ -150,13 +155,15 @@ import rx.Observable;
             } else {
                 spannableBuilder.bold("Anonymous");
             }
-            List<FilesListModel> files = getFilesAsList();
-            if (!files.isEmpty()) {
-                FilesListModel filesListModel = files.get(0);
-                if (!InputHelper.isEmpty(filesListModel.getFilename()) && filesListModel.getFilename().trim().length() > 2) {
-                    spannableBuilder.append(" ").append("/").append(" ")
-                            .append(filesListModel.getFilename());
-                    addDescription = false;
+            if (!gistView) {
+                List<FilesListModel> files = getFilesAsList();
+                if (!files.isEmpty()) {
+                    FilesListModel filesListModel = files.get(0);
+                    if (!InputHelper.isEmpty(filesListModel.getFilename()) && filesListModel.getFilename().trim().length() > 2) {
+                        spannableBuilder.append(" ").append("/").append(" ")
+                                .append(filesListModel.getFilename());
+                        addDescription = false;
+                    }
                 }
             }
         }

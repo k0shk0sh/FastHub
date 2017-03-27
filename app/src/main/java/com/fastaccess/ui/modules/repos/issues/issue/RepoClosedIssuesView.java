@@ -56,10 +56,9 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         super.onDetach();
     }
 
-    @Override public void onNotifyAdapter(int totalCount) {
+    @Override public void onNotifyAdapter() {
         hideProgress();
         adapter.notifyDataSetChanged();
-        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(1, totalCount);
     }
 
     @Override protected int fragmentLayout() {
@@ -126,8 +125,12 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         //DO NOTHING
     }
 
+    @Override public void onUpdateCount(int totalCount) {
+        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(1, totalCount);
+    }
+
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, null);
+        getPresenter().onCallApi(1, IssueState.closed);
     }
 
     @Override public void onClick(View view) {

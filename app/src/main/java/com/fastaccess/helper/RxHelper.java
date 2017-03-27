@@ -22,4 +22,8 @@ public class RxHelper {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public static <T> Observable<T> saveObserable(@NonNull Observable<T> observable) {
+        return getObserver(observable).onErrorReturn(throwable -> null);
+    }
 }

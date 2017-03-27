@@ -18,8 +18,10 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -49,10 +51,9 @@ public class NotificationSchedulerJobTask extends JobService {
                     .getNotifications(0)
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
+                        AppHelper.cancelNotification(this, BundleConstant.REQUEST_CODE);
                         if (item != null) {
                             onSave(item.getItems());
-                        } else {
-                            AppHelper.cancelNotification(this, BundleConstant.REQUEST_CODE);
                         }
                     }, Throwable::printStackTrace);
         }
@@ -90,7 +91,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private void onSave(@Nullable List<Notification> notificationThreadModels) {
         if (notificationThreadModels != null) {
-            Notification.save(notificationThreadModels).subscribe();
+            RxHelper.saveObserable(Notification.save(notificationThreadModels)).subscribe();
             onNotifyUser(notificationThreadModels);
         }
     }
@@ -106,17 +107,22 @@ public class NotificationSchedulerJobTask extends JobService {
         Context context = getApplicationContext();
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
                 R.mipmap.ic_launcher);
-        int primaryColor = ViewHelper.getPrimaryColor(context);
-        android.app.Notification grouped = getNotification(getString(R.string.notifications), getString(R.string.unread_notification))
+        Intent intent = new Intent(this, NotificationActivityView.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        int accentColor = ViewHelper.getAccentColor(context);
+        android.app.Notification grouped = getNotification(getString(R.string.app_name), getString(R.string.notifications_hint))
                 .setLargeIcon(largeIcon)
                 .setGroup(NOTIFICATION_GROUP_ID)
                 .setGroupSummary(true)
-                .setColor(primaryColor)
+                .setColor(accentColor)
+                .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .build();
         showNotification(BundleConstant.REQUEST_CODE, grouped);
         Stream.of(notificationThreadModels)
                 .filter(Notification::isUnread)
+                .limit(10)
                 .forEach(thread -> {
                     if (!InputHelper.isEmpty(thread.getSubject().getLatestCommentUrl())) {
                         RestProvider.getNotificationService().getComment(thread.getSubject().getLatestCommentUrl())
@@ -130,7 +136,7 @@ public class NotificationSchedulerJobTask extends JobService {
                                             .setLargeIcon(largeIcon)
                                             .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                                             .setGroup(NOTIFICATION_GROUP_ID)
-                                            .setColor(primaryColor)
+                                            .setColor(accentColor)
                                             .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(),
                                                     thread.getSubject().getUrl()))
                                             .build();
@@ -142,7 +148,7 @@ public class NotificationSchedulerJobTask extends JobService {
                                 .setLargeIcon(largeIcon)
                                 .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                                 .setGroup(NOTIFICATION_GROUP_ID)
-                                .setColor(primaryColor)
+                                .setColor(accentColor)
                                 .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(), thread
                                         .getSubject().getUrl()))
                                 .build();

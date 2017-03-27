@@ -30,19 +30,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     private boolean isWatched;
     private boolean isStarred;
     private boolean isForked;
-    private final String login;
-    private final String repoId;
+    private String login;
+    private String repoId;
     private Repo repo;
     private int navTyp;
 
-    RepoPagerPresenter(final String repoId, final String login, @RepoPagerMvp.RepoNavigationType int navTyp) {
-        if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId())) {
-            throw new IllegalArgumentException("arguments cannot be empty");
-        }
-        this.repoId = repoId;
-        this.login = login;
-        this.navTyp = navTyp;
-    }
+    RepoPagerPresenter() {}
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
@@ -64,12 +57,14 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         super.onError(throwable);
     }
 
-    @Override protected void onAttachView(final @NonNull RepoPagerMvp.View view) {
-        super.onAttachView(view);
-        if (getRepo() != null) {
-            view.onInitRepo();
-        } else {
+    @Override public void onActivityCreate(@NonNull String repoId, @NonNull String login, int navTyp) {
+        this.login = login;
+        this.repoId = repoId;
+        this.navTyp = navTyp;
+        if (getRepo() == null || !isApiCalled()) {
             callApi(navTyp);
+        } else {
+            sendToView(RepoPagerMvp.View::onInitRepo);
         }
     }
 

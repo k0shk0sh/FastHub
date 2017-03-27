@@ -8,6 +8,7 @@ import android.view.View;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 /**
@@ -19,7 +20,7 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
     private CommitFileListModel files = new CommitFileListModel();
 
     @Override public void onItemClick(int position, View v, CommitFileModel item) {
-        
+
     }
 
     @Override public void onItemLongClick(int position, View v, CommitFileModel item) {
@@ -28,9 +29,13 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {
-            CommitFileListModel files = (CommitFileListModel) bundle.get(BundleConstant.EXTRA);
-            if (files != null) {
-                this.files.addAll(files);
+            String sha = bundle.getString(BundleConstant.ID);
+            if (!InputHelper.isEmpty(sha)) {
+                CommitFileListModel commitFiles = CommitFilesSingleton.getInstance().getByCommitId(sha);
+                if (commitFiles != null) {
+                    this.files.addAll(commitFiles);
+                    CommitFilesSingleton.getInstance().clear();
+                }
             }
             sendToView(CommitFilesMvp.View::onNotifyAdapter);
         } else {

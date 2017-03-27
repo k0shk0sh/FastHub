@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<HorizontalScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
@@ -12,137 +12,143 @@
     tools:showIn="@layout/header_title_with_toolbar">
 
     <LinearLayout
-        android:id="@+id/watchRepoLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_normal"
-        android:background="?selectableItemBackgroundBorderless"
+        android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/watchRepoImage"
+        <LinearLayout
+            android:id="@+id/watchRepoLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_eye"/>
-
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/watchRepo"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
-            tools:text="100,000"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/watchRepoImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_eye"/>
 
-    <LinearLayout
-        android:id="@+id/starRepoLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/spacing_normal"
-        android:background="?selectableItemBackgroundBorderless"
-        android:gravity="center"
-        android:orientation="vertical">
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/watchRepo"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="100,000"/>
 
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/starRepoImage"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/starRepoLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_star"/>
-
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/starRepo"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_normal"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
-            tools:text="100,000"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/starRepoImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_star"/>
 
-    <LinearLayout
-        android:id="@+id/forkRepoLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:gravity="center"
-        android:orientation="vertical">
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/starRepo"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="100,000"/>
 
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/forkRepoImage"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/forkRepoLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_fork"/>
-
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/forkRepo"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
-            tools:text="100,000"/>
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/forkRepoImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_fork"/>
 
-    <LinearLayout
-        android:id="@+id/licenseLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_normal"
-        android:background="?selectableItemBackgroundBorderless"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:visibility="visible">
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/forkRepo"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:text="100,000"/>
 
-        <com.fastaccess.ui.widgets.ForegroundImageView
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/licenseLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:contentDescription="@string/mal_title_licenses"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_license"/>
-
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/license"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
-            android:maxLength="6"
-            android:maxLines="1"
-            tools:text="Apache"/>
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-    </LinearLayout>
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/mal_title_licenses"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_license"/>
 
-    <LinearLayout
-        android:id="@+id/pinLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/spacing_normal"
-        android:background="?selectableItemBackgroundBorderless"
-        android:gravity="center"
-        android:orientation="vertical">
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/license"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLength="6"
+                android:maxLines="1"
+                tools:text="Apache"/>
 
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/pinImage"
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/pinLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_pin"/>
-
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/pinText"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
-            android:text="@string/pin"/>
+            android:orientation="vertical">
 
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/pinImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_pin"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/pinText"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/pin"/>
+
+        </LinearLayout>
     </LinearLayout>
-
-
-</LinearLayout>
+</HorizontalScrollView>

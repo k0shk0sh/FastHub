@@ -22,6 +22,11 @@ public abstract class AbstractSearchHistory implements Parcelable {
     @Column(unique = true) String text;
 
     public Completable save(SearchHistory entity) {
+        App.getInstance().getDataStore()
+                .delete(SearchHistory.class)
+                .where(SearchHistory.TEXT.eq(entity.getText()))
+                .get()
+                .value();
         return App.getInstance().getDataStore()
                 .insert(entity)
                 .toCompletable();

@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LicenseModel;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.Repo;
@@ -180,21 +181,18 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @NonNull @Override public RepoPagerPresenter providePresenter() {
-        if (getIntent() == null) {
-            throw new IllegalArgumentException("intent is null, WTF");
-        }
-        if (getIntent().getExtras() == null) {
-            throw new IllegalArgumentException("no intent extras provided");
-        }
-        final Bundle extras = getIntent().getExtras();
-        repoId = extras.getString(BundleConstant.ID);
-        login = extras.getString(BundleConstant.EXTRA_TWO);
-        navType = extras.getInt(BundleConstant.EXTRA_TYPE);
-        return new RepoPagerPresenter(repoId, login, navType);
+        return new RepoPagerPresenter();
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            final Bundle extras = getIntent().getExtras();
+            repoId = extras.getString(BundleConstant.ID);
+            login = extras.getString(BundleConstant.EXTRA_TWO);
+            navType = extras.getInt(BundleConstant.EXTRA_TYPE);
+        }
+        getPresenter().onActivityCreate(repoId, login, navType);
         setTitle("");
         accentColor = ViewHelper.getAccentColor(this);
         iconColor = ViewHelper.getIconColor(this);
@@ -249,9 +247,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         title.setText(repoModel.getFullName());
         TextViewCompat.setTextAppearance(title, R.style.TextAppearance_AppCompat_Medium);
         title.setTextColor(ViewHelper.getPrimaryTextColor(this));
-        if (!InputHelper.isEmpty(repoModel.getLicense())) {
+        if (repoModel.getLicense() != null) {
             licenseLayout.setVisibility(View.VISIBLE);
-            license.setText(repoModel.getLicense().getSpdxId());
+            LicenseModel licenseModel = repoModel.getLicense();
+            license.setText(!InputHelper.isEmpty(licenseModel.getSpdxId()) ? licenseModel.getSpdxId() : licenseModel.getName());
         }
         supportInvalidateOptionsMenu();
         if (!PrefGetter.isRepoGuideShowed()) {// the mother of nesting. #dontjudgeme.

@@ -112,42 +112,48 @@ public abstract class AbstractUser implements Parcelable {
     }
 
     public static Observable saveUserFollowerList(@NonNull List<User> models, @NonNull String followingName) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(User.class)
-                .where(FOLLOWING_NAME.eq(followingName))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(userModel -> {
-                    userModel.setFollowingName(followingName);
-                    userModel.save(userModel);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(User.class)
+                    .where(FOLLOWING_NAME.eq(followingName))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(userModel -> {
+                        userModel.setFollowingName(followingName);
+                        userModel.save(userModel);
+                    });
+        });
     }
 
     public static Observable saveUserFollowingList(@NonNull List<User> models, @NonNull String followerName) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(User.class)
-                .where(FOLLOWER_NAME.eq(followerName))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(userModel -> {
-                    userModel.setFollowerName(followerName);
-                    userModel.save(userModel);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(User.class)
+                    .where(FOLLOWER_NAME.eq(followerName))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(userModel -> {
+                        userModel.setFollowerName(followerName);
+                        userModel.save(userModel);
+                    });
+        });
     }
 
     public static Observable saveUserContributorList(@NonNull List<User> models, @NonNull String repoId) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(User.class)
-                .where(REPO_ID.eq(repoId))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(userModel -> {
-                    userModel.setRepoId(repoId);
-                    userModel.save(userModel);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(User.class)
+                    .where(REPO_ID.eq(repoId))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(userModel -> {
+                        userModel.setRepoId(repoId);
+                        userModel.save(userModel);
+                    });
+        });
 
     }
 

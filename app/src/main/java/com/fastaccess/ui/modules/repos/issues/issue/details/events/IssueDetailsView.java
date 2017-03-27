@@ -32,7 +32,7 @@ public class IssueDetailsView extends BaseFragment<IssueDetailsMvp.View, IssueDe
 
     public static IssueDetailsView newInstance(@NonNull Issue issueModel) {
         IssueDetailsView view = new IssueDetailsView();
-        view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());
+        view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());//TODO fix this
         return view;
     }
 

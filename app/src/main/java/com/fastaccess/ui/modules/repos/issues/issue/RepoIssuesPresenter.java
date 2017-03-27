@@ -9,7 +9,6 @@ import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
@@ -57,6 +56,11 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     }
 
     @Override public void onCallApi(int page, @Nullable IssueState parameter) {
+        if (parameter == null) {
+            sendToView(RepoIssuesMvp.View::hideProgress);
+            return;
+        }
+        this.issueState = parameter;
         Logger.e(page, page, login, repoId);
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
@@ -67,8 +71,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(RepoQueryProvider
-                        .getIssuesPullRequerQuery(login, repoId, issueState, false), page),
+        makeRestCall(RestProvider.getIssueService().getRepositoryIssues(login, repoId, parameter.name(), page),
                 issues -> {
                     lastPage = issues.getLast();
                     if (getCurrentPage() == 1) {
@@ -76,8 +79,15 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                         manageSubscription(Issue.save(issues.getItems(), repoId, login).subscribe());
                     }
                     getIssues().addAll(issues.getItems());
-                    sendToView(view -> view.onNotifyAdapter(issues.getTotalCount()));
+                    sendToView(RepoIssuesMvp.View::onNotifyAdapter);
                 });
+    }
+
+    private void onCallCountApi(@NonNull IssueState issueState) {
+        manageSubscription(RxHelper.getObserver(RestProvider.getIssueService()
+                .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequerQuery(login, repoId, issueState, false), 1))
+                .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
+                        Throwable::printStackTrace));
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle, @NonNull IssueState issueState) {
@@ -85,7 +95,8 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         login = bundle.getString(BundleConstant.EXTRA);
         this.issueState = issueState;
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            onCallApi(1, null);
+            onCallApi(1, issueState);
+            onCallCountApi(issueState);
         }
     }
 
@@ -94,7 +105,10 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             manageSubscription(RxHelper.getObserver(Issue.getIssues(repoId, login, issueState))
                     .subscribe(issueModel -> {
                         issues.addAll(issueModel);
-                        sendToView(view -> view.onNotifyAdapter(issues.size()));
+                        sendToView(view -> {
+                            view.onNotifyAdapter();
+                            view.onUpdateCount(issues.size());
+                        });
                     }));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
@@ -114,7 +128,6 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     }
 
     @Override public void onItemClick(int position, View v, Issue item) {
-        Logger.e(Bundler.start().put("item", item).end().size());
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
         if (parser != null) {
             v.getContext().startActivity(IssuePagerView.createIntent(v.getContext(), parser.getRepoId(),

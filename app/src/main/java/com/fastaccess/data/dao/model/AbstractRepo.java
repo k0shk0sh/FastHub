@@ -141,29 +141,33 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     }
 
     public static Observable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(Repo.class)
-                .where(STARRED_USER.eq(starredUser))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(repo -> {
-                    repo.setStarredUser(starredUser);
-                    repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Repo.class)
+                    .where(STARRED_USER.eq(starredUser))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(repo -> {
+                        repo.setStarredUser(starredUser);
+                        repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     public static Observable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(Repo.class)
-                .where(REPOS_OWNER.eq(reposOwner))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(repo -> {
-                    repo.setReposOwner(reposOwner);
-                    repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Repo.class)
+                    .where(REPOS_OWNER.eq(reposOwner))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(repo -> {
+                        repo.setReposOwner(reposOwner);
+                        repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     public static Observable<List<Repo>> getStarred(@NonNull String starredUser) {

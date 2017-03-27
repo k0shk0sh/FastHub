@@ -1,4 +1,3 @@
--renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
 -dontpreverify
 -repackageclasses ''

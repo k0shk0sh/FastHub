@@ -79,18 +79,20 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     }
 
     public static Observable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        singleEntityStore.delete(Issue.class)
-                .where(REPO_ID.equal(repoId)
-                        .and(LOGIN.equal(login)))
-                .get()
-                .value();
-        return Observable.create(subscriber -> Stream.of(models)
-                .forEach(issueModel -> {
-                    issueModel.setRepoId(repoId);
-                    issueModel.setLogin(login);
-                    issueModel.save(issueModel).toObservable().toBlocking().singleOrDefault(null);
-                }));
+        return Observable.create(subscriber -> {
+            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+            singleEntityStore.delete(Issue.class)
+                    .where(REPO_ID.equal(repoId)
+                            .and(LOGIN.equal(login)))
+                    .get()
+                    .value();
+            Stream.of(models)
+                    .forEach(issueModel -> {
+                        issueModel.setRepoId(repoId);
+                        issueModel.setLogin(login);
+                        issueModel.save(issueModel).toObservable().toBlocking().singleOrDefault(null);
+                    });
+        });
     }
 
     public static Observable<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {

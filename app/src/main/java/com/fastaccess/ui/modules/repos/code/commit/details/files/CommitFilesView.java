@@ -33,11 +33,13 @@ public class CommitFilesView extends BaseFragment<CommitFilesMvp.View, CommitFil
 
     private CommitFilesAdapter adapter;
 
-    public static CommitFilesView newInstance(@Nullable CommitFileListModel commitFileModels) {
+    public static CommitFilesView newInstance(@NonNull String sha, @Nullable CommitFileListModel commitFileModels) {//TODO fix this
         CommitFilesView view = new CommitFilesView();
-        view.setArguments(Bundler.start()
-                .putParcelableArrayList(BundleConstant.EXTRA, commitFileModels)
-                .end());
+        if (commitFileModels != null) {
+            CommitFilesSingleton.getInstance().putFiles(sha, commitFileModels);
+        }
+        Bundle bundle = Bundler.start().put(BundleConstant.ID, sha).end();
+        view.setArguments(bundle);
         return view;
     }
 

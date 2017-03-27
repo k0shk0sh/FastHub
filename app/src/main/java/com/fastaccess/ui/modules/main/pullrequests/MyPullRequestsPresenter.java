@@ -9,8 +9,6 @@ import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
-import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -30,7 +28,6 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
     private int lastPage = Integer.MAX_VALUE;
 
     @Override public void onItemClick(int position, View v, PullRequest item) {
-        Logger.e(Bundler.start().put("item", item).end().size());
         PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
         if (parser != null) {
             Intent intent = PullRequestPagerView.createIntent(v.getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber(), true);

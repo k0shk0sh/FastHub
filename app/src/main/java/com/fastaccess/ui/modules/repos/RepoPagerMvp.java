@@ -66,6 +66,8 @@ public interface RepoPagerMvp {
 
     interface Presenter extends BaseMvp.FAPresenter, BottomNavigation.OnMenuItemSelectionListener {
 
+        void onActivityCreate(@NonNull String repoId, @NonNull String login, @RepoPagerMvp.RepoNavigationType int navTyp);
+
         @NonNull String repoId();
 
         @NonNull String login();
