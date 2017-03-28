@@ -23,7 +23,7 @@ public interface CreateMilestoneMvp {
     }
 
     interface Presenter {
-        void onSubmit(@Nullable String title, @Nullable String dueOn,
+        void onSubmit(@Nullable String title, @Nullable String dueOn, @Nullable String description,
                       @NonNull String login, @NonNull String repo);
     }
 }

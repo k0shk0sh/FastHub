@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:minWidth="300dp"
     android:orientation="vertical"
     android:paddingBottom="@dimen/spacing_xs_large">
 
@@ -29,12 +30,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/title"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
 
                     <android.support.design.widget.TextInputEditText
@@ -43,6 +45,22 @@
                         android:hint="@string/title"
                         android:inputType="textCapSentences"
                         android:maxLines="1"/>
+
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/dueOn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.6"
+                    app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+                    <android.support.design.widget.TextInputEditText
+                        android:id="@+id/dueOnEditText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:focusable="false"
+                        android:hint="@string/due_on"/>
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
@@ -64,17 +82,17 @@
                 android:orientation="vertical">
 
                 <android.support.design.widget.TextInputLayout
-                    android:id="@+id/dueOn"
+                    android:id="@+id/description"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
 
                     <android.support.design.widget.TextInputEditText
-                        android:id="@+id/dueOnEditText"
+                        android:id="@+id/descriptionText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:focusable="false"
-                        android:hint="@string/due_on"/>
+                        android:hint="@string/description"/>
 
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>

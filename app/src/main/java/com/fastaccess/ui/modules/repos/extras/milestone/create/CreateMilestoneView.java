@@ -35,6 +35,7 @@ public class CreateMilestoneView extends BaseDialogFragment<CreateMilestoneMvp.V
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.title) TextInputLayout title;
     @BindView(R.id.dueOnEditText) TextInputEditText dueOnEditText;
+    @BindView(R.id.description) TextInputEditText description;
 
     private CreateMilestoneMvp.OnMilestoneAdded onMilestoneAdded;
 
@@ -77,7 +78,7 @@ public class CreateMilestoneView extends BaseDialogFragment<CreateMilestoneMvp.V
         toolbar.setNavigationOnClickListener(item -> dismiss());
         toolbar.inflateMenu(R.menu.add_menu);
         toolbar.setOnMenuItemClickListener(item -> {
-            getPresenter().onSubmit(InputHelper.toString(title), InputHelper.toString(dueOnEditText), login, repo);
+            getPresenter().onSubmit(InputHelper.toString(title), InputHelper.toString(dueOnEditText), InputHelper.toString(description), login, repo);
             return true;
         });
     }
