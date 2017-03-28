@@ -24,7 +24,6 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
-import retrofit2.Response;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
@@ -65,6 +64,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
+        recycler.addNormalSpacingDivider();
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
@@ -99,11 +99,6 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public IssueCommentsPresenter providePresenter() {
         return new IssueCommentsPresenter();
     }
@@ -133,17 +128,6 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         onTagUser(null);
     }
 
-    @Override public void onHandleCommentDelete(@NonNull Response<Boolean> booleanResponse, long commId) {
-        hideProgress();
-        if (booleanResponse.code() == 204) {
-            Comment Comment = new Comment();
-            Comment.setId(commId);
-            adapter.removeItem(Comment);
-        } else {
-            showErrorMessage(getString(R.string.error_deleting_comment));
-        }
-    }
-
     @Override public void onShowDeleteMsg(long id) {
         MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
                 Bundler.start()
@@ -151,10 +135,6 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
                         .put(BundleConstant.YES_NO_EXTRA, true)
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
-    }
-
-    @Override public void onShowProgressDialog() {
-        showProgress(0);
     }
 
     @Override public void onTagUser(@Nullable User user) {
@@ -181,8 +161,30 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
-            onRefresh();
+        if (resultCode == Activity.RESULT_OK && data != null) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
+                Bundle bundle = data.getExtras();
+                if (bundle != null) {
+                    boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
+                    Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
+                    if (isNew) {
+                        getPresenter().getComments().add(commentsModel);
+                        adapter.notifyDataSetChanged();
+                        recycler.smoothScrollToPosition(adapter.getItemCount());
+                    } else {
+                        int position = adapter.getItem(commentsModel);
+                        if (position != -1) {
+                            getPresenter().getComments().set(position, commentsModel);
+                            adapter.notifyDataSetChanged();
+                            recycler.smoothScrollToPosition(position);
+                        } else {
+                            getPresenter().getComments().add(commentsModel);
+                            adapter.notifyDataSetChanged();
+                            recycler.smoothScrollToPosition(adapter.getItemCount());
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -207,5 +209,10 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
                 adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

@@ -51,6 +51,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     String gistId;
     String issueId;
     String pullRequestId;
+    ReactionsModel reactions;
 
     public Completable save(Comment modelEntity) {
         return App.getInstance().getDataStore()
@@ -189,9 +190,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        AbstractComment that = (AbstractComment) o;
-
+        Comment that = (Comment) o;
         return id == that.id;
 
     }
@@ -220,6 +219,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
         dest.writeString(this.gistId);
         dest.writeString(this.issueId);
         dest.writeString(this.pullRequestId);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected AbstractComment(Parcel in) {
@@ -242,11 +242,12 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
         this.gistId = in.readString();
         this.issueId = in.readString();
         this.pullRequestId = in.readString();
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
-    public static final Creator<AbstractComment> CREATOR = new Creator<AbstractComment>() {
-        @Override public AbstractComment createFromParcel(Parcel source) {return new Comment(source);}
+    public static final Creator<Comment> CREATOR = new Creator<Comment>() {
+        @Override public Comment createFromParcel(Parcel source) {return new Comment(source);}
 
-        @Override public AbstractComment[] newArray(int size) {return new Comment[size];}
+        @Override public Comment[] newArray(int size) {return new Comment[size];}
     };
 }

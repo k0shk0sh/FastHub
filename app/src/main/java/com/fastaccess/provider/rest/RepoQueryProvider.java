@@ -18,7 +18,7 @@ public class RepoQueryProvider {
 
     @NonNull public static String getMyIssuesPullRequerQuery(@NonNull String username, @NonNull IssueState issueState, boolean isPr) {
         return "type:" + (isPr ? "pr" : "issue") +
-                "+" + "author:" + username + "+" +
-                "is:" + issueState.name();
+                "+" + "author:" + username +
+                "+is:" + issueState.name();
     }
 }

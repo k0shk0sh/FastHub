@@ -84,23 +84,23 @@ public interface RepoService {
     Observable<Pageable<User>> getContributors(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/commits/{sha}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Commit> getCommit(@Path("owner") String owner, @Path("repo") String repo, @Path("sha") String sha);
 
     @NonNull @GET("repos/{owner}/{repo}/commits/{sha}/comments")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Pageable<Comment>> getCommitComments(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                     @NonNull @Path("sha") String ref, @Query("page") int page);
 
     @NonNull @POST("repos/{owner}/{repo}/commits/{sha}/comments")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> postCommitComment(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
-                                                      @NonNull @Path("sha") String ref, @Body CommentRequestModel model);
+                                          @NonNull @Path("sha") String ref, @Body CommentRequestModel model);
 
     @NonNull @PATCH("repos/{owner}/{repo}/comments/{id}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> editCommitComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,
-                                                      @Body CommentRequestModel body);
+                                          @Body CommentRequestModel body);
 
     @NonNull @DELETE("repos/{owner}/{repo}/comments/{id}")
     Observable<Response<Boolean>> deleteComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);

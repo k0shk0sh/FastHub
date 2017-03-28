@@ -13,8 +13,6 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
 
-import retrofit2.Response;
-
 /**
  * Created by Kosh on 20 Nov 2016, 11:10 AM
  */
@@ -32,11 +30,7 @@ interface GistCommentsMvp {
 
         void onStartNewComment();
 
-        void onHandleCommentDelete(@NonNull Response<Boolean> booleanResponse, long commId);
-
         void onShowDeleteMsg(long id);
-
-        void onShowProgressDialog();
 
         void onTagUser(@NonNull User user);
     }

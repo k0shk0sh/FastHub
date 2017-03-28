@@ -138,7 +138,7 @@ public class EditorView extends BaseActivity<EditorMvp.View, EditorPresenter> im
         hideProgress();
         Intent intent = new Intent();
         intent.putExtras(Bundler.start()
-//                .put(BundleConstant.ITEM, commentModel)
+                .put(BundleConstant.ITEM, commentModel)
                 .put(BundleConstant.EXTRA, isNew)
                 .end());
         setResult(RESULT_OK, intent);

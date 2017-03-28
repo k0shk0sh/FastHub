@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_micro"
+    android:layout_margin="@dimen/grid_spacing"
+    android:background="@color/card_background"
     android:foreground="?android:selectableItemBackground"
-    android:stateListAnimator="@animator/cardview_selector"
-    app:cardBackgroundColor="@color/card_background"
-    app:contentPaddingBottom="@dimen/spacing_normal"
-    app:contentPaddingRight="@dimen/spacing_xs_large"
-    app:contentPaddingTop="@dimen/spacing_normal">
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal"
+    app:cardBackgroundColor="@color/card_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,8 +58,104 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/avatar_margin_end"
+            android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_normal"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:paddingEnd="@dimen/spacing_normal"
+                android:paddingStart="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/thumbsUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_thumbs_up"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/thumbsDown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_thumbs_down"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/laugh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_laughing"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/hurray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_huray"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/sad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_sad"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:layout_marginStart="@dimen/spacing_micro"
+                    android:background="?android:selectableItemBackgroundBorderless"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_emoji_heart"
+                    android:gravity="center"
+                    tools:text="100"/>
+
+            </LinearLayout>
+        </HorizontalScrollView>
+
+
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

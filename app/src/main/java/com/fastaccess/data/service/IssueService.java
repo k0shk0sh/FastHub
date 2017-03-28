@@ -40,7 +40,7 @@ public interface IssueService {
     Observable<Pageable<Issue>> getUserIssues(@Query("page") int page, @Query("state") @NonNull String state);
 
     @GET("repos/{owner}/{repo}/issues/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Issue> getIssue(@Path("owner") String owner, @Path("repo") String repo,
                                @Path("number") int number);
 
@@ -68,22 +68,24 @@ public interface IssueService {
 
 
     @GET("repos/{owner}/{repo}/issues/{number}/comments")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Pageable<Comment>> getIssueComments(@Path("owner") String owner,
                                                    @Path("repo") String repo,
                                                    @Path("number") int number,
                                                    @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/issues/{number}/comments/{id}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> getIssueComment(@Path("owner") String owner, @Path("repo") String repo,
                                         @Path("number") int number, @Path("id") long id);
 
     @POST("repos/{owner}/{repo}/issues/{number}/comments")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> createIssueComment(@Path("owner") String owner, @Path("repo") String repo,
                                            @Path("number") int number, @Body CommentRequestModel body);
 
     @PATCH("repos/{owner}/{repo}/issues/comments/{id}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> editIssueComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,
                                          @Body CommentRequestModel body);
 

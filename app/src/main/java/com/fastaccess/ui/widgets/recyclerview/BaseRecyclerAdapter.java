@@ -25,7 +25,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     @NonNull private List<M> data;
     @Nullable private P listener;
     private int lastKnowingPosition = -1;
-    private boolean enableAnimation = !PrefGetter.isRVAnimationEnabled();
+    private boolean enableAnimation = PrefGetter.isRVAnimationEnabled();
     private boolean showedGuide;
     private GuideListener guideListener;
 
@@ -95,13 +95,10 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     public void addItem(M item, int position) {
         data.add(position, item);
         notifyItemInserted(position);
-        notifyItemRangeInserted(position, getItemCount());
     }
 
     public void addItem(M item) {
-        data.add(item);
-        notifyItemInserted(getItemCount() - 1);
-        notifyItemRangeInserted(getItemCount() - 1, getItemCount());
+        addItem(item, getItemCount());
     }
 
     @SuppressWarnings("WeakerAccess") public void addItems(@NonNull List<M> items) {
@@ -117,7 +114,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void removeItem(M item) {
         int position = data.indexOf(item);
-        removeItem(position);
+        if (position != -1) removeItem(position);
     }
 
     public void removeItems(@NonNull List<M> items) {

@@ -122,4 +122,8 @@ public class DynamicRecyclerView extends RecyclerView {
                     ContextCompat.getColor(getContext(), R.color.divider)));
         }
     }
+
+    public void addNormalSpacingDivider() {
+        addDivider();
+    }
 }

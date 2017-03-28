@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
@@ -103,7 +104,16 @@ class IssueCommentsPresenter extends BasePresenter<IssueCommentsMvp.View> implem
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
             if (commId != 0) {
                 makeRestCall(RestProvider.getIssueService().deleteIssueComment(login, repoId, commId),
-                        booleanResponse -> sendToView(view -> view.onHandleCommentDelete(booleanResponse, commId)));
+                        booleanResponse -> sendToView(view -> {
+                            if (booleanResponse.code() == 204) {
+                                Comment comment = new Comment();
+                                comment.setId(commId);
+                                getComments().remove(comment);
+                                view.onNotifyAdapter();
+                            } else {
+                                view.showMessage(R.string.error, R.string.error_deleting_comment);
+                            }
+                        }));
             }
         }
     }

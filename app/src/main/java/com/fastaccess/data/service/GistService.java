@@ -44,7 +44,7 @@ public interface GistService {
     Observable<Gist> getGist(@Path("id") String id);
 
     @GET("gists/{id}/comments")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Pageable<Comment>> getGistComments(@NonNull @Path("id") String id, @Query("page") int page);
 
     @GET("gists/{gist_id}/comments/{id}")
@@ -52,11 +52,11 @@ public interface GistService {
     Observable<Comment> getGistComment(@Path("gist_id") String gistId, @Path("id") String id);
 
     @POST("gists/{gist_id}/comments")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> createGistComment(@Path("gist_id") String gistId, @Body CommentRequestModel body);
 
     @PATCH("gists/{gist_id}/comments/{id}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> editGistComment(@Path("gist_id") String gistId, @Path("id") long id, @Body CommentRequestModel body);
 
     @DELETE("gists/{gist_id}/comments/{id}")

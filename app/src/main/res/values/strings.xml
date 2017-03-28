@@ -237,7 +237,7 @@
     <string name="background_job_title">Notification sync interval</string>
     <string name="every">Every</string>
     <string name="behavior">Behavior</string>
-    <string name="recycler_view_animation_summary">Disable list animations</string>
+    <string name="recycler_view_animation_summary">Enable list animations</string>
     <string name="recycler_view_animation_title">List animation</string>
     <string name="back_button_summary">Disable dialog preventing you to exit FastHub accidentally</string>
     <string name="back_button_title">Press back to exit</string>
