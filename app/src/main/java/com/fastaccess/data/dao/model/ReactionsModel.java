@@ -14,6 +14,7 @@ import lombok.Setter;
 
 @Getter @Setter public class ReactionsModel implements Parcelable {
 
+    private long id;
     private String url;
     private int total_count;
     @SerializedName("+1") private int plusOne; // FIXME check this code
@@ -23,9 +24,12 @@ import lombok.Setter;
     private int confused;
     private int heart;
 
+    public ReactionsModel() {}
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
         dest.writeString(this.url);
         dest.writeInt(this.total_count);
         dest.writeInt(this.plusOne);
@@ -36,9 +40,8 @@ import lombok.Setter;
         dest.writeInt(this.heart);
     }
 
-    public ReactionsModel() {}
-
     protected ReactionsModel(Parcel in) {
+        this.id = in.readLong();
         this.url = in.readString();
         this.total_count = in.readInt();
         this.plusOne = in.readInt();
@@ -49,7 +52,7 @@ import lombok.Setter;
         this.heart = in.readInt();
     }
 
-    public static final Parcelable.Creator<ReactionsModel> CREATOR = new Parcelable.Creator<ReactionsModel>() {
+    public static final Creator<ReactionsModel> CREATOR = new Creator<ReactionsModel>() {
         @Override public ReactionsModel createFromParcel(Parcel source) {return new ReactionsModel(source);}
 
         @Override public ReactionsModel[] newArray(int size) {return new ReactionsModel[size];}

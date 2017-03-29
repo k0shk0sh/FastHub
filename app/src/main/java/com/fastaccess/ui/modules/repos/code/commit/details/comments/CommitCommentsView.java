@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
@@ -23,6 +24,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
+import icepick.State;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -33,6 +35,8 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @State SparseBooleanArrayParcelable sparseBooleanArray;
+
     private CommentsAdapter adapter;
     private OnLoadMore onLoadMore;
 
@@ -57,13 +61,14 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments());
+        adapter = new CommentsAdapter(getPresenter().getComments(), this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
+            sparseBooleanArray = new SparseBooleanArrayParcelable();
             onRefresh();
         }
     }
@@ -197,5 +202,21 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    @Override public void onToggle(int position, boolean isCollapsed) {
+        getSparseBooleanArray().put(position, isCollapsed);
+        adapter.notifyItemChanged(position);
+    }
+
+    @Override public boolean isCollapsed(int position) {
+        return getSparseBooleanArray().get(position);
+    }
+
+    private SparseBooleanArrayParcelable getSparseBooleanArray() {
+        if (sparseBooleanArray == null) {
+            sparseBooleanArray = new SparseBooleanArrayParcelable();
+        }
+        return sparseBooleanArray;
     }
 }

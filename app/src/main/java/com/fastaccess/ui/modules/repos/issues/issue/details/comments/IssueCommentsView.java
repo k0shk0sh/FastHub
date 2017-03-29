@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
@@ -24,6 +25,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
+import icepick.State;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
@@ -35,6 +37,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @State SparseBooleanArrayParcelable sparseBooleanArray;
     private CommentsAdapter adapter;
     private OnLoadMore onLoadMore;
 
@@ -53,13 +56,16 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) getPresenter().onFragmentCreated(getArguments());
+        if (savedInstanceState == null) {
+            sparseBooleanArray = new SparseBooleanArrayParcelable();
+            getPresenter().onFragmentCreated(getArguments());
+        }
         stateLayout.setEmptyText(R.string.no_comments);
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments());
+        adapter = new CommentsAdapter(getPresenter().getComments(), this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -211,8 +217,24 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         }
     }
 
+    @Override public void onToggle(int position, boolean isCollapsed) {
+        getSparseBooleanArray().put(position, isCollapsed);
+        adapter.notifyItemChanged(position);
+    }
+
+    @Override public boolean isCollapsed(int position) {
+        return getSparseBooleanArray().get(position);
+    }
+
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    private SparseBooleanArrayParcelable getSparseBooleanArray() {
+        if (sparseBooleanArray == null) {
+            sparseBooleanArray = new SparseBooleanArrayParcelable();
+        }
+        return sparseBooleanArray;
     }
 }

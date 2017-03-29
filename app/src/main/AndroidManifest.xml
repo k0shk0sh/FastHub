@@ -197,9 +197,9 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
-
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
         <service android:name=".provider.tasks.git.GithubActionService"/>
+        <service android:name=".provider.tasks.git.ReactionService"/>
     </application>
 
 </manifest>

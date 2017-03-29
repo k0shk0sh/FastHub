@@ -91,7 +91,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private void onSave(@Nullable List<Notification> notificationThreadModels) {
         if (notificationThreadModels != null) {
-            RxHelper.saveObserable(Notification.save(notificationThreadModels)).subscribe();
+            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe();
             onNotifyUser(notificationThreadModels);
         }
     }

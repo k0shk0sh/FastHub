@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.CommitFileModel;
+import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.viewholder.CommitFilesViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -17,21 +18,16 @@ import java.util.ArrayList;
 public class CommitFilesAdapter extends BaseRecyclerAdapter<CommitFileModel, CommitFilesViewHolder, BaseViewHolder
         .OnItemClickListener<CommitFileModel>> {
 
-    public interface OnTogglePatch {
-        void onToggle(int position, boolean isCollapsed);
 
-        boolean isCollapsed(int position);
-    }
+    @NonNull private OnToggleView onToggleView;
 
-    @NonNull private OnTogglePatch onTogglePatch;
-
-    public CommitFilesAdapter(@NonNull ArrayList<CommitFileModel> eventsModels, @NonNull OnTogglePatch onTogglePatch) {
+    public CommitFilesAdapter(@NonNull ArrayList<CommitFileModel> eventsModels, @NonNull OnToggleView onToggleView) {
         super(eventsModels);
-        this.onTogglePatch = onTogglePatch;
+        this.onToggleView = onToggleView;
     }
 
     @Override protected CommitFilesViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return CommitFilesViewHolder.newInstance(parent, this, onTogglePatch);
+        return CommitFilesViewHolder.newInstance(parent, this, onToggleView);
     }
 
     @Override protected void onBindView(CommitFilesViewHolder holder, int position) {

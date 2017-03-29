@@ -321,4 +321,5 @@
     <string name="my_gists">My Gists</string>
     <string name="changelog">Changelog</string>
     <string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
+    <string name="posting_reaction" formatted="true">Posting reaction %s</string>
 </resources>

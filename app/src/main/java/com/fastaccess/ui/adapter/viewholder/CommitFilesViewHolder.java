@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileModel;
-import com.fastaccess.ui.adapter.CommitFilesAdapter;
+import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.widgets.DiffLineSpan;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -44,11 +44,11 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     @BindColor(R.color.patch_ref_color) int patchRefColor;
 
     private String pathText;
-    private CommitFilesAdapter.OnTogglePatch onTogglePatch;
+    private OnToggleView onToggleView;
 
     @Override public void onClick(View v) {
         int position = getAdapterPosition();
-        onTogglePatch.onToggle(position, !onTogglePatch.isCollapsed(position));
+        onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
     }
 
     private void onToggle(boolean expanded) {
@@ -64,14 +64,14 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     }
 
     private CommitFilesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
-                                  @NonNull CommitFilesAdapter.OnTogglePatch onTogglePatch) {
+                                  @NonNull OnToggleView onToggleView) {
         super(itemView, adapter);
-        this.onTogglePatch = onTogglePatch;
+        this.onToggleView = onToggleView;
     }
 
     public static CommitFilesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,
-                                                    @NonNull CommitFilesAdapter.OnTogglePatch onTogglePatch) {
-        return new CommitFilesViewHolder(getView(viewGroup, R.layout.commit_file_row_item), adapter, onTogglePatch);
+                                                    @NonNull OnToggleView onToggleView) {
+        return new CommitFilesViewHolder(getView(viewGroup, R.layout.commit_file_row_item), adapter, onToggleView);
     }
 
     @Override public void bind(@NonNull CommitFileModel commit) {
@@ -94,7 +94,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
                 .append("\n")
                 .bold(String.valueOf(commit.getStatus())));
 
-        onToggle(onTogglePatch.isCollapsed(getAdapterPosition()));
+        onToggle(onToggleView.isCollapsed(getAdapterPosition()));
     }
 
     private void setPatchText(@NonNull String text) {

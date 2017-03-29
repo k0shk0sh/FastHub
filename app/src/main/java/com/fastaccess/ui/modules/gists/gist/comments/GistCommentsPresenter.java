@@ -76,7 +76,6 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         return comments;
     }
 
-
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
         if (bundle != null) {
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);

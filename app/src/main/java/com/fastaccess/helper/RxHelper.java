@@ -23,7 +23,7 @@ public class RxHelper {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static <T> Observable<T> saveObserable(@NonNull Observable<T> observable) {
+    public static <T> Observable<T> safeObservable(@NonNull Observable<T> observable) {
         return getObserver(observable).onErrorReturn(throwable -> null);
     }
 }

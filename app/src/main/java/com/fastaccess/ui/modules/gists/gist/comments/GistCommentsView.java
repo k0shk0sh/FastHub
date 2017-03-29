@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
@@ -23,6 +24,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
+import icepick.State;
 
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_GIST_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_GIST_COMMENT_EXTRA;
@@ -36,7 +38,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-
+    @State SparseBooleanArrayParcelable sparseBooleanArray;
     private String gistId;
     private CommentsAdapter adapter;
     private OnLoadMore<String> onLoadMore;
@@ -59,13 +61,14 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments());
+        adapter = new CommentsAdapter(getPresenter().getComments(), this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
+            sparseBooleanArray = new SparseBooleanArrayParcelable();
             onRefresh();
         }
     }
@@ -202,5 +205,21 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
         if (isOk) {
             getPresenter().onHandleDeletion(bundle);
         }
+    }
+
+    @Override public void onToggle(int position, boolean isCollapsed) {
+        getSparseBooleanArray().put(position, isCollapsed);
+        adapter.notifyItemChanged(position);
+    }
+
+    @Override public boolean isCollapsed(int position) {
+        return getSparseBooleanArray().get(position);
+    }
+
+    private SparseBooleanArrayParcelable getSparseBooleanArray() {
+        if (sparseBooleanArray == null) {
+            sparseBooleanArray = new SparseBooleanArrayParcelable();
+        }
+        return sparseBooleanArray;
     }
 }

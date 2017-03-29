@@ -4,6 +4,8 @@ import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.viewholder.CommentsViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -16,12 +18,17 @@ import java.util.ArrayList;
 
 public class CommentsAdapter extends BaseRecyclerAdapter<Comment, CommentsViewHolder, BaseViewHolder.OnItemClickListener<Comment>> {
 
-    public CommentsAdapter(@NonNull ArrayList<Comment> eventsModels) {
+    private final OnToggleView onToggleView;
+    private final String login;
+
+    public CommentsAdapter(@NonNull ArrayList<Comment> eventsModels, @NonNull OnToggleView onToggleView) {
         super(eventsModels);
+        this.onToggleView = onToggleView;
+        this.login = Login.getUser().getLogin();
     }
 
     @Override protected CommentsViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return CommentsViewHolder.newInstance(parent, this);
+        return CommentsViewHolder.newInstance(parent, this, login, onToggleView);
     }
 
     @Override protected void onBindView(CommentsViewHolder holder, int position) {

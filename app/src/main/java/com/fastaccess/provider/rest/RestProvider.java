@@ -16,6 +16,7 @@ import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.data.service.PullRequestService;
+import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.UserRestService;
@@ -155,6 +156,10 @@ public class RestProvider {
 
     @NonNull public static NotificationService getNotificationService() {
         return provideRetrofit().create(NotificationService.class);
+    }
+
+    @NonNull public static ReactionsService getReactionsService() {
+        return provideRetrofit().create(ReactionsService.class);
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {
