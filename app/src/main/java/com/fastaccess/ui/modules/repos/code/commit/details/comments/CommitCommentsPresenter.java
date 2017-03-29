@@ -155,10 +155,10 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                 type = ReactionTypes.CONFUSED;
                 break;
             case R.id.thumbsDown:
-                type = ReactionTypes.PLUS_ONE;
+                type = ReactionTypes.MINUS_ONE;
                 break;
             case R.id.thumbsUp:
-                type = ReactionTypes.MINUS_ONE;
+                type = ReactionTypes.PLUS_ONE;
                 break;
             case R.id.laugh:
                 type = ReactionTypes.LAUGH;
