@@ -49,6 +49,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     @Override public void onClick(View v) {
         int position = getAdapterPosition();
         onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
+        onToggle(onToggleView.isCollapsed(position));
     }
 
     private void onToggle(boolean expanded) {
@@ -93,7 +94,6 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
                 .append(statusText)
                 .append("\n")
                 .bold(String.valueOf(commit.getStatus())));
-
         onToggle(onToggleView.isCollapsed(getAdapterPosition()));
     }
 

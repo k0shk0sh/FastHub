@@ -46,8 +46,14 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
     @Override public void bind(@NonNull IssueEventAdapterModel model) {
         IssueEvent issueEventModel = model.getIssueEvent();
         IssueEventType event = issueEventModel.getEvent();
-        SpannableBuilder spannableBuilder = SpannableBuilder.builder()
-                .bold(issueEventModel.getActor().getLogin());
+        SpannableBuilder spannableBuilder = SpannableBuilder.builder();
+        if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
+            spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
+            avatarLayout.setUrl(issueEventModel.getAssigner().getAvatarUrl(), issueEventModel.getAssigner().getLogin());
+        } else {
+            spannableBuilder.bold(issueEventModel.getActor().getLogin());
+            avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
+        }
         if (event != null) {
             stateImage.setContentDescription(event.name());
             spannableBuilder
@@ -63,7 +69,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                 spannableBuilder
                         .append(" ")
-                        .bold(issueEventModel.getAssigner().getLogin());
+                        .bold(issueEventModel.getAssignee().getLogin());
             } else if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
                 spannableBuilder
                         .append(" ")
@@ -86,7 +92,6 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
         } else {
             stateImage.setImageResource(R.drawable.ic_label);
         }
-        avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
         stateText.setText(spannableBuilder
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(issueEventModel.getCreatedAt())));

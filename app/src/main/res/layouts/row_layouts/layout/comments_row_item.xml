@@ -25,8 +25,9 @@
 
             <com.fastaccess.ui.widgets.AvatarLayout
                 android:id="@+id/avatarView"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
@@ -59,7 +60,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="?selectableItemBackgroundBorderless"
-                android:padding="@dimen/spacing_normal"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_arrow_drop_down"/>
         </LinearLayout>

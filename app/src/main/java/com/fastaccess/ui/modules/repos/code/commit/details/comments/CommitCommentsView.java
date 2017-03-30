@@ -61,7 +61,7 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments(), this);
+        adapter = new CommentsAdapter(getPresenter().getComments(), this, true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -171,6 +171,7 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
+                    getSparseBooleanArray().clear();
                     if (isNew) {
                         getPresenter().getComments().add(commentsModel);
                         adapter.notifyDataSetChanged();

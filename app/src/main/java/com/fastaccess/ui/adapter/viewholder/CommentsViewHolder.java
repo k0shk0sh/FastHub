@@ -43,14 +43,17 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     @BindView(R.id.edit) AppCompatImageView edit;
     @BindView(R.id.commentOptions) View commentOptions;
     @BindView(R.id.toggleHolder) View toggleHolder;
+    @BindView(R.id.emojiesList) View emojiesList;
     private String login;
     private OnToggleView onToggleView;
+    private boolean showEmojies;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
             if (onToggleView != null) {
                 int position = getAdapterPosition();
                 onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
+                onToggle(onToggleView.isCollapsed(position));
             }
         } else {
             switch (v.getId()) {
@@ -72,10 +75,11 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     }
 
     private CommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
-                               @NonNull String login, @NonNull OnToggleView onToggleView) {
+                               @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
         super(itemView, adapter);
         this.login = login;
         this.onToggleView = onToggleView;
+        this.showEmojies = showEmojies;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         reply.setOnClickListener(this);
@@ -91,8 +95,8 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     }
 
     public static CommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                                 @NonNull String login, @NonNull OnToggleView onToggleView) {
-        return new CommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login, onToggleView);
+                                                 @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
+        return new CommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login, onToggleView, showEmojies);
     }
 
     @Override public void bind(@NonNull Comment commentsModel) {
@@ -109,15 +113,18 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
-        if (commentsModel.getReactions() != null) {
-            ReactionsModel reaction = commentsModel.getReactions();
-            thumbsUp.setText(String.valueOf(reaction.getPlusOne()));
-            thumbsDown.setText(String.valueOf(reaction.getMinusOne()));
-            sad.setText(String.valueOf(reaction.getConfused()));
-            laugh.setText(String.valueOf(reaction.getLaugh()));
-            hooray.setText(String.valueOf(reaction.getHooray()));
-            heart.setText(String.valueOf(reaction.getHeart()));
+        if (showEmojies) {
+            if (commentsModel.getReactions() != null) {
+                ReactionsModel reaction = commentsModel.getReactions();
+                thumbsUp.setText(String.valueOf(reaction.getPlusOne()));
+                thumbsDown.setText(String.valueOf(reaction.getMinusOne()));
+                sad.setText(String.valueOf(reaction.getConfused()));
+                laugh.setText(String.valueOf(reaction.getLaugh()));
+                hooray.setText(String.valueOf(reaction.getHooray()));
+                heart.setText(String.valueOf(reaction.getHeart()));
+            }
         }
+        emojiesList.setVisibility(showEmojies ? View.VISIBLE : View.GONE);
         if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()));
     }
 

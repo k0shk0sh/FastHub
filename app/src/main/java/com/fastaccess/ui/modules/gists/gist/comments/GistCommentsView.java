@@ -61,7 +61,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments(), this);
+        adapter = new CommentsAdapter(getPresenter().getComments(), this, false);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -179,6 +179,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
+                    getSparseBooleanArray().clear();
                     if (isNew) {
                         getPresenter().getComments().add(commentsModel);
                         adapter.notifyDataSetChanged();
@@ -209,7 +210,6 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
 
     @Override public void onToggle(int position, boolean isCollapsed) {
         getSparseBooleanArray().put(position, isCollapsed);
-        adapter.notifyItemChanged(position);
     }
 
     @Override public boolean isCollapsed(int position) {

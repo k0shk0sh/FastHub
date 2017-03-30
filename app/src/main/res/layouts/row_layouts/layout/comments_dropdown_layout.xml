@@ -5,20 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:showIn="@layout/comments_row_item">
 
     <HorizontalScrollView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:showIn="@layout/comments_row_item">
+        android:id="@+id/emojiesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingEnd="@dimen/spacing_normal"
-            android:paddingStart="@dimen/spacing_normal"
-            android:paddingTop="@dimen/spacing_normal">
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal">
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/thumbsUp"
@@ -102,31 +102,41 @@
     </HorizontalScrollView>
 
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_trash"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/spacing_normal"
+        android:paddingStart="@dimen/spacing_normal">
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/reply"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_undo"/>
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_trash"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
-    <android.support.v7.widget.AppCompatImageView
-        android:id="@+id/edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_edit"
-        android:visibility="gone"
-        tools:visibility="visible"/>
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/reply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_undo"/>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackgroundBorderless"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_edit"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+    </LinearLayout>
 </LinearLayout>

@@ -73,7 +73,6 @@ public class CommitFilesView extends BaseFragment<CommitFilesMvp.View, CommitFil
             ActivityHelper.forceOpenInBrowser(getContext(), adapter.getItem(position).getBlobUrl());
         }
         getSparseBooleanArray().put(position, isCollapsed);
-        adapter.notifyItemChanged(position);
     }
 
     @Override public boolean isCollapsed(int position) {

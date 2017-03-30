@@ -65,7 +65,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         recycler.setItemViewCacheSize(10);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments(), this);
+        adapter = new CommentsAdapter(getPresenter().getComments(), this, true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -173,6 +173,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
+                    getSparseBooleanArray().clear();
                     if (isNew) {
                         getPresenter().getComments().add(commentsModel);
                         adapter.notifyDataSetChanged();
@@ -219,7 +220,7 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
 
     @Override public void onToggle(int position, boolean isCollapsed) {
         getSparseBooleanArray().put(position, isCollapsed);
-        adapter.notifyItemChanged(position);
+
     }
 
     @Override public boolean isCollapsed(int position) {
