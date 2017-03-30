@@ -275,7 +275,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
 
     @Override public void onLabelsRetrieved(@NonNull List<LabelModel> items) {
         hideProgress();
-        LabelsView.newInstance(items)
+        LabelsView.newInstance(items, getPresenter().getPullRequest() != null ? getPresenter().getPullRequest().getLabels() : null)
                 .show(getSupportFragmentManager(), "LabelsView");
     }
 

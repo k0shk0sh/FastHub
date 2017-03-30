@@ -10,6 +10,7 @@ import android.view.View;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -56,9 +57,12 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
         callback = null;
     }
 
-    public static LabelsView newInstance(@NonNull List<LabelModel> models) {
+    public static LabelsView newInstance(@NonNull List<LabelModel> models, @Nullable LabelListModel selectedLabels) {
         LabelsView fragment = new LabelsView();
-        fragment.setArguments(Bundler.start().putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models).end());
+        fragment.setArguments(Bundler.start()
+                .putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models)
+                .putParcelableArrayList(BundleConstant.EXTRA, selectedLabels)
+                .end());
         return fragment;
     }
 
@@ -69,9 +73,18 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         title.setText(R.string.labels);
         List<LabelModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
+        List<LabelModel> selectedLabels = getArguments().getParcelableArrayList(BundleConstant.EXTRA);
         if (list != null) {
             adapter = new LabelsAdapter(list, this);
             recycler.setAdapter(adapter);
+            if (savedInstanceState == null) {
+                if (selectedLabels != null && !selectedLabels.isEmpty()) {
+                    Stream.of(selectedLabels)
+                            .map(list::indexOf)
+                            .filter(value -> value != -1)
+                            .forEach(integer -> onToggleSelection(integer, true));
+                }
+            }
         }
     }
 

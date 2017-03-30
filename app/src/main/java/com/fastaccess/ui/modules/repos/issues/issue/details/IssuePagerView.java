@@ -24,7 +24,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
@@ -289,7 +288,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @Override public void onLabelsRetrieved(@NonNull List<LabelModel> items) {
         hideProgress();
-        LabelsView.newInstance(items)
+        LabelsView.newInstance(items, getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null)
                 .show(getSupportFragmentManager(), "LabelsView");
     }
 
@@ -319,7 +318,6 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     }
 
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
-        Logger.e(labels, labels.size());
         getPresenter().onPutLabels(labels);
     }
 

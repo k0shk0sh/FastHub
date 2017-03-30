@@ -95,9 +95,10 @@ public interface IssueService {
     @POST("repos/{owner}/{repo}/issues")
     Observable<Issue> createIssue(@Path("owner") String owner, @Path("repo") String repo, @NonNull @Body CreateIssueModel body);
 
-    @POST("repos/{owner}/{repo}/issues/{number}/labels")
+    @PUT("repos/{owner}/{repo}/issues/{number}/labels")
     Observable<Pageable<LabelModel>> putLabels(@Path("owner") String owner, @Path("repo") String repo,
                                                @Path("number") int number, @Body @NonNull List<String> labels);
+
 
     @POST("repos/{owner}/{repo}/issues/{number}/assignees")
     Observable<Issue> putAssignees(@Path("owner") String owner, @Path("repo") String repo,

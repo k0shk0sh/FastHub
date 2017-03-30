@@ -12,6 +12,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
@@ -85,6 +86,9 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
                     if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
                         RestProvider.downloadFile(getContext(), item.getDownloadUrl());
                     }
+                    break;
+                case R.id.copy:
+                    AppHelper.copyToClipboard(v.getContext(), !InputHelper.isEmpty(item.getHtmlUrl()) ? item.getHtmlUrl() : item.getUrl());
                     break;
             }
             return true;
