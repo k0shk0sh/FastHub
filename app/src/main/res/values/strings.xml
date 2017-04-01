@@ -322,4 +322,5 @@
     <string name="changelog">Changelog</string>
     <string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
     <string name="posting_reaction" formatted="true">Posting reaction %s</string>
+    <string name="home_long_click_hint">Long press to navigate to main screen from anywhere</string>
 </resources>

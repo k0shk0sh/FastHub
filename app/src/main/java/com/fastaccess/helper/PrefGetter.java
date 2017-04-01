@@ -37,6 +37,7 @@ public class PrefGetter {
     private static final String COMMENTS_GUIDE = "comments_guide";
     private static final String REPO_GUIDE = "repo_guide";
     private static final String MARKDOWNDOWN_GUIDE = "markdowndown_guide";
+    private static final String HOME_BUTTON_GUIDE = "home_button_guide";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -79,6 +80,12 @@ public class PrefGetter {
     public static boolean isCommentHintShowed() {
         boolean isShowed = PrefHelper.getBoolean(COMMENTS_GUIDE);
         PrefHelper.set(COMMENTS_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isHomeButoonHintShowed() {
+        boolean isShowed = PrefHelper.getBoolean(HOME_BUTTON_GUIDE);
+        PrefHelper.set(HOME_BUTTON_GUIDE, true);
         return isShowed;
     }
 

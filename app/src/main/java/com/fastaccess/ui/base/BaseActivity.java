@@ -10,6 +10,7 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogView;
 import com.fastaccess.ui.modules.login.LoginView;
+import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -35,11 +37,14 @@ import com.google.android.gms.ads.MobileAds;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import icepick.Icepick;
 import icepick.State;
+import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -202,6 +207,26 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 if (getSupportActionBar() != null) {
                     getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_back);
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                    if (canBack()) {
+                        View navIcon = getToolbarNavigationIcon(toolbar);
+                        if (navIcon != null) {
+                            if (!PrefGetter.isHomeButoonHintShowed()) {
+                                new MaterialTapTargetPrompt.Builder(this)
+                                        .setTarget(navIcon)
+                                        .setPrimaryText(R.string.home)
+                                        .setSecondaryText(R.string.home_long_click_hint)
+                                        .setCaptureTouchEventOutsidePrompt(true)
+                                        .show();
+                            }
+                            navIcon.setOnLongClickListener(v -> {
+                                Intent intent = new Intent(this, MainView.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finishAffinity();
+                                return true;
+                            });
+                        }
+                    }
                 }
             }
         }
@@ -252,5 +277,19 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             mode = AppCompatDelegate.MODE_NIGHT_YES;
         }
         AppCompatDelegate.setDefaultNightMode(mode);
+    }
+
+    @Nullable private View getToolbarNavigationIcon(Toolbar toolbar) {
+        boolean hadContentDescription = TextUtils.isEmpty(toolbar.getNavigationContentDescription());
+        String contentDescription = !hadContentDescription ? String.valueOf(toolbar.getNavigationContentDescription()) : "navigationIcon";
+        toolbar.setNavigationContentDescription(contentDescription);
+        ArrayList<View> potentialViews = new ArrayList<>();
+        toolbar.findViewsWithText(potentialViews, contentDescription, View.FIND_VIEWS_WITH_CONTENT_DESCRIPTION);
+        View navIcon = null;
+        if (potentialViews.size() > 0) {
+            navIcon = potentialViews.get(0);
+        }
+        if (hadContentDescription) toolbar.setNavigationContentDescription(null);
+        return navIcon;
     }
 }
