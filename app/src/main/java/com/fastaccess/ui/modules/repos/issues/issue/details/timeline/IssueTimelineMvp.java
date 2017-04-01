@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.CommentsLabelsModel;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -37,10 +37,10 @@ public interface IssueTimelineMvp {
         void onTagUser(@Nullable User user);
     }
 
-    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommentsLabelsModel>,
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
             BaseMvp.PaginationListener {
 
-        @NonNull ArrayList<CommentsLabelsModel> getEvents();
+        @NonNull ArrayList<TimelineModel> getEvents();
 
         void onFragmentCreated(@Nullable Bundle bundle);
 

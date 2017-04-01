@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommentsLabelsModel;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.InputHelper;
@@ -23,7 +23,7 @@ import butterknife.BindView;
  * Created by Kosh on 13 Dec 2016, 1:03 AM
  */
 
-public class IssueDetailsViewHolder extends BaseViewHolder<CommentsLabelsModel> {
+public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
 
     @BindView(R.id.avatarView) AvatarLayout avatarView;
     @BindView(R.id.name) FontTextView name;
@@ -38,11 +38,11 @@ public class IssueDetailsViewHolder extends BaseViewHolder<CommentsLabelsModel> 
         return new IssueDetailsViewHolder(getView(viewGroup, R.layout.issue_detail_header_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull CommentsLabelsModel commentsLabelsModel) {
-        if (commentsLabelsModel.getIssue() != null) {
-            bind(commentsLabelsModel.getIssue());
-        } else if (commentsLabelsModel.getPullRequest() != null) {
-            bind(commentsLabelsModel.getPullRequest());
+    @Override public void bind(@NonNull TimelineModel timelineModel) {
+        if (timelineModel.getIssue() != null) {
+            bind(timelineModel.getIssue());
+        } else if (timelineModel.getPullRequest() != null) {
+            bind(timelineModel.getPullRequest());
         }
     }
 

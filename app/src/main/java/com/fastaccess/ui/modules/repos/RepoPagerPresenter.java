@@ -35,8 +35,6 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     private Repo repo;
     private int navTyp;
 
-    RepoPagerPresenter() {}
-
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
         makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
@@ -262,7 +260,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (id == R.id.issues && (getRepo() != null && !getRepo().isHasIssues())) {
             return;
         }
-        if (getView() != null && isViewAttached()) {
+        if (getView() != null && isViewAttached() && fromUser) {
             getView().onNavigationChanged(position);
         }
     }

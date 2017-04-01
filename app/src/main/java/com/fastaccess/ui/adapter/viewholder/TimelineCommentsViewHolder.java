@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommentsLabelsModel;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
@@ -26,7 +26,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class TimelineCommentsViewHolder extends BaseViewHolder<CommentsLabelsModel> {
+public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
 
     @BindView(R.id.avatarView) AvatarLayout avatar;
     @BindView(R.id.date) FontTextView date;
@@ -64,9 +64,9 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<CommentsLabelsMod
 
     private void addReactionCount(View v) {
         if (adapter != null) {
-            CommentsLabelsModel commentsLabelsModel = (CommentsLabelsModel) adapter.getItem(getAdapterPosition());
-            if (commentsLabelsModel == null) return;
-            Comment comment = commentsLabelsModel.getComment();
+            TimelineModel timelineModel = (TimelineModel) adapter.getItem(getAdapterPosition());
+            if (timelineModel == null) return;
+            Comment comment = timelineModel.getComment();
             if (comment != null) {
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
@@ -96,7 +96,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<CommentsLabelsMod
                         break;
                 }
                 comment.setReactions(reactionsModel);
-                commentsLabelsModel.setComment(comment);
+                timelineModel.setComment(comment);
             }
         }
     }
@@ -126,8 +126,8 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<CommentsLabelsMod
         return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login, onToggleView, showEmojies);
     }
 
-    @Override public void bind(@NonNull CommentsLabelsModel commentsLabelsModel) {
-        Comment commentsModel = commentsLabelsModel.getComment();
+    @Override public void bind(@NonNull TimelineModel timelineModel) {
+        Comment commentsModel = timelineModel.getComment();
         if (commentsModel.getUser() != null) {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
             delete.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);

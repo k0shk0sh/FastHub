@@ -9,7 +9,7 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommentsLabelsModel;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
@@ -162,17 +162,17 @@ public class IssueTimelineView extends BaseFragment<IssueTimelineMvp.View, Issue
                     if (commentsModel == null) return;
                     getSparseBooleanArray().clear();
                     if (isNew) {
-                        getPresenter().getEvents().add(CommentsLabelsModel.constructComment(commentsModel));
+                        getPresenter().getEvents().add(TimelineModel.constructComment(commentsModel));
                         adapter.notifyDataSetChanged();
                         recycler.smoothScrollToPosition(adapter.getItemCount());
                     } else {
-                        int position = adapter.getItem(CommentsLabelsModel.constructComment(commentsModel));
+                        int position = adapter.getItem(TimelineModel.constructComment(commentsModel));
                         if (position != -1) {
-                            getPresenter().getEvents().set(position, CommentsLabelsModel.constructComment(commentsModel));
+                            getPresenter().getEvents().set(position, TimelineModel.constructComment(commentsModel));
                             adapter.notifyDataSetChanged();
                             recycler.smoothScrollToPosition(position);
                         } else {
-                            getPresenter().getEvents().add(CommentsLabelsModel.constructComment(commentsModel));
+                            getPresenter().getEvents().add(TimelineModel.constructComment(commentsModel));
                             adapter.notifyDataSetChanged();
                             recycler.smoothScrollToPosition(adapter.getItemCount());
                         }

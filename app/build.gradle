@@ -93,7 +93,7 @@ dependencies {
         butterKnifeVersion = '8.5.1'
         icepickVersion = '3.2.0'
         lombokVersion = '1.12.6'
-        supportVersion = "25.3.0"
+        supportVersion = "25.3.1"
         firebase = "10.2.0"
         thirtyinchVersion = '0.8.0-rc3'
         retrofit = '2.1.0'

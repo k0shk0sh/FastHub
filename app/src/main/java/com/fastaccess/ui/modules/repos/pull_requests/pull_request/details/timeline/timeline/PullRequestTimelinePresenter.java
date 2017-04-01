@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommentsLabelsModel;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
@@ -28,13 +28,13 @@ import rx.Observable;
  */
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
-    private ArrayList<CommentsLabelsModel> timeline = new ArrayList<>();
+    private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 
-    @Override public void onItemClick(int position, View v, CommentsLabelsModel item) {
-        if (item.getType() == CommentsLabelsModel.COMMENT) {
+    @Override public void onItemClick(int position, View v, TimelineModel item) {
+        if (item.getType() == TimelineModel.COMMENT) {
             Login user = Login.getUser();
             if (getView() != null) {
                 if (v.getId() == R.id.delete) {
@@ -53,7 +53,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     }
                 }
             }
-        } else if (item.getType() == CommentsLabelsModel.EVENT) {
+        } else if (item.getType() == TimelineModel.EVENT) {
             IssueEvent issueEventModel = item.getEvent();
             if (issueEventModel.getCommitUrl() != null) {
                 SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
@@ -61,11 +61,11 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommentsLabelsModel item) {
+    @Override public void onItemLongClick(int position, View v, TimelineModel item) {
         onItemClick(position, v, item);
     }
 
-    @NonNull @Override public ArrayList<CommentsLabelsModel> getEvents() {
+    @NonNull @Override public ArrayList<TimelineModel> getEvents() {
         return timeline;
     }
 
@@ -73,7 +73,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         if (bundle == null) throw new NullPointerException("Bundle is null?");
         PullRequest issueModel = bundle.getParcelable(BundleConstant.ITEM);
         if (timeline.isEmpty() && issueModel != null) {
-            timeline.add(CommentsLabelsModel.constructHeader(issueModel));
+            timeline.add(TimelineModel.constructHeader(issueModel));
             sendToView(PullRequestTimelineMvp.View::onNotifyAdapter);
             onCallApi(1, null);
         }
@@ -112,11 +112,11 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         String login = getHeader().getLogin();
         String repoID = getHeader().getRepoId();
         int number = getHeader().getNumber();
-        Observable<List<CommentsLabelsModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number, page),
+        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number, page),
                 RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
                 (issueEventPageable, commentPageable) -> {
                     lastPage = issueEventPageable.getLast() > commentPageable.getLast() ? issueEventPageable.getLast() : commentPageable.getLast();
-                    return CommentsLabelsModel.construct(commentPageable.getItems(), issueEventPageable.getItems());
+                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems());
                 });
         makeRestCall(observable, models -> {
             if (getCurrentPage() == 1) {
@@ -140,7 +140,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                getEvents().remove(CommentsLabelsModel.constructComment(comment));
+                                getEvents().remove(TimelineModel.constructComment(comment));
                                 view.onNotifyAdapter();
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);

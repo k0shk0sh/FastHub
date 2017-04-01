@@ -23,7 +23,7 @@ import lombok.Setter;
  * Created by Kosh on 30 Mar 2017, 9:03 PM
  */
 
-@Getter @Setter @NoArgsConstructor public class CommentsLabelsModel implements Parcelable {
+@Getter @Setter @NoArgsConstructor public class TimelineModel implements Parcelable {
     public static final int HEADER = 0;
     public static final int EVENT = 1;
     public static final int COMMENT = 2;
@@ -34,47 +34,47 @@ import lombok.Setter;
     private IssueEvent event;
     private PullRequest pullRequest;
 
-    private CommentsLabelsModel(Issue issue) {
+    private TimelineModel(Issue issue) {
         this.type = HEADER;
         this.issue = issue;
     }
 
-    private CommentsLabelsModel(PullRequest pullRequest) {
+    private TimelineModel(PullRequest pullRequest) {
         this.type = HEADER;
         this.pullRequest = pullRequest;
     }
 
-    private CommentsLabelsModel(Comment comment) {
+    private TimelineModel(Comment comment) {
         this.type = COMMENT;
         this.comment = comment;
     }
 
-    private CommentsLabelsModel(IssueEvent event) {
+    private TimelineModel(IssueEvent event) {
         this.type = EVENT;
         this.event = event;
     }
 
-    @NonNull public static CommentsLabelsModel constructHeader(@NonNull Issue issue) {
-        return new CommentsLabelsModel(issue);
+    @NonNull public static TimelineModel constructHeader(@NonNull Issue issue) {
+        return new TimelineModel(issue);
     }
 
-    @NonNull public static CommentsLabelsModel constructHeader(@NonNull PullRequest pullRequest) {
-        return new CommentsLabelsModel(pullRequest);
+    @NonNull public static TimelineModel constructHeader(@NonNull PullRequest pullRequest) {
+        return new TimelineModel(pullRequest);
     }
 
-    @NonNull public static CommentsLabelsModel constructComment(@NonNull Comment comment) {
-        return new CommentsLabelsModel(comment);
+    @NonNull public static TimelineModel constructComment(@NonNull Comment comment) {
+        return new TimelineModel(comment);
     }
 
-    @NonNull public static CommentsLabelsModel constructEvent(@NonNull IssueEvent event) {
-        return new CommentsLabelsModel(event);
+    @NonNull public static TimelineModel constructEvent(@NonNull IssueEvent event) {
+        return new TimelineModel(event);
     }
 
-    @NonNull public static List<CommentsLabelsModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
-        ArrayList<CommentsLabelsModel> list = new ArrayList<>();
+    @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
+        ArrayList<TimelineModel> list = new ArrayList<>();
         if (!commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
-                    .map(CommentsLabelsModel::new)
+                    .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
 
@@ -82,7 +82,7 @@ import lombok.Setter;
             list.addAll(Stream.of(eventList)
                     .filter(value -> value.getEvent() != IssueEventType.subscribed && value.getEvent() != IssueEventType.unsubscribed
                             && value.getEvent() != IssueEventType.mentioned)
-                    .map(CommentsLabelsModel::new)
+                    .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
         return Stream.of(list).sorted((o1, o2) -> {
@@ -109,7 +109,7 @@ import lombok.Setter;
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CommentsLabelsModel model = (CommentsLabelsModel) o;
+        TimelineModel model = (TimelineModel) o;
         return comment != null && model.getComment() != null && comment.getId() == model.comment.getId();
     }
 
@@ -117,7 +117,7 @@ import lombok.Setter;
         return comment != null ? (int) comment.getId() : 0;
     }
 
-    protected CommentsLabelsModel(Parcel in) {
+    protected TimelineModel(Parcel in) {
         this.type = in.readInt();
         this.issue = in.readParcelable(Issue.class.getClassLoader());
         this.comment = in.readParcelable(Comment.class.getClassLoader());
@@ -125,9 +125,9 @@ import lombok.Setter;
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
     }
 
-    public static final Creator<CommentsLabelsModel> CREATOR = new Creator<CommentsLabelsModel>() {
-        @Override public CommentsLabelsModel createFromParcel(Parcel source) {return new CommentsLabelsModel(source);}
+    public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {
+        @Override public TimelineModel createFromParcel(Parcel source) {return new TimelineModel(source);}
 
-        @Override public CommentsLabelsModel[] newArray(int size) {return new CommentsLabelsModel[size];}
+        @Override public TimelineModel[] newArray(int size) {return new TimelineModel[size];}
     };
 }
