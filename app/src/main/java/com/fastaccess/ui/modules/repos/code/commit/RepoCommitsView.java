@@ -41,6 +41,7 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
     private OnLoadMore onLoadMore;
     private CommitsAdapter adapter;
     private RepoPagerMvp.View repoCallback;
+    private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static RepoCommitsView newInstance(@NonNull String repoId, @NonNull String login, @NonNull String branch) {
         RepoCommitsView view = new RepoCommitsView();
@@ -65,6 +66,11 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
             repoCallback = (RepoPagerMvp.View) context;
         } else if (getParentFragment() instanceof RepoPagerMvp.View) {
             repoCallback = (RepoPagerMvp.View) getParentFragment();
+        }
+        if (context instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) context;
+        } else if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
         }
     }
 
@@ -128,12 +134,6 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideBranchesProgress();
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore(getPresenter());
@@ -170,11 +170,23 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
         branchesProgress.setVisibility(View.GONE);
     }
 
+    @Override public void onShowCommitCount(long sum) {
+        if (tabsBadgeListener != null) {
+            tabsBadgeListener.onSetBadge(2, (int) sum);
+        }
+    }
+
     @Override public void onRefresh() {
         getPresenter().onCallApi(1, null);
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    private void showReload() {
+        hideBranchesProgress();
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

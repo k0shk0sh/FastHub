@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.CommentRequestModel;
+import com.fastaccess.data.dao.CommitCountModel;
 import com.fastaccess.data.dao.CreateMilestoneModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MarkdownModel;
@@ -128,4 +129,7 @@ public interface RepoService {
 
     @NonNull @GET("repos/{owner}/{repo}/assignees")
     Observable<Pageable<User>> getAssignees(@Path("owner") String owner, @Path("repo") String repo);
+
+    @NonNull @GET("/repos/{owner}/{repo}/stats/participation")
+    Observable<CommitCountModel> getCommitCounts(@Path("owner") String owner, @Path("repo") String repo);
 }

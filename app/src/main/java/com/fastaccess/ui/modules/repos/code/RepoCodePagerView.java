@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.view.View;
+import android.widget.TextView;
 
 import com.annimon.stream.Objects;
 import com.fastaccess.R;
@@ -12,9 +13,11 @@ import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathView;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
@@ -75,6 +78,18 @@ public class RepoCodePagerView extends BaseFragment<RepoCodePagerMvp.View, RepoC
         RepoFilePathView pathView = (RepoFilePathView) pager.getAdapter().instantiateItem(pager, 1);
         if (pathView != null) {
             pathView.onBackPressed();
+        }
+    }
+
+    @Override public void onSetBadge(int tabIndex, int count) {
+        if (tabs != null && tabIndex == 2) {
+            TextView tv = ViewHelper.getTabTextView(tabs, tabIndex);
+            tv.setText(SpannableBuilder.builder()
+                    .append(getString(R.string.commits))
+                    .append("   ")
+                    .append("(")
+                    .bold(String.valueOf(count))
+                    .append(")"));
         }
     }
 }

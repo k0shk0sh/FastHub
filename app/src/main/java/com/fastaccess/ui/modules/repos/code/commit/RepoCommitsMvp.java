@@ -19,7 +19,8 @@ import java.util.List;
 
 interface RepoCommitsMvp {
 
-    interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
+    interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
+            android.view.View.OnClickListener {
         void onNotifyAdapter();
 
         @NonNull OnLoadMore getLoadMore();
@@ -29,6 +30,8 @@ interface RepoCommitsMvp {
         void showBranchesProgress();
 
         void hideBranchesProgress();
+
+        void onShowCommitCount(long sum);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
