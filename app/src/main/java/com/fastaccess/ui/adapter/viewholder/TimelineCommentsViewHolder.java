@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentsLabelsModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
@@ -25,7 +26,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class CommentsViewHolder extends BaseViewHolder<Comment> {
+public class TimelineCommentsViewHolder extends BaseViewHolder<CommentsLabelsModel> {
 
     @BindView(R.id.avatarView) AvatarLayout avatar;
     @BindView(R.id.date) FontTextView date;
@@ -63,7 +64,9 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
 
     private void addReactionCount(View v) {
         if (adapter != null) {
-            Comment comment = (Comment) adapter.getItem(getAdapterPosition());
+            CommentsLabelsModel commentsLabelsModel = (CommentsLabelsModel) adapter.getItem(getAdapterPosition());
+            if (commentsLabelsModel == null) return;
+            Comment comment = commentsLabelsModel.getComment();
             if (comment != null) {
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
@@ -93,13 +96,13 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
                         break;
                 }
                 comment.setReactions(reactionsModel);
-                bind(comment);
+                commentsLabelsModel.setComment(comment);
             }
         }
     }
 
-    private CommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
-                               @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
+    private TimelineCommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
+                                       @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
         super(itemView, adapter);
         this.login = login;
         this.onToggleView = onToggleView;
@@ -118,12 +121,13 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         heart.setOnClickListener(this);
     }
 
-    public static CommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                                 @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
-        return new CommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login, onToggleView, showEmojies);
+    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
+                                                         @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
+        return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login, onToggleView, showEmojies);
     }
 
-    @Override public void bind(@NonNull Comment commentsModel) {
+    @Override public void bind(@NonNull CommentsLabelsModel commentsLabelsModel) {
+        Comment commentsModel = commentsLabelsModel.getComment();
         if (commentsModel.getUser() != null) {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
             delete.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);

@@ -126,4 +126,12 @@ public class DynamicRecyclerView extends RecyclerView {
     public void addNormalSpacingDivider() {
         addDivider();
     }
+
+    public void addDivider(@NonNull Class toDivide) {
+        if (!ViewHelper.isTablet(getContext())) {
+            Resources resources = getResources();
+            addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
+                    ContextCompat.getColor(getContext(), R.color.divider), toDivide));
+        }
+    }
 }

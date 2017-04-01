@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.repos.issues.issue.details.comments;
+package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,74 +6,47 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentsLabelsModel;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
-import com.fastaccess.ui.adapter.CommentsAdapter;
+import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorView;
+import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
 import icepick.State;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
- * Created by Kosh on 11 Nov 2016, 12:36 PM
+ * Created by Kosh on 31 Mar 2017, 7:35 PM
  */
 
-public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, IssueCommentsPresenter> implements IssueCommentsMvp.View {
+public class PullRequestTimelineView extends BaseFragment<PullRequestTimelineMvp.View, PullRequestTimelinePresenter> implements
+        PullRequestTimelineMvp.View {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
-    @BindView(R.id.refresh) SwipeRefreshLayout refresh;
+    @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-    @State SparseBooleanArrayParcelable sparseBooleanArray;
-    private CommentsAdapter adapter;
+    private IssuePullsTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
+    @State SparseBooleanArrayParcelable sparseBooleanArray;
 
-    public static IssueCommentsView newInstance(@NonNull String login, @NonNull String repoId, int number) {
-        IssueCommentsView view = new IssueCommentsView();
-        view.setArguments(Bundler.start()
-                .put(BundleConstant.ID, repoId)
-                .put(BundleConstant.EXTRA, login)
-                .put(BundleConstant.EXTRA_TWO, number)
-                .end());
+    public static PullRequestTimelineView newInstance(@NonNull PullRequest issueModel) {
+        PullRequestTimelineView view = new PullRequestTimelineView();
+        view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());//TODO fix this
         return view;
-    }
-
-    @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
-    }
-
-    @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-            getPresenter().onFragmentCreated(getArguments());
-        }
-        stateLayout.setEmptyText(R.string.no_comments);
-        recycler.setEmptyView(stateLayout, refresh);
-        recycler.setItemViewCacheSize(10);
-        refresh.setOnRefreshListener(this);
-        stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments(), this, true);
-        adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
-        recycler.setAdapter(adapter);
-        recycler.addOnScrollListener(getLoadMore());
-        recycler.addNormalSpacingDivider();
-        if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
-            onRefresh();
-        }
     }
 
     @Override public void onRefresh() {
@@ -85,14 +58,41 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         adapter.notifyDataSetChanged();
     }
 
-    @Override public void hideProgress() {
-        refresh.setRefreshing(false);
-        stateLayout.hideProgress();
+    @Override protected int fragmentLayout() {
+        return R.layout.small_grid_refresh_list;
+    }
+
+    @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        stateLayout.setEmptyText(R.string.no_events);
+        recycler.setEmptyView(stateLayout, refresh);
+        refresh.setOnRefreshListener(this);
+        stateLayout.setOnReloadListener(this);
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true);
+        adapter.setListener(getPresenter());
+        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        recycler.setAdapter(adapter);
+        recycler.addDivider(TimelineCommentsViewHolder.class);
+        recycler.addOnScrollListener(getLoadMore());
+        if (savedInstanceState == null) {
+            getPresenter().onFragmentCreated(getArguments());
+        } else if (getPresenter().getEvents().size() == 1 && !getPresenter().isApiCalled()) {
+            onRefresh();
+        }
+
+    }
+
+    @NonNull @Override public PullRequestTimelinePresenter providePresenter() {
+        return new PullRequestTimelinePresenter();
     }
 
     @Override public void showProgress(@StringRes int resId) {
 
         stateLayout.showProgress();
+    }
+
+    @Override public void hideProgress() {
+        refresh.setRefreshing(false);
+        stateLayout.hideProgress();
     }
 
     @Override public void showErrorMessage(@NonNull String message) {
@@ -105,15 +105,24 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         super.showMessage(titleRes, msgRes);
     }
 
-    @NonNull @Override public IssueCommentsPresenter providePresenter() {
-        return new IssueCommentsPresenter();
-    }
-
-    @NonNull @Override public OnLoadMore getLoadMore() {
+    @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<>(getPresenter());
+            onLoadMore = new OnLoadMore(getPresenter());
         }
         return onLoadMore;
+    }
+
+    @Override public void onClick(View view) {
+        onRefresh();
+    }
+
+    @Override public void onToggle(int position, boolean isCollapsed) {
+        getSparseBooleanArray().put(position, isCollapsed);
+
+    }
+
+    @Override public boolean isCollapsed(int position) {
+        return getSparseBooleanArray().get(position);
     }
 
     @Override public void onEditComment(@NonNull Comment item) {
@@ -156,15 +165,6 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         startActivityForResult(intent, BundleConstant.REQUEST_CODE);
     }
 
-    @Override public void onDestroyView() {
-        recycler.removeOnScrollListener(getLoadMore());
-        super.onDestroyView();
-    }
-
-    @Override public void onClick(View view) {
-        onRefresh();
-    }
-
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && data != null) {
@@ -173,19 +173,20 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
+                    if (commentsModel == null) return;
                     getSparseBooleanArray().clear();
                     if (isNew) {
-                        getPresenter().getComments().add(commentsModel);
+                        getPresenter().getEvents().add(CommentsLabelsModel.constructComment(commentsModel));
                         adapter.notifyDataSetChanged();
                         recycler.smoothScrollToPosition(adapter.getItemCount());
                     } else {
-                        int position = adapter.getItem(commentsModel);
+                        int position = adapter.getItem(CommentsLabelsModel.constructComment(commentsModel));
                         if (position != -1) {
-                            getPresenter().getComments().set(position, commentsModel);
+                            getPresenter().getEvents().set(position, CommentsLabelsModel.constructComment(commentsModel));
                             adapter.notifyDataSetChanged();
                             recycler.smoothScrollToPosition(position);
                         } else {
-                            getPresenter().getComments().add(commentsModel);
+                            getPresenter().getEvents().add(CommentsLabelsModel.constructComment(commentsModel));
                             adapter.notifyDataSetChanged();
                             recycler.smoothScrollToPosition(adapter.getItemCount());
                         }
@@ -200,31 +201,6 @@ public class IssueCommentsView extends BaseFragment<IssueCommentsMvp.View, Issue
         if (isOk) {
             getPresenter().onHandleDeletion(bundle);
         }
-    }
-
-    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && adapter != null) {
-            if (!PrefGetter.isCommentHintShowed()) {
-                adapter.setGuideListener((itemView, model) ->
-                        new MaterialTapTargetPrompt.Builder(getActivity())
-                                .setTarget(itemView.findViewById(R.id.menu))
-                                .setPrimaryText(R.string.comment)
-                                .setSecondaryText(R.string.comment_hint)
-                                .setCaptureTouchEventOutsidePrompt(true)
-                                .show());
-                adapter.notifyDataSetChanged();
-            }
-        }
-    }
-
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        getSparseBooleanArray().put(position, isCollapsed);
-
-    }
-
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
     }
 
     private void showReload() {

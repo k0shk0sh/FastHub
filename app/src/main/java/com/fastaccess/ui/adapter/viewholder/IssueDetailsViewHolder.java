@@ -6,8 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.IssueEventAdapterModel;
+import com.fastaccess.data.dao.CommentsLabelsModel;
 import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -22,7 +23,7 @@ import butterknife.BindView;
  * Created by Kosh on 13 Dec 2016, 1:03 AM
  */
 
-public class IssueDetailsViewHolder extends BaseViewHolder<IssueEventAdapterModel> {
+public class IssueDetailsViewHolder extends BaseViewHolder<CommentsLabelsModel> {
 
     @BindView(R.id.avatarView) AvatarLayout avatarView;
     @BindView(R.id.name) FontTextView name;
@@ -37,8 +38,27 @@ public class IssueDetailsViewHolder extends BaseViewHolder<IssueEventAdapterMode
         return new IssueDetailsViewHolder(getView(viewGroup, R.layout.issue_detail_header_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull IssueEventAdapterModel model) {
-        Issue issueModel = model.getIssueModel();
+    @Override public void bind(@NonNull CommentsLabelsModel commentsLabelsModel) {
+        if (commentsLabelsModel.getIssue() != null) {
+            bind(commentsLabelsModel.getIssue());
+        } else if (commentsLabelsModel.getPullRequest() != null) {
+            bind(commentsLabelsModel.getPullRequest());
+        }
+    }
+
+    private void bind(@NonNull Issue issueModel) {
+        avatarView.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
+        name.setText(issueModel.getUser().getLogin());
+        date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));
+        if (!InputHelper.isEmpty(issueModel.getBodyHtml())) {
+            description.setNestedScrollingEnabled(false);
+            description.setGithubContent(issueModel.getBodyHtml(), issueModel.getHtmlUrl(), true);
+        } else {
+            description.setGithubContent(itemView.getResources().getString(R.string.no_description_provided), null, true);
+        }
+    }
+
+    private void bind(@NonNull PullRequest issueModel) {
         avatarView.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
         name.setText(issueModel.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));

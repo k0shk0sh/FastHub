@@ -96,11 +96,15 @@ public class ActivityHelper {
     public static void shareUrl(@NonNull Context context, @NonNull String url) {
         Activity activity = getActivity(context);
         if (activity == null) throw new IllegalArgumentException("Context given is not an instance of activity " + context.getClass().getName());
-        ShareCompat.IntentBuilder.from(activity)
-                .setChooserTitle(context.getString(R.string.share))
-                .setType("text/*")
-                .setText(url)
-                .startChooser();
+        try {
+            ShareCompat.IntentBuilder.from(activity)
+                    .setChooserTitle(context.getString(R.string.share))
+                    .setType("text/*")
+                    .setText(url)
+                    .startChooser();
+        } catch (ActivityNotFoundException e) {
+            Toasty.error(context, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 
     @SuppressWarnings("RestrictedApi")

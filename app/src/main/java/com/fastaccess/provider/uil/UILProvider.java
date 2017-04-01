@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
@@ -25,7 +26,7 @@ public class UILProvider {
         ImageLoader imageLoader = ImageLoader.getInstance();
         if (!imageLoader.isInited()) {
             ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context)
-                    .defaultDisplayImageOptions(getOptions())
+                    .defaultDisplayImageOptions(getOptions(context))
                     .denyCacheImageMultipleSizesInMemory()
                     .diskCache(new LimitedAgeDiskCache(context.getCacheDir(), AlarmManager.INTERVAL_DAY));
             if (BuildConfig.DEBUG) {
@@ -35,13 +36,13 @@ public class UILProvider {
         }
     }
 
-    private static DisplayImageOptions getOptions() {
+    private static DisplayImageOptions getOptions(@NonNull Context context) {
         return new DisplayImageOptions.Builder()
                 .delayBeforeLoading(0)
                 .resetViewBeforeLoading(true)
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
-                .showImageForEmptyUri(R.drawable.ic_github_black)
+                .showImageForEmptyUri(ContextCompat.getDrawable(context, R.drawable.ic_github))
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();

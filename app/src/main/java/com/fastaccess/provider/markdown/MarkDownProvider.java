@@ -29,7 +29,12 @@ public class MarkDownProvider {
     private MarkDownProvider() {}
 
     public static void setMdText(@NonNull TextView textView, @NonNull String value) {
-        textView.setText(MarkDown.fromMarkdown(value, null, textView));
+        try {
+            textView.setText(MarkDown.fromMarkdown(value, null, textView));
+        } catch (IndexOutOfBoundsException exception) {
+            exception.printStackTrace();
+            textView.setText(value);
+        }
     }
 
     public static void addList(@NonNull EditText editText, @NonNull String list) {

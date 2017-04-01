@@ -3,6 +3,7 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.App;
@@ -23,6 +24,7 @@ import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
+import io.requery.Transient;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
 import rx.Completable;
@@ -56,6 +58,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     String issueId;
     String repoId;
     String login;
+    @Transient CharSequence labels;
 
     public Completable save(IssueEvent entity) {
         return App.getInstance().getDataStore()
@@ -121,6 +124,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         dest.writeString(this.issueId);
         dest.writeString(this.repoId);
         dest.writeString(this.login);
+        TextUtils.writeToParcel(labels, dest, flags);
     }
 
     protected AbstractIssueEvent(Parcel in) {
@@ -142,6 +146,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         this.issueId = in.readString();
         this.repoId = in.readString();
         this.login = in.readString();
+        this.labels = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
     }
 
     public static final Creator<IssueEvent> CREATOR = new Creator<IssueEvent>() {

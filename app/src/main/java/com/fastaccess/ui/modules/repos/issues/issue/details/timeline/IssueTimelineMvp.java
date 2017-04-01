@@ -1,10 +1,11 @@
-package com.fastaccess.ui.modules.repos.issues.issue.details.comments;
+package com.fastaccess.ui.modules.repos.issues.issue.details.timeline;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.fastaccess.data.dao.CommentsLabelsModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -15,16 +16,15 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import java.util.ArrayList;
 
 /**
- * Created by Kosh on 20 Nov 2016, 11:10 AM
+ * Created by Kosh on 31 Mar 2017, 7:15 PM
  */
 
-interface IssueCommentsMvp {
+public interface IssueTimelineMvp {
 
-    interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
-            android.view.View.OnClickListener, OnToggleView {
+    interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
+            OnToggleView {
 
         void onNotifyAdapter();
-
 
         @NonNull OnLoadMore getLoadMore();
 
@@ -35,26 +35,23 @@ interface IssueCommentsMvp {
         void onShowDeleteMsg(long id);
 
         void onTagUser(@Nullable User user);
-
     }
 
-    interface Presenter extends BaseMvp.FAPresenter,
-            BaseMvp.PaginationListener<String>, BaseViewHolder.OnItemClickListener<Comment> {
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommentsLabelsModel>,
+            BaseMvp.PaginationListener {
+
+        @NonNull ArrayList<CommentsLabelsModel> getEvents();
 
         void onFragmentCreated(@Nullable Bundle bundle);
-
-        @NonNull ArrayList<Comment> getComments();
 
         void onWorkOffline();
 
         void onHandleDeletion(@Nullable Bundle bundle);
 
-        @NonNull String repoId();
+        @Nullable String repoId();
 
-        @NonNull String login();
+        @Nullable String login();
 
         int number();
     }
-
-
 }

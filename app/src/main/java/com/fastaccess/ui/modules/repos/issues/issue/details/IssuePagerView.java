@@ -33,8 +33,7 @@ import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsView;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
-import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
-import com.fastaccess.ui.modules.repos.issues.issue.details.events.IssueDetailsView;
+import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -90,7 +89,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @OnClick(R.id.fab) void onAddComment() {
         if (pager != null && pager.getAdapter() != null) {
-            IssueCommentsView view = (IssueCommentsView) pager.getAdapter().instantiateItem(pager, 1);
+            IssueTimelineView view = (IssueTimelineView) pager.getAdapter().instantiateItem(pager, 0);
             if (view != null) {
                 view.onStartNewComment();
             }
@@ -119,6 +118,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        tabs.setVisibility(View.GONE);
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
@@ -256,7 +256,6 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
         }
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this, issueModel)));
-        tabs.setupWithViewPager(pager);
         if (!getPresenter().isLocked() || getPresenter().isOwner()) {
             pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override public void onPageSelected(int position) {
@@ -294,7 +293,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @Override public void onUpdateTimeline() {
         showMessage(R.string.success, R.string.labels_added_successfully);
-        IssueDetailsView issueDetailsView = (IssueDetailsView) pager.getAdapter().instantiateItem(pager, 0);
+        IssueTimelineView issueDetailsView = (IssueTimelineView) pager.getAdapter().instantiateItem(pager, 0);
         if (issueDetailsView != null) {
             issueDetailsView.onRefresh();
         }
@@ -330,10 +329,6 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             fab.hide();
             return;
         }
-        if (pager.getCurrentItem() == 1) {
-            fab.show();
-        } else {
-            fab.hide();
-        }
+        fab.show();
     }
 }

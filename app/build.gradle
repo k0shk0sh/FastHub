@@ -121,7 +121,7 @@ dependencies {
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
-    compile 'com.annimon:stream:1.1.4'
+    compile 'com.annimon:stream:1.1.7'
     compile 'com.github.GrenderG:Toasty:1.1.3'
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.2'
     compile 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'

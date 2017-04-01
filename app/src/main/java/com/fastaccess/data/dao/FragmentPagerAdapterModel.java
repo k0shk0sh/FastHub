@@ -31,11 +31,10 @@ import com.fastaccess.ui.modules.repos.code.prettifier.ViewerView;
 import com.fastaccess.ui.modules.repos.code.releases.RepoReleasesView;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesView;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesView;
-import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
-import com.fastaccess.ui.modules.repos.issues.issue.details.events.IssueDetailsView;
+import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.RepoPullRequestView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.commits.PullRequestCommitsView;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.events.PullRequestDetailsView;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineView;
 import com.fastaccess.ui.modules.search.code.SearchCodeView;
 import com.fastaccess.ui.modules.search.issues.SearchIssuesView;
 import com.fastaccess.ui.modules.search.repos.SearchReposView;
@@ -91,11 +90,7 @@ public class FragmentPagerAdapterModel {
     }
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context, @NonNull Issue issueModel) {
-        String login = issueModel.getLogin();
-        String repoId = issueModel.getRepoId();
-        int number = issueModel.getNumber();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueDetailsView.newInstance(issueModel)),
-                new FragmentPagerAdapterModel(context.getString(R.string.comments), IssueCommentsView.newInstance(login, repoId, number)))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineView.newInstance(issueModel)))
                 .collect(Collectors.toList());
     }
 
@@ -104,9 +99,8 @@ public class FragmentPagerAdapterModel {
         String login = pullRequest.getLogin();
         String repoId = pullRequest.getRepoId();
         int number = pullRequest.getNumber();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), PullRequestDetailsView.newInstance(pullRequest)),
-                new FragmentPagerAdapterModel(context.getString(R.string.commits), PullRequestCommitsView.newInstance(repoId, login, number)),
-                new FragmentPagerAdapterModel(context.getString(R.string.comments), IssueCommentsView.newInstance(login, repoId, number)))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), PullRequestTimelineView.newInstance(pullRequest)),
+                new FragmentPagerAdapterModel(context.getString(R.string.commits), PullRequestCommitsView.newInstance(repoId, login, number)))
                 .collect(Collectors.toList());
     }
 

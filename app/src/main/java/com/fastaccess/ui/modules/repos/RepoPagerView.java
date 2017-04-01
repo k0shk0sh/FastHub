@@ -187,6 +187,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
+            if (getIntent() == null || getIntent().getExtras() == null) {
+                finish();
+                return;
+            }
             final Bundle extras = getIntent().getExtras();
             repoId = extras.getString(BundleConstant.ID);
             login = extras.getString(BundleConstant.EXTRA_TWO);

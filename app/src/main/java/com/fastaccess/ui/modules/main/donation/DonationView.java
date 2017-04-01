@@ -69,8 +69,11 @@ public class DonationView extends BaseDialogFragment<DonationMvp.View, DonationP
         subscription = getPago().purchaseProduct(productKey, item)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(order -> showMessage(R.string.success, R.string.success_purchase_message),
-                        throwable -> showErrorMessage(throwable.getMessage()));
+                .onErrorReturn(throwable -> {
+                    showErrorMessage(throwable.getMessage());
+                    return null;
+                })
+                .subscribe(order -> showMessage(R.string.success, R.string.success_purchase_message), Throwable::printStackTrace);
     }
 
     @Override public void onItemLongClick(int position, View v, String item) {

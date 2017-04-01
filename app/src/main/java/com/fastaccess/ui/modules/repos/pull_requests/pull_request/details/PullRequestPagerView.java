@@ -33,8 +33,7 @@ import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsView;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
-import com.fastaccess.ui.modules.repos.issues.issue.details.comments.IssueCommentsView;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.events.PullRequestDetailsView;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullRequestView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -90,7 +89,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
     }
 
     @OnClick(R.id.fab) void onAddComment() {
-        IssueCommentsView view = (IssueCommentsView) pager.getAdapter().instantiateItem(pager, 2);
+        PullRequestTimelineView view = (PullRequestTimelineView) pager.getAdapter().instantiateItem(pager, 0);
         if (view != null) {
             view.onStartNewComment();
         }
@@ -312,7 +311,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
 
     @Override public void onUpdateTimeline() {
         showMessage(R.string.success, R.string.labels_added_successfully);
-        PullRequestDetailsView pullRequestDetailsView = (PullRequestDetailsView) pager.getAdapter().instantiateItem(pager, 0);
+        PullRequestTimelineView pullRequestDetailsView = (PullRequestTimelineView) pager.getAdapter().instantiateItem(pager, 0);
         if (pullRequestDetailsView != null) {
             pullRequestDetailsView.onRefresh();
         }
@@ -333,7 +332,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
             fab.hide();
             return;
         }
-        if (pager.getCurrentItem() == 2) {
+        if (pager.getCurrentItem() == 0) {
             fab.show();
         } else {
             fab.hide();

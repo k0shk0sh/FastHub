@@ -125,7 +125,9 @@ import icepick.Icepick;
     }
 
     protected void onHidden() {
-        dismiss();
+        try {
+            dismiss();
+        } catch (IllegalStateException ignored) {} //FML FIXME
     }//helper method to notify dialogs
 
     protected void onDismissedByScrolling() {}//helper method to notify dialogs

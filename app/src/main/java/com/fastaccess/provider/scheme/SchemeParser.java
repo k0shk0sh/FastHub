@@ -1,6 +1,8 @@
 package com.fastaccess.provider.scheme;
 
 import android.app.Activity;
+import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -43,6 +45,9 @@ public class SchemeParser {
     public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
+            if (context instanceof Service || context instanceof Application) {
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
             context.startActivity(intent);
         } else {
             Activity activity = ActivityHelper.getActivity(context);

@@ -122,8 +122,8 @@ public class ViewHelper {
         return (resources.getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
-    public static boolean isTablet(@NonNull Context context) {
-        return isTablet(context.getResources());
+    @SuppressWarnings("ConstantConditions") public static boolean isTablet(@NonNull Context context) {
+        return context != null && isTablet(context.getResources());
     }
 
     public static boolean isLandscape(@NonNull Resources resources) {

@@ -41,7 +41,9 @@ public class BillingActivity extends Activity {
 
     static final String EXTRA_BUY_INTENT = "extra.buy_intent";
 
-    static void start(@NonNull final Context context, @NonNull final PendingIntent buyIntent) {
+    static void start(@NonNull
+                      final Context context, @NonNull
+                      final PendingIntent buyIntent) {
         final Intent intent = new Intent(context, BillingActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(EXTRA_BUY_INTENT, buyIntent);
@@ -68,7 +70,7 @@ public class BillingActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE && data != null) {
             data.setAction(ACTION_PURCHASE);
             data.putExtra(EXTRA_SUCCESS, resultCode == RESULT_OK);
             LocalBroadcastManager.getInstance(this).sendBroadcast(data);

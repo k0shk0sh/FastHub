@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@color/primary"
+        android:src="?colorPrimaryDark"
         app:shape_mode="circle"
         tools:layout_height="@dimen/large_icon_zie"
         tools:layout_width="@dimen/large_icon_zie"/>

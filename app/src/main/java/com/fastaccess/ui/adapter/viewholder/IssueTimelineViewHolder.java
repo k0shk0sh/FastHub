@@ -7,7 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.IssueEventAdapterModel;
+import com.fastaccess.data.dao.CommentsLabelsModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.types.IssueEventType;
@@ -28,7 +28,7 @@ import butterknife.BindView;
  * Created by Kosh on 13 Dec 2016, 1:42 AM
  */
 
-public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterModel> {
+public class IssueTimelineViewHolder extends BaseViewHolder<CommentsLabelsModel> {
 
     @BindView(R.id.stateImage) ForegroundImageView stateImage;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -43,16 +43,18 @@ public class IssueTimelineViewHolder extends BaseViewHolder<IssueEventAdapterMod
         return new IssueTimelineViewHolder(getView(viewGroup, R.layout.issue_timeline_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull IssueEventAdapterModel model) {
-        IssueEvent issueEventModel = model.getIssueEvent();
+    @Override public void bind(@NonNull CommentsLabelsModel commentsLabelsModel) {
+        IssueEvent issueEventModel = commentsLabelsModel.getEvent();
         IssueEventType event = issueEventModel.getEvent();
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
             spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
             avatarLayout.setUrl(issueEventModel.getAssigner().getAvatarUrl(), issueEventModel.getAssigner().getLogin());
         } else {
-            spannableBuilder.bold(issueEventModel.getActor().getLogin());
-            avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
+            if (issueEventModel.getActor() != null) {
+                spannableBuilder.bold(issueEventModel.getActor().getLogin());
+                avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
+            }
         }
         if (event != null) {
             stateImage.setContentDescription(event.name());
