@@ -25,10 +25,10 @@ import icepick.State;
  * Created by Kosh on 25 Mar 2017, 11:28 PM
  */
 
-public class PublicGistsActivity extends BaseActivity {
+public class GistsListActivity extends BaseActivity {
 
     public static void startActivity(@NonNull Context context, boolean myGists) {
-        Intent intent = new Intent(context, PublicGistsActivity.class);
+        Intent intent = new Intent(context, GistsListActivity.class);
         intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, myGists).end());
         context.startActivity(intent);
     }

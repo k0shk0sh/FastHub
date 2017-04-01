@@ -151,6 +151,7 @@ public class StackBuilderSchemeParser {
         }
         if (issueNumber < 1) return null;
         return TaskStackBuilder.create(context)
+                .addParentStack(MainView.class)
                 .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST))
                 .addNextIntent(PullRequestPagerView.createIntent(context, repo, owner, issueNumber));
     }
@@ -182,6 +183,7 @@ public class StackBuilderSchemeParser {
         }
         if (issueNumber < 1) return null;
         return TaskStackBuilder.create(context)
+                .addParentStack(MainView.class)
                 .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
                 .addNextIntent(IssuePagerView.createIntent(context, repo, owner, issueNumber));
     }
@@ -192,10 +194,9 @@ public class StackBuilderSchemeParser {
         String owner = segments.get(0);
         String repoName = segments.get(1);
         return TaskStackBuilder.create(context)
-                .addParentStack(MainView.class)
+                .addNextIntentWithParentStack(new Intent(context, MainView.class))
                 .addNextIntent(RepoPagerView.createIntent(context, repoName, owner));
     }
-
     /**
      * [[k0shk0sh, FastHub, issues], k0shk0sh/fastHub/(issues,pulls,commits, etc)]
      */
@@ -207,10 +208,11 @@ public class StackBuilderSchemeParser {
             if (segments.size() == 1) {
                 return getUser(context, uri);
             } else if (segments.size() > 1) {
+                if (segments.contains("wiki")) return null;
                 String owner = segments.get(0);
                 String repoName = segments.get(1);
                 return TaskStackBuilder.create(context)
-                        .addParentStack(MainView.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainView.class))
                         .addNextIntent(RepoPagerView.createIntent(context, repoName, owner));
             }
         }
@@ -225,6 +227,7 @@ public class StackBuilderSchemeParser {
             String repoId = segments.get(2);
             String sha = segments.get(4);
             return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
                     .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repoId, login))
                     .addNextIntent(CommitPagerView.createIntent(context, repoId, login, sha));
         }
@@ -238,6 +241,7 @@ public class StackBuilderSchemeParser {
         String repoId = segments.get(1);
         String sha = segments.get(3);
         return TaskStackBuilder.create(context)
+                .addParentStack(MainView.class)
                 .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repoId, login))
                 .addNextIntent(CommitPagerView.createIntent(context, repoId, login, sha));
     }
@@ -246,7 +250,7 @@ public class StackBuilderSchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments != null && !segments.isEmpty() && segments.size() == 1) {
             return TaskStackBuilder.create(context)
-                    .addParentStack(MainView.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntent(UserPagerView.createIntent(context, segments.get(0)));
         }
         return null;
@@ -271,13 +275,13 @@ public class StackBuilderSchemeParser {
                 }
             }
             if (fullUrl != null) return TaskStackBuilder.create(context)
-                    .addParentStack(MainView.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntent(CodeViewerView.createIntent(context, fullUrl));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
                 return TaskStackBuilder.create(context)
-                        .addParentStack(MainView.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainView.class))
                         .addNextIntent(CodeViewerView.createIntent(context, uri.toString()));
             }
         }
@@ -296,6 +300,7 @@ public class StackBuilderSchemeParser {
             String owner = segments.get(0);
             String repo = segments.get(1);
             return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
                     .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
                     .addNextIntent(CreateIssueView.getIntent(context, owner, repo));
         }

@@ -23,7 +23,7 @@ import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.feeds.FeedsView;
-import com.fastaccess.ui.modules.gists.PublicGistsActivity;
+import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
@@ -157,7 +157,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     @Override public void onOpenGists(boolean myGists) {
-        PublicGistsActivity.startActivity(this, myGists);
+        GistsListActivity.startActivity(this, myGists);
     }
 
     @Override public void onOpenPinnedRepos() {

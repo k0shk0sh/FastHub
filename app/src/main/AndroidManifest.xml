@@ -157,7 +157,7 @@
             android:label="@string/pinned"/>
 
         <activity
-            android:name=".ui.modules.gists.PublicGistsActivity"
+            android:name=".ui.modules.gists.GistsListActivity"
             android:label="@string/public_gists"/>
 
 
