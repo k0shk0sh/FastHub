@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.App;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -112,22 +113,24 @@ public abstract class AbstractUser implements Parcelable {
     }
 
     public static Observable saveUserFollowerList(@NonNull List<User> models, @NonNull String followingName) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(User.class)
-                    .where(FOLLOWING_NAME.eq(followingName))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(userModel -> {
-                        userModel.setFollowingName(followingName);
-                        userModel.save(userModel);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(User.class)
+                            .where(FOLLOWING_NAME.eq(followingName))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(userModel -> {
+                                userModel.setFollowingName(followingName);
+                                userModel.save(userModel);
+                            });
+                })
+        );
     }
 
     public static Observable saveUserFollowingList(@NonNull List<User> models, @NonNull String followerName) {
-        return Observable.create(subscriber -> {
+        return RxHelper.getObserver(Observable.create(subscriber -> {
             SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
             singleEntityStore.delete(User.class)
                     .where(FOLLOWER_NAME.eq(followerName))
@@ -138,22 +141,24 @@ public abstract class AbstractUser implements Parcelable {
                         userModel.setFollowerName(followerName);
                         userModel.save(userModel);
                     });
-        });
+        }));
     }
 
     public static Observable saveUserContributorList(@NonNull List<User> models, @NonNull String repoId) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(User.class)
-                    .where(REPO_ID.eq(repoId))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(userModel -> {
-                        userModel.setRepoId(repoId);
-                        userModel.save(userModel);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(User.class)
+                            .where(REPO_ID.eq(repoId))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(userModel -> {
+                                userModel.setRepoId(repoId);
+                                userModel.save(userModel);
+                            });
+                })
+        );
 
     }
 

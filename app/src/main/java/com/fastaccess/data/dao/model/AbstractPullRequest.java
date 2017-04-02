@@ -20,6 +20,7 @@ import com.fastaccess.data.dao.converters.UsersConverter;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.Date;
@@ -99,20 +100,22 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     }
 
     public static Observable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(PullRequest.class)
-                    .where(REPO_ID.equal(repoId)
-                            .and(LOGIN.equal(login)))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(pulRequest -> {
-                        pulRequest.setRepoId(repoId);
-                        pulRequest.setLogin(login);
-                        pulRequest.save(pulRequest).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(PullRequest.class)
+                            .where(REPO_ID.equal(repoId)
+                                    .and(LOGIN.equal(login)))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(pulRequest -> {
+                                pulRequest.setRepoId(repoId);
+                                pulRequest.setLogin(login);
+                                pulRequest.save(pulRequest).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
     }
 
     public static Observable<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,

@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.types.FilesType;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
@@ -50,20 +51,22 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
     }
 
     public static Observable save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(RepoFile.class)
-                    .where(REPO_ID.eq(repoId)
-                            .and(LOGIN.eq(login)))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(filesModel -> {
-                        filesModel.setRepoId(repoId);
-                        filesModel.setLogin(login);
-                        filesModel.save(filesModel).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(RepoFile.class)
+                            .where(REPO_ID.eq(repoId)
+                                    .and(LOGIN.eq(login)))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(filesModel -> {
+                                filesModel.setRepoId(repoId);
+                                filesModel.setLogin(login);
+                                filesModel.save(filesModel).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
     }
 
     public static Observable<List<RepoFile>> getFiles(@NonNull String login, @NonNull String repoId) {

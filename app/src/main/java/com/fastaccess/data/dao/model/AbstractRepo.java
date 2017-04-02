@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.converters.LicenseConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.RepoPermissionConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
+import com.fastaccess.helper.RxHelper;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -141,33 +142,37 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     }
 
     public static Observable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Repo.class)
-                    .where(STARRED_USER.eq(starredUser))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(repo -> {
-                        repo.setStarredUser(starredUser);
-                        repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(Repo.class)
+                            .where(STARRED_USER.eq(starredUser))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(repo -> {
+                                repo.setStarredUser(starredUser);
+                                repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
     }
 
     public static Observable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Repo.class)
-                    .where(REPOS_OWNER.eq(reposOwner))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(repo -> {
-                        repo.setReposOwner(reposOwner);
-                        repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(Repo.class)
+                            .where(REPOS_OWNER.eq(reposOwner))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(repo -> {
+                                repo.setReposOwner(reposOwner);
+                                repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
     }
 
     public static Observable<List<Repo>> getStarred(@NonNull String starredUser) {

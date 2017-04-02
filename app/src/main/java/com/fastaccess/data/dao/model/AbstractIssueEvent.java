@@ -16,6 +16,7 @@ import com.fastaccess.data.dao.converters.MilestoneConverter;
 import com.fastaccess.data.dao.converters.RenameConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -74,22 +75,24 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
 
     public static Observable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
                                   @NonNull String login, @NonNull String issueId) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(IssueEvent.class)
-                    .where(LOGIN.equal(login)
-                            .and(REPO_ID.equal(repoId))
-                            .and(ISSUE_ID.equal(issueId)))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(issueEventModel -> {
-                        issueEventModel.setIssueId(issueId);
-                        issueEventModel.setLogin(login);
-                        issueEventModel.setRepoId(repoId);
-                        issueEventModel.save(issueEventModel).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(IssueEvent.class)
+                            .where(LOGIN.equal(login)
+                                    .and(REPO_ID.equal(repoId))
+                                    .and(ISSUE_ID.equal(issueId)))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(issueEventModel -> {
+                                issueEventModel.setIssueId(issueId);
+                                issueEventModel.setLogin(login);
+                                issueEventModel.setRepoId(repoId);
+                                issueEventModel.save(issueEventModel).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
     }
 
     public static Observable<List<IssueEvent>> get(@NonNull String repoId, @NonNull String login,

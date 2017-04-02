@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.GithubFileModel;
 import com.fastaccess.data.dao.converters.GitHubFilesConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.annotations.SerializedName;
 
@@ -28,6 +29,7 @@ import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
 import rx.Completable;
 import rx.Observable;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:32 PM
@@ -74,11 +76,11 @@ import rx.Observable;
                     .get()
                     .value();
             Stream.of(gists).forEach(gist -> gist.save(gist));
-        });
+        }).subscribeOn(Schedulers.io());
     }
 
     public static Observable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        return Observable.create(subscriber -> {
+        return RxHelper.getObserver(Observable.create(subscriber -> {
             SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
             singleEntityStore.delete(Gist.class)
                     .where(Gist.OWNER_NAME.equal(ownerName))
@@ -89,7 +91,7 @@ import rx.Observable;
                         gistsModel.setOwnerName(ownerName);
                         gistsModel.save(gistsModel).toObservable().toBlocking().singleOrDefault(null);
                     });
-        });
+        }));
     }
 
     @NonNull public static Observable<List<Gist>> getMyGists(@NonNull String ownerName) {

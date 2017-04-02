@@ -16,6 +16,7 @@ import com.fastaccess.data.dao.converters.GitCommitConverter;
 import com.fastaccess.data.dao.converters.GitHubStateConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
+import com.fastaccess.helper.RxHelper;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -65,24 +66,26 @@ public abstract class AbstractCommit implements Parcelable {
     }
 
     public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Commit.class)
-                    .where(REPO_ID.eq(repoId)
-                            .and(LOGIN.eq(login)))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(commitModel -> {
-                        commitModel.setRepoId(repoId);
-                        commitModel.setLogin(login);
-                        commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(Commit.class)
+                            .where(REPO_ID.eq(repoId)
+                                    .and(LOGIN.eq(login)))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(commitModel -> {
+                                commitModel.setRepoId(repoId);
+                                commitModel.setLogin(login);
+                                commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
     }
 
     public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
-        return Observable.create(subscriber -> {
+        return RxHelper.getObserver(Observable.create(subscriber -> {
             SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
             singleEntityStore.delete(Commit.class)
                     .where(REPO_ID.eq(repoId)
@@ -97,7 +100,7 @@ public abstract class AbstractCommit implements Parcelable {
                         commitModel.setPullRequestNumber(number);
                         commitModel.save(commitModel).toObservable().toBlocking().singleOrDefault(null);
                     });
-        });
+        }));
     }
 
     public static Observable<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login) {

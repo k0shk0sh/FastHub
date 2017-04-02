@@ -9,6 +9,7 @@ import com.fastaccess.App;
 import com.fastaccess.data.dao.ReleasesAssetsListModel;
 import com.fastaccess.data.dao.converters.ReleasesAssetsConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
+import com.fastaccess.helper.RxHelper;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -67,19 +68,21 @@ public abstract class AbstractRelease implements Parcelable {
     }
 
     public static Observable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Release.class)
-                    .where(REPO_ID.eq(login))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(releasesModel -> {
-                        releasesModel.setRepoId(repoId);
-                        releasesModel.setLogin(login);
-                        releasesModel.save(releasesModel).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(Release.class)
+                            .where(REPO_ID.eq(login))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(releasesModel -> {
+                                releasesModel.setRepoId(repoId);
+                                releasesModel.setLogin(login);
+                                releasesModel.save(releasesModel).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
 
     }
 

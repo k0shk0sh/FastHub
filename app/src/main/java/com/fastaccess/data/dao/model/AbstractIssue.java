@@ -16,6 +16,7 @@ import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.converters.UsersConverter;
 import com.fastaccess.data.dao.types.IssueState;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -79,20 +80,22 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     }
 
     public static Observable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Issue.class)
-                    .where(REPO_ID.equal(repoId)
-                            .and(LOGIN.equal(login)))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(issueModel -> {
-                        issueModel.setRepoId(repoId);
-                        issueModel.setLogin(login);
-                        issueModel.save(issueModel).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+                    singleEntityStore.delete(Issue.class)
+                            .where(REPO_ID.equal(repoId)
+                                    .and(LOGIN.equal(login)))
+                            .get()
+                            .value();
+                    Stream.of(models)
+                            .forEach(issueModel -> {
+                                issueModel.setRepoId(repoId);
+                                issueModel.setLogin(login);
+                                issueModel.save(issueModel).toObservable().toBlocking().singleOrDefault(null);
+                            });
+                })
+        );
     }
 
     public static Observable<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {

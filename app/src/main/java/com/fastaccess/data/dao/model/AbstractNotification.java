@@ -9,6 +9,7 @@ import com.fastaccess.data.dao.NotificationSubjectModel;
 import com.fastaccess.data.dao.converters.NotificationSubjectConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.types.NotificationReason;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 import java.util.List;
@@ -50,14 +51,16 @@ import rx.Observable;
     }
 
     public static Observable<Object> save(@NonNull List<Notification> models) {
-        return Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-            dataSource.delete(Notification.class)
-                    .get()
-                    .value();
-            Stream.of(models).forEach(notification -> notification.save(notification).toObservable().toBlocking().singleOrDefault(null));
-            subscriber.onCompleted();
-        });
+        return RxHelper.getObserver(
+                Observable.create(subscriber -> {
+                    SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
+                    dataSource.delete(Notification.class)
+                            .get()
+                            .value();
+                    Stream.of(models).forEach(notification -> notification.save(notification).toObservable().toBlocking().singleOrDefault(null));
+                    subscriber.onCompleted();
+                })
+        );
     }
 
     public static Observable<List<Notification>> getNotifications() {

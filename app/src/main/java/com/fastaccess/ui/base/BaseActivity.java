@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.webkit.CookieManager;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -105,7 +106,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogView().show(getSupportFragmentManager(), "ChangelogView");
         }
-        if (drawer != null) drawer.setStatusBarBackgroundColor(ViewHelper.getPrimaryDarkColor(this));
+
         setupExtraNav();
     }
 
@@ -343,6 +344,27 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupExtraNav() {
+        if (drawer != null) {
+            if (!PrefGetter.isNavDrawerHintShowed()) {
+                drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                    @Override public boolean onPreDraw() {
+                        drawer.openDrawer(GravityCompat.START);
+                        drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
+                            @Override public void onDrawerOpened(View drawerView) {
+                                super.onDrawerOpened(drawerView);
+                                drawerView.postDelayed(() -> {
+                                    if (drawer != null) {
+                                        drawer.closeDrawer(GravityCompat.START);
+                                    }
+                                }, 1000);
+                            }
+                        });
+                        drawer.getViewTreeObserver().removeOnPreDrawListener(this);
+                        return true;
+                    }
+                });
+            }
+        }
         if (extraNav != null) {
             extraNav.setNavigationItemSelectedListener(this);
             Login userModel = Login.getUser();
