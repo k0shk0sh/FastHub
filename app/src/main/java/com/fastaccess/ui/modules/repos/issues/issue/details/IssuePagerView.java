@@ -126,6 +126,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
+        if (getPresenter().showToRepoBtn()) showNavToRepoItem();
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -187,13 +188,6 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         } else if (item.getItemId() == R.id.assignees) {
             getPresenter().onLoadAssignees();
             return true;
-        } else if (item.getItemId() == R.id.toRepo) {
-            NameParser nameParser = new NameParser("");
-            nameParser.setName(getPresenter().getRepoId());
-            nameParser.setUsername(getPresenter().getLogin());
-            RepoPagerView.startRepoPager(this, nameParser);
-            finish();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -206,7 +200,6 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         MenuItem assignees = menu.findItem(R.id.assignees);
         MenuItem edit = menu.findItem(R.id.edit);
         MenuItem editMenu = menu.findItem(R.id.editMenu);
-        menu.findItem(R.id.toRepo).setVisible(getPresenter().showToRepoBtn());
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
@@ -322,6 +315,14 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
         getPresenter().onPutAssignees(users);
+    }
+
+    @Override protected void onNavToRepoClicked() {
+        NameParser nameParser = new NameParser("");
+        nameParser.setName(getPresenter().getRepoId());
+        nameParser.setUsername(getPresenter().getLogin());
+        RepoPagerView.startRepoPager(this, nameParser);
+        finish();
     }
 
     private void hideShowFab() {

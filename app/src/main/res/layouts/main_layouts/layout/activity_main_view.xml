@@ -30,15 +30,7 @@
 
         </android.support.design.widget.CoordinatorLayout>
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="?colorPrimary"
-            android:visibility="gone"
-            app:adSize="BANNER"
-            app:adUnitId="@string/banner_ad_unit_id"/>
+        <include layout="@layout/add_banner_layout"/>
     </LinearLayout>
 
 
@@ -48,7 +40,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:clickable="true"
-        android:clipToPadding="false"
         android:fitsSystemWindows="true"
         android:focusable="true"
         app:headerLayout="@layout/drawer_header"

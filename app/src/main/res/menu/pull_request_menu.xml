@@ -50,12 +50,6 @@
     </item>
 
     <item
-        android:id="@+id/toRepo"
-        android:icon="@drawable/ic_home"
-        android:title="@string/repo"
-        app:showAsAction="ifRoom"/>
-
-    <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"

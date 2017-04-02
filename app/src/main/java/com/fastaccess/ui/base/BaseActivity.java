@@ -8,12 +8,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fastaccess.App;
@@ -27,8 +31,13 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogView;
+import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.login.LoginView;
 import com.fastaccess.ui.modules.main.MainView;
+import com.fastaccess.ui.modules.main.donation.DonationView;
+import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -50,12 +59,14 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
  */
 
 public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
-        BaseMvp.FAView {
+        BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) AppBarLayout shadowView;
     @Nullable @BindView(R.id.adView) AdView adView;
+    @Nullable @BindView(R.id.drawer) DrawerLayout drawer;
+    @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
     private Toast toast;
 
     @LayoutRes protected abstract int layout();
@@ -94,6 +105,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogView().show(getSupportFragmentManager(), "ChangelogView");
         }
+        if (drawer != null) drawer.setStatusBarBackgroundColor(ViewHelper.getPrimaryDarkColor(this));
+        setupExtraNav();
     }
 
     @Override protected void onResume() {
@@ -198,6 +211,44 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         recreate();
     }
 
+    @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        if (drawer != null) {
+            drawer.closeDrawer(GravityCompat.START);
+        }
+        if (item.getItemId() == R.id.navToRepo) {
+            onNavToRepoClicked();
+            return true;
+        } else if (item.getItemId() == R.id.fhRepo) {
+            startActivity(RepoPagerView.createIntent(this, "FastHub", "k0shk0sh"));
+        } else if (item.getItemId() == R.id.supportDev) {
+            new DonationView().show(getSupportFragmentManager(), "DonationView");
+        } else if (item.getItemId() == R.id.enableAds) {
+            boolean isEnabled = !PrefGetter.isAdsEnabled();
+            PrefGetter.setAdsEnabled(isEnabled);
+            showHideAds();
+            if (extraNav != null)/*just to ignore lint*/ extraNav.getMenu().findItem(R.id.enableAds).setChecked(isEnabled);
+            return true;
+        } else if (item.getItemId() == R.id.gists) {
+            GistsListActivity.startActivity(this, false);
+            return true;
+        } else if (item.getItemId() == R.id.myGists) {
+            GistsListActivity.startActivity(this, true);
+            return true;
+        } else if (item.getItemId() == R.id.pinnedMenu) {
+            PinnedReposActivity.startActivity(this);
+            return true;
+        }
+        return false;
+    }
+
+    protected void showNavToRepoItem() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(true);
+        }
+    }
+
+    protected void onNavToRepoClicked() {}
+
     private void setupToolbarAndStatusBar(@Nullable Toolbar toolbar) {
         changeStatusBarColor(isTransparent());
         if (toolbar != null) {
@@ -273,6 +324,22 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             setTheme(R.style.ThemeLight);
         } else if (themeMode == PrefGetter.DARK) {
             setTheme(R.style.ThemeDark);
+        }
+    }
+
+    private void setupExtraNav() {
+        if (extraNav != null) {
+            extraNav.setNavigationItemSelectedListener(this);
+            Login userModel = Login.getUser();
+            if (userModel != null) {
+                View view = extraNav.getHeaderView(0);
+                if (view != null) {
+                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+                    ((TextView) view.findViewById(R.id.username)).setText(userModel.getName());
+                    ((TextView) view.findViewById(R.id.email)).setText(userModel.getLogin());
+                }
+            }
+            extraNav.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
         }
     }
 

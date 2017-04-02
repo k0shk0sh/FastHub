@@ -119,6 +119,7 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
         } else {
             onSetup();
         }
+        if (getPresenter().showToRepoBtn()) showNavToRepoItem();
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -130,19 +131,11 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
         if (item.getItemId() == R.id.share) {
             if (getPresenter().getCommit() != null) ActivityHelper.shareUrl(this, getPresenter().getCommit().getHtmlUrl());
             return true;
-        } else if (item.getItemId() == R.id.toRepo) {
-            NameParser nameParser = new NameParser("");
-            nameParser.setName(getPresenter().getRepoId());
-            nameParser.setUsername(getPresenter().getLogin());
-            RepoPagerView.startRepoPager(this, nameParser);
-            finish();
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.toRepo).setVisible(getPresenter().showToRepoBtn());
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -179,6 +172,14 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
 
     @Override public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override protected void onNavToRepoClicked() {
+        NameParser nameParser = new NameParser("");
+        nameParser.setName(getPresenter().getRepoId());
+        nameParser.setUsername(getPresenter().getLogin());
+        RepoPagerView.startRepoPager(this, nameParser);
+        finish();
     }
 
     private void hideShowFab() {

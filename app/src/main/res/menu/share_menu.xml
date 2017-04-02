@@ -8,11 +8,4 @@
         android:title="@string/share"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/toRepo"
-        android:icon="@drawable/ic_home"
-        android:title="@string/repo"
-        android:visible="false"
-        app:showAsAction="ifRoom"/>
-
 </menu>
