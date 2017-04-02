@@ -21,4 +21,16 @@ public class RepoQueryProvider {
                 "+" + "author:" + username +
                 "+is:" + issueState.name();
     }
+
+    @NonNull public static String getAssigned(@NonNull String username, @NonNull IssueState issueState, boolean isPr) {
+        return "type:" + (isPr ? "pr" : "issue") +
+                "+" + "assignee:" + username +
+                "+is:" + issueState.name();
+    }
+
+    @NonNull public static String getMentioned(@NonNull String username, @NonNull IssueState issueState, boolean isPr) {
+        return "type:" + (isPr ? "pr" : "issue") +
+                "+" + "mentions:" + username +
+                "+is:" + issueState.name();
+    }
 }

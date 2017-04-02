@@ -1,6 +1,5 @@
 package com.fastaccess.data.dao.converters;
 
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 
 import io.requery.Converter;
@@ -30,7 +29,6 @@ public abstract class BaseConverter<C> implements Converter<C, String> {
     }
 
     @Override public C convertToMapped(Class<? extends C> type, String value) {
-        Logger.e(type.getSimpleName(), value);
         return RestProvider.gson.fromJson(value, type);
     }
 }

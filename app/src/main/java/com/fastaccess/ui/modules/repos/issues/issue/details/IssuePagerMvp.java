@@ -20,7 +20,7 @@ import java.util.List;
  * Created by Kosh on 10 Dec 2016, 9:21 AM
  */
 
-interface IssuePagerMvp {
+public interface IssuePagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
             AssigneesMvp.SelectedAssigneesListener {
@@ -37,6 +37,8 @@ interface IssuePagerMvp {
         void onUpdateMenu();
 
         void onShowAssignees(@NonNull List<User> items);
+
+        void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

@@ -18,7 +18,9 @@ public interface LabelsMvp {
         void onSelectedLabels(@NonNull ArrayList<LabelModel> labels);
     }
 
-    interface View extends BaseMvp.FAView, LabelsAdapter.OnSelectLabel {}
+    interface View extends BaseMvp.FAView, LabelsAdapter.OnSelectLabel {
+        void onLabelAdded(@NonNull LabelModel labelModel);
+    }
 
     interface Presenter {}
 }

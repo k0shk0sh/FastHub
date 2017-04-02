@@ -51,6 +51,18 @@
                     tools:text="How jolly. You loot like a mast."/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/add"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_add"
+                    android:visibility="gone"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/ok"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

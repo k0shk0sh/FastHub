@@ -52,7 +52,9 @@
         <item name="android:backgroundTint">#2D3035</item>
     </style>
 
-    <style name="DialogThemeDark" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+    <style name="DialogThemeDark" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
         <item name="android:windowBackground">@color/darkWindowBackground</item>
     </style>
 </resources>

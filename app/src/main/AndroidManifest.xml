@@ -143,10 +143,6 @@
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.extras.milestone.create.MilestoneActivityView"
-            />
-
-        <activity
             android:name=".ui.modules.about.FastHubAboutActivity"
             android:theme="@style/AppTheme.AboutActivity"/>
 

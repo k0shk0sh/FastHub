@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Kosh on 10 Dec 2016, 9:21 AM
  */
 
-interface PullRequestPagerMvp {
+public interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
             AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback {
@@ -41,6 +41,8 @@ interface PullRequestPagerMvp {
         void onUpdateTimeline();
 
         void onShowAssignees(@NonNull List<User> items);
+
+        void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

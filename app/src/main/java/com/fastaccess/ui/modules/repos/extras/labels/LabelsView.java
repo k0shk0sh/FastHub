@@ -14,8 +14,10 @@ import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.adapter.LabelsAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.labels.create.CreateLableView;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -37,9 +39,30 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
+    @BindView(R.id.add) View add;
     @State HashMap<Integer, LabelModel> selectionMap;
     private LabelsAdapter adapter;
     private LabelsMvp.SelectedLabelsListener callback;
+
+    public static LabelsView newInstance(@NonNull List<LabelModel> models, @Nullable LabelListModel selectedLabels,
+                                         @NonNull String repo, @NonNull String login) {
+        LabelsView fragment = new LabelsView();
+        fragment.setArguments(Bundler.start()
+                .putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models)
+                .putParcelableArrayList(BundleConstant.EXTRA, selectedLabels)
+                .put(BundleConstant.EXTRA_TWO, repo)
+                .put(BundleConstant.EXTRA_THREE, login)
+                .end());
+        return fragment;
+    }
+
+    @OnClick(R.id.add) void onAddLabel() {
+        String repo = getArguments().getString(BundleConstant.EXTRA_TWO);
+        String login = getArguments().getString(BundleConstant.EXTRA_THREE);
+        if (!InputHelper.isEmpty(repo) && !InputHelper.isEmpty(login)) {
+            CreateLableView.newInstance(login, repo).show(getChildFragmentManager(), "CreateLableView");
+        }
+    }
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -57,21 +80,13 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
         callback = null;
     }
 
-    public static LabelsView newInstance(@NonNull List<LabelModel> models, @Nullable LabelListModel selectedLabels) {
-        LabelsView fragment = new LabelsView();
-        fragment.setArguments(Bundler.start()
-                .putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models)
-                .putParcelableArrayList(BundleConstant.EXTRA, selectedLabels)
-                .end());
-        return fragment;
-    }
-
     @Override protected int fragmentLayout() {
         return R.layout.simple_footer_list_dialog;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         title.setText(R.string.labels);
+        add.setVisibility(View.VISIBLE);
         List<LabelModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
         List<LabelModel> selectedLabels = getArguments().getParcelableArrayList(BundleConstant.EXTRA);
         if (list != null) {
@@ -103,6 +118,11 @@ public class LabelsView extends BaseDialogFragment<LabelsMvp.View, LabelsPresent
             getSelectionMap().remove(position);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @Override public void onLabelAdded(@NonNull LabelModel labelModel) {
+        adapter.addItem(labelModel, 0);
+        recycler.scrollToPosition(0);
     }
 
     @OnClick({R.id.cancel, R.id.ok}) public void onClick(View view) {

@@ -121,17 +121,18 @@ public class MilestoneView extends BaseFragment<MilestoneMvp.View, MilestonePres
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public MilestonePresenter providePresenter() {
         return new MilestonePresenter();
     }
 
     @Override public void onMilestoneAdded(@NonNull MilestoneModel milestoneModel) {
-        adapter.addItem(milestoneModel, 0);
+        getPresenter().getMilestones().add(0, milestoneModel);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 
     private boolean onAddMilestone() {

@@ -31,7 +31,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsView;
-import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
+import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialog;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineView;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -136,12 +136,6 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
                 Bundle bundle = data.getExtras();
                 Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
                 if (issueModel != null) getPresenter().onUpdateIssue(issueModel);
-            } else if (requestCode == MilestoneActivityView.CREATE_MILESTONE_RQ) {
-                Bundle bundle = data.getExtras();
-                MilestoneModel milestoneModel = bundle.getParcelable(BundleConstant.ITEM);
-                if (milestoneModel != null) {
-                    getPresenter().onPutMilestones(milestoneModel);
-                }
             }
         }
     }
@@ -183,7 +177,8 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
             CreateIssueView.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getIssue());
             return true;
         } else if (item.getItemId() == R.id.milestone) {
-            MilestoneActivityView.startActivity(this, getPresenter().getLogin(), getPresenter().getRepoId());
+            MilestoneDialog.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())
+                    .show(getSupportFragmentManager(), "MilestoneDialog");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
             getPresenter().onLoadAssignees();
@@ -280,7 +275,8 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
 
     @Override public void onLabelsRetrieved(@NonNull List<LabelModel> items) {
         hideProgress();
-        LabelsView.newInstance(items, getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null)
+        LabelsView.newInstance(items, getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null,
+                getPresenter().getRepoId(), getPresenter().getLogin())
                 .show(getSupportFragmentManager(), "LabelsView");
     }
 
@@ -300,6 +296,10 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         hideProgress();
         AssigneesView.newInstance(items)
                 .show(getSupportFragmentManager(), "AssigneesView");
+    }
+
+    @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
+        getPresenter().onPutMilestones(milestoneModel);
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

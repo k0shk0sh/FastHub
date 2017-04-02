@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.LabelModel;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.InputHelper;
@@ -46,57 +46,66 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
     @Override public void bind(@NonNull TimelineModel timelineModel) {
         IssueEvent issueEventModel = timelineModel.getEvent();
         IssueEventType event = issueEventModel.getEvent();
-        SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
-            spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
             avatarLayout.setUrl(issueEventModel.getAssigner().getAvatarUrl(), issueEventModel.getAssigner().getLogin());
         } else {
             if (issueEventModel.getActor() != null) {
-                spannableBuilder.bold(issueEventModel.getActor().getLogin());
                 avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
             }
         }
-        if (event != null) {
-            stateImage.setContentDescription(event.name());
-            spannableBuilder
-                    .append(" ")
-                    .append(event.name());
-            stateImage.setImageResource(event.getIconResId());
-            if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
-                LabelModel labelModel = issueEventModel.getLabel();
-                int color = Color.parseColor("#" + labelModel.getColor());
-                spannableBuilder
-                        .append(" ")
-                        .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color, 5));
-            } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
-                spannableBuilder
-                        .append(" ")
-                        .bold(issueEventModel.getAssignee().getLogin());
-            } else if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
-                spannableBuilder
-                        .append(" ")
-                        .append(to)
-                        .append(" ")
-                        .bold(issueEventModel.getMilestone().getTitle());
-            } else if (event == IssueEventType.renamed) {
-                spannableBuilder
-                        .append(" ")
-                        .bold(issueEventModel.getRename().getFromValue())
-                        .append(" ")
-                        .append(to)
-                        .append(" ")
-                        .bold(issueEventModel.getRename().getToValue());
-            } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
-                spannableBuilder
-                        .append(" ")
-                        .url(stateText.getResources().getString(R.string.this_value));
+        if (issueEventModel.getLabels() == null) {
+            SpannableBuilder spannableBuilder = SpannableBuilder.builder();
+            if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
+                spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
+            } else {
+                if (issueEventModel.getActor() != null) {
+                    spannableBuilder.bold(issueEventModel.getActor().getLogin());
+                }
             }
+            if (event != null) {
+                stateImage.setContentDescription(event.name());
+                spannableBuilder
+                        .append(" ")
+                        .append(event.name());
+                stateImage.setImageResource(event.getIconResId());
+                if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
+                    LabelModel labelModel = issueEventModel.getLabel();
+                    int color = Color.parseColor("#" + labelModel.getColor());
+                    spannableBuilder
+                            .append(" ")
+                            .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color, 5));
+                } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
+                    spannableBuilder
+                            .append(" ")
+                            .bold(issueEventModel.getAssignee().getLogin());
+                } else if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
+                    spannableBuilder
+                            .append(" ")
+                            .append(to)
+                            .append(" ")
+                            .bold(issueEventModel.getMilestone().getTitle());
+                } else if (event == IssueEventType.renamed) {
+                    spannableBuilder
+                            .append(" ")
+                            .bold(issueEventModel.getRename().getFromValue())
+                            .append(" ")
+                            .append(to)
+                            .append(" ")
+                            .bold(issueEventModel.getRename().getToValue());
+                } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
+                    spannableBuilder
+                            .append(" ")
+                            .url(stateText.getResources().getString(R.string.this_value));
+                }
+            } else {
+                stateImage.setImageResource(R.drawable.ic_label);
+            }
+            stateText.setText(spannableBuilder
+                    .append(" ")
+                    .append(ParseDateFormat.getTimeAgo(issueEventModel.getCreatedAt())));
         } else {
-            stateImage.setImageResource(R.drawable.ic_label);
+            stateText.setText(issueEventModel.getLabels());
         }
-        stateText.setText(spannableBuilder
-                .append(" ")
-                .append(ParseDateFormat.getTimeAgo(issueEventModel.getCreatedAt())));
         itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()));
     }
 

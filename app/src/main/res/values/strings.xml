@@ -323,4 +323,10 @@
     <string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
     <string name="posting_reaction" formatted="true">Posting reaction %s</string>
     <string name="home_long_click_hint">Long press to navigate to main screen from anywhere</string>
+    <string name="created"/>
+    <string name="assigned">Assigned</string>
+    <string name="mentioned">Mentioned</string>
+    <string name="name">Name</string>
+    <string name="color">Color</string>
+    <string name="create_label">Create Label</string>
 </resources>

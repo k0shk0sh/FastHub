@@ -91,7 +91,7 @@ import lombok.Setter;
             } else if (o1.getComment() != null && o2.getEvent() != null) {
                 return o1.getComment().getCreatedAt().compareTo(o2.getEvent().getCreatedAt());
             } else {
-                return Integer.valueOf(o1.type).compareTo(o2.getType());
+                return Integer.valueOf(o1.getType()).compareTo(o2.getType());
             }
         }).collect(Collectors.toList());
     }

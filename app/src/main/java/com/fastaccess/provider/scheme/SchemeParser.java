@@ -39,7 +39,7 @@ public class SchemeParser {
     private static final String API_AUTHORITY = "api.github.com";
     private static final String PROTOCOL_HTTPS = "https";
 
-    static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "/settings", "blog", "explore",
+    static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "settings", "blog", "explore",
             "dashboard", "repositories", "site", "security", "contact", "about", "orgs", "")
             .collect(Collectors.toCollection(ArrayList::new));
 

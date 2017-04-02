@@ -25,4 +25,39 @@
         <item>10.00 $</item>
         <item>20.00 $</item>
     </string-array>
+
+    <string-array name="issues_filter">
+        <item>@string/created</item>
+        <item>@string/assigned</item>
+        <item>@string/mentioned</item>
+    </string-array>
+
+    <string-array name="label_colors" translatable="false">
+        <item>#2A456B</item>
+        <item>#213755</item>
+        <item>#3f51b5</item>
+        <item>#9e9e9e</item>
+        <item>#424242</item>
+        <item>#1c1c1c</item>
+        <item>#000000</item>
+        <item>#607d8b</item>
+        <item>#37474f</item>
+        <item>#795548</item>
+        <item>#d32f2f</item>
+        <item>#e91e63</item>
+        <item>#9c27b0</item>
+        <item>#5e35b1</item>
+        <item>#1976d2</item>
+        <item>#03a9f4</item>
+        <item>#00bcd4</item>
+        <item>#009688</item>
+        <item>#43a047</item>
+        <item>#7cb342</item>
+        <item>#c0ca33</item>
+        <item>#fbc02d</item>
+        <item>#ffb300</item>
+        <item>#fb8c00</item>
+        <item>#f4511e</item>
+    </string-array>
+
 </resources>

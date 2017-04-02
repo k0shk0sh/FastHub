@@ -35,7 +35,7 @@ public class CreateMilestoneView extends BaseDialogFragment<CreateMilestoneMvp.V
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.title) TextInputLayout title;
     @BindView(R.id.dueOnEditText) TextInputEditText dueOnEditText;
-    @BindView(R.id.description) TextInputEditText description;
+    @BindView(R.id.description) TextInputLayout description;
 
     private CreateMilestoneMvp.OnMilestoneAdded onMilestoneAdded;
 
@@ -70,7 +70,6 @@ public class CreateMilestoneView extends BaseDialogFragment<CreateMilestoneMvp.V
         String login = getArguments().getString(BundleConstant.EXTRA);
         String repo = getArguments().getString(BundleConstant.ID);
         if (login == null || repo == null) {
-            dismiss();
             return;
         }
         toolbar.setTitle(R.string.create_milestone);

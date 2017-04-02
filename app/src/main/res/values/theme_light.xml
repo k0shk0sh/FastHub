@@ -51,7 +51,9 @@
     </style>
 
 
-    <style name="DialogThemeLight" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+    <style name="DialogThemeLight" parent="@style/Theme.AppCompat.Light.Dialog">
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
     </style>
 

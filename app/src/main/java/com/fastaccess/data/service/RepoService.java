@@ -113,6 +113,9 @@ public interface RepoService {
     @NonNull @GET("repos/{owner}/{repo}/labels")
     Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
+    @NonNull @POST("repos/{owner}/{repo}/labels")
+    Observable<LabelModel> addLabel(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo, @Body LabelModel body);
+
     @NonNull @GET("repos/{owner}/{repo}/collaborators/{username}")
     Observable<Response<Boolean>> isCollaborator(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                  @NonNull @Path("username") String username);

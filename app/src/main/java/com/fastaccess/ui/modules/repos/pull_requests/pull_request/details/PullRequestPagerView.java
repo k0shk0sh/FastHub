@@ -31,7 +31,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesView;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsView;
-import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneActivityView;
+import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialog;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullRequestView;
@@ -134,12 +134,6 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
                 Bundle bundle = data.getExtras();
                 PullRequest pullRequest = bundle.getParcelable(BundleConstant.ITEM);
                 if (pullRequest != null) getPresenter().onUpdatePullRequest(pullRequest);
-            } else if (requestCode == MilestoneActivityView.CREATE_MILESTONE_RQ) {
-                Bundle bundle = data.getExtras();
-                MilestoneModel milestoneModel = bundle.getParcelable(BundleConstant.ITEM);
-                if (milestoneModel != null) {
-                    getPresenter().onPutMilestones(milestoneModel);
-                }
             }
         }
     }
@@ -178,7 +172,8 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
             CreateIssueView.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPullRequest());
             return true;
         } else if (item.getItemId() == R.id.milestone) {
-            MilestoneActivityView.startActivity(this, getPresenter().getLogin(), getPresenter().getRepoId());
+            MilestoneDialog.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())
+                    .show(getSupportFragmentManager(), "MilestoneDialog");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
             getPresenter().onLoadAssignees();
@@ -267,7 +262,8 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
 
     @Override public void onLabelsRetrieved(@NonNull List<LabelModel> items) {
         hideProgress();
-        LabelsView.newInstance(items, getPresenter().getPullRequest() != null ? getPresenter().getPullRequest().getLabels() : null)
+        LabelsView.newInstance(items, getPresenter().getPullRequest() != null ? getPresenter().getPullRequest().getLabels() : null,
+                getPresenter().getRepoId(), getPresenter().getLogin())
                 .show(getSupportFragmentManager(), "LabelsView");
     }
 
@@ -314,6 +310,10 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
         hideProgress();
         AssigneesView.newInstance(items)
                 .show(getSupportFragmentManager(), "AssigneesView");
+    }
+
+    @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
+        getPresenter().onPutMilestones(milestoneModel);
     }
 
     @Override public void onMerge(@NonNull String msg) {
