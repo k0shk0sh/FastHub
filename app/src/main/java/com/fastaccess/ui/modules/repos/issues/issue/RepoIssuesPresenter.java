@@ -85,7 +85,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
 
     private void onCallCountApi(@NonNull IssueState issueState) {
         manageSubscription(RxHelper.getObserver(RestProvider.getIssueService()
-                .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequerQuery(login, repoId, issueState, false), 1))
+                .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, false), 1))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));
     }

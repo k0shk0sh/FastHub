@@ -72,7 +72,7 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getPullRequestSerice().getPullsWithCount(RepoQueryProvider.getMyIssuesPullRequerQuery(Login.getUser().getLogin(),
+        makeRestCall(RestProvider.getPullRequestSerice().getPullsWithCount(RepoQueryProvider.getMyIssuesPullRequestQuery(Login.getUser().getLogin(),
                 parameter, true), page),
                 response -> {
                     lastPage = response.getLast();

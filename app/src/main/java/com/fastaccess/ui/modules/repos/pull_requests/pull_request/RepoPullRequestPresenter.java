@@ -94,7 +94,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     private void onCallCountApi(@NonNull IssueState issueState) {
         manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestSerice()
-                .getPullsWithCount(RepoQueryProvider.getIssuesPullRequerQuery(login, repoId, issueState, true), 0))
+                .getPullsWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, true), 0))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));
     }

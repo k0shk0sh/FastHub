@@ -26,10 +26,6 @@
             android:icon="@drawable/ic_heart"
             android:title="@string/support_development"/>
 
-        <item
-            android:id="@+id/enableAds"
-            android:icon="@drawable/ic_heart_full"
-            android:title="@string/enable_ads"/>
     </group>
 
     <group

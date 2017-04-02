@@ -71,7 +71,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(RepoQueryProvider.getMyIssuesPullRequerQuery(Login.getUser().getLogin(),
+        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(RepoQueryProvider.getMyIssuesPullRequestQuery(Login.getUser().getLogin(),
                 parameter, false), page),
                 issues -> {
                     lastPage = issues.getLast();

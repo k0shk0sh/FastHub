@@ -223,12 +223,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             startActivity(RepoPagerView.createIntent(this, "FastHub", "k0shk0sh"));
         } else if (item.getItemId() == R.id.supportDev) {
             new DonationView().show(getSupportFragmentManager(), "DonationView");
-        } else if (item.getItemId() == R.id.enableAds) {
-            boolean isEnabled = !PrefGetter.isAdsEnabled();
-            PrefGetter.setAdsEnabled(isEnabled);
-            showHideAds();
-            if (extraNav != null)/*just to ignore lint*/ extraNav.getMenu().findItem(R.id.enableAds).setChecked(isEnabled);
-            return true;
         } else if (item.getItemId() == R.id.gists) {
             GistsListActivity.startActivity(this, false);
             return true;
@@ -376,7 +370,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                     ((TextView) view.findViewById(R.id.email)).setText(userModel.getLogin());
                 }
             }
-            extraNav.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
         }
     }
 

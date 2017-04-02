@@ -9,14 +9,14 @@ import com.fastaccess.data.dao.types.IssueState;
  */
 
 public class RepoQueryProvider {
-    @NonNull public static String getIssuesPullRequerQuery(@NonNull String owner, @NonNull String repo,
-                                                           @NonNull IssueState issueState, boolean isPr) {
+    @NonNull public static String getIssuesPullRequestQuery(@NonNull String owner, @NonNull String repo,
+                                                            @NonNull IssueState issueState, boolean isPr) {
         return "+" + "type:" + (isPr ? "pr" : "issue") +
                 "+" + "repo:" + owner + "/" +
                 repo + "+" + "is:" + issueState.name();
     }
 
-    @NonNull public static String getMyIssuesPullRequerQuery(@NonNull String username, @NonNull IssueState issueState, boolean isPr) {
+    @NonNull public static String getMyIssuesPullRequestQuery(@NonNull String username, @NonNull IssueState issueState, boolean isPr) {
         return "type:" + (isPr ? "pr" : "issue") +
                 "+" + "author:" + username +
                 "+is:" + issueState.name();
