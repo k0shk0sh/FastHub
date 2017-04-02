@@ -117,9 +117,7 @@ public class PullRequestTimelineView extends BaseFragment<PullRequestTimelineMvp
     }
 
     @Override public void onToggle(int position, boolean isCollapsed) {
-        getSparseBooleanArray().clear();
         getSparseBooleanArray().put(position, isCollapsed);
-        adapter.notifyDataSetChanged();
     }
 
     @Override public boolean isCollapsed(int position) {

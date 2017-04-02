@@ -113,12 +113,17 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
     }
 
     @Override public void onItemClick(int position, View v, Comment item) {
-        if (item.getUser() != null) {
-            Login userModel = Login.getUser();
+        Login userModel = Login.getUser();
+        if (getView() == null) return;
+        if (v.getId() == R.id.delete) {
+            if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
+                getView().onShowDeleteMsg(item.getId());
+            }
+        } else if (item.getId() == R.id.reply) {
+            if (getView() != null) getView().onTagUser(item.getUser());
+        } else if (item.getId() == R.id.edit) {
             if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
                 if (getView() != null) getView().onEditComment(item);
-            } else {
-                if (getView() != null) getView().onTagUser(item.getUser());
             }
         }
     }
