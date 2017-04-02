@@ -17,12 +17,10 @@ import java.lang.annotation.RetentionPolicy;
 
 public class PrefGetter {
 
-    public static final int AUTO = 0;
     public static final int LIGHT = 1;
     public static final int DARK = 2;
 
     @IntDef({
-            AUTO,
             LIGHT,
             DARK,
     })
@@ -145,7 +143,7 @@ public class PrefGetter {
         String appTheme = PrefHelper.getString("appTheme");
         if (!InputHelper.isEmpty(appTheme)) {
             if (appTheme.equalsIgnoreCase(resources.getString(R.string.auto_theme_mode))) {
-                return AUTO;
+                return LIGHT;
             } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.dark_theme_mode))) {
                 return DARK;
             } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.light_theme_mode))) {

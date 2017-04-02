@@ -10,7 +10,7 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
-import com.fastaccess.provider.comments.CommentsHandler;
+import com.fastaccess.provider.comments.CommentsHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -137,7 +137,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                     getView().onEditComment(item);
                 }
             } else {
-                CommentsHandler.handleReactions(v.getContext(), login, repoId, v.getId(), item.getId(), true);
+                CommentsHelper.handleReactions(v.getContext(), login, repoId, v.getId(), item.getId(), true);
             }
         }
     }

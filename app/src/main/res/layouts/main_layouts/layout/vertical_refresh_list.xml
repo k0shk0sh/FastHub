@@ -14,7 +14,6 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:listDivider="@color/divider"
             app:layoutManager="@string/linear_layout_manager"/>
 
     </com.fastaccess.ui.widgets.AppbarRefreshLayout>

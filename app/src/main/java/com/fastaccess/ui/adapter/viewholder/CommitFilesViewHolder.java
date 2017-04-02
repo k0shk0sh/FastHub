@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileModel;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.widgets.DiffLineSpan;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -19,7 +20,6 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
-import butterknife.BindColor;
 import butterknife.BindString;
 import butterknife.BindView;
 
@@ -39,9 +39,9 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     @BindString(R.string.addition) String additionText;
     @BindString(R.string.delete) String deletionText;
     @BindString(R.string.status) String statusText;
-    @BindColor(R.color.patch_addition_color) int patchAdditionColor;
-    @BindColor(R.color.patch_deletion_color) int patchDeletionColor;
-    @BindColor(R.color.patch_ref_color) int patchRefColor;
+    private final int patchAdditionColor;
+    private final int patchDeletionColor;
+    private final int patchRefColor;
 
     private String pathText;
     private OnToggleView onToggleView;
@@ -68,6 +68,9 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
                                   @NonNull OnToggleView onToggleView) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
+        patchAdditionColor = ViewHelper.getPatchAdditionColor(itemView.getContext());
+        patchDeletionColor = ViewHelper.getPatchDeletionColor(itemView.getContext());
+        patchRefColor = ViewHelper.getPatchRefColor(itemView.getContext());
     }
 
     public static CommitFilesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,

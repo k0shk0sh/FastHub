@@ -13,7 +13,7 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.provider.comments.CommentsHandler;
+import com.fastaccess.provider.comments.CommentsHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -49,7 +49,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                     }
                 } else {
                     if (login() != null && repoId() != null) {
-                        CommentsHandler.handleReactions(v.getContext(), login(), repoId(), v.getId(), item.getComment().getId(), false);
+                        CommentsHelper.handleReactions(v.getContext(), login(), repoId(), v.getId(), item.getComment().getId(), false);
                     }
                 }
             }

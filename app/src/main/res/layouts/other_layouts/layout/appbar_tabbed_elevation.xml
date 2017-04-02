@@ -6,16 +6,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/ToolbarStyleDark">
+    android:theme="?android:toolbarStyle">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:theme="@style/ToolbarStyleDark"
+        android:theme="?android:toolbarStyle"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ToolbarStyleDark"
-        app:theme="@style/ToolbarStyleDark"/>
+        />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
@@ -24,7 +23,7 @@
         android:clipToPadding="false"
         android:paddingStart="@dimen/keyline_1"
         app:tabSelectedTextColor="?colorAccent"
-        app:tabTextColor="@color/dark_gray"
+        app:tabTextColor="?android:textColorTertiary"
         tools:ignore="RtlSymmetry"/>
 
 </android.support.design.widget.AppBarLayout>

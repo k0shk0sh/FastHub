@@ -53,11 +53,28 @@ public class ViewHelper {
     }
 
     @ColorInt public static int getIconColor(@NonNull Context context) {
-        return getPrimaryTextColor(context);
+        return getColorAttr(context, R.attr.icon_color);
     }
 
     @ColorInt public static int getWindowBackground(@NonNull Context context) {
         return getColorAttr(context, android.R.attr.windowBackground);
+    }
+
+    @ColorInt public static int getListDivider(@NonNull Context context) {
+        Logger.e(getColorAttr(context, R.attr.dividerColor));
+        return getColorAttr(context, R.attr.dividerColor);
+    }
+
+    @ColorInt public static int getPatchAdditionColor(@NonNull Context context) {
+        return getColorAttr(context, R.attr.patch_addition);
+    }
+
+    @ColorInt public static int getPatchDeletionColor(@NonNull Context context) {
+        return getColorAttr(context, R.attr.patch_deletion);
+    }
+
+    @ColorInt public static int getPatchRefColor(@NonNull Context context) {
+        return getColorAttr(context, R.attr.patch_ref);
     }
 
     @ColorInt private static int getColorAttr(@NonNull Context context, int attr) {

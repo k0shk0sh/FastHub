@@ -57,4 +57,18 @@ import lombok.Setter;
 
         @Override public ReactionsModel[] newArray(int size) {return new ReactionsModel[size];}
     };
+
+    @Override public String toString() {
+        return "ReactionsModel{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", total_count=" + total_count +
+                ", plusOne=" + plusOne +
+                ", minusOne=" + minusOne +
+                ", laugh=" + laugh +
+                ", hooray=" + hooray +
+                ", confused=" + confused +
+                ", heart=" + heart +
+                '}';
+    }
 }

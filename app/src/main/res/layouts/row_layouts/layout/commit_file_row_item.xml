@@ -8,7 +8,7 @@
     android:layout_margin="@dimen/spacing_micro"
     android:foreground="?android:selectableItemBackground"
     android:stateListAnimator="@animator/cardview_selector"
-    app:cardBackgroundColor="@color/card_background"
+    app:cardBackgroundColor="?card_background"
     app:contentPaddingBottom="@dimen/spacing_normal"
     app:contentPaddingLeft="@dimen/spacing_xs_large"
     app:contentPaddingRight="@dimen/spacing_xs_large"

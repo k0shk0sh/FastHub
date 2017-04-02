@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -111,7 +110,7 @@ public class DynamicRecyclerView extends RecyclerView {
         if (!ViewHelper.isTablet(getContext())) {
             Resources resources = getResources();
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
-                    resources.getDimensionPixelSize(R.dimen.keyline_2), ContextCompat.getColor(getContext(), R.color.divider)));
+                    resources.getDimensionPixelSize(R.dimen.keyline_2), ViewHelper.getListDivider(getContext())));
         }
     }
 
@@ -119,7 +118,7 @@ public class DynamicRecyclerView extends RecyclerView {
         if (!ViewHelper.isTablet(getContext())) {
             Resources resources = getResources();
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
-                    ContextCompat.getColor(getContext(), R.color.divider)));
+                    ViewHelper.getListDivider(getContext())));
         }
     }
 
@@ -131,7 +130,7 @@ public class DynamicRecyclerView extends RecyclerView {
         if (!ViewHelper.isTablet(getContext())) {
             Resources resources = getResources();
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
-                    ContextCompat.getColor(getContext(), R.color.divider), toDivide));
+                    ViewHelper.getListDivider(getContext()), toDivide));
         }
     }
 }

@@ -2,7 +2,7 @@
     <item>
 
         <shape>
-            <solid android:color="@color/primary"/>
+            <solid android:color="?colorPrimary"/>
         </shape>
     </item>
 

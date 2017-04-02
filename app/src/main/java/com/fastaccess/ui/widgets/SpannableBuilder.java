@@ -1,9 +1,11 @@
 package com.fastaccess.ui.widgets;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
 import android.view.View;
@@ -45,6 +47,14 @@ public class SpannableBuilder extends SpannableStringBuilder {
         return this;
     }
 
+    public SpannableBuilder append(Drawable drawable) {
+        if (drawable != null) {
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+            append(' ', new ImageSpan(drawable));
+        }
+        return this;
+    }
+
     public SpannableBuilder append(final char text, final Object span) {
         append(text);
         if (!InputHelper.isEmpty(span)) {
@@ -65,12 +75,12 @@ public class SpannableBuilder extends SpannableStringBuilder {
         return this;
     }
 
-    public SpannableBuilder foreground(final CharSequence text, @ColorInt final int color) {
+    public SpannableBuilder foreground(final CharSequence text, @ColorInt int color) {
         if (!InputHelper.isEmpty(text)) return append(text, new ForegroundColorSpan(color));
         return this;
     }
 
-    public SpannableBuilder foreground(final char text, @ColorInt final int color) {
+    public SpannableBuilder foreground(final char text, @ColorInt int color) {
         return append(text, new ForegroundColorSpan(color));
     }
 

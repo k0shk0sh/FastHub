@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:gravity="center"
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingTop="@dimen/spacing_normal"
@@ -14,8 +14,6 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout

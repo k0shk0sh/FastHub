@@ -1,25 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="primary">#F5F5F5</color>
-    <color name="primary_dark">#9E9E9E</color>
-    <color name="primary_light">#FAFAFA</color>
-    <color name="accent">@color/material_blue_accent_700</color>
-    <color name="bluish_accent">#448AFF</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
-    <color name="text_tertiary">#686868</color>
-    <color name="divider">#B6B6B6</color>
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="card_background">@color/cardview_light_background</color>
-    <color name="windowBackground">@color/primary_light</color>
     <color name="light_gray">#ffb2b2b2</color>
     <color name="carrot">@color/material_amber_800</color>
-    <color name="dark_gray">#FF616161</color>
-    <color name="patch_addition_color">#CCFFCC</color>
-    <color name="patch_deletion_color">#FFDDDD</color>
-    <color name="patch_ref_color">#EEEEEE</color>
     <color name="material_amber_100">#FFECB3</color>
     <color name="material_amber_200">#FFE082</color>
     <color name="material_amber_300">#FFD54F</color>

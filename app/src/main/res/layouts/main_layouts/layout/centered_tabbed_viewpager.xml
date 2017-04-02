@@ -14,7 +14,7 @@
         android:elevation="@dimen/spacing_micro"
         app:tabGravity="fill"
         app:tabSelectedTextColor="?colorAccent"
-        app:tabTextColor="@color/dark_gray"/>
+        app:tabTextColor="?android:textColorTertiary"/>
 
     <com.fastaccess.ui.widgets.ViewPagerView
         android:id="@+id/pager"

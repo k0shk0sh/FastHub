@@ -22,7 +22,7 @@
             android:layout_margin="@dimen/spacing_s_large"
             android:minHeight="350dp"
             android:minWidth="250dp"
-            app:cardBackgroundColor="@color/card_background"
+            app:cardBackgroundColor="?card_background"
             app:cardElevation="@dimen/spacing_normal">
 
             <LinearLayout

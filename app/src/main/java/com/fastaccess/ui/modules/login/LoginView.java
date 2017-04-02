@@ -73,7 +73,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     }
 
     @Override public void onRequire2Fa() {
-        showMessage(R.string.error, R.string.two_factors_otp_error);
+        Toasty.warning(this, getString(R.string.two_factors_otp_error)).show();
         twoFactor.setVisibility(View.VISIBLE);
         hideProgress();
     }

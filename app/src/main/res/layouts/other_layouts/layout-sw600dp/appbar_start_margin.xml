@@ -7,14 +7,13 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/bbn_bottom_navigation_width"
     android:stateListAnimator="@null"
-    app:theme="@style/ToolbarStyleDark">
+    android:theme="?android:toolbarStyle">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
-        android:theme="@style/ToolbarStyleDark"
+        android:theme="?android:toolbarStyle"
         app:layout_scrollFlags="scroll|enterAlways"
-        app:popupTheme="@style/ToolbarStyleDark"
-        app:theme="@style/ToolbarStyleDark"/>
+        />
 </android.support.design.widget.AppBarLayout>

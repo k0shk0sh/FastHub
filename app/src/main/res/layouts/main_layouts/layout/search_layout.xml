@@ -17,7 +17,7 @@
             android:id="@+id/appbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ToolbarStyleDark">
+            android:theme="?android:toolbarStyle">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -46,7 +46,7 @@
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:textColorHint="@color/divider"/>
+                        android:textColorHint="?android:textColorSecondary"/>
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/clear"
@@ -73,7 +73,7 @@
                 app:tabGravity="fill"
                 app:tabMode="scrollable"
                 app:tabSelectedTextColor="?colorAccent"
-                app:tabTextColor="@color/dark_gray"
+                app:tabTextColor="?android:textColorTertiary"
                 tools:ignore="RtlSymmetry"/>
         </android.support.design.widget.AppBarLayout>
 

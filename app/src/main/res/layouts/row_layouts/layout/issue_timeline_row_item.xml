@@ -22,7 +22,7 @@
         tools:src="@drawable/ic_issue_opened"/>
 
     <android.support.design.internal.ForegroundLinearLayout
-        style="@style/TimeLineBackground"
+        style="?timeLineBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/bbn_bottom_navigation_width"
     android:background="@color/transparent"
-    android:theme="@style/ToolbarStyleDark"
+    android:theme="?android:toolbarStyle"
     app:elevation="0dp">
 
     <include layout="@layout/title_header_layout"/>
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:background="?colorPrimary"
         android:minHeight="?actionBarSize"
-        app:theme="@style/ToolbarStyleDark">
+        android:theme="?android:toolbarStyle">
 
         <include layout="@layout/repo_header_icons_layout"/>
 

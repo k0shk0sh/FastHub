@@ -35,7 +35,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="36dp"
-                        app:cardBackgroundColor="@color/card_background"
+                        app:cardBackgroundColor="?card_background"
                         app:cardUseCompatPadding="true"
                         app:contentPaddingBottom="@dimen/spacing_normal"
                         app:contentPaddingLeft="@dimen/spacing_xs_large"
@@ -135,7 +135,7 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:cardBackgroundColor="@color/card_background"
+                    app:cardBackgroundColor="?card_background"
                     app:cardUseCompatPadding="true"
                     app:contentPaddingBottom="@dimen/spacing_normal"
                     app:contentPaddingLeft="@dimen/spacing_xs_large"

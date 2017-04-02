@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="lightWindowBackground">#FAFAFA</color>
+    <color name="lightDivider">#B6B6B6</color>
+    <color name="light_patch_addition_color">#CCFFCC</color>
+    <color name="light_patch_deletion_color">#FFDDDD</color>
+    <color name="light_patch_ref_color">#EEEEEE</color>
+
+
+    <style name="ThemeLight" parent="ThemeLight.Base"/>
+
+    <style name="ThemeLight.Base" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="card_background">@color/cardview_light_background</item>
+        <item name="icon_color">#212121</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundLight</item>
+        <item name="patch_addition">@color/light_patch_addition_color</item>
+        <item name="patch_deletion">@color/light_patch_deletion_color</item>
+        <item name="patch_ref">@color/light_patch_ref_color</item>
+        <item name="dividerColor">@color/lightDivider</item>
+        <item name="android:windowBackground">@color/lightWindowBackground</item>
+        <item name="colorPrimary">#F5F5F5</item>
+        <item name="colorPrimaryDark">#E0E0E0</item>
+        <item name="colorAccent">#2962FF</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:textColorPrimary">#212121</item>
+        <item name="android:textColorSecondary">#727272</item>
+        <item name="android:textColorTertiary">#686868</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:dialogTheme">@style/DialogThemeLight</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+    </style>
+
+    <style name="ToolbarStyleLight">
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="colorControlNormal">@color/black</item>
+        <item name="colorControlHighlight">?colorAccent</item>
+    </style>
+
+    <style name="TimeLineBackgroundLight">
+        <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+    </style>
+
+
+    <style name="DialogThemeLight" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+        <item name="android:windowBackground">@color/lightWindowBackground</item>
+    </style>
+
+</resources>

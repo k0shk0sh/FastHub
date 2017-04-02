@@ -9,8 +9,8 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.User;
@@ -194,8 +194,9 @@ public class IssueTimelineView extends BaseFragment<IssueTimelineMvp.View, Issue
     }
 
     @Override public void onToggle(int position, boolean isCollapsed) {
+        getSparseBooleanArray().clear();
         getSparseBooleanArray().put(position, isCollapsed);
-
+        adapter.notifyDataSetChanged();
     }
 
     @Override public boolean isCollapsed(int position) {

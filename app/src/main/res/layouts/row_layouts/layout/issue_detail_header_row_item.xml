@@ -8,12 +8,12 @@
     android:layout_marginBottom="@dimen/spacing_micro"
     android:layout_marginEnd="@dimen/grid_spacing"
     android:layout_marginStart="@dimen/grid_spacing"
-    android:background="@color/card_background"
+    android:background="?card_background"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
-    app:cardBackgroundColor="@color/card_background">
+    app:cardBackgroundColor="?card_background">
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -15,7 +15,6 @@
     </string-array>
 
     <string-array name="theme_modes">
-        <item>@string/auto_theme_mode</item>
         <item>@string/light_theme_mode</item>
         <item>@string/dark_theme_mode</item>
     </string-array>

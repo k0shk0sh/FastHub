@@ -18,7 +18,7 @@
             xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/ToolbarStyleDark">
+            android:theme="?android:toolbarStyle">
 
             <include layout="@layout/title_header_layout"/>
 
@@ -58,7 +58,7 @@
                 android:background="?colorPrimary"
                 app:tabMode="fixed"
                 app:tabSelectedTextColor="?colorAccent"
-                app:tabTextColor="@color/dark_gray"/>
+                app:tabTextColor="?android:textColorTertiary"/>
         </android.support.design.widget.AppBarLayout>
 
         <com.fastaccess.ui.widgets.ViewPagerView
