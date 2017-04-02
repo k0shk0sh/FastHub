@@ -61,8 +61,11 @@ public class ViewHelper {
     }
 
     @ColorInt public static int getListDivider(@NonNull Context context) {
-        Logger.e(getColorAttr(context, R.attr.dividerColor));
         return getColorAttr(context, R.attr.dividerColor);
+    }
+
+    @ColorInt public static int getCardBackground(@NonNull Context context) {
+        return getColorAttr(context, R.attr.card_background);
     }
 
     @ColorInt public static int getPatchAdditionColor(@NonNull Context context) {

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.ViewHelper;
 import com.zzhoujay.markdown.MarkDown;
 
 /**
@@ -30,7 +31,9 @@ public class MarkDownProvider {
 
     public static void setMdText(@NonNull TextView textView, @NonNull String value) {
         try {
-            textView.setText(MarkDown.fromMarkdown(value, null, textView));
+            textView.setText(MarkDown.fromMarkdown(value, textView,
+                    ViewHelper.getCardBackground(textView.getContext()),
+                    ViewHelper.getPrimaryTextColor(textView.getContext())));
         } catch (IndexOutOfBoundsException exception) {
             exception.printStackTrace();
             textView.setText(value);
