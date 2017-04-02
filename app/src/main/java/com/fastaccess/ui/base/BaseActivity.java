@@ -237,8 +237,23 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         } else if (item.getItemId() == R.id.pinnedMenu) {
             PinnedReposActivity.startActivity(this);
             return true;
+        } else if (item.getItemId() == R.id.mainView) {
+            Intent intent = new Intent(this, MainView.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
         }
         return false;
+    }
+
+    @Override public void onBackPressed() {
+        if (drawer == null || !drawer.isDrawerOpen(GravityCompat.START)) {
+            super.onBackPressed();
+        } else if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     protected void showNavToRepoItem() {
