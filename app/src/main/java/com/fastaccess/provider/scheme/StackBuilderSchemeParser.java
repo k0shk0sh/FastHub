@@ -1,6 +1,5 @@
 package com.fastaccess.provider.scheme;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -28,8 +27,6 @@ import com.fastaccess.ui.modules.user.UserPagerView;
 
 import java.util.List;
 
-import static android.content.Intent.ACTION_VIEW;
-
 /**
  * Created by Kosh on 09 Dec 2016, 4:44 PM
  */
@@ -52,20 +49,8 @@ public class StackBuilderSchemeParser {
         if (intent != null) {
             intent.startActivities();
         } else {
-            Activity activity = ActivityHelper.getActivity(context);
-            if (activity == null) {
-                ActivityHelper.forceOpenInBrowser(context, data);
-            } else {
-                ActivityHelper.startCustomTab(activity, data);
-            }
+            ActivityHelper.forceOpenInBrowser(context, data);
         }
-    }
-
-    @Nullable private static TaskStackBuilder convert(@NonNull Context context, final Intent intent) {
-        if (intent == null) return null;
-        if (!ACTION_VIEW.equals(intent.getAction())) return null;
-        Uri data = intent.getData();
-        return convert(context, data);
     }
 
     @Nullable private static TaskStackBuilder convert(@NonNull Context context, Uri data) {
@@ -87,7 +72,12 @@ public class StackBuilderSchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-
+        if (!data.getPathSegments().isEmpty()) {
+            Logger.e(SchemeParser.IGNORED_LIST.contains(data.getPath()), data.getPathSegments().get(0));
+            if (SchemeParser.IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
+        } else {
+            return null;
+        }
         return getIntentForURI(context, data);
     }
 
@@ -197,6 +187,7 @@ public class StackBuilderSchemeParser {
                 .addNextIntentWithParentStack(new Intent(context, MainView.class))
                 .addNextIntent(RepoPagerView.createIntent(context, repoName, owner));
     }
+
     /**
      * [[k0shk0sh, FastHub, issues], k0shk0sh/fastHub/(issues,pulls,commits, etc)]
      */
@@ -208,7 +199,6 @@ public class StackBuilderSchemeParser {
             if (segments.size() == 1) {
                 return getUser(context, uri);
             } else if (segments.size() > 1) {
-                if (segments.contains("wiki")) return null;
                 String owner = segments.get(0);
                 String repoName = segments.get(1);
                 return TaskStackBuilder.create(context)

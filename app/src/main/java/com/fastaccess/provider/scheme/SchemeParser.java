@@ -1,6 +1,5 @@
 package com.fastaccess.provider.scheme;
 
-import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
 import android.content.Context;
@@ -11,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
@@ -25,6 +25,7 @@ import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 import com.fastaccess.ui.modules.user.UserPagerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +39,10 @@ public class SchemeParser {
     private static final String API_AUTHORITY = "api.github.com";
     private static final String PROTOCOL_HTTPS = "https";
 
+    static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "/settings", "blog", "explore",
+            "dashboard", "repositories", "site", "security", "contact", "about", "orgs", "")
+            .collect(Collectors.toCollection(ArrayList::new));
+
     public static void launchUri(@NonNull Context context, @NonNull Uri data) {
         launchUri(context, data, false);
     }
@@ -50,12 +55,7 @@ public class SchemeParser {
             }
             context.startActivity(intent);
         } else {
-            Activity activity = ActivityHelper.getActivity(context);
-            if (activity == null) {
-                ActivityHelper.forceOpenInBrowser(context, data);
-            } else {
-                ActivityHelper.startCustomTab(activity, data);
-            }
+            ActivityHelper.forceOpenInBrowser(context, data);
         }
     }
 
@@ -78,7 +78,12 @@ public class SchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-
+        if (!data.getPathSegments().isEmpty()) {
+            Logger.e(SchemeParser.IGNORED_LIST.contains(data.getPath()), data.getPathSegments().get(0));
+            if (SchemeParser.IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
+        } else {
+            return null;
+        }
         return getIntentForURI(context, data, showRepoBtn);
     }
 
