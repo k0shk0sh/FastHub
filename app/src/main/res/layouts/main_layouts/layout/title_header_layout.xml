@@ -41,10 +41,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:layout_marginEnd="@dimen/spacing_normal"
                 android:textColor="?android:textColorPrimary"
                 tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
 
@@ -55,7 +55,7 @@
                 android:layout_gravity="top"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/description"
-                android:src="@drawable/ic_issues"
+                android:src="@drawable/ic_info_outline"
                 android:visibility="gone"
                 tools:visibility="visible"/>
 

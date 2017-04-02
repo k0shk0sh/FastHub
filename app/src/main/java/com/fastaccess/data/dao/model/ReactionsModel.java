@@ -23,40 +23,10 @@ import lombok.Setter;
     private int hooray;
     private int confused;
     private int heart;
+    private String content;
+    private User user;
 
     public ReactionsModel() {}
-
-    @Override public int describeContents() { return 0; }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(this.id);
-        dest.writeString(this.url);
-        dest.writeInt(this.total_count);
-        dest.writeInt(this.plusOne);
-        dest.writeInt(this.minusOne);
-        dest.writeInt(this.laugh);
-        dest.writeInt(this.hooray);
-        dest.writeInt(this.confused);
-        dest.writeInt(this.heart);
-    }
-
-    protected ReactionsModel(Parcel in) {
-        this.id = in.readLong();
-        this.url = in.readString();
-        this.total_count = in.readInt();
-        this.plusOne = in.readInt();
-        this.minusOne = in.readInt();
-        this.laugh = in.readInt();
-        this.hooray = in.readInt();
-        this.confused = in.readInt();
-        this.heart = in.readInt();
-    }
-
-    public static final Creator<ReactionsModel> CREATOR = new Creator<ReactionsModel>() {
-        @Override public ReactionsModel createFromParcel(Parcel source) {return new ReactionsModel(source);}
-
-        @Override public ReactionsModel[] newArray(int size) {return new ReactionsModel[size];}
-    };
 
     @Override public String toString() {
         return "ReactionsModel{" +
@@ -71,4 +41,40 @@ import lombok.Setter;
                 ", heart=" + heart +
                 '}';
     }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
+        dest.writeString(this.url);
+        dest.writeInt(this.total_count);
+        dest.writeInt(this.plusOne);
+        dest.writeInt(this.minusOne);
+        dest.writeInt(this.laugh);
+        dest.writeInt(this.hooray);
+        dest.writeInt(this.confused);
+        dest.writeInt(this.heart);
+        dest.writeString(this.content);
+        dest.writeParcelable(this.user, flags);
+    }
+
+    protected ReactionsModel(Parcel in) {
+        this.id = in.readLong();
+        this.url = in.readString();
+        this.total_count = in.readInt();
+        this.plusOne = in.readInt();
+        this.minusOne = in.readInt();
+        this.laugh = in.readInt();
+        this.hooray = in.readInt();
+        this.confused = in.readInt();
+        this.heart = in.readInt();
+        this.content = in.readString();
+        this.user = in.readParcelable(User.class.getClassLoader());
+    }
+
+    public static final Creator<ReactionsModel> CREATOR = new Creator<ReactionsModel>() {
+        @Override public ReactionsModel createFromParcel(Parcel source) {return new ReactionsModel(source);}
+
+        @Override public ReactionsModel[] newArray(int size) {return new ReactionsModel[size];}
+    };
 }

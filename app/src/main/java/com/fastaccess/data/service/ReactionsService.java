@@ -18,15 +18,15 @@ public interface ReactionsService {
     @POST("/repos/{owner}/{repo}/issues/comments/{id}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     Observable<Boolean> postIssueReaction(@NonNull @Body PostReactionModel body,
-                                           @NonNull @Path("owner") String owner,
-                                           @Path("repo") @NonNull String repo,
-                                           @Path("id") long id);
+                                          @NonNull @Path("owner") String owner,
+                                          @Path("repo") @NonNull String repo,
+                                          @Path("id") long id);
 
     @POST("/repos/{owner}/{repo}/comments/{id}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     Observable<Boolean> postCommitReaction(@NonNull @Body PostReactionModel body,
-                                            @NonNull @Path("owner") String owner,
-                                            @Path("repo") @NonNull String repo,
-                                            @Path("id") long id);
+                                           @NonNull @Path("owner") String owner,
+                                           @Path("repo") @NonNull String repo,
+                                           @Path("id") long id);
 }
 

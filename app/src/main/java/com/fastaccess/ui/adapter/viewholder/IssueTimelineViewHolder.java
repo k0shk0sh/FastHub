@@ -53,6 +53,10 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
                 avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
             }
         }
+        if (event != null) {
+            stateImage.setContentDescription(event.name());
+            stateImage.setImageResource(event.getIconResId());
+        }
         if (issueEventModel.getLabels() == null) {
             SpannableBuilder spannableBuilder = SpannableBuilder.builder();
             if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
@@ -63,17 +67,15 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
                 }
             }
             if (event != null) {
-                stateImage.setContentDescription(event.name());
                 spannableBuilder
                         .append(" ")
                         .append(event.name());
-                stateImage.setImageResource(event.getIconResId());
                 if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                     LabelModel labelModel = issueEventModel.getLabel();
                     int color = Color.parseColor("#" + labelModel.getColor());
                     spannableBuilder
                             .append(" ")
-                            .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color, 5));
+                            .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color));
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ")

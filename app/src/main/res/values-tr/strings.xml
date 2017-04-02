@@ -192,7 +192,7 @@
     <string name="five_minutes">5 dakika</string>
     <string name="one_minute">1 dakika</string>
     <string name="created_repo">Oluşturulmuş</string>
-    <string name="committed">Commit'lenmiş</string>
+    <string name="committed">Commit\'lenmiş</string>
     <string name="downloaded">İndirilmiş</string>
     <string name="followed">Takip edilen</string>
     <string name="created_gist">Gist</string>
@@ -206,7 +206,7 @@
     <string name="team_event">Takım</string>
     <string name="deleted">Silinmiş</string>
     <string name="unknown">Bilinmeyen</string>
-    <string name="commented_on_commit">Commit'deki yorumlar</string>
+    <string name="commented_on_commit">Commit\'deki yorumlar</string>
     <string name="organization_event">Organizasyon</string>
     <string name="card_event">Kart</string>
     <string name="project_event">Proje</string>
@@ -215,8 +215,8 @@
     <string name="switch_branch">Branch değiştir</string>
     <string name="assignees">Atanmış kişiler</string>
     <string name="edit">Düzenle</string>
-    <string name="update_issue">Issue'yu Güncelle</string>
-    <string name="update_pull_request">Pull Request'i Güncelle</string>
+    <string name="update_issue">Issue\'yu Güncelle</string>
+    <string name="update_pull_request">Pull Request\'i Güncelle</string>
     <string name="no_milestones">Milestone Yok</string>
     <string name="add">Ekle</string>
     <string name="done">Tamam</string>

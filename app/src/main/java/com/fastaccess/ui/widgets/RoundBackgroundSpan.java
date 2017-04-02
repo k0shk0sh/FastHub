@@ -11,25 +11,25 @@ import com.fastaccess.helper.ViewHelper;
 
 public class RoundBackgroundSpan extends ReplacementSpan {
     @NonNull private Paint paint = new Paint();
-    private float radius;
-    private int width = -1;
+    private final float radius = 5;
 
-    public RoundBackgroundSpan(int color, float radius) {
+    public RoundBackgroundSpan(int color) {
+        super();
         this.paint.setColor(color);
         this.paint.setAntiAlias(true);
-        this.radius = radius;
     }
 
-    public int getSize(@NonNull Paint paint, CharSequence charSequence, int i, int i2, FontMetricsInt fontMetricsInt) {
-        this.width = Math.round((float) ((int) paint.measureText(charSequence, i, i2)));
-        this.width = (int) (((float) this.width) + (this.radius * 4.0f));
-        return this.width;
+    public int getSize(@NonNull Paint paint, CharSequence charSequence, int start, int end, FontMetricsInt fontMetricsInt) {
+        return (int) (10 + paint.measureText(charSequence.subSequence(start, end).toString()) + 10);
+
     }
 
-    public void draw(@NonNull Canvas canvas, @NonNull CharSequence charSequence, int i, int i2, float f, int i3, int i4, int i5, @NonNull Paint
-            paint) {
-        canvas.drawRoundRect(new RectF(f, (float) i3, ((float) this.width) + f, (float) i5), this.radius, this.radius, this.paint);
+    @Override public void draw(@NonNull Canvas canvas, @NonNull CharSequence charSequence, int start, int end, float x,
+                               int top, int y, int bottom, @NonNull Paint paint) {
+        final float width = paint.measureText(charSequence.subSequence(start, end).toString());
+        RectF rectF = new RectF(x, top + 10, x + width + 2 * 10, bottom + 5);
+        canvas.drawRoundRect(rectF, this.radius, this.radius, this.paint);
         paint.setColor(ViewHelper.generateTextColor(this.paint.getColor()));
-        canvas.drawText(charSequence, i, i2, f + (this.radius * 2.0f), (float) i4, paint);
+        canvas.drawText(charSequence, start, end, x + 10, y + 5, paint);
     }
 }

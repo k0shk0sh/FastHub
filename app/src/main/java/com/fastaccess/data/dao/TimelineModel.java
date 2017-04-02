@@ -1,5 +1,6 @@
 package com.fastaccess.data.dao;
 
+import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -11,9 +12,14 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.ui.widgets.RoundBackgroundSpan;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -66,10 +72,6 @@ import lombok.Setter;
         return new TimelineModel(comment);
     }
 
-    @NonNull public static TimelineModel constructEvent(@NonNull IssueEvent event) {
-        return new TimelineModel(event);
-    }
-
     @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
         ArrayList<TimelineModel> list = new ArrayList<>();
         if (!commentList.isEmpty()) {
@@ -79,12 +81,9 @@ import lombok.Setter;
         }
 
         if (!eventList.isEmpty()) {
-            list.addAll(Stream.of(eventList)
-                    .filter(value -> value.getEvent() != IssueEventType.subscribed && value.getEvent() != IssueEventType.unsubscribed
-                            && value.getEvent() != IssueEventType.mentioned)
-                    .map(TimelineModel::new)
-                    .collect(Collectors.toList()));
+            list.addAll(constructLabels(eventList));
         }
+
         return Stream.of(list).sorted((o1, o2) -> {
             if (o1.getEvent() != null && o2.getComment() != null) {
                 return o1.getEvent().getCreatedAt().compareTo(o2.getComment().getCreatedAt());
@@ -94,6 +93,72 @@ import lombok.Setter;
                 return Integer.valueOf(o1.getType()).compareTo(o2.getType());
             }
         }).collect(Collectors.toList());
+    }
+
+    @NonNull private static List<TimelineModel> constructLabels(@NonNull List<IssueEvent> eventList) {
+        List<TimelineModel> models = new ArrayList<>();
+        Map<String, List<IssueEvent>> issueEventMap = Stream.of(eventList)
+                .filter(value -> value.getEvent() != null)
+                .filter(value -> value.getEvent() != IssueEventType.subscribed && value.getEvent() != IssueEventType.unsubscribed
+                        && value.getEvent() != IssueEventType.mentioned)
+                .collect(Collectors.groupingBy(issueEvent -> {
+                    if (issueEvent.getAssigner() != null && issueEvent.getAssignee() != null) {
+                        return issueEvent.getAssigner().getLogin();
+                    }
+                    return issueEvent.getActor().getLogin();
+                }));
+        for (List<IssueEvent> issueEvents : issueEventMap.values()) {
+            IssueEvent toAdd = null;
+            SpannableBuilder spannableBuilder = SpannableBuilder.builder();
+            for (IssueEvent issueEventModel : issueEvents) {
+                if (issueEventModel != null) {
+                    IssueEventType event = issueEventModel.getEvent();
+                    if (toAdd == null) {
+                        toAdd = issueEventModel;
+                    }
+                    long time = toAdd.getCreatedAt().after(issueEventModel.getCreatedAt()) ? (toAdd.getCreatedAt().getTime() - issueEventModel
+                            .getCreatedAt().getTime()) : (issueEventModel.getCreatedAt().getTime() - toAdd.getCreatedAt().getTime());
+                    if (TimeUnit.MINUTES.toMinutes(time) <= 2) {
+                        if (event != null) {
+                            if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
+                                LabelModel labelModel = issueEventModel.getLabel();
+                                int color = Color.parseColor("#" + labelModel.getColor());
+                                spannableBuilder
+                                        .append(" ")
+                                        .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color))
+                                        .append(" ");
+                            } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
+                                spannableBuilder
+                                        .append(" ")
+                                        .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "");
+                            }
+                        }
+                    } else {
+                        models.add(new TimelineModel(issueEventModel));
+                    }
+                }
+            }
+            if (toAdd != null) {
+                SpannableBuilder builder = SpannableBuilder.builder();
+                if (toAdd.getAssignee() != null && toAdd.getAssigner() != null) {
+                    builder.bold(toAdd.getAssigner().getLogin());
+                } else {
+                    if (toAdd.getActor() != null) {
+                        builder.bold(toAdd.getActor().getLogin());
+                    }
+                }
+                builder.append(" ")
+                        .append(toAdd.getEvent().name());
+                toAdd.setLabels(SpannableBuilder.builder().append(builder)
+                        .append(spannableBuilder)
+                        .append(" ")
+                        .append(ParseDateFormat.getTimeAgo(toAdd.getCreatedAt())));
+                models.add(new TimelineModel(toAdd));
+            }
+        }
+        return Stream.of(models)
+                .sortBy(timelineModel -> timelineModel.getEvent().getCreatedAt())
+                .collect(Collectors.toList());
     }
 
     @Override public int describeContents() { return 0; }
