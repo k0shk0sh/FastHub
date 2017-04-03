@@ -166,7 +166,7 @@ import lombok.Setter;
 
     public static List<FragmentPagerAdapterModel> buildForTeam(@NonNull Context context, long id) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.members), TeamMembersView.newInstance(id)),
-                new FragmentPagerAdapterModel(context.getString(R.string.members), TeamReposView.newInstance(id)))
+                new FragmentPagerAdapterModel(context.getString(R.string.repos), TeamReposView.newInstance(id)))
                 .collect(Collectors.toList());
     }
 }
