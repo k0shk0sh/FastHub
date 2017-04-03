@@ -9,7 +9,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -25,8 +24,6 @@ import butterknife.BindView;
 
 public class ReleasesViewHolder extends BaseViewHolder<Release> {
 
-
-    @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.details) FontTextView details;
     @BindView(R.id.download) ForegroundImageView download;
@@ -45,11 +42,15 @@ public class ReleasesViewHolder extends BaseViewHolder<Release> {
 
     @Override public void bind(@NonNull Release item) {
         title.setText(SpannableBuilder.builder().bold(!InputHelper.isEmpty(item.getName()) ? item.getName() : item.getTagName()));
-        details.setText(SpannableBuilder.builder()
-                .append(item.getAuthor().getLogin())
-                .append(" ")
-                .append(item.isDraft() ? drafted : released)
-                .append(" ")
-                .append(ParseDateFormat.getTimeAgo(item.getCreatedAt())));
+        if (item.getAuthor() != null) {
+            details.setText(SpannableBuilder.builder()
+                    .append(item.getAuthor().getLogin())
+                    .append(" ")
+                    .append(item.isDraft() ? drafted : released)
+                    .append(" ")
+                    .append(ParseDateFormat.getTimeAgo(item.getCreatedAt())));
+        } else {
+            details.setVisibility(View.GONE);
+        }
     }
 }

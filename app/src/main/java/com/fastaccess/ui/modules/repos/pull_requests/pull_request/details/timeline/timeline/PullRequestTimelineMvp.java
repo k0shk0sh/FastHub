@@ -7,13 +7,16 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
+import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:15 PM
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 public interface PullRequestTimelineMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
-            OnToggleView {
+            OnToggleView, ReactionsCallback {
 
         void onNotifyAdapter();
 
@@ -53,5 +56,11 @@ public interface PullRequestTimelineMvp {
         @Nullable String login();
 
         int number();
+
+        boolean isPreviouslyReacted(long commentId, int vId);
+
+        @NonNull Map<Long, ReactionsModel> getReactionsMap();
+
+        void onHandleReaction(int id, long commentId);
     }
 }

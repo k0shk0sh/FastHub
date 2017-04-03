@@ -329,4 +329,8 @@
     <string name="name">Name</string>
     <string name="color">Color</string>
     <string name="create_label">Create Label</string>
+    <string name="organization">Organization</string>
+    <string name="organizations">Organizations</string>
+    <string name="people">People</string>
+    <string name="teams">Teams</string>
 </resources>

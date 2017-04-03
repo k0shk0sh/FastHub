@@ -159,7 +159,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
         return new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_announcement)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(title)
                 .setContentText(message);
     }

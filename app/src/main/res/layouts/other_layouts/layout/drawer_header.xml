@@ -1,45 +1,100 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/spacing_xs_large"
     android:gravity="bottom"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/spacing_s_large"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_large">
-
-    <com.fastaccess.ui.widgets.AvatarLayout
-        android:id="@+id/avatarLayout"
-        android:layout_width="@dimen/header_icon_zie"
-        android:layout_height="@dimen/header_icon_zie"
-        android:layout_marginEnd="@dimen/avatar_margin_end"
-        android:layout_marginStart="@dimen/avatar_margin"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="@dimen/spacing_normal"
-        android:orientation="vertical">
+        android:orientation="horizontal"
+        android:paddingEnd="@dimen/spacing_normal">
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/username"
-            style="@style/TextAppearance.AppCompat.Title"
+        <com.fastaccess.ui.widgets.AvatarLayout
+            android:id="@+id/avatarLayout"
+            android:layout_width="@dimen/header_icon_zie"
+            android:layout_height="@dimen/header_icon_zie"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
+            android:layout_marginStart="@dimen/avatar_margin"/>
+
+        <LinearLayout
+            android:id="@+id/userHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:maxLines="1"
-            android:text="@string/app_name"/>
+            android:layout_gravity="center">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/username"
+                    style="@style/TextAppearance.AppCompat.Title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="marquee"
+                    android:maxLines="1"
+                    android:text="@string/app_name"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/email"
+                    style="@style/TextAppearance.AppCompat.Medium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="marquee"
+                    android:maxLines="1"
+                    android:text="@string/app_name"
+                    tools:visibility="gone"/>
+            </LinearLayout>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/dropDownIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/organization"
+                android:src="@drawable/ic_arrow_drop_down"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/orgLayoutHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:background="@drawable/top_border"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/email"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:maxLines="1"
-            android:text="@string/app_name"/>
+            android:gravity="center"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            android:text="@string/organizations"/>
+
+        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/orgRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layoutManager="@string/linear_layout_manager"
+            tools:listitem="@layout/feeds_row_item"/>
     </LinearLayout>
 </LinearLayout>

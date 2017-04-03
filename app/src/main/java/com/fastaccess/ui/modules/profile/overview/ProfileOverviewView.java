@@ -43,12 +43,11 @@ public class ProfileOverviewView extends BaseFragment<ProfileOverviewMvp.View, P
     @BindView(R.id.followers) FontTextView followers;
     @BindView(R.id.progress) View progress;
     @BindView(R.id.followBtn) Button followBtn;
-
     @State User userModel;
 
     private ProfilePagerMvp.View profileCallback;
 
-    public static ProfileOverviewView newInstance(String login) {
+    public static ProfileOverviewView newInstance(@NonNull String login) {
         ProfileOverviewView view = new ProfileOverviewView();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, login).end());
         return view;

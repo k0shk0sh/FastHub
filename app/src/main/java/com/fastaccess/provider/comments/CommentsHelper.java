@@ -22,7 +22,7 @@ public class CommentsHelper {
     private static final int HEART = 0x2764;
 
     public static void handleReactions(@NonNull Context context, @NonNull String login, @NonNull String repoId,
-                                       @IdRes int id, long commentId, boolean isCommit) {
+                                       @IdRes int id, long commentId, boolean commit, boolean isDelete) {
         ReactionTypes type = null;
         switch (id) {
             case R.id.heart:
@@ -45,7 +45,7 @@ public class CommentsHelper {
                 break;
         }
         if (type != null) {
-            ReactionService.start(context, login, repoId, commentId, type, isCommit);
+            ReactionService.start(context, login, repoId, commentId, type, commit, isDelete);
         }
     }
 

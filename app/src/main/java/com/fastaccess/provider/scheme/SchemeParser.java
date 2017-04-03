@@ -40,7 +40,7 @@ public class SchemeParser {
     private static final String PROTOCOL_HTTPS = "https";
 
     static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "settings", "blog", "explore",
-            "dashboard", "repositories", "site", "security", "contact", "about", "orgs", "")
+            "dashboard", "repositories", "site", "security", "contact", "about", "")
             .collect(Collectors.toCollection(ArrayList::new));
 
     public static void launchUri(@NonNull Context context, @NonNull Uri data) {
@@ -233,6 +233,8 @@ public class SchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments != null && !segments.isEmpty() && segments.size() == 1) {
             return UserPagerView.createIntent(context, segments.get(0));
+        } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {
+            return UserPagerView.createIntent(context, segments.get(1), true);
         }
         return null;
     }

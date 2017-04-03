@@ -35,11 +35,12 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
     @BindView(R.id.avatar) ShapedImageView avatar;
     @Nullable private String login;
+    private boolean isOrg;
     private Toast toast;
 
     @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
-        UserPagerView.startActivity(view.getContext(), login);
+        UserPagerView.startActivity(view.getContext(), login, isOrg);
     }
 
     @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
@@ -96,7 +97,12 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     @Override public void onLoadingCancelled(String imageUri, View view) {}
 
     public void setUrl(@Nullable String url, @Nullable String login) {
+        setUrl(url, login, false);
+    }
+
+    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg) {
         this.login = login;
+        this.isOrg = isOrg;
         avatar.setContentDescription(login);
         if (url != null) {
             ImageLoader.getInstance().displayImage(url, avatar, this);

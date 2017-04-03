@@ -82,10 +82,9 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         login = bundle.getString(BundleConstant.EXTRA);
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
         if (branches.isEmpty()) {
-//            manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-//                    .getCommitCounts(login, repoId)))
-//                    .map(commitCountModel -> Stream.of(commitCountModel.getAll()).mapToLong(Integer::longValue).sum())
-//                    .subscribe(sum -> sendToView(view -> view.onShowCommitCount(sum))));
+            manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                    .getCommitCounts(login, repoId)))
+                    .subscribe(response -> sendToView(view -> view.onShowCommitCount(response.getLast()))));
             makeRestCall(RestProvider.getRepoService()
                             .getBranches(login, repoId)
                             .doOnSubscribe(() -> sendToView(RepoCommitsMvp.View::showBranchesProgress)),

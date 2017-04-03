@@ -2,7 +2,6 @@
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:foreground="?selectableItemBackgroundBorderless">
 
     <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
@@ -11,7 +10,6 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="?colorPrimaryDark"
-        app:shape_mode="circle"
-        tools:layout_height="@dimen/large_icon_zie"
-        tools:layout_width="@dimen/large_icon_zie"/>
+        android:transitionName="@string/icon_transition"
+        app:shape_mode="circle"/>
 </merge>

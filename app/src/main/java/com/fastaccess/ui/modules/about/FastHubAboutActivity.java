@@ -3,6 +3,8 @@ package com.fastaccess.ui.modules.about;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,6 +17,7 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.user.UserPagerView;
@@ -25,6 +28,17 @@ import es.dmoral.toasty.Toasty;
  * Created by danielstone on 12 Mar 2017, 1:57 AM
  */
 public class FastHubAboutActivity extends MaterialAboutActivity {
+
+    @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        int themeMode = PrefGetter.getThemeType(getApplicationContext());
+        if (themeMode == PrefGetter.LIGHT) {
+            setTheme(R.style.AppTheme_AboutActivity_Light);
+        } else if (themeMode == PrefGetter.DARK) {
+            setTheme(R.style.AppTheme_AboutActivity_Dark);
+        }
+        super.onCreate(savedInstanceState);
+    }
+
     @Override protected MaterialAboutList getMaterialAboutList(Context context) {
         MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
         try {

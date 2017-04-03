@@ -66,7 +66,7 @@ public class IssueTimelineView extends BaseFragment<IssueTimelineMvp.View, Issue
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true);
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -199,6 +199,10 @@ public class IssueTimelineView extends BaseFragment<IssueTimelineMvp.View, Issue
 
     @Override public boolean isCollapsed(int position) {
         return getSparseBooleanArray().get(position);
+    }
+
+    @Override public boolean isPreviouslyReacted(long id, int vId) {
+       return getPresenter().isPreviouslyReacted(id, vId);
     }
 
     private void showReload() {

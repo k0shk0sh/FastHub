@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.user;
 
+import android.support.annotation.NonNull;
+
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 
@@ -9,8 +11,13 @@ import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 
 public interface UserPagerMvp {
 
-    interface View extends BaseMvp.FAView, ProfilePagerMvp.View {}
+    interface View extends BaseMvp.FAView, ProfilePagerMvp.View {
+        void onInitOrg(boolean isMember);
+    }
 
-    interface Presenter extends BaseMvp.FAPresenter {}
+    interface Presenter extends BaseMvp.FAPresenter {
+
+        void checkOrgMembership(@NonNull String org);
+    }
 
 }

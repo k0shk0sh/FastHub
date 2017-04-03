@@ -28,12 +28,13 @@ public class ReactionService extends IntentService {
     private NotificationManager notificationManager;
 
     public static void start(@NonNull Context context, @NonNull String login, @NonNull String repo,
-                             long commentId, ReactionTypes reactionType, boolean isCommit) {
+                             long commentId, ReactionTypes reactionType, boolean isCommit, boolean isDelete) {
         Intent intent = new Intent(context, ReactionService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, isCommit)
                 .put(BundleConstant.EXTRA_TWO, login)
                 .put(BundleConstant.EXTRA_THREE, repo)
+                .put(BundleConstant.EXTRA_FOUR, isDelete)
                 .put(BundleConstant.ID, commentId)
                 .put(BundleConstant.EXTRA_TYPE, reactionType)
                 .end());

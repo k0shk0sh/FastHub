@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.CommentRequestModel;
-import com.fastaccess.data.dao.CommitCountModel;
 import com.fastaccess.data.dao.CreateMilestoneModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MarkdownModel;
@@ -81,6 +80,10 @@ public interface RepoService {
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<Release>> getReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
+    @NonNull @GET("repos/{owner}/{repo}/tags")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    Observable<Pageable<Release>> getTagReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
     @NonNull @GET("repos/{owner}/{repo}/contributors")
     Observable<Pageable<User>> getContributors(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
@@ -133,6 +136,6 @@ public interface RepoService {
     @NonNull @GET("repos/{owner}/{repo}/assignees")
     Observable<Pageable<User>> getAssignees(@Path("owner") String owner, @Path("repo") String repo);
 
-    @NonNull @GET("/repos/{owner}/{repo}/stats/participation")
-    Observable<CommitCountModel> getCommitCounts(@Path("owner") String owner, @Path("repo") String repo);
+    @NonNull @GET("repos/{owner}/{repo}/commits?per_page=1")
+    Observable<Pageable<Commit>> getCommitCounts(@Path("owner") String owner, @Path("repo") String repo);
 }

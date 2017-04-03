@@ -65,6 +65,7 @@
                                 style="@style/Base.TextAppearance.AppCompat.Small"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:autoLink="all"
                                 tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
                         </LinearLayout>
 

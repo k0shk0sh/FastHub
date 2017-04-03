@@ -66,7 +66,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
                 .appendPath("authorize")
                 .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
                 .appendQueryParameter("redirect_uri", BuildConfig.REDIRECT_URL)
-                .appendQueryParameter("scope", "user,repo,gist,notifications")
+                .appendQueryParameter("scope", "user,repo,gist,notifications,read:org")
                 .appendQueryParameter("state", BuildConfig.APPLICATION_ID)
                 .build();
     }
@@ -107,7 +107,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         if (!usernameIsEmpty && !passwordIsEmpty) {
             String authToken = Credentials.basic(username, password);
             AuthModel authModel = new AuthModel();
-            authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications"));
+            authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
             authModel.setNote(BuildConfig.APPLICATION_ID);
             authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
             authModel.setClientId(BuildConfig.GITHUB_CLIENT_ID);

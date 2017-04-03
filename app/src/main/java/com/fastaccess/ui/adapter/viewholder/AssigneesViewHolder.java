@@ -42,7 +42,7 @@ public class AssigneesViewHolder extends BaseViewHolder<User> {
     }
 
     @Override public void bind(@NonNull User user) {
-        avatar.setUrl(user.getAvatarUrl(), user.getLogin());
+        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType());
         title.setText(user.getLogin());
         date.setVisibility(View.GONE);
         itemView.setBackgroundColor(onSelectAssignee.isAssigneeSelected(getAdapterPosition()) ? lightGray : ViewHelper.getWindowBackground(itemView

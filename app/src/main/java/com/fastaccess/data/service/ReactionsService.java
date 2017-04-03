@@ -3,8 +3,11 @@ package com.fastaccess.data.service;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.PostReactionModel;
+import com.fastaccess.data.dao.model.ReactionsModel;
 
+import retrofit2.Response;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -17,16 +20,20 @@ public interface ReactionsService {
 
     @POST("/repos/{owner}/{repo}/issues/comments/{id}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview")
-    Observable<Boolean> postIssueReaction(@NonNull @Body PostReactionModel body,
-                                          @NonNull @Path("owner") String owner,
-                                          @Path("repo") @NonNull String repo,
-                                          @Path("id") long id);
+    Observable<ReactionsModel> postIssueReaction(@NonNull @Body PostReactionModel body,
+                                                 @NonNull @Path("owner") String owner,
+                                                 @Path("repo") @NonNull String repo,
+                                                 @Path("id") long id);
 
     @POST("/repos/{owner}/{repo}/comments/{id}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview")
-    Observable<Boolean> postCommitReaction(@NonNull @Body PostReactionModel body,
-                                           @NonNull @Path("owner") String owner,
-                                           @Path("repo") @NonNull String repo,
-                                           @Path("id") long id);
+    Observable<ReactionsModel> postCommitReaction(@NonNull @Body PostReactionModel body,
+                                                  @NonNull @Path("owner") String owner,
+                                                  @Path("repo") @NonNull String repo,
+                                                  @Path("id") long id);
+
+    @DELETE("/reactions/{id}")
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview")
+    Observable<Response<Boolean>> delete(@Path("id") long id);
 }
 

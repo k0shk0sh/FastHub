@@ -15,7 +15,7 @@
         <include layout="@layout/appbar_tabbed_elevation"/>
 
         <com.fastaccess.ui.widgets.ViewPagerView
-            android:id="@+id/pager"
+            android:id="@+id/tabbedPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/scroll_behavior"/>

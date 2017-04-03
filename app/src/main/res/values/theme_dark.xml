@@ -57,4 +57,14 @@
         <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
         <item name="android:windowBackground">@color/darkWindowBackground</item>
     </style>
+
+    <style name="AppTheme.AboutActivity.Dark" parent="ThemeDark">
+        <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
+        <item name="colorPrimary">#2D3035</item>
+        <item name="colorPrimaryDark">#26282C</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="mal_lightActionBar">false</item>
+        <item name="mal_color_primary">#fff</item>
+        <item name="mal_color_secondary">#ffe0e0e0</item>
+    </style>
 </resources>

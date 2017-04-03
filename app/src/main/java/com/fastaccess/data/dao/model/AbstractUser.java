@@ -19,7 +19,6 @@ import io.requery.Persistable;
 import io.requery.Table;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
 
 import static com.fastaccess.data.dao.model.User.FOLLOWER_NAME;
@@ -71,29 +70,11 @@ public abstract class AbstractUser implements Parcelable {
     String repoId;
 
     public void save(User entity) {
-        App.getInstance().getDataStore()
-                .delete(User.class)
-                .where(User.ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity))
-                .toBlocking()
-                .value();
-    }
-
-    public Completable saveToCompletable(User entity) {
-        return App.getInstance().getDataStore()
-                .delete(User.class)
-                .where(User.ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity)
-                        .toCompletable()
-                );
+        if (getUser(entity.getId()) != null) {
+            App.getInstance().getDataStore().update(entity).toBlocking().value();
+        } else {
+            App.getInstance().getDataStore().insert(entity).toBlocking().value();
+        }
     }
 
     @Nullable public static User getUser(String login) {
@@ -187,6 +168,10 @@ public abstract class AbstractUser implements Parcelable {
                 .get()
                 .toObservable()
                 .toList();
+    }
+
+    public boolean isOrganizationType() {
+        return type != null && type.equalsIgnoreCase("Organization");
     }
 
     @Override public int describeContents() { return 0; }

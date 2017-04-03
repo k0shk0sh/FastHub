@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
+import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
@@ -25,12 +26,15 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     private final OnToggleView onToggleView;
     private final String login;
     private final boolean showEmojies;
+    private final ReactionsCallback reactionsCallback;
 
-    public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies) {
+    public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
+                                     ReactionsCallback reactionsCallback) {
         super(data);
         this.onToggleView = onToggleView;
         this.login = Login.getUser().getLogin();
         this.showEmojies = showEmojies;
+        this.reactionsCallback = reactionsCallback;
     }
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
@@ -39,7 +43,7 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         } else if (viewType == TimelineModel.EVENT) {
             return IssueTimelineViewHolder.newInstance(parent, this);
         }
-        return TimelineCommentsViewHolder.newInstance(parent, this, login, onToggleView, showEmojies);
+        return TimelineCommentsViewHolder.newInstance(parent, this, login, onToggleView, showEmojies, reactionsCallback);
     }
 
     @Override protected void onBindView(BaseViewHolder holder, int position) {

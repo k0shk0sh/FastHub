@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -60,17 +61,28 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService().getReleases(login, repoId, page),
+        makeRestCall(RestProvider.getRepoService()
+                        .getReleases(login, repoId, page),
                 response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        getReleases().clear();
-                        manageSubscription(Release.save(response.getItems(), repoId, login).subscribe());
+                    if (response.getItems() == null || response.getItems().isEmpty()) {
+                        makeRestCall(RestProvider.getRepoService()
+                                        .getTagReleases(login, repoId, page),
+                                this::onResponse);
+                        return;
                     }
-                    getReleases().addAll(response.getItems());
-                    sendToView(RepoReleasesMvp.View::onNotifyAdapter);
+                    onResponse(response);
                 });
 
+    }
+
+    private void onResponse(Pageable<Release> response) {
+        lastPage = response.getLast();
+        if (getCurrentPage() == 1) {
+            getReleases().clear();
+            manageSubscription(Release.save(response.getItems(), repoId, login).subscribe());
+        }
+        getReleases().addAll(response.getItems());
+        sendToView(RepoReleasesMvp.View::onNotifyAdapter);
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {

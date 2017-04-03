@@ -125,7 +125,7 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
 
     @Override public void bind(@NonNull Comment commentsModel) {
         if (commentsModel.getUser() != null) {
-            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
+            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(), commentsModel.getUser().isOrganizationType());
             delete.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);
             edit.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);
         } else {

@@ -19,6 +19,8 @@ import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestView;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersView;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingView;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsView;
+import com.fastaccess.ui.modules.profile.org.members.OrgMembersView;
+import com.fastaccess.ui.modules.profile.org.teams.OrgTeamView;
 import com.fastaccess.ui.modules.profile.overview.ProfileOverviewView;
 import com.fastaccess.ui.modules.profile.repos.ProfileReposView;
 import com.fastaccess.ui.modules.profile.starred.ProfileStarredView;
@@ -49,8 +51,7 @@ import lombok.Setter;
  * Created by Kosh on 03 Dec 2016, 9:26 AM
  */
 
-@Getter @Setter
-public class FragmentPagerAdapterModel {
+@Getter @Setter public class FragmentPagerAdapterModel {
 
     private String title;
     private Fragment fragment;
@@ -149,6 +150,15 @@ public class FragmentPagerAdapterModel {
     public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open), MyPullRequestView.newInstance(IssueState.open))
                 , new FragmentPagerAdapterModel(context.getString(R.string.closed), MyPullRequestView.newInstance(IssueState.closed)))
+                .collect(Collectors.toList());
+    }
+
+    public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.overview), ProfileOverviewView.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.repos), ProfileReposView.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersView.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.teams), isMember ? OrgTeamView.newInstance(login) : null))
+                .filter(fragmentPagerAdapterModel -> fragmentPagerAdapterModel.getFragment() != null)
                 .collect(Collectors.toList());
     }
 }

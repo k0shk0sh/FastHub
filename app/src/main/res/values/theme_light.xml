@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <color name="lightWindowBackground">#FAFAFA</color>
     <color name="lightDivider">#B6B6B6</color>
@@ -56,5 +56,17 @@
         <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
     </style>
+
+    <style name="AppTheme.AboutActivity.Light" parent="ThemeLight">
+        <item name="colorPrimary">#F5F5F5</item>
+        <item name="colorPrimaryDark">#E0E0E0</item>
+        <item name="colorAccent">#2962FF</item>
+        <item name="mal_lightActionBar">true</item>
+        <item name="mal_popupOverlay">@style/Theme.Mal.Light.PopupOverlay</item>
+        <item name="mal_color_primary">#212121</item>
+        <item name="mal_color_secondary">#727272</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+    </style>
+
 
 </resources>

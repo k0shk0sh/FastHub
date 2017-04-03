@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -39,7 +40,8 @@ public class UsersViewHolder extends BaseViewHolder<User> {
     @Override public void bind(@NonNull User user) {}
 
     public void bind(@NonNull User user, boolean isContributor) {
-        avatar.setUrl(user.getAvatarUrl(), user.getLogin());
+        Logger.e(user.isOrganizationType(), user.getType());
+        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType());
         title.setText(user.getLogin());
         date.setVisibility(!isContributor ? View.GONE : View.VISIBLE);
         if (isContributor) {

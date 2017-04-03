@@ -15,6 +15,7 @@ import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.service.GistService;
 import com.fastaccess.data.service.IssueService;
 import com.fastaccess.data.service.NotificationService;
+import com.fastaccess.data.service.OrganizationService;
 import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
@@ -160,6 +161,10 @@ public class RestProvider {
 
     @NonNull public static ReactionsService getReactionsService() {
         return provideRetrofit().create(ReactionsService.class);
+    }
+
+    @NonNull public static OrganizationService getOrgService() {
+        return provideRetrofit().create(OrganizationService.class);
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {

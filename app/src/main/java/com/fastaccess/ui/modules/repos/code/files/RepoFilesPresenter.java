@@ -4,10 +4,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.RepoPathsManager;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -66,7 +67,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
                     files.clear();
                     ArrayList<RepoFile> repoFilesModels = Stream.of(response.getItems())
                             .sortBy(model -> model.getType() == FilesType.file)
-                            .collect(com.annimon.stream.Collectors.toCollection(ArrayList::new));
+                            .collect(Collectors.toCollection(ArrayList::new));
                     manageSubscription(RepoFile.save(repoFilesModels, login, repoId).subscribe());
                     pathsModel.setFiles(ref, path, repoFilesModels);
                     files.addAll(repoFilesModels);

@@ -10,12 +10,9 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
@@ -30,7 +27,6 @@ import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
-import com.fastaccess.ui.widgets.AvatarLayout;
 
 import butterknife.BindView;
 import icepick.State;
@@ -191,19 +187,11 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
                         .replace(R.id.container, FeedsView.newInstance(), FeedsView.TAG)
                         .commit();
             }
+            setupNavigationView(navigationView);
             navigationView.setNavigationItemSelectedListener(getPresenter());
             Typeface myTypeface = TypeFaceHelper.getTypeface();
             bottomNavigation.setDefaultTypeface(myTypeface);
             bottomNavigation.setOnMenuItemClickListener(getPresenter());
-            Login userModel = Login.getUser();
-            if (userModel != null) {
-                View view = navigationView.getHeaderView(0);
-                if (view != null) {
-                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin());
-                    ((TextView) view.findViewById(R.id.username)).setText(userModel.getName());
-                    ((TextView) view.findViewById(R.id.email)).setText(userModel.getLogin());
-                }
-            }
         }
     }
 }

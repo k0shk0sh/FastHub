@@ -9,8 +9,8 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
@@ -67,7 +67,7 @@ public class PullRequestTimelineView extends BaseFragment<PullRequestTimelineMvp
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true);
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -200,6 +200,10 @@ public class PullRequestTimelineView extends BaseFragment<PullRequestTimelineMvp
         if (isOk) {
             getPresenter().onHandleDeletion(bundle);
         }
+    }
+
+    @Override public boolean isPreviouslyReacted(long id, int vId) {
+        return getPresenter().isPreviouslyReacted(id, vId);
     }
 
     private void showReload() {

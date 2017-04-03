@@ -301,6 +301,9 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
                         }
                     }).show();
         }
+        onRepoWatched(getPresenter().isWatched());
+        onRepoStarred(getPresenter().isStarred());
+        onRepoForked(getPresenter().isForked());
     }
 
     @Override public void onRepoWatched(boolean isWatched) {

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.StringRes;
 import android.support.design.widget.TabLayout;
 
 import com.fastaccess.R;
@@ -27,16 +26,28 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
 
 
     @BindView(R.id.tabs) TabLayout tabs;
-    @BindView(R.id.pager) ViewPagerView pager;
+    @BindView(R.id.tabbedPager) ViewPagerView pager;
     @State String login;
+    @State boolean isOrg;
 
     public static void startActivity(@NonNull Context context, @NonNull String login) {
-        context.startActivity(createIntent(context, login));
+        startActivity(context, login, false);
+    }
+
+    public static void startActivity(@NonNull Context context, @NonNull String login, boolean isOrg) {
+        context.startActivity(createIntent(context, login, isOrg));
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String login) {
+        return createIntent(context, login, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg) {
         Intent intent = new Intent(context, UserPagerView.class);
-        intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, login).end());
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.EXTRA_TYPE, isOrg)
+                .end());
         return intent;
     }
 
@@ -64,22 +75,30 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
             login = getIntent().getExtras().getString(BundleConstant.EXTRA);
+            isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
+            if (!InputHelper.isEmpty(login) && isOrg) {
+                getPresenter().checkOrgMembership(login);
+            }
         }
         if (InputHelper.isEmpty(login)) {
             finish();
             return;
         }
         setTitle(login);
-        FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
-                FragmentPagerAdapterModel.buildForProfile(this, login));
-        tabs.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
-        pager.setAdapter(adapter);
-        tabs.setupWithViewPager(pager);
-    }
-
-    @Override public void showProgress(@StringRes int resId) {
-
+        if (!isOrg) {
+            FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
+                    FragmentPagerAdapterModel.buildForProfile(this, login));
+            pager.setAdapter(adapter);
+            tabs.setTabGravity(TabLayout.GRAVITY_FILL);
+            tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+            tabs.setupWithViewPager(pager);
+        } else {
+            if (getPresenter().getIsMember() == -1) {
+                getPresenter().checkOrgMembership(login);
+            } else {
+                onInitOrg(getPresenter().isMember == 1);
+            }
+        }
     }
 
     @Override public void hideProgress() {
@@ -92,5 +111,15 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
 
     @Override public void onNavigateToFollowing() {
         pager.setCurrentItem(5);
+    }
+
+    @Override public void onInitOrg(boolean isMember) {
+        hideProgress();
+        FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapterModel.buildForOrg(this, login, isMember));
+        pager.setAdapter(adapter);
+        tabs.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+        tabs.setupWithViewPager(pager);
     }
 }

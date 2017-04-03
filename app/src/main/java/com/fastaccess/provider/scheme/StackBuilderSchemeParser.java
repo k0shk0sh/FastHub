@@ -242,6 +242,10 @@ public class StackBuilderSchemeParser {
             return TaskStackBuilder.create(context)
                     .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntent(UserPagerView.createIntent(context, segments.get(0)));
+        } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {
+            return TaskStackBuilder.create(context)
+                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
+                    .addNextIntent(UserPagerView.createIntent(context, segments.get(1), true));
         }
         return null;
     }

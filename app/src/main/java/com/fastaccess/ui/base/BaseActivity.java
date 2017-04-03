@@ -27,8 +27,10 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogView;
@@ -40,9 +42,11 @@ import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
+import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -106,8 +110,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogView().show(getSupportFragmentManager(), "ChangelogView");
         }
-
-        setupExtraNav();
+        setupNavigationView(extraNav);
+        setupDrawer();
     }
 
     @Override protected void onResume() {
@@ -202,12 +206,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onRequireLogin() {
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         CookieManager.getInstance().removeAllCookies(null);
+        ImageLoader.getInstance().clearDiskCache();
+        ImageLoader.getInstance().clearMemoryCache();
         PrefGetter.clear();
         App.getInstance().getDataStore()
                 .delete(Login.class)
                 .get()
-                .toSingle()
-                .toBlocking()
                 .value();
         recreate();
     }
@@ -337,7 +341,54 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
     }
 
-    private void setupExtraNav() {
+    protected void setupNavigationView(@Nullable NavigationView extraNav) {
+        if (extraNav != null) {
+            extraNav.setNavigationItemSelectedListener(this);
+            Login userModel = Login.getUser();
+            if (userModel != null) {
+                getPresenter().onLoadOrgs();
+                View view = extraNav.getHeaderView(0);
+                if (view != null) {
+                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+                    ((TextView) view.findViewById(R.id.username)).setText(userModel.getLogin());
+                    if (!InputHelper.isEmpty(userModel.getName())) {
+                        ((TextView) view.findViewById(R.id.email)).setText(userModel.getName());
+                    } else {
+                        view.findViewById(R.id.email).setVisibility(View.GONE);
+                    }
+                    setupOrg(view);
+                }
+            }
+        }
+    }
+
+    private void setupOrg(@NonNull View view) {
+        View dropDownIcon = view.findViewById(R.id.dropDownIcon);
+        View orgLayoutHolder = view.findViewById(R.id.orgLayoutHolder);
+        view.findViewById(R.id.userHolder).setOnClickListener(v -> dropDownIcon.performClick());
+        DynamicRecyclerView orgRecycler = (DynamicRecyclerView) view.findViewById(R.id.orgRecycler);
+        dropDownIcon.findViewById(R.id.dropDownIcon)
+                .setOnClickListener(v -> {
+                    if (!getPresenter().getOrgList().isEmpty()) {
+                        if (dropDownIcon.getTag() == null) {
+                            dropDownIcon.setRotation(180F);
+                            dropDownIcon.setTag("dropDownIcon");
+                            orgLayoutHolder.setVisibility(View.VISIBLE);
+                            Logger.e(getPresenter().getOrgList());
+                            if (orgRecycler.getAdapter() == null) {
+                                orgRecycler.addKeyLineDivider();
+                                orgRecycler.setAdapter(new UsersAdapter(getPresenter().getOrgList()));
+                            }
+                        } else {
+                            orgLayoutHolder.setVisibility(View.GONE);
+                            dropDownIcon.setTag(null);
+                            dropDownIcon.setRotation(0.0F);
+                        }
+                    }
+                });
+    }
+
+    private void setupDrawer() {
         if (drawer != null) {
             if (!PrefGetter.isNavDrawerHintShowed()) {
                 drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -357,18 +408,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                         return true;
                     }
                 });
-            }
-        }
-        if (extraNav != null) {
-            extraNav.setNavigationItemSelectedListener(this);
-            Login userModel = Login.getUser();
-            if (userModel != null) {
-                View view = extraNav.getHeaderView(0);
-                if (view != null) {
-                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin());
-                    ((TextView) view.findViewById(R.id.username)).setText(userModel.getName());
-                    ((TextView) view.findViewById(R.id.email)).setText(userModel.getLogin());
-                }
             }
         }
     }

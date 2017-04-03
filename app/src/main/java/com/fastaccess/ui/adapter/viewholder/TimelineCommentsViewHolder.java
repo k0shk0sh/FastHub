@@ -16,6 +16,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.comments.CommentsHelper;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
+import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -52,6 +53,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     private String login;
     private OnToggleView onToggleView;
     private boolean showEmojies;
+    private ReactionsCallback reactionsCallback;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder || v.getId() == R.id.reactionsText) {
@@ -72,25 +74,26 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             if (timelineModel == null) return;
             Comment comment = timelineModel.getComment();
             if (comment != null) {
+                boolean isReacted = reactionsCallback == null || reactionsCallback.isPreviouslyReacted(comment.getId(), v.getId());
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
                     case R.id.heart:
-                        reactionsModel.setHeart(reactionsModel.getHeart() + 1);
+                        reactionsModel.setHeart(!isReacted ? reactionsModel.getHeart() + 1 : reactionsModel.getHeart() - 1);
                         break;
                     case R.id.sad:
-                        reactionsModel.setConfused(reactionsModel.getConfused() + 1);
+                        reactionsModel.setConfused(!isReacted ? reactionsModel.getConfused() + 1 : reactionsModel.getConfused() - 1);
                         break;
                     case R.id.thumbsDown:
-                        reactionsModel.setMinusOne(reactionsModel.getMinusOne() + 1);
+                        reactionsModel.setMinusOne(!isReacted ? reactionsModel.getMinusOne() + 1 : reactionsModel.getMinusOne() - 1);
                         break;
                     case R.id.thumbsUp:
-                        reactionsModel.setPlusOne(reactionsModel.getPlusOne() + 1);
+                        reactionsModel.setPlusOne(!isReacted ? reactionsModel.getPlusOne() + 1 : reactionsModel.getPlusOne() - 1);
                         break;
                     case R.id.laugh:
-                        reactionsModel.setLaugh(reactionsModel.getLaugh() + 1);
+                        reactionsModel.setLaugh(!isReacted ? reactionsModel.getLaugh() + 1 : reactionsModel.getLaugh() - 1);
                         break;
                     case R.id.hurray:
-                        reactionsModel.setHooray(reactionsModel.getHooray() + 1);
+                        reactionsModel.setHooray(!isReacted ? reactionsModel.getHooray() + 1 : reactionsModel.getHooray() - 1);
                         break;
                 }
                 comment.setReactions(reactionsModel);
@@ -101,11 +104,13 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     private TimelineCommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
-                                       @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
+                                       @NonNull String login, @NonNull OnToggleView onToggleView,
+                                       boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
         super(itemView, adapter);
         this.login = login;
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
+        this.reactionsCallback = reactionsCallback;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         reply.setOnClickListener(this);
@@ -122,8 +127,10 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                                         @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
-        return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login, onToggleView, showEmojies);
+                                                         @NonNull String login, @NonNull OnToggleView onToggleView,
+                                                         boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
+        return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login,
+                onToggleView, showEmojies, reactionsCallback);
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {
