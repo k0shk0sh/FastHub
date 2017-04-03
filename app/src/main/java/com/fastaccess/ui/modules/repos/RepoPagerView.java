@@ -169,7 +169,7 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {

@@ -101,7 +101,7 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {

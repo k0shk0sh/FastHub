@@ -101,7 +101,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {

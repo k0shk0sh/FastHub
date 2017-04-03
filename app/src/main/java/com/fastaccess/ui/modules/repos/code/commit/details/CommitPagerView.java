@@ -96,7 +96,7 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {

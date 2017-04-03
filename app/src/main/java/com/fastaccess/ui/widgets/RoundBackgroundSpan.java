@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.RectF;
@@ -29,7 +30,7 @@ public class RoundBackgroundSpan extends ReplacementSpan {
         final float width = paint.measureText(charSequence.subSequence(start, end).toString());
         RectF rectF = new RectF(x, top + 10, x + width + 2 * 10, bottom + 5);
         canvas.drawRoundRect(rectF, this.radius, this.radius, this.paint);
-        paint.setColor(ViewHelper.generateTextColor(this.paint.getColor()));
+        paint.setColor(ViewHelper.generateTextColor(Color.WHITE, this.paint.getColor()));
         canvas.drawText(charSequence, start, end, x + 10, y + 5, paint);
     }
 }

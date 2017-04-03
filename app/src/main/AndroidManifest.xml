@@ -153,6 +153,7 @@
             android:name=".ui.modules.gists.GistsListActivity"
             android:label="@string/public_gists"/>
 
+        <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerView"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

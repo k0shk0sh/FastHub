@@ -33,7 +33,7 @@ public class LabelColorsViewHolder extends BaseViewHolder<String> {
     @Override public void bind(@NonNull String labelModel) {
         int labelColor = Color.parseColor(labelModel);
         itemView.setBackgroundColor(labelColor);
-        color.setTextColor(ViewHelper.generateTextColor(labelColor));
+        color.setTextColor(ViewHelper.generateTextColor(Color.WHITE, labelColor));
         color.setText(labelModel);
     }
 

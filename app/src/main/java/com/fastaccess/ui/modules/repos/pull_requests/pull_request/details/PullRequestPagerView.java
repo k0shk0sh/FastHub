@@ -100,7 +100,7 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {

@@ -12,7 +12,7 @@ import lombok.Setter;
  */
 
 @Getter @Setter @NoArgsConstructor public class TeamsModel implements Parcelable {
-    private int id;
+    private long id;
     private String url;
     private String name;
     private String slug;
@@ -25,7 +25,7 @@ import lombok.Setter;
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeLong(this.id);
         dest.writeString(this.url);
         dest.writeString(this.name);
         dest.writeString(this.slug);
@@ -37,7 +37,7 @@ import lombok.Setter;
     }
 
     protected TeamsModel(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readLong();
         this.url = in.readString();
         this.name = in.readString();
         this.slug = in.readString();
@@ -48,7 +48,7 @@ import lombok.Setter;
         this.repositoriesUrl = in.readString();
     }
 
-    public static final Parcelable.Creator<TeamsModel> CREATOR = new Parcelable.Creator<TeamsModel>() {
+    public static final Creator<TeamsModel> CREATOR = new Creator<TeamsModel>() {
         @Override public TeamsModel createFromParcel(Parcel source) {return new TeamsModel(source);}
 
         @Override public TeamsModel[] newArray(int size) {return new TeamsModel[size];}
