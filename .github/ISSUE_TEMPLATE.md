@@ -1,11 +1,16 @@
 <!--
-    Please provide as much as detail and example as you can.
-    You can add screenshots if appropriate.
-    P.S: if this is not an issue, but like something to discuss, please consider our slack channel
-    https://fasthub.herokuapp.com
+   - Please provide as much as detail and example as you can.
+   - Add screenshots if appropriate.
+   - Make sure that you are always on the latest version.
+   - Search issue before submitting new one.
+   
+   Public Slack channel: https://fasthub.herokuapp.com
 -->
 
 
 
-- **Android version:**
-- **FastHub version:**
+---
+
+ - FastHub Version: 
+ - Android Version: 
+ - Phone Model: 
