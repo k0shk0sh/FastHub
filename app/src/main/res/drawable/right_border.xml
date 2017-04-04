@@ -10,7 +10,7 @@
                 android:right="@dimen/spacing_normal"/>
             <stroke
                 android:width="0.5dp"
-                android:color="?colorAccent"/>
+                android:color="?dividerColor"/>
             <solid android:color="@color/transparent"/>
         </shape>
     </item>

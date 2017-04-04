@@ -142,7 +142,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     }
 
     public static Observable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(Repo.class)
@@ -159,7 +159,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     }
 
     public static Observable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(Repo.class)

@@ -68,6 +68,7 @@ public abstract class AbstractUser implements Parcelable {
     String followerName;
     @Column(name = "date_column") Date date;
     String repoId;
+    String description;
 
     public void save(User entity) {
         if (getUser(entity.getId()) != null) {
@@ -94,7 +95,7 @@ public abstract class AbstractUser implements Parcelable {
     }
 
     public static Observable saveUserFollowerList(@NonNull List<User> models, @NonNull String followingName) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(User.class)
@@ -111,7 +112,7 @@ public abstract class AbstractUser implements Parcelable {
     }
 
     public static Observable saveUserFollowingList(@NonNull List<User> models, @NonNull String followerName) {
-        return RxHelper.getObserver(Observable.create(subscriber -> {
+        return RxHelper.safeObservable(Observable.create(subscriber -> {
             SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
             singleEntityStore.delete(User.class)
                     .where(FOLLOWER_NAME.eq(followerName))
@@ -126,7 +127,7 @@ public abstract class AbstractUser implements Parcelable {
     }
 
     public static Observable saveUserContributorList(@NonNull List<User> models, @NonNull String repoId) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(User.class)
@@ -212,6 +213,7 @@ public abstract class AbstractUser implements Parcelable {
         dest.writeString(this.followerName);
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
         dest.writeString(this.repoId);
+        dest.writeString(this.description);
     }
 
     protected AbstractUser(Parcel in) {
@@ -253,11 +255,12 @@ public abstract class AbstractUser implements Parcelable {
         long tmpDate = in.readLong();
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
         this.repoId = in.readString();
+        this.description = in.readString();
     }
 
-    public static final Creator<AbstractUser> CREATOR = new Creator<AbstractUser>() {
-        @Override public AbstractUser createFromParcel(Parcel source) {return new User(source);}
+    public static final Creator<User> CREATOR = new Creator<User>() {
+        @Override public User createFromParcel(Parcel source) {return new User(source);}
 
-        @Override public AbstractUser[] newArray(int size) {return new User[size];}
+        @Override public User[] newArray(int size) {return new User[size];}
     };
 }

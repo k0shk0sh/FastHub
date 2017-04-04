@@ -66,7 +66,7 @@ public abstract class AbstractCommit implements Parcelable {
     }
 
     public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(Commit.class)
@@ -85,7 +85,7 @@ public abstract class AbstractCommit implements Parcelable {
     }
 
     public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
-        return RxHelper.getObserver(Observable.create(subscriber -> {
+        return RxHelper.safeObservable(Observable.create(subscriber -> {
             SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
             singleEntityStore.delete(Commit.class)
                     .where(REPO_ID.eq(repoId)

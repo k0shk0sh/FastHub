@@ -49,7 +49,7 @@ public class OrgMembersView extends BaseFragment<OrgMembersMvp.View, OrgMembersP
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, username is required");
         }
-        stateLayout.setEmptyText(R.string.no_followers);
+        stateLayout.setEmptyText(R.string.no_members);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);

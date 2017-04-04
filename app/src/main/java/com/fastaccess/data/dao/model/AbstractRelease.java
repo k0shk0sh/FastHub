@@ -68,7 +68,7 @@ public abstract class AbstractRelease implements Parcelable {
     }
 
     public static Observable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(Release.class)

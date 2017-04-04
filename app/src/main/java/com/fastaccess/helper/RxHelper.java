@@ -24,6 +24,8 @@ public class RxHelper {
     }
 
     public static <T> Observable<T> safeObservable(@NonNull Observable<T> observable) {
-        return getObserver(observable).onErrorReturn(throwable -> null);
+        return getObserver(observable)
+                .subscribeOn(Schedulers.io())
+                .onErrorReturn(throwable -> null);
     }
 }

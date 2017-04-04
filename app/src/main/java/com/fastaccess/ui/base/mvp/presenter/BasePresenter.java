@@ -76,12 +76,14 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
             manageSubscription(RxHelper.safeObservable(RestProvider.getOrgService().getMyOrganizations())
                     .doOnNext(userPageable -> {
                         orgList.clear();
-                        orgList.addAll(Stream.of(userPageable.getItems())
-                                .flatMap(user -> {
-                                    user.setType("Organization");
-                                    return Stream.of(user);
-                                })
-                                .collect(Collectors.toList()));
+                        if (userPageable != null && userPageable.getItems() != null) {
+                            orgList.addAll(Stream.of(userPageable.getItems())
+                                    .flatMap(user -> {
+                                        user.setType("Organization");
+                                        return Stream.of(user);
+                                    })
+                                    .collect(Collectors.toList()));
+                        }
                     })
                     .subscribe());
         }

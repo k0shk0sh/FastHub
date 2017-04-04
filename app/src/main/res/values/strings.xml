@@ -334,4 +334,6 @@
     <string name="people">People</string>
     <string name="teams">Teams</string>
     <string name="members">Members</string>
+    <string name="no_members">No members</string>
+    <string name="no_teams">No teams</string>
 </resources>

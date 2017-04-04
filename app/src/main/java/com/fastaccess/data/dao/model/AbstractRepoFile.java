@@ -51,7 +51,7 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
     }
 
     public static Observable save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(RepoFile.class)

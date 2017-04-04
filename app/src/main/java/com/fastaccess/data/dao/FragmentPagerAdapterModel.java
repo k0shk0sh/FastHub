@@ -19,6 +19,7 @@ import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestView;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersView;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingView;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsView;
+import com.fastaccess.ui.modules.profile.org.OrgProfileOverviewView;
 import com.fastaccess.ui.modules.profile.org.members.OrgMembersView;
 import com.fastaccess.ui.modules.profile.org.teams.OrgTeamView;
 import com.fastaccess.ui.modules.profile.org.teams.details.members.TeamMembersView;
@@ -156,7 +157,7 @@ import lombok.Setter;
     }
 
     public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.overview), ProfileOverviewView.newInstance(login)),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewView.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), ProfileReposView.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersView.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.teams), isMember ? OrgTeamView.newInstance(login) : null))

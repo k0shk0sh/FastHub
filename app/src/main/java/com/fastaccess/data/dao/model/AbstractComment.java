@@ -65,7 +65,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     }
 
     public static Observable saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(Comment.class)
@@ -83,7 +83,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
 
     public static Observable saveForCommits(@NonNull List<Comment> models, @NonNull String repoId,
                                             @NonNull String login, @NonNull String commitId) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(Comment.class)

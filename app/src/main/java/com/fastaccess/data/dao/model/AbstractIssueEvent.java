@@ -75,7 +75,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
 
     public static Observable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
                                   @NonNull String login, @NonNull String issueId) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(IssueEvent.class)

@@ -51,7 +51,7 @@ import rx.Observable;
     }
 
     public static Observable<Object> save(@NonNull List<Notification> models) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
                     dataSource.delete(Notification.class)

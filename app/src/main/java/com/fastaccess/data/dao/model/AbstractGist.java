@@ -80,7 +80,7 @@ import rx.schedulers.Schedulers;
     }
 
     public static Observable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        return RxHelper.getObserver(Observable.create(subscriber -> {
+        return RxHelper.safeObservable(Observable.create(subscriber -> {
             SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
             singleEntityStore.delete(Gist.class)
                     .where(Gist.OWNER_NAME.equal(ownerName))

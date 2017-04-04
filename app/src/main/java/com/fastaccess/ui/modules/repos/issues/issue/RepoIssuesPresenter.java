@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
@@ -19,6 +20,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -74,11 +76,14 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         makeRestCall(RestProvider.getIssueService().getRepositoryIssues(login, repoId, parameter.name(), page),
                 issues -> {
                     lastPage = issues.getLast();
+                    List<Issue> filtered = Stream.of(issues.getItems())
+                            .filter(issue -> issue.getPullRequest() == null)
+                            .toList();
                     if (getCurrentPage() == 1) {
                         getIssues().clear();
-                        manageSubscription(Issue.save(issues.getItems(), repoId, login).subscribe());
+                        manageSubscription(Issue.save(filtered, repoId, login).subscribe());
                     }
-                    getIssues().addAll(issues.getItems());
+                    getIssues().addAll(filtered);
                     sendToView(RepoIssuesMvp.View::onNotifyAdapter);
                 });
     }

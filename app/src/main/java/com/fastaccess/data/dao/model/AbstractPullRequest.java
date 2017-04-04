@@ -100,7 +100,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     }
 
     public static Observable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
-        return RxHelper.getObserver(
+        return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
                     SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
                     singleEntityStore.delete(PullRequest.class)

@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <color name="lightWindowBackground">#FAFAFA</color>
-    <color name="lightDivider">#B6B6B6</color>
+    <color name="lightDivider">#88B6B6B6</color>
     <color name="light_patch_addition_color">#CCFFCC</color>
     <color name="light_patch_deletion_color">#FFDDDD</color>
     <color name="light_patch_ref_color">#EEEEEE</color>

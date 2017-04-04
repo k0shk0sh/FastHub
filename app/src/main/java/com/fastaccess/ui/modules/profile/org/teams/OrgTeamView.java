@@ -49,7 +49,7 @@ public class OrgTeamView extends BaseFragment<OrgTeamMvp.View, OrgTeamPresenter>
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, username is required");
         }
-        stateLayout.setEmptyText(R.string.no_followers);
+        stateLayout.setEmptyText(R.string.no_teams);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
