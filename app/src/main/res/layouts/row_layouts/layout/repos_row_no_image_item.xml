@@ -10,8 +10,7 @@
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal"
-    >
+    android:paddingTop="@dimen/spacing_normal">
 
 
     <LinearLayout
@@ -77,6 +76,21 @@
                 android:textColor="?android:attr/textColorSecondary"
                 app:drawableColor="?android:attr/textColorSecondary"
                 tools:text="50 minutes ago"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/size"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_storage_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="100 MB"
+                tools:visibility="visible"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/language"

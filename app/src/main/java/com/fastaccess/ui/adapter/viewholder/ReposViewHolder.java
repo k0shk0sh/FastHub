@@ -2,6 +2,7 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.format.Formatter;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,6 +35,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
     @BindView(R.id.stars) FontTextView stars;
     @BindView(R.id.forks) FontTextView forks;
     @BindView(R.id.language) FontTextView language;
+    @BindView(R.id.size) FontTextView size;
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindString(R.string.forked) String forked;
     @BindString(R.string.private_repo) String privateRepo;
@@ -79,6 +81,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
                 avatarLayout.setUrl(avatar, login);
             }
         }
+        size.setText(Formatter.formatFileSize(size.getContext(), repo.getSize()));
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         stars.setText(numberFormat.format(repo.getStargazersCount()));
         forks.setText(numberFormat.format(repo.getForks()));

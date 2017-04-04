@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.TextViewCompat;
+import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -37,6 +38,7 @@ import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.color.ColorGenerator;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
@@ -246,7 +248,11 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         } else if (repoModel.getOrganization() != null) {
             avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin());
         }
-        date.setText(ParseDateFormat.getTimeAgo(repoModel.getUpdatedAt()));
+        date.setText(SpannableBuilder.builder()
+                .append(ParseDateFormat.getTimeAgo(repoModel.getUpdatedAt()))
+                .append(" ,")
+                .append(" ")
+                .append(Formatter.formatFileSize(this, repoModel.getSize())));
         size.setVisibility(View.GONE);
         title.setText(repoModel.getFullName());
         TextViewCompat.setTextAppearance(title, R.style.TextAppearance_AppCompat_Medium);
