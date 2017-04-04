@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -46,8 +47,9 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
             }
             sendToView(RepoFilePathMvp.View::onSendData);
             if (branches.isEmpty()) {
-                makeRestCall(RestProvider.getRepoService().getBranches(login, repoId),
-                        response -> {
+                manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                        .getBranches(login, repoId)
+                        .doOnNext(response -> {
                             if (response != null && response.getItems() != null) {
                                 branches.clear();
                                 branches.addAll(response.getItems());
@@ -56,7 +58,17 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                                     view.hideProgress();
                                 });
                             }
-                        });
+                        })))
+                        .flatMap(branchesModelPageable -> RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                                .getTags(login, repoId))))
+                        .doOnNext(response -> {
+                            branches.addAll(response.getItems());
+                            sendToView(view -> {
+                                view.setBranchesData(branches, true);
+                                view.hideProgress();
+                            });
+                        })
+                        .subscribe());
             }
         } else {
             throw new NullPointerException("Bundle is null");

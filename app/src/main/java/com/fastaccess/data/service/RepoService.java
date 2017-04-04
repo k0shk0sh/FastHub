@@ -126,6 +126,9 @@ public interface RepoService {
     @NonNull @GET("repos/{owner}/{repo}/branches")
     Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
+    @NonNull @GET("repos/{owner}/{repo}/tags")
+    Observable<Pageable<BranchesModel>> getTags(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+
     @NonNull @GET("repos/{owner}/{repo}/milestones")
     Observable<Pageable<MilestoneModel>> getMilestones(@Path("owner") String owner, @Path("repo") String repo);
 
@@ -137,5 +140,5 @@ public interface RepoService {
     Observable<Pageable<User>> getAssignees(@Path("owner") String owner, @Path("repo") String repo);
 
     @NonNull @GET("repos/{owner}/{repo}/commits?per_page=1")
-    Observable<Pageable<Commit>> getCommitCounts(@Path("owner") String owner, @Path("repo") String repo);
+    Observable<Pageable<Commit>> getCommitCounts(@Path("owner") String owner, @Path("repo") String repo, @Query("ref") String ref);
 }

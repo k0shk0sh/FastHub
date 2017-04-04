@@ -16,6 +16,7 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
+import icepick.State;
 
 /**
  * Created by Kosh on 26 Mar 2017, 12:14 AM
@@ -27,6 +28,8 @@ public class MyIssuesPagerView extends BaseFragment<MyIssuesPagerMvp.View, MyIss
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
+    @State int openCount = -1;
+    @State int closeCount = -1;
 
     public static MyIssuesPagerView newInstance() {
         return new MyIssuesPagerView();
@@ -39,6 +42,10 @@ public class MyIssuesPagerView extends BaseFragment<MyIssuesPagerMvp.View, MyIss
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(), FragmentPagerAdapterModel.buildForMyIssues(getContext())));
         tabs.setupWithViewPager(pager);
+        if (savedInstanceState != null && openCount != -1 && closeCount != -1) {
+            onSetBadge(0, openCount);
+            onSetBadge(1, closeCount);
+        }
     }
 
     @NonNull @Override public MyIssuesPagerPresenter providePresenter() {
@@ -46,6 +53,11 @@ public class MyIssuesPagerView extends BaseFragment<MyIssuesPagerMvp.View, MyIss
     }
 
     @Override public void onSetBadge(int tabIndex, int count) {
+        if (tabIndex == 0) {
+            openCount = count;
+        } else {
+            closeCount = count;
+        }
         if (tabs != null) {
             TextView tv = ViewHelper.getTabTextView(tabs, tabIndex);
             tv.setText(SpannableBuilder.builder()

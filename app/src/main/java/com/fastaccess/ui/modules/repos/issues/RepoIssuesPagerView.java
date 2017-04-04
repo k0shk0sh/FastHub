@@ -19,6 +19,7 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
+import icepick.State;
 
 /**
  * Created by Kosh on 31 Dec 2016, 1:36 AM
@@ -30,6 +31,8 @@ public class RepoIssuesPagerView extends BaseFragment<RepoIssuesPagerMvp.View, R
     public static final String TAG = RepoIssuesPagerView.class.getSimpleName();
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
+    @State int openCount = -1;
+    @State int closeCount = -1;
 
     public static RepoIssuesPagerView newInstance(@NonNull String repoId, @NonNull String login) {
         RepoIssuesPagerView view = new RepoIssuesPagerView();
@@ -51,6 +54,10 @@ public class RepoIssuesPagerView extends BaseFragment<RepoIssuesPagerMvp.View, R
         pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(),
                 FragmentPagerAdapterModel.buildForRepoIssue(getContext(), login, repoId)));
         tabs.setupWithViewPager(pager);
+        if (savedInstanceState != null && openCount != -1 && closeCount != -1) {
+            onSetBadge(0, openCount);
+            onSetBadge(1, closeCount);
+        }
     }
 
     @NonNull @Override public RepoIssuesPagerPresenter providePresenter() {
@@ -68,6 +75,11 @@ public class RepoIssuesPagerView extends BaseFragment<RepoIssuesPagerMvp.View, R
     }
 
     @Override public void onSetBadge(int tabIndex, int count) {
+        if (tabIndex == 0) {
+            openCount = count;
+        } else {
+            closeCount = count;
+        }
         if (tabs != null) {
             TextView tv = ViewHelper.getTabTextView(tabs, tabIndex);
             tv.setText(SpannableBuilder.builder()

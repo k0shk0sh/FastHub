@@ -65,14 +65,17 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService().getCommits(login, repoId, branch, page),
+        makeRestCall(RestProvider.getRepoService()
+                        .getCommits(login, repoId, branch, page),
                 response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        getCommits().clear();
-                        manageSubscription(Commit.save(response.getItems(), repoId, login).subscribe());
+                    if (response != null) {
+                        lastPage = response.getLast();
+                        if (getCurrentPage() == 1) {
+                            getCommits().clear();
+                            manageSubscription(Commit.save(response.getItems(), repoId, login).subscribe());
+                        }
+                        getCommits().addAll(response.getItems());
                     }
-                    getCommits().addAll(response.getItems());
                     sendToView(RepoCommitsMvp.View::onNotifyAdapter);
                 });
     }
@@ -83,16 +86,15 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
         if (branches.isEmpty()) {
             manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-                    .getCommitCounts(login, repoId)))
+                    .getCommitCounts(login, repoId, branch)))
                     .subscribe(response -> {
                         if (response != null) {
                             sendToView(view -> view.onShowCommitCount(response.getLast()));
                         }
                     }));
-            makeRestCall(RestProvider.getRepoService()
-                            .getBranches(login, repoId)
-                            .doOnSubscribe(() -> sendToView(RepoCommitsMvp.View::showBranchesProgress)),
-                    response -> {
+            manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                    .getBranches(login, repoId)
+                    .doOnNext(response -> {
                         if (response != null && response.getItems() != null) {
                             branches.clear();
                             branches.addAll(response.getItems());
@@ -101,7 +103,17 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                                 view.hideBranchesProgress();
                             });
                         }
-                    });
+                    })))
+                    .flatMap(branchesModelPageable -> RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                            .getTags(login, repoId))))
+                    .doOnNext(response -> {
+                        branches.addAll(response.getItems());
+                        sendToView(view -> {
+                            view.setBranchesData(branches, true);
+                            view.hideBranchesProgress();
+                        });
+                    })
+                    .subscribe());
         }
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
