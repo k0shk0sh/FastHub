@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.TeamsModel;
+import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.model.User;
 
@@ -34,4 +35,8 @@ public interface OrganizationService {
     @GET("teams/{id}/members") Observable<Pageable<User>> getTeamMembers(@Path("id") long id, @Query("page") int page);
 
     @GET("teams/{id}/repos") Observable<Pageable<Repo>> getTeamRepos(@Path("id") long id, @Query("page") int page);
+
+    @GET("orgs/{username}/events")
+    Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
+
 }

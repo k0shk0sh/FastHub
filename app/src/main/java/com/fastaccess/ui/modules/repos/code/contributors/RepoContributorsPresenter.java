@@ -56,12 +56,14 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
         }
         makeRestCall(RestProvider.getRepoService().getContributors(login, repoId, page),
                 response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        getUsers().clear();
-                        manageSubscription(User.saveUserContributorList(response.getItems(), repoId).subscribe());
+                    if (response != null) {
+                        lastPage = response.getLast();
+                        if (getCurrentPage() == 1) {
+                            getUsers().clear();
+                            manageSubscription(User.saveUserContributorList(response.getItems(), repoId).subscribe());
+                        }
+                        getUsers().addAll(response.getItems());
                     }
-                    getUsers().addAll(response.getItems());
                     sendToView(RepoContributorsMvp.View::onNotifyAdapter);
                 });
     }
