@@ -1,25 +1,8 @@
-buildscript {
-
-    repositories {
-        mavenCentral()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'me.tatarka:gradle-retrolambda:3.3.1'
-        classpath 'me.tatarka.retrolambda.projectlombok:lombok.ast:0.2.3.a2'
-    }
-
-    configurations.classpath.exclude group: 'com.android.tools.external.lombok'
-
-}
-
 repositories {
     mavenCentral()
 }
 
 apply plugin: 'com.android.library'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 25

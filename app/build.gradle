@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'com.novoda.build-properties'
 
@@ -73,10 +72,6 @@ android {
     configurations {
         all*.exclude module: 'annotations'
     }
-}
-
-retrolambda {
-    oldJdk System.getenv("JAVA7_HOME")
 }
 
 repositories {

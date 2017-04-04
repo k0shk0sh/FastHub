@@ -23,11 +23,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import io.octo.bear.pago.model.entity.Order;
 import io.octo.bear.pago.model.entity.Purchase;
-import io.octo.bear.pago.model.entity.PurchaseState;
 import io.octo.bear.pago.model.entity.PurchaseType;
 import io.octo.bear.pago.model.entity.ResponseCode;
 import io.octo.bear.pago.model.exception.BillingException;
@@ -51,18 +51,14 @@ class PerformPurchaseSingle extends Single<Order> {
     PerformPurchaseSingle(final Context context, final PurchaseType type, final String sku, String payload) {
         super((OnSubscribe<Order>) subscriber -> new BillingServiceConnection(context, service -> {
                     try {
-                        final Bundle buyIntentBundle = service.getBuyIntent(Pago.BILLING_API_VERSION, context.getPackageName(),
-                                sku, type.value, payload);
-
+                        final Bundle buyIntentBundle = service.getBuyIntent(Pago.BILLING_API_VERSION,
+                                context.getPackageName(), sku, type.value, payload);
                         final ResponseCode responseCode = retrieveResponseCode(buyIntentBundle);
-
                         checkResponseAndThrowIfError(responseCode);
-
                         final PendingIntent buyIntent = buyIntentBundle.getParcelable(RESPONSE_BUY_INTENT);
                         if (buyIntent == null) {
                             throw new RuntimeException("unable to retrieve buy intent");
                         }
-
                         LocalBroadcastManager
                                 .getInstance(context)
                                 .registerReceiver(
@@ -91,16 +87,15 @@ class PerformPurchaseSingle extends Single<Order> {
                     if (!success) {
                         throw new BillingException(ResponseCode.ITEM_UNAVAILABLE);
                     }
-
                     final ResponseCode code = retrieveResponseCode(result);
-
                     checkResponseAndThrowIfError(code);
-
                     String originalJson = result.getString(RESPONSE_INAPP_PURCHASE_DATA);
-                    Log.e("JsonDate", originalJson);
+                    Log.e("JsonDate", originalJson + "");
                     final Purchase purchase = GSON.fromJson(originalJson, Purchase.class);
                     final Order order = new Order(purchase, result.getString(RESPONSE_INAPP_DATA_SIGNATURE), originalJson);
-                    if (purchase.purchaseState == PurchaseState.PURCHASED.getValue()) {
+                    final boolean purchaseDataIsCorrect = TextUtils.equals(payload, purchase.developerPayload);
+                    Log.e("payload", purchase.developerPayload + " " + purchaseDataIsCorrect);
+                    if (purchaseDataIsCorrect) {
                         subscriber.onSuccess(order);
                     } else {
                         throw new BillingException(ResponseCode.ERROR);

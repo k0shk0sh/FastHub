@@ -66,7 +66,7 @@ public class DonationView extends BaseDialogFragment<DonationMvp.View, DonationP
             default:
                 productKey = getString(R.string.donation_product_1);
         }
-        subscription = getPago().purchaseProduct(productKey, item)
+        subscription = getPago().purchaseProduct(productKey, "inapp:com.fastaccess.github:" + productKey)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .onErrorReturn(throwable -> {
