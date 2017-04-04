@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.notification;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
@@ -22,11 +24,13 @@ public interface NotificationsMvp {
 
         @NonNull OnLoadMore getLoadMore();
 
-      @CallOnMainThread void onNotifyAdapter();
+        @CallOnMainThread void onNotifyAdapter();
 
         void onTypeChanged(boolean unread);
 
         void onClick(@NonNull String url);
+
+        void onAskMarkAsReadPermission(int position, long id);
     }
 
     interface Presenter extends BaseViewHolder.OnItemClickListener<Notification>,
@@ -37,5 +41,7 @@ public interface NotificationsMvp {
         @NonNull ArrayList<Notification> getNotifications();
 
         void showAllNotifications(boolean showAll);
+
+        void onReadNotification(@NonNull Context context, @NonNull Bundle bundle);
     }
 }

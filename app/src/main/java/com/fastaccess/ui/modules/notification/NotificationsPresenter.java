@@ -1,11 +1,14 @@
 package com.fastaccess.ui.modules.notification;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -42,7 +45,9 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     }
 
     @Override public void onItemLongClick(int position, View v, Notification item) {
-        onItemClick(position, v, item);
+        if (getView() != null) {
+            getView().onAskMarkAsReadPermission(position, item.getId());
+        }
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
@@ -70,6 +75,19 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
 
     @Override public void showAllNotifications(boolean showAll) {
         this.showAll = showAll;
+    }
+
+    @Override public void onReadNotification(@NonNull Context context, @NonNull Bundle bundle) {
+        long id = bundle.getLong(BundleConstant.ID);
+        int position = bundle.getInt(BundleConstant.EXTRA);
+        Notification notification = notifications.get(position);
+        if (notification != null && notification.getId() == id) {
+            ReadNotificationService.start(context, id);
+            notifications.remove(position);
+            notification.setUnread(true);
+            manageSubscription(notification.save(notification).subscribe());
+            sendToView(NotificationsMvp.View::onNotifyAdapter);
+        }
     }
 
     @Override public int getCurrentPage() {

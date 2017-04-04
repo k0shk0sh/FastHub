@@ -13,6 +13,8 @@ import android.view.View;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -22,6 +24,7 @@ import com.fastaccess.ui.adapter.NotificationsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
@@ -76,6 +79,22 @@ public class NotificationsView extends BaseFragment<NotificationsMvp.View, Notif
             StackBuilderSchemeParser.launchUri(getContext(), Uri.parse(url));
         } else {
             SchemeParser.launchUri(getContext(), Uri.parse(url), true);
+        }
+    }
+
+    @Override public void onAskMarkAsReadPermission(int position, long id) {
+        MessageDialogView.newInstance(getString(R.string.marking_as_read), getString(R.string.confirm_message),
+                Bundler.start().put(BundleConstant.YES_NO_EXTRA, true)
+                        .put(BundleConstant.ID, id)
+                        .put(BundleConstant.EXTRA, position)
+                        .end())
+                .show(getChildFragmentManager(), MessageDialogView.TAG);
+    }
+
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk && bundle != null) {
+            getPresenter().onReadNotification(getContext(), bundle);
         }
     }
 
