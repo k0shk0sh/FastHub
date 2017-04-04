@@ -100,6 +100,7 @@ dependencies {
     compile "com.android.support:recyclerview-v7:${supportVersion}"
     compile "com.android.support:preference-v14:${supportVersion}"
     compile "com.android.support:customtabs:${supportVersion}"
+    compile "com.android.support:palette-v7:${supportVersion}"
     compile "com.google.firebase:firebase-ads:${firebase}"
     releaseCompile "com.google.firebase:firebase-crash:${firebase}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"

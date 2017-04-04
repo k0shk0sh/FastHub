@@ -24,8 +24,6 @@
 
             <include layout="@layout/fragment_container"/>
 
-            <include layout="@layout/bottom_fab"/>
-
             <include layout="@layout/main_bottom_navigation"/>
 
         </android.support.design.widget.CoordinatorLayout>

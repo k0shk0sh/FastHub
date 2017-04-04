@@ -45,7 +45,7 @@ public class LabelsViewHolder extends BaseViewHolder<LabelModel> {
         colorImage.setBackgroundColor(color);
         name.setText(labelModel.getName());
         if (onSelectLabel.isLabelSelected(getAdapterPosition())) {
-            name.setTextColor(ViewHelper.generateTextColor(Color.WHITE, color));
+            name.setTextColor(ViewHelper.generateTextColor(color));
         } else {
             name.setTextColor(ViewHelper.getPrimaryTextColor(itemView.getContext()));
         }
