@@ -83,6 +83,7 @@ public class CreateLableView extends BaseDialogFragment<CreateLabelMvp.View, Cre
         toolbar.setNavigationIcon(R.drawable.ic_clear);
         toolbar.setNavigationOnClickListener(item -> dismiss());
         toolbar.inflateMenu(R.menu.add_menu);
+        toolbar.getMenu().findItem(R.id.add).setIcon(R.drawable.ic_send);
         toolbar.setOnMenuItemClickListener(item -> {
             boolean emptyColor = InputHelper.isEmpty(description);
             boolean emptyName = InputHelper.isEmpty(name);

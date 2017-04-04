@@ -384,6 +384,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                             dropDownIcon.setTag(null);
                             dropDownIcon.setRotation(0.0F);
                         }
+                    } else {
+                        showErrorMessage(getString(R.string.no_orgs));
                     }
                 });
     }

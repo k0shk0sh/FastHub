@@ -336,4 +336,5 @@
     <string name="members">Members</string>
     <string name="no_members">No members</string>
     <string name="no_teams">No teams</string>
+    <string name="no_orgs">No Organizations</string>
 </resources>
