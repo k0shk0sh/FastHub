@@ -131,7 +131,6 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.gist_menu, menu);
-        menu.findItem(R.id.deleteGist).setVisible(getPresenter().isOwner());
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -149,6 +148,11 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.deleteGist).setVisible(getPresenter().isOwner());
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
@@ -212,6 +216,7 @@ public class GistView extends BaseActivity<GistMvp.View, GistPresenter>
                 hideShowFab();
             }
         });
+        supportInvalidateOptionsMenu();
         onGistForked(getPresenter().isForked());
         onGistStarred(getPresenter().isStarred());
         hideShowFab();

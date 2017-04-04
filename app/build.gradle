@@ -12,7 +12,7 @@ buildProperties {
     }
 }
 
-android gr{
+android {
     signingConfigs {
         signing {
             keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
