@@ -51,9 +51,11 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA_TWO, login.equalsIgnoreCase("k0shk0sh") && repoId.equalsIgnoreCase("FastHub"))
                 .end());
         fragment.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
     }
+
 
     public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
                                       @Nullable Issue issueModel) {
@@ -193,6 +195,9 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
     }
 
     @OnTouch(R.id.description) boolean onTouch(MotionEvent event) {
+        if (isFeedback && InputHelper.isEmpty(savedText)) {
+            savedText = AppHelper.getFastHubIssueTemplate();
+        }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             Intent intent = new Intent(this, EditorView.class);
             intent.putExtras(Bundler.start()

@@ -81,7 +81,8 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
                 avatarLayout.setUrl(avatar, login);
             }
         }
-        size.setText(Formatter.formatFileSize(size.getContext(), repo.getSize()));
+        long repoSize = repo.getSize() > 0 ? (repo.getSize() * 1000) : repo.getSize();
+        size.setText(Formatter.formatFileSize(size.getContext(), repoSize));
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         stars.setText(numberFormat.format(repo.getStargazersCount()));
         forks.setText(numberFormat.format(repo.getForks()));

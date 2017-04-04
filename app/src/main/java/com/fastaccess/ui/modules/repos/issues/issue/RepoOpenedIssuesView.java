@@ -14,6 +14,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -137,7 +138,11 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
     }
 
     @Override public void onAddIssue() {
-        CreateIssueView.startForResult(this, getPresenter().login(), getPresenter().repoId());
+        String login = getPresenter().login();
+        String repoId = getPresenter().repoId();
+        if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
+            CreateIssueView.startForResult(this, login, repoId);
+        }
     }
 
     @Override public void onUpdateCount(int totalCount) {

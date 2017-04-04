@@ -248,11 +248,12 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         } else if (repoModel.getOrganization() != null) {
             avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin());
         }
+        long repoSize = repoModel.getSize() > 0 ? (repoModel.getSize() * 1000) : repoModel.getSize();
         date.setText(SpannableBuilder.builder()
                 .append(ParseDateFormat.getTimeAgo(repoModel.getUpdatedAt()))
                 .append(" ,")
                 .append(" ")
-                .append(Formatter.formatFileSize(this, repoModel.getSize())));
+                .append(Formatter.formatFileSize(this, repoSize)));
         size.setVisibility(View.GONE);
         title.setText(repoModel.getFullName());
         TextViewCompat.setTextAppearance(title, R.style.TextAppearance_AppCompat_Medium);
@@ -443,6 +444,4 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
             fab.hide();
         }
     }
-
-    @OnClick(R.id.pinLayout) public void onViewClicked() {}
 }

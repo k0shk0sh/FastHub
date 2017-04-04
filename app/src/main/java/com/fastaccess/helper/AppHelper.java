@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 
 import es.dmoral.toasty.Toasty;
@@ -50,5 +52,24 @@ public class AppHelper {
     public static boolean isNightMode(@NonNull Resources resources) {
         int currentNightMode = resources.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
         return currentNightMode == Configuration.UI_MODE_NIGHT_YES || PrefGetter.getThemeType(resources) == PrefGetter.DARK;
+    }
+
+    @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {
+        return new StringBuilder()
+                .append("**App Version: ")
+                .append(BuildConfig.VERSION_NAME)
+                .append("**")
+                .append("\n\n")
+                .append("**OS Version: ")
+                .append(String.valueOf(Build.VERSION.SDK_INT))
+                .append("**")
+                .append("\n\n")
+                .append("**Model: ")
+                .append(Build.MANUFACTURER)
+                .append("-")
+                .append(Build.MODEL)
+                .append("**")
+                .append("\n\n")
+                .toString();
     }
 }
