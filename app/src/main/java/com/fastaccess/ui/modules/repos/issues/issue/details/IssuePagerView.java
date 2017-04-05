@@ -46,6 +46,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import icepick.State;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -63,6 +64,8 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     @BindView(R.id.pager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    @State boolean isClosed;
+    @State boolean isOpened;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
         return createIntent(context, repoId, login, number, false);
@@ -149,7 +152,9 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.share) {
+        if (item.getItemId() == android.R.id.home) {
+            onNavToRepoClicked();
+        } else if (item.getItemId() == R.id.share) {
             if (getPresenter().getIssue() != null) ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
@@ -258,8 +263,12 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
     @Override public void showSuccessIssueActionMsg(boolean isClose) {
         hideProgress();
         if (isClose) {
+            isOpened = false;
+            isClosed = true;
             showMessage(getString(R.string.success), getString(R.string.success_closed));
         } else {
+            isOpened = true;
+            isClosed = false;
             showMessage(getString(R.string.success), getString(R.string.success_re_opened));
         }
     }
@@ -323,6 +332,20 @@ public class IssuePagerView extends BaseActivity<IssuePagerMvp.View, IssuePagerP
         nameParser.setUsername(getPresenter().getLogin());
         RepoPagerView.startRepoPager(this, nameParser);
         finish();
+    }
+
+    @Override public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override public void finish() {
+        Intent intent = new Intent();
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, isClosed)
+                .put(BundleConstant.EXTRA_TWO, isOpened)
+                .end());
+        setResult(RESULT_OK, intent);
+        super.finish();
     }
 
     private void hideShowFab() {

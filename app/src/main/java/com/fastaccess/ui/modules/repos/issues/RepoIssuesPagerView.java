@@ -14,6 +14,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesView;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
@@ -70,8 +71,16 @@ public class RepoIssuesPagerView extends BaseFragment<RepoIssuesPagerMvp.View, R
         repoOpenedIssuesView.onAddIssue();
     }
 
-    @Override public void setCurrentItem(int index) {
-        pager.setCurrentItem(index, true);
+    @Override public void setCurrentItem(int index, boolean refresh) {
+        if (pager == null || pager.getAdapter() == null) return;
+        if (!refresh) pager.setCurrentItem(index, true);
+        if (index == 1 && refresh) {
+            RepoClosedIssuesView closedIssues = (RepoClosedIssuesView) pager.getAdapter().instantiateItem(pager, 1);
+            if (closedIssues != null) closedIssues.onRefresh();
+        } else if (index == 0 && refresh) {
+            RepoOpenedIssuesView openedIssues = (RepoOpenedIssuesView) pager.getAdapter().instantiateItem(pager, 0);
+            if (openedIssues != null) openedIssues.onRefresh();
+        }
     }
 
     @Override public void onSetBadge(int tabIndex, int count) {

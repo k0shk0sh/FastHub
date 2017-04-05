@@ -1,6 +1,8 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -16,6 +19,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -87,6 +91,19 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
                                  ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
     }
 
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == RepoPullRequestMvp.PULL_REQUEST_REQUEST_CODE) {
+                boolean isClose = data.getExtras().getBoolean(BundleConstant.EXTRA);
+                boolean isOpened = data.getExtras().getBoolean(BundleConstant.EXTRA_TWO);
+                if (isClose || isOpened) {
+                    onRefresh();
+                }
+            }
+        }
+    }
+
     @NonNull @Override public RepoPullRequestPresenter providePresenter() {
         return new RepoPullRequestPresenter();
     }
@@ -121,6 +138,11 @@ public class RepoPullRequestView extends BaseFragment<RepoPullRequestMvp.View, R
 
     @Override public void onUpdateCount(int totalCount) {
         if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(getPresenter().getIssueState() == IssueState.open ? 0 : 1, totalCount);
+    }
+
+    @Override public void onOpenPullRequest(@NonNull PullsIssuesParser parser) {
+        Intent intent = PullRequestPagerView.createIntent(getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber());
+        startActivityForResult(intent, RepoPullRequestMvp.PULL_REQUEST_REQUEST_CODE);
     }
 
     @Override public void onRefresh() {

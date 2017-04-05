@@ -21,7 +21,6 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -107,21 +106,13 @@ public class NotificationSchedulerJobTask extends JobService {
         Context context = getApplicationContext();
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
                 R.mipmap.ic_launcher);
-        Intent intent = new Intent(this, NotificationActivityView.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+
         int accentColor = ViewHelper.getAccentColor(context);
-        android.app.Notification grouped = getNotification(getString(R.string.app_name), getString(R.string.notifications_hint))
-                .setLargeIcon(largeIcon)
-                .setGroup(NOTIFICATION_GROUP_ID)
-                .setGroupSummary(true)
-                .setColor(accentColor)
-                .setContentIntent(pendingIntent)
-                .setAutoCancel(true)
-                .build();
+        Notification firstNotification = notificationThreadModels.get(0);
+        android.app.Notification grouped = getSummaryGroupNotification(firstNotification, accentColor, largeIcon);
         showNotification(BundleConstant.REQUEST_CODE, grouped);
         Stream.of(notificationThreadModels)
-                .filter(Notification::isUnread)
+                .filter(notification -> notification.isUnread() && notification.getId() != firstNotification.getId())
                 .limit(10)
                 .forEach(thread -> {
                     if (!InputHelper.isEmpty(thread.getSubject().getLatestCommentUrl())) {
@@ -157,6 +148,17 @@ public class NotificationSchedulerJobTask extends JobService {
                 });
     }
 
+    private android.app.Notification getSummaryGroupNotification(@NonNull Notification notification, int accentColor, Bitmap largeIcon) {
+        return getNotification(notification.getSubject().getTitle(), notification.getRepository().getFullName())
+                .setLargeIcon(largeIcon)
+                .setGroup(NOTIFICATION_GROUP_ID)
+                .setGroupSummary(true)
+                .setColor(accentColor)
+                .setContentIntent(getPendingIntent(notification.getId(), notification.getSubject().getUrl()))
+                .setAutoCancel(true)
+                .build();
+    }
+
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
         return new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -174,5 +176,4 @@ public class NotificationSchedulerJobTask extends JobService {
         return PendingIntent.getService(this, (int) id, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
 }

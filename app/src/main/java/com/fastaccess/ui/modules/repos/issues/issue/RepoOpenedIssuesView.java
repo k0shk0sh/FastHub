@@ -11,16 +11,19 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -99,9 +102,21 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
-            onRefresh();
-            if (pagerCallback != null) pagerCallback.setCurrentItem(0);
+        Logger.e(requestCode, resultCode);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
+                onRefresh();
+                if (pagerCallback != null) pagerCallback.setCurrentItem(0, false);
+            } else if (requestCode == RepoIssuesMvp.ISSUE_REQUEST_CODE && data != null) {
+                boolean isClose = data.getExtras().getBoolean(BundleConstant.EXTRA);
+                boolean isOpened = data.getExtras().getBoolean(BundleConstant.EXTRA_TWO);
+                if (isClose) {
+                    if (pagerCallback != null) pagerCallback.setCurrentItem(1, true);
+                    onRefresh();
+                } else if (isOpened) {
+                    onRefresh();
+                } //else ignore!
+            }
         }
     }
 
@@ -147,6 +162,11 @@ public class RepoOpenedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
 
     @Override public void onUpdateCount(int totalCount) {
         if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(0, totalCount);
+    }
+
+    @Override public void onOpenIssue(@NonNull PullsIssuesParser parser) {
+        startActivityForResult(IssuePagerView.createIntent(getContext(), parser.getRepoId(), parser.getLogin(),
+                parser.getNumber()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
     }
 
     @Override public void onRefresh() {

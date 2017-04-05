@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -18,12 +19,16 @@ import java.util.ArrayList;
 
 interface RepoPullRequestMvp {
 
+    int PULL_REQUEST_REQUEST_CODE = 1003;
+
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
         void onNotifyAdapter();
 
         @NonNull OnLoadMore<IssueState> getLoadMore();
 
         void onUpdateCount(int totalCount);
+
+        void onOpenPullRequest(@NonNull PullsIssuesParser parser);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

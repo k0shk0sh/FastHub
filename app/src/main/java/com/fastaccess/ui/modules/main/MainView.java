@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
-import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -67,13 +66,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
-    }
-
-    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
-            showMessage(R.string.success, R.string.thank_you_for_feedback);
-        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

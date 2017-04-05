@@ -128,7 +128,9 @@ public class CommitPagerView extends BaseActivity<CommitPagerMvp.View, CommitPag
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.share) {
+        if (item.getItemId() == android.R.id.home) {
+            onNavToRepoClicked();
+        } else if (item.getItemId() == R.id.share) {
             if (getPresenter().getCommit() != null) ActivityHelper.shareUrl(this, getPresenter().getCommit().getHtmlUrl());
             return true;
         }

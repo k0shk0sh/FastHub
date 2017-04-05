@@ -20,7 +20,8 @@
         android:theme="@style/SplashTheme"
         tools:replace="android:allowBackup">
         <activity
-            android:name="com.fastaccess.ui.modules.main.MainView">
+            android:name="com.fastaccess.ui.modules.main.MainView"
+            android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -42,6 +42,10 @@ public class AppHelper {
         ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(id);
     }
 
+    public static void cancelAllNotifications(@NonNull Context context) {
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
+    }
+
     public static void copyToClipboard(@NonNull Context context, @NonNull String uri) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), uri);

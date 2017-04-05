@@ -62,7 +62,9 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                         .flatMap(branchesModelPageable -> RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
                                 .getTags(login, repoId))))
                         .doOnNext(response -> {
-                            branches.addAll(response.getItems());
+                            if (response != null && response.getItems() != null) {
+                                branches.addAll(response.getItems());
+                            }
                             sendToView(view -> {
                                 view.setBranchesData(branches, true);
                                 view.hideProgress();

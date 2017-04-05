@@ -68,7 +68,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         makeRestCall(RestProvider.getRepoService()
                         .getCommits(login, repoId, branch, page),
                 response -> {
-                    if (response != null) {
+                    if (response != null && response.getItems() != null) {
                         lastPage = response.getLast();
                         if (getCurrentPage() == 1) {
                             getCommits().clear();

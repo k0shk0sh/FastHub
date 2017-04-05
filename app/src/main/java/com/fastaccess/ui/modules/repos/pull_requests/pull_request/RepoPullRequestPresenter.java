@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,7 +15,6 @@ import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 
 import java.util.ArrayList;
 
@@ -124,9 +122,8 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     @Override public void onItemClick(int position, View v, PullRequest item) {
         PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
-        if (parser != null) {
-            Intent intent = PullRequestPagerView.createIntent(v.getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber());
-            v.getContext().startActivity(intent);
+        if (parser != null && getView() != null) {
+            getView().onOpenPullRequest(parser);
         }
     }
 

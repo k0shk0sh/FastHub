@@ -17,7 +17,6 @@ import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -134,9 +133,8 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
 
     @Override public void onItemClick(int position, View v, Issue item) {
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
-        if (parser != null) {
-            v.getContext().startActivity(IssuePagerView.createIntent(v.getContext(), parser.getRepoId(),
-                    parser.getLogin(), parser.getNumber()));
+        if (parser != null && getView()!=null) {
+            getView().onOpenIssue(parser);
         }
     }
 

@@ -56,7 +56,7 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {

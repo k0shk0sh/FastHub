@@ -1,6 +1,8 @@
 package com.fastaccess.ui.modules.repos.issues.issue;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -16,6 +19,8 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerMvp;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -32,6 +37,7 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
+    private RepoIssuesPagerMvp.View pagerCallback;
 
     public static RepoClosedIssuesView newInstance(@NonNull String repoId, @NonNull String login) {
         RepoClosedIssuesView view = new RepoClosedIssuesView();
@@ -44,6 +50,11 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
+        if (getParentFragment() instanceof RepoIssuesPagerMvp.View) {
+            pagerCallback = (RepoIssuesPagerMvp.View) getParentFragment();
+        } else if (context instanceof RepoIssuesPagerMvp.View) {
+            pagerCallback = (RepoIssuesPagerMvp.View) context;
+        }
         if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
             tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
         } else if (context instanceof RepoPagerMvp.TabsBadgeListener) {
@@ -52,6 +63,7 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
     }
 
     @Override public void onDetach() {
+        pagerCallback = null;
         tabsBadgeListener = null;
         super.onDetach();
     }
@@ -89,6 +101,22 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         return new RepoIssuesPresenter();
     }
 
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == RepoIssuesMvp.ISSUE_REQUEST_CODE && data != null) {
+                boolean isClose = data.getExtras().getBoolean(BundleConstant.EXTRA);
+                boolean isOpened = data.getExtras().getBoolean(BundleConstant.EXTRA_TWO);
+                if (isClose) {
+                    onRefresh();
+                } else if (isOpened) {
+                    if (pagerCallback != null) pagerCallback.setCurrentItem(0, true);
+                    onRefresh();
+                } //else ignore!
+            }
+        }
+    }
+
     @Override public void hideProgress() {
         refresh.setRefreshing(false);
         stateLayout.hideProgress();
@@ -108,11 +136,6 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
@@ -129,11 +152,21 @@ public class RepoClosedIssuesView extends BaseFragment<RepoIssuesMvp.View, RepoI
         if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(1, totalCount);
     }
 
+    @Override public void onOpenIssue(@NonNull PullsIssuesParser parser) {
+        startActivityForResult(IssuePagerView.createIntent(getContext(), parser.getRepoId(), parser.getLogin(),
+                parser.getNumber()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
+    }
+
     @Override public void onRefresh() {
         getPresenter().onCallApi(1, IssueState.closed);
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

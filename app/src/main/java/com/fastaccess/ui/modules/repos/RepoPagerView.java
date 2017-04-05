@@ -33,6 +33,7 @@ import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -388,7 +389,10 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.share) {
+        if (item.getItemId() == android.R.id.home) {
+            startActivity(new Intent(this, MainView.class));
+            finish();
+        } else if (item.getItemId() == R.id.share) {
             if (getPresenter().getRepo() != null) ActivityHelper.shareUrl(this, getPresenter().getRepo().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.originalRepo) {

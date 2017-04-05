@@ -1,25 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <include layout="@layout/appbar_tabbed_elevation"/>
-
-        <com.fastaccess.ui.widgets.ViewPagerView
-            android:id="@+id/tabbedPager"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/scroll_behavior"/>
-    </android.support.design.widget.CoordinatorLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-    <include layout="@layout/add_banner_layout"/>
-</LinearLayout>
+            <include layout="@layout/appbar_tabbed_elevation"/>
+
+            <com.fastaccess.ui.widgets.ViewPagerView
+                android:id="@+id/tabbedPager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/scroll_behavior"/>
+        </android.support.design.widget.CoordinatorLayout>
+
+        <include layout="@layout/add_banner_layout"/>
+    </LinearLayout>
+
+    <include layout="@layout/nav_menu_layout"/>
+</android.support.v4.widget.DrawerLayout>

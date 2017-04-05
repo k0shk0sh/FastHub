@@ -12,7 +12,7 @@ public interface RepoIssuesPagerMvp {
     interface View extends BaseMvp.FAView, RepoPagerMvp.TabsBadgeListener {
         void onAddIssue();
 
-        void setCurrentItem(int index);
+        void setCurrentItem(int index, boolean refresh);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {}
