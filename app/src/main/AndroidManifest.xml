@@ -73,6 +73,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerView"/>
         </activity>
+
         <activity
             android:name=".ui.modules.repos.issues.create.CreateIssueView"
             android:configChanges="keyboard|orientation|screenSize"
@@ -80,7 +81,6 @@
 
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
-
             android:label="@string/pull_request"
             android:parentActivityName=".ui.modules.repos.RepoPagerView">
             <meta-data
@@ -90,7 +90,6 @@
 
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerView"
-
             android:label="@string/commit"
             android:parentActivityName=".ui.modules.repos.RepoPagerView">
             <meta-data
@@ -131,7 +130,13 @@
                 android:value=".ui.modules.main.MainView"/>
         </activity>
 
-        <activity android:name=".ui.modules.search.SearchView"/>
+        <activity
+            android:name=".ui.modules.search.SearchView"
+            android:parentActivityName=".ui.modules.main.MainView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainView"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.notification.NotificationActivityView"

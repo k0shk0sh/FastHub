@@ -43,11 +43,16 @@ public class ReadNotificationService extends IntentService {
     }
 
     public static Intent start(@NonNull Context context, long id, @NonNull String url) {
+        return start(context, id, url, false);
+    }
+
+    public static Intent start(@NonNull Context context, long id, @NonNull String url, boolean onlyRead) {
         Intent intent = new Intent(context.getApplicationContext(), ReadNotificationService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, OPEN_NOTIFICATIO)
                 .put(BundleConstant.EXTRA, url)
                 .put(BundleConstant.ID, id)
+                .put(BundleConstant.YES_NO_EXTRA, onlyRead)
                 .end());
         return intent;
     }
@@ -74,18 +79,19 @@ public class ReadNotificationService extends IntentService {
             } else if (type == READ_ALL) {
                 markMultiAsRead(bundle.getLongArray(BundleConstant.ID));
             } else if (type == OPEN_NOTIFICATIO) {
-                openNotification(bundle.getLong(BundleConstant.ID), bundle.getString(BundleConstant.EXTRA));
+                openNotification(bundle.getLong(BundleConstant.ID), bundle.getString(BundleConstant.EXTRA),
+                        bundle.getBoolean(BundleConstant.YES_NO_EXTRA));
             }
         }
     }
 
-    private void openNotification(long id, @Nullable String url) {
+    private void openNotification(long id, @Nullable String url, boolean readOnly) {
         if (id > 0 && url != null) {
             AppHelper.cancelNotification(this, (int) id);
-            if (!PrefGetter.isMarkAsReadEnabled()) {
+            if (!PrefGetter.isMarkAsReadEnabled() || readOnly) {
                 markSingleAsRead(id);
             }
-            SchemeParser.launchUri(this, Uri.parse(url), true);
+            if (!readOnly) SchemeParser.launchUri(this, Uri.parse(url), true);
         }
     }
 
