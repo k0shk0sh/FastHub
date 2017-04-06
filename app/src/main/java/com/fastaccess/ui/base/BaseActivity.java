@@ -238,9 +238,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             return true;
         } else if (item.getItemId() == R.id.mainView) {
             Intent intent = new Intent(this, MainView.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-            finishAffinity();
+            finish();
         }
         return false;
     }
@@ -402,6 +402,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                                 drawerView.postDelayed(() -> {
                                     if (drawer != null) {
                                         drawer.closeDrawer(GravityCompat.START);
+                                        drawer.removeDrawerListener(this);
                                     }
                                 }, 1000);
                             }

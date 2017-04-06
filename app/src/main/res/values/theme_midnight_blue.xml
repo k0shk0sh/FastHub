@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="midNightBlueWindowBackground">#1B2837</color>
+
+    <style name="ThemeMidNightBlue" parent="ThemeMidNightBlue.Base"/>
+
+    <style name="ThemeMidNightBlue.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="card_background">#213040</item>
+        <item name="icon_color">#fff</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundMidNightBlue</item>
+        <item name="patch_addition">@color/dark_patch_addition_color</item>
+        <item name="patch_deletion">@color/dark_patch_deletion_color</item>
+        <item name="patch_ref">@color/dark_patch_ref_color</item>
+        <item name="dividerColor">@color/darkDivider</item>
+        <item name="android:windowBackground">@color/midNightBlueWindowBackground</item>
+        <item name="colorPrimary">#213040</item>
+        <item name="colorPrimaryDark">#101B27</item>
+        <item name="colorAccent">#4C5B6A</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:textColorSecondary">#9E9E9E</item>
+        <item name="android:textColorTertiary">#ffe0e0e0</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:dialogTheme">@style/DialogThemeMidNight</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    </style>
+
+
+    <style name="TimeLineBackgroundMidNightBlue">
+        <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+        <item name="android:backgroundTint">#213040</item>
+    </style>
+
+    <style name="DialogThemeMidNight" parent="@style/Theme.AppCompat.Dialog">
+        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+        <item name="android:windowBackground">@color/midNightBlueWindowBackground</item>
+    </style>
+
+    <style name="AppTheme.AboutActivity.MidNight" parent="ThemeMidNightBlue">
+        <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
+        <item name="colorPrimary">#213040</item>
+        <item name="colorPrimaryDark">#4C5B6A</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="mal_lightActionBar">false</item>
+        <item name="mal_color_primary">#fff</item>
+        <item name="mal_color_secondary">#ffe0e0e0</item>
+    </style>
+</resources>

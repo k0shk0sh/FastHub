@@ -189,7 +189,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private PendingIntent getReadOnlyPendingIntent(long id, @NonNull String url) {
         Intent intent = ReadNotificationService.start(this, id, url, true);
-        return PendingIntent.getService(this, (int) id, intent,
+        return PendingIntent.getService(this, (int) (id / 2), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 

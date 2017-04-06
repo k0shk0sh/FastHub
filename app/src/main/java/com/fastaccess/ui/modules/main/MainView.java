@@ -37,7 +37,6 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.navigation) NavigationView navigationView;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
-
     private long backPressTimer;
 
     @NonNull @Override public MainPresenter providePresenter() {

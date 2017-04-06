@@ -51,8 +51,7 @@ public class SchemeParser {
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
             if (context instanceof Service || context instanceof Application) {
-                Logger.e("instanceof");
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             context.startActivity(intent);
         } else {
