@@ -17,6 +17,7 @@ import java.util.List;
 public class IssuesAdapter extends BaseRecyclerAdapter<Issue, IssuesViewHolder, BaseViewHolder.OnItemClickListener<Issue>> {
 
     private boolean withAvatar;
+    private boolean showRepoName;
 
     public IssuesAdapter(@NonNull List<Issue> data) {
         this(data, false);
@@ -27,8 +28,14 @@ public class IssuesAdapter extends BaseRecyclerAdapter<Issue, IssuesViewHolder, 
         this.withAvatar = withAvatar;
     }
 
+    public IssuesAdapter(@NonNull List<Issue> data, boolean withAvatar, boolean showRepoName) {
+        super(data);
+        this.withAvatar = withAvatar;
+        this.showRepoName = showRepoName;
+    }
+
     @Override protected IssuesViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return IssuesViewHolder.newInstance(parent, this, withAvatar);
+        return IssuesViewHolder.newInstance(parent, this, withAvatar, showRepoName);
     }
 
     @Override protected void onBindView(IssuesViewHolder holder, int position) {

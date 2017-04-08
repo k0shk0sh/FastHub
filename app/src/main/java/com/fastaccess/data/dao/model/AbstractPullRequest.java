@@ -10,6 +10,7 @@ import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.converters.CommitConverter;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
@@ -149,25 +150,44 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                 .toObservable();
     }
 
-    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context) {
+    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context,
+                                                       boolean showRepoName) {
         boolean isMerge = pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.mergedAt);
         if (isMerge) {
             User merger = pullRequest.getMergedBy();
-            return SpannableBuilder.builder()
-                    .bold("#" + pullRequest.getNumber())
-                    .append(" ")
-                    .append(merger != null ? merger.getLogin() + " " : "")
+            SpannableBuilder builder = SpannableBuilder.builder();
+            if (showRepoName) {
+                PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(pullRequest.getHtmlUrl());
+                if (parser != null) builder.bold(parser.getLogin())
+                        .append("/")
+                        .bold(parser.getRepoId())
+                        .append(" ");
+            } else {
+                builder.bold("#" + pullRequest.getNumber())
+                        .append(" ")
+                        .append(merger != null ? merger.getLogin() + " " : "");
+            }
+            return builder
                     .bold(context.getString(R.string.merged))
                     .append(" ")
                     .append(ParseDateFormat.getTimeAgo(pullRequest.getMergedAt()));
         } else {
             User user = pullRequest.getUser();
             String status = context.getString(pullRequest.getState().getStatus());
-            return SpannableBuilder.builder()
-                    .bold("#" + pullRequest.getNumber())
-                    .append(" ")
-                    .append(user.getLogin())
-                    .append(" ")
+            SpannableBuilder builder = SpannableBuilder.builder();
+            if (showRepoName) {
+                PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(pullRequest.getHtmlUrl());
+                if (parser != null) builder.bold(parser.getLogin())
+                        .append("/")
+                        .bold(parser.getRepoId())
+                        .append(" ");
+            } else {
+                builder.bold("#" + pullRequest.getNumber())
+                        .append(" ")
+                        .append(user.getLogin())
+                        .append(" ");
+            }
+            return builder
                     .bold(status)
                     .append(" ")
                     .append(ParseDateFormat.getTimeAgo(

@@ -5,6 +5,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.TimelineModel;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
@@ -66,5 +67,17 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     @Override public int getItemViewType(int position) {
         return getData().get(position).getType();
     }
+
+    @Override public void onViewRecycled(BaseViewHolder holder) {
+        if (holder instanceof TimelineCommentsViewHolder) {
+            Comment comment = getItem(holder.getAdapterPosition()).getComment();
+            if (comment == null || comment.getBodyHtml() == null) {
+                super.onViewRecycled(holder);
+            }
+        } else {
+            super.onViewRecycled(holder);
+        }
+    }
+
 }
 

@@ -53,6 +53,6 @@
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>

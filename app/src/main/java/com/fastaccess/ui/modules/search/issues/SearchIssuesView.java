@@ -53,7 +53,7 @@ public class SearchIssuesView extends BaseFragment<SearchIssuesMvp.View, SearchI
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        adapter = new IssuesAdapter(getPresenter().getIssues());
+        adapter = new IssuesAdapter(getPresenter().getIssues(), false, true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         recycler.addDivider();

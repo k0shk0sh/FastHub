@@ -17,6 +17,7 @@ import java.util.List;
 public class PullRequestAdapter extends BaseRecyclerAdapter<PullRequest, PullRequestViewHolder, BaseViewHolder
         .OnItemClickListener<PullRequest>> {
 
+    private boolean showRepoName;
     private boolean withAvatar;
 
     public PullRequestAdapter(@NonNull List<PullRequest> data) {
@@ -28,11 +29,19 @@ public class PullRequestAdapter extends BaseRecyclerAdapter<PullRequest, PullReq
         this.withAvatar = withAvatar;
     }
 
+    public PullRequestAdapter(@NonNull List<PullRequest> data, boolean withAvatar, boolean showRepoName) {
+        super(data);
+        this.withAvatar = withAvatar;
+        this.showRepoName = showRepoName;
+    }
+
     @Override protected PullRequestViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return PullRequestViewHolder.newInstance(parent, this, withAvatar);
+        return PullRequestViewHolder.newInstance(parent, this, withAvatar, showRepoName);
     }
 
     @Override protected void onBindView(PullRequestViewHolder holder, int position) {
         holder.bind(getItem(position));
     }
+
+
 }

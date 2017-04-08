@@ -53,7 +53,7 @@ public class SearchReposView extends BaseFragment<SearchReposMvp.View, SearchRep
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        adapter = new ReposAdapter(getPresenter().getRepos(), false, true);
+        adapter = new ReposAdapter(getPresenter().getRepos(), true, true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();

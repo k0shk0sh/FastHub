@@ -110,7 +110,7 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.addDivider();
-        adapter = new IssuesAdapter(getPresenter().getIssues());
+        adapter = new IssuesAdapter(getPresenter().getIssues(), false, true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);

@@ -28,9 +28,18 @@ public class RepoFilesViewHolder extends BaseViewHolder<RepoFile> {
     @BindView(R.id.menu) ForegroundImageView menu;
     @BindString(R.string.file) String file;
 
+    @Override public void onClick(View v) {
+        if (v.getId() == R.id.contentTypeImage) {
+            itemView.callOnClick();
+        } else {
+            super.onClick(v);
+        }
+    }
+
     private RepoFilesViewHolder(@NonNull View itemView, @NonNull BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
         menu.setOnClickListener(this);
+        contentTypeImage.setOnClickListener(this);
     }
 
     public static RepoFilesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {

@@ -15,7 +15,6 @@ import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -48,7 +47,6 @@ public class ReadNotificationService extends IntentService {
     }
 
     public static Intent start(@NonNull Context context, long id, @NonNull String url, boolean onlyRead) {
-        Logger.e(onlyRead);
         Intent intent = new Intent(context.getApplicationContext(), ReadNotificationService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, OPEN_NOTIFICATIO)

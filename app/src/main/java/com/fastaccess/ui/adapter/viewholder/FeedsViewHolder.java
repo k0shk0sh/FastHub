@@ -25,6 +25,7 @@ import butterknife.BindView;
 public class FeedsViewHolder extends BaseViewHolder<Event> {
 
     @BindView(R.id.avatarLayout) AvatarLayout avatar;
+    @BindView(R.id.description) FontTextView description;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
     @BindString(R.string.to) String to;

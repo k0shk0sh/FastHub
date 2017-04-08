@@ -23,11 +23,14 @@ public class ForegroundImageView extends AppCompatImageView {
         this(context, attrs, 0);
         if (getContentDescription() != null) {
             setOnLongClickListener(view -> {
-                if (toast != null) toast.cancel();
-                toast = Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.CENTER, 0, 0);
-                toast.show();
-                return true;
+                if (getContentDescription() != null) {
+                    if (toast != null) toast.cancel();
+                    toast = Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                    return true;
+                }
+                return false;
             });
         }
     }

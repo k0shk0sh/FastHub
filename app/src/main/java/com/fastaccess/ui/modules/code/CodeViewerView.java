@@ -2,6 +2,7 @@ package com.fastaccess.ui.modules.code;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -76,6 +77,7 @@ public class CodeViewerView extends BaseActivity {
                     .replace(R.id.container, ViewerView.newInstance(url), ViewerView.TAG)
                     .commit();
         }
+        setTitle(Uri.parse(url).getLastPathSegment());
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,6 +97,10 @@ public class CodeViewerView extends BaseActivity {
             return true;
         } else if (item.getItemId() == R.id.copy) {
             AppHelper.copyToClipboard(this, url);
+            return true;
+        } else if (item.getItemId() == R.id.share) {
+            ActivityHelper.shareUrl(this, url);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

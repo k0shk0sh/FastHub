@@ -26,25 +26,30 @@ public class PullRequestViewHolder extends BaseViewHolder<PullRequest> {
     @BindView(R.id.details) FontTextView details;
     @BindString(R.string.by) String by;
     private boolean withAvatar;
+    private boolean showRepoName;
 
-    private PullRequestViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean withAvatar) {
+    private PullRequestViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean withAvatar, boolean showRepoName) {
         super(itemView, adapter);
         this.withAvatar = withAvatar;
+        this.showRepoName = showRepoName;
     }
 
-    public static PullRequestViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar) {
+    public static PullRequestViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar,
+                                                    boolean showRepoName) {
         if (withAvatar) {
-            return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true);
+            return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true, showRepoName);
         }
-        return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false);
+        return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false, showRepoName);
     }
 
     @Override public void bind(@NonNull PullRequest pullRequest) {
         title.setText(pullRequest.getTitle());
-        details.setText(PullRequest.getMergeBy(pullRequest, details.getContext()));
+        details.setText(PullRequest.getMergeBy(pullRequest, details.getContext(), showRepoName));
         if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }
+
+
 }

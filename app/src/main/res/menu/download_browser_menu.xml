@@ -2,20 +2,29 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
     <item
         android:id="@+id/download"
         android:icon="@drawable/ic_download"
         android:title="@string/download"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
     <item
         android:id="@+id/browser"
         android:icon="@drawable/ic_brower"
         android:title="@string/open_in_browser"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
+
     <item
         android:id="@+id/copy"
         android:icon="@drawable/ic_copy"
         android:title="@string/copy"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
+        app:showAsAction="never"/>
 
 </menu>
