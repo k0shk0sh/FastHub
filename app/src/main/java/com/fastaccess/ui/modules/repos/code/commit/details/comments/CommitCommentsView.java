@@ -58,7 +58,7 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
         if (savedInstanceState == null) getPresenter().onFragmentCreated(getArguments());
         stateLayout.setEmptyText(R.string.no_comments);
         recycler.setEmptyView(stateLayout, refresh);
-        recycler.setItemViewCacheSize(10);
+        recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
         adapter = new CommentsAdapter(getPresenter().getComments(), this, true);

@@ -68,16 +68,5 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         return getData().get(position).getType();
     }
 
-    @Override public void onViewRecycled(BaseViewHolder holder) {
-        if (holder instanceof TimelineCommentsViewHolder) {
-            Comment comment = getItem(holder.getAdapterPosition()).getComment();
-            if (comment == null || comment.getBodyHtml() == null) {
-                super.onViewRecycled(holder);
-            }
-        } else {
-            super.onViewRecycled(holder);
-        }
-    }
-
 }
 

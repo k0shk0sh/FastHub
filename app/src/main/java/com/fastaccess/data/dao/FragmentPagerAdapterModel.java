@@ -41,6 +41,7 @@ import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.RepoPullRequestView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.commits.PullRequestCommitsView;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineView;
 import com.fastaccess.ui.modules.search.code.SearchCodeView;
 import com.fastaccess.ui.modules.search.issues.SearchIssuesView;
@@ -106,7 +107,8 @@ import lombok.Setter;
         String repoId = pullRequest.getRepoId();
         int number = pullRequest.getNumber();
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), PullRequestTimelineView.newInstance(pullRequest)),
-                new FragmentPagerAdapterModel(context.getString(R.string.commits), PullRequestCommitsView.newInstance(repoId, login, number)))
+                new FragmentPagerAdapterModel(context.getString(R.string.commits), PullRequestCommitsView.newInstance(repoId, login, number)),
+                new FragmentPagerAdapterModel(context.getString(R.string.files), PullRequestFilesView.newInstance(repoId, login, number)))
                 .collect(Collectors.toList());
     }
 

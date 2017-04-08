@@ -58,7 +58,7 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
         recycler.setEmptyView(stateLayout, refresh);
         if (gistId == null) return;
         stateLayout.setEmptyText(R.string.no_comments);
-        recycler.setItemViewCacheSize(10);
+        recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
         adapter = new CommentsAdapter(getPresenter().getComments(), this, false);

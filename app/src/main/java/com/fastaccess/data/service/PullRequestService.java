@@ -3,13 +3,13 @@ package com.fastaccess.data.service;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.AssigneesRequestModel;
+import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MergeResponseModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.PullRequest;
-import com.fastaccess.data.dao.model.RepoFile;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -54,9 +54,9 @@ public interface PullRequestService {
                                                        @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/files")
-    Observable<Pageable<RepoFile>> getPullRequestFiles(@Path("owner") String owner, @Path("repo") String repo,
-                                                       @Path("number") long number,
-                                                       @Query("page") int page);
+    Observable<Pageable<CommitFileModel>> getPullRequestFiles(@Path("owner") String owner, @Path("repo") String repo,
+                                                              @Path("number") long number,
+                                                              @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/merge")
     Observable<Response<Boolean>> hasPullRequestBeenMerged(@Path("owner") String owner, @Path("repo") String repo,

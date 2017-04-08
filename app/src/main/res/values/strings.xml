@@ -52,15 +52,15 @@
     <string name="downloading_file">Downloading File…</string>
     <string name="released">Released</string>
     <string name="drafted">Drafted</string>
-    <string name="this_text">This</string><!-- TODO use string format args instead of concatenating string resources -->
-    <string name="on">On</string><!-- TODO use string format args instead of concatenating string resources -->
+    <string name="this_text">this</string>
+    <string name="on">On</string>
     <string name="releases">Releases</string>
     <string name="no_body">No body</string>
     <string name="download_as_zip" translatable="false">Source code (zip)</string>
     <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">Contributors</string>
     <string name="merged" translatable="false">Merged</string>
-    <string name="by">By</string><!-- TODO use string format args instead of concatenating string resources -->
+    <string name="by">By</string>
     <string name="star" translatable="false">Star</string>
     <string name="fork" translatable="false">Fork</string>
     <string name="close_issue">Close Issue</string>
@@ -97,7 +97,7 @@
     <string name="status">Status</string>
     <string name="confirm_message">Are you sure?</string>
     <string name="success">Success</string>
-    <string name="to">to</string><!-- TODO use string format args instead of concatenating string resources -->
+    <string name="to">to</string>
     <string name="error_deleting_comment">Error deleting comment</string>
     <string name="delete">Delete</string>
     <string name="comments">Comments</string>
@@ -228,9 +228,9 @@
     <string name="home">Home</string>
     <string name="create_milestone">Create Milestone</string>
     <string name="error_creating_milestone">Error creating milestone</string>
-    <string name="due_on">Due on</string><!-- TODO use string format args instead of concatenating string resources -->
+    <string name="due_on">Due on</string>
     <string name="no_assignees">No assignees</string>
-    <string name="this_value">This</string><!-- TODO use string format args instead of concatenating string resources -->
+    <string name="this_value">This</string>
     <string name="commits_reflected">Commits have been switched to the selected branch</string>
     <string name="general_settings">General</string>
     <string name="background_job_summary">Change how frequent FastHub checks for new notifications</string>
