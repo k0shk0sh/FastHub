@@ -3,7 +3,7 @@ package com.fastaccess.ui.modules.repos.extras.assignees;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.model.User;
-import com.fastaccess.ui.AssigneesAdapter;
+import com.fastaccess.ui.adapter.AssigneesAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.ViewHelper;
-import com.fastaccess.ui.AssigneesAdapter;
+import com.fastaccess.ui.adapter.AssigneesAdapter;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;

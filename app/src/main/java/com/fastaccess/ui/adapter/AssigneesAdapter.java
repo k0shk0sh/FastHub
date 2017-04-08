@@ -1,4 +1,4 @@
-package com.fastaccess.ui;
+package com.fastaccess.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
