@@ -19,6 +19,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.prettifier.ViewerView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -100,6 +101,10 @@ public class CodeViewerView extends BaseActivity {
             return true;
         } else if (item.getItemId() == R.id.share) {
             ActivityHelper.shareUrl(this, url);
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            RepoFilesActivity.startActivity(this, url);
+            finish();
             return true;
         }
         return super.onOptionsItemSelected(item);

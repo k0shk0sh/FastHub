@@ -67,6 +67,7 @@ public class PullRequestTimelineView extends BaseFragment<PullRequestTimelineMvp
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
+        recycler.setItemViewCacheSize(30);
         adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());

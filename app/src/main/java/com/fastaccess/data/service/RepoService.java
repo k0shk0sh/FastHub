@@ -111,7 +111,8 @@ public interface RepoService {
 
     @NonNull @GET("repos/{owner}/{repo}/contents/{path}")
     Observable<Pageable<RepoFile>> getRepoFiles(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
-                                                @NonNull @Path("path") String path, @NonNull @Query("ref") String ref);
+                                                @NonNull @Path(value = "path", encoded = true) String path,
+                                                @NonNull @Query("ref") String ref);
 
     @NonNull @GET("repos/{owner}/{repo}/labels")
     Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);

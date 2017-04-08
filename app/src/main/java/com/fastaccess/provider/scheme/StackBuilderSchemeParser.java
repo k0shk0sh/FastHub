@@ -20,6 +20,7 @@ import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
+import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
@@ -255,27 +256,35 @@ public class StackBuilderSchemeParser {
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
-            String fullUrl = uri.toString();
-            if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(fullUrl))) {
+            StringBuilder fullUrl = new StringBuilder(uri.toString());
+            if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(fullUrl.toString()))) {
                 return null;
             }
+            String owner = null;
+            String repo = null;
             if (uri.getAuthority().equalsIgnoreCase(HOST_DEFAULT)) {
-                String owner = segments.get(0);
-                String repo = segments.get(1);
+                owner = segments.get(0);
+                repo = segments.get(1);
                 String branch = segments.get(3);
-                fullUrl = "https://" + RAW_AUTHORITY + "/" + owner + "/" + repo + "/" + branch;
+                fullUrl = new StringBuilder("https://" + RAW_AUTHORITY + "/" + owner + "/" + repo + "/" + branch);
                 for (int i = 4; i < segments.size(); i++) {
-                    fullUrl += "/" + segments.get(i);
+                    fullUrl.append("/").append(segments.get(i));
                 }
             }
-            if (fullUrl != null) return TaskStackBuilder.create(context)
-                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
-                    .addNextIntent(CodeViewerView.createIntent(context, fullUrl));
+            if (fullUrl.length() > 0 && owner != null && repo != null) return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
+                    .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
+                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, fullUrl.toString()))
+                    .addNextIntent(CodeViewerView.createIntent(context, fullUrl.toString()));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
+                String owner = uri.getPathSegments().get(0);
+                String repo = uri.getPathSegments().get(1);
                 return TaskStackBuilder.create(context)
-                        .addNextIntentWithParentStack(new Intent(context, MainView.class))
+                        .addParentStack(MainView.class)
+                        .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
+                        .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, uri.toString()))
                         .addNextIntent(CodeViewerView.createIntent(context, uri.toString()));
             }
         }

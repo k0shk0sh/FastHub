@@ -24,7 +24,6 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesView;
 
 import java.util.List;
@@ -32,6 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
+import butterknife.OnTouch;
 import icepick.State;
 
 /**
@@ -49,7 +49,7 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
 
     private RepoFilePathsAdapter adapter;
     private RepoFilesView repoFilesView;
-    private RepoPagerMvp.View repoCallback;
+    private boolean canSelectSpinner;
 
     public static RepoFilePathView newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String defaultBranch) {
         RepoFilePathView view = new RepoFilePathView();
@@ -87,8 +87,13 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         }
     }
 
+    @OnTouch(R.id.branches) boolean onTouchSpinner() {
+        canSelectSpinner = true;
+        return false;
+    }
+
     @OnItemSelected(R.id.branches) void onBranchSelected(int position) {
-        if (repoCallback.hasUserInteractedWithView()) {
+        if (canSelectSpinner) {
             ref = ((BranchesModel) branches.getItemAtPosition(position)).getName();
             getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, true);
             onBackClicked();
@@ -97,15 +102,9 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof RepoPagerMvp.View) {
-            repoCallback = (RepoPagerMvp.View) context;
-        } else if (getParentFragment() instanceof RepoPagerMvp.View) {
-            repoCallback = (RepoPagerMvp.View) getParentFragment();
-        }
     }
 
     @Override public void onDetach() {
-        repoCallback = null;
         super.onDetach();
     }
 
@@ -129,7 +128,6 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
     }
 
     @Override public void onSendData() {
-        Logger.e(ref, getPresenter().getDefaultBranch());
         if (InputHelper.isEmpty(ref)) {
             ref = getPresenter().getDefaultBranch();
         }

@@ -160,6 +160,7 @@
             android:label="@string/public_gists"/>
 
         <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerView"/>
+        <activity android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
@@ -182,6 +183,10 @@
                     android:scheme="http"/>
                 <data
                     android:host="gist.github.com"
+                    android:scheme="https"/>
+
+                <data
+                    android:host="raw.githubusercontent.com"
                     android:scheme="https"/>
 
                 <data android:pathPattern=".*"/>

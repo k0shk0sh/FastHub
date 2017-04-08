@@ -65,12 +65,14 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         makeRestCall(RestProvider.getRepoService().getRepoFiles(login, repoId, path, ref),
                 response -> {
                     files.clear();
-                    ArrayList<RepoFile> repoFilesModels = Stream.of(response.getItems())
-                            .sortBy(model -> model.getType() == FilesType.file)
-                            .collect(Collectors.toCollection(ArrayList::new));
-                    manageSubscription(RepoFile.save(repoFilesModels, login, repoId).subscribe());
-                    pathsModel.setFiles(ref, path, repoFilesModels);
-                    files.addAll(repoFilesModels);
+                    if (response != null && response.getItems() != null) {
+                        ArrayList<RepoFile> repoFilesModels = Stream.of(response.getItems())
+                                .sortBy(model -> model.getType() == FilesType.file)
+                                .collect(Collectors.toCollection(ArrayList::new));
+                        manageSubscription(RepoFile.save(repoFilesModels, login, repoId).subscribe());
+                        pathsModel.setFiles(ref, path, repoFilesModels);
+                        files.addAll(repoFilesModels);
+                    }
                     sendToView(RepoFilesMvp.View::onNotifyAdapter);
                 });
 
