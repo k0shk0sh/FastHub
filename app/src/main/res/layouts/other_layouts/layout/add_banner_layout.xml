@@ -8,6 +8,6 @@
     android:layout_height="wrap_content"
     android:background="?colorPrimary"
     android:visibility="gone"
-    ads:adSize="SMART_BANNER"
+    ads:adSize="BANNER"
     ads:adUnitId="@string/banner_ad_unit_id"
     tools:visibility="visible"/>

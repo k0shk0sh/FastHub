@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
-import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -26,7 +25,6 @@ import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
-import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 
@@ -44,9 +42,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @BindView(R.id.fab) FloatingActionButton fab;
     private long backPressTimer;
 
-    @OnClick(R.id.fab) void onFilter() {
-        ActivityHelper.startReveal(this, CreateIssueView.getIntent(this, "K0shk0sh", "FastHub"), fab);
-    }
+    @OnClick(R.id.fab) void onFilter() {}
 
     @NonNull @Override public MainPresenter providePresenter() {
         return new MainPresenter();
@@ -163,11 +159,11 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     }
 
     private void showHideFab() {
-        if (navType == MainMvp.ISSUES || navType == MainMvp.PULL_REQUESTS) {
-            fab.show();
-        } else {
-            fab.hide();
-        }
+//        if (navType == MainMvp.ISSUES || navType == MainMvp.PULL_REQUESTS) {
+//            fab.show();
+//        } else {
+//            fab.hide();
+//        }
     }
 
     private void superOnBackPressed(boolean didClickTwice) {

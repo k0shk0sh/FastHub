@@ -238,7 +238,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             return true;
         } else if (item.getItemId() == R.id.mainView) {
             Intent intent = new Intent(this, MainView.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
             finish();
         }

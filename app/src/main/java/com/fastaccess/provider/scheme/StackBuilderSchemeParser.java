@@ -143,6 +143,7 @@ public class StackBuilderSchemeParser {
         if (issueNumber < 1) return null;
         return TaskStackBuilder.create(context)
                 .addParentStack(MainView.class)
+                .addNextIntentWithParentStack(new Intent(context, MainView.class))
                 .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST))
                 .addNextIntent(PullRequestPagerView.createIntent(context, repo, owner, issueNumber));
     }
@@ -175,6 +176,7 @@ public class StackBuilderSchemeParser {
         if (issueNumber < 1) return null;
         return TaskStackBuilder.create(context)
                 .addParentStack(MainView.class)
+                .addNextIntentWithParentStack(new Intent(context, MainView.class))
                 .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
                 .addNextIntent(IssuePagerView.createIntent(context, repo, owner, issueNumber));
     }
@@ -185,6 +187,7 @@ public class StackBuilderSchemeParser {
         String owner = segments.get(0);
         String repoName = segments.get(1);
         return TaskStackBuilder.create(context)
+                .addParentStack(MainView.class)
                 .addNextIntentWithParentStack(new Intent(context, MainView.class))
                 .addNextIntent(RepoPagerView.createIntent(context, repoName, owner));
     }
@@ -203,6 +206,7 @@ public class StackBuilderSchemeParser {
                 String owner = segments.get(0);
                 String repoName = segments.get(1);
                 return TaskStackBuilder.create(context)
+                        .addParentStack(MainView.class)
                         .addNextIntentWithParentStack(new Intent(context, MainView.class))
                         .addNextIntent(RepoPagerView.createIntent(context, repoName, owner));
             }
@@ -219,6 +223,7 @@ public class StackBuilderSchemeParser {
             String sha = segments.get(4);
             return TaskStackBuilder.create(context)
                     .addParentStack(MainView.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repoId, login))
                     .addNextIntent(CommitPagerView.createIntent(context, repoId, login, sha));
         }
@@ -233,6 +238,7 @@ public class StackBuilderSchemeParser {
         String sha = segments.get(3);
         return TaskStackBuilder.create(context)
                 .addParentStack(MainView.class)
+                .addNextIntentWithParentStack(new Intent(context, MainView.class))
                 .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repoId, login))
                 .addNextIntent(CommitPagerView.createIntent(context, repoId, login, sha));
     }
@@ -245,6 +251,7 @@ public class StackBuilderSchemeParser {
                     .addNextIntent(UserPagerView.createIntent(context, segments.get(0)));
         } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {
             return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
                     .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntent(UserPagerView.createIntent(context, segments.get(1), true));
         }
@@ -273,6 +280,7 @@ public class StackBuilderSchemeParser {
             }
             if (fullUrl.length() > 0 && owner != null && repo != null) return TaskStackBuilder.create(context)
                     .addParentStack(MainView.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
                     .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, fullUrl.toString()))
                     .addNextIntent(CodeViewerView.createIntent(context, fullUrl.toString()));
@@ -283,6 +291,7 @@ public class StackBuilderSchemeParser {
                 String repo = uri.getPathSegments().get(1);
                 return TaskStackBuilder.create(context)
                         .addParentStack(MainView.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainView.class))
                         .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner))
                         .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, uri.toString()))
                         .addNextIntent(CodeViewerView.createIntent(context, uri.toString()));
@@ -304,6 +313,7 @@ public class StackBuilderSchemeParser {
             String repo = segments.get(1);
             return TaskStackBuilder.create(context)
                     .addParentStack(MainView.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntentWithParentStack(RepoPagerView.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
                     .addNextIntent(CreateIssueView.getIntent(context, owner, repo));
         }
