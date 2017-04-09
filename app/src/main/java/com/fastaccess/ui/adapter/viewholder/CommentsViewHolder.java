@@ -66,33 +66,36 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     }
 
     private void addReactionCount(View v) {
-        if (adapter != null) {
-            Comment comment = (Comment) adapter.getItem(getAdapterPosition());
-            if (comment != null) {
-                ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
-                switch (v.getId()) {
-                    case R.id.heart:
-                        reactionsModel.setHeart(reactionsModel.getHeart() + 1);
-                        break;
-                    case R.id.sad:
-                        reactionsModel.setConfused(reactionsModel.getConfused() + 1);
-                        break;
-                    case R.id.thumbsDown:
-                        reactionsModel.setMinusOne(reactionsModel.getMinusOne() + 1);
-                        break;
-                    case R.id.thumbsUp:
-                        reactionsModel.setPlusOne(reactionsModel.getPlusOne() + 1);
-                        break;
-                    case R.id.laugh:
-                        reactionsModel.setLaugh(reactionsModel.getLaugh() + 1);
-                        break;
-                    case R.id.hurray:
-                        reactionsModel.setHooray(reactionsModel.getHooray() + 1);
-                        break;
+        if (v.getId() == R.id.heart || v.getId() == R.id.sad || v.getId() == R.id.thumbsDown ||
+                v.getId() == R.id.laugh || v.getId() == R.id.hurray || v.getId() == R.id.thumbsUp) {
+            if (adapter != null) {
+                Comment comment = (Comment) adapter.getItem(getAdapterPosition());
+                if (comment != null) {
+                    ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
+                    switch (v.getId()) {
+                        case R.id.heart:
+                            reactionsModel.setHeart(reactionsModel.getHeart() + 1);
+                            break;
+                        case R.id.sad:
+                            reactionsModel.setConfused(reactionsModel.getConfused() + 1);
+                            break;
+                        case R.id.thumbsDown:
+                            reactionsModel.setMinusOne(reactionsModel.getMinusOne() + 1);
+                            break;
+                        case R.id.thumbsUp:
+                            reactionsModel.setPlusOne(reactionsModel.getPlusOne() + 1);
+                            break;
+                        case R.id.laugh:
+                            reactionsModel.setLaugh(reactionsModel.getLaugh() + 1);
+                            break;
+                        case R.id.hurray:
+                            reactionsModel.setHooray(reactionsModel.getHooray() + 1);
+                            break;
+                    }
+                    comment.setReactions(reactionsModel);
+                    appendEmojies(reactionsModel);
+                    bind(comment);
                 }
-                comment.setReactions(reactionsModel);
-                appendEmojies(reactionsModel);
-                bind(comment);
             }
         }
     }

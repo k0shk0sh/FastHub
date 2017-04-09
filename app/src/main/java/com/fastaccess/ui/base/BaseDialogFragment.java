@@ -1,6 +1,9 @@
 package com.fastaccess.ui.base;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -12,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -59,6 +63,15 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         }
     }
 
+    @Override public void dismiss() {
+        AnimHelper.dismissDialog(this,getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
+            @Override public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                BaseDialogFragment.super.dismiss();
+            }
+        });
+    }
+
     @SuppressLint("RestrictedApi") @Nullable @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (fragmentLayout() != 0) {
@@ -69,6 +82,13 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
             return view;
         }
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
+                getResources().getInteger(android.R.integer.config_longAnimTime)));
+        return dialog;
     }
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

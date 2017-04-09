@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.base.BaseActivity;
@@ -72,6 +73,6 @@ public class GistsListActivity extends BaseActivity {
     }
 
     @OnClick(R.id.fab) public void onViewClicked() {
-        startActivity(new Intent(this, CreateGistView.class));
+        ActivityHelper.startReveal(this, new Intent(this, CreateGistView.class), fab);
     }
 }

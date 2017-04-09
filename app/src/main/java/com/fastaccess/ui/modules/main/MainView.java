@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -24,10 +26,12 @@ import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.notification.NotificationActivityView;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
@@ -37,7 +41,12 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
     @BindView(R.id.bottomNavigation) BottomNavigation bottomNavigation;
     @BindView(R.id.navigation) NavigationView navigationView;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+    @BindView(R.id.fab) FloatingActionButton fab;
     private long backPressTimer;
+
+    @OnClick(R.id.fab) void onFilter() {
+        ActivityHelper.startReveal(this, CreateIssueView.getIntent(this, "K0shk0sh", "FastHub"), fab);
+    }
 
     @NonNull @Override public MainPresenter providePresenter() {
         return new MainPresenter();
@@ -65,6 +74,8 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
+        fab.setImageResource(R.drawable.ic_filter);
+        showHideFab();
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -105,6 +116,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
         this.navType = navType;
+        showHideFab();
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
         hideShowShadow(navType == MainMvp.FEEDS);
@@ -148,6 +160,14 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public void onOpenPinnedRepos() {
         PinnedReposActivity.startActivity(this);
+    }
+
+    private void showHideFab() {
+        if (navType == MainMvp.ISSUES || navType == MainMvp.PULL_REQUESTS) {
+            fab.show();
+        } else {
+            fab.hide();
+        }
     }
 
     private void superOnBackPressed(boolean didClickTwice) {

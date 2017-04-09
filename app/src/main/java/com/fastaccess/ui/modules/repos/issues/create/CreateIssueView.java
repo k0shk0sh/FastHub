@@ -14,6 +14,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -53,7 +54,12 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, login.equalsIgnoreCase("k0shk0sh") && repoId.equalsIgnoreCase("FastHub"))
                 .end());
-        fragment.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        View view = fragment.getActivity() != null ? fragment.getActivity().findViewById(R.id.fab) : null;
+        if (view != null) {
+            ActivityHelper.startReveal(fragment, intent, view, BundleConstant.REQUEST_CODE);
+        } else {
+            fragment.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        }
     }
 
 
@@ -64,9 +70,14 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.ITEM, issueModel)//TODO remove this pass only required data.
+                    .put(BundleConstant.ITEM, issueModel)
                     .end());
-            activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+            View view = activity.findViewById(R.id.fab);
+            if (view != null) {
+                startForResult(activity, intent, view);
+            } else {
+                activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+            }
         }
     }
 
@@ -77,13 +88,18 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.ITEM, pullRequestModel)//TODO remove this, pass only required data
+                    .put(BundleConstant.ITEM, pullRequestModel)
                     .end());
-            activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+            View view = activity.findViewById(R.id.fab);
+            if (view != null) {
+                startForResult(activity, intent, view);
+            } else {
+                activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+            }
         }
     }
 
-    public static Intent getIntent(@NonNull Context context, @NonNull String login, @NonNull String repoId) {
+    @NonNull public static Intent getIntent(@NonNull Context context, @NonNull String login, @NonNull String repoId) {
         Intent intent = new Intent(context, CreateIssueView.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
@@ -93,7 +109,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
         return intent;
     }
 
-    public static void startForResult(@NonNull Activity activity) {
+    @NonNull public static Intent startForResult(@NonNull Activity activity) {
         String login = "k0shk0sh"; // FIXME: 23/02/2017 hardcoded
         String repoId = "FastHub";// FIXME: 23/02/2017 hardcoded
         Intent intent = new Intent(activity, CreateIssueView.class);
@@ -102,8 +118,13 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, true)
                 .end());
-        activity.startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        return intent;
     }
+
+    public static void startForResult(@NonNull Activity activity, @NonNull Intent intent, @NonNull View view) {
+        ActivityHelper.startReveal(activity, intent, view, BundleConstant.REQUEST_CODE);
+    }
+
 
     @Override public void onSetCode(@NonNull CharSequence charSequence) {
         this.savedText = charSequence;
@@ -204,7 +225,7 @@ public class CreateIssueView extends BaseActivity<CreateIssueMvp.View, CreateIss
                     .put(BundleConstant.EXTRA, InputHelper.toString(savedText))
                     .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA)
                     .end());
-            startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+            ActivityHelper.startReveal(this, intent, submit, BundleConstant.REQUEST_CODE);
             return true;
         }
         return false;

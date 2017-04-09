@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.danielstone.materialaboutlibrary.ConvenienceBuilder;
@@ -29,6 +30,8 @@ import es.dmoral.toasty.Toasty;
  */
 public class FastHubAboutActivity extends MaterialAboutActivity {
 
+    View malRecyclerview;
+
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {
@@ -37,6 +40,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
             setTheme(R.style.AppTheme_AboutActivity_Dark);
         }
         super.onCreate(savedInstanceState);
+        malRecyclerview = findViewById(R.id.mal_recyclerview);
     }
 
     @Override protected MaterialAboutList getMaterialAboutList(Context context) {
@@ -55,7 +59,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .text(R.string.report_issue)
                 .subText(R.string.report_issue_here)
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_bug))
-                .setOnClickListener(b -> CreateIssueView.startForResult(this))
+                .setOnClickListener(b -> CreateIssueView.startForResult(this, CreateIssueView.startForResult(this), malRecyclerview))
                 .build());
 
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();

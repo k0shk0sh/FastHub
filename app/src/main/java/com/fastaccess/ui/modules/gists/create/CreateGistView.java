@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Gist;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -92,7 +93,7 @@ public class CreateGistView extends BaseActivity<CreateGistMvp.View, CreateGistP
                     .put(BundleConstant.EXTRA, InputHelper.toString(savedText))
                     .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA)
                     .end());
-            startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+            ActivityHelper.startReveal(this, intent, fileContent, BundleConstant.REQUEST_CODE);
             return true;
         }
         return false;

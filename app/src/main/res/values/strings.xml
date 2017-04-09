@@ -338,4 +338,7 @@
     <string name="no_teams">No teams</string>
     <string name="no_orgs">No Organizations</string>
     <string name="mark_as_read">Mark as read</string>
+    <string name="animations">Animations</string>
+    <string name="dialog_animation_summary">Enable popups animations</string>
+    <string name="dialog_animation_title">Popup animation</string>
 </resources>

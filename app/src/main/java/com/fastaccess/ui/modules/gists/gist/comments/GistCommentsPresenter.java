@@ -119,11 +119,11 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
             if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
                 getView().onShowDeleteMsg(item.getId());
             }
-        } else if (item.getId() == R.id.reply) {
-            if (getView() != null) getView().onTagUser(item.getUser());
-        } else if (item.getId() == R.id.edit) {
+        } else if (v.getId() == R.id.reply) {
+            getView().onTagUser(item.getUser());
+        } else if (v.getId() == R.id.edit) {
             if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
-                if (getView() != null) getView().onEditComment(item);
+                getView().onEditComment(item);
             }
         }
     }

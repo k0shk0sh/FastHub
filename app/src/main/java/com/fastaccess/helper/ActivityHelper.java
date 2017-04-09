@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -80,10 +79,24 @@ public class ActivityHelper {
         activity.startActivity(intent, options.toBundle());
     }
 
+    public static void startReveal(Activity activity, Intent intent, View sharedElement, int requestCode) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                sharedElement.getHeight() / 2,
+                sharedElement.getWidth(), sharedElement.getHeight());
+        activity.startActivityForResult(intent, requestCode, options.toBundle());
+    }
+
+    public static void startReveal(Fragment activity, Intent intent, View sharedElement, int requestCode) {
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                sharedElement.getHeight() / 2,
+                sharedElement.getWidth(), sharedElement.getHeight());
+        activity.startActivityForResult(intent, requestCode, options.toBundle());
+    }
+
     public static void startReveal(Activity activity, Intent intent, View sharedElement) {
-        Rect rect = ViewHelper.getLayoutPosition(sharedElement);
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, rect.centerX(), rect.centerY(), sharedElement
-                .getWidth(), sharedElement.getHeight());
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                sharedElement.getHeight() / 2,
+                sharedElement.getWidth(), sharedElement.getHeight());
         activity.startActivity(intent, options.toBundle());
     }
 

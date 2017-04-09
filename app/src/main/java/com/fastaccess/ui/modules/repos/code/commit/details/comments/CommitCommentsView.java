@@ -13,6 +13,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -125,7 +126,8 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA)
                 .end());
-        startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onStartNewComment() {
@@ -151,7 +153,8 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
                 .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
                 .end());
-        startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onDestroyView() {
@@ -200,11 +203,6 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
         }
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @Override public void onToggle(int position, boolean isCollapsed) {
         getSparseBooleanArray().put(position, isCollapsed);
         adapter.notifyItemChanged(position);
@@ -219,5 +217,10 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
             sparseBooleanArray = new SparseBooleanArrayParcelable();
         }
         return sparseBooleanArray;
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

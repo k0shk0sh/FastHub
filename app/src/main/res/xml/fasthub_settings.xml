@@ -35,13 +35,6 @@
 
         <SwitchPreference
             android:defaultValue="false"
-            android:key="recylerViewAnimation"
-            android:summary="@string/recycler_view_animation_summary"
-            android:title="@string/recycler_view_animation_title"/>
-
-
-        <SwitchPreference
-            android:defaultValue="false"
             android:key="rect_avatar"
             android:summary="@string/rect_avatar_summary"
             android:title="@string/rect_avatar_title"/>
@@ -54,6 +47,20 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/animations">
+        <!--<SwitchPreference-->
+            <!--android:defaultValue="true"-->
+            <!--android:key="popupAnimation"-->
+            <!--android:summary="@string/dialog_animation_summary"-->
+            <!--android:title="@string/dialog_animation_title"/>-->
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="recylerViewAnimation"
+            android:summary="@string/recycler_view_animation_summary"
+            android:title="@string/recycler_view_animation_title"/>
+
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
 

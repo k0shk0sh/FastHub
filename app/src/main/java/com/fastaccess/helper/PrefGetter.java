@@ -37,6 +37,7 @@ public class PrefGetter {
     private static final String MARKDOWNDOWN_GUIDE = "markdowndown_guide";
     private static final String HOME_BUTTON_GUIDE = "home_button_guide";
     private static final String NAV_DRAWER_GUIDE = "nav_drawer_guide";
+    private static final String POPUP_ANIMATION = "popupAnimation";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -140,6 +141,10 @@ public class PrefGetter {
 
     public static boolean isMarkAsReadEnabled() {
         return PrefHelper.getBoolean("markNotificationAsRead");
+    }
+
+    public static boolean isPopupAnimationEnabled() {
+        return PrefHelper.getBoolean(POPUP_ANIMATION);
     }
 
     @ThemeType public static int getThemeType(@NonNull Context context) {

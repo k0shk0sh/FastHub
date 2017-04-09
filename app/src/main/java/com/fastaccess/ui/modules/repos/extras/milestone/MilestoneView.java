@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
@@ -89,7 +90,7 @@ public class MilestoneView extends BaseFragment<MilestoneMvp.View, MilestonePres
         toolbar.setOnMenuItemClickListener(item -> onAddMilestone());
         toolbar.inflateMenu(R.menu.add_menu);
         toolbar.setNavigationIcon(R.drawable.ic_clear);
-        toolbar.setNavigationOnClickListener(v -> getActivity().finish());
+        toolbar.setNavigationOnClickListener(v -> ((DialogFragment) getParentFragment()).dismiss());
         recycler.addDivider();
         adapter = new MilestonesAdapter(getPresenter().getMilestones());
         adapter.setListener(getPresenter());

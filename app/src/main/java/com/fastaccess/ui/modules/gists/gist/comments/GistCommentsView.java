@@ -13,6 +13,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -128,7 +129,8 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA_TYPE, EDIT_GIST_COMMENT_EXTRA)
                 .end());
-        startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onStartNewComment() {
@@ -138,7 +140,8 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
                 .put(BundleConstant.ID, gistId)
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
                 .end());
-        startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onShowDeleteMsg(long id) {
@@ -159,7 +162,8 @@ public class GistCommentsView extends BaseFragment<GistCommentsMvp.View, GistCom
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
                 .end());
-        startActivityForResult(intent, BundleConstant.REQUEST_CODE);
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onDestroyView() {

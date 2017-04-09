@@ -3,16 +3,16 @@ package com.fastaccess.helper;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.graphics.Rect;
+import android.app.Dialog;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
@@ -35,7 +35,7 @@ public class AnimHelper {
 
     private static final Interpolator interpolator = new LinearInterpolator();
 
-    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show, int visibility) {
+    @UiThread private static void animateVisibility(@Nullable final View view, final boolean show, int visibility) {
         animateVisibility(view, show, visibility, null);
     }
 
@@ -43,13 +43,8 @@ public class AnimHelper {
         animateVisibility(view, show, View.GONE);
     }
 
-    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show,
-                                                   @Nullable final AnimationCallback callback) {
-        animateVisibility(view, show, View.GONE, callback);
-    }
-
-    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show, int visibility,
-                                                   @Nullable final AnimationCallback callback) {
+    @UiThread private static void animateVisibility(@Nullable final View view, final boolean show, int visibility,
+                                                    @Nullable final AnimationCallback callback) {
         if (view == null) {
             return;
         }
@@ -117,52 +112,40 @@ public class AnimHelper {
         }
     }
 
-    @UiThread public static void circularReveal(final View mRevealView, final View from, final boolean show) {
-        if (ViewCompat.isAttachedToWindow(mRevealView)) {
-            if (show) {
-                if (mRevealView.isShown()) return;
-            } else {
-                if (!mRevealView.isShown()) {
-                    return;
+    @UiThread public static void revealDialog(@NonNull Dialog dialog, int animDuration) {
+        if (PrefGetter.isPopupAnimationEnabled()) {
+            if (dialog.getWindow() != null) {
+                View view = dialog.getWindow().getDecorView();
+                if (view != null) {
+                    int centerX = view.getWidth() / 2;
+                    int centerY = view.getHeight() / 2;
+                    Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, 20, view.getHeight());
+                    animator.setDuration(animDuration);
+                    animator.start();
                 }
             }
-            reveal(mRevealView, show, from);
-        } else {
-            mRevealView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                @Override public boolean onPreDraw() {
-                    mRevealView.getViewTreeObserver().removeOnPreDrawListener(this);
-                    if (show) {
-                        if (mRevealView.isShown()) return true;
-                    } else {
-                        if (!mRevealView.isShown()) {
-                            return true;
-                        }
+        }
+    }
+
+    @UiThread public static void dismissDialog(@NonNull DialogFragment dialogFragment, int duration, AnimatorListenerAdapter listenerAdapter) {
+        if (PrefGetter.isPopupAnimationEnabled()) {
+            Dialog dialog = dialogFragment.getDialog();
+            if (dialog != null) {
+                if (dialog.getWindow() != null) {
+                    View view = dialog.getWindow().getDecorView();
+                    if (view != null) {
+                        int centerX = view.getWidth() / 2;
+                        int centerY = view.getHeight() / 2;
+                        float radius = (float) Math.sqrt(view.getWidth() * view.getWidth() / 4 + view.getHeight() * view.getHeight() / 4);
+                        Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, radius, 0);
+                        animator.setDuration(duration);
+                        animator.addListener(listenerAdapter);
+                        animator.start();
                     }
-                    reveal(mRevealView, show, from);
-                    return true;
                 }
-            });
+            }
+        } else {
+            listenerAdapter.onAnimationEnd(null);
         }
     }
-
-    @UiThread private static void reveal(final View mRevealView, final boolean show, View from) {
-        Rect rect = ViewHelper.getLayoutPosition(from);
-        int x = (int) rect.exactCenterX();
-        int y = (int) rect.exactCenterY();
-        Animator animator = ViewAnimationUtils.createCircularReveal(mRevealView, x, y, 0, Math.max(rect.width(), rect.height()));
-        animator.setDuration(400L);
-        animator.setInterpolator(new AccelerateDecelerateInterpolator());
-        mRevealView.setVisibility(View.VISIBLE);
-        if (!show) {
-            animator.addListener(new AnimatorListenerAdapter() {
-                @Override public void onAnimationEnd(Animator animation) {
-                    super.onAnimationEnd(animation);
-                    mRevealView.setVisibility(View.GONE);
-                    animation.removeListener(this);
-                }
-            });
-            animator.start();
-        }
-    }
-
 }
