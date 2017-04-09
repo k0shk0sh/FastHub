@@ -7,25 +7,19 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.PostReactionModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
-import com.fastaccess.data.dao.model.ReactionsModel;
-import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.comments.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import rx.Observable;
 
@@ -35,10 +29,10 @@ import rx.Observable;
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private Map<Long, ReactionsModel> reactionsMap = new LinkedHashMap<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    private ReactionsProvider reactionsProvider;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (item.getType() == TimelineModel.COMMENT) {
@@ -167,43 +161,21 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return getHeader() != null ? getHeader().getNumber() : -1;
     }
 
-    @NonNull @Override public Map<Long, ReactionsModel> getReactionsMap() {
-        return reactionsMap;
-    }
-
     @Override public void onHandleReaction(int id, long commentId) {
         String login = login();
         String repoId = repoId();
-        if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            if (!isPreviouslyReacted(commentId, id)) {
-                ReactionTypes reactionTypes = ReactionTypes.get(id);
-                if (reactionTypes != null) {
-                    manageSubscription(RxHelper.safeObservable(RestProvider.getReactionsService()
-                            .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, commentId))
-                            .doOnNext(response -> getReactionsMap().put(commentId, response))
-                            .subscribe());
-                }
-            } else {
-                ReactionsModel reactionsModel = getReactionsMap().get(commentId);
-                if (reactionsModel != null) {
-                    manageSubscription(RxHelper.safeObservable(RestProvider.getReactionsService().delete(reactionsModel.getId()))
-                            .doOnNext(booleanResponse -> {
-                                if (booleanResponse.code() == 204) {
-                                    getReactionsMap().remove(commentId);
-                                }
-                            })
-                            .subscribe());
-                }
-            }
+        Observable observable = getReactionsProvider().onHandleReaction(id, commentId, login, repoId);
+        if (observable != null) manageSubscription(observable.subscribe());
+    }
+
+    private ReactionsProvider getReactionsProvider() {
+        if (reactionsProvider == null) {
+            reactionsProvider = new ReactionsProvider();
         }
+        return reactionsProvider;
     }
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
-        ReactionsModel reactionsModel = getReactionsMap().get(commentId);
-        if (reactionsModel == null || InputHelper.isEmpty(reactionsModel.getContent())) {
-            return false;
-        }
-        ReactionTypes type = ReactionTypes.get(vId);
-        return type != null && type.getContent().equals(reactionsModel.getContent());
+        return getReactionsProvider().isPreviouslyReacted(commentId, vId);
     }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
@@ -17,6 +18,8 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
 
 import java.util.ArrayList;
+
+import rx.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -86,32 +89,34 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
         if (branches.isEmpty()) {
             manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-                    .getCommitCounts(login, repoId, branch)))
-                    .subscribe(response -> {
-                        if (response != null) {
-                            sendToView(view -> view.onShowCommitCount(response.getLast()));
-                        }
-                    }));
-            manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-                    .getBranches(login, repoId)
-                    .doOnNext(response -> {
-                        if (response != null && response.getItems() != null) {
+                    .getBranches(login, repoId)))
+                    .doOnSubscribe(() -> sendToView(RepoCommitsMvp.View::showBranchesProgress))
+                    .flatMap(branchesModelPageable -> {
+                        if (branchesModelPageable != null && branchesModelPageable.getItems() != null) {
                             branches.clear();
-                            branches.addAll(response.getItems());
-                            sendToView(view -> {
-                                view.setBranchesData(branches, true);
-                                view.hideBranchesProgress();
-                            });
+                            branches.addAll(Stream.of(branchesModelPageable.getItems())
+                                    .map(branchesModel -> {
+                                        branchesModel.setTag(false);
+                                        return branchesModel;
+                                    }).collect(com.annimon.stream.Collectors.toList()));
+                            return RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                                    .getTags(login, repoId)));
                         }
-                    })))
-                    .flatMap(branchesModelPageable -> RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-                            .getTags(login, repoId))))
-                    .doOnNext(response -> {
-                        branches.addAll(response.getItems());
-                        sendToView(view -> {
-                            view.setBranchesData(branches, true);
-                            view.hideBranchesProgress();
-                        });
+                        return Observable.empty();
+                    })
+                    .doOnNext(branchesModelPageable -> {
+                        if (branchesModelPageable != null && branchesModelPageable.getItems() != null) {
+                            branches.addAll(Stream.of(branchesModelPageable.getItems())
+                                    .map(branchesModel -> {
+                                        branchesModel.setTag(true);
+                                        return branchesModel;
+                                    }).collect(com.annimon.stream.Collectors.toList()));
+                        }
+                        sendToView(view -> view.setBranchesData(branches, true));
+                    })
+                    .onErrorReturn(throwable -> {
+                        sendToView(view -> view.setBranchesData(branches, true));
+                        return null;
                     })
                     .subscribe());
         }

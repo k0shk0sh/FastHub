@@ -8,7 +8,7 @@ import com.fastaccess.R;
 
 public enum EventsType {
     WatchEvent(R.string.starred, R.drawable.ic_star_filled),
-    CreateEvent(R.string.created_repo, R.drawable.ic_add),
+    CreateEvent(R.string.created_repo, R.drawable.ic_repo),
     CommitCommentEvent(R.string.commented_on_commit, R.drawable.ic_comment),
     DownloadEvent(R.string.downloaded, R.drawable.ic_download),
     FollowEvent(R.string.followed, R.drawable.ic_add),

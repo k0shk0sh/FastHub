@@ -21,6 +21,7 @@ public class BranchesModel implements Parcelable {
     private Commit commit;
     @SerializedName("protected") private boolean protectedBranch;
     private String protectionUrl;
+    private boolean isTag;
 
     @Override public String toString() {
         return name;
@@ -33,6 +34,7 @@ public class BranchesModel implements Parcelable {
         dest.writeParcelable(this.commit, flags);
         dest.writeByte(this.protectedBranch ? (byte) 1 : (byte) 0);
         dest.writeString(this.protectionUrl);
+        dest.writeByte(this.isTag ? (byte) 1 : (byte) 0);
     }
 
     protected BranchesModel(Parcel in) {
@@ -40,6 +42,7 @@ public class BranchesModel implements Parcelable {
         this.commit = in.readParcelable(Commit.class.getClassLoader());
         this.protectedBranch = in.readByte() != 0;
         this.protectionUrl = in.readString();
+        this.isTag = in.readByte() != 0;
     }
 
     public static final Creator<BranchesModel> CREATOR = new Creator<BranchesModel>() {

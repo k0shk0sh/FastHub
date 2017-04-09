@@ -49,6 +49,10 @@ public class ViewHelper {
         return getColorAttr(context, android.R.attr.textColorPrimary);
     }
 
+    @ColorInt public static int getSecondaryTextColor(@NonNull Context context) {
+        return getColorAttr(context, android.R.attr.textColorSecondary);
+    }
+
     @ColorInt public static int getAccentColor(@NonNull Context context) {
         return getColorAttr(context, R.attr.colorAccent);
     }

@@ -32,7 +32,6 @@ public class MyPullRequestView extends BaseFragment<MyPullRequestsMvp.View, MyPu
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<IssueState> onLoadMore;
     private PullRequestAdapter adapter;
-    private IssueState issueState;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static MyPullRequestView newInstance(@NonNull IssueState issueState) {
@@ -87,11 +86,6 @@ public class MyPullRequestView extends BaseFragment<MyPullRequestsMvp.View, MyPu
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
@@ -129,9 +123,11 @@ public class MyPullRequestView extends BaseFragment<MyPullRequestsMvp.View, MyPu
     }
 
     public IssueState getIssueState() {
-        if (issueState == null) {
-            issueState = (IssueState) getArguments().getSerializable(BundleConstant.EXTRA);
-        }
-        return issueState;
+        return (IssueState) getArguments().getSerializable(BundleConstant.EXTRA);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

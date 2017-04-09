@@ -82,8 +82,9 @@ public class FontTextView extends AppCompatTextView {
         int width = drawable.getIntrinsicWidth();
         int height = drawable.getIntrinsicHeight();
         drawable.setBounds(0, 0, width / 2, height / 2);
-        ScaleDrawable sd = new ScaleDrawable(drawable, Gravity.CENTER, 0.8f, 0.8f);
+        ScaleDrawable sd = new ScaleDrawable(drawable, Gravity.CENTER, 0.6f, 0.6f);
         sd.setLevel(8000);
+        ViewHelper.tintDrawable(drawable, ViewHelper.getSecondaryTextColor(getContext()));
         setCompoundDrawablesWithIntrinsicBounds(sd, null, null, null);
     }
 }

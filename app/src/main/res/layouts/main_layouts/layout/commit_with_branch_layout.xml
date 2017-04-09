@@ -14,7 +14,6 @@
         android:layout_margin="@dimen/grid_spacing"
         android:orientation="horizontal"
         android:paddingBottom="@dimen/spacing_micro"
-        android:paddingEnd="@dimen/spacing_xs_large"
         android:paddingStart="@dimen/spacing_xs_large"
         android:paddingTop="@dimen/spacing_micro">
 

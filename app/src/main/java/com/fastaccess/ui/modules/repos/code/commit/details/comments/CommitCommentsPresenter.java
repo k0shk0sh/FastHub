@@ -137,7 +137,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                     getView().onEditComment(item);
                 }
             } else {
-                CommentsHelper.handleReactions(v.getContext(), login, repoId, v.getId(), item.getId(), false, false);
+                CommentsHelper.handleReactions(v.getContext(), login, repoId, v.getId(), item.getId(), true, false);
             }
         }
     }

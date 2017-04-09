@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.AppCompatSpinner;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 
 import com.fastaccess.R;
@@ -17,6 +16,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.ui.adapter.BranchesAdapter;
 import com.fastaccess.ui.adapter.CommitsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
@@ -130,11 +130,13 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
 
     @Override public void showErrorMessage(@NonNull String message) {
         showReload();
+        branchesProgress.setVisibility(View.GONE);
         super.showErrorMessage(message);
     }
 
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
+        branchesProgress.setVisibility(View.GONE);
         super.showMessage(titleRes, msgRes);
     }
 
@@ -145,22 +147,22 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
         return onLoadMore;
     }
 
-    @Override public void setBranchesData(@NonNull List<BranchesModel> branchesData, boolean firstTime) {
+    @Override public void setBranchesData(@Nullable List<BranchesModel> branchesData, boolean firstTime) {
         branchesProgress.setVisibility(View.GONE);
-        ArrayAdapter<BranchesModel> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, branchesData);
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-        branches.setAdapter(adapter);
-        if (firstTime) {
-            if (!InputHelper.isEmpty(getPresenter().getDefaultBranch())) {
-                int index = -1;
-                for (int i = 0; i < branchesData.size(); i++) {
-                    if (branchesData.get(i).getName().equals(getPresenter().getDefaultBranch())) {
-                        index = i;
-                        break;
+        if (branchesData != null) {
+            branches.setAdapter(new BranchesAdapter(branchesData));
+            if (firstTime) {
+                if (!InputHelper.isEmpty(getPresenter().getDefaultBranch())) {
+                    int index = -1;
+                    for (int i = 0; i < branchesData.size(); i++) {
+                        if (branchesData.get(i).getName().equals(getPresenter().getDefaultBranch())) {
+                            index = i;
+                            break;
+                        }
                     }
-                }
-                if (index != -1) {
-                    branches.setSelection(index, true);
+                    if (index != -1) {
+                        branches.setSelection(index, true);
+                    }
                 }
             }
         }
