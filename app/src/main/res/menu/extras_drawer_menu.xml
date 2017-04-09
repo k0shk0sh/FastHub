@@ -4,7 +4,7 @@
     <group android:id="@+id/home_group">
         <item
             android:id="@+id/navToRepo"
-            android:icon="@drawable/ic_home"
+            android:icon="@drawable/ic_repo"
             android:title="@string/repo"
             android:visible="false"/>
         <item

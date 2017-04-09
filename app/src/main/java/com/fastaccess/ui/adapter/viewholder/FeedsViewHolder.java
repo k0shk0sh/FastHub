@@ -2,6 +2,7 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -47,6 +48,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");
         if (eventsModel.getType() != null) {
+            date.setGravity(Gravity.CENTER);
+            date.setSmallLeftDrawable(eventsModel.getType().getDrawableRes());
             String action;
             if (eventsModel.getType() == EventsType.WatchEvent) {
                 action = itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase();
@@ -56,7 +59,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
             if (eventsModel.getType() != EventsType.WatchEvent) {
-                if (eventsModel.getType() == EventsType.CreateEvent && eventsModel.getPayload().getRefType().equalsIgnoreCase("branch")) {
+                if (eventsModel.getType() == EventsType.CreateEvent && eventsModel.getPayload()
+                        .getRefType().equalsIgnoreCase("branch")) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
                             .append(" ")
@@ -64,8 +68,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .append(" ")
                             .append(to).append(" ");
                 } else {
-                    spannableBuilder.bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
-                            .append(" ");
+                    spannableBuilder.bold(itemView.getResources().getString(eventsModel.getType()
+                            .getType()).toLowerCase()).append(" ");
                 }
             }
         }

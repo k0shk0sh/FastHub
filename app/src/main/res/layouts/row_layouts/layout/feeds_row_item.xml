@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
         <com.fastaccess.ui.widgets.AvatarLayout
             android:id="@+id/avatarLayout"
             android:layout_width="@dimen/large_icon_zie"
@@ -44,10 +45,10 @@
                 android:id="@+id/description"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="match_parent"
-                android:visibility="gone"
                 android:layout_height="wrap_content"
                 android:maxLines="2"
                 android:textColor="?android:attr/textColorSecondary"
+                android:visibility="gone"
                 tools:text="50 minutes ago"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -55,7 +56,9 @@
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/spacing_normal"
                 android:textColor="?android:attr/textColorSecondary"
+                tools:drawableStart="@drawable/ic_notification"
                 tools:text="50 minutes ago"/>
         </LinearLayout>
     </LinearLayout>
