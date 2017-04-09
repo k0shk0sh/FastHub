@@ -109,7 +109,6 @@ public class MyPullRequestView extends BaseFragment<MyPullRequestsMvp.View, MyPu
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        stateLayout.setEmptyText(R.string.no_issues);
         recycler.setEmptyView(stateLayout, refresh);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
@@ -122,6 +121,7 @@ public class MyPullRequestView extends BaseFragment<MyPullRequestsMvp.View, MyPu
         if (savedInstanceState == null || (getPresenter().getPullRequests().isEmpty() && !getPresenter().isApiCalled())) {
             onRefresh();
         }
+        stateLayout.setEmptyText(getIssueState() == IssueState.open ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
     }
 
     @NonNull @Override public MyPullRequestsPresenter providePresenter() {
