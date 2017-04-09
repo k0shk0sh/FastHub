@@ -10,6 +10,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -49,7 +50,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");
         if (eventsModel.getType() != null) {
             date.setGravity(Gravity.CENTER);
-            date.setSmallLeftDrawable(eventsModel.getType().getDrawableRes());
+            date.setEventsIcon(eventsModel.getType().getDrawableRes());
             String action;
             if (eventsModel.getType() == EventsType.WatchEvent) {
                 action = itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase();
@@ -72,6 +73,24 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .getType()).toLowerCase()).append(" ");
                 }
             }
+        }
+        if (eventsModel.getPayload() != null) {
+            if (eventsModel.getPayload().getComment() != null) {
+                MarkDownProvider.setMdText(description, eventsModel.getPayload().getComment().getBody());
+                description.setVisibility(View.VISIBLE);
+            } else if (eventsModel.getPayload().getIssue() != null) {
+                MarkDownProvider.setMdText(description, eventsModel.getPayload().getIssue().getTitle());
+                description.setVisibility(View.VISIBLE);
+            } else if (eventsModel.getPayload().getPullRequest() != null) {
+                MarkDownProvider.setMdText(description, eventsModel.getPayload().getPullRequest().getTitle());
+                description.setVisibility(View.VISIBLE);
+            } else {
+                description.setText("");
+                description.setVisibility(View.GONE);
+            }
+        } else {
+            description.setText("");
+            description.setVisibility(View.GONE);
         }
         spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "");
         title.setText(spannableBuilder);

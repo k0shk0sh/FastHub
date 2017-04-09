@@ -49,7 +49,8 @@
                 android:maxLines="2"
                 android:textColor="?android:attr/textColorSecondary"
                 android:visibility="gone"
-                tools:text="50 minutes ago"/>
+                tools:text="Hello World"
+                tools:visibility="visible"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/date"
@@ -57,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/spacing_normal"
-                android:textColor="?android:attr/textColorSecondary"
+                android:textColor="?android:attr/textColorTertiary"
                 tools:drawableStart="@drawable/ic_notification"
                 tools:text="50 minutes ago"/>
         </LinearLayout>
