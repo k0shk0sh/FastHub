@@ -10,7 +10,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -76,13 +75,13 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         }
         if (eventsModel.getPayload() != null) {
             if (eventsModel.getPayload().getComment() != null) {
-                MarkDownProvider.setMdText(description, eventsModel.getPayload().getComment().getBody());
+                description.setText(eventsModel.getPayload().getComment().getBody());
                 description.setVisibility(View.VISIBLE);
             } else if (eventsModel.getPayload().getIssue() != null) {
-                MarkDownProvider.setMdText(description, eventsModel.getPayload().getIssue().getTitle());
+                description.setText(eventsModel.getPayload().getIssue().getTitle());
                 description.setVisibility(View.VISIBLE);
             } else if (eventsModel.getPayload().getPullRequest() != null) {
-                MarkDownProvider.setMdText(description, eventsModel.getPayload().getPullRequest().getTitle());
+                description.setText(eventsModel.getPayload().getPullRequest().getTitle());
                 description.setVisibility(View.VISIBLE);
             } else {
                 description.setText("");
