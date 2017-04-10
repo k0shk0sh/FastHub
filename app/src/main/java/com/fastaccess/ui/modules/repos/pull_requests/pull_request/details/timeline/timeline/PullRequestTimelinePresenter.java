@@ -109,17 +109,18 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
         setCurrentPage(page);
         String login = getHeader().getLogin();
-        String repoID = getHeader().getRepoId();
+        String repoId = getHeader().getRepoId();
         int number = getHeader().getNumber();
-        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number, page),
-                RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
-                RestProvider.getPullRequestSerice().getPullStatus(login, repoID, getHeader().getHead().getSha()),
-                (issueEventPageable, commentPageable, statuses) -> {
+        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number, page),
+                RestProvider.getIssueService().getIssueComments(login, repoId, number, page),
+                RestProvider.getPullRequestSerice().getPullStatus(login, repoId, getHeader().getHead().getSha()),
+                RestProvider.getPullRequestSerice().getReviews(login, repoId, number),
+                (issueEventPageable, commentPageable, statuses, reviews) -> {
                     lastPage = issueEventPageable.getLast() > commentPageable.getLast() ? issueEventPageable.getLast() : commentPageable.getLast();
                     if (statuses != null) {
                         statuses.setMergable(getHeader().isMergeable());
                     }
-                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses);
+                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses, reviews.getItems());
                 });
         makeRestCall(observable, models -> {
             if (getCurrentPage() == 1) {

@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.fastaccess.data.dao.types.StatusStateType;
 
+import java.util.Date;
 import java.util.List;
 
 import lombok.Getter;
@@ -23,6 +24,7 @@ import lombok.Setter;
     private String commitUrl;
     private String url;
     private boolean mergable;
+    private Date createdAt;
 
     public PullRequestStatusModel() {}
 
@@ -36,6 +38,7 @@ import lombok.Setter;
         dest.writeString(this.commitUrl);
         dest.writeString(this.url);
         dest.writeByte(this.mergable ? (byte) 1 : (byte) 0);
+        dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
     }
 
     protected PullRequestStatusModel(Parcel in) {
@@ -47,6 +50,8 @@ import lombok.Setter;
         this.commitUrl = in.readString();
         this.url = in.readString();
         this.mergable = in.readByte() != 0;
+        long tmpCreatedAt = in.readLong();
+        this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
     }
 
     public static final Creator<PullRequestStatusModel> CREATOR = new Creator<PullRequestStatusModel>() {

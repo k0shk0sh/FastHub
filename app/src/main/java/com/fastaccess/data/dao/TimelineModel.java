@@ -18,6 +18,7 @@ import com.fastaccess.ui.widgets.RoundBackgroundSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -33,8 +34,9 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor public class TimelineModel implements Parcelable {
     public static final int HEADER = 0;
     public static final int STATUS = 1;
-    public static final int EVENT = 2;
-    public static final int COMMENT = 3;
+    public static final int REVIEW = 2;
+    public static final int EVENT = 3;
+    public static final int COMMENT = 4;
 
     private int type;
     private Issue issue;
@@ -42,30 +44,43 @@ import lombok.Setter;
     private IssueEvent event;
     private PullRequest pullRequest;
     private PullRequestStatusModel status;
+    private ReviewModel review;
+    private Date sortedDate;
 
     private TimelineModel(Issue issue) {
         this.type = HEADER;
         this.issue = issue;
+        this.sortedDate = issue.getCreatedAt();
     }
 
     private TimelineModel(PullRequest pullRequest) {
         this.type = HEADER;
         this.pullRequest = pullRequest;
+        this.sortedDate = pullRequest.getCreatedAt();
     }
 
     private TimelineModel(Comment comment) {
         this.type = COMMENT;
         this.comment = comment;
+        this.sortedDate = comment.getCreatedAt();
     }
 
     private TimelineModel(IssueEvent event) {
         this.type = EVENT;
         this.event = event;
+        this.sortedDate = event.getCreatedAt();
     }
 
     private TimelineModel(PullRequestStatusModel status) {
         this.type = STATUS;
         this.status = status;
+        this.sortedDate = status.getCreatedAt();
+    }
+
+    private TimelineModel(ReviewModel review) {
+        this.type = REVIEW;
+        this.review = review;
+        this.sortedDate = review.getSubmittedAt();
     }
 
     @NonNull public static TimelineModel constructHeader(@NonNull Issue issue) {
@@ -104,28 +119,30 @@ import lombok.Setter;
     }
 
     @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList,
-                                                         @Nullable PullRequestStatusModel status) {
+                                                         @Nullable PullRequestStatusModel status, @Nullable List<ReviewModel> reviews) {
         ArrayList<TimelineModel> list = new ArrayList<>();
         if (status != null) {
             list.add(new TimelineModel(status));
+        }
+        if (reviews != null && !reviews.isEmpty()) {
+            list.addAll(Stream.of(reviews)
+                    .map(TimelineModel::new)
+                    .collect(Collectors.toList()));
         }
         if (!commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-
         if (!eventList.isEmpty()) {
             list.addAll(constructLabels(eventList));
         }
 
-        return Stream.of(list).sorted((o1, o2) -> {
-            if (o1.getEvent() != null && o2.getComment() != null) {
-                return o1.getEvent().getCreatedAt().compareTo(o2.getComment().getCreatedAt());
-            } else if (o1.getComment() != null && o2.getEvent() != null) {
-                return o1.getComment().getCreatedAt().compareTo(o2.getEvent().getCreatedAt());
+        return Stream.of(list).sortBy(model -> {
+            if (model.getSortedDate() != null) {
+                return model.getSortedDate().getTime();
             } else {
-                return Integer.valueOf(o1.getType()).compareTo(o2.getType());
+                return (long) model.getType();
             }
         }).collect(Collectors.toList());
     }
@@ -196,16 +213,6 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @Override public int describeContents() { return 0; }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.type);
-        dest.writeParcelable(this.issue, flags);
-        dest.writeParcelable(this.comment, flags);
-        dest.writeParcelable(this.event, flags);
-        dest.writeParcelable(this.pullRequest, flags);
-    }
-
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -217,12 +224,29 @@ import lombok.Setter;
         return comment != null ? (int) comment.getId() : 0;
     }
 
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.type);
+        dest.writeParcelable(this.issue, flags);
+        dest.writeParcelable(this.comment, flags);
+        dest.writeParcelable(this.event, flags);
+        dest.writeParcelable(this.pullRequest, flags);
+        dest.writeParcelable(this.status, flags);
+        dest.writeParcelable(this.review, flags);
+        dest.writeLong(this.sortedDate != null ? this.sortedDate.getTime() : -1);
+    }
+
     protected TimelineModel(Parcel in) {
         this.type = in.readInt();
         this.issue = in.readParcelable(Issue.class.getClassLoader());
         this.comment = in.readParcelable(Comment.class.getClassLoader());
         this.event = in.readParcelable(IssueEvent.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
+        this.status = in.readParcelable(PullRequestStatusModel.class.getClassLoader());
+        this.review = in.readParcelable(ReviewModel.class.getClassLoader());
+        long tmpSortedDate = in.readLong();
+        this.sortedDate = tmpSortedDate == -1 ? null : new Date(tmpSortedDate);
     }
 
     public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {

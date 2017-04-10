@@ -9,6 +9,7 @@ import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MergeResponseModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.PullRequestStatusModel;
+import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.PullRequest;
 
@@ -36,9 +37,6 @@ public interface PullRequestService {
     @GET("search/issues")
     Observable<Pageable<PullRequest>> getPullsWithCount(@NonNull @Query(value = "q", encoded = true) String query,
                                                         @Query("page") int page);
-
-    @GET("user/issues")
-    Observable<Pageable<PullRequest>> getUserPullRequests(@Query("page") int page, @Query("state") @NonNull String state);
 
     @GET("repos/{owner}/{repo}/pulls/{number}")
     @Headers("Accept: application/vnd.github.VERSION.html")
@@ -81,4 +79,8 @@ public interface PullRequestService {
 
     @GET("repos/{owner}/{repo}/commits/{ref}/status")
     Observable<PullRequestStatusModel> getPullStatus(@Path("owner") String owner, @Path("repo") String repo, @Path("ref") String ref);
+
+    @GET("repos/{owner}/{repo}/pulls/{number}/reviews")
+    @Headers("Accept: application/vnd.github.black-cat-preview+json")
+    Observable<Pageable<ReviewModel>> getReviews(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
 }

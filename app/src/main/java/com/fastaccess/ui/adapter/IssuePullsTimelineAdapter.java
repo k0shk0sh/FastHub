@@ -11,6 +11,7 @@ import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
+import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -45,6 +46,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             return IssueTimelineViewHolder.newInstance(parent, this);
         } else if (viewType == TimelineModel.STATUS) {
             return PullStatusViewHolder.newInstance(parent);
+        } else if (viewType == TimelineModel.REVIEW) {
+            return ReviewsViewHolder.newInstance(parent, this);
         }
         return TimelineCommentsViewHolder.newInstance(parent, this, login, onToggleView, showEmojies, reactionsCallback);
     }
@@ -61,6 +64,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             ((IssueTimelineViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.COMMENT) {
             ((TimelineCommentsViewHolder) holder).bind(model);
+        } else if (model.getType() == TimelineModel.REVIEW) {
+            ((ReviewsViewHolder) holder).bind(model);
         } else {
             if (model.getStatus() != null) ((PullStatusViewHolder) holder).bind(model.getStatus());
         }
