@@ -26,6 +26,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Offline-mode
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
+  - Pinned Repos
 - **Repositories**
   - Search Repos
   - Browse and search Repos
@@ -35,14 +36,18 @@ _(To download the app from here, please look at the [latest release](https://git
   - Download releases, files and branches
 - **Issues and Pull Requests** 
   - Search Issues/PRs
+  - Filter Issues/PRs
   - Open/close Issues/PRs
   - Comment on Issues/PRs
   - Manage Issue/PR comments
+  - React to comments with reactions
   - Edit Issues/PRs
   - Lock/unlock conversation in Issues/PRs
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
+  - PRs reviews
+  - PRs statuses
 - **Commits and Gists**
   - Search Code/Gists
   - View Gists and their files
