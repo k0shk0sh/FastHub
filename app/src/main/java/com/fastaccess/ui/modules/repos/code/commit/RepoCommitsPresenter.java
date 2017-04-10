@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.Commit;
@@ -18,6 +19,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 
@@ -88,30 +90,33 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         login = bundle.getString(BundleConstant.EXTRA);
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
         if (branches.isEmpty()) {
-            manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-                    .getBranches(login, repoId)))
-                    .doOnSubscribe(() -> sendToView(RepoCommitsMvp.View::showBranchesProgress))
-                    .flatMap(branchesModelPageable -> {
-                        if (branchesModelPageable != null && branchesModelPageable.getItems() != null) {
-                            branches.clear();
-                            branches.addAll(Stream.of(branchesModelPageable.getItems())
+            Observable<List<BranchesModel>> observable = RxHelper.getObserver(Observable.zip(
+                    RestProvider.getRepoService().getBranches(login, repoId),
+                    RestProvider.getRepoService().getTags(login, repoId),
+                    (branchPageable, tags) -> {
+                        ArrayList<BranchesModel> branchesModels = new ArrayList<>();
+                        if (branchPageable.getItems() != null) {
+                            branchesModels.addAll(Stream.of(branchPageable.getItems())
                                     .map(branchesModel -> {
                                         branchesModel.setTag(false);
                                         return branchesModel;
-                                    }).collect(com.annimon.stream.Collectors.toList()));
-                            return RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-                                    .getTags(login, repoId)));
+                                    }).collect(Collectors.toList()));
                         }
-                        return Observable.empty();
-                    })
-                    .doOnNext(branchesModelPageable -> {
-                        if (branchesModelPageable != null && branchesModelPageable.getItems() != null) {
-                            branches.addAll(Stream.of(branchesModelPageable.getItems())
+                        if (tags != null) {
+                            branchesModels.addAll(Stream.of(tags.getItems())
                                     .map(branchesModel -> {
                                         branchesModel.setTag(true);
                                         return branchesModel;
-                                    }).collect(com.annimon.stream.Collectors.toList()));
+                                    }).collect(Collectors.toList()));
+
                         }
+                        return branchesModels;
+                    }));
+            manageSubscription(observable
+                    .doOnSubscribe(() -> sendToView(RepoCommitsMvp.View::showBranchesProgress))
+                    .doOnNext(branchesModels -> {
+                        branches.clear();
+                        branches.addAll(branchesModels);
                         sendToView(view -> view.setBranchesData(branches, true));
                     })
                     .onErrorReturn(throwable -> {
