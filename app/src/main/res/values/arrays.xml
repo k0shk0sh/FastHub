@@ -60,4 +60,13 @@
         <item>#f4511e</item>
     </string-array>
 
+    <string-array name="sort_prs_issues">
+        <item>@string/newest</item>
+        <item>@string/oldest</item>
+        <item>@string/most_commented</item>
+        <item>@string/least_commented</item>
+        <item>@string/recently_updated</item>
+        <item>@string/least_recent_updated</item>
+    </string-array>
+
 </resources>

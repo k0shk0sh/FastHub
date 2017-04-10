@@ -29,6 +29,8 @@ public class FontTextView extends AppCompatTextView {
 
     @State int tintColor = -1;
 
+    @State boolean selected;
+
     public FontTextView(@NonNull Context context) {
         this(context, null);
     }
@@ -49,7 +51,12 @@ public class FontTextView extends AppCompatTextView {
     @Override public void onRestoreInstanceState(Parcelable state) {
         super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
         tintDrawables(tintColor);
-//        setActivated(isActivated);
+        setSelected(selected);
+    }
+
+    @Override public void setSelected(boolean selected) {
+        super.setSelected(selected);
+        this.selected = selected;
     }
 
     private void init(@NonNull Context context, @Nullable AttributeSet attributeSet) {

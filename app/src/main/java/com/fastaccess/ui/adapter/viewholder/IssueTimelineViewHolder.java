@@ -69,7 +69,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
             if (event != null) {
                 spannableBuilder
                         .append(" ")
-                        .append(event.name());
+                        .append(event.name().replaceAll("_", " "));
                 if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                     LabelModel labelModel = issueEventModel.getLabel();
                     int color = Color.parseColor("#" + labelModel.getColor());
@@ -110,6 +110,5 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
         }
         itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()));
     }
-
 
 }

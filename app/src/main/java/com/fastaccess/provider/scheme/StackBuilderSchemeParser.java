@@ -88,6 +88,7 @@ public class StackBuilderSchemeParser {
             if (gist != null) {
                 return TaskStackBuilder.create(context)
                         .addParentStack(MainView.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainView.class))
                         .addNextIntent(GistView.createIntent(context, gist));
             }
         } else {
@@ -216,11 +217,20 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getCommits(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.isEmpty() || segments.size() < 4) return null;
+        if (segments == null || segments.isEmpty() || segments.size() < 3) return null;
+        String login = null;
+        String repoId = null;
+        String sha = null;
         if (segments.get(3).equals("commits")) {
-            String login = segments.get(1);
-            String repoId = segments.get(2);
-            String sha = segments.get(4);
+            login = segments.get(1);
+            repoId = segments.get(2);
+            sha = segments.get(4);
+        } else if (segments.get(2).equals("commits")) {
+            login = segments.get(0);
+            repoId = segments.get(1);
+            sha = uri.getLastPathSegment();
+        }
+        if (login != null && sha != null && repoId != null) {
             return TaskStackBuilder.create(context)
                     .addParentStack(MainView.class)
                     .addNextIntentWithParentStack(new Intent(context, MainView.class))
@@ -232,7 +242,7 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getCommit(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4 || !"commit".equals(segments.get(2))) return null;
+        if (segments == null || segments.size() < 2 || !"commit".equals(segments.get(2))) return null;
         String login = segments.get(0);
         String repoId = segments.get(1);
         String sha = segments.get(3);
@@ -247,6 +257,7 @@ public class StackBuilderSchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments != null && !segments.isEmpty() && segments.size() == 1) {
             return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
                     .addNextIntentWithParentStack(new Intent(context, MainView.class))
                     .addNextIntent(UserPagerView.createIntent(context, segments.get(0)));
         } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {

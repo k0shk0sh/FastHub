@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Dialog;
+import android.graphics.Rect;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.UiThread;
@@ -16,6 +17,7 @@ import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.widget.PopupWindow;
 
 import java.util.Arrays;
 import java.util.List;
@@ -109,6 +111,26 @@ public class AnimHelper {
         for (ObjectAnimator anim : animators) {
             anim.setDuration(300).start();
             anim.setInterpolator(interpolator);
+        }
+    }
+
+    @UiThread public static void revealPopupWindow(@NonNull PopupWindow popupWindow, @NonNull View from) {
+        if (PrefGetter.isPopupAnimationEnabled()) {
+            Rect rect = ViewHelper.getLayoutPosition(from);
+            int x = (int) rect.exactCenterX();
+            int y = (int) rect.exactCenterY();
+            if (popupWindow.getContentView() != null) {
+                View view = popupWindow.getContentView();
+                if (view != null) {
+                    popupWindow.showAsDropDown(from);
+                    view.post(() -> {
+                        Animator animator = ViewAnimationUtils.createCircularReveal(view, x, y, 0,
+                                (float) Math.hypot(rect.width(), rect.height()));
+                        animator.setDuration(view.getResources().getInteger(android.R.integer.config_shortAnimTime));
+                        animator.start();
+                    });
+                }
+            }
         }
     }
 

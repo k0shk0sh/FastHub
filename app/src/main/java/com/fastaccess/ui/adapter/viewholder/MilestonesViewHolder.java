@@ -37,7 +37,7 @@ public class MilestonesViewHolder extends BaseViewHolder<MilestoneModel> {
         notificationTitle.setText(milestoneModel.getDescription());
         if (milestoneModel.getDueOn() != null) {
             date.setText(ParseDateFormat.getTimeAgo(milestoneModel.getDueOn()));
-        } else {
+        } else if (milestoneModel.getCreatedAt() != null) {
             date.setText(ParseDateFormat.getTimeAgo(milestoneModel.getCreatedAt()));
         }
     }

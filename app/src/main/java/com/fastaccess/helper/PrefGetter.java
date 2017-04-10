@@ -144,7 +144,8 @@ public class PrefGetter {
     }
 
     public static boolean isPopupAnimationEnabled() {
-        return PrefHelper.getBoolean(POPUP_ANIMATION);
+//        return PrefHelper.getBoolean(POPUP_ANIMATION);
+        return true;
     }
 
     @ThemeType public static int getThemeType(@NonNull Context context) {

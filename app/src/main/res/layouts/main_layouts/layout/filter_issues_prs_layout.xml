@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="?android:toolbarStyle">
+
+            <android.support.v7.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize"
+                android:theme="?android:toolbarStyle"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="?actionBarSize"
+                    android:orientation="horizontal"
+                    android:paddingEnd="@dimen/spacing_normal"
+                    android:paddingStart="@dimen/spacing_normal">
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/back"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/back"
+                        android:padding="@dimen/spacing_normal"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_back"/>
+
+                    <com.fastaccess.ui.widgets.FontEditText
+                        android:id="@+id/searchEditText"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:hint="@string/type_here"
+                        android:imeActionLabel="@string/search"
+                        android:imeOptions="actionSearch"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:padding="@dimen/spacing_xs_large"
+                        android:singleLine="true"/>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/clear"
+                        android:padding="@dimen/spacing_normal"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_clear"
+                        android:visibility="invisible"/>
+
+                </LinearLayout>
+            </android.support.v7.widget.Toolbar>
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/open"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?selectableItemBackground"
+                        android:drawablePadding="@dimen/spacing_micro"
+                        android:drawableStart="@drawable/ic_issues"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/open"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/close"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?selectableItemBackground"
+                        android:drawablePadding="@dimen/spacing_micro"
+                        android:drawableStart="@drawable/ic_done"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/closed"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/labels"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="@dimen/spacing_micro"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/labels"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/milestone"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="@dimen/spacing_micro"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/milestones"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/assignee"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="@dimen/spacing_micro"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/assignee"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/sort"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="@dimen/spacing_micro"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/sort"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/author"
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down"
+                        android:drawablePadding="@dimen/spacing_micro"
+                        android:gravity="center"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/author"
+                        android:textColor="@color/search_tab_highlighter"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+        </android.support.design.widget.AppBarLayout>
+
+        <fragment
+            android:id="@+id/filterFragment"
+            android:name="com.fastaccess.ui.modules.filter.issues.fragment.FilterIssueView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/scroll_behavior"
+            tools:layout="@layout/small_grid_refresh_list"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+    <include layout="@layout/nav_menu_layout"/>
+</android.support.v4.widget.DrawerLayout>

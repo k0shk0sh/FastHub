@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
@@ -31,14 +32,16 @@ import lombok.Setter;
 
 @Getter @Setter @NoArgsConstructor public class TimelineModel implements Parcelable {
     public static final int HEADER = 0;
-    public static final int EVENT = 1;
-    public static final int COMMENT = 2;
+    public static final int STATUS = 1;
+    public static final int EVENT = 2;
+    public static final int COMMENT = 3;
 
     private int type;
     private Issue issue;
     private Comment comment;
     private IssueEvent event;
     private PullRequest pullRequest;
+    private PullRequestStatusModel status;
 
     private TimelineModel(Issue issue) {
         this.type = HEADER;
@@ -60,6 +63,11 @@ import lombok.Setter;
         this.event = event;
     }
 
+    private TimelineModel(PullRequestStatusModel status) {
+        this.type = STATUS;
+        this.status = status;
+    }
+
     @NonNull public static TimelineModel constructHeader(@NonNull Issue issue) {
         return new TimelineModel(issue);
     }
@@ -74,6 +82,33 @@ import lombok.Setter;
 
     @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
         ArrayList<TimelineModel> list = new ArrayList<>();
+        if (!commentList.isEmpty()) {
+            list.addAll(Stream.of(commentList)
+                    .map(TimelineModel::new)
+                    .collect(Collectors.toList()));
+        }
+
+        if (!eventList.isEmpty()) {
+            list.addAll(constructLabels(eventList));
+        }
+
+        return Stream.of(list).sorted((o1, o2) -> {
+            if (o1.getEvent() != null && o2.getComment() != null) {
+                return o1.getEvent().getCreatedAt().compareTo(o2.getComment().getCreatedAt());
+            } else if (o1.getComment() != null && o2.getEvent() != null) {
+                return o1.getComment().getCreatedAt().compareTo(o2.getEvent().getCreatedAt());
+            } else {
+                return Integer.valueOf(o1.getType()).compareTo(o2.getType());
+            }
+        }).collect(Collectors.toList());
+    }
+
+    @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList,
+                                                         @Nullable PullRequestStatusModel status) {
+        ArrayList<TimelineModel> list = new ArrayList<>();
+        if (status != null) {
+            list.add(new TimelineModel(status));
+        }
         if (!commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
                     .map(TimelineModel::new)
@@ -148,7 +183,7 @@ import lombok.Setter;
                     }
                 }
                 builder.append(" ")
-                        .append(toAdd.getEvent().name());
+                        .append(toAdd.getEvent().name().replaceAll("_", " "));
                 toAdd.setLabels(SpannableBuilder.builder().append(builder)
                         .append(spannableBuilder)
                         .append(" ")

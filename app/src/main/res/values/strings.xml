@@ -52,7 +52,6 @@
     <string name="downloading_file">Downloading File…</string>
     <string name="released">Released</string>
     <string name="drafted">Drafted</string>
-    <string name="this_text">this</string>
     <string name="on">On</string>
     <string name="releases">Releases</string>
     <string name="no_body">No body</string>
@@ -230,7 +229,7 @@
     <string name="error_creating_milestone">Error creating milestone</string>
     <string name="due_on">Due on</string>
     <string name="no_assignees">No assignees</string>
-    <string name="this_value">This</string>
+    <string name="this_value">this</string>
     <string name="commits_reflected">Commits have been switched to the selected branch</string>
     <string name="general_settings">General</string>
     <string name="background_job_summary">Change how frequent FastHub checks for new notifications</string>
@@ -341,4 +340,17 @@
     <string name="animations">Animations</string>
     <string name="dialog_animation_summary">Enable popups animations</string>
     <string name="dialog_animation_title">Popup animation</string>
+    <string name="milestones">Milestones</string>
+    <string name="assignee">Assignee</string>
+    <string name="checks_failed">All checks failed</string>
+    <string name="checks_pending">All checks are pending</string>
+    <string name="checks_passed">All checks are passed</string>
+    <string name="sort">Sort</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="most_commented">Most commented</string>
+    <string name="least_commented">Least commented</string>
+    <string name="recently_updated">Recently updated</string>
+    <string name="least_recent_updated">Least recently updated</string>
+    <string name="empty_search_error">Search field can\'t be empty</string>
 </resources>

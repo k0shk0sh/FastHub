@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -24,23 +23,28 @@ public class UsersViewHolder extends BaseViewHolder<User> {
     @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
+    private boolean isFilter;
 
-    public UsersViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private UsersViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean isFilter) {
         super(itemView, adapter);
+        this.isFilter = isFilter;
     }
 
-    public static View getView(@NonNull ViewGroup viewGroup) {
-        return getView(viewGroup, R.layout.feeds_row_item);
+    public static UsersViewHolder newInstance(@NonNull ViewGroup parent, @Nullable BaseRecyclerAdapter adapter, boolean isFilter) {
+        return new UsersViewHolder(getView(parent, isFilter ? R.layout.users_small_row_item : R.layout.feeds_row_item), adapter, isFilter);
     }
 
     @Override public void onClick(View v) {
-        avatar.findViewById(R.id.avatar).callOnClick();
+        if (isFilter) {
+            super.onClick(v);
+        } else {
+            avatar.findViewById(R.id.avatar).callOnClick();
+        }
     }
 
     @Override public void bind(@NonNull User user) {}
 
     public void bind(@NonNull User user, boolean isContributor) {
-        Logger.e(user.isOrganizationType(), user.getType());
         avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType());
         title.setText(user.getLogin());
         date.setVisibility(!isContributor ? View.GONE : View.VISIBLE);

@@ -283,9 +283,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                             }
                             navIcon.setOnLongClickListener(v -> {
                                 Intent intent = new Intent(this, MainView.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(intent);
-                                finishAffinity();
+                                finish();
                                 return true;
                             });
                         }

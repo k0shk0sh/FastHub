@@ -83,6 +83,10 @@ public class RepoIssuesPagerView extends BaseFragment<RepoIssuesPagerMvp.View, R
         }
     }
 
+    @Override public int getCurrentItem() {
+        return pager != null ? pager.getCurrentItem() : 0;
+    }
+
     @Override public void onSetBadge(int tabIndex, int count) {
         if (tabIndex == 0) {
             openCount = count;

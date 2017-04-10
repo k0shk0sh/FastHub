@@ -5,12 +5,12 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.TimelineModel;
-import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
+import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -43,6 +43,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             return IssueDetailsViewHolder.newInstance(parent, this);
         } else if (viewType == TimelineModel.EVENT) {
             return IssueTimelineViewHolder.newInstance(parent, this);
+        } else if (viewType == TimelineModel.STATUS) {
+            return PullStatusViewHolder.newInstance(parent);
         }
         return TimelineCommentsViewHolder.newInstance(parent, this, login, onToggleView, showEmojies, reactionsCallback);
     }
@@ -55,12 +57,16 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             } else if (model.getPullRequest() != null) {
                 ((IssueDetailsViewHolder) holder).bind(model);
             }
-            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
-            layoutParams.setFullSpan(true);
         } else if (model.getType() == TimelineModel.EVENT) {
             ((IssueTimelineViewHolder) holder).bind(model);
-        } else {
+        } else if (model.getType() == TimelineModel.COMMENT) {
             ((TimelineCommentsViewHolder) holder).bind(model);
+        } else {
+            if (model.getStatus() != null) ((PullStatusViewHolder) holder).bind(model.getStatus());
+        }
+        if (model.getType() == TimelineModel.HEADER || model.getType() == TimelineModel.STATUS) {
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
         }
     }
 

@@ -160,7 +160,10 @@
             android:label="@string/public_gists"/>
 
         <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerView"/>
+
         <activity android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"/>
+
+        <activity android:name=".ui.modules.filter.issues.FilterIssuesActivityView"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

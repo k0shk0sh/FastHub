@@ -8,6 +8,7 @@ import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MergeResponseModel;
 import com.fastaccess.data.dao.Pageable;
+import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.PullRequest;
 
@@ -77,4 +78,7 @@ public interface PullRequestService {
     @POST("repos/{owner}/{repo}/issues/{number}/assignees")
     Observable<PullRequest> putAssignees(@Path("owner") String owner, @Path("repo") String repo,
                                          @Path("number") int number, @Body AssigneesRequestModel body);
+
+    @GET("repos/{owner}/{repo}/commits/{ref}/status")
+    Observable<PullRequestStatusModel> getPullStatus(@Path("owner") String owner, @Path("repo") String repo, @Path("ref") String ref);
 }

@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.repos.issues;
 
+import android.support.annotation.IntRange;
+
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 
@@ -13,6 +15,8 @@ public interface RepoIssuesPagerMvp {
         void onAddIssue();
 
         void setCurrentItem(int index, boolean refresh);
+
+        @IntRange(from = 0, to = 1) int getCurrentItem();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {}

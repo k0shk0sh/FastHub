@@ -1,6 +1,7 @@
 package com.fastaccess.ui.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.LabelModel;
@@ -23,15 +24,15 @@ public class LabelsAdapter extends BaseRecyclerAdapter<LabelModel, LabelsViewHol
         void onToggleSelection(int position, boolean select);
     }
 
-    @NonNull private OnSelectLabel onSelectLabel;
+    @Nullable private OnSelectLabel onSelectLabel;
 
-    public LabelsAdapter(@NonNull List<LabelModel> eventsModels, @NonNull OnSelectLabel onSelectLabel) {
+    public LabelsAdapter(@NonNull List<LabelModel> eventsModels, @Nullable OnSelectLabel onSelectLabel) {
         super(eventsModels);
         this.onSelectLabel = onSelectLabel;
     }
 
     @Override protected LabelsViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return LabelsViewHolder.newInstance(parent, onSelectLabel);
+        return LabelsViewHolder.newInstance(parent, onSelectLabel, this);
     }
 
     @Override protected void onBindView(LabelsViewHolder holder, int position) {

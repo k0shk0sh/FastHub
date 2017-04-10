@@ -17,14 +17,14 @@ import rx.Observable;
 public interface SearchService {
 
     @GET("search/repositories")
-    Observable<Pageable<Repo>> searchRepositories(@Query("q") String query, @Query("page") long page);
+    Observable<Pageable<Repo>> searchRepositories(@Query(value = "q", encoded = true) String query, @Query("page") long page);
 
     @GET("search/code")
-    Observable<Pageable<SearchCodeModel>> searchCode(@Query("q") String query, @Query("page") long page);
+    Observable<Pageable<SearchCodeModel>> searchCode(@Query(value = "q", encoded = true) String query, @Query("page") long page);
 
     @GET("search/issues")
-    Observable<Pageable<Issue>> searchIssues(@Query("q") String query, @Query("page") long page);
+    Observable<Pageable<Issue>> searchIssues(@Query(value = "q", encoded = true) String query, @Query("page") long page);
 
     @GET("search/users")
-    Observable<Pageable<User>> searchUsers(@Query("q") String query, @Query("page") long page);
+    Observable<Pageable<User>> searchUsers(@Query(value = "q", encoded = true) String query, @Query("page") long page);
 }

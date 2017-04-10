@@ -113,9 +113,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         int number = getHeader().getNumber();
         Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number, page),
                 RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
-                (issueEventPageable, commentPageable) -> {
+                RestProvider.getPullRequestSerice().getPullStatus(login, repoID, getHeader().getHead().getSha()),
+                (issueEventPageable, commentPageable, statuses) -> {
                     lastPage = issueEventPageable.getLast() > commentPageable.getLast() ? issueEventPageable.getLast() : commentPageable.getLast();
-                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems());
+                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses);
                 });
         makeRestCall(observable, models -> {
             if (getCurrentPage() == 1) {
