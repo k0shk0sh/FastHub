@@ -13,13 +13,14 @@ public enum ReviewStateType {
     COMMENTED(R.string.reviewed, R.drawable.ic_eye),
     CHANGES_REQUESTED(R.string.reviewed, R.drawable.ic_eye),
     DISMISSED(R.string.dismissed_review, R.drawable.ic_clear),
-    APPROVED(R.string.reviewed, R.drawable.ic_done);
+    APPROVED(R.string.approved_these_changes, R.drawable.ic_done);
 
     private int stringRes;
     private int drawableRes;
 
     ReviewStateType(@StringRes int stringRes, @DrawableRes int drawableRes) {
         this.stringRes = stringRes;
+        this.drawableRes = drawableRes;
     }
 
     @StringRes public int getStringRes() {

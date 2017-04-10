@@ -68,9 +68,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/spacing_micro"
-                    android:ellipsize="end"
-                    android:maxLines="5"
                     android:visibility="gone"
                     tools:text="For a divided large loaf, add some champaign and cinnamon."/>
             </LinearLayout>

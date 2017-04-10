@@ -60,7 +60,7 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
             }
             if (!InputHelper.isEmpty(review.getBody())) {
                 body.setVisibility(View.VISIBLE);
-                body.setText(review.getBody());
+                body.setText(review.getBody().replaceAll("\n", " "));
             } else {
                 body.setVisibility(View.GONE);
             }

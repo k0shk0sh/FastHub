@@ -261,7 +261,6 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
                             .append(getString(R.string.files))
                             .append(" ")
                             .append("(")
-                            .append(" ")
                             .append(String.valueOf(pullRequest.getChangedFiles()))
                             .append(")"));
         }

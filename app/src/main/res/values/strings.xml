@@ -357,4 +357,5 @@
     <string name="commit_can_be_merged">This pull request can be merged</string>
     <string name="reviewed">reviewed</string>
     <string name="dismissed_review">dismissed their review</string>
+    <string name="approved_these_changes">approved these changes</string>
 </resources>
