@@ -255,6 +255,34 @@ public class PullRequestPagerView extends BaseActivity<PullRequestPagerMvp.View,
                 }
             });
         }
+        if (tabs.getTabAt(2) != null) {
+            tabs.getTabAt(2)
+                    .setText(SpannableBuilder.builder()
+                            .append(getString(R.string.files))
+                            .append(" ")
+                            .append("(")
+                            .append(" ")
+                            .append(String.valueOf(pullRequest.getChangedFiles()))
+                            .append(")"));
+        }
+        if (tabs.getTabAt(1) != null) {
+            tabs.getTabAt(1)
+                    .setText(SpannableBuilder.builder()
+                            .append(getString(R.string.commits))
+                            .append(" ")
+                            .append("(")
+                            .append(String.valueOf(pullRequest.getCommits()))
+                            .append(")"));
+        }
+        if (tabs.getTabAt(0) != null) {
+            tabs.getTabAt(0)
+                    .setText(SpannableBuilder.builder()
+                            .append(getString(R.string.details))
+                            .append(" ")
+                            .append("(")
+                            .append(String.valueOf(pullRequest.getComments()))
+                            .append(")"));
+        }
         hideShowFab();
     }
 

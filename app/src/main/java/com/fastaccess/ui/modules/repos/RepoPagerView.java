@@ -458,6 +458,22 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         super.onBackPressed();
     }
 
+    @Override public void onAddSelected() {
+        RepoIssuesPagerView pagerView = (RepoIssuesPagerView) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerView.TAG);
+        if (pagerView != null) {
+            pagerView.onAddIssue();
+        }
+    }
+
+    @Override public void onSearchSelected() {
+        boolean isOpen = true;
+        RepoIssuesPagerView pagerView = (RepoIssuesPagerView) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerView.TAG);
+        if (pagerView != null) {
+            isOpen = pagerView.getCurrentItem() == 0;
+        }
+        FilterIssuesActivityView.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen);
+    }
+
     private void showHideFab() {
         if (navType == RepoPagerMvp.ISSUES) {
             fab.setImageResource(R.drawable.ic_menu);
@@ -476,21 +492,5 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         } else {
             fab.hide();
         }
-    }
-
-    @Override public void onAddSelected() {
-        RepoIssuesPagerView pagerView = (RepoIssuesPagerView) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerView.TAG);
-        if (pagerView != null) {
-            pagerView.onAddIssue();
-        }
-    }
-
-    @Override public void onSearchSelected() {
-        boolean isOpen = true;
-        RepoIssuesPagerView pagerView = (RepoIssuesPagerView) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerView.TAG);
-        if (pagerView != null) {
-            isOpen = pagerView.getCurrentItem() == 0;
-        }
-        FilterIssuesActivityView.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen);
     }
 }

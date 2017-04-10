@@ -337,6 +337,6 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static String getGistId(@NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        return segments != null && !segments.isEmpty() ? segments.get(0) : null;
+        return segments != null && !segments.isEmpty() ? uri.getLastPathSegment() : null;
     }
 }

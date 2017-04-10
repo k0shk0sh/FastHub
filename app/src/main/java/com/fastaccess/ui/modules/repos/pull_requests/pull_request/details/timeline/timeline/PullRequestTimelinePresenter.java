@@ -116,6 +116,9 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 RestProvider.getPullRequestSerice().getPullStatus(login, repoID, getHeader().getHead().getSha()),
                 (issueEventPageable, commentPageable, statuses) -> {
                     lastPage = issueEventPageable.getLast() > commentPageable.getLast() ? issueEventPageable.getLast() : commentPageable.getLast();
+                    if (statuses != null) {
+                        statuses.setMergable(getHeader().isMergeable());
+                    }
                     return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses);
                 });
         makeRestCall(observable, models -> {

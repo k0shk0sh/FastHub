@@ -122,7 +122,6 @@
 
         <activity
             android:name=".ui.modules.gists.gist.GistView"
-
             android:label="@string/gist"
             android:parentActivityName=".ui.modules.main.MainView">
             <meta-data
@@ -161,7 +160,13 @@
 
         <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerView"/>
 
-        <activity android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"/>
+        <activity
+            android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"
+            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerView"/>
+        </activity>
 
         <activity android:name=".ui.modules.filter.issues.FilterIssuesActivityView"/>
 

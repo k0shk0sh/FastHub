@@ -9,6 +9,7 @@ import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.types.StatusStateType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -48,14 +49,25 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
                 stateImage.tintDrawableColor(red);
                 status.setText(R.string.checks_failed);
             } else if (stateType == StatusStateType.pending) {
-                stateImage.tintDrawableColor(indigo);
-                status.setText(R.string.checks_pending);
+                if (pullRequestStatusModel.isMergable()) {
+                    stateImage.setImageResource(R.drawable.ic_check_small);
+                    stateImage.tintDrawableColor(green);
+                    status.setText(R.string.commit_can_be_merged);
+                } else {
+                    stateImage.setImageResource(stateType.getDrawableRes());
+                    stateImage.tintDrawableColor(indigo);
+                    status.setText(R.string.checks_pending);
+                }
             } else {
                 stateImage.tintDrawableColor(green);
-                status.setText(R.string.checks_passed);
+                if (pullRequestStatusModel.isMergable()) {
+                    status.setText(R.string.commit_can_be_merged);
+                } else {
+                    status.setText(R.string.checks_passed);
+                }
             }
         }
-        if (pullRequestStatusModel.getStatuses() != null) {
+        if (pullRequestStatusModel.getStatuses() != null && !pullRequestStatusModel.getStatuses().isEmpty()) {
             Stream.of(pullRequestStatusModel.getStatuses())
                     .filter(statusesModel -> statusesModel.getState() != null)
                     .forEach(statusesModel -> statuses.setText(SpannableBuilder.builder()
@@ -63,6 +75,13 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
                             .append(" ")
                             .append(statusesModel.getDescription())
                             .append("\n")));
+            if (!InputHelper.isEmpty(statuses)) {
+                statuses.setVisibility(View.VISIBLE);
+            } else {
+                statuses.setVisibility(View.GONE);
+            }
+        } else {
+            statuses.setVisibility(View.GONE);
         }
     }
 }

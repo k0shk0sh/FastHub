@@ -22,6 +22,7 @@ import lombok.Setter;
     private List<StatusesModel> statuses;
     private String commitUrl;
     private String url;
+    private boolean mergable;
 
     public PullRequestStatusModel() {}
 
@@ -34,6 +35,7 @@ import lombok.Setter;
         dest.writeTypedList(this.statuses);
         dest.writeString(this.commitUrl);
         dest.writeString(this.url);
+        dest.writeByte(this.mergable ? (byte) 1 : (byte) 0);
     }
 
     protected PullRequestStatusModel(Parcel in) {
@@ -44,6 +46,7 @@ import lombok.Setter;
         this.statuses = in.createTypedArrayList(StatusesModel.CREATOR);
         this.commitUrl = in.readString();
         this.url = in.readString();
+        this.mergable = in.readByte() != 0;
     }
 
     public static final Creator<PullRequestStatusModel> CREATOR = new Creator<PullRequestStatusModel>() {
