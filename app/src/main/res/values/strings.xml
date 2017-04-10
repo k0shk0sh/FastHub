@@ -353,4 +353,5 @@
     <string name="recently_updated">Recently updated</string>
     <string name="least_recent_updated">Least recently updated</string>
     <string name="empty_search_error">Search field can\'t be empty</string>
+    <string name="long_press_repo_fab_hint">Long press to create issue ticket on the fly</string>
 </resources>

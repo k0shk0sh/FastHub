@@ -1,12 +1,10 @@
 package com.fastaccess.provider.uil;
 
-import android.app.AlarmManager;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.BuildConfig;
-import com.fastaccess.R;
 import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -19,6 +17,8 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 public class UILProvider {
 
+    private final static long ONE_DAY = 24 * (60 * 60);
+
     private UILProvider() {}
 
     public static void initUIL(@NonNull Context context) {
@@ -27,7 +27,7 @@ public class UILProvider {
             ImageLoaderConfiguration.Builder builder = new ImageLoaderConfiguration.Builder(context)
                     .defaultDisplayImageOptions(getOptions())
                     .denyCacheImageMultipleSizesInMemory()
-                    .diskCache(new LimitedAgeDiskCache(context.getCacheDir(), AlarmManager.INTERVAL_DAY));
+                    .diskCache(new LimitedAgeDiskCache(context.getCacheDir(), ONE_DAY));
             if (BuildConfig.DEBUG) {
                 builder.writeDebugLogs();
             }
@@ -41,7 +41,6 @@ public class UILProvider {
                 .resetViewBeforeLoading(true)
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
-                .showImageForEmptyUri(R.drawable.ic_github_dark)
                 .imageScaleType(ImageScaleType.EXACTLY)
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();

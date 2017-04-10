@@ -67,9 +67,10 @@ public class PinnedReposViewHolder extends BaseViewHolder<PinnedRepos> {
         }
         String avatar = repo.getOwner() != null ? repo.getOwner().getAvatarUrl() : null;
         String login = repo.getOwner() != null ? repo.getOwner().getLogin() : null;
+        boolean isOrg = repo.getOwner() != null && repo.getOwner().isOrganizationType();
         if (avatarLayout != null) {
             avatarLayout.setVisibility(View.VISIBLE);
-            avatarLayout.setUrl(avatar, login);
+            avatarLayout.setUrl(avatar, login, isOrg);
         }
         NumberFormat numberFormat = NumberFormat.getNumberInstance();
         stars.setText(numberFormat.format(repo.getStargazersCount()));

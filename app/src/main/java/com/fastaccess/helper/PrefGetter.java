@@ -37,6 +37,7 @@ public class PrefGetter {
     private static final String MARKDOWNDOWN_GUIDE = "markdowndown_guide";
     private static final String HOME_BUTTON_GUIDE = "home_button_guide";
     private static final String NAV_DRAWER_GUIDE = "nav_drawer_guide";
+    private static final String FAB_LONG_PRESS_REPO_GUIDE = "fab_long_press_repo_guide";
     private static final String POPUP_ANIMATION = "popupAnimation";
 
     public static void setToken(@NonNull String token) {
@@ -104,6 +105,12 @@ public class PrefGetter {
     public static boolean isNavDrawerHintShowed() {
         boolean isShowed = PrefHelper.getBoolean(NAV_DRAWER_GUIDE);
         PrefHelper.set(NAV_DRAWER_GUIDE, true);
+        return isShowed;
+    }
+
+    public static boolean isRepoFabHintShowed() {
+        boolean isShowed = PrefHelper.getBoolean(FAB_LONG_PRESS_REPO_GUIDE);
+        PrefHelper.set(FAB_LONG_PRESS_REPO_GUIDE, true);
         return isShowed;
     }
 

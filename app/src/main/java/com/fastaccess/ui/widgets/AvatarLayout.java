@@ -108,6 +108,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
+            avatar.setImageResource(R.drawable.ic_github_dark);
         }
     }
 

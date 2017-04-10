@@ -262,9 +262,9 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
         watchRepo.setText(numberFormat.format(repoModel.getSubsCount()));
         if (repoModel.getOwner() != null) {
-            avatarLayout.setUrl(repoModel.getOwner().getAvatarUrl(), repoModel.getOwner().getLogin());
+            avatarLayout.setUrl(repoModel.getOwner().getAvatarUrl(), repoModel.getOwner().getLogin(), repoModel.getOwner().isOrganizationType());
         } else if (repoModel.getOrganization() != null) {
-            avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin());
+            avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin(), true);
         }
         long repoSize = repoModel.getSize() > 0 ? (repoModel.getSize() * 1000) : repoModel.getSize();
         date.setText(SpannableBuilder.builder()
@@ -462,6 +462,14 @@ public class RepoPagerView extends BaseActivity<RepoPagerMvp.View, RepoPagerPres
         if (navType == RepoPagerMvp.ISSUES) {
             fab.setImageResource(R.drawable.ic_menu);
             fab.show();
+            if (!PrefGetter.isRepoFabHintShowed()) {
+                new MaterialTapTargetPrompt.Builder(this)
+                        .setTarget(fab)
+                        .setPrimaryText(R.string.create_issue)
+                        .setSecondaryText(R.string.long_press_repo_fab_hint)
+                        .setCaptureTouchEventOutsidePrompt(true)
+                        .show();
+            }
         } else if (navType == RepoPagerMvp.PULL_REQUEST) {
             fab.setImageResource(R.drawable.ic_search);
             fab.show();

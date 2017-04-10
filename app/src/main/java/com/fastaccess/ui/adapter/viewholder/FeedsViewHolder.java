@@ -41,7 +41,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
 
     @Override public void bind(@NonNull Event eventsModel) {
         if (eventsModel.getActor() != null) {
-            avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin());
+            avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
         } else {
             avatar.setUrl(null, null);
         }
