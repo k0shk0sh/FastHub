@@ -159,10 +159,16 @@ public class AnimHelper {
                         int centerX = view.getWidth() / 2;
                         int centerY = view.getHeight() / 2;
                         float radius = (float) Math.sqrt(view.getWidth() * view.getWidth() / 4 + view.getHeight() * view.getHeight() / 4);
-                        Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, radius, 0);
-                        animator.setDuration(duration);
-                        animator.addListener(listenerAdapter);
-                        animator.start();
+                        view.post(() -> {
+                            if (ViewCompat.isAttachedToWindow(view)) {
+                                Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, radius, 0);
+                                animator.setDuration(duration);
+                                animator.addListener(listenerAdapter);
+                                animator.start();
+                            } else {
+                                listenerAdapter.onAnimationEnd(null);
+                            }
+                        });
                     }
                 }
             }

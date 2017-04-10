@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 import rx.Completable;
 import rx.Observable;
 
+import static com.fastaccess.data.dao.model.Release.CREATED_AT;
 import static com.fastaccess.data.dao.model.Release.ID;
 import static com.fastaccess.data.dao.model.Release.LOGIN;
 import static com.fastaccess.data.dao.model.Release.REPO_ID;
@@ -109,6 +110,7 @@ public abstract class AbstractRelease implements Parcelable {
                 .select(Release.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
+                .orderBy(CREATED_AT.desc())
                 .get()
                 .toObservable()
                 .toList();

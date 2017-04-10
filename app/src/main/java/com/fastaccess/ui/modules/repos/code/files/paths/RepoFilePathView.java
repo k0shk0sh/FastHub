@@ -169,10 +169,6 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-    }
-
     @Override public void setBranchesData(@Nullable List<BranchesModel> branchesData, boolean firstTime) {
         branchesProgress.setVisibility(View.GONE);
         if (branchesData != null) {
@@ -223,5 +219,10 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
             repoFilesView = (RepoFilesView) getChildFragmentManager().findFragmentById(R.id.filesFragment);
         }
         return repoFilesView;
+    }
+
+    private void showReload() {
+        branchesProgress.setVisibility(View.GONE);
+        hideProgress();
     }
 }
