@@ -1,7 +1,7 @@
 package com.fastaccess;
 
+import android.app.Application;
 import android.support.annotation.NonNull;
-import android.support.multidex.MultiDexApplication;
 import android.support.v7.preference.PreferenceManager;
 
 import com.fastaccess.data.dao.model.Models;
@@ -23,7 +23,7 @@ import io.requery.sql.TableCreationMode;
  * Created by Kosh on 03 Feb 2017, 12:07 AM
  */
 
-public class App extends MultiDexApplication {
+public class App extends Application {
     private static App instance;
     private SingleEntityStore<Persistable> dataStore;
 

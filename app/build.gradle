@@ -124,7 +124,6 @@ dependencies {
     compile 'com.github.daniel-stoneuk:material-about-library:1.8.1'
     compile 'io.requery:requery:1.2.0'
     compile 'io.requery:requery-android:1.2.0'
-    compile 'com.android.support:multidex:1.0.1'
     compile project(':pago')
     compile project(':markdown')
     annotationProcessor 'io.requery:requery-processor:1.2.0'
