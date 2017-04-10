@@ -242,7 +242,7 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getCommit(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 2 || !"commit".equals(segments.get(2))) return null;
+        if (segments == null || segments.size() < 3 || !"commit".equals(segments.get(2))) return null;
         String login = segments.get(0);
         String repoId = segments.get(1);
         String sha = segments.get(3);

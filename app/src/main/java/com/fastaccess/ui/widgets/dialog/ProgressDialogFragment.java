@@ -38,7 +38,13 @@ public class ProgressDialogFragment extends DialogFragment {
         AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
             @Override public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                ProgressDialogFragment.super.dismiss();
+                try {
+                    ProgressDialogFragment.super.dismiss();//FIXME PLEASEEEEEEEEEEEEE
+                } catch (Exception e) {
+                    if (getDialog() != null && getDialog().isShowing()) {
+                        getDialog().dismiss();
+                    }
+                }
             }
         });
     }
