@@ -10,9 +10,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
-import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
-import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
@@ -25,23 +23,22 @@ import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 import com.fastaccess.ui.modules.user.UserPagerView;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import static com.fastaccess.provider.scheme.LinkParserHelper.*;
+import static com.fastaccess.provider.scheme.LinkParserHelper.API_AUTHORITY;
+import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_DEFAULT;
+import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS;
+import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS_RAW;
+import static com.fastaccess.provider.scheme.LinkParserHelper.PROTOCOL_HTTPS;
+import static com.fastaccess.provider.scheme.LinkParserHelper.RAW_AUTHORITY;
+import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
 
 /**
  * Created by Kosh on 09 Dec 2016, 4:44 PM
  */
 
 public class SchemeParser {
-    private static final String HOST_DEFAULT = "github.com";
-    private static final String HOST_GISTS = "gist.github.com";
-    private static final String RAW_AUTHORITY = "raw.githubusercontent.com";
-    private static final String API_AUTHORITY = "api.github.com";
-    private static final String PROTOCOL_HTTPS = "https";
-
-    static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "settings", "blog", "explore",
-            "dashboard", "repositories", "site", "security", "contact", "about", "")
-            .collect(Collectors.toCollection(ArrayList::new));
 
     public static void launchUri(@NonNull Context context, @NonNull Uri data) {
         launchUri(context, data, false);
@@ -79,8 +76,8 @@ public class SchemeParser {
             }
         }
         if (!data.getPathSegments().isEmpty()) {
-            Logger.e(SchemeParser.IGNORED_LIST.contains(data.getPath()), data.getPathSegments().get(0));
-            if (SchemeParser.IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
+            Logger.e(IGNORED_LIST.contains(data.getPath()), data.getPathSegments().get(0));
+            if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
         } else {
             return null;
         }
@@ -93,6 +90,8 @@ public class SchemeParser {
             if (gist != null) {
                 return GistView.createIntent(context, gist);
             }
+        } else if (HOST_GISTS_RAW.equalsIgnoreCase(data.getHost())) {
+            return getGistFile(context, data);
         } else {
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
@@ -205,7 +204,7 @@ public class SchemeParser {
 
     @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.isEmpty() || segments.size() < 4) return null;
+        if (segments == null || segments.isEmpty() || segments.size() < 3) return null;
         if (segments.get(3).equals("commits")) {
             String login = segments.get(1);
             String repoId = segments.get(2);
@@ -217,7 +216,7 @@ public class SchemeParser {
 
     @Nullable private static Intent getCommit(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4 || !"commit".equals(segments.get(2))) return null;
+        if (segments == null || segments.size() < 3 || !"commit".equals(segments.get(2))) return null;
         String login = segments.get(0);
         String repoId = segments.get(1);
         String sha = segments.get(3);
@@ -283,7 +282,10 @@ public class SchemeParser {
         return null;
     }
 
-    @SafeVarargs private static <T> Optional<T> returnNonNull(@NonNull T... t) {
-        return Stream.of(t).filter(value -> value != null).findFirst();
+    @Nullable private static Intent getGistFile(@NonNull Context context, @NonNull Uri uri) {
+        if (uri.getHost().equalsIgnoreCase(HOST_GISTS_RAW)) {
+            return CodeViewerView.createIntent(context, uri.toString());
+        }
+        return null;
     }
 }

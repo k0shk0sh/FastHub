@@ -197,6 +197,10 @@
                     android:host="raw.githubusercontent.com"
                     android:scheme="https"/>
 
+                <data
+                    android:host="raw.githubusercontent.com"
+                    android:scheme="https"/>
+
                 <data android:pathPattern=".*"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -206,8 +210,7 @@
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
-            android:permission="android.permission.BIND_JOB_SERVICE">
-        </service>
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>

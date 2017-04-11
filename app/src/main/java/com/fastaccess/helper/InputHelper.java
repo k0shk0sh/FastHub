@@ -67,4 +67,8 @@ public class InputHelper {
         }
         return 0;
     }
+
+    public static int getSafeIntId(long id) {
+        return id > Integer.MAX_VALUE ? (int) (id - Integer.MAX_VALUE) : (int) id;
+    }
 }

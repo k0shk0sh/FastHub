@@ -47,18 +47,11 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         Toasty.info(this, getString(R.string.open_in_browser)).show();
     }
 
-    public void doLogin() {
-        if(progress.getVisibility() == View.GONE) {
-            getPresenter().login(InputHelper.toString(username),
-                    InputHelper.toString(password), InputHelper.toString(twoFactor));
-        }
-    }
-
     @OnClick(R.id.login) public void onClick() {
         doLogin();
     }
 
-    @OnEditorAction(R.id.passwordEditText) public boolean onSendPassword(int actionId) {
+    @OnEditorAction(R.id.passwordEditText) public boolean onSendPassword() {
         if (twoFactor.getVisibility() == View.VISIBLE) {
             twoFactorEditText.requestFocus();
         } else {
@@ -67,7 +60,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         return true;
     }
 
-    @OnEditorAction(R.id.twoFactorEditText) public boolean onSend2FA(int actionId) {
+    @OnEditorAction(R.id.twoFactorEditText) public boolean onSend2FA() {
         doLogin();
         return true;
     }
@@ -158,5 +151,12 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         super.onResume();
         getPresenter().onHandleAuthIntent(getIntent());
         setIntent(null);
+    }
+
+    private void doLogin() {
+        if (progress.getVisibility() == View.GONE) {
+            getPresenter().login(InputHelper.toString(username),
+                    InputHelper.toString(password), InputHelper.toString(twoFactor));
+        }
     }
 }

@@ -8,7 +8,8 @@
     android:background="@color/material_indigo_700"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    app:statusBarBackground="@color/material_indigo_900">
+    app:statusBarBackground="@color/material_indigo_900"
+    tools:context=".ui.modules.login.LoginView">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -22,7 +23,6 @@
             android:layout_margin="@dimen/spacing_s_large"
             android:minHeight="350dp"
             android:minWidth="250dp"
-            app:cardBackgroundColor="?card_background"
             app:cardElevation="@dimen/spacing_normal">
 
             <LinearLayout
@@ -85,9 +85,9 @@
                             android:id="@+id/passwordEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:imeOptions="actionSend"
                             android:inputType="textPassword"
-                            android:maxLines="1"
-                            android:imeOptions="actionSend"/>
+                            android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -103,9 +103,9 @@
                             android:id="@+id/twoFactorEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:imeOptions="actionSend"
                             android:inputType="text"
-                            android:maxLines="1"
-                            android:imeOptions="actionSend"/>
+                            android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <FrameLayout

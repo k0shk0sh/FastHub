@@ -10,7 +10,6 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
-import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
@@ -28,16 +27,20 @@ import com.fastaccess.ui.modules.user.UserPagerView;
 
 import java.util.List;
 
+import static com.fastaccess.provider.scheme.LinkParserHelper.API_AUTHORITY;
+import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_DEFAULT;
+import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS;
+import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS_RAW;
+import static com.fastaccess.provider.scheme.LinkParserHelper.IGNORED_LIST;
+import static com.fastaccess.provider.scheme.LinkParserHelper.PROTOCOL_HTTPS;
+import static com.fastaccess.provider.scheme.LinkParserHelper.RAW_AUTHORITY;
+import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
+
 /**
  * Created by Kosh on 09 Dec 2016, 4:44 PM
  */
 
 public class StackBuilderSchemeParser {
-    private static final String HOST_DEFAULT = "github.com";
-    private static final String HOST_GISTS = "gist.github.com";
-    private static final String RAW_AUTHORITY = "raw.githubusercontent.com";
-    private static final String API_AUTHORITY = "api.github.com";
-    private static final String PROTOCOL_HTTPS = "https";
 
     public static void launchUri(@NonNull Context context, @NonNull Intent data) {
         if (data.getData() != null) {
@@ -74,8 +77,7 @@ public class StackBuilderSchemeParser {
             }
         }
         if (!data.getPathSegments().isEmpty()) {
-            Logger.e(SchemeParser.IGNORED_LIST.contains(data.getPath()), data.getPathSegments().get(0));
-            if (SchemeParser.IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
+            if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
         } else {
             return null;
         }
@@ -91,6 +93,8 @@ public class StackBuilderSchemeParser {
                         .addNextIntentWithParentStack(new Intent(context, MainView.class))
                         .addNextIntent(GistView.createIntent(context, gist));
             }
+        } else if (HOST_GISTS_RAW.equalsIgnoreCase(data.getHost())) {
+            return getGistFile(context, data);
         } else {
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
@@ -311,9 +315,6 @@ public class StackBuilderSchemeParser {
         return null;
     }
 
-    /**
-     * https://github.com/owner/repo/issues/new
-     */
     @Nullable private static TaskStackBuilder getCreateIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         Logger.e(segments);
@@ -331,8 +332,15 @@ public class StackBuilderSchemeParser {
         return null;
     }
 
-    @SafeVarargs private static <T> Optional<T> returnNonNull(T... t) {
-        return Stream.of(t).filter(value -> value != null).findFirst();
+    @Nullable private static TaskStackBuilder getGistFile(@NonNull Context context, @NonNull Uri uri) {
+        if (uri.getHost().equalsIgnoreCase(HOST_GISTS_RAW)) {
+            return TaskStackBuilder.create(context)
+                    .addParentStack(MainView.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainView.class))
+                    .addNextIntentWithParentStack(GistView.createIntent(context, uri.getPathSegments().get(1)))
+                    .addNextIntent(CodeViewerView.createIntent(context, uri.toString()));
+        }
+        return null;
     }
 
     @Nullable private static String getGistId(@NonNull Uri uri) {

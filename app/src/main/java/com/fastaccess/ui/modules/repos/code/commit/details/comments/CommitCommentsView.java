@@ -205,7 +205,6 @@ public class CommitCommentsView extends BaseFragment<CommitCommentsMvp.View, Com
 
     @Override public void onToggle(int position, boolean isCollapsed) {
         getSparseBooleanArray().put(position, isCollapsed);
-        adapter.notifyItemChanged(position);
     }
 
     @Override public boolean isCollapsed(int position) {

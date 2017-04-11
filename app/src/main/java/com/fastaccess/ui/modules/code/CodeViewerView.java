@@ -19,6 +19,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.gists.gist.GistView;
 import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.prettifier.ViewerView;
 
@@ -103,7 +104,14 @@ public class CodeViewerView extends BaseActivity {
             ActivityHelper.shareUrl(this, url);
             return true;
         } else if (item.getItemId() == android.R.id.home) {
-            RepoFilesActivity.startActivity(this, url);
+            Uri uri = Uri.parse(url);
+            if (uri.getHost().contains("gist.github")) {
+                if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty() && uri.getPathSegments().size() >= 1) {
+                    GistView.createIntent(this, uri.getPathSegments().get(1));
+                }
+            } else {
+                RepoFilesActivity.startActivity(this, url);
+            }
             finish();
             return true;
         }

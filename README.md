@@ -26,6 +26,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Offline-mode
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
+  - Search users/orgs, repos, issues/prs & code.
   - Pinned Repos
 - **Repositories**
   - Search Repos
@@ -54,6 +55,11 @@ _(To download the app from here, please look at the [latest release](https://git
   - Comment on Commits/Gists
   - Manage Commit/Gist comments
   - Create/Delete Gists
+- **Orgs**
+    - Overview
+    - Feeds
+    - Teams & Teams repos
+    - Repos
 - **Users**
   - Follow/unfollow users
   - Search Users, Repos, Issues,Pull Requests and Code

@@ -15,6 +15,7 @@ import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -87,7 +88,7 @@ public class ReadNotificationService extends IntentService {
 
     private void openNotification(long id, @Nullable String url, boolean readOnly) {
         if (id > 0 && url != null) {
-            AppHelper.cancelNotification(this, (int) id);
+            AppHelper.cancelNotification(this, InputHelper.getSafeIntId(id));
             if (!PrefGetter.isMarkAsReadEnabled() || readOnly) {
                 markSingleAsRead(id);
             }
@@ -104,7 +105,7 @@ public class ReadNotificationService extends IntentService {
     private void markSingleAsRead(long id) {
         RestProvider.getNotificationService()
                 .markAsRead(String.valueOf(id))
-                .doOnSubscribe(() -> getNotificationManager().notify((int) id, getNotification().build()))
+                .doOnSubscribe(() -> getNotificationManager().notify(InputHelper.getSafeIntId(id), getNotification().build()))
                 .subscribeOn(Schedulers.io())
                 .subscribe(booleanResponse -> {
                 }, Throwable::printStackTrace, () -> getNotificationManager().cancel((int) id));
