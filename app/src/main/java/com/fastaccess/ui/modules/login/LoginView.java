@@ -48,8 +48,10 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     }
 
     public void doLogin() {
-        getPresenter().login(InputHelper.toString(username),
-                InputHelper.toString(password), InputHelper.toString(twoFactor));
+        if(progress.getVisibility() == View.GONE) {
+            getPresenter().login(InputHelper.toString(username),
+                    InputHelper.toString(password), InputHelper.toString(twoFactor));
+        }
     }
 
     @OnClick(R.id.login) public void onClick() {
