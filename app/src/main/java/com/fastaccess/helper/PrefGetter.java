@@ -10,6 +10,7 @@ import com.fastaccess.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Kosh on 10 Nov 2016, 3:43 PM
@@ -110,19 +111,19 @@ public class PrefGetter {
         return PrefHelper.getBoolean("recylerViewAnimation");
     }
 
-    public static int getNotificationTaskDuration(@NonNull Context context) {
+    public static long getNotificationTaskDuration(@NonNull Context context) {
         String s = PrefHelper.getString("notificationTime");
         if (!InputHelper.isEmpty(s)) {
             if (s.equalsIgnoreCase(context.getString(R.string.thirty_minutes))) {
-                return 30 * 60;
+                return TimeUnit.MINUTES.toMillis(30);
             } else if (s.equalsIgnoreCase(context.getString(R.string.twenty_minutes))) {
-                return 20 * 60;
+                return TimeUnit.MINUTES.toMillis(20);
             } else if (s.equalsIgnoreCase(context.getString(R.string.ten_minutes))) {
-                return 10 * 60;
+                return TimeUnit.MINUTES.toMillis(10);
             } else if (s.equalsIgnoreCase(context.getString(R.string.five_minutes))) {
-                return 5 * 60;
+                return TimeUnit.MINUTES.toMillis(5);
             } else if (s.equalsIgnoreCase(context.getString(R.string.one_minute))) {
-                return 60;
+                return TimeUnit.MINUTES.toMillis(1);
             } else if (s.equalsIgnoreCase(context.getString(R.string.turn_off))) {
                 return -1;
             }

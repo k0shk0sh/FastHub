@@ -39,7 +39,7 @@ import rx.schedulers.Schedulers;
 
 public class NotificationSchedulerJobTask extends JobService {
     private final static int JOB_ID_EVERY_30_MINS = 1;
-    private final static int THIRTY_MINUTES = 30 * 60;//in seconds
+    private final static long THIRTY_MINUTES = TimeUnit.MINUTES.toMillis(30);
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
 
     @Override public boolean onStartJob(JobParameters job) {
@@ -52,7 +52,7 @@ public class NotificationSchedulerJobTask extends JobService {
                         if (item != null) {
                             onSave(item.getItems());
                         }
-                        fastScheduleJob(getApplicationContext());
+                        scheduleJob(getApplicationContext());
                         jobFinished(job, false);
                     }, Throwable::printStackTrace);
         }
@@ -64,20 +64,11 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context) {
-        int duration = PrefGetter.getNotificationTaskDuration(context);
+        long duration = PrefGetter.getNotificationTaskDuration(context);
         scheduleJob(context, duration == 0 ? THIRTY_MINUTES : duration, false);
     }
 
-    public static void fastScheduleJob(@NonNull Context context) {
-        int duration = PrefGetter.getNotificationTaskDuration(context);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (TimeUnit.SECONDS.toMillis(duration) < JobInfo.getMinPeriodMillis()) {
-                scheduleJob(context, duration, false);
-            }
-        }
-    }
-
-    public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
+    public static void scheduleJob(@NonNull Context context, long duration, boolean cancel) {
         JobScheduler mJobScheduler = (JobScheduler)
                 context.getSystemService( Context.JOB_SCHEDULER_SERVICE );
         if (cancel) mJobScheduler.cancel(JOB_ID_EVERY_30_MINS);
@@ -94,10 +85,10 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
-                TimeUnit.SECONDS.toMillis(duration) < JobInfo.getMinPeriodMillis()) {
-            builder.setMinimumLatency(TimeUnit.SECONDS.toMillis(duration));
+                duration < JobInfo.getMinPeriodMillis()) {
+            builder.setMinimumLatency(duration);
         } else {
-            builder.setPeriodic(TimeUnit.SECONDS.toMillis(duration));
+            builder.setPeriodic(duration);
         }
 
         if (mJobScheduler.schedule(builder.build()) <= 0) {
