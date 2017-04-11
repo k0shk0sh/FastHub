@@ -20,6 +20,7 @@ import com.fastaccess.ui.modules.main.MainView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 import es.dmoral.toasty.Toasty;
 
 /**
@@ -34,6 +35,7 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     @BindView(R.id.passwordEditText) TextInputEditText passwordEditText;
     @BindView(R.id.password) TextInputLayout password;
     @BindView(R.id.twoFactor) TextInputLayout twoFactor;
+    @BindView(R.id.twoFactorEditText) TextInputEditText twoFactorEditText;
     @BindView(R.id.login) FloatingActionButton login;
     @BindView(R.id.progress) ProgressBar progress;
 
@@ -43,9 +45,23 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
         Toasty.info(this, getString(R.string.open_in_browser)).show();
     }
 
-    @OnClick(R.id.login) public void onClick() {
+    public void doLogin() {
         getPresenter().login(InputHelper.toString(username),
                 InputHelper.toString(password), InputHelper.toString(twoFactor));
+    }
+
+    @OnClick(R.id.login) public void onClick() {
+        doLogin();
+    }
+
+    @OnEditorAction(R.id.passwordEditText) public boolean onSendPassword(int actionId) {
+        doLogin();
+        return true;
+    }
+
+    @OnEditorAction(R.id.twoFactorEditText) public boolean onSend2FA(int actionId) {
+        doLogin();
+        return true;
     }
 
     @Override protected int layout() {
