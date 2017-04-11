@@ -55,7 +55,7 @@ public class PrettifyWebView extends NestedWebView {
         return true;
     }
 
-    @Override public boolean onTouchEvent(MotionEvent event) {
+    @SuppressLint("ClickableViewAccessibility") @Override public boolean onTouchEvent(MotionEvent event) {
         if (getParent() != null) {
             getParent().requestDisallowInterceptTouchEvent(interceptTouch);
         }
@@ -101,15 +101,15 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source) {
+    public void setSource(@NonNull String source, boolean wrap) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
+        settings.setSupportZoom(!wrap);
+        settings.setBuiltInZoomControls(!wrap);
+        if (!wrap) settings.setDisplayZoomControls(false);
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()));
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
         }
     }

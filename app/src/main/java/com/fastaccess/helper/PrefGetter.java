@@ -40,6 +40,7 @@ public class PrefGetter {
     private static final String NAV_DRAWER_GUIDE = "nav_drawer_guide";
     private static final String FAB_LONG_PRESS_REPO_GUIDE = "fab_long_press_repo_guide";
     private static final String POPUP_ANIMATION = "popupAnimation";
+    private static final String WRAP_CODE = "wrap_code";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -154,6 +155,10 @@ public class PrefGetter {
     public static boolean isPopupAnimationEnabled() {
 //        return PrefHelper.getBoolean(POPUP_ANIMATION);
         return true;
+    }
+
+    public static boolean isWrapCode() {
+        return PrefHelper.getBoolean(WRAP_CODE);
     }
 
     @ThemeType public static int getThemeType(@NonNull Context context) {

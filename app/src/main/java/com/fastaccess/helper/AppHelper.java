@@ -4,7 +4,6 @@ import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -54,8 +53,7 @@ public class AppHelper {
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {
-        int currentNightMode = resources.getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        return currentNightMode == Configuration.UI_MODE_NIGHT_YES || PrefGetter.getThemeType(resources) == PrefGetter.DARK;
+        return PrefGetter.getThemeType(resources) == PrefGetter.DARK;
     }
 
     @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {

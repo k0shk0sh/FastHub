@@ -35,6 +35,13 @@
 
         <SwitchPreference
             android:defaultValue="false"
+            android:key="wrap_code"
+            android:summary="@string/wrap_code_summary"
+            android:title="@string/wrap_code_title"/>
+
+
+        <SwitchPreference
+            android:defaultValue="false"
             android:key="rect_avatar"
             android:summary="@string/rect_avatar_summary"
             android:title="@string/rect_avatar_title"/>
@@ -48,11 +55,6 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/animations">
-        <!--<SwitchPreference-->
-            <!--android:defaultValue="true"-->
-            <!--android:key="popupAnimation"-->
-            <!--android:summary="@string/dialog_animation_summary"-->
-            <!--android:title="@string/dialog_animation_title"/>-->
 
         <SwitchPreference
             android:defaultValue="false"

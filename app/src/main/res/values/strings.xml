@@ -360,4 +360,7 @@
     <string name="approved_these_changes">approved these changes</string>
     <string name="no_reactions">No reactions</string>
     <string name="reactions">Reactions</string>
+    <string name="wrap_content">Wrap content</string>
+    <string name="wrap_code_summary">Wrap code in code viewer by default</string>
+    <string name="wrap_code_title">Wrap Code</string>
 </resources>

@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -11,11 +14,13 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
+import icepick.State;
 
 /**
  * Created by Kosh on 28 Nov 2016, 9:27 PM
@@ -27,6 +32,7 @@ public class ViewerView extends BaseFragment<ViewerMvp.View, ViewerPresenter> im
 
     @BindView(R.id.webView) PrettifyWebView webView;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @State boolean isWrap = PrefGetter.isWrapCode();
 
     public static ViewerView newInstance(@NonNull String url) {
         return newInstance(url, false);
@@ -61,7 +67,8 @@ public class ViewerView extends BaseFragment<ViewerMvp.View, ViewerPresenter> im
     @Override public void onSetCode(@NonNull String text) {
         stateLayout.hideProgress();
         webView.setVisibility(View.VISIBLE);
-        webView.setSource(text);
+        webView.setSource(text, isWrap);
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onShowError(@NonNull String msg) {
@@ -114,6 +121,11 @@ public class ViewerView extends BaseFragment<ViewerMvp.View, ViewerPresenter> im
         }
     }
 
+    @Override public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (InputHelper.isEmpty(getPresenter().downloadedStream())) {
             getPresenter().onHandleIntent(getArguments());
@@ -124,5 +136,26 @@ public class ViewerView extends BaseFragment<ViewerMvp.View, ViewerPresenter> im
                 onSetCode(getPresenter().downloadedStream());
             }
         }
+    }
+
+    @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.wrap_menu_option, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.wrap)
+                .setVisible(!getPresenter().isMarkDown())
+                .setChecked(isWrap);
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.wrap) {
+            item.setChecked(!item.isChecked());
+            isWrap = item.isChecked();
+            onSetCode(getPresenter().downloadedStream());
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
