@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -51,9 +52,11 @@ public class NotificationSchedulerJobTask extends JobService {
                         if (item != null) {
                             onSave(item.getItems());
                         }
+                        fastScheduleJob(getApplicationContext());
+                        jobFinished(job, false);
                     }, Throwable::printStackTrace);
         }
-        return false;
+        return true;
     }
 
     @Override public boolean onStopJob(JobParameters job) {
@@ -65,6 +68,15 @@ public class NotificationSchedulerJobTask extends JobService {
         scheduleJob(context, duration == 0 ? THIRTY_MINUTES : duration, false);
     }
 
+    public static void fastScheduleJob(@NonNull Context context) {
+        int duration = PrefGetter.getNotificationTaskDuration(context);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            if (TimeUnit.SECONDS.toMillis(duration) < JobInfo.getMinPeriodMillis()) {
+                scheduleJob(context, duration, false);
+            }
+        }
+    }
+
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
         JobScheduler mJobScheduler = (JobScheduler)
                 context.getSystemService( Context.JOB_SCHEDULER_SERVICE );
@@ -74,13 +86,21 @@ public class NotificationSchedulerJobTask extends JobService {
             return;
         }
         duration = duration <= 0 ? THIRTY_MINUTES : duration;
-        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_EVERY_30_MINS, new ComponentName( context.getPackageName(),
+
+        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_EVERY_30_MINS, new ComponentName(context.getPackageName(),
                 NotificationSchedulerJobTask.class.getName()))
                 .setBackoffCriteria(JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS, JobInfo.BACKOFF_POLICY_LINEAR)
                 .setPersisted(true)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
-                .setPeriodic(TimeUnit.SECONDS.toMillis(duration));
-        if( mJobScheduler.schedule( builder.build() ) <= 0 ) {
+                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N &&
+                TimeUnit.SECONDS.toMillis(duration) < JobInfo.getMinPeriodMillis()) {
+            builder.setMinimumLatency(TimeUnit.SECONDS.toMillis(duration));
+        } else {
+            builder.setPeriodic(TimeUnit.SECONDS.toMillis(duration));
+        }
+
+        if (mJobScheduler.schedule(builder.build()) <= 0) {
             // something gone wrong
         }
     }
