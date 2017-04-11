@@ -75,10 +75,10 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context, long duration, boolean cancel) {
-        JobScheduler mJobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        if (cancel) mJobScheduler.cancel(JOB_ID_EVERY_30_MINS);
+        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
+        if (cancel) jobScheduler.cancel(JOB_ID_EVERY_30_MINS);
         if (duration == -1) {
-            mJobScheduler.cancel(JOB_ID_EVERY_30_MINS);
+            jobScheduler.cancel(JOB_ID_EVERY_30_MINS);
             return;
         }
         duration = duration <= 0 ? THIRTY_MINUTES : duration;
@@ -93,7 +93,7 @@ public class NotificationSchedulerJobTask extends JobService {
         } else {
             builder.setPeriodic(duration);
         }
-        mJobScheduler.schedule(builder.build());
+        jobScheduler.schedule(builder.build());
     }
 
     private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {

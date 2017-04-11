@@ -26,11 +26,14 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
 
     @Override protected void onAttachView(@NonNull SearchMvp.View view) {
         super.onAttachView(view);
-        manageSubscription(SearchHistory.getHistory()
-                .subscribe(strings -> {
-                    if (strings != null) hints.addAll(strings);
-                    view.onNotifyAdapter(null);
-                }));
+        if (hints.isEmpty()) {
+            manageSubscription(SearchHistory.getHistory()
+                    .subscribe(strings -> {
+                        hints.clear();
+                        if (strings != null) hints.addAll(strings);
+                        view.onNotifyAdapter(null);
+                    }));
+        }
     }
 
     @NonNull @Override public ArrayList<SearchHistory> getHints() {
@@ -55,7 +58,7 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
             boolean noneMatch = Stream.of(hints).noneMatch(value -> value.getText().equalsIgnoreCase(query));
             if (noneMatch) {
                 SearchHistory searchHistory = new SearchHistory(query);
-                manageSubscription(searchHistory.save(searchHistory).subscribe());
+                searchHistory.save(searchHistory);
                 sendToView(view -> view.onNotifyAdapter(new SearchHistory(query)));
             }
         }

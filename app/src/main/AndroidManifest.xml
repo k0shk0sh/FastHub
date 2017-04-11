@@ -198,7 +198,7 @@
                     android:scheme="https"/>
 
                 <data
-                    android:host="raw.githubusercontent.com"
+                    android:host="gist.githubusercontent.com"
                     android:scheme="https"/>
 
                 <data android:pathPattern=".*"/>

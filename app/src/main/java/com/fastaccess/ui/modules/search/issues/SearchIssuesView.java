@@ -45,9 +45,6 @@ public class SearchIssuesView extends BaseFragment<SearchIssuesMvp.View, SearchI
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            stateLayout.hideProgress();
-        }
         stateLayout.setEmptyText(R.string.no_search_results);
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
@@ -59,6 +56,9 @@ public class SearchIssuesView extends BaseFragment<SearchIssuesMvp.View, SearchI
         recycler.addDivider();
         if (!InputHelper.isEmpty(searchQuery) && getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
+        }
+        if (InputHelper.isEmpty(searchQuery)) {
+            stateLayout.showEmptyState();
         }
     }
 

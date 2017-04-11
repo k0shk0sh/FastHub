@@ -60,6 +60,9 @@ public class SearchReposView extends BaseFragment<SearchReposMvp.View, SearchRep
         if (!InputHelper.isEmpty(searchQuery) && getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        if (InputHelper.isEmpty(searchQuery)) {
+            stateLayout.showEmptyState();
+        }
     }
 
     @NonNull @Override public SearchReposPresenter providePresenter() {

@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,6 +26,7 @@ public class StateLayout extends NestedScrollView {
     private static final int HIDE_PROGRESS_STATE = 2;
     private static final int HIDE_RELOAD_STATE = 3;
     private static final int SHOW_RELOAD_STATE = 4;
+    private static final int SHOW_EMPTY_STATE = 7;
     private static final int HIDDEN = 5;
     private static final int SHOWEN = 6;
     private OnClickListener onReloadListener;
@@ -98,6 +100,14 @@ public class StateLayout extends NestedScrollView {
         emptyText.setText(text);
     }
 
+    public void showEmptyState() {
+        hideProgress();
+        hideReload();
+        setVisibility(VISIBLE);
+        emptyText.setVisibility(VISIBLE);
+        layoutState = SHOW_EMPTY_STATE;// last so it override visibility state.
+    }
+
     public void setOnReloadListener(OnClickListener onReloadListener) {
         this.onReloadListener = onReloadListener;
     }
@@ -134,6 +144,7 @@ public class StateLayout extends NestedScrollView {
     }
 
     private void onHandleLayoutState() {
+        Logger.e(layoutState);
         setEmptyText(emptyTextValue);
         switch (layoutState) {
             case SHOW_PROGRESS_STATE:
@@ -150,6 +161,9 @@ public class StateLayout extends NestedScrollView {
                 break;
             case HIDDEN:
                 setVisibility(GONE);
+                break;
+            case SHOW_EMPTY_STATE:
+                showEmptyState();
                 break;
             case SHOWEN:
                 setVisibility(VISIBLE);
