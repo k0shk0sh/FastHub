@@ -134,6 +134,10 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
 
     @Override public void showProgress(@StringRes int resId) {
         login.hide();
+
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(login.getWindowToken(), 0);
+
         AnimHelper.animateVisibility(progress, true);
     }
 
