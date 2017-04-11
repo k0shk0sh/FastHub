@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 
 import com.fastaccess.R;
@@ -55,7 +57,11 @@ public class LoginView extends BaseActivity<LoginMvp.View, LoginPresenter> imple
     }
 
     @OnEditorAction(R.id.passwordEditText) public boolean onSendPassword(int actionId) {
-        doLogin();
+        if (twoFactor.getVisibility() == View.VISIBLE) {
+            twoFactorEditText.requestFocus();
+        } else {
+            doLogin();
+        }
         return true;
     }
 
