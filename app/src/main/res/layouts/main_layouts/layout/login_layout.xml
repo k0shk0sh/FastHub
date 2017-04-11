@@ -86,7 +86,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPassword"
-                            android:maxLines="1"/>
+                            android:maxLines="1"
+                            android:imeOptions="actionSend"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <android.support.design.widget.TextInputLayout
@@ -103,7 +104,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
-                            android:maxLines="1"/>
+                            android:maxLines="1"
+                            android:imeOptions="actionSend"/>
                     </android.support.design.widget.TextInputLayout>
 
                     <FrameLayout
