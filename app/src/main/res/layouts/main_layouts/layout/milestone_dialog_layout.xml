@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:minWidth="300dp"
         app:layout_behavior="@string/scroll_behavior">
 
         <include layout="@layout/vertical_refresh_list"/>

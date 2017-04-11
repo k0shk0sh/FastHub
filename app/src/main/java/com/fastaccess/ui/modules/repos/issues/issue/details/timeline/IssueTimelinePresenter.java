@@ -12,7 +12,9 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.comments.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -65,7 +67,21 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
     }
 
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
-        onItemClick(position, v, item);
+        if (getView() == null) return;
+        if (item.getType() == TimelineModel.COMMENT) {
+            String login = login();
+            String repoId = repoId();
+            if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
+                ReactionTypes type = ReactionTypes.get(v.getId());
+                if (type != null) {
+                    getView().showReactionsPopup(type, login, repoId, item.getComment().getId());
+                } else {
+                    onItemClick(position, v, item);
+                }
+            }
+        } else {
+            onItemClick(position, v, item);
+        }
     }
 
     @NonNull @Override public ArrayList<TimelineModel> getEvents() {

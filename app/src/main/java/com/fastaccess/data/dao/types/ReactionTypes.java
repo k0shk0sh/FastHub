@@ -30,8 +30,8 @@ public enum ReactionTypes {
         return content;
     }
 
-    public void setvId(int vId) {
-        this.vId = vId;
+    @IdRes public int getvId() {
+        return vId;
     }
 
     @Nullable public static ReactionTypes get(@IdRes int vId) {

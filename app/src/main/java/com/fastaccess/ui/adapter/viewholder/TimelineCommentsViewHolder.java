@@ -122,6 +122,12 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         thumbsDown.setOnClickListener(this);
         thumbsUp.setOnClickListener(this);
         hooray.setOnClickListener(this);
+        laugh.setOnLongClickListener(this);
+        sad.setOnLongClickListener(this);
+        thumbsDown.setOnLongClickListener(this);
+        thumbsUp.setOnLongClickListener(this);
+        hooray.setOnLongClickListener(this);
+        heart.setOnLongClickListener(this);
         heart.setOnClickListener(this);
         reactionsText.setOnClickListener(this);
     }
@@ -236,7 +242,6 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             reactionsText.setVisibility(!expanded ? View.VISIBLE : View.GONE);
         }
     }
-
 
 
 }

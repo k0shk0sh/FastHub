@@ -14,6 +14,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -22,6 +23,7 @@ import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorView;
+import com.fastaccess.ui.modules.repos.reactions.ReactionsDialogView;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -208,6 +210,11 @@ public class PullRequestTimelineView extends BaseFragment<PullRequestTimelineMvp
 
     @Override public boolean isPreviouslyReacted(long id, int vId) {
         return getPresenter().isPreviouslyReacted(id, vId);
+    }
+
+    @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login,
+                                             @NonNull String repoId, long id) {
+        ReactionsDialogView.newInstance(login, repoId, type, id).show(getChildFragmentManager(), "ReactionsDialogView");
     }
 
     private void showReload() {

@@ -221,7 +221,7 @@ public class StackBuilderSchemeParser {
         String login = null;
         String repoId = null;
         String sha = null;
-        if (segments.get(3).equals("commits")) {
+        if (segments.size() > 3 && segments.get(3).equals("commits")) {
             login = segments.get(1);
             repoId = segments.get(2);
             sha = segments.get(4);

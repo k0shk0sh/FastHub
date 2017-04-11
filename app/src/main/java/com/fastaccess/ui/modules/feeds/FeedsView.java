@@ -12,7 +12,6 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -75,7 +74,6 @@ public class FeedsView extends BaseFragment<FeedsMvp.View, FeedsPresenter> imple
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
         stateLayout.showProgress();
     }
 
@@ -100,7 +98,6 @@ public class FeedsView extends BaseFragment<FeedsMvp.View, FeedsPresenter> imple
     }
 
     @Override public void onOpenRepoChooser(@NonNull ArrayList<SimpleUrlsModel> models) {
-        Logger.e(models);
         ListDialogView<SimpleUrlsModel> dialogView = new ListDialogView<>();
         dialogView.initArguments(getString(R.string.repo_chooser), models);
         dialogView.show(getChildFragmentManager(), "ListDialogView");

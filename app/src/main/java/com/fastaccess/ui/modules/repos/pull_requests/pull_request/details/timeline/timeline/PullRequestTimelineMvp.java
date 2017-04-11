@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
@@ -36,6 +37,8 @@ public interface PullRequestTimelineMvp {
         void onShowDeleteMsg(long id);
 
         void onTagUser(@Nullable User user);
+
+        void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long id);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
