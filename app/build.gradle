@@ -94,10 +94,7 @@ android {
 repositories {
     maven { url "https://clojars.org/repo/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "http://dl.bintray.com/amulyakhare/maven" }
     maven { url "https://jitpack.io" }
-    maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
-    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
 }
 
 dependencies {
