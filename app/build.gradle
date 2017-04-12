@@ -37,7 +37,6 @@ android {
         signingConfig signingConfigs.signing
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
-        buildConfigString "REDIRECT_URL", (buildProperties.secrets['redirect_url'] | buildProperties.notThere['redirect_url']).string
         buildConfigField "String", "REST_URL", '"https://api.github.com/"'
         buildConfigField "int", "DB_VERSION", "2"
         multiDexEnabled true

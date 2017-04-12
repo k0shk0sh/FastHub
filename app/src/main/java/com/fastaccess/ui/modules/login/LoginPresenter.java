@@ -10,6 +10,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.AccessTokenModel;
 import com.fastaccess.data.dao.AuthModel;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.GithubConfigHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
@@ -64,8 +65,8 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
                 .appendPath("login")
                 .appendPath("oauth")
                 .appendPath("authorize")
-                .appendQueryParameter("client_id", BuildConfig.GITHUB_CLIENT_ID)
-                .appendQueryParameter("redirect_uri", BuildConfig.REDIRECT_URL)
+                .appendQueryParameter("client_id", GithubConfigHelper.getClientId())
+                .appendQueryParameter("redirect_uri", GithubConfigHelper.getRedirectUrl())
                 .appendQueryParameter("scope", "user,repo,gist,notifications,read:org")
                 .appendQueryParameter("state", BuildConfig.APPLICATION_ID)
                 .build();
@@ -76,11 +77,11 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         if (intent != null && intent.getData() != null) {
             Uri uri = intent.getData();
             Logger.e(uri.toString());
-            if (uri.toString().startsWith(BuildConfig.REDIRECT_URL)) {
+            if (uri.toString().startsWith(GithubConfigHelper.getRedirectUrl())) {
                 String tokenCode = uri.getQueryParameter("code");
                 if (!InputHelper.isEmpty(tokenCode)) {
-                    makeRestCall(LoginProvider.getLoginRestService().getAccessToken(tokenCode, BuildConfig.GITHUB_CLIENT_ID,
-                            BuildConfig.GITHUB_SECRET, BuildConfig.APPLICATION_ID, BuildConfig.REDIRECT_URL), this::onTokenResponse);
+                    makeRestCall(LoginProvider.getLoginRestService().getAccessToken(tokenCode, GithubConfigHelper.getClientId(),
+                            GithubConfigHelper.getSecret(), BuildConfig.APPLICATION_ID, GithubConfigHelper.getRedirectUrl()), this::onTokenResponse);
                 } else {
                     sendToView(view -> view.showMessage(R.string.error, R.string.error));
                 }
@@ -109,9 +110,9 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             AuthModel authModel = new AuthModel();
             authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
             authModel.setNote(BuildConfig.APPLICATION_ID);
-            authModel.setClientSecret(BuildConfig.GITHUB_SECRET);
-            authModel.setClientId(BuildConfig.GITHUB_CLIENT_ID);
-            authModel.setNoteUr(BuildConfig.REDIRECT_URL);
+            authModel.setClientSecret(GithubConfigHelper.getSecret());
+            authModel.setClientId(GithubConfigHelper.getClientId());
+            authModel.setNoteUr(GithubConfigHelper.getRedirectUrl());
             if (!InputHelper.isEmpty(twoFactorCode)) {
                 authModel.setOtpCode(twoFactorCode);
             }
