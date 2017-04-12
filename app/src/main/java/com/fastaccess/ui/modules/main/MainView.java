@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.PrefGetter;
@@ -66,7 +67,13 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        navigationView.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
+        if (BuildConfig.fdroid) {
+            Menu menu = navigationView.getMenu();
+            menu.findItem(R.id.enableAds).setVisible(false);
+            menu.findItem(R.id.supportDev).setVisible(false);
+        } else {
+            navigationView.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
+        }
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);

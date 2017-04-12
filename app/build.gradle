@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'com.novoda.build-properties'
 
 buildProperties {
@@ -45,6 +44,18 @@ android {
         }
     }
 
+    productFlavors {
+        // includes gms
+        gms {
+            buildConfigField "boolean", "fdroid", "false"
+        }
+
+        // only foss
+        fdroid {
+            buildConfigField "boolean", "fdroid", "true"
+        }
+    }
+
     sourceSets {
         main {
             res.srcDirs = [
@@ -70,6 +81,7 @@ android {
     }
 
     configurations {
+        gmsReleaseCompile
         all*.exclude module: 'annotations'
     }
 }
@@ -101,8 +113,6 @@ dependencies {
     compile "com.android.support:preference-v14:${supportVersion}"
     compile "com.android.support:customtabs:${supportVersion}"
     compile "com.android.support:palette-v7:${supportVersion}"
-    compile "com.google.firebase:firebase-ads:${firebase}"
-    releaseCompile "com.google.firebase:firebase-crash:${firebase}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
@@ -130,6 +140,11 @@ dependencies {
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     provided "org.projectlombok:lombok:${lombokVersion}"
+    gmsCompile "com.google.firebase:firebase-ads:${firebase}"
+    gmsReleaseCompile "com.google.firebase:firebase-crash:${firebase}"
 }
 
-apply plugin: "com.google.gms.google-services"
+def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
+if (taskRequests.contains("Gms") || taskRequests.contains("gms")){
+    apply plugin: 'com.google.gms.google-services'
+}
