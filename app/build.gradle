@@ -47,12 +47,12 @@ android {
     productFlavors {
         // includes gms
         gms {
-            buildConfigField "boolean", "fdroid", "false"
+            buildConfigField "boolean", "FDROID", "false"
         }
 
         // only foss
         fdroid {
-            buildConfigField "boolean", "fdroid", "true"
+            buildConfigField "boolean", "FDROID", "true"
         }
     }
 

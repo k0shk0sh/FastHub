@@ -67,7 +67,7 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (BuildConfig.fdroid) {
+        if (BuildConfig.FDROID) {
             Menu menu = navigationView.getMenu();
             menu.findItem(R.id.enableAds).setVisible(false);
             menu.findItem(R.id.supportDev).setVisible(false);
