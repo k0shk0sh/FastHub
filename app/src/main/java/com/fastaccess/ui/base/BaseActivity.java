@@ -43,12 +43,7 @@ import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.nostra13.universalimageloader.core.ImageLoader;
-
-import net.grandcentrix.thirtyinch.TiActivity;
 
 import java.util.ArrayList;
 
@@ -63,13 +58,12 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) AppBarLayout shadowView;
-    @Nullable @BindView(R.id.adView) AdView adView;
     @Nullable @BindView(R.id.drawer) DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
     private Toast toast;
@@ -114,19 +108,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupDrawer();
     }
 
-    @Override protected void onResume() {
-        super.onResume();
-        if (adView != null && adView.isShown()) {
-            adView.resume();
-        }
-    }
-
-    @Override protected void onPause() {
-        if (adView != null && adView.isShown()) {
-            adView.pause();
-        }
-        super.onPause();
-    }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
@@ -140,13 +121,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             }
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override protected void onDestroy() {
-        if (adView != null && adView.isShown()) {
-            adView.destroy();
-        }
-        super.onDestroy();
     }
 
     @Override public void onDialogDismissed() {
@@ -298,23 +272,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(res);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-    }
-
-    protected void showHideAds() {
-        if (adView != null) {
-            boolean isAdsEnabled = PrefGetter.isAdsEnabled();
-            if (isAdsEnabled) {
-                adView.setVisibility(View.VISIBLE);
-                MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(getString(R.string.test_device_id))
-                        .build();
-                adView.loadAd(adRequest);
-            } else {
-                adView.destroy();
-                adView.setVisibility(View.GONE);
-            }
         }
     }
 
