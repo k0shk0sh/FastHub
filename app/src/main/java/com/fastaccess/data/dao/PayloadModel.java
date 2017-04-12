@@ -7,6 +7,7 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.Repo;
+import com.fastaccess.data.dao.model.User;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,9 @@ public class PayloadModel implements Parcelable {
     private String ref;
     private String refType;
     private Comment comment;
+    private User target;
+    private User member;
+    private TeamsModel team;
 
     @Override public int describeContents() { return 0; }
 
@@ -36,6 +40,12 @@ public class PayloadModel implements Parcelable {
         dest.writeParcelable(this.forkee, flags);
         dest.writeParcelable(this.issue, flags);
         dest.writeParcelable(this.pullRequest, flags);
+        dest.writeString(this.ref);
+        dest.writeString(this.refType);
+        dest.writeParcelable(this.comment, flags);
+        dest.writeParcelable(this.target, flags);
+        dest.writeParcelable(this.member, flags);
+        dest.writeParcelable(this.team, flags);
     }
 
     protected PayloadModel(Parcel in) {
@@ -43,6 +53,12 @@ public class PayloadModel implements Parcelable {
         this.forkee = in.readParcelable(Repo.class.getClassLoader());
         this.issue = in.readParcelable(Issue.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
+        this.ref = in.readString();
+        this.refType = in.readString();
+        this.comment = in.readParcelable(Comment.class.getClassLoader());
+        this.target = in.readParcelable(User.class.getClassLoader());
+        this.member = in.readParcelable(User.class.getClassLoader());
+        this.team = in.readParcelable(TeamsModel.class.getClassLoader());
     }
 
     public static final Creator<PayloadModel> CREATOR = new Creator<PayloadModel>() {

@@ -45,10 +45,10 @@ public enum EventsType {
     }
 
     @DrawableRes public int getDrawableRes() {
-        return drawableRes;
+        return drawableRes > 0 ? drawableRes : R.drawable.ic_info_outline;
     }
 
     @StringRes public int getType() {
-        return type;
+        return type > 0 ? type : R.string.unknown;
     }
 }

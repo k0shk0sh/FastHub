@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
@@ -48,28 +49,44 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");
         if (eventsModel.getType() != null) {
+            EventsType type = eventsModel.getType();
             date.setGravity(Gravity.CENTER);
-            date.setEventsIcon(eventsModel.getType().getDrawableRes());
+            date.setEventsIcon(type.getDrawableRes());
             String action;
-            if (eventsModel.getType() == EventsType.WatchEvent) {
-                action = itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase();
+            if (type == EventsType.WatchEvent) {
+                action = itemView.getResources().getString(type.getType()).toLowerCase();
             } else {
                 action = eventsModel.getPayload() != null ? eventsModel.getPayload().getAction() : "";
             }
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
-            if (eventsModel.getType() != EventsType.WatchEvent) {
-                if (eventsModel.getType() == EventsType.CreateEvent && eventsModel.getPayload()
+            if (type != EventsType.WatchEvent) {
+                if (type == EventsType.CreateEvent && eventsModel.getPayload()
                         .getRefType().equalsIgnoreCase("branch")) {
                     spannableBuilder
-                            .bold(itemView.getResources().getString(eventsModel.getType().getType()).toLowerCase())
+                            .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")
                             .bold(eventsModel.getPayload().getRefType())
                             .append(" ")
                             .append(to).append(" ");
                 } else {
-                    spannableBuilder.bold(itemView.getResources().getString(eventsModel.getType()
-                            .getType()).toLowerCase()).append(" ");
+                    spannableBuilder.bold(itemView.getResources().getString(type
+                            .getType())
+                            .toLowerCase())
+                            .append(" ");
+                    if (eventsModel.getPayload() != null) {
+                        PayloadModel payloadModel = eventsModel.getPayload();
+                        if (payloadModel.getTarget() != null) {
+                            spannableBuilder.append(payloadModel.getTarget().getLogin())
+                                    .append(" ");
+                        } else if (payloadModel.getTeam() != null) {
+                            spannableBuilder.append(payloadModel.getTeam().getName())
+                                    .append(" ");
+                        } else if (payloadModel.getMember() != null) {
+                            spannableBuilder.append(payloadModel.getMember().getName())
+                                    .append(" ");
+                        }
+                    }
                 }
             }
         }
