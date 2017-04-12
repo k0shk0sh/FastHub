@@ -92,7 +92,7 @@ public class ReadNotificationService extends IntentService {
             if (!PrefGetter.isMarkAsReadEnabled() || readOnly) {
                 markSingleAsRead(id);
             }
-            if (!readOnly) SchemeParser.launchUri(this, Uri.parse(url), true);
+            if (!readOnly) SchemeParser.launchUri(getApplicationContext(), Uri.parse(url), true);
         }
     }
 

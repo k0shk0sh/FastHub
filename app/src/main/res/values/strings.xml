@@ -363,4 +363,5 @@
     <string name="wrap_content">Wrap content</string>
     <string name="wrap_code_summary">Wrap code in code viewer by default</string>
     <string name="wrap_code_title">Wrap Code</string>
+    <string name="open_source_libs">Open source libraries</string>
 </resources>

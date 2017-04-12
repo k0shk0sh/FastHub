@@ -204,14 +204,14 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private PendingIntent getReadOnlyPendingIntent(long id, @NonNull String url) {
-        Intent intent = ReadNotificationService.start(this, id, url, true);
-        return PendingIntent.getService(this, InputHelper.getSafeIntId(id) / 2, intent,
+        Intent intent = ReadNotificationService.start(getApplicationContext(), id, url, true);
+        return PendingIntent.getService(getApplicationContext(), InputHelper.getSafeIntId(id) / 2, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     private PendingIntent getPendingIntent(long id, @NonNull String url) {
-        Intent intent = ReadNotificationService.start(this, id, url);
-        return PendingIntent.getService(this, InputHelper.getSafeIntId(id), intent,
+        Intent intent = ReadNotificationService.start(getApplicationContext(), id, url);
+        return PendingIntent.getService(getApplicationContext(), InputHelper.getSafeIntId(id), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
