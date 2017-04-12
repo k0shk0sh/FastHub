@@ -77,7 +77,6 @@ _(To download the app from here, please look at the [latest release](https://git
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
 - [**Requery**](https://github.com/requery/requery/) for offline-mode
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `ArrayLists`
-- **JobScheduler** using Firebase JobDispatcher for notifications service.
 - [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding
 - [**Icepick**](https://github.com/frankiesardo/icepick) for saving instance states
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
