@@ -70,8 +70,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService()
-                        .getCommits(login, repoId, branch, page),
+        makeRestCall(RestProvider.getRepoService().getCommits(login, repoId, branch, page),
                 response -> {
                     if (response != null && response.getItems() != null) {
                         lastPage = response.getLast();
@@ -90,6 +89,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         login = bundle.getString(BundleConstant.EXTRA);
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
         if (branches.isEmpty()) {
+            getCommitCount(branch);
             Observable<List<BranchesModel>> observable = RxHelper.getObserver(Observable.zip(
                     RestProvider.getRepoService().getBranches(login, repoId),
                     RestProvider.getRepoService().getTags(login, repoId),
@@ -130,6 +130,16 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         }
     }
 
+    private void getCommitCount(@NonNull String branch) {
+        manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                .getCommitCounts(login, repoId, branch)))
+                .subscribe(response -> {
+                    if (response != null) {
+                        sendToView(view -> view.onShowCommitCount(response.getLast()));
+                    }
+                }));
+    }
+
     @NonNull @Override public ArrayList<Commit> getCommits() {
         return commits;
     }
@@ -154,6 +164,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         if (!TextUtils.equals(branch, this.branch)) {
             this.branch = branch;
             onCallApi(1, null);
+            getCommitCount(branch);
         }
     }
 

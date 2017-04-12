@@ -82,7 +82,6 @@ public class RepoCommitsView extends BaseFragment<RepoCommitsMvp.View, RepoCommi
     }
 
     @Override public void onNotifyAdapter() {
-
         hideProgress();
         adapter.notifyDataSetChanged();
     }

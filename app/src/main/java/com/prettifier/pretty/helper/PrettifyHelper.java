@@ -2,8 +2,6 @@ package com.prettifier.pretty.helper;
 
 import android.support.annotation.NonNull;
 
-import com.fastaccess.helper.Logger;
-
 /**
  * Created by Kosh on 25 Dec 2016, 9:12 PM
  */
@@ -58,7 +56,6 @@ public class PrettifyHelper {
 
 
     @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap) {
-        Logger.e(String.format(HTML_CONTENT, getStyle(isDark), wrap ? WRAPPED_STYLE : "", getFormattedSource(source)));
         return String.format(HTML_CONTENT, getStyle(isDark), wrap ? WRAPPED_STYLE : "", getFormattedSource(source));
     }
 
