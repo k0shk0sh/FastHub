@@ -30,7 +30,6 @@ public class PrettifyHelper {
             "    white-space: -pre-wrap !important;\n" +
             "    white-space: -o-pre-wrap !important;\n" +
             "    word-wrap: break-word !important;\n" +
-            "    margin: 4px 0px 4px 0px !important;\n" +
             "}\n" +
             "pre code {\n" +
             "    word-wrap: break-all !important;\n" +
@@ -50,7 +49,6 @@ public class PrettifyHelper {
             "    white-space: -pre-wrap !important;\n" +
             "    white-space: -o-pre-wrap !important;\n" +
             "    word-wrap: break-word !important;\n" +
-            "    margin: 4px 0px 4px 0px !important;\n" +
             "}\n" +
             "</style>";
 

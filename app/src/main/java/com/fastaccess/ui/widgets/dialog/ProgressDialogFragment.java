@@ -35,16 +35,10 @@ public class ProgressDialogFragment extends DialogFragment {
     }
 
     @Override public void dismiss() {
-        AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
+        AnimHelper.dismissDialog(this, 100, new AnimatorListenerAdapter() {
             @Override public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                try {
-                    ProgressDialogFragment.super.dismiss();//FIXME PLEASEEEEEEEEEEEEE
-                } catch (Exception e) {
-                    if (getDialog() != null && getDialog().isShowing()) {
-                        getDialog().dismiss();
-                    }
-                }
+                ProgressDialogFragment.super.dismiss();
             }
         });
     }
@@ -54,8 +48,10 @@ public class ProgressDialogFragment extends DialogFragment {
         progressDialog.setMessage(getArguments().getString("msg"));
         progressDialog.setCancelable(getArguments().getBoolean("isCancelable"));
         setCancelable(getArguments().getBoolean("isCancelable"));
-        progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog,
-                getResources().getInteger(android.R.integer.config_shortAnimTime)));
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog,
+                    getResources().getInteger(android.R.integer.config_shortAnimTime)));
+        }
         return progressDialog;
     }
 }

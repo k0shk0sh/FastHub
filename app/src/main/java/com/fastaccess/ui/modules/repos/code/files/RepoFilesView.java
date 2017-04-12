@@ -156,11 +156,6 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public RepoFilesPresenter providePresenter() {
         return new RepoFilesPresenter();
     }
@@ -179,6 +174,11 @@ public class RepoFilesView extends BaseFragment<RepoFilesMvp.View, RepoFilesPres
                 }
             }
         }
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 
     private RepoFilePathView getParent() {

@@ -9,6 +9,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 20 Nov 2016, 11:10 AM
@@ -40,7 +41,7 @@ interface RepoFilesMvp {
         void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @NonNull String path,
                                   @NonNull String ref, boolean clear);
 
-        @Nullable ArrayList<RepoFile> getCachedFiles(@NonNull String url, @NonNull String ref);
+        @Nullable List<RepoFile> getCachedFiles(@NonNull String url, @NonNull String ref);
     }
 
 

@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -47,8 +48,25 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
             login = bundle.getString(BundleConstant.EXTRA);
             path = Objects.toString(bundle.getString(BundleConstant.EXTRA_TWO), "");
             defaultBranch = Objects.toString(bundle.getString(BundleConstant.EXTRA_THREE), "master");
+            boolean forceAppend = bundle.getBoolean(BundleConstant.EXTRA_FOUR);
             if (InputHelper.isEmpty(repoId) || InputHelper.isEmpty(login)) {
                 throw new NullPointerException(String.format("error, repoId(%s) or login(%s) is null", repoId, login));
+            }
+            if (forceAppend && paths.isEmpty()) {
+                if (!InputHelper.isEmpty(path)) {
+                    Uri uri = Uri.parse(path);
+                    if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty()) {
+                        for (String name : uri.getPathSegments()) {
+                            RepoFile file = new RepoFile();
+                            file.setPath(name);
+                            file.setName(name);
+                            paths.add(file);
+                        }
+                    }
+                    if (!paths.isEmpty()) {
+                        sendToView(RepoFilePathMvp.View::onNotifyAdapter);
+                    }
+                }
             }
             sendToView(RepoFilePathMvp.View::onSendData);
             if (branches.isEmpty()) {

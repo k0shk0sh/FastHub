@@ -52,12 +52,19 @@ public class RepoFilePathView extends BaseFragment<RepoFilePathMvp.View, RepoFil
     private boolean canSelectSpinner;
 
     public static RepoFilePathView newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String defaultBranch) {
+        return newInstance(login, repoId, path, defaultBranch, false);
+    }
+
+    public static RepoFilePathView newInstance(@NonNull String login, @NonNull String repoId,
+                                               @Nullable String path, @NonNull String defaultBranch,
+                                               boolean forceAppendPath) {
         RepoFilePathView view = new RepoFilePathView();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, path)
                 .put(BundleConstant.EXTRA_THREE, defaultBranch)
+                .put(BundleConstant.EXTRA_FOUR, forceAppendPath)
                 .end());
         return view;
     }

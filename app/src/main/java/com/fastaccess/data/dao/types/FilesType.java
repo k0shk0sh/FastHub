@@ -10,7 +10,9 @@ import com.fastaccess.R;
 
 public enum FilesType {
     file(R.drawable.ic_file_document),
-    dir(R.drawable.ic_folder);
+    dir(R.drawable.ic_folder),
+    blob(R.drawable.ic_file_document),
+    tree(R.drawable.ic_folder);
 
     int icon;
 
@@ -19,6 +21,6 @@ public enum FilesType {
     }
 
     @DrawableRes public int getIcon() {
-        return icon;
+        return icon > 0 ? icon : R.drawable.ic_file_document;
     }
 }

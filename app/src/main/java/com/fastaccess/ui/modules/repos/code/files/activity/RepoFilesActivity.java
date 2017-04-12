@@ -46,10 +46,10 @@ public class RepoFilesActivity extends BaseActivity {
             String repoId = uri.getPathSegments().get(1);
             String branch = uri.getPathSegments().get(2);
             StringBuilder path = new StringBuilder();
-//            for (int i = 3; i < uri.getPathSegments().size() - 1; i++) { // disable for now.
-//                String appendedPath = uri.getPathSegments().get(i);
-//                path.append("/").append(appendedPath);
-//            }
+            for (int i = 3; i < uri.getPathSegments().size() - 1; i++) {
+                String appendedPath = uri.getPathSegments().get(i);
+                path.append("/").append(appendedPath);
+            }
             Intent intent = new Intent(context, RepoFilesActivity.class);
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.ID, repoId)
@@ -91,7 +91,7 @@ public class RepoFilesActivity extends BaseActivity {
             String path = bundle.getString(BundleConstant.EXTRA_TWO);
             String defaultBranch = Objects.toString(bundle.getString(BundleConstant.EXTRA_THREE), "master");
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragmentContainer, RepoFilePathView.newInstance(login, repoId, path, defaultBranch), "RepoFilePathView")
+                    .add(R.id.fragmentContainer, RepoFilePathView.newInstance(login, repoId, path, defaultBranch, true), "RepoFilePathView")
                     .commit();
         }
         setTitle(String.format("%s/%s", login, repoId));

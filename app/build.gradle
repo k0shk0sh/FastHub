@@ -1,8 +1,7 @@
 def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
 
 apply plugin: 'com.android.application'
-
-if (taskRequests.contains("Gms") || taskRequests.contains("gms")){
+if (taskRequests.contains("Gms") || taskRequests.contains("gms")) {
     apply plugin: 'com.google.firebase.firebase-crash'
 }
 
@@ -151,6 +150,6 @@ dependencies {
     gmsReleaseCompile "com.google.firebase:firebase-crash:${firebase}"
 }
 
-if (taskRequests.contains("Gms") || taskRequests.contains("gms")){
+if (taskRequests.contains("Gms") || taskRequests.contains("gms")) {
     apply plugin: 'com.google.gms.google-services'
 }

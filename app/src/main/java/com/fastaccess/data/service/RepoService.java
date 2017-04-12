@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.MarkdownModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.RepoSubscriptionModel;
+import com.fastaccess.data.dao.TreeResponseModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.Release;
@@ -113,6 +114,10 @@ public interface RepoService {
     Observable<Pageable<RepoFile>> getRepoFiles(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                 @NonNull @Path(value = "path", encoded = true) String path,
                                                 @NonNull @Query("ref") String ref);
+
+    @NonNull @GET("repos/{owner}/{repo}/git/trees/{sha}?recursive=1")
+    Observable<TreeResponseModel> getRepoTree(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                              @NonNull @Path("sha") String sha);
 
     @NonNull @GET("repos/{owner}/{repo}/labels")
     Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
