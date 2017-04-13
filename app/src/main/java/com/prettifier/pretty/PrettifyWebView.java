@@ -2,6 +2,7 @@ package com.prettifier.pretty;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
@@ -38,17 +40,17 @@ public class PrettifyWebView extends NestedWebView {
     public PrettifyWebView(Context context) {
         super(context);
         if (isInEditMode()) return;
-        initView();
+        initView(null);
     }
 
     public PrettifyWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView();
+        initView(attrs);
     }
 
     public PrettifyWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView();
+        initView(attrs);
     }
 
     @Override public boolean onInterceptTouchEvent(MotionEvent p_event) {
@@ -62,11 +64,16 @@ public class PrettifyWebView extends NestedWebView {
         return super.onTouchEvent(event);
     }
 
-    @SuppressLint("SetJavaScriptEnabled") private void initView() {
+    @SuppressLint("SetJavaScriptEnabled") private void initView(@Nullable AttributeSet attrs) {
         if (isInEditMode()) return;
-        if (AppHelper.isNightMode(getResources())) {
-            Logger.e(ViewHelper.getWindowBackground(getContext()));
-            setBackgroundColor(ViewHelper.getWindowBackground(getContext()));
+        if (attrs != null) {
+            TypedArray tp = getContext().obtainStyledAttributes(attrs, R.styleable.PrettifyWebView);
+            try {
+                int color = tp.getColor(R.styleable.PrettifyWebView_webview_background, ViewHelper.getWindowBackground(getContext()));
+                setBackgroundColor(color);
+            } finally {
+                tp.recycle();
+            }
         }
         setWebChromeClient(new ChromeClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

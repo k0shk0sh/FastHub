@@ -186,4 +186,8 @@ public class PrefGetter {
     public static boolean showWhatsNew() {
         return PrefHelper.getInt(WHATS_NEW_VERSION) != BuildConfig.VERSION_CODE;
     }
+
+    public static boolean isNotificationSoundEnabled() {
+        return PrefHelper.getBoolean("notificationSound");
+    }
 }

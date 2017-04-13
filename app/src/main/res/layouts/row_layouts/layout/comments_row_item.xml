@@ -70,7 +70,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_normal"/>
+            android:layout_marginTop="@dimen/spacing_normal"
+            app:webview_background="?card_background"/>
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/reactionsText"

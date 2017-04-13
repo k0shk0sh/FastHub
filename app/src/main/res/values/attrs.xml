@@ -79,4 +79,8 @@
     <declare-styleable name="AutoLinearLayoutTheme">
         <attr name="autoLinearLayoutStyle" format="reference"/>
     </declare-styleable>
+
+    <declare-styleable name="PrettifyWebView">
+        <attr name="webview_background" format="color"/>
+    </declare-styleable>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-                  xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <PreferenceCategory android:title="@string/notification_settings">
 
@@ -18,6 +19,12 @@
             android:key="markNotificationAsRead"
             android:summary="@string/mark_notification_summary"
             android:title="@string/mark_notification_title"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notificationSound"
+            android:title="@string/enable_notification_sound_title"
+            android:summary="@string/enable_notification_sound_summary"/>
 
     </PreferenceCategory>
 

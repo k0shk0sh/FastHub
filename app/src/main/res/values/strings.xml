@@ -364,4 +364,6 @@
     <string name="wrap_code_summary">Wrap code in code viewer by default</string>
     <string name="wrap_code_title">Wrap Code</string>
     <string name="open_source_libs">Open source libraries</string>
+    <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
+    <string name="enable_notification_sound_title">Enable notification sound</string>
 </resources>

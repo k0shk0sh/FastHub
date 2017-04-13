@@ -57,7 +57,11 @@ public class NotificationSchedulerJobTask extends JobService {
                         } else {
                             finishJob(job);
                         }
-                        scheduleJob(getApplicationContext());
+                        long minutes = TimeUnit.MILLISECONDS.toMinutes(PrefGetter.getNotificationTaskDuration(getApplicationContext()));
+                        Logger.e(minutes);
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && minutes < JobInfo.getMinPeriodMillis()) {
+                            scheduleJob(getApplicationContext());
+                        }
                     }, throwable -> finishJob(job));
         } else {
             finishJob(job);
@@ -127,15 +131,11 @@ public class NotificationSchedulerJobTask extends JobService {
                         showNotification((int) comment.getId(), toAdd);
                         return null;
                     }
+                    showNotificationWithoutComment(context, accentColor, thread, largeIcon);
                     return thread;
                 })
                 .subscribeOn(Schedulers.io())
-                .subscribe(thread -> {
-                    if (thread != null) {
-                        showNotificationWithoutComment(context, accentColor, thread, largeIcon);
-                    }
-                }, throwable -> finishJob(job), () -> {
-                    Logger.e();
+                .subscribe(thread -> {/*do nothing in here*/}, throwable -> finishJob(job), () -> {
                     android.app.Notification grouped = getSummaryGroupNotification(accentColor);
                     showNotification(BundleConstant.REQUEST_CODE, grouped);
                     finishJob(job);
@@ -193,6 +193,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
         return new NotificationCompat.Builder(this)
+                .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);

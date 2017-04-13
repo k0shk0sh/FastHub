@@ -62,6 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/avatar_margin"
+            app:webview_background="?card_background"
             android:layout_marginTop="@dimen/spacing_normal"/>
     </LinearLayout>
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>
