@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
@@ -28,6 +29,7 @@ import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
 import com.fastaccess.ui.modules.search.SearchView;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
+import com.fastaccess.ui.modules.user.UserPagerView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -163,6 +165,10 @@ public class MainView extends BaseActivity<MainMvp.View, MainPresenter> implemen
 
     @Override public void onOpenPinnedRepos() {
         PinnedReposActivity.startActivity(this);
+    }
+
+    @Override public void onOpenProfile() {
+        startActivity(UserPagerView.createIntent(this, Login.getUser().getLogin()));
     }
 
     private void showHideFab() {

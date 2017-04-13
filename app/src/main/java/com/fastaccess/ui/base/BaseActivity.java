@@ -40,6 +40,7 @@ import com.fastaccess.ui.modules.main.MainView;
 import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.user.UserPagerView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -107,7 +108,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupNavigationView(extraNav);
         setupDrawer();
     }
-
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         return super.onCreateOptionsMenu(menu);
@@ -214,6 +214,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             Intent intent = new Intent(this, MainView.class);
             startActivity(intent);
             finish();
+            return true;
+        } else if (item.getItemId() == R.id.profile) {
+            startActivity(UserPagerView.createIntent(this, Login.getUser().getLogin()));
+            return true;
         }
         return false;
     }
@@ -314,6 +318,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                     setupOrg(view);
                 }
             }
+        }
+    }
+
+    protected void hideProfileMenuItem() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.profile).setVisible(false);
         }
     }
 

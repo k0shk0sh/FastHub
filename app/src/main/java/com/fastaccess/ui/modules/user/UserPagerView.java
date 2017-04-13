@@ -8,6 +8,7 @@ import android.support.design.widget.TabLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -85,6 +86,9 @@ public class UserPagerView extends BaseActivity<UserPagerMvp.View, UserPagerPres
             return;
         }
         setTitle(login);
+        if (login.equalsIgnoreCase(Login.getUser().getLogin())) {
+            hideProfileMenuItem();
+        }
         if (!isOrg) {
             FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
                     FragmentPagerAdapterModel.buildForProfile(this, login));

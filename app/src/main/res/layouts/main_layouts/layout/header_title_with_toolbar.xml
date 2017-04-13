@@ -9,18 +9,26 @@
     android:theme="?android:toolbarStyle"
     app:elevation="0dp">
 
-    <include layout="@layout/title_header_layout"/>
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimary"
-        android:minHeight="?actionBarSize"
-        android:theme="?android:toolbarStyle">
+        android:orientation="vertical"
+        app:layout_scrollFlags="scroll|enterAlways">
 
-        <include layout="@layout/repo_header_icons_layout"/>
+        <include layout="@layout/title_header_layout"/>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:minHeight="?actionBarSize"
+            android:theme="?android:toolbarStyle">
+
+            <include layout="@layout/repo_header_icons_layout"/>
 
 
-    </android.support.v7.widget.Toolbar>
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
 </android.support.design.widget.AppBarLayout>

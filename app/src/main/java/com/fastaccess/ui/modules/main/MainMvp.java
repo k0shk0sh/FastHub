@@ -52,6 +52,8 @@ interface MainMvp {
         void onOpenGists(boolean myGists);
 
         void onOpenPinnedRepos();
+
+        void onOpenProfile();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, NavigationView.OnNavigationItemSelectedListener,

@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
 
+    <group android:id="@+id/profile_group">
+        <item
+            android:id="@+id/profile"
+            android:icon="@drawable/ic_profile"
+            android:title="@string/profile"/>
+
+    </group>
+
     <group
         android:id="@+id/fasthub_group"
         android:checkableBehavior="single">

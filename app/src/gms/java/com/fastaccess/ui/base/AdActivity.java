@@ -19,12 +19,9 @@ import butterknife.BindView;
  * Created by thermatk on 12.04.17.
  */
 
-public abstract class AdActivity<V extends TiView,P extends TiPresenter<V>> extends TiActivity<P, V> {
+public abstract class AdActivity<V extends TiView, P extends TiPresenter<V>> extends TiActivity<P, V> {
 
-    @Nullable @BindView(R.id.adView)
-    AdView adView;
-
-
+    @Nullable @BindView(R.id.adView) AdView adView;
 
     @Override protected void onResume() {
         super.onResume();
@@ -39,7 +36,6 @@ public abstract class AdActivity<V extends TiView,P extends TiPresenter<V>> exte
         }
         super.onPause();
     }
-
 
     @Override protected void onDestroy() {
         if (adView != null && adView.isShown()) {

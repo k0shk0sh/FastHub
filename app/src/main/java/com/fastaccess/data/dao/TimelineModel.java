@@ -165,13 +165,13 @@ import lombok.Setter;
             for (IssueEvent issueEventModel : issueEvents) {
                 if (issueEventModel != null) {
                     IssueEventType event = issueEventModel.getEvent();
-                    if (toAdd == null) {
-                        toAdd = issueEventModel;
-                    }
-                    long time = toAdd.getCreatedAt().after(issueEventModel.getCreatedAt()) ? (toAdd.getCreatedAt().getTime() - issueEventModel
-                            .getCreatedAt().getTime()) : (issueEventModel.getCreatedAt().getTime() - toAdd.getCreatedAt().getTime());
-                    if (TimeUnit.MINUTES.toMinutes(time) <= 2) {
-                        if (event != null) {
+                    if (event != null) {
+                        if (toAdd == null) {
+                            toAdd = issueEventModel;
+                        }
+                        long time = toAdd.getCreatedAt().after(issueEventModel.getCreatedAt()) ? (toAdd.getCreatedAt().getTime() - issueEventModel
+                                .getCreatedAt().getTime()) : (issueEventModel.getCreatedAt().getTime() - toAdd.getCreatedAt().getTime());
+                        if (TimeUnit.MINUTES.toMinutes(time) <= 2 && toAdd.getEvent() == event) {
                             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                                 LabelModel labelModel = issueEventModel.getLabel();
                                 int color = Color.parseColor("#" + labelModel.getColor());
@@ -184,6 +184,8 @@ import lombok.Setter;
                                         .append(" ")
                                         .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "");
                             }
+                        } else {
+                            models.add(new TimelineModel(issueEventModel));
                         }
                     } else {
                         models.add(new TimelineModel(issueEventModel));

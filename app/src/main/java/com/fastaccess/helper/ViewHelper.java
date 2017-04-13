@@ -185,7 +185,7 @@ public class ViewHelper {
 
     @ColorInt public static int generateTextColor(int background) {
         Palette.Swatch swatch = new Palette.Swatch(background, 0);
-        return swatch.getBodyTextColor();
+        return swatch.getTitleTextColor();
     }
 
     public static boolean isEllipsed(@NonNull TextView textView) {

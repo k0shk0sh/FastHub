@@ -4,32 +4,35 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.FontMetricsInt;
 import android.graphics.RectF;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.text.style.ReplacementSpan;
 
 import com.fastaccess.helper.ViewHelper;
 
 public class RoundBackgroundSpan extends ReplacementSpan {
-    @NonNull private Paint paint = new Paint();
-    private final float radius = 5;
+    private final int color;
+    private int width = -1;
+    private final RectF rectF;
 
-    public RoundBackgroundSpan(int color) {
-        super();
-        this.paint.setColor(color);
-        this.paint.setAntiAlias(true);
+
+    public RoundBackgroundSpan(@ColorInt int color) {
+        this.color = color;
+        rectF = new RectF();
     }
 
     public int getSize(@NonNull Paint paint, CharSequence charSequence, int start, int end, FontMetricsInt fontMetricsInt) {
-        return (int) (10 + paint.measureText(charSequence.subSequence(start, end).toString()) + 10);
-
+        this.width = Math.round(paint.measureText(charSequence, start, end));
+        this.width = (int) (this.width + (5 * 4.0f));
+        return this.width;
     }
 
-    @Override public void draw(@NonNull Canvas canvas, @NonNull CharSequence charSequence, int start, int end, float x,
-                               int top, int y, int bottom, @NonNull Paint paint) {
-        final float width = paint.measureText(charSequence.subSequence(start, end).toString());
-        RectF rectF = new RectF(x, top + 10, x + width + 2 * 10, bottom + 5);
-        canvas.drawRoundRect(rectF, this.radius, this.radius, this.paint);
-        paint.setColor(ViewHelper.generateTextColor(this.paint.getColor()));
-        canvas.drawText(charSequence, start, end, x + 10, y + 5, paint);
+    public void draw(@NonNull Canvas canvas, @NonNull CharSequence charSequence,
+                     int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
+        paint.setColor(color);
+        rectF.set(x, top, width + x, bottom);
+        canvas.drawRoundRect(rectF, 5, 5, paint);
+        paint.setColor(ViewHelper.generateTextColor(color));
+        canvas.drawText(charSequence, start, end, x + (5 * 2.0f), (float) y, paint);
     }
 }
