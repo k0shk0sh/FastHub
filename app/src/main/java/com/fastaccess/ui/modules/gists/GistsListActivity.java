@@ -13,8 +13,8 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.gists.create.CreateGistView;
-import com.fastaccess.ui.modules.profile.gists.ProfileGistsView;
+import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
+import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -64,8 +64,8 @@ public class GistsListActivity extends BaseActivity {
             myGists = getIntent().getExtras().getBoolean(BundleConstant.EXTRA);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainer, myGists ? ProfileGistsView.newInstance(Login.getUser().getLogin())
-                                                             : GistsView.newInstance(), GistsView.TAG)
+                    .replace(R.id.fragmentContainer, myGists ? ProfileGistsFragment.newInstance(Login.getUser().getLogin())
+                                                             : GistsFragment.newInstance(), GistsFragment.TAG)
                     .commit();
         }
         setTitle(myGists ? R.string.my_gists : R.string.public_gists);
@@ -73,6 +73,6 @@ public class GistsListActivity extends BaseActivity {
     }
 
     @OnClick(R.id.fab) public void onViewClicked() {
-        ActivityHelper.startReveal(this, new Intent(this, CreateGistView.class), fab);
+        ActivityHelper.startReveal(this, new Intent(this, CreateGistActivity.class), fab);
     }
 }

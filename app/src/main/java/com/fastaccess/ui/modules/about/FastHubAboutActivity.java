@@ -19,9 +19,9 @@ import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
-import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
-import com.fastaccess.ui.modules.user.UserPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import es.dmoral.toasty.Toasty;
 
@@ -59,7 +59,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .text(R.string.report_issue)
                 .subText(R.string.report_issue_here)
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_bug))
-                .setOnClickListener(b -> CreateIssueView.startForResult(this, CreateIssueView.startForResult(this), malRecyclerview))
+                .setOnClickListener(b -> CreateIssueActivity.startForResult(this, CreateIssueActivity.startForResult(this), malRecyclerview))
                 .build());
 
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();
@@ -68,12 +68,12 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .text("Kosh")
                 .subText("k0shk0sh")
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
-                .setOnClickListener(b -> UserPagerView.startActivity(context, "k0shk0sh"))
+                .setOnClickListener(b -> UserPagerActivity.startActivity(context, "k0shk0sh"))
                 .build());
         authorCardBuilder.addItem(new MaterialAboutActionItem.Builder()
                 .text(R.string.fork_github)
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_github))
-                .setOnClickListener(b -> startActivity(RepoPagerView.createIntent(this, "FastHub", "k0shk0sh")))
+                .setOnClickListener(b -> startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh")))
                 .build());
 
         authorCardBuilder.addItem(ConvenienceBuilder.createEmailItem(context, ContextCompat.getDrawable(context, R.drawable.ic_email),

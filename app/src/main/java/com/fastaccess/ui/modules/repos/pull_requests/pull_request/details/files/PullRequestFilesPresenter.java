@@ -12,7 +12,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 
 import java.util.ArrayList;
 
@@ -94,7 +94,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
     }
 
     @Override public void onItemLongClick(int position, View v, CommitFileModel item) {
-        v.getContext().startActivity(CommitPagerView.createIntent(v.getContext(), repoId, login, Uri.parse(item.getContentsUrl())
+        v.getContext().startActivity(CommitPagerActivity.createIntent(v.getContext(), repoId, login, Uri.parse(item.getContentsUrl())
                 .getQueryParameter("ref")));
     }
 }

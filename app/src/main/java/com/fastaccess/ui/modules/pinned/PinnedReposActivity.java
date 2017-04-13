@@ -47,7 +47,7 @@ public class PinnedReposActivity extends BaseActivity {
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.fragmentContainer, PinnedReposView.newInstance(), PinnedReposView.TAG)
+                    .replace(R.id.fragmentContainer, PinnedReposFragment.newInstance(), PinnedReposFragment.TAG)
                     .commit();
         }
     }

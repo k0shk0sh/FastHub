@@ -12,7 +12,7 @@ import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 
 import java.util.ArrayList;
 
@@ -30,7 +30,7 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
     @Override public void onItemClick(int position, View v, PullRequest item) {
         PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
         if (parser != null) {
-            Intent intent = PullRequestPagerView.createIntent(v.getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber(), true);
+            Intent intent = PullRequestPagerActivity.createIntent(v.getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber(), true);
             v.getContext().startActivity(intent);
         }
     }

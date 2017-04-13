@@ -14,14 +14,14 @@ import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
-import com.fastaccess.ui.modules.code.CodeViewerView;
-import com.fastaccess.ui.modules.gists.gist.GistView;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
-import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerView;
-import com.fastaccess.ui.modules.repos.issues.create.CreateIssueView;
-import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
-import com.fastaccess.ui.modules.user.UserPagerView;
+import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.gists.gist.GistActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import java.util.List;
 
@@ -88,7 +88,7 @@ public class SchemeParser {
         if (HOST_GISTS.equals(data.getHost())) {
             String gist = getGistId(data);
             if (gist != null) {
-                return GistView.createIntent(context, gist);
+                return GistActivity.createIntent(context, gist);
             }
         } else if (HOST_GISTS_RAW.equalsIgnoreCase(data.getHost())) {
             return getGistFile(context, data);
@@ -143,7 +143,7 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return PullRequestPagerView.createIntent(context, repo, owner, issueNumber, showRepoBtn);
+        return PullRequestPagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn);
     }
 
     @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
@@ -172,7 +172,7 @@ public class SchemeParser {
             return null;
         }
         if (issueNumber < 1) return null;
-        return IssuePagerView.createIntent(context, repo, owner, issueNumber, showRepoBtn);
+        return IssuePagerActivity.createIntent(context, repo, owner, issueNumber, showRepoBtn);
     }
 
     @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {
@@ -180,7 +180,7 @@ public class SchemeParser {
         if (segments == null || segments.size() < 2 || segments.size() > 2) return null;
         String owner = segments.get(0);
         String repoName = segments.get(1);
-        return RepoPagerView.createIntent(context, repoName, owner);
+        return RepoPagerActivity.createIntent(context, repoName, owner);
     }
 
     /**
@@ -196,7 +196,7 @@ public class SchemeParser {
             } else if (segments.size() > 1) {
                 String owner = segments.get(0);
                 String repoName = segments.get(1);
-                return RepoPagerView.createIntent(context, repoName, owner);
+                return RepoPagerActivity.createIntent(context, repoName, owner);
             }
         }
         return null;
@@ -209,7 +209,7 @@ public class SchemeParser {
             String login = segments.get(1);
             String repoId = segments.get(2);
             String sha = segments.get(4);
-            return CommitPagerView.createIntent(context, repoId, login, sha, showRepoBtn);
+            return CommitPagerActivity.createIntent(context, repoId, login, sha, showRepoBtn);
         }
         return null;
     }
@@ -220,7 +220,7 @@ public class SchemeParser {
         String login = segments.get(0);
         String repoId = segments.get(1);
         String sha = segments.get(3);
-        return CommitPagerView.createIntent(context, repoId, login, sha, showRepoBtn);
+        return CommitPagerActivity.createIntent(context, repoId, login, sha, showRepoBtn);
     }
 
     @Nullable private static String getGistId(@NonNull Uri uri) {
@@ -231,9 +231,9 @@ public class SchemeParser {
     @Nullable private static Intent getUser(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
         if (segments != null && !segments.isEmpty() && segments.size() == 1) {
-            return UserPagerView.createIntent(context, segments.get(0));
+            return UserPagerActivity.createIntent(context, segments.get(0));
         } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {
-            return UserPagerView.createIntent(context, segments.get(1), true);
+            return UserPagerActivity.createIntent(context, segments.get(1), true);
         }
         return null;
     }
@@ -256,11 +256,11 @@ public class SchemeParser {
                     fullUrl += "/" + segments.get(i);
                 }
             }
-            if (fullUrl != null) return CodeViewerView.createIntent(context, fullUrl);
+            if (fullUrl != null) return CodeViewerActivity.createIntent(context, fullUrl);
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
-                return CodeViewerView.createIntent(context, uri.toString());
+                return CodeViewerActivity.createIntent(context, uri.toString());
             }
         }
         return null;
@@ -277,14 +277,14 @@ public class SchemeParser {
         if ("issues".equals(segments.get(2))) {
             String owner = segments.get(0);
             String repo = segments.get(1);
-            return CreateIssueView.getIntent(context, owner, repo);
+            return CreateIssueActivity.getIntent(context, owner, repo);
         }
         return null;
     }
 
     @Nullable private static Intent getGistFile(@NonNull Context context, @NonNull Uri uri) {
         if (uri.getHost().equalsIgnoreCase(HOST_GISTS_RAW)) {
-            return CodeViewerView.createIntent(context, uri.toString());
+            return CodeViewerActivity.createIntent(context, uri.toString());
         }
         return null;
     }

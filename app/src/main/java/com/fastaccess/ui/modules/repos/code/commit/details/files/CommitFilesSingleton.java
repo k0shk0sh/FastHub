@@ -13,10 +13,10 @@ import java.util.Map;
  */
 
 class CommitFilesSingleton {
-    private static final CommitFilesSingleton ourInstance = new CommitFilesSingleton();
+    private static final CommitFilesSingleton SINGLETON = new CommitFilesSingleton();
 
     static CommitFilesSingleton getInstance() {
-        return ourInstance;
+        return SINGLETON;
     }
 
     private Map<String, CommitFileListModel> files = new Hashtable<>();

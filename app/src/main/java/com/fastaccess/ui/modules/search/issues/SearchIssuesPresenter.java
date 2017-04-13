@@ -8,8 +8,8 @@ import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 
 import java.util.ArrayList;
 
@@ -72,13 +72,13 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
         if (item.getPullRequest() == null) {
             PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
             if (parser != null) {
-                v.getContext().startActivity(IssuePagerView.createIntent(v.getContext(), parser.getRepoId(),
+                v.getContext().startActivity(IssuePagerActivity.createIntent(v.getContext(), parser.getRepoId(),
                         parser.getLogin(), parser.getNumber(), true));
             }
         } else {
             PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
             if (parser != null) {
-                v.getContext().startActivity(PullRequestPagerView.createIntent(v.getContext(), parser.getRepoId(),
+                v.getContext().startActivity(PullRequestPagerActivity.createIntent(v.getContext(), parser.getRepoId(),
                         parser.getLogin(), parser.getNumber(), true));
             }
         }

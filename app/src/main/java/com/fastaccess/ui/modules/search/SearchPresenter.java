@@ -10,10 +10,10 @@ import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.search.code.SearchCodeView;
-import com.fastaccess.ui.modules.search.issues.SearchIssuesView;
-import com.fastaccess.ui.modules.search.repos.SearchReposView;
-import com.fastaccess.ui.modules.search.users.SearchUsersView;
+import com.fastaccess.ui.modules.search.code.SearchCodeFragment;
+import com.fastaccess.ui.modules.search.issues.SearchIssuesFragment;
+import com.fastaccess.ui.modules.search.repos.SearchReposFragment;
+import com.fastaccess.ui.modules.search.users.SearchUsersFragment;
 
 import java.util.ArrayList;
 
@@ -47,10 +47,10 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
             editText.dismissDropDown();
             AppHelper.hideKeyboard(editText);
             String query = InputHelper.toString(editText);
-            SearchReposView repos = (SearchReposView) viewPager.getAdapter().instantiateItem(viewPager, 0);
-            SearchUsersView users = (SearchUsersView) viewPager.getAdapter().instantiateItem(viewPager, 1);
-            SearchIssuesView issues = (SearchIssuesView) viewPager.getAdapter().instantiateItem(viewPager, 2);
-            SearchCodeView code = (SearchCodeView) viewPager.getAdapter().instantiateItem(viewPager, 3);
+            SearchReposFragment repos = (SearchReposFragment) viewPager.getAdapter().instantiateItem(viewPager, 0);
+            SearchUsersFragment users = (SearchUsersFragment) viewPager.getAdapter().instantiateItem(viewPager, 1);
+            SearchIssuesFragment issues = (SearchIssuesFragment) viewPager.getAdapter().instantiateItem(viewPager, 2);
+            SearchCodeFragment code = (SearchCodeFragment) viewPager.getAdapter().instantiateItem(viewPager, 3);
             repos.onSetSearchQuery(query);
             users.onSetSearchQuery(query);
             issues.onSetSearchQuery(query);

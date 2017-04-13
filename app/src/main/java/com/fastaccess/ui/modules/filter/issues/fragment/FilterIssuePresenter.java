@@ -8,7 +8,7 @@ import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerView;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ public class FilterIssuePresenter extends BasePresenter<FilterIssuesMvp.View> im
     @Override public void onItemClick(int position, View v, Issue item) {
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
         if (parser != null) {
-            v.getContext().startActivity(IssuePagerView.createIntent(v.getContext(), parser.getRepoId(),
+            v.getContext().startActivity(IssuePagerActivity.createIntent(v.getContext(), parser.getRepoId(),
                     parser.getLogin(), parser.getNumber(), true));
         }
     }

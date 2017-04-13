@@ -17,7 +17,7 @@ import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -90,7 +90,7 @@ class OrgFeedsPresenter extends BasePresenter<OrgFeedsMvp.View> implements OrgFe
     @Override public void onItemClick(int position, View v, Event item) {
         if (item.getType() == EventsType.ForkEvent) {
             NameParser parser = new NameParser(item.getPayload().getForkee().getHtmlUrl());
-            RepoPagerView.startRepoPager(v.getContext(), parser);
+            RepoPagerActivity.startRepoPager(v.getContext(), parser);
         } else {
             PayloadModel payloadModel = item.getPayload();
             if (payloadModel != null) {

@@ -33,8 +33,6 @@ public class Logger {
         Log.i(tag, text != null ? text.toString() : "LOGGER IS NULL");//avoid null
     }
 
-    public static void e(@Nullable Object text) {e(getCurrentClassName() + " || " + getCurrentMethodName(), text);}
-
     public static void d(@Nullable Object text) {
         d(getCurrentClassName() + " || " + getCurrentMethodName(), text);//avoid null
     }

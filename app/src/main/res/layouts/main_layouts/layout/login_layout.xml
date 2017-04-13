@@ -9,7 +9,7 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     app:statusBarBackground="@color/material_indigo_900"
-    tools:context=".ui.modules.login.LoginView">
+    tools:context=".ui.modules.login.LoginActivity">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

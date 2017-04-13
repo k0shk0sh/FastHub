@@ -16,9 +16,9 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.main.MainView;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
-import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathView;
+import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -59,7 +59,7 @@ public class RepoFilesActivity extends BaseActivity {
                     .end());
             return intent;
         }
-        return new Intent(context, MainView.class);
+        return new Intent(context, MainActivity.class);
     }
 
     @Override protected int layout() {
@@ -91,7 +91,7 @@ public class RepoFilesActivity extends BaseActivity {
             String path = bundle.getString(BundleConstant.EXTRA_TWO);
             String defaultBranch = Objects.toString(bundle.getString(BundleConstant.EXTRA_THREE), "master");
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragmentContainer, RepoFilePathView.newInstance(login, repoId, path, defaultBranch, true), "RepoFilePathView")
+                    .add(R.id.fragmentContainer, RepoFilePathFragment.newInstance(login, repoId, path, defaultBranch, true), "RepoFilePathFragment")
                     .commit();
         }
         setTitle(String.format("%s/%s", login, repoId));
@@ -99,7 +99,7 @@ public class RepoFilesActivity extends BaseActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            startActivity(RepoPagerView.createIntent(this, repoId, login));
+            startActivity(RepoPagerActivity.createIntent(this, repoId, login));
             finish();
             return true;
         }
@@ -107,7 +107,7 @@ public class RepoFilesActivity extends BaseActivity {
     }
 
     @Override public void onBackPressed() {
-        RepoFilePathView filePathView = (RepoFilePathView) AppHelper.getFragmentByTag(getSupportFragmentManager(), "RepoFilePathView");
+        RepoFilePathFragment filePathView = (RepoFilePathFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(), "RepoFilePathFragment");
         if (filePathView != null) {
             if (filePathView.canPressBack()) {
                 super.onBackPressed();

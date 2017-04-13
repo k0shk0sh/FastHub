@@ -11,7 +11,7 @@ import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -98,7 +98,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
     }
 
     @Override public void onItemClick(int position, View v, Repo item) {
-        RepoPagerView.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
     @Override public void onItemLongClick(int position, View v, Repo item) {

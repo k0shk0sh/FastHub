@@ -20,7 +20,7 @@
         android:theme="@style/SplashTheme"
         tools:replace="android:allowBackup">
         <activity
-            android:name="com.fastaccess.ui.modules.main.MainView"
+            android:name="com.fastaccess.ui.modules.main.MainActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -29,7 +29,7 @@
         </activity>
 
         <activity
-            android:name=".ui.modules.login.LoginView"
+            android:name=".ui.modules.login.LoginActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
@@ -48,102 +48,102 @@
         </activity>
 
         <activity
-            android:name=".ui.modules.user.UserPagerView"
+            android:name=".ui.modules.user.UserPagerActivity"
             android:label="@string/user"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.RepoPagerView"
+            android:name=".ui.modules.repos.RepoPagerActivity"
             android:label="@string/repo"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.issues.issue.details.IssuePagerView"
+            android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
-            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerView"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.issues.create.CreateIssueView"
+            android:name=".ui.modules.repos.issues.create.CreateIssueActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/create_issue"/>
 
         <activity
-            android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
+            android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity"
             android:label="@string/pull_request"
-            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerView"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.code.commit.details.CommitPagerView"
+            android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
-            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerView"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.code.CodeViewerView"
+            android:name=".ui.modules.code.CodeViewerActivity"
             android:configChanges="keyboard|orientation|screenSize"
 
             android:label="@string/viewer"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.editor.EditorView"
+            android:name=".ui.modules.editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/markdown"
             />
 
         <activity
-            android:name=".ui.modules.gists.create.CreateGistView"
+            android:name=".ui.modules.gists.create.CreateGistActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/create_gist"
             />
 
         <activity
-            android:name=".ui.modules.gists.gist.GistView"
+            android:name=".ui.modules.gists.gist.GistActivity"
             android:label="@string/gist"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.search.SearchView"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:name=".ui.modules.search.SearchActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.notification.NotificationActivityView"
+            android:name=".ui.modules.notification.NotificationActivity"
             android:label="@string/notifications"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
@@ -158,17 +158,17 @@
             android:name=".ui.modules.gists.GistsListActivity"
             android:label="@string/public_gists"/>
 
-        <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerView"/>
+        <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerActivity"/>
 
         <activity
             android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"
-            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerView"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
-        <activity android:name=".ui.modules.filter.issues.FilterIssuesActivityView"/>
+        <activity android:name=".ui.modules.filter.issues.FilterIssuesActivity"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

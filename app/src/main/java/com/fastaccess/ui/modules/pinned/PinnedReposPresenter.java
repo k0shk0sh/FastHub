@@ -7,7 +7,7 @@ import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.PinnedRepos;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -41,7 +41,7 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
     }
 
     @Override public void onItemClick(int position, View v, PinnedRepos item) {
-        RepoPagerView.startRepoPager(v.getContext(), new NameParser(item.getPinnedRepo().getHtmlUrl()));
+        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getPinnedRepo().getHtmlUrl()));
     }
 
     @Override public void onItemLongClick(int position, View v, PinnedRepos item) {

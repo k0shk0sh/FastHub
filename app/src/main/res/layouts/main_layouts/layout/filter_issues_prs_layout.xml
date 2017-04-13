@@ -191,7 +191,7 @@
 
         <fragment
             android:id="@+id/filterFragment"
-            android:name="com.fastaccess.ui.modules.filter.issues.fragment.FilterIssueView"
+            android:name="com.fastaccess.ui.modules.filter.issues.fragment.FilterIssueFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/scroll_behavior"

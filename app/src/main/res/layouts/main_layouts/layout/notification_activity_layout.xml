@@ -46,7 +46,7 @@
 
         <fragment
             android:id="@+id/notificationFragment"
-            android:name="com.fastaccess.ui.modules.notification.NotificationsView"
+            android:name="com.fastaccess.ui.modules.notification.NotificationsFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/scroll_behavior"

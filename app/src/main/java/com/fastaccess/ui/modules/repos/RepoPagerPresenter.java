@@ -16,9 +16,9 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.code.RepoCodePagerView;
-import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerView;
-import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerView;
+import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
+import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
+import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 
@@ -176,10 +176,10 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @RepoPagerMvp.RepoNavigationType int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
-        RepoCodePagerView codePagerView = (RepoCodePagerView) AppHelper.getFragmentByTag(fragmentManager, RepoCodePagerView.TAG);
-        RepoIssuesPagerView repoIssuesPagerView = (RepoIssuesPagerView) AppHelper.getFragmentByTag(fragmentManager, RepoIssuesPagerView.TAG);
-        RepoPullRequestPagerView pullRequestPagerView = (RepoPullRequestPagerView) AppHelper.getFragmentByTag(fragmentManager,
-                RepoPullRequestPagerView.TAG);
+        RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(fragmentManager, RepoCodePagerFragment.TAG);
+        RepoIssuesPagerFragment repoIssuesPagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(fragmentManager, RepoIssuesPagerFragment.TAG);
+        RepoPullRequestPagerFragment pullRequestPagerView = (RepoPullRequestPagerFragment) AppHelper.getFragmentByTag(fragmentManager,
+                RepoPullRequestPagerFragment.TAG);
         if (getRepo() == null) {
             sendToView(RepoPagerMvp.View::onFinishActivity);
             return;
@@ -189,7 +189,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         switch (type) {
             case RepoPagerMvp.CODE:
                 if (codePagerView == null) {
-                    onAddAndHide(fragmentManager, RepoCodePagerView.newInstance(repoId(), login(),
+                    onAddAndHide(fragmentManager, RepoCodePagerFragment.newInstance(repoId(), login(),
                             getRepo().getUrl(), getRepo().getDefaultBranch()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, codePagerView, currentVisible);
@@ -201,14 +201,14 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                     return;
                 }
                 if (repoIssuesPagerView == null) {
-                    onAddAndHide(fragmentManager, RepoIssuesPagerView.newInstance(repoId(), login()), currentVisible);
+                    onAddAndHide(fragmentManager, RepoIssuesPagerFragment.newInstance(repoId(), login()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, repoIssuesPagerView, currentVisible);
                 }
                 break;
             case RepoPagerMvp.PULL_REQUEST:
                 if (pullRequestPagerView == null) {
-                    onAddAndHide(fragmentManager, RepoPullRequestPagerView.newInstance(repoId(), login()), currentVisible);
+                    onAddAndHide(fragmentManager, RepoPullRequestPagerFragment.newInstance(repoId(), login()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestPagerView, currentVisible);
                 }

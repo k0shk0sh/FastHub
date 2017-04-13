@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.ui.modules.user.UserPagerView;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -40,7 +40,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
     @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
-        UserPagerView.startActivity(view.getContext(), login, isOrg);
+        UserPagerActivity.startActivity(view.getContext(), login, isOrg);
     }
 
     @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {

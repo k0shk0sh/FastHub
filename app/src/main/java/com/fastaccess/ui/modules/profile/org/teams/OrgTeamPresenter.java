@@ -7,7 +7,7 @@ import android.view.View;
 import com.fastaccess.data.dao.TeamsModel;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.profile.org.teams.details.TeamPagerView;
+import com.fastaccess.ui.modules.profile.org.teams.details.TeamPagerActivity;
 
 import java.util.ArrayList;
 
@@ -80,7 +80,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
     }
 
     @Override public void onItemClick(int position, View v, TeamsModel item) {
-        TeamPagerView.startActivity(v.getContext(), item.getId(), item.getName());
+        TeamPagerActivity.startActivity(v.getContext(), item.getId(), item.getName());
     }
 
     @Override public void onItemLongClick(int position, View v, TeamsModel item) {

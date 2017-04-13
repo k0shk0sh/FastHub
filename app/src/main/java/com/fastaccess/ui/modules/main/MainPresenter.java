@@ -10,9 +10,9 @@ import android.view.MenuItem;
 
 import com.fastaccess.R;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.feeds.FeedsView;
+import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerView;
-import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerView;
+import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -30,20 +30,20 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
     @SuppressWarnings("ConstantConditions")
     @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
-        FeedsView homeView = (FeedsView) getFragmentByTag(fragmentManager, FeedsView.TAG);
-        MyPullsPagerView pullRequestView = (MyPullsPagerView) getFragmentByTag(fragmentManager, MyPullsPagerView.TAG);
+        FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
+        MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag(fragmentManager, MyPullsPagerFragment.TAG);
         MyIssuesPagerView issuesView = (MyIssuesPagerView) getFragmentByTag(fragmentManager, MyIssuesPagerView.TAG);
         switch (type) {
             case MainMvp.FEEDS:
                 if (homeView == null) {
-                    onAddAndHide(fragmentManager, FeedsView.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, homeView, currentVisible);
                 }
                 break;
             case MainMvp.PULL_REQUESTS:
                 if (pullRequestView == null) {
-                    onAddAndHide(fragmentManager, MyPullsPagerView.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestView, currentVisible);
                 }

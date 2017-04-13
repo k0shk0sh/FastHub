@@ -23,7 +23,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
-import com.fastaccess.ui.modules.code.CodeViewerView;
+import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.prettifier.pretty.callback.MarkDownInterceptorInterface;
 import com.prettifier.pretty.helper.GithubHelper;
 import com.prettifier.pretty.helper.PrettifyHelper;
@@ -166,7 +166,7 @@ public class PrettifyWebView extends NestedWebView {
         if (url == null) return;
         Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
-            CodeViewerView.startActivity(getContext(), url.toString());
+            CodeViewerActivity.startActivity(getContext(), url.toString());
         } else {
             if (url.toString().startsWith("#")) {
                 return;

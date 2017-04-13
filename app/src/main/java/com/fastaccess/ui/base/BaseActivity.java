@@ -33,14 +33,14 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.changelog.ChangelogView;
+import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
-import com.fastaccess.ui.modules.login.LoginView;
-import com.fastaccess.ui.modules.main.MainView;
+import com.fastaccess.ui.modules.login.LoginActivity;
+import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
-import com.fastaccess.ui.modules.user.UserPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -91,7 +91,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         if (!isSecured()) {
             if (!isLoggedIn()) {
-                startActivity(new Intent(this, LoginView.class));
+                startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 return;
             }
@@ -103,7 +103,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         setupToolbarAndStatusBar(toolbar);
         showHideAds();
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
-            new ChangelogView().show(getSupportFragmentManager(), "ChangelogView");
+            new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
         setupNavigationView(extraNav);
         setupDrawer();
@@ -198,7 +198,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             onNavToRepoClicked();
             return true;
         } else if (item.getItemId() == R.id.fhRepo) {
-            startActivity(RepoPagerView.createIntent(this, "FastHub", "k0shk0sh"));
+            startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
         } else if (item.getItemId() == R.id.supportDev) {
             new DonationView().show(getSupportFragmentManager(), "DonationView");
         } else if (item.getItemId() == R.id.gists) {
@@ -211,12 +211,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             PinnedReposActivity.startActivity(this);
             return true;
         } else if (item.getItemId() == R.id.mainView) {
-            Intent intent = new Intent(this, MainView.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
             return true;
         } else if (item.getItemId() == R.id.profile) {
-            startActivity(UserPagerView.createIntent(this, Login.getUser().getLogin()));
+            startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
             return true;
         }
         return false;
@@ -260,7 +260,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                                         .show();
                             }
                             navIcon.setOnLongClickListener(v -> {
-                                Intent intent = new Intent(this, MainView.class);
+                                Intent intent = new Intent(this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
                                 return true;
