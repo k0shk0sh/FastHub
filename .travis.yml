@@ -13,7 +13,8 @@ jdk: oraclejdk8
 sudo: required
 
 script:
-  - ./gradlew clean assembleDebug
+  - ./gradlew clean assembleFdroidDebug
+  - ./gradlew clean assembleGmsDebug
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
