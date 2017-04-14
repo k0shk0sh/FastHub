@@ -107,6 +107,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 .count();
         if (count == 0) {
             AppHelper.cancelAllNotifications(getApplicationContext());
+            finishJob(job);
             return;
         }
         Context context = getApplicationContext();
