@@ -87,7 +87,6 @@ android {
     }
 
     configurations {
-        gmsReleaseCompile
         all*.exclude module: 'annotations'
     }
 }
@@ -144,8 +143,10 @@ dependencies {
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     provided "org.projectlombok:lombok:${lombokVersion}"
-    gmsCompile "com.google.firebase:firebase-ads:${firebase}"
-    gmsReleaseCompile "com.google.firebase:firebase-crash:${firebase}"
+    if (isGms) {
+        compile "com.google.firebase:firebase-ads:${firebase}"
+        releaseCompile "com.google.firebase:firebase-crash:${firebase}"
+    }
 }
 
 if (isGms) {
