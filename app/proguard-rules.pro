@@ -1,8 +1,6 @@
 -keepattributes SourceFile,LineNumberTable
--dontpreverify
--repackageclasses ''
--allowaccessmodification
--optimizations !code/simplification/arithmetic
+-dontobfuscate
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
 -keepattributes *Annotation*,Signature
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;
