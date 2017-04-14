@@ -92,7 +92,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @OnClick({R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic,
             R.id.strikethrough, R.id.bullet, R.id.header, R.id.code, R.id.numbered,
-            R.id.quote, R.id.link, R.id.image}) void onActions(View v) {
+            R.id.quote, R.id.link, R.id.image, R.id.unCheckbox, R.id.checkbox}) void onActions(View v) {
         if (!editText.isEnabled()) {
             Snackbar.make(editText, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show();
             return;

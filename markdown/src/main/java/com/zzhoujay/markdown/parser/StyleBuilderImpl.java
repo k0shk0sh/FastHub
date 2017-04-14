@@ -12,6 +12,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.zzhoujay.markdown.style.CodeBlockSpan;
@@ -258,5 +259,21 @@ public class StyleBuilderImpl implements StyleBuilder {
         UnderLineSpan underLineSpan = new UnderLineSpan(underLine, getTextViewRealWidth(), 10);
         builder.setSpan(underLineSpan, 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
+    }
+
+    @Override public SpannableStringBuilder checked(CharSequence charSequence) {
+        Log.e("checked()", "" + charSequence);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        return builder.append("☑")
+                .append("\t")
+                .append(charSequence);
+    }
+
+    @Override public SpannableStringBuilder unChecked(CharSequence charSequence) {
+        Log.e("unChecked()", "" + charSequence);
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        return builder.append("☐")
+                .append("\t")
+                .append(charSequence);
     }
 }

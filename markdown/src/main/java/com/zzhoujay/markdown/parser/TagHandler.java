@@ -26,6 +26,10 @@ public interface TagHandler extends TagFinder, QueueConsumer, TagGetter {
 
     boolean ol(Line line);
 
+    boolean todoChecked(Line line);
+
+    boolean todoUnChecked(Line line);
+
     boolean gap(Line line);
 
     boolean em(Line line);

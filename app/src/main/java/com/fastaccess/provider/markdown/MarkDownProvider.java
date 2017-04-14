@@ -75,7 +75,6 @@ public class MarkDownProvider {
         }
         editText.getText().replace(selectionStart, selectionEnd, stringBuffer.toString());
         editText.setSelection(stringBuffer.length() + selectionStart);
-
     }
 
     public static void addHeader(@NonNull EditText editText, int level) {

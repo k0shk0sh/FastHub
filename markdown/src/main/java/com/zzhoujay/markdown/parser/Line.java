@@ -18,11 +18,12 @@ public class Line {
     public static final int LINE_TYPE_H4 = 7; // H4
     public static final int LINE_TYPE_H5 = 8; // H5
     public static final int LINE_TYPE_H6 = 9; // H6
-    public static final int LINE_TYPE_CODE_BLOCK_2 = 10; // 代码块1
-    public static final int LINE_TYPE_CODE_BLOCK_1 = 11; // 代码块2
-    public static final int LINE_TYPE_GAP = 12; // 间隔
-
-    public static final int HANDLE_BY_ROOT=1;
+    public static final int LINE_TYPE_CODE_BLOCK_2 = 10;
+    public static final int LINE_TYPE_CODE_BLOCK_1 = 11;
+    public static final int LINE_TYPE_GAP = 12;
+    public static final int LINE_TYPE_CHECKED = 13;
+    public static final int LINE_TYPE_UN_CHECKED = 14;
+    public static final int HANDLE_BY_ROOT = 1;
 
     private Line prev; // 前一个节点
     private Line next; // 下一个节点
@@ -133,7 +134,8 @@ public class Line {
     /**
      * 添加为下一个节点
      *
-     * @param line Line
+     * @param line
+     *         Line
      * @return Line
      */
     public Line addNext(Line line) {
@@ -162,7 +164,8 @@ public class Line {
     /**
      * 添加为上一个节点
      *
-     * @param line Line
+     * @param line
+     *         Line
      * @return Line
      */
     public Line addPrev(Line line) {
@@ -264,7 +267,8 @@ public class Line {
     /**
      * 添加子节点，并将子节点和前后节点的子节点建立连接
      *
-     * @param line child
+     * @param line
+     *         child
      */
     public void addChild(Line line) {
         if (child != null) {
@@ -320,7 +324,8 @@ public class Line {
     /**
      * 将自身作为子节点添加到某个节点
      *
-     * @param line parent
+     * @param line
+     *         parent
      */
     public void attachToParent(Line line) {
         line.addChild(this);
@@ -340,7 +345,8 @@ public class Line {
     /**
      * 创建一个子节点
      *
-     * @param src 子节点的source
+     * @param src
+     *         子节点的source
      * @return 子节点
      */
     public Line createChild(String src) {

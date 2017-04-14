@@ -71,6 +71,12 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             case R.id.image:
                 MarkDownProvider.addPhoto(editText);
                 break;
+            case R.id.checkbox:
+                MarkDownProvider.addList(editText, "- [x]");
+                break;
+            case R.id.unCheckbox:
+                MarkDownProvider.addList(editText, "- []");
+                break;
         }
     }
 

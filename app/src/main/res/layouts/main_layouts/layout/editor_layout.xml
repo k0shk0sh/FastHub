@@ -138,6 +138,26 @@
                     android:src="@drawable/ic_list_numbers"/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/checkbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/numbered_list"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_checkbox"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/unCheckbox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/numbered_list"
+                    android:padding="@dimen/spacing_normal"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_checkbox_empty"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/header"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -52,4 +52,8 @@ public interface StyleBuilder {
 
     SpannableStringBuilder gap();
 
+    SpannableStringBuilder checked(CharSequence charSequence);
+
+    SpannableStringBuilder unChecked(CharSequence charSequence);
+
 }

@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.datetimepicker.DatePickerFragmentDialog;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
@@ -38,7 +37,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             new LibsBuilder()
                     .withActivityStyle(AppHelper.isNightMode(getResources()) ? Libs.ActivityStyle.DARK :
                                        Libs.ActivityStyle.LIGHT)
-                    .withOwnLibsActivityClass(DatePickerFragmentDialog.class)
                     .withAutoDetect(true)
                     .withAboutIconShown(true)
                     .withAboutVersionShown(true)

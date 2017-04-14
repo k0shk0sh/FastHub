@@ -54,7 +54,7 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
             if (review.getUser() != null) {
                 stateText.setText(SpannableBuilder.builder().append(review.getUser().getLogin())
                         .append(" ")
-                        .append(stateText.getResources().getString(review.getState().getStringRes()))
+                        .append(review.getState() != null ? stateText.getResources().getString(review.getState().getStringRes()) : "")
                         .append(" ")
                         .append(ParseDateFormat.getTimeAgo(review.getSubmittedAt())));
             }

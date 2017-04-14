@@ -12,8 +12,10 @@ import com.fastaccess.R;
 public enum ReviewStateType {
     COMMENTED(R.string.reviewed, R.drawable.ic_eye),
     CHANGES_REQUESTED(R.string.reviewed, R.drawable.ic_eye),
+    REQUEST_CHANGES(R.string.reviewed, R.drawable.ic_eye),
     DISMISSED(R.string.dismissed_review, R.drawable.ic_clear),
-    APPROVED(R.string.approved_these_changes, R.drawable.ic_done);
+    APPROVED(R.string.approved_these_changes, R.drawable.ic_done),
+    APPROVE(R.string.approved_these_changes, R.drawable.ic_done);
 
     private int stringRes;
     private int drawableRes;

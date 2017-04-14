@@ -36,5 +36,6 @@ public class Tag {
     public static final int H1_2 = 28;
     public static final int H2_2 = 29;
     public static final int CODE = 30;
-
+    public static final int TODO_CHECKED = 31;
+    public static final int TODO_UNCHECKED = 32;
 }

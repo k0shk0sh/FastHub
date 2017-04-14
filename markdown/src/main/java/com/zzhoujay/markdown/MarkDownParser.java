@@ -77,7 +77,8 @@ class MarkDownParser {
     /**
      * 解析LineQueue
      *
-     * @param queue LineQueue
+     * @param queue
+     *         LineQueue
      * @return Spanned
      */
     private Spannable parse(final LineQueue queue) {
@@ -91,23 +92,25 @@ class MarkDownParser {
         boolean notBlock;// 当前Line不是CodeBlock
         do {
 
-            notBlock = queue.prevLine() != null && (queue.prevLine().getType() == Line.LINE_TYPE_OL || queue.prevLine().getType() == Line.LINE_TYPE_UL)
-                    && (tagHandler.find(Tag.UL, queue.currLine()) || tagHandler.find(Tag.OL, queue.currLine()));
-            // 处理CodeBlock
+            notBlock = queue.prevLine() != null && (queue.prevLine().getType() == Line.LINE_TYPE_OL
+                    || queue.prevLine().getType() == Line.LINE_TYPE_UL || queue.prevLine().getType() == Line.LINE_TYPE_CHECKED
+                    || queue.prevLine().getType() == Line.LINE_TYPE_UN_CHECKED)
+                    && (tagHandler.find(Tag.UL, queue.currLine()) || tagHandler.find(Tag.OL, queue.currLine())
+                    || tagHandler.find(Tag.TODO_CHECKED, queue.currLine()) || tagHandler.find(Tag.TODO_UNCHECKED, queue.currLine()));
             if (!notBlock && (tagHandler.codeBlock1(queue.currLine()) || tagHandler.codeBlock2(queue.currLine()))) {
                 continue;
             }
-            // 合并未换行的Line，并处理一些和Quota嵌套相关的问题
-            boolean isNewLine = tagHandler.find(Tag.NEW_LINE, queue.currLine()) || tagHandler.find(Tag.GAP, queue.currLine()) || tagHandler.find(Tag.H, queue.currLine());
+            boolean isNewLine = tagHandler.find(Tag.NEW_LINE, queue.currLine()) || tagHandler.find(Tag.GAP, queue.currLine())
+                    || tagHandler.find(Tag.H, queue.currLine());
             if (isNewLine) {
-                if (queue.nextLine() != null)
-                    handleQuotaRelevant(queue, true);
+                if (queue.nextLine() != null) handleQuotaRelevant(queue, true);
                 removeNextBlankLine(queue);
             } else {
                 while (queue.nextLine() != null && !removeNextBlankLine(queue)) {
                     if (tagHandler.find(Tag.CODE_BLOCK_1, queue.nextLine()) || tagHandler.find(Tag.CODE_BLOCK_2, queue.nextLine()) ||
                             tagHandler.find(Tag.GAP, queue.nextLine()) || tagHandler.find(Tag.UL, queue.nextLine()) ||
-                            tagHandler.find(Tag.OL, queue.nextLine()) || tagHandler.find(Tag.H, queue.nextLine())) {
+                            tagHandler.find(Tag.OL, queue.nextLine()) || tagHandler.find(Tag.H, queue.nextLine())
+                            || tagHandler.find(Tag.TODO_CHECKED, queue.nextLine()) || tagHandler.find(Tag.TODO_UNCHECKED, queue.nextLine())) {
                         break;
                     }
                     if (handleQuotaRelevant(queue, false)) break;
@@ -128,8 +131,10 @@ class MarkDownParser {
     /**
      * 处理Quota嵌套相关问题
      *
-     * @param queue LineQueue
-     * @param onlyH 只处理Title相关的问题
+     * @param queue
+     *         LineQueue
+     * @param onlyH
+     *         只处理Title相关的问题
      * @return true：已处理
      */
     private boolean handleQuotaRelevant(LineQueue queue, boolean onlyH) {
@@ -149,7 +154,10 @@ class MarkDownParser {
             if (onlyH) {
                 return false;
             }
-            if (tagHandler.find(Tag.UL, source) || tagHandler.find(Tag.OL, source) || tagHandler.find(Tag.H, source)) {
+            if (tagHandler.find(Tag.UL, source) || tagHandler.find(Tag.OL, source)
+                    || tagHandler.find(Tag.TODO_CHECKED, source)
+                    || tagHandler.find(Tag.TODO_UNCHECKED, source)
+                    || tagHandler.find(Tag.H, source)) {
                 return true;
             } else {
                 queue.currLine().setSource(queue.currLine().getSource() + ' ' + source);
@@ -200,7 +208,8 @@ class MarkDownParser {
     /**
      * 合并LineQueue -> Spanned
      *
-     * @param queue LineQueue
+     * @param queue
+     *         LineQueue
      * @return Spanned
      */
     private Spannable merge(LineQueue queue) {
@@ -231,6 +240,18 @@ class MarkDownParser {
                     }
                     builder.append('\n');
                     break;
+                case Line.LINE_TYPE_CHECKED:
+                    if (next.getType() == Line.LINE_TYPE_OL) {
+                        builder.append(listMarginBottom());
+                    }
+                    builder.append('\n');
+                    break;
+                case Line.LINE_TYPE_UN_CHECKED:
+                    if (next.getType() == Line.LINE_TYPE_OL) {
+                        builder.append(listMarginBottom());
+                    }
+                    builder.append('\n');
+                    break;
                 default:
                     builder.append('\n');
             }
@@ -241,7 +262,8 @@ class MarkDownParser {
     /**
      * 从下个Line开始移除空Line
      *
-     * @param queue LineQueue
+     * @param queue
+     *         LineQueue
      * @return 是否移除了
      */
     private boolean removeNextBlankLine(LineQueue queue) {
@@ -260,7 +282,8 @@ class MarkDownParser {
     /**
      * 从当前行开始移除空Line
      *
-     * @param queue LineQueue
+     * @param queue
+     *         LineQueue
      * @return true：移除了Line
      */
     private boolean removeCurrBlankLine(LineQueue queue) {

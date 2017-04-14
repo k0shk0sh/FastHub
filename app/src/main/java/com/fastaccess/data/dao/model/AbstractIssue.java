@@ -117,10 +117,12 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
                 .toObservable();
     }
 
-    public static Observable<Issue> getIssueByNumber(int number) {
+    public static Observable<Issue> getIssueByNumber(int number, String repoId, String login) {
         return App.getInstance().getDataStore()
                 .select(Issue.class)
-                .where(NUMBER.equal(number))
+                .where(NUMBER.equal(number)
+                        .and(REPO_ID.eq(repoId))
+                        .and(LOGIN.eq(login)))
                 .get()
                 .toObservable();
     }

@@ -30,7 +30,8 @@ public class TagHandlerImpl implements TagHandler {
     private static final Matcher matcherQuota = Pattern.compile("^\\s{0,3}>\\s(.*)").matcher("");
     private static final Matcher matcherUl = Pattern.compile("^\\s*[*+-]\\s+(.*)").matcher("");
     private static final Matcher matcherOl = Pattern.compile("^\\s*\\d+\\.\\s+(.*)").matcher("");
-
+    private static final Matcher matcherUnChecked = Pattern.compile("-\\s\\[]+(.*)").matcher("");
+    private static final Matcher matcherChecked = Pattern.compile("-\\s\\[x]+(.*)").matcher("");
     private static final Matcher matcherItalic = Pattern.compile("[^*_]*(([*_])([^*_].*?)\\2)").matcher("");
     private static final Matcher matcherEm = Pattern.compile("[^*_]*(([*_])\\2([^*_].*?)\\2\\2)").matcher("");
     private static final Matcher matcherEmItalic = Pattern.compile("[^*_]*(([*_])\\2\\2([^*_].*?)\\2\\2\\2)").matcher("");
@@ -69,6 +70,8 @@ public class TagHandlerImpl implements TagHandler {
         matchers.put(Tag.H5, matcherH5);
         matchers.put(Tag.H6, matcherH6);
         matchers.put(Tag.H, matcherH);
+        matchers.put(Tag.TODO_CHECKED, matcherChecked);
+        matchers.put(Tag.TODO_UNCHECKED, matcherUnChecked);
         matchers.put(Tag.QUOTA, matcherQuota);
         matchers.put(Tag.UL, matcherUl);
         matchers.put(Tag.OL, matcherOl);
@@ -185,7 +188,6 @@ public class TagHandlerImpl implements TagHandler {
             line.setStyle(SpannableStringBuilder.valueOf(matcher.group(1)));
             inline(line);
             line.setStyle(styleBuilder.h6(line.getStyle()));
-
             return true;
         }
         return false;
@@ -248,23 +250,26 @@ public class TagHandlerImpl implements TagHandler {
     }
 
     private boolean ul(Line line, int level) {
+        if (line.getSource() != null && (line.getSource().startsWith("- []") || line.getSource().startsWith("- [x]"))) {
+            if (line.getSource().startsWith("- [x]")) {
+                return todoChecked(line);
+            } else {
+                return todoUnChecked(line);
+            }
+        }
         Matcher matcher = obtain(Tag.UL, line.getSource());
         if (matcher.find()) {
             line.setType(Line.LINE_TYPE_UL);
             Line line1 = line.createChild(matcher.group(1));
             line.setAttr(0);
-
             Line parent = line.parentLine();
             LineQueue queue = queueProvider.getQueue();
             Line prev = line.prevLine();
-
             boolean inQuota = queue.currLine().getType() == Line.LINE_TYPE_QUOTA;
             if (inQuota) {
                 line.setHandle(Line.HANDLE_BY_ROOT);
                 line.setData(Line.LINE_TYPE_UL);
             }
-
-
             if (prev != null && (prev.getType() == Line.LINE_TYPE_OL || prev.getType() == Line.LINE_TYPE_UL)) {
                 if (level > 0) {
                     line.setAttr(level);
@@ -369,6 +374,13 @@ public class TagHandlerImpl implements TagHandler {
     }
 
     private boolean ol(Line line, int level) {
+        if (line.getSource() != null && (line.getSource().startsWith("- []") || line.getSource().startsWith("- [x]"))) {
+            if (line.getSource().startsWith("- [x]")) {
+                return todoChecked(line);
+            } else {
+                return todoUnChecked(line);
+            }
+        }
         Matcher matcher = obtain(Tag.OL, line.getSource());
         if (matcher.find()) {
             line.setType(Line.LINE_TYPE_OL);
@@ -378,7 +390,6 @@ public class TagHandlerImpl implements TagHandler {
             Line parent = line.parentLine();
             LineQueue queue = queueProvider.getQueue();
             Line prev = line.prevLine();
-
             boolean inQuota = queue.currLine().getType() == Line.LINE_TYPE_QUOTA;
             if (inQuota) {
                 line.setHandle(Line.HANDLE_BY_ROOT);
@@ -798,6 +809,30 @@ public class TagHandlerImpl implements TagHandler {
             } else {
                 return false;
             }
+        }
+        return false;
+    }
+
+    @Override public boolean todoChecked(Line line) {
+        Matcher matcher = obtain(Tag.TODO_CHECKED, line.getSource());
+        if (matcher != null && matcher.find()) {
+            line.setType(Line.LINE_TYPE_CHECKED);
+            line.setStyle(SpannableStringBuilder.valueOf(matcher.group(1)));
+            inline(line);
+            line.setStyle(styleBuilder.checked(line.getStyle()));
+            return true;
+        }
+        return false;
+    }
+
+    @Override public boolean todoUnChecked(Line line) {
+        Matcher matcher = obtain(Tag.TODO_UNCHECKED, line.getSource());
+        if (matcher != null && matcher.find()) {
+            line.setType(Line.LINE_TYPE_UN_CHECKED);
+            line.setStyle(SpannableStringBuilder.valueOf(matcher.group(1)));
+            inline(line);
+            line.setStyle(styleBuilder.unChecked(line.getStyle()));
+            return true;
         }
         return false;
     }
