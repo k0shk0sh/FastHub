@@ -37,6 +37,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             new LibsBuilder()
                     .withActivityStyle(AppHelper.isNightMode(getResources()) ? Libs.ActivityStyle.DARK :
                                        Libs.ActivityStyle.LIGHT)
+                    .withFields(R.string.class.getFields())
                     .withAutoDetect(true)
                     .withAboutIconShown(true)
                     .withAboutVersionShown(true)
