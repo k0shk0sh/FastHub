@@ -54,15 +54,9 @@ public class NotificationSchedulerJobTask extends JobService {
                         AppHelper.cancelAllNotifications(getApplicationContext());
                         if (item != null) {
                             onSave(item.getItems(), job);
-                        } else {
-                            finishJob(job);
                         }
-                        long minutes = TimeUnit.MILLISECONDS.toMinutes(PrefGetter.getNotificationTaskDuration(getApplicationContext()));
-                        Logger.e(minutes);
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && minutes < JobInfo.getMinPeriodMillis()) {
-                            scheduleJob(getApplicationContext());
-                        }
-                    }, throwable -> finishJob(job));
+                        finishJob(job);
+                    }, throwable -> jobFinished(job,true));
         } else {
             finishJob(job);
         }
@@ -91,7 +85,6 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setBackoffCriteria(JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS, JobInfo.BACKOFF_POLICY_LINEAR)
                 .setPersisted(true)
                 .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && duration < JobInfo.getMinPeriodMillis()) {
             builder.setMinimumLatency(duration);
         } else {
@@ -143,6 +136,11 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void finishJob(JobParameters job) {
+        long duration = PrefGetter.getNotificationTaskDuration(getApplicationContext());
+        Logger.e(TimeUnit.MILLISECONDS.toMinutes(duration));
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && duration < JobInfo.getMinPeriodMillis()) {
+            scheduleJob(getApplicationContext());
+        }
         jobFinished(job, false);
     }
 
