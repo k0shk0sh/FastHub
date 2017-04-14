@@ -54,9 +54,10 @@ public class NotificationSchedulerJobTask extends JobService {
                         AppHelper.cancelAllNotifications(getApplicationContext());
                         if (item != null) {
                             onSave(item.getItems(), job);
+                        } else {
+                            finishJob(job);
                         }
-                        finishJob(job);
-                    }, throwable -> jobFinished(job,true));
+                    }, throwable -> jobFinished(job, true));
         } else {
             finishJob(job);
         }
@@ -128,7 +129,7 @@ public class NotificationSchedulerJobTask extends JobService {
                     return thread;
                 })
                 .subscribeOn(Schedulers.io())
-                .subscribe(thread -> {/*do nothing in here*/}, throwable -> finishJob(job), () -> {
+                .subscribe(thread -> {/*do nothing in here*/}, throwable -> jobFinished(job, true), () -> {
                     android.app.Notification grouped = getSummaryGroupNotification(accentColor);
                     showNotification(BundleConstant.REQUEST_CODE, grouped);
                     finishJob(job);
