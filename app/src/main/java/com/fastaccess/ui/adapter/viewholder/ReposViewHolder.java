@@ -90,7 +90,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
         date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
         if (!InputHelper.isEmpty(repo.getLanguage())) {
             language.setText(repo.getLanguage());
-            language.setTextColor(ColorGenerator.MATERIAL.getColor(repo.getLanguage()));
+            language.setTextColor(ColorGenerator.getColor(itemView.getContext(),repo.getLanguage()));
             language.setVisibility(View.VISIBLE);
         }
     }

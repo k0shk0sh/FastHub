@@ -592,3 +592,79 @@ table {
     white-space: -o-pre-wrap !important;
     word-wrap: break-word !important;
 }
+
+.task-list-item {
+    list-style-type: none
+}
+.task-list-item label {
+    font-weight: normal
+}
+.task-list-item.enabled label {
+    cursor: pointer
+}
+.task-list-item+.task-list-item {
+    margin-top: 3px
+}
+.task-list-item .handle {
+    display: none
+}
+.task-list-item-checkbox {
+    margin: 0 0.2em 0.25em -1.6em;
+    vertical-align: middle
+}
+.reorderable-task-lists .markdown-body .contains-task-list {
+    padding: 0
+}
+.reorderable-task-lists .markdown-body li:not(.task-list-item) {
+    margin-left: 26px
+}
+.reorderable-task-lists .markdown-body .task-list-item {
+    padding-right: 15px;
+    padding-left: 42px;
+    margin-right: -15px;
+    margin-left: -15px;
+    border: 1px solid transparent
+}
+.reorderable-task-lists .markdown-body .task-list-item+.task-list-item {
+    margin-top: 0
+}
+.reorderable-task-lists .markdown-body .task-list-item .contains-task-list {
+    padding-top: 4px
+}
+.reorderable-task-lists .markdown-body .task-list-item .handle {
+    display: block;
+    float: left;
+    width: 20px;
+    padding: 2px 0 0 2px;
+    margin-left: -43px;
+    opacity: 0
+}
+.reorderable-task-lists .markdown-body .task-list-item .drag-handle {
+    fill: #333
+}
+.reorderable-task-lists .markdown-body .task-list-item.hovered {
+    background: #fafafa;
+    border-top-color: #ededed;
+    border-bottom-color: #ededed
+}
+.reorderable-task-lists .markdown-body .task-list-item.hovered>.handle {
+    opacity: 1
+}
+.reorderable-task-lists .markdown-body .task-list-item.is-dragging {
+    opacity: 0
+}
+.reorderable-task-lists .markdown-body .task-list-item.is-ghost {
+    border-right-color: #ededed;
+    border-left-color: #ededed
+}
+.review-comment-contents .markdown-body .task-list-item {
+    padding-left: 42px;
+    margin-right: -12px;
+    margin-left: -12px;
+    border-top-left-radius: 3px;
+    border-bottom-left-radius: 3px
+}
+.review-comment-contents .markdown-body .task-list-item.hovered {
+    border-left-color: #ededed
+}
+

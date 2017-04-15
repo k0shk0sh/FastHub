@@ -257,7 +257,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
         language.setVisibility(InputHelper.isEmpty(repoModel.getLanguage()) ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(repoModel.getLanguage())) language.setText(repoModel.getLanguage());
-        language.setTextColor(ColorGenerator.MATERIAL.getColor(repoModel.getLanguage()));
+        language.setTextColor(ColorGenerator.getColor(this, repoModel.getLanguage()));
         forkRepo.setText(numberFormat.format(repoModel.getForksCount()));
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
         watchRepo.setText(numberFormat.format(repoModel.getSubsCount()));
@@ -445,7 +445,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     @Override public void onBackPressed() {
         if (navType == RepoPagerMvp.CODE) {
-            RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoCodePagerFragment.TAG);
+            RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                    RepoCodePagerFragment.TAG);
             if (codePagerView != null) {
                 if (codePagerView.canPressBack()) {
                     super.onBackPressed();
@@ -459,7 +460,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void onAddSelected() {
-        RepoIssuesPagerFragment pagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerFragment.TAG);
+        RepoIssuesPagerFragment pagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                RepoIssuesPagerFragment.TAG);
         if (pagerView != null) {
             pagerView.onAddIssue();
         }
@@ -467,7 +469,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     @Override public void onSearchSelected() {
         boolean isOpen = true;
-        RepoIssuesPagerFragment pagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(), RepoIssuesPagerFragment.TAG);
+        RepoIssuesPagerFragment pagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                RepoIssuesPagerFragment.TAG);
         if (pagerView != null) {
             isOpen = pagerView.getCurrentItem() == 0;
         }

@@ -129,7 +129,6 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @Override public void showProgress(@StringRes int resId) {
         login.hide();
-
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(login.getWindowToken(), 0);
 
@@ -156,7 +155,8 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     private void doLogin() {
         if (progress.getVisibility() == View.GONE) {
             getPresenter().login(InputHelper.toString(username),
-                    InputHelper.toString(password), InputHelper.toString(twoFactor));
+                    InputHelper.toString(password),
+                    InputHelper.toString(twoFactor));
         }
     }
 }

@@ -1,15 +1,19 @@
 package com.fastaccess.ui.widgets.color;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.annimon.stream.Objects;
+import com.fastaccess.helper.AppHelper;
 
 import java.util.Arrays;
 import java.util.List;
 
 public class ColorGenerator {
 
-    public static ColorGenerator MATERIAL;
+    private static ColorGenerator MATERIAL;
+    private static ColorGenerator MATERIAL_DARK;
 
     static {
         MATERIAL = create(Arrays.asList(
@@ -24,6 +28,18 @@ public class ColorGenerator {
                 0xffd50000,
                 0xff00695c
         ));
+        MATERIAL_DARK = create(Arrays.asList(
+                0xffffc107,
+                0xffffc400,
+                -14575885,
+                0xff2979ff,
+                0xffa1887f,
+                0xff4dd0e1,
+                0xff00acc1,
+                0xffe64a19,
+                0xff9575cd,
+                0xff66bb6a
+        ));
     }
 
     private final List<Integer> colors;
@@ -36,8 +52,16 @@ public class ColorGenerator {
         colors = colorList;
     }
 
-    public int getColor(@Nullable Object key) {
+    private int getColor(@Nullable Object key) {
         key = Objects.toString(key, "default");
         return colors.get(Math.abs(key.hashCode()) % colors.size());
+    }
+
+    public static int getColor(@NonNull Context context, @Nullable Object object) {
+        if (AppHelper.isNightMode(context.getResources())) {
+            return MATERIAL_DARK.getColor(object);
+        } else {
+            return MATERIAL.getColor(object);
+        }
     }
 }

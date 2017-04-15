@@ -64,7 +64,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void dismiss() {
-        AnimHelper.dismissDialog(this,getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
+        AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
             @Override public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 BaseDialogFragment.super.dismiss();
@@ -130,6 +130,18 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @Override public void onRequireLogin() {
         callback.onRequireLogin();
+    }
+
+    @Override public void onLogoutPressed() {
+        callback.onLogoutPressed();
+    }
+
+    @Override public void onThemeChanged() {
+        callback.onThemeChanged();
+    }
+
+    @Override public void onOpenSettings() {
+        callback.onOpenSettings();
     }
 
     @Override public void onDestroyView() {

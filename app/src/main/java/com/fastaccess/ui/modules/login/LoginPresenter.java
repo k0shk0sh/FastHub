@@ -116,7 +116,12 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
             if (!InputHelper.isEmpty(twoFactorCode)) {
                 authModel.setOtpCode(twoFactorCode);
             }
-            makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), this::onTokenResponse);
+            makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), accessTokenModel -> {
+                if (!InputHelper.isEmpty(twoFactorCode)) {
+                    PrefGetter.setOtpCode(twoFactorCode);
+                }
+                onTokenResponse(accessTokenModel);
+            });
         }
     }
 }

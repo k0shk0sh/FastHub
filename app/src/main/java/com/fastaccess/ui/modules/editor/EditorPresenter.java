@@ -75,7 +75,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
                 MarkDownProvider.addList(editText, "- [x]");
                 break;
             case R.id.unCheckbox:
-                MarkDownProvider.addList(editText, "- []");
+                MarkDownProvider.addList(editText, "- [ ]");
                 break;
         }
     }

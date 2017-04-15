@@ -58,4 +58,22 @@
             android:icon="@drawable/ic_gists"
             android:title="@string/my_gists"/>
     </group>
+
+    <group
+        android:id="@+id/group_three"
+        android:checkableBehavior="none">
+        <item android:title="@string/action">
+            <menu>
+                <!--<item-->
+                    <!--android:id="@+id/settings"-->
+                    <!--android:icon="@drawable/ic_settings"-->
+                    <!--android:title="@string/settings"/>-->
+
+                <item
+                    android:id="@+id/logout"
+                    android:icon="@drawable/ic_logout"
+                    android:title="@string/logout"/>
+            </menu>
+        </item>
+    </group>
 </menu>

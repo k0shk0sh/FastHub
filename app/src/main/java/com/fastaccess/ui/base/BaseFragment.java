@@ -120,6 +120,18 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
 
     }
 
+    @Override public void onLogoutPressed() {
+        callback.onLogoutPressed();
+    }
+
+    @Override public void onThemeChanged() {
+        callback.onThemeChanged();
+    }
+
+    @Override public void onOpenSettings() {
+        callback.onOpenSettings();
+    }
+
     protected boolean isSafe() {
         return getView() != null && getActivity() != null && !getActivity().isFinishing();
     }

@@ -41,6 +41,7 @@ public class PrefGetter {
     private static final String FAB_LONG_PRESS_REPO_GUIDE = "fab_long_press_repo_guide";
     private static final String POPUP_ANIMATION = "popupAnimation";
     private static final String WRAP_CODE = "wrap_code";
+    private static final String OTP_CODE = "otp_code";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -48,6 +49,14 @@ public class PrefGetter {
 
     public static String getToken() {
         return PrefHelper.getString(TOKEN);
+    }
+
+    public static String getOtpCode() {
+        return PrefHelper.getString(OTP_CODE);
+    }
+
+    public static void setOtpCode(@NonNull String otp) {
+        PrefHelper.set(OTP_CODE, otp);
     }
 
     public static boolean isAdsEnabled() {

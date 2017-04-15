@@ -21,6 +21,7 @@ import rx.functions.Action1;
  */
 
 public interface BaseMvp {
+
     interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback {
 
         @CallOnMainThread void showProgress(@StringRes int resId);
@@ -36,6 +37,12 @@ public interface BaseMvp {
         boolean isLoggedIn();
 
         void onRequireLogin();
+
+        void onLogoutPressed();
+
+        void onThemeChanged();
+
+        void onOpenSettings();
     }
 
     interface FAPresenter {

@@ -36,7 +36,7 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter> implements EditorMvp.View {
 
-    private CharSequence savedText;
+    private CharSequence savedText = "";
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
@@ -75,8 +75,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     }
 
     @OnClick(R.id.view) void onViewMarkDown() {
-        if (InputHelper.isEmpty(editText)) return;
-        if (editText.isEnabled()) {
+        if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
             editText.setEnabled(false);
             MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
             ViewHelper.hideKeyboard(editText);

@@ -24,6 +24,7 @@ import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
+import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
 import com.fastaccess.provider.rest.interceptors.PaginationInterceptor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -71,13 +72,11 @@ public class RestProvider {
             client.addInterceptor(new HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
+        client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
         client.addInterceptor(new PaginationInterceptor())
                 .addInterceptor(chain -> {
                     Request original = chain.request();
                     Request.Builder requestBuilder = original.newBuilder();
-                    if (!InputHelper.isEmpty(PrefGetter.getToken())) {
-                        requestBuilder.header("Authorization", "token " + PrefGetter.getToken());
-                    }
                     requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
                             .addHeader("Content-type", "application/vnd.github.v3+json");
                     requestBuilder.method(original.method(), original.body());
@@ -174,7 +173,7 @@ public class RestProvider {
         }
         if (body != null) {
             try {
-                return new Gson().fromJson(body.toString(), GitHubErrorResponse.class);
+                return gson.fromJson(body.string(), GitHubErrorResponse.class);
             } catch (Exception ignored) {}
         }
         return null;

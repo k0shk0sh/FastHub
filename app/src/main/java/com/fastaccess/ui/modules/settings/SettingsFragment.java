@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -10,6 +11,7 @@ import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
@@ -21,6 +23,21 @@ import es.dmoral.toasty.Toasty;
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+
+
+    private BaseMvp.FAView callback;
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof BaseMvp.FAView) {
+            callback = (BaseMvp.FAView) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        callback = null;
+        super.onDetach();
+    }
 
     @Override public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         addPreferencesFromResource(R.xml.fasthub_settings);
@@ -37,7 +54,6 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             new LibsBuilder()
                     .withActivityStyle(AppHelper.isNightMode(getResources()) ? Libs.ActivityStyle.DARK :
                                        Libs.ActivityStyle.LIGHT)
-                    .withFields(R.string.class.getFields())
                     .withAutoDetect(true)
                     .withAboutIconShown(true)
                     .withAboutVersionShown(true)
@@ -66,8 +82,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     }
 
     private void restartActivity() {
-        if (getActivity() != null) {
-            getActivity().recreate();
+        if (callback != null) {
+            callback.onThemeChanged();
         }
     }
 }

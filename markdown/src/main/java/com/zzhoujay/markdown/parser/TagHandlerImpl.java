@@ -30,7 +30,7 @@ public class TagHandlerImpl implements TagHandler {
     private static final Matcher matcherQuota = Pattern.compile("^\\s{0,3}>\\s(.*)").matcher("");
     private static final Matcher matcherUl = Pattern.compile("^\\s*[*+-]\\s+(.*)").matcher("");
     private static final Matcher matcherOl = Pattern.compile("^\\s*\\d+\\.\\s+(.*)").matcher("");
-    private static final Matcher matcherUnChecked = Pattern.compile("-\\s\\[]+(.*)").matcher("");
+    private static final Matcher matcherUnChecked = Pattern.compile("-\\s\\[ ]+(.*)").matcher("");
     private static final Matcher matcherChecked = Pattern.compile("-\\s\\[x]+(.*)").matcher("");
     private static final Matcher matcherItalic = Pattern.compile("[^*_]*(([*_])([^*_].*?)\\2)").matcher("");
     private static final Matcher matcherEm = Pattern.compile("[^*_]*(([*_])\\2([^*_].*?)\\2\\2)").matcher("");
@@ -250,7 +250,7 @@ public class TagHandlerImpl implements TagHandler {
     }
 
     private boolean ul(Line line, int level) {
-        if (line.getSource() != null && (line.getSource().startsWith("- []") || line.getSource().startsWith("- [x]"))) {
+        if (line.getSource() != null && (line.getSource().startsWith("- [ ]") || line.getSource().startsWith("- [x]"))) {
             if (line.getSource().startsWith("- [x]")) {
                 return todoChecked(line);
             } else {
@@ -374,7 +374,7 @@ public class TagHandlerImpl implements TagHandler {
     }
 
     private boolean ol(Line line, int level) {
-        if (line.getSource() != null && (line.getSource().startsWith("- []") || line.getSource().startsWith("- [x]"))) {
+        if (line.getSource() != null && (line.getSource().startsWith("- [ ]") || line.getSource().startsWith("- [x]"))) {
             if (line.getSource().startsWith("- [x]")) {
                 return todoChecked(line);
             } else {

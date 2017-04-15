@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.AccessTokenModel;
 import com.fastaccess.data.dao.AuthModel;
+import com.fastaccess.data.dao.model.Login;
 
 import retrofit2.http.Body;
 import retrofit2.http.Field;
@@ -23,4 +24,6 @@ public interface LoginRestService {
                                                 @NonNull @Field("client_secret") String clientSecret,
                                                 @NonNull @Field("state") String state,
                                                 @NonNull @Field("redirect_uri") String redirectUrl);
+
+    @POST("user") @Headers("Accept: application/json") Observable<Login> loginAndGetUser(@NonNull @Body AuthModel authModel);
 }

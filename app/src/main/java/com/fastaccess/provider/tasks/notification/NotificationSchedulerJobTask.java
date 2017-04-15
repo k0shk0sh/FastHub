@@ -23,7 +23,6 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
-import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
@@ -114,16 +113,17 @@ public class NotificationSchedulerJobTask extends JobService {
         int accentColor = ContextCompat.getColor(this, R.color.material_blue_700);
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
                 R.mipmap.ic_launcher);
+        Notification first = notificationThreadModels.get(0);
         Observable.from(notificationThreadModels)
                 .subscribeOn(Schedulers.io())
-                .filter(Notification::isUnread)
+                .filter(notification -> notification.isUnread() && first.getId() != notification.getId())
                 .limit(10)
                 .flatMap(notification -> RestProvider.getNotificationService()
                         .getComment(notification.getSubject().getLatestCommentUrl())
                         .subscribeOn(Schedulers.io()), (thread, comment) -> {
                     if (!InputHelper.isEmpty(thread.getSubject().getLatestCommentUrl())) {
                         android.app.Notification toAdd = getNotificationWithComment(context, accentColor, largeIcon, thread, comment);
-                        showNotification((int) comment.getId(), toAdd);
+                        showNotification(thread.getId(), toAdd);
                         return null;
                     }
                     showNotificationWithoutComment(context, accentColor, thread, largeIcon);
@@ -131,16 +131,17 @@ public class NotificationSchedulerJobTask extends JobService {
                 })
                 .subscribeOn(Schedulers.io())
                 .subscribe(thread -> {/*do nothing in here*/}, throwable -> jobFinished(job, true), () -> {
-                    android.app.Notification grouped = getSummaryGroupNotification(accentColor);
-                    showNotification(BundleConstant.REQUEST_CODE, grouped);
+                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor);
+                    showNotification(first.getId(), grouped);
                     finishJob(job);
                 });
     }
 
     private void finishJob(JobParameters job) {
         long duration = PrefGetter.getNotificationTaskDuration(getApplicationContext());
-        Logger.e(TimeUnit.MILLISECONDS.toMinutes(duration));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && duration < JobInfo.getMinPeriodMillis()) {
+        boolean reschedule = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && duration < JobInfo.getMinPeriodMillis();
+        Logger.e(reschedule);
+        if (reschedule) {
             scheduleJob(getApplicationContext());
         }
         jobFinished(job, false);
@@ -159,7 +160,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setColor(accentColor)
                 .setGroup(NOTIFICATION_GROUP_ID)
                 .build();
-        showNotification((int) thread.getId(), toAdd);
+        showNotification(thread.getId(), toAdd);
     }
 
     private android.app.Notification getNotificationWithComment(Context context, int accentColor, Bitmap largeIcon,
@@ -182,8 +183,16 @@ public class NotificationSchedulerJobTask extends JobService {
                 .build();
     }
 
-    private android.app.Notification getSummaryGroupNotification(int accentColor) {
-        return getNotification(getString(R.string.notifications), getString(R.string.unread_notification))
+    private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor) {
+        return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
+                .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
+                .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
+                        .getSubject().getUrl()))
+                .addAction(R.drawable.ic_eye_off, getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread
+                        .getSubject().getUrl()))
+                .setWhen(thread.getUpdatedAt() != null ? thread.getUpdatedAt().getTime() : System.currentTimeMillis())
+                .setShowWhen(true)
                 .setSmallIcon(R.drawable.ic_notification)
                 .setColor(accentColor)
                 .setGroup(NOTIFICATION_GROUP_ID)
@@ -193,15 +202,14 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
         return new NotificationCompat.Builder(this)
-                .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);
     }
 
-    private void showNotification(int id, android.app.Notification notification) {
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(id, notification);
+    private void showNotification(long id, android.app.Notification notification) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(InputHelper.getSafeIntId(id), notification);
     }
 
     private PendingIntent getReadOnlyPendingIntent(long id, @NonNull String url) {

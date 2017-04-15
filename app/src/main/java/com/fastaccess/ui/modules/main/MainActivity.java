@@ -28,7 +28,6 @@ import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
-import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import butterknife.BindView;
@@ -136,16 +135,8 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         if (drawerLayout != null && drawerLayout.isDrawerOpen(GravityCompat.START)) drawerLayout.closeDrawer(GravityCompat.START);
     }
 
-    @Override public void onLogout() {
-        onRequireLogin();
-    }
-
     @Override public void openFasHubRepo() {
         startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
-    }
-
-    @Override public void onOpenSettings() {
-        SettingsBottomSheetDialog.show(getSupportFragmentManager());
     }
 
     @Override public void onSupportDevelopment() {

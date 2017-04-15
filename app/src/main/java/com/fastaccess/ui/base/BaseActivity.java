@@ -26,6 +26,8 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
@@ -40,8 +42,10 @@ import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationView;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -128,7 +132,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }//pass
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
-
+        if (isOk && bundle != null) {
+            boolean logout = bundle.getBoolean("logout");
+            if (logout) onRequireLogin();
+        }
     }//pass
 
     @Override public void showMessage(@StringRes int titleRes, @StringRes int msgRes) {
@@ -187,7 +194,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 .delete(Login.class)
                 .get()
                 .value();
-        recreate();
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finishAffinity();
     }
 
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -218,6 +228,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         } else if (item.getItemId() == R.id.profile) {
             startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
             return true;
+        } else if (item.getItemId() == R.id.logout) {
+            onLogoutPressed();
+            return true;
+        } else if (item.getItemId() == R.id.settings) {
+            onOpenSettings();
+            return true;
         }
         return false;
     }
@@ -230,6 +246,23 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override public void onLogoutPressed() {
+        MessageDialogView.newInstance(getString(R.string.logout), getString(R.string.confirm_message),
+                Bundler.start()
+                        .put(BundleConstant.YES_NO_EXTRA, true)
+                        .put("logout", true)
+                        .end())
+                .show(getSupportFragmentManager(), MessageDialogView.TAG);
+    }
+
+    @Override public void onThemeChanged() {
+        recreate();
+    }
+
+    @Override public void onOpenSettings() {
+        SettingsBottomSheetDialog.show(getSupportFragmentManager());
     }
 
     protected void showNavToRepoItem() {

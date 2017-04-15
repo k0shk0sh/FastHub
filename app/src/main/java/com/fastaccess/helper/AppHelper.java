@@ -38,7 +38,8 @@ public class AppHelper {
     }
 
     public static void cancelNotification(@NonNull Context context, int id) {
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(id);
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(id);
     }
 
     public static void cancelAllNotifications(@NonNull Context context) {

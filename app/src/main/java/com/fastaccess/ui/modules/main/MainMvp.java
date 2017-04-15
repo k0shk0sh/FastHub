@@ -39,11 +39,7 @@ interface MainMvp {
 
         void onCloseDrawer();
 
-        void onLogout();
-
         void openFasHubRepo();
-
-        void onOpenSettings();
 
         void onSupportDevelopment();
 

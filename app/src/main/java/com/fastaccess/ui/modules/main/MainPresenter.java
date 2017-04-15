@@ -82,7 +82,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         if (getView() != null) {
             getView().onCloseDrawer();
             if (item.getItemId() == R.id.logout) {
-                getView().onLogout();
+                getView().onLogoutPressed();
                 return true;
             } else if (item.getItemId() == R.id.fhRepo) {
                 getView().openFasHubRepo();
