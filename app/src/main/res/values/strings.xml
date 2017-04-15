@@ -369,6 +369,8 @@
     <string name="login_with_personal_token">Login with personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
-    <string name="no_orgs_description">No organizations could be loaded. If you are actually tied to an organization and you can\'t see them here
-        please follow link below.\nhttps://developer.github.com/v3/orgs/#list-your-organizations</string>
+    <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
+        below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: The reason FastHub didn\'t use "Access Token" was
+        due to the fact that if one has 2fa enabled, their OTP code lifetime could only survive for a maximum of one minute or so, which will cause
+        FastHub to log you out immediately due to GitHub responded with an unauthorized access.</string>
 </resources>
