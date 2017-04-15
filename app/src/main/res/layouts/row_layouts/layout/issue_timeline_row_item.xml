@@ -58,7 +58,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:lineSpacingExtra="@dimen/spacing_normal"
+                    android:lineSpacingExtra="@dimen/spacing_micro"
                     android:ellipsize="end"
                     android:maxLines="5"
                     tools:text="For a divided large loaf, add some champaign and cinnamon."/>

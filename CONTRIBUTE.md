@@ -35,4 +35,4 @@ Before you clone the project, Please read the guide below to be able to login fr
 
 # Contribute Translations
 
-In order to help translations, please take a look https://github.com/k0shk0sh/FastHub-translations repository.
+In order to help translations, please pull the repo & edit the strings.xml.

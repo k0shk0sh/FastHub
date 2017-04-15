@@ -125,7 +125,6 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
         ActivityHelper.startReveal(activity, intent, view, BundleConstant.REQUEST_CODE);
     }
 
-
     @Override public void onSetCode(@NonNull CharSequence charSequence) {
         this.savedText = charSequence;
         MarkDownProvider.setMdText(description, InputHelper.toString(charSequence));
@@ -141,14 +140,22 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
 
     @Override public void onSuccessSubmission(Issue issueModel) {
         hideProgress();
-        setResult(RESULT_OK);
+        Intent intent = new Intent();
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.ITEM, issueModel)
+                .end());
+        setResult(RESULT_OK, intent);
         finish();
         showMessage(R.string.success, R.string.successfully_submitted);
     }
 
     @Override public void onSuccessSubmission(PullRequest issueModel) {
         hideProgress();
-        setResult(RESULT_OK);
+        Intent intent = new Intent();
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.ITEM, issueModel)
+                .end());
+        setResult(RESULT_OK, intent);
         finish();
         showMessage(R.string.success, R.string.successfully_submitted);
     }
