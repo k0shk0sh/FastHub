@@ -130,19 +130,23 @@ public class PrefGetter {
     }
 
     public static long getNotificationTaskDuration(@NonNull Context context) {
-        String s = PrefHelper.getString("notificationTime");
-        if (!InputHelper.isEmpty(s)) {
-            if (s.equalsIgnoreCase(context.getString(R.string.thirty_minutes))) {
+        String prefValue = PrefHelper.getString("notificationTime");
+        return notificationDurationMillis(context, prefValue);
+    }
+
+    public static long notificationDurationMillis(@NonNull Context context, @NonNull String prefValue) {
+        if (!InputHelper.isEmpty(prefValue)) {
+            if (prefValue.equalsIgnoreCase(context.getString(R.string.thirty_minutes))) {
                 return TimeUnit.MINUTES.toMillis(30);
-            } else if (s.equalsIgnoreCase(context.getString(R.string.twenty_minutes))) {
+            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.twenty_minutes))) {
                 return TimeUnit.MINUTES.toMillis(20);
-            } else if (s.equalsIgnoreCase(context.getString(R.string.ten_minutes))) {
+            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.ten_minutes))) {
                 return TimeUnit.MINUTES.toMillis(10);
-            } else if (s.equalsIgnoreCase(context.getString(R.string.five_minutes))) {
+            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.five_minutes))) {
                 return TimeUnit.MINUTES.toMillis(5);
-            } else if (s.equalsIgnoreCase(context.getString(R.string.one_minute))) {
+            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.one_minute))) {
                 return TimeUnit.MINUTES.toMillis(1);
-            } else if (s.equalsIgnoreCase(context.getString(R.string.turn_off))) {
+            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.turn_off))) {
                 return -1;
             }
         }

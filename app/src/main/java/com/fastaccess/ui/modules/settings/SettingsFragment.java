@@ -65,7 +65,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
     @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference.getKey().equalsIgnoreCase("notificationTime")) {
             NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
-                    PrefGetter.getNotificationTaskDuration(getActivity().getApplicationContext()), true);
+                    PrefGetter.notificationDurationMillis(getActivity().getApplicationContext(), (String) newValue), true);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("recylerViewAnimation")) {
             restartActivity();
