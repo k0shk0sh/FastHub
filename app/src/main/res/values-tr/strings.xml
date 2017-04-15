@@ -172,7 +172,7 @@
     <string name="switch_branch">Branch değiştir</string>
     <string name="assignees">Atananlar</string>
     <string name="edit">Düzenle</string>
-    <string name="update_issue">Issue\ 'yu Güncelle</string>
+    <string name="update_issue">Issue\'yu Güncelle</string>
     <string name="update_pull_request">Pull Request\'i Güncelle</string>
     <string name="no_milestones">Milestone yok</string>
     <string name="add">Ekle</string>
@@ -235,7 +235,7 @@
     <string name="pin">Pin</string>
     <string name="pinned">Pinlendi</string>
     <string name="unpin">Pini Kaldır</string>
-    <string name="empty_pinned_repos">Pinlemiş repository bulunmuyor. Repository'leri pinleyerek burada görülmesini sağlayabilirsiniz.</string>
+    <string name="empty_pinned_repos">Pinlemiş repository bulunmuyor. Repository\'leri pinleyerek burada görülmesini sağlayabilirsiniz.</string>
     <string name="yes">Evet</string>
     <string name="no">Hayır</string>
     <string name="no_feeds">Akış bulunmuyor</string>
@@ -311,7 +311,7 @@
     <string name="login_with_personal_token">Personal token ile giriş yap</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Basic auth ile giriş yap</string>
-	<string name="no_orgs_description">Eğer organizasyonunuz varsa ve onları burada göremiyorsanız lütfen aşağıdaki link\'i takip ediniz.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nNOT: FastHub'ın access token kullanmamasının sebebi 2FA etkinleştirildiğinde OTP kodu en fazla birkaç dakika etkin olduğundan, bu da FastHub'dan otomatik olarak çıkış yapmanıza ve GitHub'ın unauthorized access yanıtını vermesine sebep olmaktadır.</string>
+	<string name="no_orgs_description">Eğer organizasyonunuz varsa ve onları burada göremiyorsanız lütfen aşağıdaki link\'i takip ediniz.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nNOT: FastHub\'ın access token kullanmamasının sebebi 2FA etkinleştirildiğinde OTP kodu en fazla birkaç dakika etkin olduğundan, bu da FastHub\'dan otomatik olarak çıkış yapmanıza ve GitHub\'ın unauthorized access yanıtını vermesine sebep olmaktadır.</string>
     <string name="support_with_2_00">2.00$ bağışla</string>
     <string name="support_with_5_00">5.00$ bağışla</string>
     <string name="support_with_10_00">10.00$ bağışla</string>
