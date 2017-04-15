@@ -55,7 +55,6 @@ import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import icepick.Icepick;
 import icepick.State;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -289,14 +288,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                     if (canBack()) {
                         View navIcon = getToolbarNavigationIcon(toolbar);
                         if (navIcon != null) {
-                            if (!PrefGetter.isHomeButoonHintShowed()) {
-                                new MaterialTapTargetPrompt.Builder(this)
-                                        .setTarget(navIcon)
-                                        .setPrimaryText(R.string.home)
-                                        .setSecondaryText(R.string.home_long_click_hint)
-                                        .setCaptureTouchEventOutsidePrompt(true)
-                                        .show();
-                            }
                             navIcon.setOnLongClickListener(v -> {
                                 Intent intent = new Intent(this, MainActivity.class);
                                 startActivity(intent);
