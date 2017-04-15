@@ -131,6 +131,10 @@ public class PrefGetter {
 
     public static long getNotificationTaskDuration(@NonNull Context context) {
         String s = PrefHelper.getString("notificationTime");
+        return notificationDurationMillis(context, s);
+    }
+
+    public static long notificationDurationMillis(@NonNull Context context,@NonNull String s) {
         if (!InputHelper.isEmpty(s)) {
             if (s.equalsIgnoreCase(context.getString(R.string.thirty_minutes))) {
                 return TimeUnit.MINUTES.toMillis(30);
