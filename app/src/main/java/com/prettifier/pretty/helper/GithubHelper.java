@@ -62,7 +62,7 @@ public class GithubHelper {
             }
             String link;
             if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(href))) {
-                link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href;
+                link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href; //assuming always master is bad :'(
             } else {
                 String formattedLink = href.replaceFirst("./", "/");
                 link = "https://api.github.com/repos/" + owner + "/" + repoName +
@@ -84,7 +84,7 @@ public class GithubHelper {
                 "\n" +
                 "<body>\n" +
                 source +
-                (!wrap ? "\n<script src=\"./intercept-touch.js\"></script>\n" : "") +
+                (!wrap ? "\n<script src=\"./intercept-touch.js\"></script>\n" : "\n") +
                 HASH_LINK_SCRIPT + "\n" +
                 "</body>\n" +
                 "\n" +

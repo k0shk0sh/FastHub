@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/windowBackground"
-    android:minWidth="300dp"
     android:orientation="vertical"
     android:paddingBottom="@dimen/spacing_xs_large">
 

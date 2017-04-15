@@ -25,6 +25,7 @@ import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -47,7 +48,7 @@ public class NotificationSchedulerJobTask extends JobService {
     @Override public boolean onStartJob(JobParameters job) {
         if (Login.getUser() != null) {
             RestProvider.getNotificationService()
-                    .getNotifications(0)
+                    .getNotifications(ParseDateFormat.getLastWeekDate(), 0)
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
                         AppHelper.cancelAllNotifications(getApplicationContext());

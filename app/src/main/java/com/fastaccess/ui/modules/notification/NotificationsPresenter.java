@@ -9,6 +9,7 @@ import android.view.View;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -118,7 +119,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
         setCurrentPage(page);
         Observable<Pageable<Notification>> observable =
                 showAll ? RestProvider.getNotificationService().getAllNotifications(page)
-                        : RestProvider.getNotificationService().getNotifications(page);
+                        : RestProvider.getNotificationService().getNotifications(ParseDateFormat.getDateByDays(-30), page);
         makeRestCall(observable, response -> {
             if (response.getItems() != null) {
                 lastPage = response.getLast();

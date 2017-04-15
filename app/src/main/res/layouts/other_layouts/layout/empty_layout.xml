@@ -8,8 +8,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/spacing_s_large"
         android:gravity="center"
+        android:minHeight="250dp"
         android:orientation="vertical">
 
         <com.fastaccess.ui.widgets.FontTextView

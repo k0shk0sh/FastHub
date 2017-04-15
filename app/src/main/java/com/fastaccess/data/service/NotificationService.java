@@ -23,7 +23,7 @@ import rx.Observable;
 public interface NotificationService {
 
     @GET("notifications")
-    Observable<Pageable<Notification>> getNotifications(@Query("page") int page);
+    Observable<Pageable<Notification>> getNotifications(@Query("since") String date, @Query("page") int page);
 
     @GET("notifications?all=true")
     Observable<Pageable<Notification>> getAllNotifications(@Query("page") int page);

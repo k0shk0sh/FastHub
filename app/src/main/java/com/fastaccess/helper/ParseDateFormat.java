@@ -7,6 +7,7 @@ import android.text.format.DateUtils;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
@@ -58,4 +59,16 @@ public class ParseDateFormat {
     @NonNull private static ParseDateFormat getInstance() {
         return INSTANCE;
     }
+
+    public static String getDateByDays(int days) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ENGLISH);
+        cal.add(Calendar.DAY_OF_YEAR, days);
+        return s.format(new Date(cal.getTimeInMillis()));
+    }
+
+    public static String getLastWeekDate() {
+        return getDateByDays(-7);
+    }
+
 }

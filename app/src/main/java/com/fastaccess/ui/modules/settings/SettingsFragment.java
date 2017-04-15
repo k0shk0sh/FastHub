@@ -74,8 +74,8 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
-            restartActivity();
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
+            restartActivity();
             return true;
         }
         return false;

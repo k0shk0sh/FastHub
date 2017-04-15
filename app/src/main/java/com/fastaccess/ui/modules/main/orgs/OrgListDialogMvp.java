@@ -16,7 +16,6 @@ public interface OrgListDialogMvp {
     interface View extends BaseMvp.FAView {
         void onNotifyAdapter();
 
-        void onNoOrgs();
     }
 
     interface Presenter {

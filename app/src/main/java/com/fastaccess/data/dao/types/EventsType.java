@@ -23,7 +23,7 @@ public enum EventsType {
     PullRequestReviewCommentEvent(R.string.pr_comment_review, R.drawable.ic_comment),
     PullRequestReviewEvent(R.string.pr_review_event, R.drawable.ic_eye),
     RepositoryEvent(R.string.repo_event, R.drawable.ic_repo),
-    PushEvent(R.string.pushed, R.drawable.ic_arrow_right),
+    PushEvent(R.string.pushed, R.drawable.ic_push),
     StatusEvent(R.string.status, R.drawable.ic_info_outline),
     TeamAddEvent(R.string.team_event, R.drawable.ic_profile),
     DeleteEvent(R.string.deleted, R.drawable.ic_trash),

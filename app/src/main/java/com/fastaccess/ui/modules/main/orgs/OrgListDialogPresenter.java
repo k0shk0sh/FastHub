@@ -22,11 +22,9 @@ public class OrgListDialogPresenter extends BasePresenter<OrgListDialogMvp.View>
                         if (userPageable.getItems() != null && !userPageable.getItems().isEmpty()) {
                             orgs.clear();
                             orgs.addAll(userPageable.getItems());
-                            sendToView(OrgListDialogMvp.View::onNotifyAdapter);
-                            return;
                         }
                     }
-                    sendToView(OrgListDialogMvp.View::onNoOrgs);
+                    sendToView(OrgListDialogMvp.View::onNotifyAdapter);
                 });
     }
 

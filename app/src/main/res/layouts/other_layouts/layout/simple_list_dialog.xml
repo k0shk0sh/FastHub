@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="?android:attr/windowBackground"
     android:orientation="vertical">
 
@@ -13,7 +13,6 @@
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minWidth="300dp"
         android:padding="@dimen/spacing_xs_large"
         android:textColor="?android:textColorPrimary"
         android:textStyle="bold"

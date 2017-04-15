@@ -12,6 +12,7 @@ import com.fastaccess.R;
 import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
@@ -38,19 +39,20 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
         adapter.notifyDataSetChanged();
     }
 
-    @Override public void onNoOrgs() {
-        hideProgress();
-        stateLayout.hideReload();
-        stateLayout.setEmptyText(getString(R.string.no_orgs_description));
-        stateLayout.showEmptyState();
-    }
-
     @Override protected int fragmentLayout() {
         return R.layout.milestone_dialog_layout;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         toolbar.setTitle(R.string.organizations);
+        toolbar.inflateMenu(R.menu.add_menu);
+        toolbar.getMenu().findItem(R.id.add).setIcon(R.drawable.ic_info_outline)
+                .setTitle(R.string.no_orgs);
+        toolbar.setOnMenuItemClickListener(item -> {
+            MessageDialogView.newInstance(getString(R.string.no_orgs), getString(R.string.no_orgs_description))
+                    .show(getChildFragmentManager(), MessageDialogView.TAG);
+            return true;
+        });
         toolbar.setNavigationIcon(R.drawable.ic_clear);
         toolbar.setNavigationOnClickListener(v -> dismiss());
         stateLayout.setEmptyText(R.string.no_orgs);

@@ -8,6 +8,7 @@ import android.widget.EditText;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp;
 
 /**
  * Created by Kosh on 27 Nov 2016, 1:31 AM
@@ -15,7 +16,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 
 interface EditorMvp {
 
-    interface View extends BaseMvp.FAView {
+    interface View extends BaseMvp.FAView, EditorLinkImageMvp.EditorLinkCallback {
         void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew);
 
         void onSendMarkDownResult();

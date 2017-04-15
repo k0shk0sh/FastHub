@@ -20,6 +20,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
 import com.fastaccess.ui.widgets.FontEditText;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -96,7 +97,13 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             Snackbar.make(editText, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show();
             return;
         }
-        getPresenter().onActionClicked(editText, v.getId());
+        if (v.getId() == R.id.link) {
+            EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
+        } else if (v.getId() == R.id.image) {
+            EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
+        } else {
+            getPresenter().onActionClicked(editText, v.getId());
+        }
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -196,6 +203,14 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk && bundle != null) {
             finish();
+        }
+    }
+
+    @Override public void onAppendLink(@Nullable String title, @Nullable String link, boolean isLink) {
+        if (isLink) {
+            MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link));
+        } else {
+            MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
         }
     }
 }

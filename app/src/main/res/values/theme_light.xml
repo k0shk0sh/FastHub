@@ -37,6 +37,7 @@
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:dialogTheme">@style/DialogThemeLight</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight</item>
         <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
     </style>
 
@@ -44,6 +45,11 @@
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/black</item>
         <item name="colorControlHighlight">?colorAccent</item>
+        <item name="popupTheme">@style/PopupThemeLight</item>
+    </style>
+
+    <style name="PopupThemeLight" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:colorBackground">@color/lightWindowBackground</item>
     </style>
 
     <style name="TimeLineBackgroundLight">
@@ -51,9 +57,10 @@
     </style>
 
 
-    <style name="DialogThemeLight" parent="@style/Theme.AppCompat.Light.Dialog">
-        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
-        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">#F5F5F5</item>
+        <item name="colorPrimaryDark">#E0E0E0</item>
+        <item name="colorAccent">#2962FF</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
     </style>
 

@@ -373,4 +373,7 @@
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: The reason FastHub didn\'t use "Access Token" was
         due to the fact that if one has 2fa enabled, their OTP code lifetime could only survive for a maximum of one minute or so, which will cause
         FastHub to log you out immediately due to GitHub responded with an unauthorized access.</string>
+    <string name="insert">Insert</string>
+    <string name="select">Select</string>
+    <string name="select_picture">Select Picture</string>
 </resources>

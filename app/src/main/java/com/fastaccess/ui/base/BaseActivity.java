@@ -55,6 +55,7 @@ import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import icepick.Icepick;
 import icepick.State;
+import rx.Subscription;
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -63,6 +64,7 @@ import icepick.State;
 public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
+    private Subscription themeSubscription;
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) AppBarLayout shadowView;

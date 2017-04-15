@@ -177,19 +177,27 @@ public class MarkDownProvider {
     }
 
     public static void addPhoto(@NonNull EditText editText) {
+        addLink(editText, "", "");
+    }
+
+    public static void addPhoto(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
         int selectionStart = editText.getSelectionStart();
-        String result = "![]()\n";
+        String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
         int length = selectionStart + result.length();
         editText.getText().insert(selectionStart, result);
-        editText.setSelection(length - 2);
+        editText.setSelection(length);
     }
 
     public static void addLink(@NonNull EditText editText) {
+        addLink(editText, "", "");
+    }
+
+    public static void addLink(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
         int selectionStart = editText.getSelectionStart();
-        String result = "[]()\n";
+        String result = "[" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
         int length = selectionStart + result.length();
         editText.getText().insert(selectionStart, result);
-        editText.setSelection(length - 2);
+        editText.setSelection(length);
     }
 
     private static boolean hasNewLine(@NonNull String source, int selectionStart) {

@@ -31,6 +31,7 @@ public class PayloadModel implements Parcelable {
     private Comment comment;
     private User target;
     private User member;
+    private String head;
     private TeamsModel team;
 
     @Override public int describeContents() { return 0; }

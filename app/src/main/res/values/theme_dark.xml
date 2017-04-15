@@ -36,6 +36,7 @@
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
         <item name="android:dialogTheme">@style/DialogThemeDark</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark</item>
         <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
@@ -45,6 +46,11 @@
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
         <item name="colorControlHighlight">?colorAccent</item>
+        <item name="popupTheme">@style/PopupThemeDark</item>
+    </style>
+
+    <style name="PopupThemeDark" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/darkWindowBackground</item>
     </style>
 
     <style name="TimeLineBackgroundDark">
@@ -52,9 +58,10 @@
         <item name="android:backgroundTint">#2D3035</item>
     </style>
 
-    <style name="DialogThemeDark" parent="@style/Theme.AppCompat.Dialog">
-        <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
-        <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+    <style name="DialogThemeDark" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorPrimary">#2D3035</item>
+        <item name="colorPrimaryDark">#26282C</item>
+        <item name="colorAccent">#2196F3</item>
         <item name="android:windowBackground">@color/darkWindowBackground</item>
     </style>
 
@@ -67,4 +74,5 @@
         <item name="mal_color_primary">#fff</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>
     </style>
+
 </resources>

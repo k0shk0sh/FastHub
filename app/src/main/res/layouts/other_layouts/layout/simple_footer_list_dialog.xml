@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/windowBackground"
-    android:minWidth="300dp"
     android:orientation="vertical">
 
     <android.support.design.widget.AppBarLayout
@@ -77,12 +76,10 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-
     <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
         android:id="@+id/recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        app:layoutManager="@string/linear_layout_manager"
-        tools:listitem="@layout/simple_row_item"/>
+        app:layoutManager="@string/linear_layout_manager"/>
+
 </LinearLayout>
