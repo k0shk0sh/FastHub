@@ -127,7 +127,6 @@
     <string name="twoFactor">2 adımlı doğrulama kodu gerekli</string>
     <string name="login">Giriş yap</string>
     <string name="gist_description">Gist\'in açıklaması</string>
-    <string name="avatar_click_hint">Wherever there is a user avatar, you can click it to open the user\'s profile</string>
     <string name="avatar_click_hint">Herhangi bir yerde kullanıcı avatarı gördüğünüzde üzerine tıklayarak profillerine gidebilirsiniz</string>
     <string name="feeds_fork_hint">Fork\'lanmış bir repository\'ye uzun basarsanız orijinal repository\'ye gidersiniz.</string>
     <string name="click_here_to_download_release_hint">Yayınlamaları indir</string>
