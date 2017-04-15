@@ -52,7 +52,6 @@
     <string name="downloading_file">Downloading File…</string>
     <string name="released">Released</string>
     <string name="drafted">Drafted</string>
-    <string name="on">On</string>
     <string name="releases">Releases</string>
     <string name="no_body">No body</string>
     <string name="download_as_zip" translatable="false">Source code (zip)</string>
@@ -120,7 +119,6 @@
     <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">Submit</string>
     <string name="type_here">Type here</string>
-    <string name="write">Write</string>
     <string name="description">Description</string>
     <string name="file_name">File name</string>
     <string name="file_name_hint">File name with extension</string>
@@ -312,7 +310,7 @@
     <string name="no_closed_pull_request">No closed pull requests</string>
     <string name="no_search_results">No search results</string>
     <string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
-        store the files in your sdcard to be able to view theme</string>
+        store the files in your sdcard to be able to view them</string>
     <string name="public_gists">Public Gists</string>
     <string name="enable_ads">Enable Ads</string>
     <string name="no_issues">No issues</string>
@@ -376,4 +374,8 @@
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
+    <string name="support_with_2_00">Support with 2.00$</string>
+    <string name="support_with_5_00">Support with 5.00$</string>
+    <string name="support_with_10_00">Support with 10.00$</string>
+    <string name="support_with_20_00">Support with 20.00$</string>
 </resources>

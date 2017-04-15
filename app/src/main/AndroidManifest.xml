@@ -207,6 +207,7 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.modules.main.donation.DonationActivity"/>
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"

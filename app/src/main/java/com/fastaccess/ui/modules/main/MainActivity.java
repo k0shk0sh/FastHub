@@ -23,7 +23,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
-import com.fastaccess.ui.modules.main.donation.DonationView;
+import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -140,7 +140,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onSupportDevelopment() {
-        new DonationView().show(getSupportFragmentManager(), "DonationView");
+        startActivity(new Intent(this, DonationActivity.class));
     }
 
     @Override public void onEnableAds() {

@@ -37,7 +37,7 @@ import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.login.LoginActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.main.donation.DonationView;
+import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -209,7 +209,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         } else if (item.getItemId() == R.id.fhRepo) {
             startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
         } else if (item.getItemId() == R.id.supportDev) {
-            new DonationView().show(getSupportFragmentManager(), "DonationView");
+            startActivity(new Intent(this, DonationActivity.class));
         } else if (item.getItemId() == R.id.gists) {
             GistsListActivity.startActivity(this, false);
             return true;
