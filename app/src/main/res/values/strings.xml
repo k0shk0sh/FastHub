@@ -369,4 +369,6 @@
     <string name="login_with_personal_token">Login with personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
+    <string name="no_orgs_description">No organizations could be loaded. If you are actually tied to an organization and you can\'t see them here
+        please follow link below.\nhttps://developer.github.com/v3/orgs/#list-your-organizations</string>
 </resources>

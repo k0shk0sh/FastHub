@@ -105,6 +105,9 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
             } else if (item.getItemId() == R.id.profile) {
                 getView().onOpenProfile();
                 return true;
+            } else if (item.getItemId() == R.id.orgs) {
+                getView().onOpenOrgs();
+                return true;
             }
         }
         return false;

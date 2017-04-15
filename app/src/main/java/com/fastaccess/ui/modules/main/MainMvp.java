@@ -50,6 +50,8 @@ interface MainMvp {
         void onOpenPinnedRepos();
 
         void onOpenProfile();
+
+        void onOpenOrgs();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, NavigationView.OnNavigationItemSelectedListener,

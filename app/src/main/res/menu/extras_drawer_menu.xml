@@ -14,12 +14,14 @@
     </group>
 
     <group android:id="@+id/profile_group">
-
         <item
             android:id="@+id/profile"
             android:icon="@drawable/ic_profile"
             android:title="@string/profile"/>
-
+        <item
+            android:id="@+id/orgs"
+            android:icon="@drawable/ic_people"
+            android:title="@string/organizations"/>
     </group>
 
     <group
@@ -65,9 +67,9 @@
         <item android:title="@string/action">
             <menu>
                 <!--<item-->
-                    <!--android:id="@+id/settings"-->
-                    <!--android:icon="@drawable/ic_settings"-->
-                    <!--android:title="@string/settings"/>-->
+                <!--android:id="@+id/settings"-->
+                <!--android:icon="@drawable/ic_settings"-->
+                <!--android:title="@string/settings"/>-->
 
                 <item
                     android:id="@+id/logout"

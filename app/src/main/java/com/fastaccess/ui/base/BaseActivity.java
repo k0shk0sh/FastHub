@@ -29,10 +29,8 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
-import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
@@ -40,6 +38,7 @@ import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.login.LoginActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationView;
+import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
@@ -47,7 +46,6 @@ import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
-import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -234,6 +232,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         } else if (item.getItemId() == R.id.settings) {
             onOpenSettings();
             return true;
+        } else if (item.getItemId() == R.id.orgs) {
+            onOpenOrgsDialog();
+            return true;
         }
         return false;
     }
@@ -263,6 +264,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onOpenSettings() {
         SettingsBottomSheetDialog.show(getSupportFragmentManager());
+    }
+
+    protected void onOpenOrgsDialog() {
+        OrgListDialogFragment.newInstance().show(getSupportFragmentManager(), "OrgListDialogFragment");
     }
 
     protected void showNavToRepoItem() {
@@ -338,7 +343,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             extraNav.setNavigationItemSelectedListener(this);
             Login userModel = Login.getUser();
             if (userModel != null) {
-                getPresenter().onLoadOrgs();
                 View view = extraNav.getHeaderView(0);
                 if (view != null) {
                     ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin());
@@ -348,7 +352,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                     } else {
                         view.findViewById(R.id.email).setVisibility(View.GONE);
                     }
-                    setupOrg(view);
+                    view.findViewById(R.id.userHolder).setOnClickListener(v -> UserPagerActivity.startActivity(this, userModel.getLogin()));
+
                 }
             }
         }
@@ -358,34 +363,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (extraNav != null) {
             extraNav.getMenu().findItem(R.id.profile).setVisible(false);
         }
-    }
-
-    private void setupOrg(@NonNull View view) {
-        View dropDownIcon = view.findViewById(R.id.dropDownIcon);
-        View orgLayoutHolder = view.findViewById(R.id.orgLayoutHolder);
-        view.findViewById(R.id.userHolder).setOnClickListener(v -> dropDownIcon.performClick());
-        DynamicRecyclerView orgRecycler = (DynamicRecyclerView) view.findViewById(R.id.orgRecycler);
-        dropDownIcon.findViewById(R.id.dropDownIcon)
-                .setOnClickListener(v -> {
-                    if (!getPresenter().getOrgList().isEmpty()) {
-                        if (dropDownIcon.getTag() == null) {
-                            dropDownIcon.setRotation(180F);
-                            dropDownIcon.setTag("dropDownIcon");
-                            orgLayoutHolder.setVisibility(View.VISIBLE);
-                            Logger.e(getPresenter().getOrgList());
-                            if (orgRecycler.getAdapter() == null) {
-                                orgRecycler.addKeyLineDivider();
-                                orgRecycler.setAdapter(new UsersAdapter(getPresenter().getOrgList()));
-                            }
-                        } else {
-                            orgLayoutHolder.setVisibility(View.GONE);
-                            dropDownIcon.setTag(null);
-                            dropDownIcon.setRotation(0.0F);
-                        }
-                    } else {
-                        showErrorMessage(getString(R.string.no_orgs));
-                    }
-                });
     }
 
     private void setupDrawer() {

@@ -17,6 +17,7 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoLink="all"
             android:gravity="center"
             android:padding="@dimen/spacing_xs_large"
             android:text="@string/no_data"

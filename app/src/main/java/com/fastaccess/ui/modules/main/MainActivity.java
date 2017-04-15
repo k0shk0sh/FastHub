@@ -162,6 +162,10 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
     }
 
+    @Override public void onOpenOrgs() {
+        onOpenOrgsDialog();
+    }
+
     private void showHideFab() {
 //        if (navType == MainMvp.ISSUES || navType == MainMvp.PULL_REQUESTS) {
 //            fab.show();

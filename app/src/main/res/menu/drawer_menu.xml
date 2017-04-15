@@ -7,7 +7,10 @@
             android:id="@+id/profile"
             android:icon="@drawable/ic_profile"
             android:title="@string/profile"/>
-
+        <item
+            android:id="@+id/orgs"
+            android:icon="@drawable/ic_people"
+            android:title="@string/organizations"/>
     </group>
 
     <group
