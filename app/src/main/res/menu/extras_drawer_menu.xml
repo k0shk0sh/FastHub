@@ -24,20 +24,6 @@
             android:title="@string/organizations"/>
     </group>
 
-    <group
-        android:id="@+id/fasthub_group"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/fhRepo"
-            android:icon="@drawable/ic_github"
-            android:title="@string/app_name"/>
-
-        <item
-            android:id="@+id/supportDev"
-            android:icon="@drawable/ic_heart"
-            android:title="@string/support_development"/>
-
-    </group>
 
     <group
         android:id="@+id/group_one"
@@ -62,14 +48,29 @@
     </group>
 
     <group
+        android:id="@+id/fasthub_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/fhRepo"
+            android:icon="@drawable/ic_github"
+            android:title="@string/app_name"/>
+
+        <item
+            android:id="@+id/supportDev"
+            android:icon="@drawable/ic_heart"
+            android:title="@string/support_development"/>
+
+    </group>
+
+    <group
         android:id="@+id/group_three"
         android:checkableBehavior="none">
         <item android:title="@string/action">
             <menu>
                 <!--<item-->
-                    <!--android:id="@+id/settings"-->
-                    <!--android:icon="@drawable/ic_settings"-->
-                    <!--android:title="@string/settings"/>-->
+                <!--android:id="@+id/settings"-->
+                <!--android:icon="@drawable/ic_settings"-->
+                <!--android:title="@string/settings"/>-->
 
                 <item
                     android:id="@+id/logout"

@@ -66,6 +66,7 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
     }
 
     @Override public void onRemove(int position) {
+        hideProgress();
         adapter.removeItem(position);
     }
 

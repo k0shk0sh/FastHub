@@ -14,25 +14,6 @@
     </group>
 
     <group
-        android:id="@+id/fasthub_group"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/fhRepo"
-            android:icon="@drawable/ic_github"
-            android:title="@string/app_name"/>
-
-        <item
-            android:id="@+id/supportDev"
-            android:icon="@drawable/ic_heart"
-            android:title="@string/support_development"/>
-
-        <item
-            android:id="@+id/enableAds"
-            android:icon="@drawable/ic_heart_full"
-            android:title="@string/enable_ads"/>
-    </group>
-
-    <group
         android:id="@+id/group_one"
         android:checkableBehavior="none">
         <item
@@ -52,6 +33,25 @@
             android:id="@+id/myGists"
             android:icon="@drawable/ic_gists"
             android:title="@string/my_gists"/>
+    </group>
+
+    <group
+        android:id="@+id/fasthub_group"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/fhRepo"
+            android:icon="@drawable/ic_github"
+            android:title="@string/app_name"/>
+
+        <item
+            android:id="@+id/supportDev"
+            android:icon="@drawable/ic_heart"
+            android:title="@string/support_development"/>
+
+        <item
+            android:id="@+id/enableAds"
+            android:icon="@drawable/ic_heart_full"
+            android:title="@string/enable_ads"/>
     </group>
 
     <group

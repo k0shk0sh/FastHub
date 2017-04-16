@@ -94,6 +94,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     }
 
     @Override public void onRemove(@NonNull Comment comment) {
+        hideProgress();
         adapter.removeItem(comment);
     }
 

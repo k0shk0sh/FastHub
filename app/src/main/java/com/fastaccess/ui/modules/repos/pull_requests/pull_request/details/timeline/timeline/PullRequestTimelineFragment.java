@@ -154,6 +154,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void onRemove(@NonNull TimelineModel timelineModel) {
+        hideProgress();
         adapter.removeItem(timelineModel);
     }
 

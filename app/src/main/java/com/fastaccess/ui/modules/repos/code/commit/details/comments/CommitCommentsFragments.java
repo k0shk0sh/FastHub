@@ -94,6 +94,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     }
 
     @Override public void onRemove(@NonNull Comment comment) {
+        hideProgress();
         adapter.removeItem(comment);
     }
 
