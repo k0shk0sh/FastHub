@@ -1,5 +1,6 @@
 package com.fastaccess.ui.adapter;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatImageView;
@@ -24,8 +25,12 @@ import butterknife.ButterKnife;
 public class BranchesAdapter extends BaseAdapter {
 
     private List<BranchesModel> branches;
+    private Context context;
 
-    public BranchesAdapter(List<BranchesModel> branches) {this.branches = branches;}
+    public BranchesAdapter(Context context, List<BranchesModel> branches) {
+        this.branches = branches;
+        this.context = context;
+    }
 
     @Override public int getCount() {
         return branches.size();
@@ -51,9 +56,9 @@ public class BranchesAdapter extends BaseAdapter {
         ViewHolder viewHolder;
         if (convertView == null) {
             if (!isDropDown) {
-                convertView = LayoutInflater.from(parent.getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+                convertView = LayoutInflater.from(context).inflate(android.R.layout.simple_list_item_1, parent, false);
             } else {
-                convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.branches_row_item, parent, false);
+                convertView = LayoutInflater.from(context).inflate(R.layout.branches_row_item, parent, false);
             }
             viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);

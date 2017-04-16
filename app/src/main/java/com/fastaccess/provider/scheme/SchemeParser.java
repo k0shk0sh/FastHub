@@ -1,7 +1,5 @@
 package com.fastaccess.provider.scheme;
 
-import android.app.Application;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -25,11 +23,11 @@ import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import java.util.List;
 
-import static com.fastaccess.provider.scheme.LinkParserHelper.*;
 import static com.fastaccess.provider.scheme.LinkParserHelper.API_AUTHORITY;
 import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_DEFAULT;
 import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS;
 import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS_RAW;
+import static com.fastaccess.provider.scheme.LinkParserHelper.IGNORED_LIST;
 import static com.fastaccess.provider.scheme.LinkParserHelper.PROTOCOL_HTTPS;
 import static com.fastaccess.provider.scheme.LinkParserHelper.RAW_AUTHORITY;
 import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
@@ -45,16 +43,19 @@ public class SchemeParser {
     }
 
     public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
+        launchUri(context, data, showRepoBtn, false);
+    }
+
+    public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn, boolean isService) {
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
-            if (context instanceof Service || context instanceof Application) {
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            }
+            if (isService) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
             ActivityHelper.forceOpenInBrowser(context, data);
         }
     }
+
 
     @Nullable private static Intent convert(@NonNull Context context, Uri data, boolean showRepoBtn) {
         if (data == null) return null;

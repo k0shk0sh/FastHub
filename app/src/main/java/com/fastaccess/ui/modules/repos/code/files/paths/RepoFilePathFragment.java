@@ -51,7 +51,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     private RepoFilesFragment repoFilesView;
     private boolean canSelectSpinner;
 
-    public static RepoFilePathFragment newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String defaultBranch) {
+    public static RepoFilePathFragment newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String
+            defaultBranch) {
         return newInstance(login, repoId, path, defaultBranch, false);
     }
 
@@ -179,7 +180,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @Override public void setBranchesData(@Nullable List<BranchesModel> branchesData, boolean firstTime) {
         branchesProgress.setVisibility(View.GONE);
         if (branchesData != null) {
-            branches.setAdapter(new BranchesAdapter(branchesData));
+            branches.setAdapter(new BranchesAdapter(getContext(), branchesData));
             if (firstTime) {
                 if (!InputHelper.isEmpty(getPresenter().getDefaultBranch())) {
                     int index = -1;

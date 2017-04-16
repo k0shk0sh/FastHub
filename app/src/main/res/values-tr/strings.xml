@@ -263,7 +263,7 @@
     <string name="changelog">Sürüm notları</string>
     <string name="notifications_hint">Bildirimleri açmak için dokununuz veya yoksaymak için kaydırınız</string>
     <string name="home_long_click_hint">Herhangi bir yerden ana ekrana dönmek için uzun basınız</string>
-    <string name="created"/>
+    <string name="created">Oluşturuldu</string>
     <string name="assigned">Atanmış</string>
     <string name="mentioned">Bahsedilmiş</string>
     <string name="name">İsim</string>

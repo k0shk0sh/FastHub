@@ -391,10 +391,12 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
             onSearch();
             return;
         }
-        if (!text.replaceAll(regex, " milestone:\"" + item.getTitle() + "\"").equalsIgnoreCase(text)) {
-            text = text.replaceAll(regex, " milestone:\"" + item.getTitle() + "\"");
+        if (!text.replaceAll(regex, "milestone:\"" + item.getTitle() + "\"").equalsIgnoreCase(text)) {
+            String space = text.endsWith(" ") ? "" : " ";
+            text = text.replaceAll(regex, space + "milestone:\"" + item.getTitle() + "\"");
         } else {
-            text += " milestone:\"" + item.getTitle() + "\"";
+            text += text.endsWith(" ") ? "" : " ";
+            text += "milestone:\"" + item.getTitle() + "\"";
         }
         searchEditText.setText(text);
         onSearch();
@@ -413,10 +415,12 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
             onSearch();
             return;
         }
-        if (!text.replaceAll(regex, " label:\"" + item.getName() + "\"").equalsIgnoreCase(text)) {
-            text = text.replaceAll(regex, " label:\"" + item.getName() + "\"");
+        if (!text.replaceAll(regex, "label:\"" + item.getName() + "\"").equalsIgnoreCase(text)) {
+            String space = text.endsWith(" ") ? "" : " ";
+            text = text.replaceAll(regex, space + "label:\"" + item.getName() + "\"");
         } else {
-            text += " label:\"" + item.getName() + "\"";
+            text += text.endsWith(" ") ? "" : " ";
+            text += "label:\"" + item.getName() + "\"";
         }
         searchEditText.setText(text);
         onSearch();
@@ -435,10 +439,12 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
             onSearch();
             return;
         }
-        if (!text.replaceAll(regex, " assignee:\"" + item.getLogin() + "\"").equalsIgnoreCase(text)) {
-            text = text.replaceAll(regex, " assignee:\"" + item.getLogin() + "\"");
+        if (!text.replaceAll(regex, "assignee:\"" + item.getLogin() + "\"").equalsIgnoreCase(text)) {
+            String space = text.endsWith(" ") ? "" : " ";
+            text = text.replaceAll(regex, space + "assignee:\"" + item.getLogin() + "\"");
         } else {
-            text += " assignee:\"" + item.getLogin() + "\"";
+            text += text.endsWith(" ") ? "" : " ";
+            text += "assignee:\"" + item.getLogin() + "\"";
         }
         searchEditText.setText(text);
         onSearch();
@@ -475,10 +481,12 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         } else if (item.equalsIgnoreCase(resources.getString(R.string.least_recent_updated))) {
             toQuery = leastRecentUpdatedQuery;
         }
-        if (!text.replaceAll(regex, " sort:\"" + toQuery + "\"").equalsIgnoreCase(text)) {
-            text = text.replaceAll(regex, " sort:\"" + toQuery + "\"");
+        if (!text.replaceAll(regex, "sort:\"" + toQuery + "\"").equalsIgnoreCase(text)) {
+            String space = text.endsWith(" ") ? "" : " ";
+            text = text.replaceAll(regex, space + "sort:\"" + toQuery + "\"");
         } else {
-            text += " sort:\"" + toQuery + "\"";
+            text += text.endsWith(" ") ? "" : " ";
+            text += "sort:\"" + toQuery + "\"";
         }
         if (!InputHelper.toString(searchEditText).equalsIgnoreCase(text)) {
             searchEditText.setText(text);

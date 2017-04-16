@@ -60,6 +60,8 @@ public class LabelsViewHolder extends BaseViewHolder<LabelModel> {
                 }
                 itemView.setBackgroundColor(onSelectLabel.isLabelSelected(getAdapterPosition()) ? color : 0);
             }
+        } else {
+            colorImage.setBackgroundColor(0);
         }
     }
 }

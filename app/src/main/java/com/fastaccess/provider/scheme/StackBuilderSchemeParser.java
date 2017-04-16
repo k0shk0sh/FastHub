@@ -221,7 +221,7 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getCommits(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.isEmpty() || segments.size() < 3) return null;
+        if (segments == null || segments.isEmpty()) return null;
         String login = null;
         String repoId = null;
         String sha = null;
@@ -229,7 +229,7 @@ public class StackBuilderSchemeParser {
             login = segments.get(1);
             repoId = segments.get(2);
             sha = segments.get(4);
-        } else if (segments.get(2).equals("commits")) {
+        } else if (segments.size() > 2 && segments.get(2).equals("commits")) {
             login = segments.get(0);
             repoId = segments.get(1);
             sha = uri.getLastPathSegment();

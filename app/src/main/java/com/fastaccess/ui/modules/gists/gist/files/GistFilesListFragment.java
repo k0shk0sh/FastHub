@@ -24,7 +24,6 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import butterknife.BindView;
 
@@ -41,7 +40,10 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
 
     public static GistFilesListFragment newInstance(@NonNull GithubFileModel gistsModel) {
         GistFilesListFragment view = new GistFilesListFragment();
-        view.setArguments(Bundler.start().put(BundleConstant.ITEM, gistsModel).end());
+        view.setArguments(Bundler.start()
+                .putParcelableArrayList(BundleConstant.ITEM,
+                        gistsModel.values() != null ? new ArrayList<>(gistsModel.values()) : new ArrayList<FilesListModel>())
+                .end());
         return view;
     }
 
@@ -54,18 +56,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ArrayList<FilesListModel> filesListModel = null;
-        if (getArguments().get(BundleConstant.ITEM) instanceof HashMap) {
-            HashMap<String, FilesListModel> gistsModel = (GithubFileModel) getArguments().getSerializable(BundleConstant.ITEM);
-            if (gistsModel != null) {
-                filesListModel = new ArrayList<>(gistsModel.values());
-            }
-        } else {
-            GithubFileModel gistsModel = (GithubFileModel) getArguments().getSerializable(BundleConstant.ITEM);
-            if (gistsModel != null) {
-                filesListModel = new ArrayList<>(gistsModel.values());
-            }
-        }
+        ArrayList<FilesListModel> filesListModel = getArguments().getParcelableArrayList(BundleConstant.ITEM);
         stateLayout.hideReload();
         stateLayout.setEmptyText(R.string.no_files);
         recycler.setEmptyView(stateLayout);

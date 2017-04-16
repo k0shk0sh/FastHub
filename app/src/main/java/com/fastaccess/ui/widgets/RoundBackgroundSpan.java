@@ -30,10 +30,9 @@ public class RoundBackgroundSpan extends ReplacementSpan {
     public void draw(@NonNull Canvas canvas, @NonNull CharSequence charSequence,
                      int start, int end, float x, int top, int y, int bottom, @NonNull Paint paint) {
         paint.setColor(color);
-        rectF.set(x, top, width + x, bottom - 10);
+        rectF.set(x, top, width + x, bottom - 8);
         canvas.drawRoundRect(rectF, 5, 5, paint);
         paint.setColor(ViewHelper.generateTextColor(color));
-        canvas.drawText(charSequence, start, end, x + (5 * 2.0f), (float) y, paint);
-
+        canvas.drawText(charSequence, start, end, x, y, paint);
     }
 }

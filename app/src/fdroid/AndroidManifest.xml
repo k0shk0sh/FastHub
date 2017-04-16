@@ -11,6 +11,13 @@
         <activity
             android:name="io.octo.bear.pago.BillingActivity"
             tools:node="remove"/>
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            tools:node="remove"/>
+        <service
+            android:name=".provider.fcm.PushNotificationService"
+            tools:node="remove"/>
     </application>
 
 </manifest>

@@ -1,5 +1,7 @@
 # How to contribute & build *FastHub*
 
+If you have a question in mind, feel free to come our public [Slack](https://fasthub.herokuapp.com) channel.
+
 ### Registering GitHub Account
 
 Before you clone the project, Please read the guide below to be able to login from FastHub.
@@ -34,8 +36,6 @@ Before you clone the project, Please read the guide below to be able to login fr
 > I really appreciate your efforts on contributing to this project.
 
 # Contribute Translations
-
-If you have a question in mind, feel free to come our public [Slack](https://fasthub.herokuapp.com) channel.
 
 1. First fork the repository by clicking **Fork** button.
 1. Clone your own forked repository to your computer.

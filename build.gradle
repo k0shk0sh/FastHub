@@ -6,7 +6,6 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.4.0-alpha6'
-
         def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
         def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
         if (isGms) {

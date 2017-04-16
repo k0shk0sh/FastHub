@@ -69,7 +69,7 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         } else {
             if (model.getStatus() != null) ((PullStatusViewHolder) holder).bind(model.getStatus());
         }
-        if (model.getType() == TimelineModel.HEADER || model.getType() == TimelineModel.STATUS) {
+        if (model.getType() != TimelineModel.COMMENT) {
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
             layoutParams.setFullSpan(true);
         }

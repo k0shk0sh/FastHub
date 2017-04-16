@@ -124,10 +124,12 @@ public class AnimHelper {
                 if (view != null) {
                     popupWindow.showAsDropDown(from);
                     view.post(() -> {
-                        Animator animator = ViewAnimationUtils.createCircularReveal(view, x, y, 0,
-                                (float) Math.hypot(rect.width(), rect.height()));
-                        animator.setDuration(view.getResources().getInteger(android.R.integer.config_shortAnimTime));
-                        animator.start();
+                        if (ViewCompat.isAttachedToWindow(view)) {
+                            Animator animator = ViewAnimationUtils.createCircularReveal(view, x, y, 0,
+                                    (float) Math.hypot(rect.width(), rect.height()));
+                            animator.setDuration(view.getResources().getInteger(android.R.integer.config_shortAnimTime));
+                            animator.start();
+                        }
                     });
                 }
             }
@@ -139,11 +141,15 @@ public class AnimHelper {
             if (dialog.getWindow() != null) {
                 View view = dialog.getWindow().getDecorView();
                 if (view != null) {
-                    int centerX = view.getWidth() / 2;
-                    int centerY = view.getHeight() / 2;
-                    Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, 20, view.getHeight());
-                    animator.setDuration(animDuration);
-                    animator.start();
+                    view.post(() -> {
+                        if (ViewCompat.isAttachedToWindow(view)) {
+                            int centerX = view.getWidth() / 2;
+                            int centerY = view.getHeight() / 2;
+                            Animator animator = ViewAnimationUtils.createCircularReveal(view, centerX, centerY, 20, view.getHeight());
+                            animator.setDuration(animDuration);
+                            animator.start();
+                        }
+                    });
                 }
             }
         }
