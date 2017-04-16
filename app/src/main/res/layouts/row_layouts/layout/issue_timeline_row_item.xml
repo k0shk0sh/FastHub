@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spacing_normal"
-    android:layout_marginEnd="@dimen/spacing_xs_large"
-    android:layout_marginStart="@dimen/spacing_xs_large"
+    android:layout_marginEnd="@dimen/layout_margin"
+    android:layout_marginStart="@dimen/layout_margin"
     android:layout_marginTop="@dimen/spacing_normal">
 
     <com.fastaccess.ui.widgets.ForegroundImageView

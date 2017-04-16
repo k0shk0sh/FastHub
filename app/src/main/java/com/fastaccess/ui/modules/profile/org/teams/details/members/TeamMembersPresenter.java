@@ -57,11 +57,7 @@ class TeamMembersPresenter extends BasePresenter<TeamMembersMvp.View> implements
         makeRestCall(RestProvider.getOrgService().getTeamMembers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        users.clear();
-                    }
-                    users.addAll(response.getItems());
-                    sendToView(TeamMembersMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 

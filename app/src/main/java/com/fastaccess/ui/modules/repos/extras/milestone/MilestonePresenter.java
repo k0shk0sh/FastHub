@@ -32,11 +32,7 @@ public class MilestonePresenter extends BasePresenter<MilestoneMvp.View> impleme
                         sendToView(view -> view.showMessage(R.string.error, R.string.no_milestones));
                         return;
                     }
-                    if (response.getItems() != null) {
-                        milestoneModels.clear();
-                        milestoneModels.addAll(response.getItems());
-                        sendToView(MilestoneMvp.View::onNotifyAdapter);
-                    }
+                    sendToView(view -> view.onNotifyAdapter(response.getItems()));
                 });
     }
 

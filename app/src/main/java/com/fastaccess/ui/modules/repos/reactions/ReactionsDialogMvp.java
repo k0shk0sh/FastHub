@@ -9,6 +9,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 11 Apr 2017, 11:19 AM
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 public interface ReactionsDialogMvp {
 
     interface View extends BaseMvp.FAView {
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<User> items, int page);
 
         @NonNull OnLoadMore getLoadMore();
     }

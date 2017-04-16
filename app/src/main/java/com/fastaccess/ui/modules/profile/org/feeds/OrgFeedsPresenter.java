@@ -60,14 +60,7 @@ class OrgFeedsPresenter extends BasePresenter<OrgFeedsMvp.View> implements OrgFe
         setCurrentPage(page);
         if (Login.getUser() == null) return;
         makeRestCall(RestProvider.getOrgService().getReceivedEvents(parameter, page),
-                response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        eventsModels.clear();
-                    }
-                    eventsModels.addAll(response.getItems());
-                    sendToView(OrgFeedsMvp.View::onNotifyAdapter);
-                });
+                response -> sendToView(view -> view.onNotifyAdapter(response.getItems(), page)));
     }
 
     @Override public void onSubscribed() {

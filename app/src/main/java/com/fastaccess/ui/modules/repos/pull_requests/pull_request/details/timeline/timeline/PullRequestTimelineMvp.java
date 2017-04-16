@@ -16,6 +16,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:15 PM
@@ -25,12 +26,13 @@ public interface PullRequestTimelineMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
             OnToggleView, ReactionsCallback {
-
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
 
         @NonNull OnLoadMore getLoadMore();
 
         void onEditComment(@NonNull Comment item);
+
+        void onRemove(@NonNull TimelineModel timelineModel);
 
         void onStartNewComment();
 

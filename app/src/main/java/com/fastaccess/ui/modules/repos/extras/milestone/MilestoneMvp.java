@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.extras.milestone;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -8,6 +9,7 @@ import com.fastaccess.ui.modules.repos.extras.milestone.create.CreateMilestoneMv
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 04 Mar 2017, 9:38 PM
@@ -21,7 +23,7 @@ public interface MilestoneMvp {
     }
 
     interface View extends BaseMvp.FAView, CreateMilestoneMvp.OnMilestoneAdded {
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<MilestoneModel> items);
 
         void onMilestoneSelected(@NonNull MilestoneModel milestoneModel);
     }

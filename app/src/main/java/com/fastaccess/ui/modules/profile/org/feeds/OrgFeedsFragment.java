@@ -25,6 +25,7 @@ import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
@@ -71,9 +72,17 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
         getPresenter().onCallApi(1, getArguments().getString(BundleConstant.EXTRA));
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<Event> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override public void showProgress(@StringRes int resId) {

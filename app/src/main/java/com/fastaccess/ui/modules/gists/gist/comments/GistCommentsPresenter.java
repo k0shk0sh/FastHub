@@ -10,7 +10,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -64,11 +63,9 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        getComments().clear();
                         manageSubscription(Comment.saveForGist(listResponse.getItems(), parameter).subscribe());
                     }
-                    getComments().addAll(listResponse.getItems());
-                    sendToView(GistCommentsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
     }
 
@@ -86,8 +83,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                getComments().remove(comment);
-                                view.onNotifyAdapter();
+                                view.onRemove(comment);
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -99,13 +95,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Comment.getGistComments(gistId)).subscribe(
-                    localComments -> {
-                        if (localComments != null && !localComments.isEmpty()) {
-                            Logger.e(localComments.size());
-                            comments.addAll(localComments);
-                            sendToView(GistCommentsMvp.View::onNotifyAdapter);
-                        }
-                    }
+                    localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))
             ));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

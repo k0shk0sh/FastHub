@@ -38,11 +38,6 @@ class OrgMembersPresenter extends BasePresenter<OrgMembersMvp.View> implements O
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
-        sendToView(view -> {
-            if (view.getLoadMore().getParameter() != null) {
-                onWorkOffline(view.getLoadMore().getParameter());
-            }
-        });
         super.onError(throwable);
     }
 
@@ -62,11 +57,7 @@ class OrgMembersPresenter extends BasePresenter<OrgMembersMvp.View> implements O
         makeRestCall(RestProvider.getOrgService().getOrgMembers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        users.clear();
-                    }
-                    users.addAll(response.getItems());
-                    sendToView(OrgMembersMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 

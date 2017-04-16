@@ -17,6 +17,8 @@ import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import icepick.State;
 
@@ -37,9 +39,17 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         return new SearchCodeFragment();
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<SearchCodeModel> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override protected int fragmentLayout() {
@@ -88,16 +98,10 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @Override public void onSetSearchQuery(@NonNull String query) {
         this.searchQuery = query;
         getLoadMore().reset();
-        getPresenter().getCodes().clear();
-        onNotifyAdapter();
+        adapter.clear();
         recycler.scrollToPosition(0);
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());
@@ -128,5 +132,10 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

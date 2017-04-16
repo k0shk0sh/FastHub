@@ -72,14 +72,10 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
         makeRestCall(RestProvider.getReactionsService().getIssueCommentReaction(login, repoId, id, reactionType.getContent()),
                 response -> {
                     lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        users.clear();
-                    }
-                    users.addAll(Stream.of(response.getItems())
+                    sendToView(view -> view.onNotifyAdapter(Stream.of(response.getItems())
                             .filter(reactionsModel -> reactionsModel.getUser() != null)
                             .map(ReactionsModel::getUser)
-                            .collect(Collectors.toList()));
-                    sendToView(ReactionsDialogMvp.View::onNotifyAdapter);
+                            .collect(Collectors.toList()), page));
                 });
     }
 

@@ -35,8 +35,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     @Override public void onItemClick(int position, View v, Notification item) {
         if (item.isUnread() && !PrefGetter.isMarkAsReadEnabled()) {
             ReadNotificationService.start(v.getContext(), item.getId());
-            notifications.remove(position);
-            sendToView(NotificationsMvp.View::onNotifyAdapter);
+            sendToView(view -> view.onRemove(position));
             item.setUnread(true);
             manageSubscription(item.save(item).subscribe());
         }
@@ -59,12 +58,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Notification.getNotifications())
-                    .subscribe(models -> {
-                        if (models != null) {
-                            notifications.addAll(models);
-                            sendToView(NotificationsMvp.View::onNotifyAdapter);
-                        }
-                    }));
+                    .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }
@@ -84,10 +78,9 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
         Notification notification = notifications.get(position);
         if (notification != null && notification.getId() == id) {
             ReadNotificationService.start(context, id);
-            notifications.remove(position);
             notification.setUnread(true);
             manageSubscription(notification.save(notification).subscribe());
-            sendToView(NotificationsMvp.View::onNotifyAdapter);
+            sendToView(view -> view.onRemove(position));
         }
     }
 
@@ -124,12 +117,10 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
             if (response.getItems() != null) {
                 lastPage = response.getLast();
                 if (page == 1) {
-                    notifications.clear();
                     manageSubscription(Notification.save(response.getItems()).subscribe());
                 }
-                notifications.addAll(response.getItems());
             }
-            sendToView(NotificationsMvp.View::onNotifyAdapter);
+            sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
     }
 }

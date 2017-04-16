@@ -75,12 +75,10 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     if (response != null && response.getItems() != null) {
                         lastPage = response.getLast();
                         if (getCurrentPage() == 1) {
-                            getCommits().clear();
                             manageSubscription(Commit.save(response.getItems(), repoId, login).subscribe());
                         }
-                        getCommits().addAll(response.getItems());
                     }
-                    sendToView(RepoCommitsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
                 });
     }
 
@@ -151,10 +149,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Commit.getCommits(repoId, login))
-                    .subscribe(models -> {
-                        commits.addAll(models);
-                        sendToView(RepoCommitsMvp.View::onNotifyAdapter);
-                    }));
+                    .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }

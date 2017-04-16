@@ -64,11 +64,9 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        users.clear();
                         manageSubscription(User.saveUserFollowingList(response.getItems(), parameter).subscribe());
                     }
-                    users.addAll(response.getItems());
-                    sendToView(ProfileFollowingMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 
@@ -78,10 +76,8 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(User.getUserFollowingList(login)).subscribe(userModels -> {
-                users.addAll(userModels);
-                sendToView(ProfileFollowingMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(User.getUserFollowingList(login)).subscribe(userModels ->
+                    sendToView(view -> view.onNotifyAdapter(userModels, 1))));
         } else {
             sendToView(ProfileFollowingMvp.View::hideProgress);
         }

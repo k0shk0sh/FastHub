@@ -39,11 +39,6 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
-        sendToView(view -> {
-            if (view.getLoadMore().getParameter() != null) {
-                onWorkOffline(view.getLoadMore().getParameter());
-            }
-        });
         super.onError(throwable);
     }
 
@@ -63,11 +58,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
         makeRestCall(RestProvider.getOrgService().getOrgTeams(parameter, page),
                 response -> {
                     lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        users.clear();
-                    }
-                    users.addAll(response.getItems());
-                    sendToView(OrgTeamMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 

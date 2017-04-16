@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.profile.org.teams.details.repos;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.fastaccess.data.dao.model.Repo;
@@ -9,6 +10,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:45 PM
@@ -17,7 +19,7 @@ import java.util.ArrayList;
 interface TeamReposMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<Repo> items, int page);
 
         @NonNull OnLoadMore<Long> getLoadMore();
     }

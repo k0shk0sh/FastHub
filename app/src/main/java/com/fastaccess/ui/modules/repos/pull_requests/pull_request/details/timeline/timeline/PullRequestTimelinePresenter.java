@@ -34,6 +34,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    private PullRequest pullRequest;
     private ReactionsProvider reactionsProvider;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
@@ -86,10 +87,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
-        PullRequest issueModel = bundle.getParcelable(BundleConstant.ITEM);
-        if (timeline.isEmpty() && issueModel != null) {
-            timeline.add(TimelineModel.constructHeader(issueModel));
-            sendToView(PullRequestTimelineMvp.View::onNotifyAdapter);
+        pullRequest = bundle.getParcelable(BundleConstant.ITEM);
+        if (timeline.isEmpty() && pullRequest != null) {
             onCallApi(1, null);
         }
     }
@@ -139,16 +138,17 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses, reviews.getItems());
                 });
         makeRestCall(observable, models -> {
-            if (getCurrentPage() == 1) {
-                getEvents().subList(1, getEvents().size()).clear();
+            if (models != null) {
+                if (page == 1) {
+                    models.add(0, TimelineModel.constructHeader(pullRequest));
+                }
             }
-            getEvents().addAll(models);
-            sendToView(PullRequestTimelineMvp.View::onNotifyAdapter);
+            sendToView(view -> view.onNotifyAdapter(models, page));
         });
     }
 
     @Nullable private PullRequest getHeader() {
-        return !timeline.isEmpty() ? timeline.get(0).getPullRequest() : null;
+        return pullRequest;
     }
 
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
@@ -160,8 +160,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                getEvents().remove(TimelineModel.constructComment(comment));
-                                view.onNotifyAdapter();
+                                view.onRemove(TimelineModel.constructComment(comment));
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }

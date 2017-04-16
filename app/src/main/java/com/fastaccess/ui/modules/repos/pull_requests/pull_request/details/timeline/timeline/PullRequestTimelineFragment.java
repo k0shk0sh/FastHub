@@ -29,6 +29,8 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import icepick.State;
 
@@ -56,13 +58,21 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         getPresenter().onCallApi(1, null);
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.fab_small_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -143,6 +153,10 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
+    @Override public void onRemove(@NonNull TimelineModel timelineModel) {
+        adapter.removeItem(timelineModel);
+    }
+
     @Override public void onStartNewComment() {
         onTagUser(null);
     }
@@ -181,18 +195,15 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                     if (commentsModel == null) return;
                     getSparseBooleanArray().clear();
                     if (isNew) {
-                        getPresenter().getEvents().add(TimelineModel.constructComment(commentsModel));
-                        adapter.notifyDataSetChanged();
+                        adapter.addItem(TimelineModel.constructComment(commentsModel));
                         recycler.smoothScrollToPosition(adapter.getItemCount());
                     } else {
                         int position = adapter.getItem(TimelineModel.constructComment(commentsModel));
                         if (position != -1) {
-                            getPresenter().getEvents().set(position, TimelineModel.constructComment(commentsModel));
-                            adapter.notifyDataSetChanged();
+                            adapter.swapItem(TimelineModel.constructComment(commentsModel), position);
                             recycler.smoothScrollToPosition(position);
                         } else {
-                            getPresenter().getEvents().add(TimelineModel.constructComment(commentsModel));
-                            adapter.notifyDataSetChanged();
+                            adapter.addItem(TimelineModel.constructComment(commentsModel));
                             recycler.smoothScrollToPosition(adapter.getItemCount());
                         }
                     }

@@ -21,6 +21,8 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -63,9 +65,13 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
         super.onDetach();
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<MilestoneModel> items) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        adapter.insertItems(items);
     }
 
     @Override public void onMilestoneSelected(@NonNull MilestoneModel milestoneModel) {
@@ -127,8 +133,7 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
     }
 
     @Override public void onMilestoneAdded(@NonNull MilestoneModel milestoneModel) {
-        getPresenter().getMilestones().add(0, milestoneModel);
-        adapter.notifyDataSetChanged();
+        adapter.addItem(milestoneModel, 0);
     }
 
     private void showReload() {

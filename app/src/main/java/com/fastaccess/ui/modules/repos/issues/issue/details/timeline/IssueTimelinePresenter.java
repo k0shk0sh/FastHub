@@ -35,6 +35,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ReactionsProvider reactionsProvider;
+    private Issue issue;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (item.getType() == TimelineModel.COMMENT) {
@@ -90,10 +91,8 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
-        Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
-        if (timeline.isEmpty() && issueModel != null) {
-            timeline.add(TimelineModel.constructHeader(issueModel));
-            sendToView(IssueTimelineMvp.View::onNotifyAdapter);
+        issue = bundle.getParcelable(BundleConstant.ITEM);
+        if (timeline.isEmpty() && issue != null) {
             onCallApi(1, null);
         }
     }
@@ -111,8 +110,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                getEvents().remove(TimelineModel.constructComment(comment));
-                                view.onNotifyAdapter();
+                                view.onRemove(TimelineModel.constructComment(comment));
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -169,16 +167,17 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                     return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems());
                 });
         makeRestCall(observable, models -> {
-            if (getCurrentPage() == 1) {
-                getEvents().subList(1, getEvents().size()).clear();
+            if (models != null) {
+                if (page == 1) {
+                    models.add(0, TimelineModel.constructHeader(issue));
+                }
             }
-            getEvents().addAll(models);
-            sendToView(IssueTimelineMvp.View::onNotifyAdapter);
+            sendToView(view -> view.onNotifyAdapter(models, page));
         });
     }
 
     @Nullable private Issue getHeader() {
-        return !timeline.isEmpty() ? timeline.get(0).getIssue() : null;
+        return issue;
     }
 
     @Override public void onHandleReaction(int id, long commentId) {

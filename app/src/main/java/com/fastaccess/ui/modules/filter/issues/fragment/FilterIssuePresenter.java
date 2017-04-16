@@ -70,11 +70,9 @@ public class FilterIssuePresenter extends BasePresenter<FilterIssuesMvp.View> im
                 issues -> {
                     lastPage = issues.getLast();
                     if (getCurrentPage() == 1) {
-                        getIssues().clear();
                         sendToView(view -> view.onSetCount(issues.getTotalCount()));
                     }
-                    getIssues().addAll(issues.getItems());
-                    sendToView(FilterIssuesMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
                 });
     }
 }

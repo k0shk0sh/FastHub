@@ -66,11 +66,9 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        getCommits().clear();
                         manageSubscription(Commit.save(response.getItems(), repoId, login, number).subscribe());
                     }
-                    getCommits().addAll(response.getItems());
-                    sendToView(PullRequestCommitsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 
@@ -90,10 +88,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Commit.getCommits(repoId, login, number))
-                    .subscribe(models -> {
-                        commits.addAll(models);
-                        sendToView(PullRequestCommitsMvp.View::onNotifyAdapter);
-                    }));
+                    .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }

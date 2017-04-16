@@ -57,11 +57,9 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        getGists().clear();
                         manageSubscription(Gist.save(listResponse.getItems()).subscribe());
                     }
-                    getGists().addAll(listResponse.getItems());
-                    sendToView(GistsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
     }
 
@@ -71,10 +69,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
 
     @Override public void onWorkOffline() {
         if (gistsModels.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Gist.getGists()).subscribe(gistsModels1 -> {
-                gistsModels.addAll(gistsModels1);
-                sendToView(GistsMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(Gist.getGists()).subscribe(gists -> sendToView(view -> view.onNotifyAdapter(gists, 1))));
         } else {
             sendToView(GistsMvp.View::hideProgress);
         }

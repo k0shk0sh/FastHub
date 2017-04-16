@@ -10,6 +10,8 @@ import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
+import java.util.List;
+
 /**
  * Created by Kosh on 20 Nov 2016, 11:10 AM
  */
@@ -18,7 +20,7 @@ interface CommitFilesMvp {
 
     interface View extends BaseMvp.FAView, OnToggleView {
 
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<CommitFileModel> items);
 
     }
 

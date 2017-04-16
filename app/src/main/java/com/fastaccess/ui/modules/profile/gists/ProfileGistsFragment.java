@@ -20,6 +20,8 @@ import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -68,10 +70,17 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
         getPresenter().onCallApi(1, getArguments().getString(BundleConstant.EXTRA));
     }
 
-    @Override public void onNotifyAdapter() {
-
+    @Override public void onNotifyAdapter(@Nullable List<Gist> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -92,11 +101,6 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @NonNull @Override public ProfileGistsPresenter providePresenter() {
@@ -128,5 +132,10 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

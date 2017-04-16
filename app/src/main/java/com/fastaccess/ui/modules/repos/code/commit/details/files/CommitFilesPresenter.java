@@ -11,6 +11,8 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
+import java.util.ArrayList;
+
 /**
  * Created by Kosh on 15 Feb 2017, 10:10 PM
  */
@@ -32,12 +34,13 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
             String sha = bundle.getString(BundleConstant.ID);
             if (!InputHelper.isEmpty(sha)) {
                 CommitFileListModel commitFiles = CommitFilesSingleton.getInstance().getByCommitId(sha);
+                ArrayList<CommitFileModel> fileModels = new ArrayList<>();
                 if (commitFiles != null) {
-                    this.files.addAll(commitFiles);
+                    fileModels.addAll(commitFiles);
                     CommitFilesSingleton.getInstance().clear();
                 }
+                sendToView(view -> view.onNotifyAdapter(fileModels));
             }
-            sendToView(CommitFilesMvp.View::onNotifyAdapter);
         } else {
             throw new NullPointerException("Bundle is null");
         }

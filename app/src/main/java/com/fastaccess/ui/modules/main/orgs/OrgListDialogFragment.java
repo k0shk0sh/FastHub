@@ -9,11 +9,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -34,9 +37,13 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
         return new OrgListDialogFragment();
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<User> items) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        adapter.insertItems(items);
     }
 
     @Override protected int fragmentLayout() {

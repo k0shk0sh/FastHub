@@ -76,11 +76,9 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
                 issues -> {
                     lastPage = issues.getLast();
                     if (getCurrentPage() == 1) {
-                        getIssues().clear();
                         sendToView(view -> view.onSetCount(issues.getTotalCount()));
                     }
-                    getIssues().addAll(issues.getItems());
-                    sendToView(MyIssuesMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
                 });
     }
 }

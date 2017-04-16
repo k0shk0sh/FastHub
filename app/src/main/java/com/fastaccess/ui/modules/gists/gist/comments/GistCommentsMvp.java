@@ -13,6 +13,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 20 Nov 2016, 11:10 AM
@@ -23,7 +24,9 @@ interface GistCommentsMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
             android.view.View.OnClickListener, OnToggleView {
 
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<Comment> items, int page);
+
+        void onRemove(@NonNull Comment comment);
 
         @NonNull OnLoadMore<String> getLoadMore();
 

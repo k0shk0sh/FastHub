@@ -63,11 +63,9 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        getGists().clear();
                         manageSubscription(Gist.save(listResponse.getItems(), parameter).subscribe());
                     }
-                    getGists().addAll(listResponse.getItems());
-                    sendToView(ProfileGistsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
     }
 
@@ -77,10 +75,8 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (gistsModels.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Gist.getMyGists(login)).subscribe(gistsModels1 -> {
-                gistsModels.addAll(gistsModels1);
-                sendToView(ProfileGistsMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(Gist.getMyGists(login)).subscribe(gistsModels1 ->
+                    sendToView(view -> view.onNotifyAdapter(gistsModels1, 1))));
         } else {
             sendToView(ProfileGistsMvp.View::hideProgress);
         }

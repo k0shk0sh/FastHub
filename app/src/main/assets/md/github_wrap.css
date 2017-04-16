@@ -55,7 +55,7 @@ body .anchor:focus {
 
 body p, body blockquote, body ul, body ol, body dl, body table, body pre {
     margin-top: 0;
-    margin-bottom: 5px
+    margin-bottom: 4px
 }
 
 body hr {
@@ -99,8 +99,8 @@ body .loweralpha {
 }
 
 body h1, body h2, body h3, body h4, body h5, body h6 {
-    margin-top: 24px;
-    margin-bottom: 8px;
+    margin-top: 8px;
+    margin-bottom: 4px;
     font-weight: 600;
     line-height: 1.25
 }
@@ -167,7 +167,7 @@ body ul ul, body ul ol, body ol ol, body ol ul {
 }
 
 body li>p {
-    margin-top: 16px
+    margin-top: 8px
 }
 
 body li+li {
@@ -180,7 +180,7 @@ body dl {
 
 body dl dt {
     padding: 0;
-    margin-top: 16px;
+    margin-top: 8px;
     font-size: 1em;
     font-style: italic;
     font-weight: 700
@@ -188,7 +188,7 @@ body dl dt {
 
 body dl dd {
     padding: 0 16px;
-    margin-bottom: 8px
+    margin-bottom: 4px
 }
 
 body table {
@@ -359,7 +359,7 @@ body pre>code {
 }
 
 body .highlight {
-    margin-bottom: 5px
+    margin-bottom: 4px
 }
 
 body .highlight pre {
@@ -450,7 +450,7 @@ body .email-hidden-reply.expanded {
 
 body .email-quoted-reply, body .email-signature-reply {
     padding: 0 10px;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
     color: #767676;
     border-left: 4px solid #ddd
 }

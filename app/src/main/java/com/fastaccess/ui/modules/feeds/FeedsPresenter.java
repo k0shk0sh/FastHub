@@ -50,10 +50,8 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
                         manageSubscription(Event.save(response.getItems()).subscribe());
-                        eventsModels.clear();
                     }
-                    eventsModels.addAll(response.getItems());
-                    sendToView(FeedsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 
@@ -94,8 +92,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         if (eventsModels.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Event.getEvents()).subscribe(modelList -> {
                 if (modelList != null) {
-                    eventsModels.addAll(modelList);
-                    sendToView(FeedsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(modelList, 1));
                 }
             }));
         } else {

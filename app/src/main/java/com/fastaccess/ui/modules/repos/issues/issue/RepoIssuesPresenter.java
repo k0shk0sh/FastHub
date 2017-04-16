@@ -79,11 +79,9 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                             .filter(issue -> issue.getPullRequest() == null)
                             .toList();
                     if (getCurrentPage() == 1) {
-                        getIssues().clear();
                         manageSubscription(Issue.save(filtered, repoId, login).subscribe());
                     }
-                    getIssues().addAll(filtered);
-                    sendToView(RepoIssuesMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(filtered, page));
                 });
     }
 
@@ -107,13 +105,10 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     @Override public void onWorkOffline() {
         if (issues.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Issue.getIssues(repoId, login, issueState))
-                    .subscribe(issueModel -> {
-                        issues.addAll(issueModel);
-                        sendToView(view -> {
-                            view.onNotifyAdapter();
-                            view.onUpdateCount(issues.size());
-                        });
-                    }));
+                    .subscribe(issueModel -> sendToView(view -> {
+                        view.onNotifyAdapter(issueModel, 1);
+                        view.onUpdateCount(issueModel.size());
+                    })));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }
@@ -133,7 +128,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
 
     @Override public void onItemClick(int position, View v, Issue item) {
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
-        if (parser != null && getView()!=null) {
+        if (parser != null && getView() != null) {
             getView().onOpenIssue(parser);
         }
     }

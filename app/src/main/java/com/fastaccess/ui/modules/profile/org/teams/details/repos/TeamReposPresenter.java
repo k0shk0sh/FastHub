@@ -58,11 +58,7 @@ class TeamReposPresenter extends BasePresenter<TeamReposMvp.View> implements Tea
         makeRestCall(RestProvider.getOrgService().getTeamRepos(parameter, page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
-                    if (getCurrentPage() == 1) {
-                        getRepos().clear();
-                    }
-                    getRepos().addAll(repoModelPageable.getItems());
-                    sendToView(TeamReposMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
     }
 
