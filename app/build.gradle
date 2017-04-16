@@ -146,9 +146,9 @@ dependencies {
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     provided "org.projectlombok:lombok:${lombokVersion}"
-    gmsCompile "com.google.firebase:firebase-ads:${firebase}"
-    gmsCompile "com.google.firebase:firebase-messaging:${firebase}"
     if (isGms) {
+        compile "com.google.firebase:firebase-ads:${firebase}"
+        compile "com.google.firebase:firebase-messaging:${firebase}"
         releaseCompile "com.google.firebase:firebase-crash:${firebase}"
     }
 }
