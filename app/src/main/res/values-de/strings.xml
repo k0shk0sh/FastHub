@@ -64,7 +64,7 @@
     <string name="link">Link</string>
     <string name="image">Bild</string>
     <string name="deletion">Löschung</string>
-    <string name="addition">Addition</string>
+    <string name="addition">Additionen</string>
     <string name="changes">Änderungen</string>
     <string name="status">Status</string>
     <string name="confirm_message">Bist du sicher?</string>
@@ -78,7 +78,7 @@
     <string name="file">Datei</string>
     <string name="file_menu">File menu</string>
     <string name="files">Dateien</string>
-    <string name="download">Heruterladen</string>
+    <string name="download">Herunterladen</string>
     <string name="back">Zurück</string>
     <string name="parent_folder">Übergeordneter Ordner</string>
     <string name="code_viewer">Code Betrachter</string>
@@ -93,7 +93,7 @@
     <string name="file_name_hint">Dateiname mit Erweiterung</string>
     <string name="create_secret_gist">Privater Gist</string>
     <string name="create_public_gist">Öffentlicher Gist</string>
-    <string name="submit_as">Abschicken als</string>
+    <string name="submit_as">Speichern als</string>
     <string name="delete_gist">Löschen</string>
     <string name="error_deleting_gist">Konnte Gist nicht löschen</string>
     <string name="no_files">Keine Dateien</string>
@@ -126,7 +126,7 @@
     <string name="password">Passwort</string>
     <string name="twoFactor">Zwei-Faktor Authentifizierungscode</string>
     <string name="login">Anmelden</string>
-    <string name="gist_description">Gist-Beschraeibung</string>
+    <string name="gist_description">Gist-Beschreibung</string>
     <string name="avatar_click_hint">Tippe auf einen Avatar um zu dem jeweiligen Profil zu gelangen</string>
     <string name="feeds_fork_hint">Tippe länger auf einen Fork um entweder die originale- oder die geforkte Repo anzuzeigen</string>
     <string name="click_here_to_download_release_hint">Download releases</string>
@@ -141,9 +141,9 @@
     <string name="no_url">Keine URL gefunden</string>
     <string name="last_updated">Zuletzt geupdatet.</string>
     <string name="preview">Vorschau</string>
-    <string name="view_code">Syntax Marker</string>
-    <string name="click_to_toggle_highlighting">Syntax Markierung umschalten
-        \nScrolle durch die Markdown-Editor Icons für mehr Optionen</string>
+    <string name="view_code">Syntaxhervorheber</string>
+    <string name="click_to_toggle_highlighting">Syntaxhervorhebung umschalten
+        \nWische die Iconleiste nach links für mehr Optionen</string>
     <string name="creation_date">Erstellungsdatum</string>
     <string name="creation_date_hint">Wann die Datei erstellt wurden</string>
     <string name="last_updated_hint">Wann die Datei zuletzt verändert wurde</string>
@@ -183,12 +183,12 @@
     <string name="error_creating_milestone">Konnte Meilenstein nicht erstellen</string>
     <string name="due_on">Fällig am</string>
     <string name="no_assignees">Keine Bevollmächtigten</string>
-    <string name="this_value">dieser</string>
+    <string name="this_value">dies</string>
     <string name="commits_reflected">Commit wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
     <string name="background_job_summary">Wähle wie regelmäßig FastHub nach einem Update sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
-    <string name="every">Jeder</string>
+    <string name="every">Alle</string>
     <string name="behavior">Verhalten</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
@@ -196,7 +196,7 @@
     <string name="back_button_title">Drücke nochmal zum beenden</string>
     <string name="unsaved_data_warning">Alle ungespeicherten Fortschritte gehen verloren</string>
     <string name="private_repo">Privat</string>
-    <string name="rect_avatar_summary">Rechteckige anstatt Runde Avatare benutzen</string>
+    <string name="rect_avatar_summary">Rechteckige statt runde Avatare benutzen</string>
     <string name="rect_avatar_title">Avataraussehen</string>
     <string name="rate_app">Diese App bewerten</string>
     <string name="author">Autor</string>
@@ -222,7 +222,7 @@
     <string name="forking_gist">gist forken</string>
     <string name="login_using_your_default_browser">Mit dem Standardbrowser anmelden</string>
     <string name="or_character">ODER</string>
-    <string name="mark_notification_title">Benachrichtigungslesestatus deaktivieren</string>
+    <string name="mark_notification_title">Lesestatus deaktivieren</string>
     <string name="mark_notification_summary">Als gelesen markieren sobald Benachrichtigung angetippt wurde.</string>
     <string name="theme_title">Wähle ein Design</string>
     <string name="theme_summary">Wähle das Standarddesign aus</string>
@@ -231,13 +231,13 @@
     <string name="success_purchase_message">Vielen Dank für deine Unterstützung!</string>
     <string name="change_theme_warning">Wenn das Design nicht richtig angezeigt wird, beende die App manuell und starte sie erneut.</string>
     <string name="pin">Anpinnen</string>
-    <string name="pinned">Angepinnt</string>
+    <string name="pinned">Pinnwand</string>
     <string name="unpin">Entpinnen</string>
-    <string name="empty_pinned_repos">Du hast noch keine Repos angepinnt, pinne welche an um sie hier zu sehen</string>
+    <string name="empty_pinned_repos">Du hast noch keine Repos angepinnt, pinne welche an, damit sie her erscheinen</string>
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
-    <string name="no_feeds">Keine feeds</string>
-    <string name="no_gists">Keine gists</string>
+    <string name="no_feeds">Keine Feeds</string>
+    <string name="no_gists">Keine Gists</string>
     <string name="no_comments">Keine Kommentare</string>
     <string name="no_notifications">Keine Benachrichtigungen</string>
     <string name="no_followers">Keine Follower</string>
@@ -308,9 +308,9 @@
     <string name="enable_notification_sound_title">Benachrichtigunston aktivieren</string>
     <string name="login_with_personal_token">Mit persönlichen Token anmelden</string>
     <string name="personal_token">Persönlicher Token</string>
-    <string name="basic_login">Normal anmelden</string>
+    <string name="basic_login">normal anmelden</string>
     <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link
-\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: FastHub hat keinen "Access Token" benutzt, weil sobald die Zwei-Faktor Authentifizierung aktiviert wurde, das Einmalige Password oder "One time password" nur für ca. eine Minute verwendet werden kann, weswegen du dann direkt ausgeloggt worden wärst, weil das One time password abgelaufen ist.</string>
+\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: FastHub benutzt keinen "Access Token", weil sobald die Zwei-Faktor Authentifizierung aktiviert wurde, das Einmalige Password oder "One time password" nur für ca. eine Minute verwendet werden kann, weswegen du dann direkt ausgeloggt worden wärst, weil das One time password abgelaufen ist.</string>
     <string name="insert">Einfügen</string>
     <string name="select">Auswählen</string>
     <string name="select_picture">Bild auswählen</string>
@@ -320,5 +320,6 @@
     <string name="support_with_20_00">Unterstützen mit 20$</string>
     <string name="app_language">App Sprache</string>
     <string name="choose_language_title">Spracheneinstellung</string>
-    <string name="choose_language_summary">Wählen Sie Ihre bevorzugte Sprache</string>
+    <string name="choose_language_summary">Wählen deine bevorzugte Sprache</string>
 </resources>
+
