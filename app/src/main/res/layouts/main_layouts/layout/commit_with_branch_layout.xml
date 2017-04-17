@@ -15,7 +15,8 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/spacing_micro"
         android:paddingStart="@dimen/spacing_xs_large"
-        android:paddingTop="@dimen/spacing_micro">
+        android:paddingTop="@dimen/spacing_micro"
+        tools:ignore="RtlSymmetry">
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:layout_width="wrap_content"

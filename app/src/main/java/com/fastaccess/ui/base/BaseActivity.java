@@ -87,6 +87,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         setupTheme();
+        AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
         if (layout() != 0) {
             setContentView(layout());

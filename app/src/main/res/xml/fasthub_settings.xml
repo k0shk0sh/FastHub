@@ -23,8 +23,8 @@
         <SwitchPreference
             android:defaultValue="true"
             android:key="notificationSound"
-            android:title="@string/enable_notification_sound_title"
-            android:summary="@string/enable_notification_sound_summary"/>
+            android:summary="@string/enable_notification_sound_summary"
+            android:title="@string/enable_notification_sound_title"/>
 
     </PreferenceCategory>
 
@@ -59,6 +59,17 @@
             android:summary="@string/back_button_summary"
             android:title="@string/back_button_title"/>
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/app_language">
+
+        <ListPreference
+            android:defaultValue="en"
+            android:entries="@array/languages_array"
+            android:entryValues="@array/languages_array_values"
+            android:key="app_language"
+            android:summary="@string/choose_language_summary"
+            android:title="@string/choose_language_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/animations">

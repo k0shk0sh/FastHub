@@ -9,7 +9,6 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
-import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -26,9 +25,7 @@ public interface PullRequestTimelineMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
             OnToggleView, ReactionsCallback {
-        void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
-
-        @NonNull OnLoadMore getLoadMore();
+        void onNotifyAdapter(@Nullable List<TimelineModel> items);
 
         void onEditComment(@NonNull Comment item);
 
@@ -43,8 +40,10 @@ public interface PullRequestTimelineMvp {
         void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long id);
     }
 
-    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
-            BaseMvp.PaginationListener {
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel> {
+
+
+        void onCallApi();
 
         @NonNull ArrayList<TimelineModel> getEvents();
 

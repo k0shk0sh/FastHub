@@ -594,7 +594,13 @@ table {
 }
 
 .task-list-item {
-    list-style-type: none
+    list-style-type: none;
+    word-wrap: break-all !important;
+    white-space: pre-wrap !important;
+    white-space: -moz-pre-wrap !important;
+    white-space: -pre-wrap !important;
+    white-space: -o-pre-wrap !important;
+    word-wrap: break-word !important;
 }
 .task-list-item label {
     font-weight: normal

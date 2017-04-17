@@ -62,4 +62,16 @@
         <item>@string/least_recent_updated</item>
     </string-array>
 
+    <string-array name="languages_array" translatable="false">
+        <item>English</item>
+        <item>German</item>
+        <item>Turkish</item>
+    </string-array>
+
+    <string-array name="languages_array_values" translatable="false">
+        <item>en</item>
+        <item>de</item>
+        <item>tr</item>
+    </string-array>
+
 </resources>

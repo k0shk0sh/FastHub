@@ -15,12 +15,12 @@ import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.comments.CommentsHelper;
+import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
-import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import com.prettifier.pretty.PrettifyWebView;
 
@@ -54,6 +54,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
+    private boolean isPaused;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder || v.getId() == R.id.reactionsText) {
@@ -103,7 +104,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
-    private TimelineCommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
+    private TimelineCommentsViewHolder(@NonNull View itemView, @Nullable IssuePullsTimelineAdapter adapter,
                                        @NonNull String login, @NonNull OnToggleView onToggleView,
                                        boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
         super(itemView, adapter);
@@ -132,7 +133,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         reactionsText.setOnClickListener(this);
     }
 
-    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
+    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
                                                          @NonNull String login, @NonNull OnToggleView onToggleView,
                                                          boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
         return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login,
@@ -148,7 +149,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         } else {
             avatar.setUrl(null, null);
         }
-        if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
+        if (!InputHelper.isEmpty(commentsModel.getBodyHtml()) && !isPaused) {
             comment.setNestedScrollingEnabled(false);
             comment.setGithubContent(commentsModel.getBodyHtml(), null, true);
         }
@@ -243,5 +244,17 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
+    public void pauseWebView() {
+        if (comment != null) {
+            comment.onPause();
+            isPaused = true;
+        }
+    }
 
+    public void resumeWebView() {
+        if (comment != null) {
+            comment.onResume();
+            isPaused = false;
+        }
+    }
 }

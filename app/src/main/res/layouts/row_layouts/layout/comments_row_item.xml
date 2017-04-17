@@ -10,7 +10,8 @@
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
-    app:cardBackgroundColor="?card_background">
+    app:cardBackgroundColor="?card_background"
+    tools:ignore="RtlSymmetry">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -81,7 +82,8 @@
             android:gravity="start"
             android:paddingStart="@dimen/spacing_xs_large"
             android:visibility="gone"
-            tools:text="Hello World"/>
+            tools:text="Hello World"
+            tools:ignore="RtlSymmetry"/>
 
         <include layout="@layout/comments_dropdown_layout"/>
 

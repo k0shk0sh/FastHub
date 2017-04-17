@@ -132,7 +132,7 @@
     <string name="click_here_to_download_release_hint">Yayınlamaları indir</string>
     <string name="options">Ayarlar</string>
     <string name="click_file_option_hint">Dosyayı indir veya dizini paylaş</string>
-	<string name="comment_hint">Kullanıcıya cevap vermek veya yorumunuzu düzenlemek için yorumların üzerine dokunun.\nSilmek için ise uzun basınız.</string>
+    <string name="comment_hint">Kullanıcıya cevap vermek veya yorumunuzu düzenlemek için yorumların üzerine dokunun.\nSilmek için ise uzun basınız.</string>
     <string name="star_hint">Repo\'yu Yıldızla</string>
     <string name="watch">İzle</string>
     <string name="watch_hint">Repo\'yu İzle</string>
@@ -222,9 +222,6 @@
     <string name="or_character">VEYA</string>
     <string name="mark_notification_title">Okundu Durumunu Devre Dışı Bırak</string>
     <string name="mark_notification_summary">Bildirimlere dokunmayla okundu olarak işaretlenmesini devre dışı bırak.</string>
-    <string name="auto_theme_mode">Otomatik Mod</string>
-    <string name="light_theme_mode">Aydınlık Tema</string>
-    <string name="dark_theme_mode">Karanlık Tema</string>
     <string name="theme_title">Tema Seç</string>
     <string name="theme_summary">Varsayılan temanızı seçiniz</string>
     <string name="website">Website</string>
@@ -310,7 +307,7 @@
     <string name="login_with_personal_token">Personal token ile giriş yap</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Basic auth ile giriş yap</string>
-	<string name="no_orgs_description">Eğer organizasyonunuz varsa ve onları burada göremiyorsanız lütfen aşağıdaki link\'i takip ediniz.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nNOT: FastHub\'ın access token kullanmamasının sebebi 2FA etkinleştirildiğinde OTP kodu en fazla birkaç dakika etkin olduğundan, bu da FastHub\'dan otomatik olarak çıkış yapmanıza ve GitHub\'ın unauthorized access yanıtını vermesine sebep olmaktadır.</string>
+    <string name="no_orgs_description">Eğer organizasyonunuz varsa ve onları burada göremiyorsanız lütfen aşağıdaki link\'i takip ediniz.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nNOT: FastHub\'ın access token kullanmamasının sebebi 2FA etkinleştirildiğinde OTP kodu en fazla birkaç dakika etkin olduğundan, bu da FastHub\'dan otomatik olarak çıkış yapmanıza ve GitHub\'ın unauthorized access yanıtını vermesine sebep olmaktadır.</string>
     <string name="support_with_2_00">2.00$ bağışla</string>
     <string name="support_with_5_00">5.00$ bağışla</string>
     <string name="support_with_10_00">10.00$ bağışla</string>
@@ -318,4 +315,7 @@
     <string name="insert">Ekle</string>
     <string name="select">Seç</string>
     <string name="select_picture">Resim Seç</string>
+    <string name="app_language">Uygulama Dili</string>
+    <string name="choose_language_title">Dil seçiniz</string>
+    <string name="choose_language_summary">Tercih ettiğiniz dili seçin</string>
 </resources>

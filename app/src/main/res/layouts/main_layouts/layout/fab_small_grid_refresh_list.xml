@@ -2,8 +2,10 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
 
     <com.fastaccess.ui.widgets.AppbarRefreshLayout
         android:id="@+id/refresh"
@@ -22,5 +24,14 @@
     </com.fastaccess.ui.widgets.AppbarRefreshLayout>
 
     <include layout="@layout/state_layout"/>
+
+    <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller
+        android:id="@+id/fastScroller"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
 
 </FrameLayout>

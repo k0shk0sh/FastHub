@@ -265,21 +265,20 @@
     <string name="request_error">Error requesting server, please try again later</string>
     <string name="marking_as_read">Marking notification as read</string>
     <string name="forking_gist">Forking gist</string>
-    <string name="forking" formatted="true">Forking %s</string>
-    <string name="staring" formatted="true">Staring %s</string>
-    <string name="un_staring" formatted="true">Un-Staring %s</string>
-    <string name="un_watching" formatted="true">Un-Watching %s</string>
-    <string name="watching" formatted="true">Watching %s</string>
+    <string name="forking" formatted="true" translatable="false">Forking %s</string>
+    <string name="staring" formatted="true" translatable="false">Staring %s</string>
+    <string name="un_staring" formatted="true" translatable="false">Un-Staring %s</string>
+    <string name="un_watching" formatted="true" translatable="false">Un-Watching %s</string>
+    <string name="watching" formatted="true" translatable="false">Watching %s</string>
     <string name="login_using_your_default_browser">Login using your default Internet Browser</string>
     <string name="or_character">OR</string>
     <string name="mark_notification_title">Disable Notification Read Status</string>
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
-    <string name="auto_theme_mode">Auto Mode</string>
-    <string name="light_theme_mode">Light Theme</string>
-    <string name="dark_theme_mode">Dark Theme</string>
+    <string name="light_theme_mode" translatable="false">Light Theme</string>
+    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
     <string name="theme_title">Choose Theme</string>
     <string name="theme_summary">Choose your default theme</string>
-    <string name="logo_designer" formatted="true">Logo Designer (%s)</string>
+    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
     <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Website</string>
     <string name="twitter" translatable="false">Twitter</string>
@@ -318,7 +317,7 @@
     <string name="my_gists">My Gists</string>
     <string name="changelog">Changelog</string>
     <string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
-    <string name="posting_reaction" formatted="true">Posting reaction %s</string>
+    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
     <string name="home_long_click_hint">Long press to navigate to main screen from anywhere</string>
     <string name="created">Created</string>
     <string name="assigned">Assigned</string>
@@ -378,4 +377,7 @@
     <string name="support_with_5_00">Support with 5.00$</string>
     <string name="support_with_10_00">Support with 10.00$</string>
     <string name="support_with_20_00">Support with 20.00$</string>
+    <string name="app_language">App Language</string>
+    <string name="choose_language_title">Choose Language</string>
+    <string name="choose_language_summary">Choose your preferred language</string>
 </resources>
