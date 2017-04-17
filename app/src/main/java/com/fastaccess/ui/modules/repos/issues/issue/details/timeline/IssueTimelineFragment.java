@@ -27,7 +27,7 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
-import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller;
 
 import java.util.List;
 
