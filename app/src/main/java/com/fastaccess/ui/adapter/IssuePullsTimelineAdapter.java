@@ -79,5 +79,19 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         return getData().get(position).getType();
     }
 
+    @Override public void onViewDetachedFromWindow(BaseViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        if (holder instanceof TimelineCommentsViewHolder) {
+            ((TimelineCommentsViewHolder) holder).pauseWebView();
+        }
+    }
+
+    @Override public void onViewAttachedToWindow(BaseViewHolder holder) {
+        super.onViewAttachedToWindow(holder);
+        if (holder instanceof TimelineCommentsViewHolder) {
+            ((TimelineCommentsViewHolder) holder).resumeWebView();
+        }
+    }
+
 }
 

@@ -244,4 +244,11 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
 
+    public void pauseWebView() {
+        if (comment != null) comment.onPause();
+    }
+
+    public void resumeWebView() {
+        if (comment != null) comment.onResume();
+    }
 }
