@@ -24,4 +24,9 @@ public class StaggeredManager extends StaggeredGridLayoutManager {
         } catch (IndexOutOfBoundsException ignored) {}
     }
 
+    public void reverse(){
+        setReverseLayout(true);
+    }
+
+
 }

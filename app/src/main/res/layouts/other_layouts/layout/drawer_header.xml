@@ -16,7 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingEnd="@dimen/spacing_normal">
+        android:paddingEnd="@dimen/spacing_normal"
+        tools:ignore="RtlSymmetry">
 
         <com.fastaccess.ui.widgets.AvatarLayout
             android:id="@+id/avatarLayout"

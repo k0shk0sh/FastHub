@@ -141,6 +141,7 @@ dependencies {
     compile('com.mikepenz:aboutlibraries:5.9.5@aar') { transitive = true }
     compile project(':pago')
     compile project(':markdown')
+    compile project(':fastScroller')
     annotationProcessor 'io.requery:requery-processor:1.2.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"

@@ -10,7 +10,8 @@
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
-    app:paddingEnd="@dimen/spacing_xs_large">
+    app:paddingEnd="@dimen/spacing_xs_large"
+    tools:ignore="RtlSymmetry">
 
     <LinearLayout
         android:layout_width="match_parent"

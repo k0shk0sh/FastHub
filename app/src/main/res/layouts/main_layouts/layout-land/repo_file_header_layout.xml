@@ -9,7 +9,8 @@
     android:paddingBottom="@dimen/spacing_micro"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_micro"
-    tools:showIn="@layout/repo_file_layout">
+    tools:showIn="@layout/repo_file_layout"
+    tools:ignore="RtlSymmetry">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -38,7 +39,8 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="@string/linear_layout_manager"
-            tools:listitem="@layout/file_path_row_item"/>
+            tools:listitem="@layout/file_path_row_item"
+            tools:ignore="NestedWeights"/>
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/downloadRepoFiles"
@@ -76,7 +78,8 @@
             android:layout_weight="1"
             android:spinnerMode="dialog"
             app:backgroundTint="?colorAccent"
-            tools:entries="@array/notification_types"/>
+            tools:entries="@array/notification_types"
+            tools:ignore="NestedWeights"/>
 
         <ProgressBar
             android:id="@+id/branchesProgress"

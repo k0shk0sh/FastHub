@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.NonNull;
@@ -15,6 +16,8 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+
+import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
 
@@ -74,5 +77,29 @@ public class AppHelper {
                 .append("**")
                 .append("\n\n")
                 .toString();
+    }
+
+    public static void updateAppLanguage(@NonNull Context context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            updateResources(context, PrefGetter.getAppLanguage());
+        }
+        updateResourcesLegacy(context, PrefGetter.getAppLanguage());
+    }
+
+    private static void updateResources(Context context, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration configuration = context.getResources().getConfiguration();
+        configuration.setLocale(locale);
+        context.createConfigurationContext(configuration);
+    }
+
+    private static void updateResourcesLegacy(Context context, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Resources resources = context.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
 }

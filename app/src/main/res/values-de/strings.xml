@@ -1,11 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">FastHub</string>
-    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
-    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
-    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
-    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
-    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
-    <string name="in_progress">Wird geladen...</string>
+    <string name="in_progress">Wird geladen…</string>
     <string name="action">Aktion</string>
     <string name="settings">Einstellungen</string>
     <string name="cancel">Abbrechen</string>
@@ -19,31 +13,19 @@
     <string name="share">Teilen</string>
     <string name="reload">Neu laden</string>
     <string name="feeds">Feeds</string>
-    <string name="gists" translatable="false">Gists</string>
     <string name="profile">Profil</string>
     <string name="error">Fehler</string>
     <string name="press_again_to_exit">Nochmal drücken zum beenden</string>
-    <string name="readme" translatable="false">Readme</string>
     <string name="opened">Offen</string>
     <string name="closed">Geschlossen</string>
     <string name="repo_chooser">Repo auswählen</string>
-    <string name="commits" translatable="false">Commits</string>
     <string name="followers">Follower</string>
     <string name="following">Folgt</string>
     <string name="overview">Übersicht</string>
-    <string name="repos" translatable="false">Repos</string>
-    <string name="forked" translatable="false">Forked</string>
-    <string name="starred" translatable="false">Starred</string>
     <string name="follow">Folgen</string>
     <string name="unfollow">Entfolgen</string>
     <string name="user">Benutzer</string>
-    <string name="icon_transition" translatable="false">profile_image_transition</string>
-    <string name="title_transition" translatable="false">profile_title_transition</string>
-    <string name="code" translatable="false">Code</string>
-    <string name="issues" translatable="false">Issues</string>
-    <string name="pull_requests" translatable="false">Pull Requests</string>
     <string name="details">Details</string>
-    <string name="repo" translatable="false">Repository</string>
     <string name="archive_file_detected_error">Archiv entdeckt. Zum öffnen des Archivs die Datei herunterladen</string>
     <string name="minimum_three_chars">Mindestens (3) Zeichen</string>
     <string name="no_file_found">Kein Datei gefunden</string>
@@ -54,19 +36,14 @@
     <string name="drafted">Entworfen</string>
     <string name="releases">Releases</string>
     <string name="no_body">No body</string>
-    <string name="download_as_zip" translatable="false">Source code (zip)</string>
-    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">Mitwirkende</string>
-    <string name="merged" translatable="false">Merged</string>
     <string name="by">von</string>
-    <string name="star" translatable="false">Star</string>
-    <string name="fork" translatable="false">Fork</string>
     <string name="close_issue">Issue schließen</string>
     <string name="re_open_issue">Issue wieder öffnen</string>
     <string name="re_open">wieder öffnen</string>
     <string name="close">Schließen</string>
     <string name="success_re_opened">Erfolgreich wiedereröffnet</string>
-    <string name="lock_issue_details">Wenn du das Issue sperrst:\n&#183;Können andere Benutzer keine Kommentare mehr schreiben.\n&#183;Du und andere berechtigte Kollaboteure können allerdings immernoch Kommentare hinterlassen, die die anderen lesen können.\n&#183;Du kannst dieses Issue jederzeit wieder entsperren\n</string>
+    <string name="lock_issue_details">Wenn du das Issue sperrst:\n&#183;Können andere Benutzer keine Kommentare mehr schreiben.\n&#183;Du und andere berechtigte Kollaboteure können allerdings immer noch Kommentare hinterlassen, die anderen lesen können.\n&#183;Du kannst dieses Issue jederzeit wieder entsperren\n</string>
     <string name="unlock_issue_details">Wenn du das Issue entsperrst:\n&#183;Kann jeder wieder Kommentare schreiben\n&#183;Du kannst dieses Issue jederzeit wieder sperren\n</string>
     <string name="lock_issue">Issue sperren</string>
     <string name="unlock_issue">Issue entsperren</string>
@@ -97,10 +74,6 @@
     <string name="delete">Löschen</string>
     <string name="comments">Kommentare</string>
     <string name="comment">Kommentar</string>
-    <string name="issue" translatable="false">Issue</string>
-    <string name="merge" translatable="false">Merge</string>
-    <string name="pull_request" translatable="false">Pull Request</string>
-    <string name="commit" translatable="false">Commit</string>
     <string name="success_merge">Erfolreich gemerged</string>
     <string name="file">Datei</string>
     <string name="file_menu">File menu</string>
@@ -113,7 +86,6 @@
     <string name="big_file">Große Datei</string>
     <string name="big_file_description">Die Datei ist zu groß zum öffnen.\nKlicke auf "OK" um die Datei herunterzuladen</string>
     <string name="viewer">Betrachter</string>
-    <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">Abschicken</string>
     <string name="type_here">Hier schreiben</string>
     <string name="description">Beschreibung</string>
@@ -128,7 +100,6 @@
     <string name="required_field">Benötigtes Feld</string>
     <string name="successfully_submitted">Erfolgreich abgeschickt!</string>
     <string name="create_gist">Gist erstellen</string>
-    <string name="gist" translatable="false">Gist</string>
     <string name="clear">leeren</string>
     <string name="users">Benutzer</string>
     <string name="title">Titel</string>
@@ -142,7 +113,6 @@
     <string name="unread_notification">Du hast ungelesene Benachrichtigungen</string>
     <string name="open">Öffnen</string>
     <string name="notification_type">Benachrichtigungsart</string>
-    <string name="back_slash" translatable="false">/</string>
     <string name="labels">Label</string>
     <string name="no_labels">Keine Label</string>
     <string name="labels_added_successfully">Label erfolgreich hinzugefügt</string>
@@ -167,7 +137,6 @@
     <string name="star_hint">Repo favorisieren/entfavorisieren</string>
     <string name="watch">Beobachten</string>
     <string name="watch_hint">Beobachten/Entbeobachten des Repos</string>
-    <string name="fork_repo_hint" translatable="false">Fork repo</string>
     <string name="pin_repo_hint">Pinne repos an um schneller auf sie zuzugreifen zu können</string>
     <string name="no_url">Keine URL gefunden</string>
     <string name="last_updated">Zuletzt geupdatet.</string>
@@ -178,7 +147,6 @@
     <string name="creation_date">Erstellungsdatum</string>
     <string name="creation_date_hint">Wann die Datei erstellt wurden</string>
     <string name="last_updated_hint">Wann die Datei zuletzt verändert wurde</string>
-    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
     <string name="all_notifications">Alle Benachrichtigungen</string>
     <string name="unread">Ungelesen</string>
@@ -194,23 +162,14 @@
     <string name="committed">Committed</string>
     <string name="downloaded">Heruntergeladen</string>
     <string name="followed">Gefolgt</string>
-    <string name="created_gist" translatable="false">@string/gist</string>
-    <string name="gollum" translatable="false">Wiki</string>
     <string name="commented_on_issue">Issue kommentieren</string>
-    <string name="created_issue" translatable="false">Issue</string>
     <string name="member">Mitglied</string>
-    <string name="public_event" translatable="false">Open-sourced</string>
     <string name="pr_comment_review">Pull Request Kommentar</string>
     <string name="pushed">Gepushed an</string>
     <string name="team_event">Team</string>
     <string name="deleted">Gelöscht</string>
     <string name="unknown">Unbekannt</string>
     <string name="commented_on_commit">Commit kommentieren</string>
-    <string name="organization_event" translatable="false">Organization</string>
-    <string name="card_event" translatable="false">Card</string>
-    <string name="project_event" translatable="false">Project</string>
-    <string name="pr_review_event" translatable="false">Pull Request</string>
-    <string name="repo_event" translatable="false">Repository</string>
     <string name="switch_branch">Branch wechseln</string>
     <string name="assignees">Bevollmächtigte</string>
     <string name="edit">Bearbeiten</string>
@@ -243,7 +202,6 @@
     <string name="author">Autor</string>
     <string name="fork_github">Auf GitHub forken</string>
     <string name="send_email">Eine E-Mail senden</string>
-    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
     <string name="question_concerning_fasthub">Fragen bezüglich FastHub</string>
     <string name="feedback">Feedback</string>
     <string name="report_issue">Einen Fehler melden</string>
@@ -262,24 +220,13 @@
     <string name="request_error">Konnte Server nicht erreichen, versuche es später erneut</string>
     <string name="marking_as_read">Benachrichtigung als gelesen markieren</string>
     <string name="forking_gist">gist forken</string>
-    <string name="forking" formatted="true">%s wird geforkt</string>
-    <string name="staring" formatted="true">%s wird favorisiert</string>
-    <string name="un_staring" formatted="true">%s wird nicht mehr favorisiert</string>
-    <string name="un_watching" formatted="true">%s wird nun nicht mehr beobachtet</string>
-    <string name="watching" formatted="true">%s beobachten</string>
     <string name="login_using_your_default_browser">Mit dem Standardbrowser anmelden</string>
     <string name="or_character">ODER</string>
     <string name="mark_notification_title">Benachrichtigungslesestatus deaktivieren</string>
     <string name="mark_notification_summary">Als gelesen markieren sobald Benachrichtigung angetippt wurde.</string>
-    <string name="auto_theme_mode">Automatisch</string>
-    <string name="light_theme_mode">Helles Design</string>
-    <string name="dark_theme_mode">Dunkles Design</string>
     <string name="theme_title">Wähle ein Design</string>
     <string name="theme_summary">Wähle das Standarddesign aus</string>
-    <string name="logo_designer" formatted="true">Logo Designer (%s)</string>
-    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Webseite</string>
-    <string name="twitter" translatable="false">Twitter</string>
     <string name="support_development">Unterstütze die Entwicklung</string>
     <string name="success_purchase_message">Vielen Dank für deine Unterstützung!</string>
     <string name="change_theme_warning">Wenn das Design nicht richtig angezeigt wird, beende die App manuell und starte sie erneut.</string>
@@ -314,7 +261,6 @@
     <string name="my_gists">Meine Gists</string>
     <string name="changelog">Changelog</string>
     <string name="notifications_hint">Tippe um die Benachrichtigungsliste zu öffnen oder wische zum verwerfen</string>
-    <string name="posting_reaction" formatted="true">Reaktion %s wird gepostet</string>
     <string name="home_long_click_hint">Tippe hier länger drauf um zum Hauptbildschirm zu gelangen</string>
     <string name="created">Erstellt</string>
     <string name="assigned">Zugewiesen</string>
@@ -360,7 +306,7 @@
     <string name="open_source_libs">Open Source Bibliotheken</string>
     <string name="enable_notification_sound_summary">Benachrichtungston bei Benachrichtigungen abspielen.</string>
     <string name="enable_notification_sound_title">Benachrichtigunston aktivieren</string>
-    <string name="login_with_personal_token">Mit perönlichem Token anmelden</string>
+    <string name="login_with_personal_token">Mit persönlichen Token anmelden</string>
     <string name="personal_token">Persönlicher Token</string>
     <string name="basic_login">Normal anmelden</string>
     <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link
@@ -372,4 +318,7 @@
     <string name="support_with_5_00">Unterstützen mit 5$</string>
     <string name="support_with_10_00">Unterstützen mit 10$</string>
     <string name="support_with_20_00">Unterstützen mit 20$</string>
+    <string name="app_language">App Sprache</string>
+    <string name="choose_language_title">Wähle eine Sprache</string>
+    <string name="choose_language_summary">Wählen Sie Ihre bevorzugte Sprache</string>
 </resources>

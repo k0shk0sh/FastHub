@@ -9,7 +9,8 @@
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal">
+    android:paddingTop="@dimen/spacing_normal"
+    tools:ignore="RtlSymmetry">
 
 
     <android.support.v7.widget.AppCompatImageView

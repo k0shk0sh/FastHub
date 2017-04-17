@@ -18,7 +18,6 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
@@ -28,6 +27,7 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.pluscubed.recyclerfastscroll.RecyclerFastScroller;
 
 import java.util.List;
 
@@ -43,9 +43,9 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
+    @BindView(R.id.fastScroller) RecyclerFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private IssuePullsTimelineAdapter adapter;
-    private OnLoadMore onLoadMore;
     @State SparseBooleanArrayParcelable sparseBooleanArray;
 
     public static PullRequestTimelineFragment newInstance(@NonNull PullRequest issueModel) {
@@ -55,20 +55,16 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, null);
+        getPresenter().onCallApi();
     }
 
-    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items, int page) {
+    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items) {
         hideProgress();
         if (items == null || items.isEmpty()) {
             adapter.clear();
             return;
         }
-        if (page <= 1) {
-            adapter.insertItems(items);
-        } else {
-            adapter.addItems(items);
-        }
+        adapter.insertItems(items);
     }
 
     @Override protected int fragmentLayout() {
@@ -83,10 +79,10 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         recycler.setItemViewCacheSize(30);
         adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        fastScroller.setVisibility(View.VISIBLE);
+        fastScroller.attachRecyclerView(recycler);
         recycler.setAdapter(adapter);
         recycler.addDivider(TimelineCommentsViewHolder.class);
-        recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getEvents().size() == 1 && !getPresenter().isApiCalled()) {
@@ -117,13 +113,6 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
-        if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore(getPresenter());
-        }
-        return onLoadMore;
     }
 
     @Override public void onClick(View view) {

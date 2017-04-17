@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerFastScroller">
+        <attr name="rfs_barColor" format="color" />
+        <attr name="rfs_handleNormalColor" format="color" />
+        <attr name="rfs_handlePressedColor" format="color" />
+        <attr name="rfs_touchTargetWidth" format="dimension" />
+        <attr name="rfs_hideDelay" format="integer" />
+        <attr name="rfs_hidingEnabled" format="boolean" />
+    </declare-styleable>
+</resources>

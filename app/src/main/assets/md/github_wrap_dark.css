@@ -599,7 +599,13 @@ table {
 }
 
 .task-list-item {
-    list-style-type: none
+    list-style-type: none;
+    word-wrap: break-all !important;
+    white-space: pre-wrap !important;
+    white-space: -moz-pre-wrap !important;
+    white-space: -pre-wrap !important;
+    white-space: -o-pre-wrap !important;
+    word-wrap: break-word !important;
 }
 .task-list-item label {
     font-weight: normal
@@ -624,7 +630,7 @@ table {
     margin-left: 26px
 }
 .reorderable-task-lists .markdown-body .task-list-item {
-    padding-right: 15px;
+    padding-right: 5px;
     padding-left: 42px;
     margin-right: -15px;
     margin-left: -15px;

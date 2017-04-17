@@ -61,8 +61,7 @@
                         android:imeOptions="actionSearch"
                         android:inputType="text"
                         android:maxLines="1"
-                        android:padding="@dimen/spacing_xs_large"
-                        android:singleLine="true"/>
+                        android:padding="@dimen/spacing_xs_large"/>
 
                     <com.fastaccess.ui.widgets.ForegroundImageView
                         android:id="@+id/clear"
