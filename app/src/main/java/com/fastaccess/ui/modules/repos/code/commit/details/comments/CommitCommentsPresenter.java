@@ -59,11 +59,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         makeRestCall(RestProvider.getRepoService().getCommitComments(login, repoId, sha, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
-                    if (getCurrentPage() == 1) {
-                        getComments().clear();
-                    }
-                    getComments().addAll(listResponse.getItems());
-                    sendToView(CommitCommentsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
     }
 
@@ -87,8 +83,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                getComments().remove(comment);
-                                view.onNotifyAdapter();
+                                view.onRemove(comment);
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -100,12 +95,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha))
-                    .subscribe(models -> {
-                        if (models != null) {
-                            comments.addAll(models);
-                            sendToView(CommitCommentsMvp.View::onNotifyAdapter);
-                        }
-                    }));
+                    .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(CommitCommentsMvp.View::hideProgress);
         }

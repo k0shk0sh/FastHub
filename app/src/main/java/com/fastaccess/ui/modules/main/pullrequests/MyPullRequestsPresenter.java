@@ -77,11 +77,9 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        getPullRequests().clear();
                         sendToView(view -> view.onSetCount(response.getTotalCount()));
                     }
-                    getPullRequests().addAll(response.getItems());
-                    sendToView(MyPullRequestsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 }

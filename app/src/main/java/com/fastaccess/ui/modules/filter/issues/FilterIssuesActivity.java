@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.filter.issues;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -24,7 +25,6 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.LabelsAdapter;
 import com.fastaccess.ui.adapter.MilestonesAdapter;
@@ -171,8 +171,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
                 Toast.LENGTH_LONG).show();
     }
 
-    @OnClick(R.id.labels) public void onLabelsClicked() {
-        Logger.e(getPresenter().getLabels().size());
+    @SuppressLint("InflateParams") @OnClick(R.id.labels) public void onLabelsClicked() {
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);
@@ -183,7 +182,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         AnimHelper.revealPopupWindow(popupWindow, labels);
     }
 
-    @OnClick(R.id.milestone) public void onMilestoneClicked() {
+    @SuppressLint("InflateParams") @OnClick(R.id.milestone) public void onMilestoneClicked() {
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);
@@ -195,7 +194,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         AnimHelper.revealPopupWindow(popupWindow, milestone);
     }
 
-    @OnClick(R.id.assignee) public void onAssigneeClicked() {
+    @SuppressLint("InflateParams") @OnClick(R.id.assignee) public void onAssigneeClicked() {
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);
@@ -207,7 +206,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         AnimHelper.revealPopupWindow(popupWindow, assignee);
     }
 
-    @OnClick(R.id.sort) public void onSortClicked() {
+    @SuppressLint("InflateParams") @OnClick(R.id.sort) public void onSortClicked() {
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);

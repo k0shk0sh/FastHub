@@ -9,7 +9,8 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     app:statusBarBackground="@color/material_indigo_900"
-    tools:context=".ui.modules.login.LoginActivity">
+    tools:context=".ui.modules.login.LoginActivity"
+    tools:ignore="Overdraw">
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

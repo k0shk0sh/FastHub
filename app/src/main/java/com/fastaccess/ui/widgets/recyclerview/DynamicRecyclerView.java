@@ -22,6 +22,7 @@ public class DynamicRecyclerView extends RecyclerView {
 
     private StateLayout emptyView;
     @Nullable private View parentView;
+    private BottomPaddingDecoration bottomPaddingDecoration;
 
     @NonNull private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override public void onChanged() {
@@ -50,7 +51,6 @@ public class DynamicRecyclerView extends RecyclerView {
     public DynamicRecyclerView(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         if (isInEditMode()) return;
-        addItemDecoration(BottomPaddingDecoration.with(context));
     }
 
     @Override public void setAdapter(@Nullable Adapter adapter) {
@@ -60,6 +60,18 @@ public class DynamicRecyclerView extends RecyclerView {
             adapter.registerAdapterDataObserver(observer);
             observer.onChanged();
         }
+    }
+
+    public void removeBottomDecoration() {
+        if (bottomPaddingDecoration != null) {
+            removeItemDecoration(bottomPaddingDecoration);
+            bottomPaddingDecoration = null;
+        }
+    }
+
+    public void addDecoration() {
+        bottomPaddingDecoration = BottomPaddingDecoration.with(getContext());
+        addItemDecoration(bottomPaddingDecoration);
     }
 
     public void showEmptyView() {

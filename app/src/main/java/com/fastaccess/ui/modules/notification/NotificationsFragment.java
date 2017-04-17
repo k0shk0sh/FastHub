@@ -27,6 +27,8 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
 
 /**
@@ -63,9 +65,22 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
         return onLoadMore;
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onRemove(int position) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        adapter.removeItem(position);
+    }
+
+    @Override public void onNotifyAdapter(@Nullable List<Notification> items, int page) {
+        hideProgress();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override public void onTypeChanged(boolean unread) {
@@ -154,14 +169,13 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.readAll) {
-            if (!getPresenter().getNotifications().isEmpty()) {
-                long[] ids = Stream.of(getPresenter().getNotifications())
+            if (!adapter.getData().isEmpty()) {
+                long[] ids = Stream.of(adapter.getData())
                         .filter(Notification::isUnread)
                         .mapToLong(Notification::getId)
                         .toArray();
                 if (ids != null && ids.length > 0) {
-                    getPresenter().getNotifications().clear();
-                    onNotifyAdapter();
+                    adapter.clear();
                     ReadNotificationService.start(getContext(), ids);
                 }
             }

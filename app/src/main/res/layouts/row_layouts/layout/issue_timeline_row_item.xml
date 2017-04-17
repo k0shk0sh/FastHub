@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spacing_normal"
-    android:layout_marginEnd="@dimen/spacing_xs_large"
-    android:layout_marginStart="@dimen/spacing_xs_large"
+    android:layout_marginEnd="@dimen/layout_margin"
+    android:layout_marginStart="@dimen/layout_margin"
     android:layout_marginTop="@dimen/spacing_normal">
 
     <com.fastaccess.ui.widgets.ForegroundImageView
@@ -36,7 +36,8 @@
             android:layout_height="wrap_content"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingEnd="@dimen/spacing_xs_large"
-            android:paddingTop="@dimen/spacing_normal">
+            android:paddingTop="@dimen/spacing_normal"
+            tools:ignore="RtlSymmetry">
 
             <com.fastaccess.ui.widgets.AvatarLayout
                 android:id="@+id/avatarLayout"

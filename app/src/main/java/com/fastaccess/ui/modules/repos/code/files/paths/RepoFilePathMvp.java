@@ -19,7 +19,7 @@ import java.util.List;
 interface RepoFilePathMvp {
 
     interface View extends BaseMvp.FAView {
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<RepoFile> items, int page);
 
         void onItemClicked(@NonNull RepoFile model, int position);
 

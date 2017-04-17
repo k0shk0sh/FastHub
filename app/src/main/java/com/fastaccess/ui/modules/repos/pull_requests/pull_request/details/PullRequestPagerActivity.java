@@ -16,7 +16,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
@@ -29,6 +28,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFragment;
@@ -357,10 +357,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override protected void onNavToRepoClicked() {
-        NameParser nameParser = new NameParser("");
-        nameParser.setName(getPresenter().getRepoId());
-        nameParser.setUsername(getPresenter().getLogin());
-        RepoPagerActivity.startRepoPager(this, nameParser);
+        startActivity(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(), getPresenter().getLogin(), RepoPagerMvp.PULL_REQUEST));
         finish();
     }
 

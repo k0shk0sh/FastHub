@@ -18,6 +18,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.comments.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -31,10 +32,8 @@ import rx.Observable;
 
 public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private int page;
-    private int previousTotal;
-    private int lastPage = Integer.MAX_VALUE;
     private ReactionsProvider reactionsProvider;
+    private Issue issue;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (item.getType() == TimelineModel.COMMENT) {
@@ -66,6 +65,25 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
     }
 
+    @Override public void onCallApi() {
+        if (getHeader() == null) {
+            sendToView(BaseMvp.FAView::hideProgress);
+            return;
+        }
+        String login = getHeader().getLogin();
+        String repoID = getHeader().getRepoId();
+        int number = getHeader().getNumber();
+        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number),
+                RestProvider.getIssueService().getIssueComments(login, repoID, number),
+                (issueEventPageable, commentPageable) -> TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems()));
+        makeRestCall(observable, models -> {
+            if (models != null) {
+                models.add(0, TimelineModel.constructHeader(issue));
+            }
+            sendToView(view -> view.onNotifyAdapter(models));
+        });
+    }
+
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
         if (getView() == null) return;
         if (item.getType() == TimelineModel.COMMENT) {
@@ -90,11 +108,9 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
-        Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
-        if (timeline.isEmpty() && issueModel != null) {
-            timeline.add(TimelineModel.constructHeader(issueModel));
-            sendToView(IssueTimelineMvp.View::onNotifyAdapter);
-            onCallApi(1, null);
+        issue = bundle.getParcelable(BundleConstant.ITEM);
+        if (timeline.isEmpty() && issue != null) {
+            onCallApi();
         }
     }
 
@@ -111,8 +127,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                getEvents().remove(TimelineModel.constructComment(comment));
-                                view.onNotifyAdapter();
+                                view.onRemove(TimelineModel.constructComment(comment));
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -133,52 +148,8 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         return getHeader() != null ? getHeader().getNumber() : -1;
     }
 
-    @Override public int getCurrentPage() {
-        return page;
-    }
-
-    @Override public int getPreviousTotal() {
-        return previousTotal;
-    }
-
-    @Override public void setCurrentPage(int page) {
-        this.page = page;
-    }
-
-    @Override public void setPreviousTotal(int previousTotal) {
-        this.previousTotal = previousTotal;
-    }
-
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
-        if (page == 1) {
-            lastPage = Integer.MAX_VALUE;
-            sendToView(view -> view.getLoadMore().reset());
-        }
-        if (page > lastPage || lastPage == 0 || getHeader() == null) {
-            sendToView(IssueTimelineMvp.View::hideProgress);
-            return;
-        }
-        setCurrentPage(page);
-        String login = getHeader().getLogin();
-        String repoID = getHeader().getRepoId();
-        int number = getHeader().getNumber();
-        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number, page),
-                RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
-                (issueEventPageable, commentPageable) -> {
-                    lastPage = issueEventPageable.getLast() > commentPageable.getLast() ? issueEventPageable.getLast() : commentPageable.getLast();
-                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems());
-                });
-        makeRestCall(observable, models -> {
-            if (getCurrentPage() == 1) {
-                getEvents().subList(1, getEvents().size()).clear();
-            }
-            getEvents().addAll(models);
-            sendToView(IssueTimelineMvp.View::onNotifyAdapter);
-        });
-    }
-
     @Nullable private Issue getHeader() {
-        return !timeline.isEmpty() ? timeline.get(0).getIssue() : null;
+        return issue;
     }
 
     @Override public void onHandleReaction(int id, long commentId) {

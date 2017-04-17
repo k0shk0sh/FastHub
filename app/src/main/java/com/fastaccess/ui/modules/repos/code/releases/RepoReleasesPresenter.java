@@ -61,13 +61,10 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService()
-                        .getReleases(login, repoId, page),
+        makeRestCall(RestProvider.getRepoService().getReleases(login, repoId, page),
                 response -> {
                     if (response.getItems() == null || response.getItems().isEmpty()) {
-                        makeRestCall(RestProvider.getRepoService()
-                                        .getTagReleases(login, repoId, page),
-                                this::onResponse);
+                        makeRestCall(RestProvider.getRepoService().getTagReleases(login, repoId, page), this::onResponse);
                         return;
                     }
                     onResponse(response);
@@ -78,11 +75,9 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
     private void onResponse(Pageable<Release> response) {
         lastPage = response.getLast();
         if (getCurrentPage() == 1) {
-            getReleases().clear();
             manageSubscription(Release.save(response.getItems(), repoId, login).subscribe());
         }
-        getReleases().addAll(response.getItems());
-        sendToView(RepoReleasesMvp.View::onNotifyAdapter);
+        sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
@@ -96,10 +91,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
     @Override public void onWorkOffline() {
         if (releases.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Release.get(repoId, login))
-                    .subscribe(releasesModels -> {
-                        releases.addAll(releasesModels);
-                        sendToView(RepoReleasesMvp.View::onNotifyAdapter);
-                    }));
+                    .subscribe(releasesModels -> sendToView(view -> view.onNotifyAdapter(releasesModels, 1))));
         } else {
             sendToView(RepoReleasesMvp.View::hideProgress);
         }

@@ -7,6 +7,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
+import com.fastaccess.data.dao.model.PinnedRepos;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.PinnedReposAdapter;
@@ -15,6 +16,8 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -35,10 +38,11 @@ public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, Pinne
         return new PinnedReposFragment();
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<PinnedRepos> items) {
         refresh.setRefreshing(false);
         stateLayout.hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items != null) adapter.insertItems(items);
+        else adapter.clear();
     }
 
     @Override public void onDeletePinnedRepo(long id, int position) {

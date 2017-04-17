@@ -18,6 +18,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.comments.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -31,9 +32,7 @@ import rx.Observable;
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private int page;
-    private int previousTotal;
-    private int lastPage = Integer.MAX_VALUE;
+    private PullRequest pullRequest;
     private ReactionsProvider reactionsProvider;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
@@ -80,17 +79,41 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
     }
 
+    @Override public void onCallApi() {
+        if (getHeader() == null) {
+            sendToView(BaseMvp.FAView::hideProgress);
+            return;
+        }
+        String login = getHeader().getLogin();
+        String repoId = getHeader().getRepoId();
+        int number = getHeader().getNumber();
+        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
+                RestProvider.getIssueService().getIssueComments(login, repoId, number),
+                RestProvider.getPullRequestSerice().getPullStatus(login, repoId, getHeader().getHead().getSha()),
+                RestProvider.getPullRequestSerice().getReviews(login, repoId, number),
+                (issueEventPageable, commentPageable, statuses, reviews) -> {
+                    if (statuses != null) {
+                        statuses.setMergable(getHeader().isMergeable());
+                    }
+                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses, reviews.getItems());
+                });
+        makeRestCall(observable, models -> {
+            if (models != null) {
+                models.add(0, TimelineModel.constructHeader(pullRequest));
+            }
+            sendToView(view -> view.onNotifyAdapter(models));
+        });
+    }
+
     @NonNull @Override public ArrayList<TimelineModel> getEvents() {
         return timeline;
     }
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
-        PullRequest issueModel = bundle.getParcelable(BundleConstant.ITEM);
-        if (timeline.isEmpty() && issueModel != null) {
-            timeline.add(TimelineModel.constructHeader(issueModel));
-            sendToView(PullRequestTimelineMvp.View::onNotifyAdapter);
-            onCallApi(1, null);
+        pullRequest = bundle.getParcelable(BundleConstant.ITEM);
+        if (timeline.isEmpty() && pullRequest != null) {
+            onCallApi();
         }
     }
 
@@ -98,57 +121,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         //TODO
     }
 
-    @Override public int getCurrentPage() {
-        return page;
-    }
-
-    @Override public int getPreviousTotal() {
-        return previousTotal;
-    }
-
-    @Override public void setCurrentPage(int page) {
-        this.page = page;
-    }
-
-    @Override public void setPreviousTotal(int previousTotal) {
-        this.previousTotal = previousTotal;
-    }
-
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
-        if (page == 1) {
-            lastPage = Integer.MAX_VALUE;
-            sendToView(view -> view.getLoadMore().reset());
-        }
-        if (page > lastPage || lastPage == 0 || getHeader() == null) {
-            sendToView(PullRequestTimelineMvp.View::hideProgress);
-            return;
-        }
-        setCurrentPage(page);
-        String login = getHeader().getLogin();
-        String repoId = getHeader().getRepoId();
-        int number = getHeader().getNumber();
-        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number, page),
-                RestProvider.getIssueService().getIssueComments(login, repoId, number, page),
-                RestProvider.getPullRequestSerice().getPullStatus(login, repoId, getHeader().getHead().getSha()),
-                RestProvider.getPullRequestSerice().getReviews(login, repoId, number),
-                (issueEventPageable, commentPageable, statuses, reviews) -> {
-                    lastPage = issueEventPageable.getLast() > commentPageable.getLast() ? issueEventPageable.getLast() : commentPageable.getLast();
-                    if (statuses != null) {
-                        statuses.setMergable(getHeader().isMergeable());
-                    }
-                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses, reviews.getItems());
-                });
-        makeRestCall(observable, models -> {
-            if (getCurrentPage() == 1) {
-                getEvents().subList(1, getEvents().size()).clear();
-            }
-            getEvents().addAll(models);
-            sendToView(PullRequestTimelineMvp.View::onNotifyAdapter);
-        });
-    }
-
     @Nullable private PullRequest getHeader() {
-        return !timeline.isEmpty() ? timeline.get(0).getPullRequest() : null;
+        return pullRequest;
     }
 
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
@@ -160,8 +134,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                getEvents().remove(TimelineModel.constructComment(comment));
-                                view.onNotifyAdapter();
+                                view.onRemove(TimelineModel.constructComment(comment));
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }

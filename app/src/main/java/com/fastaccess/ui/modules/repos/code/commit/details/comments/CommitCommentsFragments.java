@@ -24,6 +24,8 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.List;
+
 import butterknife.BindView;
 import icepick.State;
 
@@ -52,7 +54,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.fab_small_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -78,9 +80,22 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         getPresenter().onCallApi(1, null);
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<Comment> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
+    }
+
+    @Override public void onRemove(@NonNull Comment comment) {
+        hideProgress();
+        adapter.removeItem(comment);
     }
 
     @Override public void hideProgress() {
@@ -175,19 +190,17 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
                     getSparseBooleanArray().clear();
+                    if (commentsModel == null) return;
                     if (isNew) {
-                        getPresenter().getComments().add(commentsModel);
-                        adapter.notifyDataSetChanged();
+                        adapter.addItem(commentsModel);
                         recycler.smoothScrollToPosition(adapter.getItemCount());
                     } else {
                         int position = adapter.getItem(commentsModel);
                         if (position != -1) {
-                            getPresenter().getComments().set(position, commentsModel);
-                            adapter.notifyDataSetChanged();
+                            adapter.swapItem(commentsModel, position);
                             recycler.smoothScrollToPosition(position);
                         } else {
-                            getPresenter().getComments().add(commentsModel);
-                            adapter.notifyDataSetChanged();
+                            adapter.addItem(commentsModel);
                             recycler.smoothScrollToPosition(adapter.getItemCount());
                         }
                     }

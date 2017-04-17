@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.fastaccess.R;
 import com.fastaccess.data.dao.SearchCodeModel;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -52,13 +53,12 @@ class SearchCodePresenter extends BasePresenter<SearchCodeMvp.View> implements S
         }
         makeRestCall(RestProvider.getSearchService().searchCode(parameter, page),
                 response -> {
-                    if (response.isIncompleteResults()) return;
                     lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        getCodes().clear();
+                    if (response.isIncompleteResults()) {
+                        sendToView(view -> view.showMessage(R.string.error, R.string.no_search_results));
+                        return;
                     }
-                    getCodes().addAll(response.getItems());
-                    sendToView(SearchCodeMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 

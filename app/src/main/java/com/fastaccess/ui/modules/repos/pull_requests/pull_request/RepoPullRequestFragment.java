@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -22,6 +23,8 @@ import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -61,9 +64,17 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
         super.onDetach();
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<PullRequest> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override protected int fragmentLayout() {

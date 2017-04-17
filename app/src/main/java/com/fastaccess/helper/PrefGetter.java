@@ -42,6 +42,7 @@ public class PrefGetter {
     private static final String POPUP_ANIMATION = "popupAnimation";
     private static final String WRAP_CODE = "wrap_code";
     private static final String OTP_CODE = "otp_code";
+    private static final String APP_LANGUAGE = "app_language";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -71,7 +72,7 @@ public class PrefGetter {
         PrefHelper.clearPrefs();
     }
 
-    public static boolean isUserIconGuideShowed() {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted") public static boolean isUserIconGuideShowed() {
         boolean isShowed = PrefHelper.getBoolean(USER_ICON_GUIDE);
         PrefHelper.set(USER_ICON_GUIDE, true);
         return isShowed;
@@ -164,7 +165,7 @@ public class PrefGetter {
         return PrefHelper.getBoolean("rect_avatar");
     }
 
-    public static boolean isMarkAsReadEnabled() {
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted") public static boolean isMarkAsReadEnabled() {
         return PrefHelper.getBoolean("markNotificationAsRead");
     }
 
@@ -184,15 +185,18 @@ public class PrefGetter {
     @ThemeType public static int getThemeType(@NonNull Resources resources) {
         String appTheme = PrefHelper.getString("appTheme");
         if (!InputHelper.isEmpty(appTheme)) {
-            if (appTheme.equalsIgnoreCase(resources.getString(R.string.auto_theme_mode))) {
-                return LIGHT;
-            } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.dark_theme_mode))) {
+            if (appTheme.equalsIgnoreCase(resources.getString(R.string.dark_theme_mode))) {
                 return DARK;
             } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.light_theme_mode))) {
                 return LIGHT;
-            } /* add future themes here */
+            }
         }
         return LIGHT;
+    }
+
+    @NonNull public static String getAppLanguage() {
+        String appLanguage = PrefHelper.getString(APP_LANGUAGE);
+        return appLanguage == null ? "en" : appLanguage;
     }
 
     public static void setWhatsNewVersion() {

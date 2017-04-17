@@ -8,11 +8,14 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.GistsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -58,10 +61,17 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
         getPresenter().onCallApi(1, null);
     }
 
-    @Override public void onNotifyAdapter() {
-
+    @Override public void onNotifyAdapter(@Nullable List<Gist> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override public void showProgress(@StringRes int resId) {

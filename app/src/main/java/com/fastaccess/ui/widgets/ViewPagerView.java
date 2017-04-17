@@ -1,5 +1,6 @@
 package com.fastaccess.ui.widgets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
@@ -50,7 +51,7 @@ public class ViewPagerView extends ViewPager {
         }
     }
 
-    @Override public boolean onTouchEvent(MotionEvent event) {
+    @SuppressLint("ClickableViewAccessibility") @Override public boolean onTouchEvent(MotionEvent event) {
         try {
             return !isEnabled() || super.onTouchEvent(event);
         } catch (IllegalArgumentException ex) {

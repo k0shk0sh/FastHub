@@ -89,8 +89,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {
         if (adapter.getItemCount() > 0) {
-            getPresenter().getPaths().clear();
-            onNotifyAdapter();
+            adapter.clear();
+            adapter.notifyItemRangeRemoved(0, adapter.getItemCount());
             getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, false);
         }
     }
@@ -116,8 +116,17 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         super.onDetach();
     }
 
-    @Override public void onNotifyAdapter() {
-        adapter.notifyDataSetChanged();
+    @Override public void onNotifyAdapter(@Nullable List<RepoFile> items, int page) {
+        hideProgress();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override public void onItemClicked(@NonNull RepoFile model, int position) {

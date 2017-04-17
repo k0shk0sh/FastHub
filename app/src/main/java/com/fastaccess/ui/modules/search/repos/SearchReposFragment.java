@@ -8,12 +8,15 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import icepick.State;
@@ -35,9 +38,17 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
         return new SearchReposFragment();
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<Repo> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override protected int fragmentLayout() {
@@ -97,8 +108,7 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
     @Override public void onSetSearchQuery(@NonNull String query) {
         this.searchQuery = query;
         getLoadMore().reset();
-        getPresenter().getRepos().clear();
-        onNotifyAdapter();
+        adapter.clear();
         recycler.scrollToPosition(0);
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());

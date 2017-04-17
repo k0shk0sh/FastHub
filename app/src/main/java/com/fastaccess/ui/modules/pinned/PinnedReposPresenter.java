@@ -31,13 +31,7 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
 
     @Override public void onReload() {
         manageSubscription(AbstractPinnedRepos.getMyPinnedRepos()
-                .subscribe(repos -> {
-                    if (repos != null) {
-                        pinnedRepos.clear();
-                        pinnedRepos.addAll(repos);
-                    }
-                    sendToView(PinnedReposMvp.View::onNotifyAdapter);
-                }));
+                .subscribe(repos -> sendToView(view -> view.onNotifyAdapter(repos))));
     }
 
     @Override public void onItemClick(int position, View v, PinnedRepos item) {

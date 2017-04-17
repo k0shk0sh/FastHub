@@ -9,13 +9,13 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
-import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:15 PM
@@ -25,12 +25,11 @@ public interface PullRequestTimelineMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
             OnToggleView, ReactionsCallback {
-
-        void onNotifyAdapter();
-
-        @NonNull OnLoadMore getLoadMore();
+        void onNotifyAdapter(@Nullable List<TimelineModel> items);
 
         void onEditComment(@NonNull Comment item);
+
+        void onRemove(@NonNull TimelineModel timelineModel);
 
         void onStartNewComment();
 
@@ -41,8 +40,10 @@ public interface PullRequestTimelineMvp {
         void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long id);
     }
 
-    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
-            BaseMvp.PaginationListener {
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel> {
+
+
+        void onCallApi();
 
         @NonNull ArrayList<TimelineModel> getEvents();
 

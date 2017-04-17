@@ -22,7 +22,8 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/SplashTheme"
-        tools:replace="android:allowBackup">
+        tools:replace="android:allowBackup"
+        tools:targetApi="n">
         <activity
             android:name="com.fastaccess.ui.modules.main.MainActivity"
             android:launchMode="singleTask">

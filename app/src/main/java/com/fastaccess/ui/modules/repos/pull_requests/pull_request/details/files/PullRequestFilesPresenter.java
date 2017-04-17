@@ -65,11 +65,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
         makeRestCall(RestProvider.getPullRequestSerice().getPullRequestFiles(login, repoId, number, page),
                 response -> {
                     lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        getFiles().clear();
-                    }
-                    getFiles().addAll(response.getItems());
-                    sendToView(PullRequestFilesMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 

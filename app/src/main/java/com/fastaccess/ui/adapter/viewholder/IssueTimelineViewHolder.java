@@ -81,10 +81,12 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
                             .append(" ")
                             .bold(issueEventModel.getAssignee().getLogin());
                 } else if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
-                    spannableBuilder
-                            .append(" ")
-                            .append(to)
-                            .append(" ")
+                    if (event == IssueEventType.milestoned) {
+                        spannableBuilder
+                                .append(" ")
+                                .append(to);
+                    }
+                    spannableBuilder.append(" ")
                             .bold(issueEventModel.getMilestone().getTitle());
                 } else if (event == IssueEventType.renamed) {
                     spannableBuilder

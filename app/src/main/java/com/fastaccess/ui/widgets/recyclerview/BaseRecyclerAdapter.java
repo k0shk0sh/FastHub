@@ -89,27 +89,28 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void insertItems(@NonNull List<M> items) {
         data.clear();
-        addItems(items);
+        data.addAll(items);
+        notifyDataSetChanged();
     }
 
     public void addItem(M item, int position) {
         data.add(position, item);
-        notifyItemInserted(position);
+        notifyItemInserted(data.size() - 1);
     }
 
     public void addItem(M item) {
-        addItem(item, getItemCount());
+        data.add(item);
+        notifyItemInserted(data.size() - 1);
     }
 
     @SuppressWarnings("WeakerAccess") public void addItems(@NonNull List<M> items) {
         data.addAll(items);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(getItemCount(), (getItemCount() + items.size()) - 1);
     }
 
     @SuppressWarnings("WeakerAccess") public void removeItem(int position) {
         data.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeRemoved(position, getItemCount());
     }
 
     public void removeItem(M item) {
@@ -118,20 +119,21 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     public void removeItems(@NonNull List<M> items) {
-//        int prevSize = data.size();
+        int prevSize = getItemCount();
         data.removeAll(items);
-        notifyDataSetChanged();
-//        notifyItemRangeRemoved(prevSize, Math.abs(data.size() - prevSize));
+        notifyItemRangeRemoved(prevSize, Math.abs(data.size() - prevSize));
     }
 
-    public void swapItem(M model) {
+    public void swapItem(@NonNull M model) {
         int index = getItem(model);
         swapItem(model, index);
     }
 
-    public void swapItem(M model, int position) {
-        data.set(position, model);
-        notifyDataSetChanged();
+    public void swapItem(@NonNull M model, int position) {
+        if (position != -1) {
+            data.set(position, model);
+            notifyItemChanged(position);
+        }
     }
 
     public void subList(int fromPosition, int toPosition) {
@@ -141,7 +143,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void clear() {
         data.clear();
-        notifyItemRangeRemoved(0, getItemCount());
+        notifyDataSetChanged();
     }
 
     public void setEnableAnimation(boolean enableAnimation) {

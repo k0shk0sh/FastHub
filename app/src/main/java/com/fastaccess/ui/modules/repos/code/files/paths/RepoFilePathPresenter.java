@@ -53,6 +53,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                 throw new NullPointerException(String.format("error, repoId(%s) or login(%s) is null", repoId, login));
             }
             if (forceAppend && paths.isEmpty()) {
+                List<RepoFile> repoFiles = new ArrayList<>();
                 if (!InputHelper.isEmpty(path)) {
                     Uri uri = Uri.parse(path);
                     if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty()) {
@@ -60,11 +61,11 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                             RepoFile file = new RepoFile();
                             file.setPath(name);
                             file.setName(name);
-                            paths.add(file);
+                            repoFiles.add(file);
                         }
                     }
-                    if (!paths.isEmpty()) {
-                        sendToView(RepoFilePathMvp.View::onNotifyAdapter);
+                    if (!repoFiles.isEmpty()) {
+                        sendToView(view -> view.onNotifyAdapter(repoFiles, 1));
                     }
                 }
             }

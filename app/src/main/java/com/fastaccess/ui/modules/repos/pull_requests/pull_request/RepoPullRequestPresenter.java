@@ -72,11 +72,9 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         makeRestCall(RestProvider.getPullRequestSerice().getPullRequests(login, repoId, parameter.name(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                getPullRequests().clear();
                 manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
             }
-            getPullRequests().addAll(response.getItems());
-            sendToView(RepoPullRequestMvp.View::onNotifyAdapter);
+            sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
     }
 
@@ -100,13 +98,10 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     @Override public void onWorkOffline() {
         if (pullRequests.isEmpty()) {
             manageSubscription(RxHelper.getObserver(PullRequest.getPullRequests(repoId, login, issueState))
-                    .subscribe(pulls -> {
-                        pullRequests.addAll(pulls);
-                        sendToView(view -> {
-                            view.onNotifyAdapter();
-                            view.onUpdateCount(pullRequests.size());
-                        });
-                    }));
+                    .subscribe(pulls -> sendToView(view -> {
+                        view.onNotifyAdapter(pulls, 1);
+                        view.onUpdateCount(pulls.size());
+                    })));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }

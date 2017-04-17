@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -74,11 +74,9 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        getRepos().clear();
                         manageSubscription(Repo.saveMyRepos(repoModelPageable.getItems(), parameter).subscribe());
                     }
-                    getRepos().addAll(repoModelPageable.getItems());
-                    sendToView(ProfileReposMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
     }
 
@@ -88,10 +86,8 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Repo.getMyRepos(login)).subscribe(repoModels -> {
-                repos.addAll(repoModels);
-                sendToView(ProfileReposMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(Repo.getMyRepos(login)).subscribe(repoModels ->
+                    sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileReposMvp.View::hideProgress);
         }

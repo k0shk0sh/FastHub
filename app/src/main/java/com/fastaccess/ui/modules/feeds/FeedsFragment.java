@@ -22,6 +22,7 @@ import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
@@ -68,9 +69,17 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
         getPresenter().onCallApi(1);
     }
 
-    @Override public void onNotifyAdapter() {
+    @Override public void onNotifyAdapter(@Nullable List<Event> items, int page) {
         hideProgress();
-        adapter.notifyDataSetChanged();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -90,11 +99,6 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @Override public void onOpenRepoChooser(@NonNull ArrayList<SimpleUrlsModel> models) {
@@ -150,5 +154,10 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
                     .setCaptureTouchEventOutsidePrompt(true)
                     .show();
         }
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

@@ -197,7 +197,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 break;
             case RepoPagerMvp.ISSUES:
                 if ((!getRepo().isHasIssues())) {
-                    sendToView(view -> view.showMessage(R.string.error, R.string.no_issue));
+                    sendToView(view -> view.showMessage(R.string.error, R.string.no_issues));
                     return;
                 }
                 if (repoIssuesPagerView == null) {
