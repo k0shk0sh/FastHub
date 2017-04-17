@@ -94,6 +94,7 @@ public class AppHelper {
         context.createConfigurationContext(configuration);
     }
 
+    @SuppressWarnings("deprecation")
     private static void updateResourcesLegacy(Context context, String language) {
         Locale locale = new Locale(language);
         Locale.setDefault(locale);
