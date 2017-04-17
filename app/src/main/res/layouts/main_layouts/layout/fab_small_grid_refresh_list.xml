@@ -25,7 +25,7 @@
 
     <include layout="@layout/state_layout"/>
 
-    <com.pluscubed.recyclerfastscroll.RecyclerFastScroller
+    <com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller
         android:id="@+id/fastScroller"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
