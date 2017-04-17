@@ -80,10 +80,10 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     }
 
     @Override public void onViewDetachedFromWindow(BaseViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
         if (holder instanceof TimelineCommentsViewHolder) {
             ((TimelineCommentsViewHolder) holder).pauseWebView();
         }
+        super.onViewDetachedFromWindow(holder);
     }
 
     @Override public void onViewAttachedToWindow(BaseViewHolder holder) {
@@ -91,6 +91,10 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         if (holder instanceof TimelineCommentsViewHolder) {
             ((TimelineCommentsViewHolder) holder).resumeWebView();
         }
+    }
+
+    @Override public void insertItems(@NonNull List<TimelineModel> items) {
+        super.insertItems(items);
     }
 
 }

@@ -64,8 +64,8 @@
 
     <string-array name="languages_array" translatable="false">
         <item>English</item>
-        <item>Germany</item>
-        <item>Turkey</item>
+        <item>German</item>
+        <item>Turkish</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
