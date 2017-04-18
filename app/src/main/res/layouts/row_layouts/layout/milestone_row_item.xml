@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/grid_spacing"
+    android:foreground="?android:selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="?android:textColorPrimary"
+                android:textStyle="bold"
+                tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/date"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="50 minutes ago"/>
+        </LinearLayout>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/notificationTitle"
+            style="@style/TextAppearance.AppCompat.Body1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="1000"/>
+    </LinearLayout>
+
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

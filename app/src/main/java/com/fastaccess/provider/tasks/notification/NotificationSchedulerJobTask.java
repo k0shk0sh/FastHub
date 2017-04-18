@@ -48,7 +48,7 @@ public class NotificationSchedulerJobTask extends JobService {
     @Override public boolean onStartJob(JobParameters job) {
         if (Login.getUser() != null && PrefGetter.getNotificationTaskDuration(this) != -1) {
             RestProvider.getNotificationService()
-                    .getNotifications(ParseDateFormat.getLastWeekDate(), 0)
+                    .getNotifications(ParseDateFormat.getLastWeekDate())
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
                         AppHelper.cancelAllNotifications(getApplicationContext());

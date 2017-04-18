@@ -8,9 +8,9 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Notification;
 
 import retrofit2.Response;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -22,18 +22,13 @@ import rx.Observable;
 
 public interface NotificationService {
 
-    @GET("notifications")
-    Observable<Pageable<Notification>> getNotifications(@Query("since") String date, @Query("page") int page);
+    @GET("notifications") Observable<Pageable<Notification>> getNotifications(@Query("since") String date);
 
-    @GET("notifications?all=true")
-    Observable<Pageable<Notification>> getAllNotifications(@Query("page") int page);
-
-    @GET("/notifications/threads/{id}")
-    Observable<Notification> getNotification(@Path("id") String id);
+    @GET("notifications?all=true&per_page=200") Observable<Pageable<Notification>> getAllNotifications();
 
     @PATCH("notifications/threads/{id}") Observable<Response<Boolean>> markAsRead(@Path("id") String id);
 
-    @PUT("notifications") Observable<Response<Boolean>> markAllNotificationsAsRead();
-
     @GET() Observable<Comment> getComment(@Url @NonNull String commentUrl);
+
+    @DELETE("notifications/threads/{id}/subscription") Observable<Response<Boolean>> unSubscribe(@Path("id") long id);
 }

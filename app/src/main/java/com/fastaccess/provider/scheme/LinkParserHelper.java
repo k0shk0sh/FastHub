@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
+import com.fastaccess.helper.ObjectsCompat;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,6 @@ class LinkParserHelper {
 
 
     @SafeVarargs static <T> Optional<T> returnNonNull(@NonNull T... t) {
-        return Stream.of(t).filter(value -> value != null).findFirst();
+        return Stream.of(t).filter(ObjectsCompat::nonNull).findFirst();
     }
 }

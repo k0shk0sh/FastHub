@@ -10,21 +10,18 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.data.dao.model.Notification;
-import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.Logger;
-import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.scheme.StackBuilderSchemeParser;
 import com.fastaccess.provider.tasks.notification.ReadNotificationService;
 import com.fastaccess.ui.adapter.NotificationsAdapter;
+import com.fastaccess.ui.adapter.viewholder.NotificationsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
-import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.List;
@@ -41,8 +38,6 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-
-    private OnLoadMore onLoadMore;
     private NotificationsAdapter adapter;
 
     public static NotificationsFragment newInstance() {
@@ -55,37 +50,20 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, null);
+        getPresenter().onCallApi();
     }
 
-    @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
-        if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<>(getPresenter());
-        }
-        return onLoadMore;
+    @Override public void onUpdateReadState(GroupedNotificationModel item, int position) {
+        adapter.swapItem(item, position);
     }
 
-    @Override public void onRemove(int position) {
-        hideProgress();
-        adapter.removeItem(position);
-    }
-
-    @Override public void onNotifyAdapter(@Nullable List<Notification> items, int page) {
+    @Override public void onNotifyAdapter(@Nullable List<GroupedNotificationModel> items) {
         hideProgress();
         if (items == null || items.isEmpty()) {
             adapter.clear();
             return;
         }
-        if (page <= 1) {
-            adapter.insertItems(items);
-        } else {
-            adapter.addItems(items);
-        }
-    }
-
-    @Override public void onTypeChanged(boolean unread) {
-        getPresenter().showAllNotifications(!unread);
-        onRefresh();
+        adapter.insertItems(items);
     }
 
     @Override public void onClick(@NonNull String url) {
@@ -97,20 +75,9 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
         }
     }
 
-    @Override public void onAskMarkAsReadPermission(int position, long id) {
-        MessageDialogView.newInstance(getString(R.string.marking_as_read), getString(R.string.confirm_message),
-                Bundler.start().put(BundleConstant.YES_NO_EXTRA, true)
-                        .put(BundleConstant.ID, id)
-                        .put(BundleConstant.EXTRA, position)
-                        .end())
-                .show(getChildFragmentManager(), MessageDialogView.TAG);
-    }
-
-    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
-        super.onMessageDialogActionClicked(isOk, bundle);
-        if (isOk && bundle != null) {
-            getPresenter().onReadNotification(getContext(), bundle);
-        }
+    @Override public void onReadNotification(@NonNull Notification notification) {
+        adapter.swapItem(new GroupedNotificationModel(notification));
+        ReadNotificationService.start(getContext(), notification.getId());
     }
 
     @Override protected int fragmentLayout() {
@@ -123,11 +90,9 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
         refresh.setOnRefreshListener(this);
         stateLayout.setEmptyText(R.string.no_notifications);
         stateLayout.setOnReloadListener(v -> onRefresh());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
-        recycler.addOnScrollListener(getLoadMore());
-        recycler.addDivider();
+        recycler.addDivider(NotificationsViewHolder.class);
         if (savedInstanceState == null || !getPresenter().isApiCalled()) {
             onRefresh();
         }
@@ -157,11 +122,6 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.notification_menu, menu);
@@ -170,22 +130,15 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.readAll) {
             if (!adapter.getData().isEmpty()) {
-                long[] ids = Stream.of(adapter.getData())
-                        .filter(Notification::isUnread)
-                        .mapToLong(Notification::getId)
-                        .toArray();
-                if (ids != null && ids.length > 0) {
-                    adapter.clear();
-                    ReadNotificationService.start(getContext(), ids);
-                }
+                getPresenter().onMarkAllAsRead(adapter.getData());
             }
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    @Override public void onDestroyView() {
-        recycler.removeOnScrollListener(getLoadMore());
-        super.onDestroyView();
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

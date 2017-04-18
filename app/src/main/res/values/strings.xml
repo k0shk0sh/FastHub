@@ -380,4 +380,5 @@
     <string name="app_language">App Language</string>
     <string name="choose_language_title">Choose Language</string>
     <string name="choose_language_summary">Choose your preferred language</string>
+    <string name="un_subscribe">Un-Subscribe</string>
 </resources>
