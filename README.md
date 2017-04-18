@@ -1,4 +1,4 @@
-### FastHub has been suspended from the playstore, Please update your app from the releases page until this sorted out. :cry:
+### FastHub has been suspended from the playstore, Please update your app from the releases page to _1.9.1_ until this sorted out. :cry:
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
