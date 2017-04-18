@@ -12,10 +12,10 @@
     <string name="ok">OK</string>
     <string name="no_data">No data available</string>
     <string name="search">Search</string>
-    <string name="please_login">Please login to continue using FastHub</string>
-    <string name="sign_in_to_github">Sign-In to your GitHub account to get the best out of FastHub</string>
-    <string name="failed_login">Failed to sign-in</string>
-    <string name="sign_in">Sign-In</string>
+    <string name="please_login">Please sign in to continue using FastHub</string>
+    <string name="sign_in_to_github">Sign in to your GitHub account to get the best out of FastHub</string>
+    <string name="failed_login">Failed to sign in</string>
+    <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
     <string name="reload">Reload</string>
     <string name="feeds">Feeds</string>
@@ -47,9 +47,9 @@
     <string name="archive_file_detected_error">Archive file detected, please download the file to view its content.</string>
     <string name="minimum_three_chars">Minimum characters (3)</string>
     <string name="no_file_found">No file found</string>
-    <string name="no_readme_found">No Readme found</string>
+    <string name="no_readme_found">No readme found</string>
     <string name="downloading">Downloading…</string>
-    <string name="downloading_file">Downloading File…</string>
+    <string name="downloading_file">Downloading file…</string>
     <string name="released">Released</string>
     <string name="drafted">Drafted</string>
     <string name="releases">Releases</string>
@@ -62,10 +62,10 @@
     <string name="star" translatable="false">Star</string>
     <string name="fork" translatable="false">Fork</string>
     <string name="close_issue">Close Issue</string>
-    <string name="re_open_issue">Re-Open Issue</string>
-    <string name="re_open">Re-Open</string>
+    <string name="re_open_issue">Reopen Issue</string>
+    <string name="re_open">Reopen</string>
     <string name="close">Close</string>
-    <string name="success_re_opened">Successfully re-opened</string>
+    <string name="success_re_opened">Successfully reopened</string>
     <string name="lock_issue_details">Locking the conversation means:\n&#183;Other users can’t add new comments to this issue.\n&#183;You and other
         collaborators with access to this repository can still leave comments that others can see.\n&#183;You can always unlock this issue again in the
         future.\n</string>
@@ -73,16 +73,16 @@
         always lock this issue again in the future.\n</string>
     <string name="lock_issue">Lock conversation</string>
     <string name="unlock_issue">Unlock conversation</string>
-    <string name="error_closing_issue">Error closing Issue, please try again later.</string>
-    <string name="error_re_opening_issue">Error re-opening Issue, please try again later.</string>
-    <string name="success_closed">Successfully closed Issue</string>
+    <string name="error_closing_issue">Error closing issue, please try again later.</string>
+    <string name="error_re_opening_issue">Error reopening issue, please try again later.</string>
+    <string name="success_closed">Successfully closed issue</string>
     <string name="no_description_provided"><p>No description provided</p></string>
     <string name="header_one">Header One</string>
     <string name="header_two">Header Two</string>
     <string name="header_three">Header Three</string>
     <string name="bold">Bold</string>
     <string name="italic">Italic</string>
-    <string name="strike_through">Strike through</string>
+    <string name="strike_through">Strikethrough</string>
     <string name="bullet">Bullet list</string>
     <string name="numbered_list">Numbered list</string>
     <string name="header">Header</string>
@@ -114,7 +114,7 @@
     <string name="code_viewer">Code viewer</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="big_file">Large file</string>
-    <string name="big_file_description">The file is too big to open it.\nClick "OK" to Download it instead.</string>
+    <string name="big_file_description">The file is too big to open.\nPress "OK" to download it instead.</string>
     <string name="viewer">Viewer</string>
     <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">Submit</string>
@@ -138,7 +138,7 @@
     <string name="milestone">Milestone</string>
     <string name="assign_myself">Assign myself</string>
     <string name="submit_issue">Submit Issue</string>
-    <string name="error_creating_issue">Error creating Issue</string>
+    <string name="error_creating_issue">Error creating issue</string>
     <string name="create_issue">Create Issue</string>
     <string name="error_highlighting_editor">Please un-select highlighting to continue editing.</string>
     <string name="notifications">Notifications</string>
@@ -154,14 +154,14 @@
     <string name="thank_you_for_feedback">Thanks for your feedback!</string>
     <string name="current_version">Current version</string>
     <string name="version">Version</string>
-    <string name="support_development_enable_ads">Support development, enable Ads</string>
+    <string name="support_development_enable_ads">Support development, enable ads</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="twoFactor">Two-factor authentication code</string>
     <string name="login">Login</string>
     <string name="gist_description">Gist description</string>
     <string name="avatar_click_hint">Wherever there is a user avatar, you can click it to open the user\'s profile</string>
-    <string name="feeds_fork_hint">Long click on a Fork event to open either the original or the forked Repo.</string>
+    <string name="feeds_fork_hint">Long click on a fork event to open either the original or the forked repo.</string>
     <string name="click_here_to_download_release_hint">Download releases</string>
     <string name="options">Options</string>
     <string name="click_file_option_hint">Download file or share directory</string>
@@ -171,12 +171,12 @@
     <string name="watch">Watch</string>
     <string name="watch_hint">Watch/unwatch repo</string>
     <string name="fork_repo_hint" translatable="false">Fork repo</string>
-    <string name="pin_repo_hint">Pin repos to access them faster from the NavigationDrawer.</string>
+    <string name="pin_repo_hint">Pin repos to access them faster from the navigation drawer.</string>
     <string name="no_url">No URL found</string>
     <string name="last_updated">Last updated</string>
     <string name="preview">Preview</string>
     <string name="view_code">Syntax highlighter</string>
-    <string name="click_to_toggle_highlighting">Toggle Syntax highlighting.
+    <string name="click_to_toggle_highlighting">Toggle syntax highlighting.
         \nScroll the Markdown editor icons for more options.</string>
     <string name="creation_date">Creation date</string>
     <string name="creation_date_hint">When the file was created</string>
@@ -230,13 +230,13 @@
     <string name="this_value">this</string>
     <string name="commits_reflected">Commits have been switched to the selected branch</string>
     <string name="general_settings">General</string>
-    <string name="background_job_summary">Change how frequent FastHub checks for new notifications</string>
+    <string name="background_job_summary">Change how frequently FastHub checks for new notifications</string>
     <string name="background_job_title">Notification sync interval</string>
     <string name="every">Every</string>
     <string name="behavior">Behavior</string>
     <string name="recycler_view_animation_summary">Enable list animations</string>
     <string name="recycler_view_animation_title">List animation</string>
-    <string name="back_button_summary">Disable dialog preventing you to exit FastHub accidentally</string>
+    <string name="back_button_summary">Disable dialog preventing accidental app closure</string>
     <string name="back_button_title">Press back to exit</string>
     <string name="unsaved_data_warning">Any unsaved changes will be discarded</string>
     <string name="private_repo">Private</string>
@@ -267,10 +267,10 @@
     <string name="forking_gist">Forking gist</string>
     <string name="forking" formatted="true" translatable="false">Forking %s</string>
     <string name="staring" formatted="true" translatable="false">Staring %s</string>
-    <string name="un_staring" formatted="true" translatable="false">Un-Staring %s</string>
-    <string name="un_watching" formatted="true" translatable="false">Un-Watching %s</string>
+    <string name="un_staring" formatted="true" translatable="false">Unstaring %s</string>
+    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
     <string name="watching" formatted="true" translatable="false">Watching %s</string>
-    <string name="login_using_your_default_browser">Login using your default Internet Browser</string>
+    <string name="login_using_your_default_browser">Login using your default browser</string>
     <string name="or_character">OR</string>
     <string name="mark_notification_title">Disable Notification Read Status</string>
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
@@ -298,7 +298,7 @@
     <string name="no_followers">No followers</string>
     <string name="no_followings">No followings</string>
     <string name="no_repos">No repositories</string>
-    <string name="no_starred_repos">No stared repositories</string>
+    <string name="no_starred_repos">No starred repositories</string>
     <string name="no_commits">No commits</string>
     <string name="no_contributors">No contributors</string>
     <string name="no_releases">No releases</string>
@@ -309,7 +309,7 @@
     <string name="no_closed_pull_request">No closed pull requests</string>
     <string name="no_search_results">No search results</string>
     <string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
-        store the files in your sdcard to be able to view them</string>
+        store the files on your device to be able to view them</string>
     <string name="public_gists">Public Gists</string>
     <string name="enable_ads">Enable Ads</string>
     <string name="no_issues">No issues</string>
@@ -368,17 +368,17 @@
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: The reason FastHub didn\'t use "Access Token" was
-        due to the fact that if one has 2fa enabled, their OTP code lifetime could only survive for a maximum of one minute or so, which will cause
-        FastHub to log you out immediately due to GitHub responded with an unauthorized access.</string>
+        due to the fact that if one has 2FA enabled, their OTP code lifetime could only survive for a maximum of one minute or so, which will cause
+        FastHub to log you out immediately due to GitHub responding with an unauthorized access.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
-    <string name="support_with_2_00">Support with 2.00$</string>
-    <string name="support_with_5_00">Support with 5.00$</string>
-    <string name="support_with_10_00">Support with 10.00$</string>
-    <string name="support_with_20_00">Support with 20.00$</string>
+    <string name="support_with_2_00">Support with $2.00</string>
+    <string name="support_with_5_00">Support with $5.00</string>
+    <string name="support_with_10_00">Support with $10.00</string>
+    <string name="support_with_20_00">Support with $20.00</string>
     <string name="app_language">App Language</string>
     <string name="choose_language_title">Choose Language</string>
     <string name="choose_language_summary">Choose your preferred language</string>
-    <string name="un_subscribe">Un-Subscribe</string>
+    <string name="un_subscribe">Unsubscribe</string>
 </resources>
