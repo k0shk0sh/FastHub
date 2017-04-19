@@ -17,6 +17,7 @@ import java.util.List;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
+import io.requery.Nullable;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,7 @@ import rx.Observable;
     boolean unread;
     Date updatedAt;
     Date lastReadAt;
+    @Nullable boolean isSubscribed;
 
     public Completable save(Notification notification) {
         return App.getInstance().getDataStore()
@@ -85,6 +87,17 @@ import rx.Observable;
                 .value() > 0;
     }
 
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Notification that = (Notification) o;
+        return repository != null && that.repository != null && repository.getId() == that.repository.getId();
+    }
+
+    @Override public int hashCode() {
+        return repository != null ? (int) repository.getId() : 0;
+    }
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
@@ -96,17 +109,7 @@ import rx.Observable;
         dest.writeByte(this.unread ? (byte) 1 : (byte) 0);
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
         dest.writeLong(this.lastReadAt != null ? this.lastReadAt.getTime() : -1);
-    }
-
-    @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Notification that = (Notification) o;
-        return repository != null && that.repository != null && repository.getId() == that.repository.getId();
-    }
-
-    @Override public int hashCode() {
-        return repository != null ? (int) repository.getId() : 0;
+        dest.writeByte(this.isSubscribed ? (byte) 1 : (byte) 0);
     }
 
     protected AbstractNotification(Parcel in) {
@@ -121,6 +124,7 @@ import rx.Observable;
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
         long tmpLastReadAt = in.readLong();
         this.lastReadAt = tmpLastReadAt == -1 ? null : new Date(tmpLastReadAt);
+        this.isSubscribed = in.readByte() != 0;
     }
 
     public static final Creator<Notification> CREATOR = new Creator<Notification>() {

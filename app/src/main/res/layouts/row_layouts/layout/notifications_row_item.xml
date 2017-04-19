@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+<android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,10 +7,11 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal">
+    app:cardBackgroundColor="?card_background"
+    app:contentPaddingBottom="@dimen/spacing_normal"
+    app:contentPaddingLeft="@dimen/spacing_xs_large"
+    app:contentPaddingRight="@dimen/spacing_normal"
+    app:contentPaddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,39 +23,77 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/title"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="?android:textColorPrimary"
-                android:textStyle="bold"
-                tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Small"
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/notificationType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:gravity="start|center"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="50 minutes ago"/>
-        </LinearLayout>
+                android:layout_gravity="top"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
+                tools:src="@drawable/ic_issues"/>
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/notificationTitle"
-            style="@style/TextAppearance.AppCompat.Body1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary"
-            tools:text="1000"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/title"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    android:textColor="?android:textColorPrimary"
+                    android:textStyle="bold"
+                    tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/date"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="start|center"
+                        android:textColor="?android:attr/textColorSecondary"
+                        app:drawableColor="?android:attr/textColorSecondary"
+                        tools:text="50 minutes ago"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="end"
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.ForegroundImageView
+                            android:id="@+id/unsubsribe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/un_subscribe"
+                            android:padding="@dimen/spacing_normal"
+                            android:src="@drawable/ic_unsubscribe"/>
+
+                        <com.fastaccess.ui.widgets.ForegroundImageView
+                            android:id="@+id/markAsRead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:contentDescription="@string/un_subscribe"
+                            android:padding="@dimen/spacing_normal"
+                            android:src="@drawable/ic_done"/>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
-</com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+</android.support.v7.widget.CardView>

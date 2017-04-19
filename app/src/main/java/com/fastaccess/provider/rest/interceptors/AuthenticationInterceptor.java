@@ -1,7 +1,6 @@
 package com.fastaccess.provider.rest.interceptors;
 
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 
 import java.io.IOException;
 
@@ -25,7 +24,6 @@ public class AuthenticationInterceptor implements Interceptor {
         if (!InputHelper.isEmpty(otp)) {
             builder.addHeader("X-GitHub-OTP", otp.trim());
         }
-        Logger.e(authToken, otp);
         Request request = builder.build();
         return chain.proceed(request);
     }

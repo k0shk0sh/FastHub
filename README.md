@@ -1,3 +1,6 @@
+### FastHub has been suspended from the playstore, Please update your app from the releases page to _1.9.1_ until this sorted out. :cry:
+
+
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
 [![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Slack Status](https://fasthub.herokuapp.com/badge.svg)](https://fasthub.herokuapp.com)
 

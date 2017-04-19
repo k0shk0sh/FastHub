@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:maxLength="6"
+                android:maxLength="10"
                 android:maxLines="1"
                 tools:text="Apache"/>
 
@@ -144,8 +144,7 @@
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@string/pin"/>
+                android:gravity="center"/>
 
         </LinearLayout>
     </LinearLayout>
