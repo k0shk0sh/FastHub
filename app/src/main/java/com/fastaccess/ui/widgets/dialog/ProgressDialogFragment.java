@@ -35,7 +35,7 @@ public class ProgressDialogFragment extends DialogFragment {
     }
 
     @Override public void dismiss() {
-        AnimHelper.dismissDialog(this, 100, new AnimatorListenerAdapter() {
+        AnimHelper.dismissDialog(this, 40, new AnimatorListenerAdapter() {
             @Override public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 ProgressDialogFragment.super.dismiss();

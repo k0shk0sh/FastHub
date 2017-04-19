@@ -13,6 +13,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.scheme.StackBuilderSchemeParser;
@@ -78,6 +79,10 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
     @Override public void onReadNotification(@NonNull Notification notification) {
         adapter.swapItem(new GroupedNotificationModel(notification));
         ReadNotificationService.start(getContext(), notification.getId());
+    }
+
+    @Override public void onMarkAllByRepo(@NonNull Repo repo) {
+        getPresenter().onMarkReadByRepo(adapter.getData(), repo);
     }
 
     @Override protected int fragmentLayout() {

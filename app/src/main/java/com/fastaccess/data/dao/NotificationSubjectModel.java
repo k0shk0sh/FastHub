@@ -3,6 +3,8 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.types.NotificationType;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +17,7 @@ import lombok.Setter;
 public class NotificationSubjectModel implements Parcelable {
     String title;
     String url;
-    String type;
+    NotificationType type;
     String latestCommentUrl;
 
     @Override public String toString() {
@@ -32,14 +34,15 @@ public class NotificationSubjectModel implements Parcelable {
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.title);
         dest.writeString(this.url);
-        dest.writeString(this.type);
+        dest.writeInt(this.type == null ? -1 : this.type.ordinal());
         dest.writeString(this.latestCommentUrl);
     }
 
     protected NotificationSubjectModel(Parcel in) {
         this.title = in.readString();
         this.url = in.readString();
-        this.type = in.readString();
+        int tmpType = in.readInt();
+        this.type = tmpType == -1 ? null : NotificationType.values()[tmpType];
         this.latestCommentUrl = in.readString();
     }
 

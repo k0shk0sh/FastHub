@@ -4,6 +4,7 @@ package com.fastaccess.data.service;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.Pageable;
+import com.fastaccess.data.dao.RepoSubscriptionModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Notification;
 
@@ -29,6 +30,8 @@ public interface NotificationService {
     @PATCH("notifications/threads/{id}") Observable<Response<Boolean>> markAsRead(@Path("id") String id);
 
     @GET() Observable<Comment> getComment(@Url @NonNull String commentUrl);
+
+    @GET("notifications/threads/{id}/subscription") Observable<RepoSubscriptionModel> isSubscribed(@Path("id") long id);
 
     @DELETE("notifications/threads/{id}/subscription") Observable<Response<Boolean>> unSubscribe(@Path("id") long id);
 }

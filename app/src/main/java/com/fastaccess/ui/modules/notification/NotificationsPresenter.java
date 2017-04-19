@@ -5,8 +5,6 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GroupedNotificationModel;
-import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.Logger;
@@ -16,7 +14,6 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.tasks.notification.ReadNotificationService;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +28,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     private ArrayList<GroupedNotificationModel> notifications = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, GroupedNotificationModel model) {
+        if (getView() == null) return;
         if (model.getType() == GroupedNotificationModel.ROW) {
             Notification item = model.getNotification();
             if (v.getId() == R.id.markAsRead) {
@@ -40,7 +38,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
                     sendToView(view -> view.onUpdateReadState(new GroupedNotificationModel(item), position));
                     ReadNotificationService.start(v.getContext(), item.getId());
                 }
-            } else if (v.getId() == R.id.unSubscribe) {
+            } else if (v.getId() == R.id.unsubsribe) {
                 item.setUnread(false);
                 manageSubscription(item.save(item).subscribe());
                 sendToView(view -> view.onUpdateReadState(new GroupedNotificationModel(item), position));
@@ -52,9 +50,8 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
             }
         } else {
             Repo repo = model.getRepo();
-            NameParser nameParser = new NameParser(repo.getHtmlUrl());
-            if (nameParser.getName() == null && nameParser.getUsername() == null) return;
-            RepoPagerActivity.startRepoPager(v.getContext(), nameParser);
+            if (repo == null) return;
+            getView().onMarkAllByRepo(repo);
         }
     }
 
@@ -80,21 +77,34 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     }
 
     @Override public void onCallApi() {
-        Observable<Pageable<Notification>> observable = RestProvider.getNotificationService().getAllNotifications();
-        makeRestCall(observable
-                        .flatMap(reponse -> {
-                            if (reponse.getItems() != null) {
-                                manageSubscription(Notification.save(reponse.getItems()).subscribe());
-                            }
-                            return Observable.just(GroupedNotificationModel.construct(reponse.getItems()));
-                        }),
-                response -> sendToView(view -> view.onNotifyAdapter(response)));
+        Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService().getAllNotifications()
+                .flatMap(response -> {
+                    if (response.getItems() != null) {
+                        manageSubscription(Notification.save(response.getItems()).subscribe());
+                    }
+                    return Observable.just(GroupedNotificationModel.construct(response.getItems()));
+                });
+        makeRestCall(observable, response -> sendToView(view -> view.onNotifyAdapter(response)));
     }
 
     @Override public void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data) {
         manageSubscription(RxHelper.getObserver(Observable.from(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
+                .map(GroupedNotificationModel::getNotification)
+                .subscribe(notification -> {
+                    Logger.e(notification.getUrl());
+                    notification.setUnread(false);
+                    manageSubscription(notification.save(notification).subscribe());
+                    sendToView(view -> view.onReadNotification(notification));
+                }));
+    }
+
+    @Override public void onMarkReadByRepo(@NonNull List<GroupedNotificationModel> data, @NonNull Repo repo) {
+        manageSubscription(RxHelper.getObserver(Observable.from(data))
+                .filter(group -> group.getType() == GroupedNotificationModel.ROW)
+                .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
+                .filter(group -> group.getNotification().getRepository().getFullName().equalsIgnoreCase(repo.getFullName()))
                 .map(GroupedNotificationModel::getNotification)
                 .subscribe(notification -> {
                     Logger.e(notification.getUrl());

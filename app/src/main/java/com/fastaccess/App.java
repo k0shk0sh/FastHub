@@ -31,6 +31,7 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         deleteDatabase("database.db");
+        getDataStore();//init requery before anything.
         PreferenceManager.setDefaultValues(this, R.xml.fasthub_settings, false);
         UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
@@ -44,7 +45,7 @@ public class App extends Application {
     public SingleEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 4);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 5);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

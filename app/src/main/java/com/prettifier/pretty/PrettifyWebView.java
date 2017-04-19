@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -181,25 +180,12 @@ public class PrettifyWebView extends NestedWebView {
             startActivity(request.getUrl());
             return true;
         }
-
-        @Override public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            ViewGroup.LayoutParams params = getLayoutParams();
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            setLayoutParams(params);
-        }
     }
 
     private class WebClientCompat extends WebViewClient {
         @SuppressWarnings("deprecation") @Override public boolean shouldOverrideUrlLoading(WebView view, String url) {
             startActivity(Uri.parse(url));
             return true;
-        }
-        @Override public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            ViewGroup.LayoutParams params = getLayoutParams();
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-            setLayoutParams(params);
         }
     }
 

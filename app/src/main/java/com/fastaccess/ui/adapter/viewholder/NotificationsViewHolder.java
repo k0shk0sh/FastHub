@@ -14,6 +14,7 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -27,8 +28,9 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
-    @BindView(R.id.unSubscribe) FontTextView unSubscribe;
-    @BindView(R.id.markAsRead) FontTextView markAsRead;
+    @BindView(R.id.unsubsribe) ForegroundImageView unSubscribe;
+    @BindView(R.id.markAsRead) ForegroundImageView markAsRead;
+    @BindView(R.id.notificationType) ForegroundImageView notificationType;
 
     private NotificationsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -47,6 +49,12 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
             date.setText(ParseDateFormat.getTimeAgo(thread.getUpdatedAt()));
             int cardBackground = ViewHelper.getCardBackground(itemView.getContext());
             int color;
+            markAsRead.setVisibility(thread.isUnread() ? View.VISIBLE : View.GONE);
+//            unSubscribe.setImageResource(thread.isIsSubscribed() ? R.drawable.ic_unsubscribe : R.drawable.ic_subscribe);
+            if (thread.getSubject().getType() != null) {
+                notificationType.setImageResource(thread.getSubject().getType().getDrawableRes());
+                notificationType.setContentDescription(thread.getSubject().getType().name());
+            }
             if (AppHelper.isNightMode(itemView.getResources())) {
                 color = ContextCompat.getColor(itemView.getContext(), R.color.material_blue_grey_800);
             } else {
