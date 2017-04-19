@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:layout_marginEnd="@dimen/avatar_margin_end"
-                android:src="@drawable/ic_issues"/>
+                tools:src="@drawable/ic_issues"/>
 
             <LinearLayout
                 android:layout_width="match_parent"

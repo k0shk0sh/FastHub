@@ -8,7 +8,8 @@ import com.fastaccess.R;
 
 public enum NotificationType {
     PullRequest(R.drawable.ic_pull_requests),
-    Issue(R.drawable.ic_issues);
+    Issue(R.drawable.ic_issues),
+    Commit(R.drawable.ic_push);
 
     int drawableRes;
 
