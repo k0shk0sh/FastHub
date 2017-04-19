@@ -7,7 +7,7 @@
     <string name="no_data">没有任何数据</string>
     <string name="search">搜索</string>
     <string name="please_login">请登录后再使用FastHub</string>
-    <string name="sign_in_to_github">登录你的GitHub账户到FastHub </string>
+    <string name="sign_in_to_github">登录你的GitHub账户到FastHub</string>
     <string name="failed_login">注册失败</string>
     <string name="sign_in">注册</string>
     <string name="share">分享</string>
@@ -205,7 +205,7 @@
     <string name="author">作者</string>
     <string name="fork_github">在 GitHub 上创建分支</string>
     <string name="send_email">发送电子邮件</string>
-    <string name="question_concerning_fasthub">关于FastHub的问题/string>
+    <string name="question_concerning_fasthub">关于FastHub的问题</string>
     <string name="feedback">反馈</string>
     <string name="report_issue">问题反馈</string>
     <string name="report_issue_here">有问题吗 在这里报告</string>
