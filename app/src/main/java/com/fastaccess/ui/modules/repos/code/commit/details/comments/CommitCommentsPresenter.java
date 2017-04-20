@@ -10,7 +10,7 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
-import com.fastaccess.provider.comments.CommentsHelper;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 

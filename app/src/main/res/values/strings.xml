@@ -381,4 +381,6 @@
     <string name="choose_language_title">Choose Language</string>
     <string name="choose_language_summary">Choose your preferred language</string>
     <string name="un_subscribe">Unsubscribe</string>
+    <string name="from">from</string>
+    <string name="in_value">in</string>
 </resources>

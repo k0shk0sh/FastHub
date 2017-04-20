@@ -1,4 +1,4 @@
-package com.fastaccess.provider.comments;
+package com.fastaccess.provider.timeline;
 
 import android.content.Context;
 import android.support.annotation.IdRes;

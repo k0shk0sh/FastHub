@@ -13,8 +13,9 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.ui.widgets.RoundBackgroundSpan;
+import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
@@ -162,7 +163,8 @@ import lombok.Setter;
         for (List<IssueEvent> issueEvents : issueEventMap.values()) {
             IssueEvent toAdd = null;
             SpannableBuilder spannableBuilder = SpannableBuilder.builder();
-            for (IssueEvent issueEventModel : issueEvents) {
+            for (int i = 0; i < issueEvents.size(); i++) {
+                IssueEvent issueEventModel = issueEvents.get(i);
                 if (issueEventModel != null) {
                     IssueEventType event = issueEventModel.getEvent();
                     if (event != null) {
@@ -177,7 +179,7 @@ import lombok.Setter;
                                 int color = Color.parseColor("#" + labelModel.getColor());
                                 spannableBuilder
                                         .append(" ")
-                                        .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color))
+                                        .append(InputHelper.SPACE + labelModel.getName() + InputHelper.SPACE, new LabelSpan(color))
                                         .append(" ");
                             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                                 spannableBuilder
@@ -204,9 +206,10 @@ import lombok.Setter;
                 builder.append(" ")
                         .append(toAdd.getEvent().name().replaceAll("_", " "));
                 toAdd.setLabels(SpannableBuilder.builder().append(builder)
-                        .append(spannableBuilder)
                         .append(" ")
-                        .append(ParseDateFormat.getTimeAgo(toAdd.getCreatedAt())));
+                        .append(ParseDateFormat.getTimeAgo(toAdd.getCreatedAt()))
+                        .append("\n")
+                        .append(spannableBuilder));
                 models.add(new TimelineModel(toAdd));
             }
         }

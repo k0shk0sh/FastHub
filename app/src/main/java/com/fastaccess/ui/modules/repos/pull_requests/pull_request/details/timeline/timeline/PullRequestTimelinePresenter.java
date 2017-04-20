@@ -15,7 +15,7 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.provider.comments.ReactionsProvider;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.BaseMvp;

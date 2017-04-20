@@ -14,6 +14,7 @@ import android.widget.TextView;
  */
 public class InputHelper {
 
+    public static final String SPACE = "\u202F\u202F";
 
     private static boolean isWhiteSpaces(@Nullable String s) {
         return s != null && s.matches("\\s+");

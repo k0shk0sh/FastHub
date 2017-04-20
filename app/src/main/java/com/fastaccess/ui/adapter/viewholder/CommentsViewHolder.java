@@ -13,7 +13,7 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.provider.comments.CommentsHelper;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
