@@ -116,14 +116,12 @@
         <activity
             android:name=".ui.modules.editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/markdown"
-            />
+            android:label="@string/markdown"/>
 
         <activity
             android:name=".ui.modules.gists.create.CreateGistActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/create_gist"
-            />
+            android:label="@string/create_gist"/>
 
         <activity
             android:name=".ui.modules.gists.gist.GistActivity"

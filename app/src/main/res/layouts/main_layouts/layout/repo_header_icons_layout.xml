@@ -117,7 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:maxLength="10"
+                android:maxLength="6"
                 android:maxLines="1"
                 tools:text="Apache"/>
 
