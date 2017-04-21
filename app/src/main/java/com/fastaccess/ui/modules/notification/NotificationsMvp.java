@@ -1,13 +1,12 @@
 package com.fastaccess.ui.modules.notification;
 
-import android.content.Context;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.data.dao.model.Notification;
-import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -24,28 +23,27 @@ public interface NotificationsMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener {
 
-        @NonNull OnLoadMore getLoadMore();
+        @CallOnMainThread void onNotifyAdapter(@Nullable List<GroupedNotificationModel> items);
 
-        @CallOnMainThread void onNotifyAdapter(@Nullable List<Notification> items, int page);
-
-        void onRemove(int position);
-
-        void onTypeChanged(boolean unread);
+        void onUpdateReadState(GroupedNotificationModel item, int position);
 
         void onClick(@NonNull String url);
 
-        void onAskMarkAsReadPermission(int position, long id);
+        void onReadNotification(@NonNull Notification notification);
+
+        void onMarkAllByRepo(@NonNull Repo repo);
     }
 
-    interface Presenter extends BaseViewHolder.OnItemClickListener<Notification>,
-            BaseMvp.PaginationListener {
+    interface Presenter extends BaseViewHolder.OnItemClickListener<GroupedNotificationModel> {
 
         void onWorkOffline();
 
-        @NonNull ArrayList<Notification> getNotifications();
+        @NonNull ArrayList<GroupedNotificationModel> getNotifications();
 
-        void showAllNotifications(boolean showAll);
+        void onCallApi();
 
-        void onReadNotification(@NonNull Context context, @NonNull Bundle bundle);
+        void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data);
+
+        void onMarkReadByRepo(@NonNull List<GroupedNotificationModel> data, @NonNull Repo repo);
     }
 }

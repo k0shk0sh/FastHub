@@ -78,12 +78,12 @@
             android:id="@+id/reactionsText"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="start"
             android:paddingStart="@dimen/spacing_xs_large"
             android:visibility="gone"
-            tools:text="Hello World"
-            tools:ignore="RtlSymmetry"/>
+            tools:ignore="RtlSymmetry"
+            tools:text="Hello World"/>
 
         <include layout="@layout/comments_dropdown_layout"/>
 

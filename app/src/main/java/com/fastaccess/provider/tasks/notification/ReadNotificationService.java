@@ -1,6 +1,7 @@
 package com.fastaccess.provider.tasks.notification;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 
+import rx.Observable;
 import rx.schedulers.Schedulers;
 
 /**
@@ -30,7 +32,8 @@ public class ReadNotificationService extends IntentService {
 
     public static final int READ_SINGLE = 1;
     public static final int READ_ALL = 2;
-    public static final int OPEN_NOTIFICATIO = 3;
+    public static final int OPEN_NOTIFICATION = 3;
+    public static final int UN_SUBSCRIBE = 4;
     private NotificationCompat.Builder notification;
     private NotificationManager notificationManager;
 
@@ -50,12 +53,21 @@ public class ReadNotificationService extends IntentService {
     public static Intent start(@NonNull Context context, long id, @NonNull String url, boolean onlyRead) {
         Intent intent = new Intent(context.getApplicationContext(), ReadNotificationService.class);
         intent.putExtras(Bundler.start()
-                .put(BundleConstant.EXTRA_TYPE, OPEN_NOTIFICATIO)
+                .put(BundleConstant.EXTRA_TYPE, OPEN_NOTIFICATION)
                 .put(BundleConstant.EXTRA, url)
                 .put(BundleConstant.ID, id)
                 .put(BundleConstant.YES_NO_EXTRA, onlyRead)
                 .end());
         return intent;
+    }
+
+    public static void unSubscribe(@NonNull Context context, long id) {
+        Intent intent = new Intent(context.getApplicationContext(), ReadNotificationService.class);
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA_TYPE, UN_SUBSCRIBE)
+                .put(BundleConstant.ID, id)
+                .end());
+        context.startService(intent);
     }
 
     public static void start(@NonNull Context context, @NonNull long[] ids) {
@@ -71,6 +83,11 @@ public class ReadNotificationService extends IntentService {
         super(ReadNotificationService.class.getSimpleName());
     }
 
+    @Override public void onCreate() {
+        super.onCreate();
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    }
+
     @Override protected void onHandleIntent(@Nullable Intent intent) {
         if (intent != null && intent.getExtras() != null) {
             Bundle bundle = intent.getExtras();
@@ -79,11 +96,22 @@ public class ReadNotificationService extends IntentService {
                 markSingleAsRead(bundle.getLong(BundleConstant.ID));
             } else if (type == READ_ALL) {
                 markMultiAsRead(bundle.getLongArray(BundleConstant.ID));
-            } else if (type == OPEN_NOTIFICATIO) {
+            } else if (type == OPEN_NOTIFICATION) {
                 openNotification(bundle.getLong(BundleConstant.ID), bundle.getString(BundleConstant.EXTRA),
                         bundle.getBoolean(BundleConstant.YES_NO_EXTRA));
+            } else if (type == UN_SUBSCRIBE) {
+                unSubscribeFromThread(bundle.getLong(BundleConstant.ID));
             }
         }
+    }
+
+    private void unSubscribeFromThread(long id) {
+        RestProvider.getNotificationService()
+                .unSubscribe(id)
+                .doOnSubscribe(() -> notify(id, getNotification().build()))
+                .subscribeOn(Schedulers.io())
+                .flatMap(notification1 -> Observable.create(subscriber -> markSingleAsRead(id)))
+                .subscribe(booleanResponse -> cancel(id), throwable -> cancel(id));
     }
 
     private void openNotification(long id, @Nullable String url, boolean readOnly) {
@@ -105,13 +133,12 @@ public class ReadNotificationService extends IntentService {
     private void markSingleAsRead(long id) {
         RestProvider.getNotificationService()
                 .markAsRead(String.valueOf(id))
-                .doOnSubscribe(() -> getNotificationManager().notify(InputHelper.getSafeIntId(id), getNotification().build()))
+                .doOnSubscribe(() -> notify(id, getNotification().build()))
                 .subscribeOn(Schedulers.io())
-                .subscribe(booleanResponse -> {
-                }, Throwable::printStackTrace, () -> getNotificationManager().cancel((int) id));
+                .subscribe(booleanResponse -> cancel(id), throwable -> cancel(id));
     }
 
-    public NotificationCompat.Builder getNotification() {
+    private NotificationCompat.Builder getNotification() {
         if (notification == null) {
             notification = new NotificationCompat.Builder(this)
                     .setContentTitle(getString(R.string.marking_as_read))
@@ -121,10 +148,11 @@ public class ReadNotificationService extends IntentService {
         return notification;
     }
 
-    public NotificationManager getNotificationManager() {
-        if (notificationManager == null) {
-            notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        }
-        return notificationManager;
+    private void notify(long id, Notification notification) {
+        notificationManager.notify(InputHelper.getSafeIntId(id), notification);
+    }
+
+    private void cancel(long id) {
+        notificationManager.cancel(InputHelper.getSafeIntId(id));
     }
 }

@@ -149,10 +149,8 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         } else {
             avatar.setUrl(null, null);
         }
-        if (!InputHelper.isEmpty(commentsModel.getBodyHtml()) && !isPaused) {
-            comment.setNestedScrollingEnabled(false);
-            comment.setGithubContent(commentsModel.getBodyHtml(), null, true);
-        }
+        comment.setNestedScrollingEnabled(false);
+        comment.setGithubContent(commentsModel.getBodyHtml(), null, true);
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
         if (showEmojies) {

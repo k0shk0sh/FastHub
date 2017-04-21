@@ -1,1 +1,1 @@
-include ':app', ':pago', ':markdown',':fastScroller'
+include ':app', ':pago', ':markdown'

@@ -123,7 +123,6 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         return true;
     }
 
-
     @OnLongClick(R.id.fab) boolean onFabLongClick() {
         if (navType == RepoPagerMvp.ISSUES) {
             onAddSelected();
@@ -254,6 +253,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         Repo repoModel = getPresenter().getRepo();
         hideProgress();
         onRepoPinned(AbstractPinnedRepos.isPinned(repoModel.getFullName()));
+        pinText.setText(R.string.pin);
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
         language.setVisibility(InputHelper.isEmpty(repoModel.getLanguage()) ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(repoModel.getLanguage())) language.setText(repoModel.getLanguage());
