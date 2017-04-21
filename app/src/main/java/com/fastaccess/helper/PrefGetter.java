@@ -135,7 +135,7 @@ public class PrefGetter {
         if (prefValue != null) {
             return notificationDurationMillis(context, prefValue);
         }
-        return 0;
+        return -1;
     }
 
     public static long notificationDurationMillis(@NonNull Context context, @NonNull String prefValue) {

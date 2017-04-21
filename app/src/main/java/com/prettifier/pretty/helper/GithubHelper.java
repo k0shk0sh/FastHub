@@ -18,12 +18,6 @@ import java.util.regex.Pattern;
 public class GithubHelper {
     private static Pattern LINK_TAG_MATCHER = Pattern.compile("href=\"(.*?)\"");
     private static Pattern IMAGE_TAG_MATCHER = Pattern.compile("src=\"(.*?)\"");
-    private final static String HASH_LINK_SCRIPT = "<script>\n" +
-            "function scrollTo(hash) {\n" +
-            "var element = document.getElementById(\"user-content-\" + hash);\n" +
-            "element.scrollIntoView();\n" +
-            "}" +
-            "</script>";
 
     @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl, boolean wrap, boolean dark) {
         if (baseUrl == null) {
@@ -80,12 +74,12 @@ public class GithubHelper {
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;\"/>" +
                 "    <link rel=\"stylesheet\" type=\"text/css\" href=\"" + getStyle(dark, wrap) + "\">\n" +
+                "    <script src=\"./intercept-hash.js\"></script>\n" +
                 "</head>\n" +
                 "\n" +
                 "<body>\n" +
                 source +
                 (!wrap ? "\n<script src=\"./intercept-touch.js\"></script>\n" : "\n") +
-                HASH_LINK_SCRIPT + "\n" +
                 "</body>\n" +
                 "\n" +
                 "</html>\n";

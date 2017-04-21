@@ -168,7 +168,8 @@ public class PrettifyWebView extends NestedWebView {
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerActivity.startActivity(getContext(), url.toString());
         } else {
-            if (url.toString().startsWith("#")) {
+            String lastSegment = url.getEncodedFragment();
+            if (lastSegment != null || url.toString().startsWith("#") || url.toString().indexOf('#') != -1) {
                 return;
             }
             SchemeParser.launchUri(getContext(), url, true);
