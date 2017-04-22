@@ -1,10 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">FastHub</string>
-    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
-    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
-    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
-    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
-    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
     <string name="in_progress">Memuat, mohon tunggu…</string>
     <string name="action">Tindakan</string>
     <string name="settings">Pengaturan</string>
@@ -19,31 +13,19 @@
     <string name="share">Bagikan</string>
     <string name="reload">Memuat ulang</string>
     <string name="feeds">Feed</string>
-    <string name="gists" translatable="false">Gists</string>
     <string name="profile">Profil</string>
     <string name="error">Kesalahan</string>
     <string name="press_again_to_exit">Tekan sekali lagi untuk keluar</string>
-    <string name="readme" translatable="false">Readme</string>
     <string name="opened">Dibuka</string>
     <string name="closed">Ditutup</string>
     <string name="repo_chooser">Pilih Repo</string>
-    <string name="commits" translatable="false">Commits</string>
     <string name="followers">Pengikut</string>
     <string name="following">Mengikuti</string>
     <string name="overview">Ikhtisar</string>
-    <string name="repos" translatable="false">Repositories</string>
-    <string name="forked" translatable="false">Forked</string>
-    <string name="starred" translatable="false">Starred</string>
     <string name="follow">Ikuti</string>
     <string name="unfollow">Berhenti mengikuti</string>
     <string name="user">Pengguna</string>
-    <string name="icon_transition" translatable="false">profile_image_transition</string>
-    <string name="title_transition" translatable="false">profile_title_transition</string>
-    <string name="code" translatable="false">Code</string>
-    <string name="issues" translatable="false">Issues</string>
-    <string name="pull_requests" translatable="false">Pull Requests</string>
     <string name="details">Rincian</string>
-    <string name="repo" translatable="false">Repository</string>
     <string name="archive_file_detected_error">Berkas arsip terdeteksi, silakan unduh berkas untuk melihat isinya.</string>
     <string name="minimum_three_chars">Karakter minimum (3)</string>
     <string name="no_file_found">Berkas tidak ditemukan</string>
@@ -54,13 +36,8 @@
     <string name="drafted">Draft</string>
     <string name="releases">Rilis</string>
     <string name="no_body">Tidak ada</string>
-    <string name="download_as_zip" translatable="false">Source code (zip)</string>
-    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">Kontributor</string>
-    <string name="merged" translatable="false">Merged</string>
     <string name="by">Oleh</string>
-    <string name="star" translatable="false">Star</string>
-    <string name="fork" translatable="false">Fork</string>
     <string name="close_issue">Tutup Masalah</string>
     <string name="re_open_issue">Buka Kembali Masalah</string>
     <string name="re_open">Buka Kembali</string>
@@ -100,10 +77,6 @@
     <string name="delete">Hapus</string>
     <string name="comments">Komentar</string>
     <string name="comment">Komentar</string>
-    <string name="issue" translatable="false">Issue</string>
-    <string name="merge" translatable="false">Merge</string>
-    <string name="pull_request" translatable="false">Pull Request</string>
-    <string name="commit" translatable="false">Commit</string>
     <string name="success_merge">Berhasil digabung</string>
     <string name="file">Berkas</string>
     <string name="file_menu">Menu berkas</string>
@@ -116,7 +89,6 @@
     <string name="big_file">Berkas besar</string>
     <string name="big_file_description">Berkas terlalu besar untuk dibuka.\nTekan "OK" untuk mengunduh sebagai gantinya.</string>
     <string name="viewer">Penampil</string>
-    <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">Mengajukan</string>
     <string name="type_here">Ketik di sini</string>
     <string name="description">Deskripsi</string>
@@ -131,7 +103,6 @@
     <string name="required_field">Kolom yang harus diisi</string>
     <string name="successfully_submitted">Berhasil diajukan</string>
     <string name="create_gist">Membuat Gist</string>
-    <string name="gist" translatable="false">Gist</string>
     <string name="clear">Bersihkan</string>
     <string name="users">Pengguna</string>
     <string name="title">Judul</string>
@@ -145,7 +116,6 @@
     <string name="unread_notification">Anda memiliki pemberitahuan yang belum dibaca</string>
     <string name="open">Buka</string>
     <string name="notification_type">Jenis pemberitahuan</string>
-    <string name="back_slash" translatable="false">/</string>
     <string name="labels">Label</string>
     <string name="no_labels">Tidak ada label</string>
     <string name="labels_added_successfully">Label ditambahkan dengan sukses</string>
@@ -170,7 +140,6 @@
     <string name="star_hint">Star/unstar repo</string>
     <string name="watch">Watch</string>
     <string name="watch_hint">Watch/unwatch repo</string>
-    <string name="fork_repo_hint" translatable="false">Fork repo</string>
     <string name="pin_repo_hint">Pin repo untuk mengaksesnya lebih cepat dari navigasi.</string>
     <string name="no_url">URL tidak ditemukan</string>
     <string name="last_updated">Terakhir diperbarui</string>
@@ -181,7 +150,6 @@
     <string name="creation_date">Tanggal pembuatan</string>
     <string name="creation_date_hint">Saat berkas itu dibuat</string>
     <string name="last_updated_hint">Saat berkas terakhir diperbarui</string>
-    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
     <string name="mark_all_as_read">Tandai semua telah dibaca</string>
     <string name="all_notifications">Semua pemberitahuan</string>
     <string name="unread">Belum dibaca</string>
@@ -197,23 +165,14 @@
     <string name="committed">Dikomit</string>
     <string name="downloaded">Diunduh</string>
     <string name="followed">Diikuti</string>
-    <string name="created_gist" translatable="false">@string/gist</string>
-    <string name="gollum" translatable="false">Wiki</string>
-    <string name="commented_on_issue">Komentar pada Masalah</string>
-    <string name="created_issue" translatable="false">Issue</string>
+    <string name="commented_on_issue">Komentar pada Issue</string>
     <string name="member">Anggota</string>
-    <string name="public_event" translatable="false">Open-sourced</string>
     <string name="pr_comment_review">Komentar Pull Request</string>
     <string name="pushed">Push ke</string>
     <string name="team_event">Tim</string>
     <string name="deleted">Dihapus</string>
     <string name="unknown">Tidak diketahui</string>
     <string name="commented_on_commit">Komentar pada komit</string>
-    <string name="organization_event" translatable="false">Organization</string>
-    <string name="card_event" translatable="false">Card</string>
-    <string name="project_event" translatable="false">Project</string>
-    <string name="pr_review_event" translatable="false">Pull Request</string>
-    <string name="repo_event" translatable="false">Repository</string>
     <string name="switch_branch">Beralih cabang</string>
     <string name="assignees">Penerima</string>
     <string name="edit">Sunting</string>
@@ -246,7 +205,6 @@
     <string name="author">Penulis</string>
     <string name="fork_github">Fork di GitHub</string>
     <string name="send_email">Kirim sebuah email</string>
-    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
     <string name="question_concerning_fasthub">Pertanyaan tentang FastHub</string>
     <string name="feedback">Umpan balik</string>
     <string name="report_issue">Laporkan masalah</string>
@@ -265,23 +223,13 @@
     <string name="request_error">Terjadi kesalahan saat meminta ke server, coba lagi nanti</string>
     <string name="marking_as_read">Menandai pemberitahuan telah dibaca</string>
     <string name="forking_gist">Forking gist</string>
-    <string name="forking" formatted="true" translatable="false">Forking %s</string>
-    <string name="staring" formatted="true" translatable="false">Staring %s</string>
-    <string name="un_staring" formatted="true" translatable="false">Unstaring %s</string>
-    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
-    <string name="watching" formatted="true" translatable="false">Watching %s</string>
     <string name="login_using_your_default_browser">Masuk menggunakan browser default Anda</string>
     <string name="or_character">Atau</string>
     <string name="mark_notification_title">Nonaktifkan Pemberitahuan Status Baca</string>
     <string name="mark_notification_summary">Nonaktifkan tandai telah dibaca saat mengklik pemberitahuan.</string>
-    <string name="light_theme_mode" translatable="false">Light Theme</string>
-    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
     <string name="theme_title">Pilih Tema</string>
     <string name="theme_summary">Pilih tema default Anda</string>
-    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
-    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Situs web</string>
-    <string name="twitter" translatable="false">Twitter</string>
     <string name="support_development">Dukung pengembangan</string>
     <string name="success_purchase_message">Terima kasih telah menjadi orang yang sangat mengagumkan!</string>
     <string name="change_theme_warning">Jika tema tidak diterapkan dengan benar, tolong hentikan dan buka aplikasi secara manual.</string>
@@ -317,7 +265,6 @@
     <string name="my_gists">Gist Saya</string>
     <string name="changelog">Catatan Perubahan</string>
     <string name="notifications_hint">Klik untuk membuka daftar pemberitahuan atau geser untuk mengabaikan</string>
-    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
     <string name="home_long_click_hint">Tekan lama untuk menavigasi ke layar utama dari mana saja</string>
     <string name="created">Dibuat</string>
     <string name="assigned">Ditugaskan</string>

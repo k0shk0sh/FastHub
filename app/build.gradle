@@ -92,6 +92,10 @@ android {
     configurations {
         all*.exclude module: 'annotations'
     }
+
+    dexOptions {
+        jumboMode true
+    }
 }
 
 repositories {
