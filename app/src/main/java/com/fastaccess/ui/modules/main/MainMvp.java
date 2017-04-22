@@ -2,7 +2,6 @@ package com.fastaccess.ui.modules.main;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -34,27 +33,9 @@ interface MainMvp {
     interface View extends BaseMvp.FAView {
 
         void onNavigationChanged(@NavigationType int navType);
-
-        void onOpenDrawer();
-
-        void onCloseDrawer();
-
-        void openFasHubRepo();
-
-        void onSupportDevelopment();
-
-        void onEnableAds();
-
-        void onOpenGists(boolean myGists);
-
-        void onOpenPinnedRepos();
-
-        void onOpenProfile();
-
-        void onOpenOrgs();
     }
 
-    interface Presenter extends BaseMvp.FAPresenter, NavigationView.OnNavigationItemSelectedListener,
+    interface Presenter extends BaseMvp.FAPresenter,
             BottomNavigation.OnMenuItemSelectionListener {
 
         boolean canBackPress(@NonNull DrawerLayout drawerLayout);

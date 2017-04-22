@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.helper.BundleConstant;
@@ -22,12 +23,12 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
     private CommitFileListModel files = new CommitFileListModel();
 
     @Override public void onItemClick(int position, View v, CommitFileModel item) {
+        if (v.getId() == R.id.open) {
 
+        }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommitFileModel item) {
-
-    }
+    @Override public void onItemLongClick(int position, View v, CommitFileModel item) {}
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {

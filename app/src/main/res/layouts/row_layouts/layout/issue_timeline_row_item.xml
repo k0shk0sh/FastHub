@@ -7,7 +7,8 @@
     android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/layout_margin"
     android:layout_marginStart="@dimen/layout_margin"
-    android:layout_marginTop="@dimen/spacing_normal">
+    android:layout_marginTop="@dimen/spacing_normal"
+    android:clipChildren="false">
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/stateImage"
@@ -70,7 +71,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:text="For a divided large loaf, add some champaign and cinnamon."/>
+                    tools:text="For a divided large loaf, add some champaign and cinnamon."
+                    tools:visibility="visible"/>
             </LinearLayout>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>

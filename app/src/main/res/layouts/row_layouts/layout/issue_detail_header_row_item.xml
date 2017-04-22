@@ -58,7 +58,7 @@
 
         </LinearLayout>
 
-        <com.prettifier.pretty.PrettifyWebView
+        <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

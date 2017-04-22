@@ -35,6 +35,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     @BindView(R.id.deletion) FontTextView deletion;
     @BindView(R.id.status) FontTextView status;
     @BindView(R.id.toggle) View toggle;
+    @BindView(R.id.open) View open;
     @BindString(R.string.changes) String changesText;
     @BindString(R.string.addition) String additionText;
     @BindString(R.string.delete) String deletionText;
@@ -47,9 +48,11 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     private OnToggleView onToggleView;
 
     @Override public void onClick(View v) {
-        int position = getAdapterPosition();
-        onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-        onToggle(onToggleView.isCollapsed(position));
+        if (v.getId() != R.id.open) {
+            int position = getAdapterPosition();
+            onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
+            onToggle(onToggleView.isCollapsed(position));
+        }
     }
 
     private void onToggle(boolean expanded) {
@@ -67,6 +70,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     private CommitFilesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
                                   @NonNull OnToggleView onToggleView) {
         super(itemView, adapter);
+        open.setOnClickListener(this);
         this.onToggleView = onToggleView;
         patchAdditionColor = ViewHelper.getPatchAdditionColor(itemView.getContext());
         patchDeletionColor = ViewHelper.getPatchDeletionColor(itemView.getContext());

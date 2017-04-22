@@ -64,7 +64,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             return;
         }
         adapter.insertItems(items);
-//        recycler.scrollToPosition(items.size());
     }
 
     @Override protected int fragmentLayout() {
@@ -75,7 +74,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
-        recycler.setItemViewCacheSize(30);
         stateLayout.setOnReloadListener(this);
         adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
         adapter.setListener(getPresenter());

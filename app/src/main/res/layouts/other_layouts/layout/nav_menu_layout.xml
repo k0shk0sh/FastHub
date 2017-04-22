@@ -12,4 +12,4 @@
     app:headerLayout="@layout/drawer_header"
     app:itemIconTint="?colorAccent"
     app:itemTextColor="?colorAccent"
-    app:menu="@menu/extras_drawer_menu"/>
+    app:menu="@menu/drawer_menu"/>

@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -60,7 +61,7 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
             }
             if (!InputHelper.isEmpty(review.getBody())) {
                 body.setVisibility(View.VISIBLE);
-                body.setText(review.getBody().replaceAll("\n", " "));
+                HtmlHelper.getComment(body, review.getBody());
             } else {
                 body.setVisibility(View.GONE);
             }

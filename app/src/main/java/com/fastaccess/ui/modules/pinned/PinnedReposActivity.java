@@ -27,7 +27,7 @@ public class PinnedReposActivity extends BaseActivity {
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {

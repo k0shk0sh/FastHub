@@ -139,6 +139,8 @@ dependencies {
     compile 'io.requery:requery:1.3.0'
     compile 'io.requery:requery-android:1.3.0'
     compile('com.mikepenz:aboutlibraries:5.9.5@aar') { transitive = true }
+    compile 'com.github.nightwhistler:HtmlSpanner:0.4'
+    compile 'me.saket:better-link-movement-method:1.2'
     compile project(':pago')
     compile project(':markdown')
     annotationProcessor 'io.requery:requery-processor:1.2.0'

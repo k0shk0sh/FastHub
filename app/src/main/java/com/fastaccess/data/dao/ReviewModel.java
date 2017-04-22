@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReviewStateType;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
@@ -19,7 +20,7 @@ import lombok.Setter;
 
     private long id;
     private User user;
-    private String body;
+    @SerializedName("body_html") private String body;
     private ReviewStateType state;
     private Date submittedAt;
     private String commitId;

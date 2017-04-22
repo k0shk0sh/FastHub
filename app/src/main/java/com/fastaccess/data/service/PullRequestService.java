@@ -81,6 +81,6 @@ public interface PullRequestService {
     Observable<PullRequestStatusModel> getPullStatus(@Path("owner") String owner, @Path("repo") String repo, @Path("ref") String ref);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/reviews?per_page=200")
-    @Headers("Accept: application/vnd.github.black-cat-preview+json")
+    @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
     Observable<Pageable<ReviewModel>> getReviews(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
 }

@@ -1,9 +1,4 @@
-body {
- background: #22252A;
-}
-
 .prettyprint {
-  background: #22252A;
   font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
   border: 0 !important;
 }
@@ -30,7 +25,6 @@ li.L7,
 li.L8,
 li.L9 {
   padding-left: 0.5em;
-  background-color: #22252A;
   list-style-type: decimal;
 }
 

@@ -55,7 +55,6 @@ import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import icepick.Icepick;
 import icepick.State;
-import rx.Subscription;
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -64,12 +63,13 @@ import rx.Subscription;
 public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
-    private Subscription themeSubscription;
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) AppBarLayout shadowView;
-    @Nullable @BindView(R.id.drawer) DrawerLayout drawer;
+    @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
+
+    private long backPressTimer;
     private Toast toast;
 
     @LayoutRes protected abstract int layout();
@@ -237,17 +237,22 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         } else if (item.getItemId() == R.id.orgs) {
             onOpenOrgsDialog();
             return true;
+        } else if (item.getItemId() == R.id.enableAds) {
+            boolean isEnabled = !PrefGetter.isAdsEnabled();
+            PrefGetter.setAdsEnabled(isEnabled);
+            showHideAds();
+            item.setChecked(isEnabled);
+            return true;
         }
         return false;
     }
 
     @Override public void onBackPressed() {
-        if (drawer == null || !drawer.isDrawerOpen(GravityCompat.START)) {
-            super.onBackPressed();
-        } else if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            boolean clickTwiceToExit = !PrefGetter.isTwiceBackButtonDisabled();
+            superOnBackPressed(clickTwiceToExit);
         }
     }
 
@@ -266,6 +271,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onOpenSettings() {
         SettingsBottomSheetDialog.show(getSupportFragmentManager());
+    }
+
+    protected void hideHome() {
+        if (extraNav != null) extraNav.getMenu().removeGroup(R.id.home_group);
     }
 
     protected void onOpenOrgsDialog() {
@@ -350,6 +359,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
                 }
             }
+            if (BuildConfig.FDROID) {
+                Menu menu = extraNav.getMenu();
+                menu.findItem(R.id.enableAds).setVisible(false);
+                menu.findItem(R.id.supportDev).setVisible(false);
+            } else {
+                extraNav.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
+            }
         }
     }
 
@@ -382,6 +398,30 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 });
             }
         }
+    }
+
+    private void superOnBackPressed(boolean didClickTwice) {
+        if (this instanceof MainActivity) {
+            if (didClickTwice) {
+                if (canExit()) {
+                    super.onBackPressed();
+                }
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private boolean canExit() {
+        if (backPressTimer + 2000 > System.currentTimeMillis()) {
+            return true;
+        } else {
+            Toast.makeText(getBaseContext(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+        }
+        backPressTimer = System.currentTimeMillis();
+        return false;
     }
 
     @Nullable private View getToolbarNavigationIcon(Toolbar toolbar) {

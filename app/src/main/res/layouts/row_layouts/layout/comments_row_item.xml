@@ -65,20 +65,20 @@
                 android:src="@drawable/ic_arrow_drop_down"/>
         </LinearLayout>
 
-        <com.prettifier.pretty.PrettifyWebView
+        <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
             android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_normal"
-            app:webview_background="?card_background"/>
+            android:textIsSelectable="true"/>
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/reactionsText"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
             android:gravity="start"
             android:paddingStart="@dimen/spacing_xs_large"
             android:visibility="gone"

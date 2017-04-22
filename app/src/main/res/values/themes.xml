@@ -12,7 +12,8 @@
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
-        <item name="icon_color">@color/black</item> <!-- to display the icons properly since this theme is the default -->
+        <item name="icon_color">@color/darkWindowBackground</item> <!-- to display the icons properly since this theme is the default -->
+
     </style>
 
 </resources>

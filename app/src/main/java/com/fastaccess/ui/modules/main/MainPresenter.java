@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.MenuItem;
 
 import com.fastaccess.R;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -76,41 +75,6 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 .add(R.id.container, toAdd, toAdd.getClass().getSimpleName())
                 .commit();
         toAdd.onHiddenChanged(false);
-    }
-
-    @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (getView() != null) {
-            getView().onCloseDrawer();
-            if (item.getItemId() == R.id.logout) {
-                getView().onLogoutPressed();
-                return true;
-            } else if (item.getItemId() == R.id.fhRepo) {
-                getView().openFasHubRepo();
-            } else if (item.getItemId() == R.id.settings) {
-                getView().onOpenSettings();
-            } else if (item.getItemId() == R.id.supportDev) {
-                getView().onSupportDevelopment();
-            } else if (item.getItemId() == R.id.enableAds) {
-                getView().onEnableAds();
-                return true;
-            } else if (item.getItemId() == R.id.gists) {
-                getView().onOpenGists(false);
-                return true;
-            } else if (item.getItemId() == R.id.myGists) {
-                getView().onOpenGists(true);
-                return true;
-            } else if (item.getItemId() == R.id.pinnedMenu) {
-                getView().onOpenPinnedRepos();
-                return true;
-            } else if (item.getItemId() == R.id.profile) {
-                getView().onOpenProfile();
-                return true;
-            } else if (item.getItemId() == R.id.orgs) {
-                getView().onOpenOrgs();
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {

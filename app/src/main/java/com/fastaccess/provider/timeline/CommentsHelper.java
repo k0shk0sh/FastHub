@@ -49,7 +49,7 @@ public class CommentsHelper {
         }
     }
 
-    private static String getEmojiByUnicode(int unicode) {
+    public static String getEmojiByUnicode(int unicode) {
         return new String(Character.toChars(unicode));
     }
 
