@@ -1,0 +1,386 @@
+<resources>
+    <string name="app_name" translatable="false">FastHub</string>
+    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
+    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
+    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
+    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
+    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
+    <string name="in_progress">Memuat, mohon tunggu…</string>
+    <string name="action">Tindakan</string>
+    <string name="settings">Pengaturan</string>
+    <string name="cancel">Batal</string>
+    <string name="ok">OK</string>
+    <string name="no_data">Tidak ada data yang tersedia</string>
+    <string name="search">Cari</string>
+    <string name="please_login">Silakan masuk untuk melanjutkan menggunakan FastHub</string>
+    <string name="sign_in_to_github">Masuk ke akun GitHub Anda untuk mendapatkan pengalaman terbaik dari FastHub</string>
+    <string name="failed_login">Gagal untuk masuk</string>
+    <string name="sign_in">Masuk</string>
+    <string name="share">Bagikan</string>
+    <string name="reload">Memuat ulang</string>
+    <string name="feeds">Feed</string>
+    <string name="gists" translatable="false">Gists</string>
+    <string name="profile">Profil</string>
+    <string name="error">Kesalahan</string>
+    <string name="press_again_to_exit">Tekan sekali lagi untuk keluar</string>
+    <string name="readme" translatable="false">Readme</string>
+    <string name="opened">Dibuka</string>
+    <string name="closed">Ditutup</string>
+    <string name="repo_chooser">Pilih Repo</string>
+    <string name="commits" translatable="false">Commits</string>
+    <string name="followers">Pengikut</string>
+    <string name="following">Mengikuti</string>
+    <string name="overview">Ikhtisar</string>
+    <string name="repos" translatable="false">Repositories</string>
+    <string name="forked" translatable="false">Forked</string>
+    <string name="starred" translatable="false">Starred</string>
+    <string name="follow">Ikuti</string>
+    <string name="unfollow">Berhenti mengikuti</string>
+    <string name="user">Pengguna</string>
+    <string name="icon_transition" translatable="false">profile_image_transition</string>
+    <string name="title_transition" translatable="false">profile_title_transition</string>
+    <string name="code" translatable="false">Code</string>
+    <string name="issues" translatable="false">Issues</string>
+    <string name="pull_requests" translatable="false">Pull Requests</string>
+    <string name="details">Rincian</string>
+    <string name="repo" translatable="false">Repository</string>
+    <string name="archive_file_detected_error">Berkas arsip terdeteksi, silakan unduh berkas untuk melihat isinya.</string>
+    <string name="minimum_three_chars">Karakter minimum (3)</string>
+    <string name="no_file_found">Berkas tidak ditemukan</string>
+    <string name="no_readme_found">Readme tidak ditemukan</string>
+    <string name="downloading">Mengunduh…</string>
+    <string name="downloading_file">Mengunduh berkas…</string>
+    <string name="released">Dirilis</string>
+    <string name="drafted">Draft</string>
+    <string name="releases">Rilis</string>
+    <string name="no_body">Tidak ada</string>
+    <string name="download_as_zip" translatable="false">Source code (zip)</string>
+    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
+    <string name="contributors">Kontributor</string>
+    <string name="merged" translatable="false">Merged</string>
+    <string name="by">Oleh</string>
+    <string name="star" translatable="false">Star</string>
+    <string name="fork" translatable="false">Fork</string>
+    <string name="close_issue">Tutup Masalah</string>
+    <string name="re_open_issue">Buka Kembali Masalah</string>
+    <string name="re_open">Buka Kembali</string>
+    <string name="close">Tutup</string>
+    <string name="success_re_opened">Berhasil dibuka kembali</string>
+    <string name="lock_issue_details">Maksud dari mengunci percakapan:\n&#183;Pengguna lain tidak dapat menambahkan komentar baru untuk masalah ini.\n&#183;Kamu dan kolaborator
+        lainnya yang mempunyai akses ke repositori ini masih bisa meninggalkan komentar yang bisa dilihat oleh orang lain.\n&#183;Anda selalu dapat membuka kembali masalah ini
+        di masa mendatang.\n</string>
+    <string name="unlock_issue_details">Maksud dari membuka kunci percakapan:\n&#183;Semua orang akan bisa mengomentari masalah ini sekali lagi.\n&#183;Anda selalu
+        dapat mengunci masalah ini lagi di masa mendatang.\n</string>
+    <string name="lock_issue">Kunci percakapan</string>
+    <string name="unlock_issue">Membuka kunci percakapan</string>
+    <string name="error_closing_issue">Terjadi kesalahan saat menutup masalah, silakan coba lagi nanti.</string>
+    <string name="error_re_opening_issue">Terjadi kesalahan saat membuka kembali masalah, coba lagi nanti.</string>
+    <string name="success_closed">Berhasil menutup masalah</string>
+    <string name="no_description_provided"><p>Tidak ada deskripsi yang diberikan</p></string>
+    <string name="header_one">Header Satu</string>
+    <string name="header_two">Header Dua</string>
+    <string name="header_three">Header Tiga</string>
+    <string name="bold">Tebal</string>
+    <string name="italic">Miring</string>
+    <string name="strike_through">Dicoret</string>
+    <string name="bullet">Daftar peluru</string>
+    <string name="numbered_list">Daftar nomor</string>
+    <string name="header">Header</string>
+    <string name="quote">Kutipan</string>
+    <string name="link">Tautan</string>
+    <string name="image">Gambar</string>
+    <string name="deletion">Penghapusan</string>
+    <string name="addition">Penambahan</string>
+    <string name="changes">Perubahan</string>
+    <string name="status">Status</string>
+    <string name="confirm_message">Apakah Anda yakin?</string>
+    <string name="success">Berhasil</string>
+    <string name="to">untuk</string>
+    <string name="error_deleting_comment">Kesalahan menghapus komentar</string>
+    <string name="delete">Hapus</string>
+    <string name="comments">Komentar</string>
+    <string name="comment">Komentar</string>
+    <string name="issue" translatable="false">Issue</string>
+    <string name="merge" translatable="false">Merge</string>
+    <string name="pull_request" translatable="false">Pull Request</string>
+    <string name="commit" translatable="false">Commit</string>
+    <string name="success_merge">Berhasil digabung</string>
+    <string name="file">Berkas</string>
+    <string name="file_menu">Menu berkas</string>
+    <string name="files">Berkas</string>
+    <string name="download">Unduh</string>
+    <string name="back">Kembali</string>
+    <string name="parent_folder">Direktori induk</string>
+    <string name="code_viewer">Penampil kode</string>
+    <string name="open_in_browser">Buka di browser</string>
+    <string name="big_file">Berkas besar</string>
+    <string name="big_file_description">Berkas terlalu besar untuk dibuka.\nTekan "OK" untuk mengunduh sebagai gantinya.</string>
+    <string name="viewer">Penampil</string>
+    <string name="markdown" translatable="false">Markdown</string>
+    <string name="submit">Mengajukan</string>
+    <string name="type_here">Ketik di sini</string>
+    <string name="description">Deskripsi</string>
+    <string name="file_name">Nama berkas</string>
+    <string name="file_name_hint">Nama berkas dengan ekstensi</string>
+    <string name="create_secret_gist">Gist Rahasia</string>
+    <string name="create_public_gist">Gist Publik</string>
+    <string name="submit_as">Mengajukan sebagai</string>
+    <string name="delete_gist">Hapus</string>
+    <string name="error_deleting_gist">Kesalahan menghapus Gist</string>
+    <string name="no_files">Tidak ada berkas</string>
+    <string name="required_field">Kolom yang harus diisi</string>
+    <string name="successfully_submitted">Berhasil diajukan</string>
+    <string name="create_gist">Membuat Gist</string>
+    <string name="gist" translatable="false">Gist</string>
+    <string name="clear">Bersihkan</string>
+    <string name="users">Pengguna</string>
+    <string name="title">Judul</string>
+    <string name="milestone">Milestone</string>
+    <string name="assign_myself">Menugaskan diri saya</string>
+    <string name="submit_issue">Kirimkan Masalah</string>
+    <string name="error_creating_issue">Kesalahan membuat masalah</string>
+    <string name="create_issue">Membuat Masalah</string>
+    <string name="error_highlighting_editor">Harap tidak memilih highlighting untuk terus mengedit.</string>
+    <string name="notifications">Pemberitahuan</string>
+    <string name="unread_notification">Anda memiliki pemberitahuan yang belum dibaca</string>
+    <string name="open">Buka</string>
+    <string name="notification_type">Jenis pemberitahuan</string>
+    <string name="back_slash" translatable="false">/</string>
+    <string name="labels">Label</string>
+    <string name="no_labels">Tidak ada label</string>
+    <string name="labels_added_successfully">Label ditambahkan dengan sukses</string>
+    <string name="submit_feedback">Berikan umpan balik</string>
+    <string name="logout">Keluar</string>
+    <string name="thank_you_for_feedback">Terima kasih atas umpan balik Anda!</string>
+    <string name="current_version">Versi sekarang</string>
+    <string name="version">Versi</string>
+    <string name="support_development_enable_ads">Dukung pengembangan, aktifkan iklan</string>
+    <string name="username">Nama pengguna</string>
+    <string name="password">Kata sandi</string>
+    <string name="twoFactor">Kode otentikasi dua faktor</string>
+    <string name="login">Masuk</string>
+    <string name="gist_description">Deskripsi Gist</string>
+    <string name="avatar_click_hint">Dimanapun ada sebuah avatar pengguna, Anda bisa mengkliknya untuk membuka profil pengguna</string>
+    <string name="feeds_fork_hint">Klik lama pada fork untuk membuka repo asli atau cabang.</string>
+    <string name="click_here_to_download_release_hint">Unduh rilis</string>
+    <string name="options">Opsi</string>
+    <string name="click_file_option_hint">Unduh berkas atau bagikan direktori</string>
+    <string name="comment_hint">Ketuk komentar untuk memberi tag pengarangnya atau untuk mengedit komentar Anda.
+        \nTekan lama komentar Anda untuk menghapusnya.</string>
+    <string name="star_hint">Star/unstar repo</string>
+    <string name="watch">Watch</string>
+    <string name="watch_hint">Watch/unwatch repo</string>
+    <string name="fork_repo_hint" translatable="false">Fork repo</string>
+    <string name="pin_repo_hint">Pin repo untuk mengaksesnya lebih cepat dari navigasi.</string>
+    <string name="no_url">URL tidak ditemukan</string>
+    <string name="last_updated">Terakhir diperbarui</string>
+    <string name="preview">Pratinjau</string>
+    <string name="view_code">Sintaks highlighter</string>
+    <string name="click_to_toggle_highlighting">Toggle sintaks highlighting.
+        \nGulirkan ikon editor Markdown untuk opsi lainnya.</string>
+    <string name="creation_date">Tanggal pembuatan</string>
+    <string name="creation_date_hint">Saat berkas itu dibuat</string>
+    <string name="last_updated_hint">Saat berkas terakhir diperbarui</string>
+    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
+    <string name="mark_all_as_read">Tandai semua telah dibaca</string>
+    <string name="all_notifications">Semua pemberitahuan</string>
+    <string name="unread">Belum dibaca</string>
+    <string name="all">Semua</string>
+    <string name="delete_repo">Hapus Repo</string>
+    <string name="delete_repo_warning">Menghapus repo ini tidak dapat dikembalikan</string>
+    <string name="thirty_minutes">30 menit</string>
+    <string name="twenty_minutes">20 menit</string>
+    <string name="ten_minutes">10 menit</string>
+    <string name="five_minutes">5 menit</string>
+    <string name="one_minute">1 menit</string>
+    <string name="created_repo">Dibuat</string>
+    <string name="committed">Dikomit</string>
+    <string name="downloaded">Diunduh</string>
+    <string name="followed">Diikuti</string>
+    <string name="created_gist" translatable="false">@string/gist</string>
+    <string name="gollum" translatable="false">Wiki</string>
+    <string name="commented_on_issue">Komentar pada Masalah</string>
+    <string name="created_issue" translatable="false">Issue</string>
+    <string name="member">Anggota</string>
+    <string name="public_event" translatable="false">Open-sourced</string>
+    <string name="pr_comment_review">Komentar Pull Request</string>
+    <string name="pushed">Push ke</string>
+    <string name="team_event">Tim</string>
+    <string name="deleted">Dihapus</string>
+    <string name="unknown">Tidak diketahui</string>
+    <string name="commented_on_commit">Komentar pada komit</string>
+    <string name="organization_event" translatable="false">Organization</string>
+    <string name="card_event" translatable="false">Card</string>
+    <string name="project_event" translatable="false">Project</string>
+    <string name="pr_review_event" translatable="false">Pull Request</string>
+    <string name="repo_event" translatable="false">Repository</string>
+    <string name="switch_branch">Beralih cabang</string>
+    <string name="assignees">Penerima</string>
+    <string name="edit">Sunting</string>
+    <string name="update_issue">Perbarui Masalah</string>
+    <string name="update_pull_request">Perbarui Pull Request</string>
+    <string name="no_milestones">Tidak ada milestone</string>
+    <string name="add">Tambahkan</string>
+    <string name="done">Selesai</string>
+    <string name="home">Beranda</string>
+    <string name="create_milestone">Buat Milestone</string>
+    <string name="error_creating_milestone">Kesalahan membuat milestone</string>
+    <string name="due_on">Jatuh tempo pada</string>
+    <string name="no_assignees">Tidak ada orang yang ditugaskan</string>
+    <string name="this_value">ini</string>
+    <string name="commits_reflected">Komit telah beralih ke cabang yang dipilih</string>
+    <string name="general_settings">Umum</string>
+    <string name="background_job_summary">Ubah seberapa sering FastHub memeriksa pemberitahuan baru</string>
+    <string name="background_job_title">Jarak waktu sinkronisasi pemberitahuan</string>
+    <string name="every">Setiap</string>
+    <string name="behavior">Tindakan</string>
+    <string name="recycler_view_animation_summary">Aktifkan daftar animasi</string>
+    <string name="recycler_view_animation_title">Daftar animasi</string>
+    <string name="back_button_summary">Nonaktifkan dialog yang mencegah penutupan aplikasi yang tidak disengaja</string>
+    <string name="back_button_title">Tekan kembali untuk keluar</string>
+    <string name="unsaved_data_warning">Perubahan yang belum disimpan akan dibuang</string>
+    <string name="private_repo">Pribadi</string>
+    <string name="rect_avatar_summary">Gunakan avatar persegi panjang bulat bukan avatar melingkar</string>
+    <string name="rect_avatar_title">Tampilan avatar</string>
+    <string name="rate_app">Nilai aplikasi ini</string>
+    <string name="author">Penulis</string>
+    <string name="fork_github">Fork di GitHub</string>
+    <string name="send_email">Kirim sebuah email</string>
+    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
+    <string name="question_concerning_fasthub">Pertanyaan tentang FastHub</string>
+    <string name="feedback">Umpan balik</string>
+    <string name="report_issue">Laporkan masalah</string>
+    <string name="report_issue_here">Mempunyai masalah? Laporkan di sini</string>
+    <string name="about">Tentang</string>
+    <string name="notification_settings">Pemberitahuan</string>
+    <string name="turn_off">Matikan</string>
+    <string name="unauthorized_user">Pengguna tidak sah</string>
+    <string name="two_factors_otp_error">Dua faktor OTP diperlukan</string>
+    <string name="no_issue">Tidak ada masalah</string>
+    <string name="copy">Salin</string>
+    <string name="success_copied">Disalin</string>
+    <string name="commit_message">Pesan komit</string>
+    <string name="network_error">Terjadi kesalahan saat berkomunikasi ke server</string>
+    <string name="unexpected_error">Kesalahan tak terduga saat meminta API</string>
+    <string name="request_error">Terjadi kesalahan saat meminta ke server, coba lagi nanti</string>
+    <string name="marking_as_read">Menandai pemberitahuan telah dibaca</string>
+    <string name="forking_gist">Forking gist</string>
+    <string name="forking" formatted="true" translatable="false">Forking %s</string>
+    <string name="staring" formatted="true" translatable="false">Staring %s</string>
+    <string name="un_staring" formatted="true" translatable="false">Unstaring %s</string>
+    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
+    <string name="watching" formatted="true" translatable="false">Watching %s</string>
+    <string name="login_using_your_default_browser">Masuk menggunakan browser default Anda</string>
+    <string name="or_character">Atau</string>
+    <string name="mark_notification_title">Nonaktifkan Pemberitahuan Status Baca</string>
+    <string name="mark_notification_summary">Nonaktifkan tandai telah dibaca saat mengklik pemberitahuan.</string>
+    <string name="light_theme_mode" translatable="false">Light Theme</string>
+    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="theme_title">Pilih Tema</string>
+    <string name="theme_summary">Pilih tema default Anda</string>
+    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
+    <string name="google_plus" translatable="false">Google+</string>
+    <string name="website">Situs web</string>
+    <string name="twitter" translatable="false">Twitter</string>
+    <string name="support_development">Dukung pengembangan</string>
+    <string name="success_purchase_message">Terima kasih telah menjadi orang yang sangat mengagumkan!</string>
+    <string name="change_theme_warning">Jika tema tidak diterapkan dengan benar, tolong hentikan dan buka aplikasi secara manual.</string>
+    <string name="pin">Pin</string>
+    <string name="pinned">Disematkan</string>
+    <string name="unpin">Jangan disematkan</string>
+    <string name="empty_pinned_repos">Tidak ada repositori yang disematkan, pin beberapa untuk melihat mereka di sini</string>
+    <string name="yes">Ya</string>
+    <string name="no">Tidak</string>
+    <string name="no_feeds">Tidak ada feed</string>
+    <string name="no_gists">Tidak ada gist</string>
+    <string name="no_comments">Tidak ada komentar</string>
+    <string name="no_notifications">Tidak ada pemberitahuan</string>
+    <string name="no_followers">Tidak ada pengikut</string>
+    <string name="no_followings">Tidak mengikuti siapapun</string>
+    <string name="no_repos">Tidak ada repositori</string>
+    <string name="no_starred_repos">Tidak ada repositori yang berbintang</string>
+    <string name="no_commits">Tidak ada komit</string>
+    <string name="no_contributors">Tidak ada kontributor</string>
+    <string name="no_releases">Tidak ada rilis</string>
+    <string name="no_closed_issues">Tidak ada masalah tertutup</string>
+    <string name="no_opened_issues">Tidak ada masalah terbuka</string>
+    <string name="no_events">Tidak ada peristiwa</string>
+    <string name="no_open_pull_requests">Tidak ada pull request terbuka</string>
+    <string name="no_closed_pull_request">Tidak ada pull request tertutup</string>
+    <string name="no_search_results">Tidak ada hasil pencarian</string>
+    <string name="read_write_permission_explanation">Tolong menerima perintah izin dari FastHub untuk menyimpan berkas di
+        perangkat Anda untuk dapat meninjau mereka</string>
+    <string name="public_gists">Gist Publik</string>
+    <string name="enable_ads">Aktifkan Iklan</string>
+    <string name="no_issues">Tidak ada masalah</string>
+    <string name="no_unread_notifications">Tidak ada pemberitahuan yang belum dibaca.</string>
+    <string name="my_gists">Gist Saya</string>
+    <string name="changelog">Catatan Perubahan</string>
+    <string name="notifications_hint">Klik untuk membuka daftar pemberitahuan atau geser untuk mengabaikan</string>
+    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
+    <string name="home_long_click_hint">Tekan lama untuk menavigasi ke layar utama dari mana saja</string>
+    <string name="created">Dibuat</string>
+    <string name="assigned">Ditugaskan</string>
+    <string name="mentioned">Disebutkan</string>
+    <string name="name">Nama</string>
+    <string name="color">Warna</string>
+    <string name="create_label">Buat Label</string>
+    <string name="organization">Organisasi</string>
+    <string name="organizations">Organisasi</string>
+    <string name="people">Orang</string>
+    <string name="teams">Tim</string>
+    <string name="members">Anggota</string>
+    <string name="no_members">Tidak ada anggota</string>
+    <string name="no_teams">Tidak ada tim</string>
+    <string name="no_orgs">Tidak ada organisasi</string>
+    <string name="mark_as_read">Tandai telah dibaca</string>
+    <string name="animations">Animasi</string>
+    <string name="dialog_animation_summary">Aktifkan animasi popup</string>
+    <string name="dialog_animation_title">Animasi popup</string>
+    <string name="milestones">Milestone</string>
+    <string name="assignee">Penerima</string>
+    <string name="checks_failed">Semua cek gagal</string>
+    <string name="checks_pending">Semua cek tertunda</string>
+    <string name="checks_passed">Semua cek dilewati</string>
+    <string name="sort">Urutkan</string>
+    <string name="newest">Terbaru</string>
+    <string name="oldest">Terlama</string>
+    <string name="most_commented">Paling besar dikomentari</string>
+    <string name="least_commented">Paling sedikit dikomentari</string>
+    <string name="recently_updated">Baru saja diperbarui</string>
+    <string name="least_recent_updated">Baru-baru ini diperbarui</string>
+    <string name="empty_search_error">Kolom pencarian tidak boleh kosong</string>
+    <string name="long_press_repo_fab_hint">Tekan lama untuk membuat tiket masalah dengan cepat</string>
+    <string name="commit_can_be_merged">Pull request ini dapat digabungkan</string>
+    <string name="reviewed">ditinjau</string>
+    <string name="dismissed_review">menolak tinjauan mereka</string>
+    <string name="approved_these_changes">menyetujui perubahan ini</string>
+    <string name="no_reactions">Tidak ada reaksi</string>
+    <string name="reactions">Reaksi</string>
+    <string name="wrap_content">Pembungkus konten</string>
+    <string name="wrap_code_summary">Bungkus kode di penampil kode secara default</string>
+    <string name="wrap_code_title">Pembungkus Kode</string>
+    <string name="open_source_libs">Pustaka sumber terbuka</string>
+    <string name="enable_notification_sound_summary">Aktifkan suara pemberitahuan setelah pemberitahuan diterima.</string>
+    <string name="enable_notification_sound_title">Aktifkan suara pemberitahuan</string>
+    <string name="login_with_personal_token">Masuk dengan token pribadi</string>
+    <string name="personal_token">Token Pribadi</string>
+    <string name="basic_login">Masuk melalui otentikasi dasar</string>
+    <string name="no_orgs_description">Jika Anda benar-benar terikat pada sebuah organisasi dan Anda tidak dapat melihatnya di sini
+        silakan ikuti tautan di bawah ini.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Alasan FastHub tidak menggunakan "Akses Token" adalah karena
+        fakta bahwa jika salah satu organisasi Anda memiliki pengaturan 2FA yang diaktifkan, Kode OTP tersebut hanya dapat bertahan maksimum satu menit atau lebih, yang akan menyebabkan
+        FastHub untuk mengeluarkan Anda dengan segera karena GitHub menanggapi hal tersebut dengan akses yang tidak sah.</string>
+    <string name="insert">Memasukkan</string>
+    <string name="select">Pilih</string>
+    <string name="select_picture">Pilih Gambar</string>
+    <string name="support_with_2_00">Dukung dengan $2.00</string>
+    <string name="support_with_5_00">Dukung dengan $5.00</string>
+    <string name="support_with_10_00">Dukung dengan $10.00</string>
+    <string name="support_with_20_00">Dukung dengan $20.00</string>
+    <string name="app_language">Bahasa Aplikasi</string>
+    <string name="choose_language_title">Pilih Bahasa</string>
+    <string name="choose_language_summary">Pilih bahasa pilihan Anda</string>
+    <string name="un_subscribe">Berhenti berlangganan</string>
+    <string name="from">dari</string>
+    <string name="in_value">di</string>
+</resources>
