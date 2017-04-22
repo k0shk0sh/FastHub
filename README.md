@@ -88,7 +88,7 @@ _(To download the app from here, please look at the [latest release](https://git
 - [**MarkDown**](https://github.com/zzhoujay/Markdown) for _Markdown_ editor highlighting
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
-- [**MatrialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
+- [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
 - **Firebase** analytics, crash reporting, ads
 - **Android Support Libraries**, the almighty ;-)
 
