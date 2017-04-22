@@ -28,7 +28,7 @@ public class StateLayout extends NestedScrollView {
     private static final int SHOW_RELOAD_STATE = 4;
     private static final int SHOW_EMPTY_STATE = 7;
     private static final int HIDDEN = 5;
-    private static final int SHOWEN = 6;
+    private static final int SHOWN = 6;
     private OnClickListener onReloadListener;
 
     @BindView(R.id.empty_text) FontTextView emptyText;
@@ -117,7 +117,7 @@ public class StateLayout extends NestedScrollView {
         if (visibility == GONE || visibility == INVISIBLE) {
             layoutState = HIDDEN;
         } else {
-            layoutState = SHOWEN;
+            layoutState = SHOWN;
         }
     }
 
@@ -165,7 +165,7 @@ public class StateLayout extends NestedScrollView {
             case SHOW_EMPTY_STATE:
                 showEmptyState();
                 break;
-            case SHOWEN:
+            case SHOWN:
                 setVisibility(VISIBLE);
                 showReload(adapterSize);
                 break;
