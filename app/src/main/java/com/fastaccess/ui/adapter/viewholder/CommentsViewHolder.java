@@ -22,6 +22,9 @@ import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import com.prettifier.pretty.PrettifyWebView;
 
+import org.sufficientlysecure.htmltextview.HtmlHttpImageGetter;
+import org.sufficientlysecure.htmltextview.HtmlTextView;
+
 import butterknife.BindView;
 
 /**
@@ -33,7 +36,7 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     @BindView(R.id.avatarView) AvatarLayout avatar;
     @BindView(R.id.date) FontTextView date;
     @BindView(R.id.name) FontTextView name;
-    @BindView(R.id.comment) PrettifyWebView comment;
+    @BindView(R.id.comment) HtmlTextView comment;
     @BindView(R.id.thumbsUp) FontTextView thumbsUp;
     @BindView(R.id.thumbsDown) FontTextView thumbsDown;
     @BindView(R.id.laugh) FontTextView laugh;
@@ -136,7 +139,8 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             comment.setNestedScrollingEnabled(false);
-            comment.setGithubContent(commentsModel.getBodyHtml(), null, true);
+            //comment.setGithubContent(commentsModel.getBodyHtml(), null, true);
+            comment.setHtml(commentsModel.getBodyHtml(),new HtmlHttpImageGetter(comment));
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
