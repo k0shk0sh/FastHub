@@ -115,9 +115,9 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         super.onCreate(savedInstanceState);
         setTitle("");
         if (savedInstanceState == null) {
-            if (getPresenter().isApiCalled()) getPresenter().onActivityCreated(getIntent());
+            getPresenter().onActivityCreated(getIntent());
         } else {
-            onSetup();
+            if (getPresenter().isApiCalled()) onSetup();
         }
         if (getPresenter().showToRepoBtn()) showNavToRepoItem();
     }
