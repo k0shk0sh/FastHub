@@ -7,7 +7,7 @@
     <string name="no_data">Нет доступных данных</string>
     <string name="search">Поиск</string>
     <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
-    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получать лучшее от FastHub</string>
+    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получить всё самое лучшее от FastHub</string>
     <string name="failed_login">Не удалось войти</string>
     <string name="sign_in">Вход</string>
     <string name="share">Поделиться</string>
@@ -29,7 +29,7 @@
     <string name="archive_file_detected_error">Обнаружен файл архива. Пожалуйста, скачайте этот файл, чтобы посмотреть его содержимое.</string>
     <string name="minimum_three_chars">Минимум символов (3)</string>
     <string name="no_file_found">Файлы не найдены</string>
-    <string name="no_readme_found">Readme не найден</string>
+    <string name="no_readme_found">README не найден</string>
     <string name="downloading">Скачивание…</string>
     <string name="downloading_file">Скачивание файла…</string>
     <string name="released">Выпущенные</string>
@@ -38,20 +38,20 @@
     <string name="no_body">Нет body</string>
     <string name="contributors">Вкладчики</string>
     <string name="by">By</string>
-    <string name="close_issue">Закрыть вопрос</string>
-    <string name="re_open_issue">Открыть вопрос</string>
+    <string name="close_issue">Закрыть Вопрос</string>
+    <string name="re_open_issue">Открыть Вопрос</string>
     <string name="re_open">Открыть</string>
     <string name="close">Закрыть</string>
     <string name="success_re_opened">Успешно открыто</string>
-    <string name="lock_issue_details">Блокировка обсуждения значит:\n&#183;Другие пользователи не смогут оставлять комментарии к этому вопросу.\n&#183;Вы и другие
+    <string name="lock_issue_details">Блокировка обсуждения значит:\n&#183;Другие пользователи не смогут оставлять комментарии к этому Вопросу.\n&#183;Вы и другие
         сооучастники с доступом к этому репозиторию всё ещё сможете оставлять комментарии, которые смогут видеть остальныеe.\n&#183;В дальнейшем вы всегда сможете снять
         эту блокировку.\n</string>
-    <string name="unlock_issue_details">Снятие блокировки обсуждения значит:\n&#183;Любой пользователь сможет оставлять комментарии к этому вопросу.\n&#183;В дальнейшем
+    <string name="unlock_issue_details">Снятие блокировки обсуждения значит:\n&#183;Любой пользователь сможет оставлять комментарии к этому Вопросу.\n&#183;В дальнейшем
         вы всегда сможете заблокировать обсуждения снова.\n</string>
     <string name="lock_issue">Заблокировать обсуждение</string>
     <string name="unlock_issue">Разблокировать обсуждение</string>
-    <string name="error_closing_issue">Ошибка закрытия вопроса. Пожалуйста, попробуйте позже.</string>
-    <string name="error_re_opening_issue">Ошибка повторного открытия вопроса. Пожалуйста, попробуйте позже.</string>
+    <string name="error_closing_issue">Ошибка закрытия Вопроса. Пожалуйста, попробуйте позже.</string>
+    <string name="error_re_opening_issue">Ошибка повторного открытия Вопроса. Пожалуйста, попробуйте позже.</string>
     <string name="success_closed">Issue успешно закрыт</string>
     <string name="no_description_provided"><p>Без описания</p></string>
     <string name="header_one">Заголовок h1</string>
@@ -90,7 +90,7 @@
     <string name="big_file_description">Этот файл слишком большой, чтобы его открыть.\nНажмите "ОК", чтобы скачать его.</string>
     <string name="viewer">Средство просмотра</string>
     <string name="submit">Опубликовать</string>
-    <string name="type_here">Вводите здесь</string>
+    <string name="type_here">Пишите здесь</string>
     <string name="description">Описание</string>
     <string name="file_name">Название файла</string>
     <string name="file_name_hint">Название файла с расширением</string>
@@ -108,9 +108,9 @@
     <string name="title">Название</string>
     <string name="milestone">Цель</string>
     <string name="assign_myself">Назначить себя</string>
-    <string name="submit_issue">Опубликовать вопрос</string>
-    <string name="error_creating_issue">Ошибка создания вопроса</string>
-    <string name="create_issue">Создать вопрос</string>
+    <string name="submit_issue">Опубликовать Вопрос</string>
+    <string name="error_creating_issue">Ошибка создания Вопроса</string>
+    <string name="create_issue">Создать Вопрос</string>
     <string name="error_highlighting_editor">Отмените выделение, чтобы продолжить редактирование.</string>
     <string name="notifications">Уведомления</string>
     <string name="unread_notification">У вас есть новые уведомления</string>
@@ -165,18 +165,18 @@
     <string name="committed">Опубликовано</string>
     <string name="downloaded">Скачено</string>
     <string name="followed">Отслеживается</string>
-    <string name="commented_on_issue">Комментарий к вопросу</string>
+    <string name="commented_on_issue">Комментарий к Вопросу</string>
     <string name="member">Участник</string>
     <string name="pr_comment_review">Комментарий к Запросу на слияние</string>
     <string name="pushed">Опубликовано</string>
     <string name="team_event">Команда</string>
     <string name="deleted">Удалено</string>
     <string name="unknown">Неизвестно</string>
-    <string name="commented_on_commit">Комментарий к коммиту</string>
+    <string name="commented_on_commit">Комментарий к Коммиту</string>
     <string name="switch_branch">Переключить ветвь</string>
     <string name="assignees">Назначения</string>
     <string name="edit">Редактировать</string>
-    <string name="update_issue">Обновить вопрос</string>
+    <string name="update_issue">Обновить Вопрос</string>
     <string name="update_pull_request">Обновить Запрос на слияние</string>
     <string name="no_milestones">Нет целей</string>
     <string name="add">Добавить</string>
@@ -214,10 +214,10 @@
     <string name="turn_off">Выключить</string>
     <string name="unauthorized_user">Неавторизованный пользователь</string>
     <string name="two_factors_otp_error">Необходим одноразовый пароль двухфакторной аутентификации</string>
-    <string name="no_issue">Нет вопроса</string>
+    <string name="no_issue">Нет Вопроса</string>
     <string name="copy">Копировать</string>
     <string name="success_copied">Скопировано</string>
-    <string name="commit_message">Сообщение коммита</string>
+    <string name="commit_message">Сообщение Коммита</string>
     <string name="network_error">Возникла ошибка при попытке связаться с сервером</string>
     <string name="unexpected_error">Возникла ошибка при работе с API</string>
     <string name="request_error">Возникла связи с сервером, пожалуйста, попробуйте снова позже</string>
@@ -250,8 +250,8 @@
     <string name="no_commits">Коммиты отсутствуют</string>
     <string name="no_contributors">Вкладчики отсутствуют</string>
     <string name="no_releases">Релизы отсутствуют</string>
-    <string name="no_closed_issues">Закрытые вопросы отсутствуют</string>
-    <string name="no_opened_issues">Открытые вопросы отсутствуют</string>
+    <string name="no_closed_issues">Закрытые Вопросы отсутствуют</string>
+    <string name="no_opened_issues">Открытые Вопросы отсутствуют</string>
     <string name="no_events">События отсутствуют</string>
     <string name="no_open_pull_requests">Запросы на слияние отсутствуют</string>
     <string name="no_closed_pull_request">Закрытые Запросы на слияние отсутствуют</string>
@@ -260,7 +260,7 @@
         хранить файлы на вашей SD карте и просматривать их</string>
     <string name="public_gists">Публичные Gist\'ы</string>
     <string name="enable_ads">Включить рекламу</string>
-    <string name="no_issues">Нет вопросов</string>
+    <string name="no_issues">Нет Вопросов</string>
     <string name="no_unread_notifications">Нет новых уведомлений.</string>
     <string name="my_gists">Мои Gist\'ы</string>
     <string name="changelog">Список изменений</string>
@@ -280,7 +280,7 @@
     <string name="no_members">Нет участников</string>
     <string name="no_teams">Нет команд</string>
     <string name="no_orgs">Нет организаций</string>
-    <string name="mark_as_read">Пометить прочтённым</string>
+    <string name="mark_as_read">Прочитано</string>
     <string name="animations">Анимации</string>
     <string name="dialog_animation_summary">Включить всплывающие анимации</string>
     <string name="dialog_animation_title">Всплывающая анимация</string>
@@ -297,7 +297,7 @@
     <string name="recently_updated">Недавно обновлённые</string>
     <string name="least_recent_updated">Давно обновлённые</string>
     <string name="empty_search_error">Поле поиска не может быть пустым</string>
-    <string name="long_press_repo_fab_hint">Долгое нажатие мгновенно создаёт новый вопрос</string>
+    <string name="long_press_repo_fab_hint">Долгое нажатие мгновенно создаёт новый Вопрос</string>
     <string name="commit_can_be_merged">Этот Запрос на слияние может быть объединён</string>
     <string name="reviewed">рассмотрел(а)</string>
     <string name="dismissed_review">отклонил(а) их рассмотрение</string>
