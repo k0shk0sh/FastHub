@@ -9,6 +9,6 @@
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/web_hi_res_512"/>
+            android:src="@mipmap/ic_launcher"/>
     </item>
 </layer-list>
