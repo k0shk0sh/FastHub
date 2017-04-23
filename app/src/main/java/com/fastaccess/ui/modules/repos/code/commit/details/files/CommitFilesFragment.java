@@ -64,6 +64,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         stateLayout.setEmptyText(R.string.no_files);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this);
+        adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         if (savedInstanceState == null) {
             sparseBooleanArray = new SparseBooleanArrayParcelable();

@@ -52,7 +52,11 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
-        onWorkOffline();
+        if (RestProvider.getErrorCode(throwable) == 404) {
+            sendToView(PullRequestPagerMvp.View::onFinishActivity);
+        } else {
+            onWorkOffline();
+        }
         super.onError(throwable);
     }
 

@@ -383,4 +383,5 @@
     <string name="un_subscribe">Unsubscribe</string>
     <string name="from">from</string>
     <string name="in_value">in</string>
+    <string name="subscribe">Subscribe</string>
 </resources>

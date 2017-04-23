@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  * Created by Kosh on 27 Mar 2017, 7:28 PM
+ * Commits files could be so freaking large, so having this will avoid transactionToLargeException.
  */
 
 class CommitFilesSingleton {

@@ -122,23 +122,27 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null) return null;
         String owner;
         String repo;
         String number;
-        if ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2))) {
+        if (segments.size() > 2 && "pull".equals(segments.get(2)) || "pulls".equals(segments.get(2))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && "pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
         } else {
             return null;
         }
-        if (InputHelper.isEmpty(number))
-            return null;
+        if (InputHelper.isEmpty(number)) {
+            return TaskStackBuilder.create(context)
+                    .addParentStack(MainActivity.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                    .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST));
+        }
         int issueNumber;
         try {
             issueNumber = Integer.parseInt(number);
@@ -155,23 +159,27 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null) return null;
         String owner;
         String repo;
         String number;
-        if ("issues".equals(segments.get(2))) {
+        if (segments.size() > 2 && "issues".equals(segments.get(2))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("issues".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && "issues".equals(segments.get(3))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
         } else {
             return null;
         }
-        if (InputHelper.isEmpty(number))
-            return null;
+        if (InputHelper.isEmpty(number)) {
+            return TaskStackBuilder.create(context)
+                    .addParentStack(MainActivity.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                    .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES));
+        }
         int issueNumber;
         try {
             issueNumber = Integer.parseInt(number);
@@ -208,12 +216,21 @@ public class StackBuilderSchemeParser {
             if (segments.size() == 1) {
                 return getUser(context, uri);
             } else if (segments.size() > 1) {
-                String owner = segments.get(0);
-                String repoName = segments.get(1);
-                return TaskStackBuilder.create(context)
-                        .addParentStack(MainActivity.class)
-                        .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
-                        .addNextIntent(RepoPagerActivity.createIntent(context, repoName, owner));
+                if (segments.get(0).equalsIgnoreCase("repos") && segments.size() >= 2) {
+                    String owner = segments.get(1);
+                    String repoName = segments.get(2);
+                    return TaskStackBuilder.create(context)
+                            .addParentStack(MainActivity.class)
+                            .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                            .addNextIntent(RepoPagerActivity.createIntent(context, repoName, owner));
+                } else {
+                    String owner = segments.get(0);
+                    String repoName = segments.get(1);
+                    return TaskStackBuilder.create(context)
+                            .addParentStack(MainActivity.class)
+                            .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                            .addNextIntent(RepoPagerActivity.createIntent(context, repoName, owner));
+                }
             }
         }
         return null;

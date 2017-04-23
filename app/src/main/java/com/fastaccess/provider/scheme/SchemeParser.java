@@ -195,9 +195,15 @@ public class SchemeParser {
             if (segments.size() == 1) {
                 return getUser(context, uri);
             } else if (segments.size() > 1) {
-                String owner = segments.get(0);
-                String repoName = segments.get(1);
-                return RepoPagerActivity.createIntent(context, repoName, owner);
+                if (segments.get(0).equalsIgnoreCase("repos") && segments.size() >= 2) {
+                    String owner = segments.get(1);
+                    String repoName = segments.get(2);
+                    return RepoPagerActivity.createIntent(context, repoName, owner);
+                } else {
+                    String owner = segments.get(0);
+                    String repoName = segments.get(1);
+                    return RepoPagerActivity.createIntent(context, repoName, owner);
+                }
             }
         }
         return null;
@@ -206,10 +212,19 @@ public class SchemeParser {
     @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.isEmpty() || segments.size() < 3) return null;
-        if (segments.get(3).equals("commits")) {
-            String login = segments.get(1);
-            String repoId = segments.get(2);
-            String sha = segments.get(4);
+        String login = null;
+        String repoId = null;
+        String sha = null;
+        if (segments.size() > 3 && segments.get(3).equals("commits")) {
+            login = segments.get(1);
+            repoId = segments.get(2);
+            sha = segments.get(4);
+        } else if (segments.size() > 2 && segments.get(2).equals("commits")) {
+            login = segments.get(0);
+            repoId = segments.get(1);
+            sha = uri.getLastPathSegment();
+        }
+        if (login != null && sha != null && repoId != null) {
             return CommitPagerActivity.createIntent(context, repoId, login, sha, showRepoBtn);
         }
         return null;

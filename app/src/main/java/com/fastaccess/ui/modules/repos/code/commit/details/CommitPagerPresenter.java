@@ -10,6 +10,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -27,7 +28,11 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
-        onWorkOffline(sha, repoId, login);
+        if (RestProvider.getErrorCode(throwable) == 404) {
+            sendToView(CommitPagerMvp.View::onFinishActivity);
+        } else {
+            onWorkOffline(sha, repoId, login);
+        }
         super.onError(throwable);
     }
 

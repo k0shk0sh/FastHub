@@ -11,6 +11,7 @@ import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.code.CodeViewerActivity;
 
 import java.util.ArrayList;
 
@@ -24,7 +25,7 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
 
     @Override public void onItemClick(int position, View v, CommitFileModel item) {
         if (v.getId() == R.id.open) {
-
+            v.getContext().startActivity(CodeViewerActivity.createIntent(v.getContext(), item.getContentsUrl()));
         }
     }
 

@@ -1,7 +1,5 @@
 package com.fastaccess.ui.widgets.dialog;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
@@ -32,15 +30,6 @@ public class ProgressDialogFragment extends DialogFragment {
                 .put("isCancelable", isCancelable)
                 .end());
         return fragment;
-    }
-
-    @Override public void dismiss() {
-        AnimHelper.dismissDialog(this, 40, new AnimatorListenerAdapter() {
-            @Override public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                ProgressDialogFragment.super.dismiss();
-            }
-        });
     }
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {

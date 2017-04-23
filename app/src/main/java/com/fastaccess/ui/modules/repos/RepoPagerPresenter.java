@@ -51,7 +51,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
-        onWorkOffline();
+        int code = RestProvider.getErrorCode(throwable);
+        if (code == 404) {
+            sendToView(RepoPagerMvp.View::onFinishActivity);
+        } else {
+            onWorkOffline();
+        }
         super.onError(throwable);
     }
 
@@ -177,7 +182,8 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @RepoPagerMvp.RepoNavigationType int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
         RepoCodePagerFragment codePagerView = (RepoCodePagerFragment) AppHelper.getFragmentByTag(fragmentManager, RepoCodePagerFragment.TAG);
-        RepoIssuesPagerFragment repoIssuesPagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(fragmentManager, RepoIssuesPagerFragment.TAG);
+        RepoIssuesPagerFragment repoIssuesPagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(fragmentManager, RepoIssuesPagerFragment
+                .TAG);
         RepoPullRequestPagerFragment pullRequestPagerView = (RepoPullRequestPagerFragment) AppHelper.getFragmentByTag(fragmentManager,
                 RepoPullRequestPagerFragment.TAG);
         if (getRepo() == null) {

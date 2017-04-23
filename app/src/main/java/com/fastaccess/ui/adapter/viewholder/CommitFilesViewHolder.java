@@ -52,6 +52,8 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
             int position = getAdapterPosition();
             onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
             onToggle(onToggleView.isCollapsed(position));
+        } else {
+            super.onClick(v);
         }
     }
 

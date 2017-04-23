@@ -43,6 +43,8 @@ public interface PullRequestPagerMvp {
         void onShowAssignees(@NonNull List<User> items);
 
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
+
+        void onFinishActivity();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

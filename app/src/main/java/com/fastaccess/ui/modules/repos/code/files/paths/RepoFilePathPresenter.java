@@ -56,10 +56,18 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                 List<RepoFile> repoFiles = new ArrayList<>();
                 if (!InputHelper.isEmpty(path)) {
                     Uri uri = Uri.parse(path);
+                    StringBuilder builder = new StringBuilder();
                     if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty()) {
-                        for (String name : uri.getPathSegments()) {
+                        List<String> pathSegments = uri.getPathSegments();
+                        for (int i = 0; i < pathSegments.size(); i++) {
+                            String name = pathSegments.get(i);
                             RepoFile file = new RepoFile();
-                            file.setPath(name);
+                            if (i == 0) {
+                                builder.append(name);
+                            } else {
+                                builder.append("/").append(name);
+                            }
+                            file.setPath(builder.toString());
                             file.setName(name);
                             repoFiles.add(file);
                         }

@@ -16,13 +16,16 @@ import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.UsersListModel;
+import com.fastaccess.data.dao.model.AbstractRepo;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.service.IssueService;
+import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -50,7 +53,11 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
-        onWorkOffline(issueNumber, login, repoId);
+        if (RestProvider.getErrorCode(throwable) == 404) {
+            sendToView(IssuePagerMvp.View::onFinishActivity);
+        } else {
+            onWorkOffline(issueNumber, login, repoId);
+        }
         super.onError(throwable);
     }
 
@@ -66,22 +73,27 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                 sendToView(IssuePagerMvp.View::onSetupIssue);
                 return;
             } else if (issueNumber > 0 && !InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                makeRestCall(RestProvider.getIssueService().getIssue(login, repoId, issueNumber),
-                        issue -> {
-                            issueModel = issue;
-                            issueModel.setRepoId(repoId);
-                            issueModel.setLogin(login);
-                            sendToView(IssuePagerMvp.View::onSetupIssue);
-                            manageSubscription(RxHelper.getObserver(RestProvider.getRepoService()
-                                    .isCollaborator(login, repoId, Login.getUser().getLogin()))
-                                    .subscribe(booleanResponse -> {
-                                        isCollaborator = booleanResponse.code() == 204;
-                                        sendToView(IssuePagerMvp.View::onUpdateMenu);
-                                    }, Throwable::printStackTrace));
-                        });
+                getIssueFromApi();
                 return;
             }
         }
+        sendToView(IssuePagerMvp.View::onSetupIssue);
+    }
+
+    private void getIssueFromApi() {
+        Observable<Issue> observable = RestProvider.getIssueService().getIssue(login, repoId, issueNumber)
+                .flatMap(issue -> RestProvider.getRepoService().isCollaborator(login, repoId, Login.getUser().getLogin()),
+                        (issue, booleanResponse) -> {
+                            isCollaborator = booleanResponse.code() == 204;
+                            return issue;
+                        });
+        makeRestCall(observable, this::setupIssue);
+    }
+
+    private void setupIssue(Issue issue) {
+        issueModel = issue;
+        issueModel.setRepoId(repoId);
+        issueModel.setLogin(login);
         sendToView(IssuePagerMvp.View::onSetupIssue);
     }
 
@@ -272,5 +284,24 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         this.issueModel.setRepoId(repoId);
         manageSubscription(issueModel.save(issueModel).subscribe());
         sendToView(IssuePagerMvp.View::onSetupIssue);
+    }
+
+    @Override public void onSubscribeOrMute(boolean mute) {
+        if (getIssue() == null) return;
+        String url = NotificationService.SUBSCRIPTION_URL;
+        String utf = NotificationService.UTF8;
+        String issue = NotificationService.ISSUE_THREAD_CLASS;
+        String token = PrefGetter.getToken();
+        String id = mute ? NotificationService.MUTE : NotificationService.SUBSCRIBE;
+        makeRestCall(AbstractRepo.getRepo(repoId, login)
+                        .flatMap(repo -> RestProvider.getNotificationService()
+                                .subscribe(url, repo.getId(), getIssue().getId(), issue, id, token, utf)),
+                booleanResponse -> {
+                    if (booleanResponse.code() == 204 || booleanResponse.code() == 200) {
+                        sendToView(view -> view.showMessage(R.string.success, R.string.successfully_submitted));
+                    } else {
+                        sendToView(view -> view.showMessage(R.string.error, R.string.network_error));
+                    }
+                });
     }
 }
