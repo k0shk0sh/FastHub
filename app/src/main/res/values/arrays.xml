@@ -66,12 +66,16 @@
         <item>English</item>
         <item>German</item>
         <item>Turkish</item>
+        <item>Chinese</item>
+        <item>Bahasa Indonesia</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
         <item>en</item>
         <item>de</item>
         <item>tr</item>
+        <item>zh</item>
+        <item>in</item>
     </string-array>
 
 </resources>

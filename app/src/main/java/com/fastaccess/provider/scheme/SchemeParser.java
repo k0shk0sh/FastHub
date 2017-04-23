@@ -120,15 +120,15 @@ public class SchemeParser {
 
     @Nullable private static Intent getPullRequestIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;
-        if ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2))) {
+        if (segments.size() > 2 && ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3)))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
@@ -149,15 +149,15 @@ public class SchemeParser {
 
     @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;
-        if ("issues".equals(segments.get(2))) {
+        if (segments.size() > 2 && "issues".equals(segments.get(2))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("issues".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && "issues".equals(segments.get(3))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);

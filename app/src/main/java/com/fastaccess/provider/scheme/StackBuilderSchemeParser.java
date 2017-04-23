@@ -99,6 +99,9 @@ public class StackBuilderSchemeParser {
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY)) {
+                if (data.getPathSegments() != null) {
+                    Logger.e(data.getPathSegments().size(), data.getPathSegments());
+                }
                 TaskStackBuilder userIntent = getUser(context, data);
                 TaskStackBuilder pullRequestIntent = getPullRequestIntent(context, data);
                 TaskStackBuilder createIssueIntent = getCreateIssueIntent(context, data);
@@ -122,15 +125,15 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;
-        if (segments.size() > 2 && "pull".equals(segments.get(2)) || "pulls".equals(segments.get(2))) {
+        if (segments.size() > 2 && ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if (segments.size() > 3 && "pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3)))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
@@ -159,7 +162,7 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;

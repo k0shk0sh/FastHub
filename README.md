@@ -1,4 +1,4 @@
-### FastHub 1.9.2 has been submitted to appeal with, I guess within today you guys should be receiving an update.
+## FastHub is back to the play store.
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
