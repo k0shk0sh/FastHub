@@ -68,6 +68,7 @@
         <item>Turkish</item>
         <item>Chinese</item>
         <item>Bahasa Indonesia</item>
+        <item>Russian</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -76,6 +77,7 @@
         <item>tr</item>
         <item>zh</item>
         <item>in</item>
+        <item>ru</item>
     </string-array>
 
 </resources>
