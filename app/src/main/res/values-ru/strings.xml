@@ -7,7 +7,7 @@
     <string name="no_data">Нет доступных данных</string>
     <string name="search">Поиск</string>
     <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
-    <string name="sign_in_to_github">Войдите в свою учётную запись GutHub, чтобы получать лучшее от FastHub</string>
+    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получать лучшее от FastHub</string>
     <string name="failed_login">Не удалось войти</string>
     <string name="sign_in">Вход</string>
     <string name="share">Поделиться</string>
