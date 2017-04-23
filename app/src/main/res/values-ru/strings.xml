@@ -131,7 +131,7 @@
     <string name="login">Логин</string>
     <string name="gist_description">Описание Gist'а</string>
     <string name="avatar_click_hint">Вы можете везде нажать на аватар пользователя, чтобы открыть его профиль</string>
-    <string name="feeds_fork_hint">Долгое нажатие на событие Fork позволяет открыть орининальный или ответвлённый репозиторий.</string>
+    <string name="feeds_fork_hint">Долгое нажатие на событие ответвления позволяет открыть орининальный или ответвлённый репозиторий.</string>
     <string name="click_here_to_download_release_hint">Скачать релизы</string>
     <string name="options">Опции</string>
     <string name="click_file_option_hint">Скачать файл или поделиться папкой</string>
@@ -203,7 +203,7 @@
     <string name="rect_avatar_title">Вид аватара</string>
     <string name="rate_app">Оценить это приложение</string>
     <string name="author">Автор</string>
-    <string name="fork_github">Fork на GitHub</string>
+    <string name="fork_github">Разветвить на GitHub</string>
     <string name="send_email">Отправить сообщение эл. почты</string>
     <string name="question_concerning_fasthub">Вопрос относительно FastHub</string>
     <string name="feedback">Обратная связь</string>
@@ -222,7 +222,7 @@
     <string name="unexpected_error">Возникла ошибка при работе с API</string>
     <string name="request_error">Возникла связи с сервером, пожалуйста, попробуйте снова позже</string>
     <string name="marking_as_read">Маркировка уведомления как прочтённое</string>
-    <string name="forking_gist">Делаем Fork Gist'a</string>
+    <string name="forking_gist">Ответвление Gist'a</string>
     <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию</string>
     <string name="or_character">ИЛИ</string>
     <string name="mark_notification_title">Отключить статус о прочтении</string>
