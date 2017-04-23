@@ -12,6 +12,7 @@ import com.fastaccess.provider.timeline.handler.PreTagHandler;
 import com.fastaccess.provider.timeline.handler.QouteHandler;
 
 import net.nightwhistler.htmlspanner.HtmlSpanner;
+import net.nightwhistler.htmlspanner.handlers.BoldHandler;
 
 /**
  * Created by Kosh on 21 Apr 2017, 11:24 PM
@@ -33,6 +34,8 @@ public class HtmlHelper {
         mySpanner.registerHandler("g-emoji", new DrawableHandler(textView));
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false));
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
+        mySpanner.registerHandler("b", new BoldHandler());
+        mySpanner.registerHandler("strong", new BoldHandler());
         textView.setText(mySpanner.fromHtml(html));
     }
 }
