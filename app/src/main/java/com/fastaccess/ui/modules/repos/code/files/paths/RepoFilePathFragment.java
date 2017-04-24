@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -25,6 +26,7 @@ import com.fastaccess.ui.adapter.BranchesAdapter;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
+import com.fastaccess.ui.modules.search.files.SearchFileActivity;
 
 import java.util.List;
 
@@ -85,6 +87,11 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
             RestProvider.downloadFile(getContext(), uri.toString());
         }
+    }
+
+    @OnClick(R.id.searchRepoFiles) void onSearchClicked() {
+        Intent intent = new Intent(getContext(), SearchFileActivity.class);
+        startActivity(intent);
     }
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {

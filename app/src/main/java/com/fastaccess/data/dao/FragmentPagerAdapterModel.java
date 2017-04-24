@@ -176,4 +176,9 @@ import lombok.Setter;
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), TeamReposFragment.newInstance(id)))
                 .collect(Collectors.toList());
     }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForSearchFiles(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.file), SearchCodeFragment.newInstance()))
+                .collect(Collectors.toList());
+    }
 }
