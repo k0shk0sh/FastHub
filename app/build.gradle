@@ -41,7 +41,6 @@ android {
         buildConfigString "IMGUR_SECRET", (buildProperties.secrets['imgur_secret'] | buildProperties.notThere['imgur_secret']).string
         buildConfigField "String", "REST_URL", '"https://api.github.com/"'
         buildConfigField "String", "IMGUR_URL", '"https://api.imgur.com/3/"'
-        buildConfigField "int", "DB_VERSION", "2"
         multiDexEnabled true
     }
 

@@ -84,11 +84,23 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
     }
 
     @Override public void onCallApi() {
+//        Observable<List<Notification>> notifications = RestProvider.getNotificationService().getAllNotifications()
+//                .flatMap(response -> response.getItems() != null ? Observable.from(response.getItems()) : Observable.empty())
+//                .filter(ObjectsCompat::nonNull)
+//                .flatMap(notification -> RestProvider.getNotificationService().isSubscribed(notification.getId())
+//                                .onErrorReturn(throwable -> null),
+//                        (notification, subscriptionModel) -> {
+//                            if (subscriptionModel != null) {
+//                                notification.setIsSubscribed(subscriptionModel.isSubscribed());
+//                            } else {
+//                                notification.setIsSubscribed(true);
+//                            }
+//                            return notification;
+//                        })
+//                .toList();
         Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService().getAllNotifications()
                 .flatMap(response -> {
-                    if (response.getItems() != null) {
-                        manageSubscription(Notification.save(response.getItems()).subscribe());
-                    }
+                    if (response.getItems() != null) manageSubscription(Notification.save(response.getItems()).subscribe());
                     return Observable.just(GroupedNotificationModel.construct(response.getItems()));
                 });
         makeRestCall(observable, response -> sendToView(view -> view.onNotifyAdapter(response)));

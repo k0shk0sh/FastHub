@@ -24,8 +24,7 @@ interface CommitFilesMvp {
 
     }
 
-    interface Presenter extends BaseMvp.FAPresenter,
-            BaseMvp.PaginationListener<String>, BaseViewHolder.OnItemClickListener<CommitFileModel> {
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommitFileModel> {
 
         void onFragmentCreated(@Nullable Bundle bundle);
 

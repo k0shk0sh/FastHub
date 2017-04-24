@@ -1,12 +1,7 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -107,35 +102,6 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     }
 
     private void setPatchText(@NonNull String text) {
-        if (!TextUtils.isEmpty(text)) {
-            String[] split = text.split("\\r?\\n|\\r");
-            if (split.length > 0) {
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                int lines = split.length;
-                for (int i = 0; i < lines; i++) {
-                    String token = split[i];
-                    if (i < (lines - 1)) {
-                        token = token.concat("\n");
-                    }
-                    char firstChar = token.charAt(0);
-                    int color = Color.TRANSPARENT;
-                    if (firstChar == '+') {
-                        color = patchAdditionColor;
-                    } else if (firstChar == '-') {
-                        color = patchDeletionColor;
-                    } else if (token.startsWith("@@")) {
-                        color = patchRefColor;
-                    }
-                    SpannableString spannableDiff = new SpannableString(token);
-                    if (color != Color.TRANSPARENT) {
-                        DiffLineSpan span = new DiffLineSpan(color, patch.getPaddingLeft());
-                        spannableDiff.setSpan(span, 0, token.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    builder.append(spannableDiff);
-                }
-                patch.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-                patch.setText(builder);
-            }
-        }
+        patch.setText(DiffLineSpan.getSpannable(text, patchAdditionColor, patchDeletionColor, patchRefColor));
     }
 }

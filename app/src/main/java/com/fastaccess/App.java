@@ -45,7 +45,7 @@ public class App extends Application {
     public SingleEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 6);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 7);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

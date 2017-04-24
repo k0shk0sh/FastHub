@@ -23,6 +23,7 @@ public class HtmlHelper {
 
     public static void getComment(@NonNull TextView textView, @NonNull String html) {
         HtmlSpanner mySpanner = new HtmlSpanner();
+        mySpanner.setStripExtraWhiteSpace(true);
         BetterLinkMovementExtended betterLinkMovementMethod = BetterLinkMovementExtended.linkifyHtml(textView);
         betterLinkMovementMethod.setOnLinkClickListener((view, url) -> {
             SchemeParser.launchUri(view.getContext(), Uri.parse(url));
@@ -38,4 +39,5 @@ public class HtmlHelper {
         mySpanner.registerHandler("strong", new BoldHandler());
         textView.setText(mySpanner.fromHtml(html));
     }
+
 }

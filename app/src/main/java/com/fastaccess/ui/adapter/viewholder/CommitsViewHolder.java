@@ -28,6 +28,7 @@ public class CommitsViewHolder extends BaseViewHolder<Commit> {
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.details) FontTextView details;
+    @BindView(R.id.commentsNo) FontTextView commentsNo;
 
     private CommitsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -48,5 +49,6 @@ public class CommitsViewHolder extends BaseViewHolder<Commit> {
                 .append(ParseDateFormat.getTimeAgo(date)));
         avatarLayout.setUrl(avatar, login);
         avatarLayout.setVisibility(View.VISIBLE);
+        commentsNo.setText(String.valueOf(commit.getGitCommit() != null ? commit.getGitCommit().getCommentCount() : 0));
     }
 }

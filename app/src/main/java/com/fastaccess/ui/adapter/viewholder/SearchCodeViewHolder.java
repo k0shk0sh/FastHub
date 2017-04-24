@@ -21,6 +21,7 @@ public class SearchCodeViewHolder extends BaseViewHolder<SearchCodeModel> {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.details) FontTextView details;
+    @BindView(R.id.commentsNo) View commentsNo;
 
     private SearchCodeViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -33,5 +34,6 @@ public class SearchCodeViewHolder extends BaseViewHolder<SearchCodeModel> {
     @Override public void bind(@NonNull SearchCodeModel codeMode) {
         title.setText(codeMode.getRepository() != null ? codeMode.getRepository().getFullName() : "N/A");
         details.setText(codeMode.getName());
+        commentsNo.setVisibility(View.GONE);
     }
 }

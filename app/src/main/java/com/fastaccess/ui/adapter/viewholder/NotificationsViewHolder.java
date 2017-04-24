@@ -50,6 +50,7 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
             int cardBackground = ViewHelper.getCardBackground(itemView.getContext());
             int color;
             markAsRead.setVisibility(thread.isUnread() ? View.VISIBLE : View.GONE);
+//            unSubscribe.setImageResource(thread.isIsSubscribed() ? R.drawable.ic_unsubscribe : R.drawable.ic_subscribe);
             if (thread.getSubject().getType() != null) {
                 notificationType.setImageResource(thread.getSubject().getType().getDrawableRes());
                 notificationType.setContentDescription(thread.getSubject().getType().name());
