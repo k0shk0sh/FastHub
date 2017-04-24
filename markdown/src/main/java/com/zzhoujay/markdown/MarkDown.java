@@ -24,8 +24,8 @@ public class MarkDown {
         return null;
     }
 
-    public static Spanned fromMarkdown(String source, TextView textView, int codeColor, int headerColor) {
-        MarkDownParser parser = new MarkDownParser(source, new StyleBuilderImpl(textView, codeColor, headerColor));
+    public static Spanned fromMarkdown(String source, TextView textView, int codeColor, int headerColor, Html.ImageGetter imageGetter) {
+        MarkDownParser parser = new MarkDownParser(source, new StyleBuilderImpl(textView, codeColor, headerColor, imageGetter));
         try {
             return parser.parse();
         } catch (IOException e) {

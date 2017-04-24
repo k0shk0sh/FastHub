@@ -28,7 +28,7 @@ public class DrawableGetter implements Html.ImageGetter {
         return container != null ? container.get() : null;
     }
 
-    DrawableGetter(TextView t) {
+    public DrawableGetter(TextView t) {
         this.container = new WeakReference<>(t);
     }
 
