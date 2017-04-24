@@ -37,7 +37,7 @@ public class StateLayout extends NestedScrollView {
 
     @State int layoutState = HIDDEN;
     @State String emptyTextValue;
-    @State boolean showReload;
+    @State int adapterSize;
 
     @OnClick(R.id.reload) void onReload() {
         if (onReloadListener != null && !progressBar.isShown()) {
@@ -81,13 +81,9 @@ public class StateLayout extends NestedScrollView {
     }
 
     public void showReload(int adapterCount) {
-        showReload = adapterCount == 0;
-        showReload();
-    }
-
-    protected void showReload() {
+        this.adapterSize = adapterCount;
         hideProgress();
-        if (showReload) {
+        if (adapterCount == 0) {
             layoutState = SHOW_RELOAD_STATE;
             reload.setVisibility(VISIBLE);
             emptyText.setVisibility(VISIBLE);
@@ -161,7 +157,7 @@ public class StateLayout extends NestedScrollView {
                 hideReload();
                 break;
             case SHOW_RELOAD_STATE:
-                showReload();
+                showReload(adapterSize);
                 break;
             case HIDDEN:
                 setVisibility(GONE);
@@ -171,7 +167,7 @@ public class StateLayout extends NestedScrollView {
                 break;
             case SHOWN:
                 setVisibility(VISIBLE);
-                showReload();
+                showReload(adapterSize);
                 break;
         }
     }
