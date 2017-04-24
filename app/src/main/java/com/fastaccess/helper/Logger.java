@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Kosh on 04/12/15 11:52 PM. copyrights @ Innov8tif
+ * Created by Kosh on 04/12/15 11:52 PM. copyrights @
  */
 public class Logger {
 

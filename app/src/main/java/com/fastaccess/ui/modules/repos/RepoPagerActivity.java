@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -33,7 +35,6 @@ import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.base.BaseActivity;
-import com.fastaccess.ui.modules.filter.chooser.FilterChooserBottomSheetDialog;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
@@ -83,6 +84,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @BindView(R.id.pinImage) ForegroundImageView pinImage;
     @BindView(R.id.pinLayout) LinearLayout pinLayout;
     @BindView(R.id.pinText) FontTextView pinText;
+    @BindView(R.id.filterLayout) View filterLayout;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -133,7 +135,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     @OnClick(R.id.fab) void onFabClicked() {
         if (navType == RepoPagerMvp.ISSUES) {
-            FilterChooserBottomSheetDialog.newInstance().show(getSupportFragmentManager(), "FilterChooserBottomSheetDialog");
+            fab.hide(new FloatingActionButton.OnVisibilityChangedListener() {
+                @Override public void onHidden(FloatingActionButton fab) {
+                    super.onHidden(fab);
+                    if (appbar != null) appbar.setExpanded(false, true);
+                    bottomNavigation.setExpanded(false, true);
+                    AnimHelper.mimicFabVisibility(true, filterLayout, null);
+                }
+            });
         } else if (navType == RepoPagerMvp.PULL_REQUEST) {
             RepoPullRequestPagerFragment pullRequestPagerView = (RepoPullRequestPagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
                     RepoPullRequestPagerFragment.TAG);
@@ -144,6 +153,34 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         } else {
             fab.hide();
         }
+    }
+
+    @OnClick(R.id.add) void onAddIssues() {
+        hideFilterLayout();
+        onAddSelected();
+    }
+
+    @OnClick(R.id.search) void onSearch() {
+        hideFilterLayout();
+        onSearchSelected();
+    }
+
+    @Override public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (navType == RepoPagerMvp.ISSUES && filterLayout.isShown()) {
+            Rect viewRect = ViewHelper.getLayoutPosition(filterLayout);
+            if (!viewRect.contains((int) ev.getRawX(), (int) ev.getRawY())) {
+                hideFilterLayout();
+            }
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
+    private void hideFilterLayout() {
+        AnimHelper.mimicFabVisibility(false, filterLayout, new FloatingActionButton.OnVisibilityChangedListener() {
+            @Override public void onHidden(FloatingActionButton actionButton) {
+                fab.show();
+            }
+        });
     }
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
@@ -454,6 +491,11 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                     codePagerView.onBackPressed();
                     return;
                 }
+            }
+        } else if (navType == RepoPagerMvp.ISSUES) {
+            if (filterLayout.isShown()) {
+                hideFilterLayout();
+                return;
             }
         }
         super.onBackPressed();

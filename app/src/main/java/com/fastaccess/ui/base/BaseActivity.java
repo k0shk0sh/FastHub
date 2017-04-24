@@ -65,7 +65,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
-    @Nullable @BindView(R.id.appbar) AppBarLayout shadowView;
+    @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
 
@@ -321,8 +321,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void hideShowShadow(boolean show) {
-        if (shadowView != null) {
-            shadowView.setElevation(show ? getResources().getDimension(R.dimen.spacing_micro) : 0.0f);
+        if (appbar != null) {
+            appbar.setElevation(show ? getResources().getDimension(R.dimen.spacing_micro) : 0.0f);
         }
     }
 

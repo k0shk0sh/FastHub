@@ -31,6 +31,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
     @BindString(R.string.to) String to;
+    @BindString(R.string.in_value) String in;
 
     public FeedsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -68,7 +69,16 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .append(" ")
                             .bold(eventsModel.getPayload().getRefType())
                             .append(" ")
-                            .append(to).append(" ");
+                            .append(to)
+                            .append(" ");
+                } else if (type == EventsType.PushEvent && eventsModel.getPayload() != null) {
+                    spannableBuilder
+                            .bold(itemView.getResources().getString(type.getType()).toLowerCase())
+                            .append(" ")
+                            .bold(eventsModel.getPayload().getRef())
+                            .append(" ")
+                            .append(in)
+                            .append(" ");
                 } else {
                     spannableBuilder.bold(itemView.getResources().getString(type
                             .getType())

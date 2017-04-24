@@ -9,7 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Created by kosh20111 on 10/7/2015. CopyRights @ Innov8tif
+ * Created by kosh20111 on 10/7/2015. CopyRights @
  */
 public class FileHelper {
     public static final long ONE_MB = 1048576L;

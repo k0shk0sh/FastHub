@@ -39,7 +39,6 @@ public class PrefGetter {
     private static final String HOME_BUTTON_GUIDE = "home_button_guide";
     private static final String NAV_DRAWER_GUIDE = "nav_drawer_guide";
     private static final String FAB_LONG_PRESS_REPO_GUIDE = "fab_long_press_repo_guide";
-    private static final String POPUP_ANIMATION = "popupAnimation";
     private static final String WRAP_CODE = "wrap_code";
     private static final String OTP_CODE = "otp_code";
     private static final String APP_LANGUAGE = "app_language";
@@ -169,11 +168,6 @@ public class PrefGetter {
         return PrefHelper.getBoolean("markNotificationAsRead");
     }
 
-    public static boolean isPopupAnimationEnabled() {
-//        return PrefHelper.getBoolean(POPUP_ANIMATION);
-        return true;
-    }
-
     public static boolean isWrapCode() {
         return PrefHelper.getBoolean(WRAP_CODE);
     }
@@ -182,7 +176,7 @@ public class PrefGetter {
         return getThemeType(context.getResources());
     }
 
-    @ThemeType public static int getThemeType(@NonNull Resources resources) {
+    @ThemeType static int getThemeType(@NonNull Resources resources) {
         String appTheme = PrefHelper.getString("appTheme");
         if (!InputHelper.isEmpty(appTheme)) {
             if (appTheme.equalsIgnoreCase(resources.getString(R.string.dark_theme_mode))) {
@@ -194,7 +188,7 @@ public class PrefGetter {
         return LIGHT;
     }
 
-    @NonNull public static String getAppLanguage() {
+    @NonNull static String getAppLanguage() {
         String appLanguage = PrefHelper.getString(APP_LANGUAGE);
         return appLanguage == null ? "en" : appLanguage;
     }

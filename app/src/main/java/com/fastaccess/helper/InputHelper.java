@@ -8,7 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * Created by kosh20111 on 3/11/2015. CopyRights @ Innov8tif
+ * Created by kosh20111 on 3/11/2015. CopyRights @
  * <p>
  * Input Helper to validate stuff related to input fields.
  */
