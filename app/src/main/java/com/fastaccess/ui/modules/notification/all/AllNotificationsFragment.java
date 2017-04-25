@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.notification;
+package com.fastaccess.ui.modules.notification.all;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,13 +10,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.data.dao.model.Repo;
-import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.ObjectsCompat;
 import com.fastaccess.provider.scheme.SchemeParser;
-import com.fastaccess.provider.scheme.StackBuilderSchemeParser;
 import com.fastaccess.provider.tasks.notification.ReadNotificationService;
 import com.fastaccess.ui.adapter.NotificationsAdapter;
 import com.fastaccess.ui.adapter.viewholder.NotificationsViewHolder;
@@ -33,16 +33,16 @@ import butterknife.BindView;
  * Created by Kosh on 20 Feb 2017, 8:50 PM
  */
 
-public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, NotificationsPresenter>
-        implements NotificationsMvp.View {
+public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.View, AllNotificationsPresenter>
+        implements AllNotificationsMvp.View {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private NotificationsAdapter adapter;
 
-    public static NotificationsFragment newInstance() {
-        return new NotificationsFragment();
+    public static AllNotificationsFragment newInstance() {
+        return new AllNotificationsFragment();
     }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,15 +65,11 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
             return;
         }
         adapter.insertItems(items);
+        if (isSafe()) getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onClick(@NonNull String url) {
-        Logger.e(getActivity().isTaskRoot());
-        if (getActivity().isTaskRoot()) {
-            StackBuilderSchemeParser.launchUri(getContext(), Uri.parse(url));
-        } else {
-            SchemeParser.launchUri(getContext(), Uri.parse(url), true);
-        }
+        SchemeParser.launchUri(getContext(), Uri.parse(url), true);
     }
 
     @Override public void onReadNotification(@NonNull Notification notification) {
@@ -90,7 +86,7 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        adapter = new NotificationsAdapter(getPresenter().getNotifications());
+        adapter = new NotificationsAdapter(getPresenter().getNotifications(),true);
         adapter.setListener(getPresenter());
         refresh.setOnRefreshListener(this);
         stateLayout.setEmptyText(R.string.no_notifications);
@@ -103,8 +99,8 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
         }
     }
 
-    @NonNull @Override public NotificationsPresenter providePresenter() {
-        return new NotificationsPresenter();
+    @NonNull @Override public AllNotificationsPresenter providePresenter() {
+        return new AllNotificationsPresenter();
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -140,6 +136,15 @@ public class NotificationsFragment extends BaseFragment<NotificationsMvp.View, N
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onPrepareOptionsMenu(Menu menu) {
+        boolean hasUnread = Stream.of(adapter.getData())
+                .filter(ObjectsCompat::nonNull)
+                .filter(group -> group.getType() == GroupedNotificationModel.ROW)
+                .anyMatch(group -> group.getNotification().isUnread());
+        menu.findItem(R.id.readAll).setVisible(hasUnread);
+        super.onPrepareOptionsMenu(menu);
     }
 
     private void showReload() {

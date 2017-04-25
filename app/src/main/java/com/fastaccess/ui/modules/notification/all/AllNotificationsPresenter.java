@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.notification;
+package com.fastaccess.ui.modules.notification.all;
 
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -24,7 +24,7 @@ import rx.Observable;
  * Created by Kosh on 20 Feb 2017, 8:46 PM
  */
 
-public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View> implements NotificationsMvp.Presenter {
+public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp.View> implements AllNotificationsMvp.Presenter {
     private ArrayList<GroupedNotificationModel> notifications = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, GroupedNotificationModel model) {
@@ -71,7 +71,7 @@ public class NotificationsPresenter extends BasePresenter<NotificationsMvp.View>
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Notification.getNotifications())
+            manageSubscription(RxHelper.getObserver(Notification.getAlltNotifications())
                     .flatMap(notifications -> Observable.from(GroupedNotificationModel.construct(notifications)).toList())
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models))));
         } else {

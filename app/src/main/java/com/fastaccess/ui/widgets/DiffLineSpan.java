@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.TextPaint;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.LineBackgroundSpan;
 import android.text.style.MetricAffectingSpan;
 
@@ -70,6 +69,10 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     } else if (token.startsWith("@@")) {
                         color = patchRefColor;
                     }
+//                    String noNewLine = "\\No newline at end of file";
+//                    if (token.endsWith(noNewLine)) {
+//                        token = token.replace(noNewLine, "");
+//                    }
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
                         DiffLineSpan span = new DiffLineSpan(color);

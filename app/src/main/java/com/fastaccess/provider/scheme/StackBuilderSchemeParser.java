@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
-import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
@@ -34,6 +33,7 @@ import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS_RAW;
 import static com.fastaccess.provider.scheme.LinkParserHelper.IGNORED_LIST;
 import static com.fastaccess.provider.scheme.LinkParserHelper.PROTOCOL_HTTPS;
 import static com.fastaccess.provider.scheme.LinkParserHelper.RAW_AUTHORITY;
+import static com.fastaccess.provider.scheme.LinkParserHelper.getBlobBuilder;
 import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
 
 /**
@@ -53,7 +53,7 @@ public class StackBuilderSchemeParser {
         if (intent != null) {
             intent.startActivities();
         } else {
-            ActivityHelper.forceOpenInBrowser(context, data);
+            ActivityHelper.openChooser(context, data);
         }
     }
 
@@ -298,27 +298,17 @@ public class StackBuilderSchemeParser {
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
-            StringBuilder fullUrl = new StringBuilder(uri.toString());
-            if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(fullUrl.toString()))) {
-                return null;
-            }
-            String owner = null;
-            String repo = null;
-            if (uri.getAuthority().equalsIgnoreCase(HOST_DEFAULT)) {
-                owner = segments.get(0);
-                repo = segments.get(1);
-                String branch = segments.get(3);
-                fullUrl = new StringBuilder("https://" + RAW_AUTHORITY + "/" + owner + "/" + repo + "/" + branch);
-                for (int i = 4; i < segments.size(); i++) {
-                    fullUrl.append("/").append(segments.get(i));
-                }
-            }
-            if (fullUrl.length() > 0 && owner != null && repo != null) return TaskStackBuilder.create(context)
+            String owner;
+            String repo;
+            Uri urlBuilder = getBlobBuilder(uri);
+            owner = segments.get(0);
+            repo = segments.get(1);
+            if (owner != null && repo != null) return TaskStackBuilder.create(context)
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
-                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, fullUrl.toString()))
-                    .addNextIntent(CodeViewerActivity.createIntent(context, fullUrl.toString()));
+                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, uri.toString()))
+                    .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString()));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {

@@ -2,6 +2,7 @@ package com.fastaccess.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -204,46 +205,39 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        if (item.getItemId() == R.id.navToRepo) {
-            onNavToRepoClicked();
-            return true;
-        } else if (item.getItemId() == R.id.fhRepo) {
-            startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
-        } else if (item.getItemId() == R.id.supportDev) {
-            startActivity(new Intent(this, DonationActivity.class));
-        } else if (item.getItemId() == R.id.gists) {
-            GistsListActivity.startActivity(this, false);
-            return true;
-        } else if (item.getItemId() == R.id.myGists) {
-            GistsListActivity.startActivity(this, true);
-            return true;
-        } else if (item.getItemId() == R.id.pinnedMenu) {
-            PinnedReposActivity.startActivity(this);
-            return true;
-        } else if (item.getItemId() == R.id.mainView) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        } else if (item.getItemId() == R.id.profile) {
-            startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
-            return true;
-        } else if (item.getItemId() == R.id.logout) {
-            onLogoutPressed();
-            return true;
-        } else if (item.getItemId() == R.id.settings) {
-            onOpenSettings();
-            return true;
-        } else if (item.getItemId() == R.id.orgs) {
-            onOpenOrgsDialog();
-            return true;
-        } else if (item.getItemId() == R.id.enableAds) {
-            boolean isEnabled = !PrefGetter.isAdsEnabled();
-            PrefGetter.setAdsEnabled(isEnabled);
-            showHideAds();
-            item.setChecked(isEnabled);
-            return true;
-        }
+        new Handler().postDelayed(() -> {
+            if (isFinishing()) return;
+            if (item.getItemId() == R.id.navToRepo) {
+                onNavToRepoClicked();
+            } else if (item.getItemId() == R.id.fhRepo) {
+                startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
+            } else if (item.getItemId() == R.id.supportDev) {
+                startActivity(new Intent(this, DonationActivity.class));
+            } else if (item.getItemId() == R.id.gists) {
+                GistsListActivity.startActivity(this, false);
+            } else if (item.getItemId() == R.id.myGists) {
+                GistsListActivity.startActivity(this, true);
+            } else if (item.getItemId() == R.id.pinnedMenu) {
+                PinnedReposActivity.startActivity(this);
+            } else if (item.getItemId() == R.id.mainView) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else if (item.getItemId() == R.id.profile) {
+                startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
+            } else if (item.getItemId() == R.id.logout) {
+                onLogoutPressed();
+            } else if (item.getItemId() == R.id.settings) {
+                onOpenSettings();
+            } else if (item.getItemId() == R.id.orgs) {
+                onOpenOrgsDialog();
+            } else if (item.getItemId() == R.id.enableAds) {
+                boolean isEnabled = !PrefGetter.isAdsEnabled();
+                PrefGetter.setAdsEnabled(isEnabled);
+                showHideAds();
+                item.setChecked(isEnabled);
+            }
+        }, 300);
         return false;
     }
 

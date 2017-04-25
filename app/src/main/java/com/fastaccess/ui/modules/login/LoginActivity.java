@@ -43,7 +43,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @OnClick(R.id.browserLogin) void onOpenBrowser() {
         Uri uri = getPresenter().getAuthorizationUrl();
-        ActivityHelper.forceOpenInBrowser(this, uri);
+        ActivityHelper.openChooser(this, uri);
         Toasty.info(this, getString(R.string.open_in_browser)).show();
     }
 

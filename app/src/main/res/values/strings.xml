@@ -384,4 +384,5 @@
     <string name="from">from</string>
     <string name="in_value">in</string>
     <string name="subscribe">Subscribe</string>
+    <string name="repo_issues_is_disabled">The repo has no issues tab</string>
 </resources>
