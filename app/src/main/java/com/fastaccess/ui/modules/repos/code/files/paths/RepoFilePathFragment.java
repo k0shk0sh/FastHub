@@ -91,6 +91,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
 
     @OnClick(R.id.searchRepoFiles) void onSearchClicked() {
         Intent intent = new Intent(getContext(), SearchFileActivity.class);
+        intent.putExtra(BundleConstant.ID, getPresenter().getRepoId());
+        intent.putExtra(BundleConstant.EXTRA, getPresenter().getLogin());
         startActivity(intent);
     }
 
