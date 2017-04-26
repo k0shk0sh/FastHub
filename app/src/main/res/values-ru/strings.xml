@@ -9,15 +9,15 @@
     <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
     <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получить всё самое лучшее от FastHub</string>
     <string name="failed_login">Не удалось войти</string>
-    <string name="sign_in">Вход</string>
+    <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
     <string name="reload">Обновить</string>
     <string name="feeds">Фиды</string>
     <string name="profile">Профиль</string>
     <string name="error">Ошибка</string>
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
-    <string name="opened">Открыто</string>
-    <string name="closed">Закрыто</string>
+    <string name="opened">Открыт</string>
+    <string name="closed">Закрыт</string>
     <string name="repo_chooser">Выбрать репозиторий</string>
     <string name="followers">Подписчики</string>
     <string name="following">Подписки</string>
@@ -35,14 +35,14 @@
     <string name="released">Выпущенные</string>
     <string name="drafted">Черновые</string>
     <string name="releases">Релизы</string>
-    <string name="no_body">Нет body</string>
+    <string name="no_body">Нет содержимого</string>
     <string name="contributors">Вкладчики</string>
-    <string name="by">By</string>
+    <string name="by">от</string>
     <string name="close_issue">Закрыть Вопрос</string>
     <string name="re_open_issue">Открыть Вопрос</string>
     <string name="re_open">Открыть</string>
     <string name="close">Закрыть</string>
-    <string name="success_re_opened">Успешно открыто</string>
+    <string name="success_re_opened">Успешно открыт</string>
     <string name="lock_issue_details">Блокировка обсуждения значит:\n&#183;Другие пользователи не смогут оставлять комментарии к этому Вопросу.\n&#183;Вы и другие
         сооучастники с доступом к этому репозиторию всё ещё сможете оставлять комментарии, которые смогут видеть остальныеe.\n&#183;В дальнейшем вы всегда сможете снять
         эту блокировку.\n</string>
@@ -52,7 +52,7 @@
     <string name="unlock_issue">Разблокировать обсуждение</string>
     <string name="error_closing_issue">Ошибка закрытия Вопроса. Пожалуйста, попробуйте позже.</string>
     <string name="error_re_opening_issue">Ошибка повторного открытия Вопроса. Пожалуйста, попробуйте позже.</string>
-    <string name="success_closed">Issue успешно закрыт</string>
+    <string name="success_closed">Вопрос успешно закрыт</string>
     <string name="no_description_provided"><p>Без описания</p></string>
     <string name="header_one">Заголовок h1</string>
     <string name="header_two">Заголовок h2</string>
@@ -218,9 +218,9 @@
     <string name="copy">Копировать</string>
     <string name="success_copied">Скопировано</string>
     <string name="commit_message">Сообщение Коммита</string>
-    <string name="network_error">Возникла ошибка при попытке связаться с сервером</string>
-    <string name="unexpected_error">Возникла ошибка при работе с API</string>
-    <string name="request_error">Возникла связи с сервером, пожалуйста, попробуйте снова позже</string>
+    <string name="network_error">Ошибка соединения с сервером</string>
+    <string name="unexpected_error">Возникло непредвиденное исключение при работе с API </string>
+    <string name="request_error">Произошла ошибка при запросе на сервер, повторите попытку позже</string>
     <string name="marking_as_read">Маркировка уведомления как прочтённое</string>
     <string name="forking_gist">Ответвление Gist\'a</string>
     <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию</string>
