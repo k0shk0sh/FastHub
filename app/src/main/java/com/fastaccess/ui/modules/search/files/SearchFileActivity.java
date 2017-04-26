@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.search.files;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.search.code.SearchCodeFragment;
 import com.fastaccess.ui.widgets.FontAutoCompleteEditText;
@@ -30,6 +33,13 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
 
     private ArrayAdapter adapter;
     private SearchCodeFragment searchCodeFragment;
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String login, @NonNull String repoId) {
+        Intent intent = new Intent(context, SearchFileActivity.class);
+        intent.putExtra(BundleConstant.ID, repoId);
+        intent.putExtra(BundleConstant.EXTRA, login);
+        return intent;
+    }
 
     @Override
     protected int layout() {
@@ -94,10 +104,6 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
 
     @OnClick(R.id.back) public void onBackClicked() {
         onBackPressed();
-    }
-
-    @OnTextChanged(R.id.searchEditText) public void onSearchTextChanged() {
-
     }
 
     @Override
