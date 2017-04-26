@@ -22,6 +22,7 @@ import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
@@ -32,8 +33,10 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
+import java.net.URI;
 
 import okhttp3.Cache;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
@@ -60,7 +63,7 @@ public class RestProvider {
 
     private static Cache provideCache() {
         if (cache == null) {
-            int cacheSize = 20 * 1024 * 1024; //20MB
+            int cacheSize = 20 * (1024 * 1024); //20MB
             cache = new Cache(App.getInstance().getCacheDir(), cacheSize);
         }
         return cache;
@@ -76,14 +79,17 @@ public class RestProvider {
         client.addInterceptor(new PaginationInterceptor())
                 .addInterceptor(chain -> {
                     Request original = chain.request();
-                    Request.Builder requestBuilder = original.newBuilder();
-                    requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
-                            .addHeader("Content-type", "application/vnd.github.v3+json");
-                    requestBuilder.method(original.method(), original.body());
-                    Request request = requestBuilder.build();
-                    return chain.proceed(request);
+                    if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
+                        Request.Builder requestBuilder = original.newBuilder();
+                        requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
+                                .addHeader("Content-type", "application/vnd.github.v3+json");
+                        requestBuilder.method(original.method(), original.body());
+                        Request request = requestBuilder.build();
+                        return chain.proceed(request);
+                    }
+                    Logger.e(original.url());
+                    return chain.proceed(original);
                 });
-//        client.cache(provideCache());//disable cache, since we are going offline.
         return client.build();
     }
 

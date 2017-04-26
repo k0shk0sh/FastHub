@@ -117,7 +117,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            onSetup();
+            if (getPresenter().isApiCalled()) onSetup();
         }
         if (getPresenter().showToRepoBtn()) showNavToRepoItem();
     }
@@ -144,7 +144,6 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     @Override public void onSetup() {
         hideProgress();
         if (getPresenter().getCommit() == null) {
-            finish();
             return;
         }
         supportInvalidateOptionsMenu();
@@ -170,6 +169,11 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
             }
         });
         hideShowFab();
+    }
+
+    @Override public void onFinishActivity() {
+        hideProgress();
+        finish();
     }
 
     @Override public void onBackPressed() {

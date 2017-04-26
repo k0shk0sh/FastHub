@@ -125,7 +125,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            onSetupIssue();
+            if (getPresenter().isApiCalled()) onSetupIssue();
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
@@ -188,6 +188,12 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         } else if (item.getItemId() == R.id.assignees) {
             getPresenter().onLoadAssignees();
             return true;
+        } else if (item.getItemId() == R.id.subscribe) {
+            getPresenter().onSubscribeOrMute(false);
+            return true;
+        } else if (item.getItemId() == R.id.mute) {
+            getPresenter().onSubscribeOrMute(true);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -223,7 +229,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public void onSetupIssue() {
         hideProgress();
         if (getPresenter().getIssue() == null) {
-            finish();
             return;
         }
         supportInvalidateOptionsMenu();
@@ -309,6 +314,11 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
         getPresenter().onPutMilestones(milestoneModel);
+    }
+
+    @Override public void onFinishActivity() {
+        hideProgress();
+        finish();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

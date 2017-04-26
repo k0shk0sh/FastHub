@@ -14,7 +14,7 @@ public class CodeBackgroundRoundedSpan extends MetricAffectingSpan implements Le
     private final int color;
     private final int padding = 30;
 
-    private final RectF mRect = new RectF();
+    private final RectF rect = new RectF();
 
     CodeBackgroundRoundedSpan(int color) {
         this.color = color;
@@ -38,8 +38,8 @@ public class CodeBackgroundRoundedSpan extends MetricAffectingSpan implements Le
         int color = p.getColor();
         p.setStyle(Paint.Style.FILL);
         p.setColor(this.color);
-        mRect.set(left, top, right, bottom);
-        c.drawRect(mRect, p);
+        rect.set(left, top, right, bottom);
+        c.drawRect(rect, p);
         p.setColor(color);
         p.setStyle(style);
     }
@@ -49,6 +49,5 @@ public class CodeBackgroundRoundedSpan extends MetricAffectingSpan implements Le
     }
 
     @Override public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, int baseline, int bottom,
-                                            CharSequence text, int start, int end, boolean first, Layout layout) {
-    }
+                                            CharSequence text, int start, int end, boolean first, Layout layout) {}
 }

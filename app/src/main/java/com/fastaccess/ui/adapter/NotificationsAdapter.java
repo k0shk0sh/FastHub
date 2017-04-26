@@ -1,6 +1,7 @@
 package com.fastaccess.ui.adapter;
 
 import android.support.annotation.NonNull;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.GroupedNotificationModel;
@@ -17,16 +18,18 @@ import java.util.ArrayList;
 
 public class NotificationsAdapter extends BaseRecyclerAdapter<GroupedNotificationModel, BaseViewHolder,
         BaseViewHolder.OnItemClickListener<GroupedNotificationModel>> {
+    private boolean showUnreadState;
 
-    public NotificationsAdapter(@NonNull ArrayList<GroupedNotificationModel> eventsModels) {
+    public NotificationsAdapter(@NonNull ArrayList<GroupedNotificationModel> eventsModels, boolean showUnreadState) {
         super(eventsModels);
+        this.showUnreadState = showUnreadState;
     }
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
         if (viewType == GroupedNotificationModel.HEADER) {
             return NotificationsHeaderViewHolder.newInstance(parent, this);
         } else {
-            return NotificationsViewHolder.newInstance(parent, this);
+            return NotificationsViewHolder.newInstance(parent, this, showUnreadState);
         }
     }
 
@@ -35,6 +38,10 @@ public class NotificationsAdapter extends BaseRecyclerAdapter<GroupedNotificatio
             ((NotificationsHeaderViewHolder) holder).bind(getItem(position));
         } else {
             ((NotificationsViewHolder) holder).bind(getItem(position));
+        }
+        if (getItem(position).getType() == GroupedNotificationModel.HEADER) {
+            StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+            layoutParams.setFullSpan(true);
         }
     }
 

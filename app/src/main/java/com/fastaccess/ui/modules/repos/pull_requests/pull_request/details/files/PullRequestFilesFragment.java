@@ -131,7 +131,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
 
     @Override public void onToggle(int position, boolean isCollapsed) {
         if (adapter.getItem(position).getPatch() == null) {
-            ActivityHelper.forceOpenInBrowser(getContext(), adapter.getItem(position).getBlobUrl());
+            ActivityHelper.openChooser(getContext(), adapter.getItem(position).getBlobUrl());
         }
         getSparseBooleanArray().put(position, isCollapsed);
     }

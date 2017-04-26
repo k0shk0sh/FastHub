@@ -47,10 +47,6 @@ public interface GistService {
     @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Pageable<Comment>> getGistComments(@NonNull @Path("id") String id, @Query("page") int page);
 
-    @GET("gists/{gist_id}/comments/{id}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
-    Observable<Comment> getGistComment(@Path("gist_id") String gistId, @Path("id") String id);
-
     @POST("gists/{gist_id}/comments")
     @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> createGistComment(@Path("gist_id") String gistId, @Body CommentRequestModel body);

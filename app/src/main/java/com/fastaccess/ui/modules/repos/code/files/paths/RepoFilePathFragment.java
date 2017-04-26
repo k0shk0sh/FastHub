@@ -133,6 +133,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         } else {
             adapter.addItems(items);
         }
+        recycler.smoothScrollToPosition(adapter.getItemCount() - 1);
     }
 
     @Override public void onItemClicked(@NonNull RepoFile model, int position) {

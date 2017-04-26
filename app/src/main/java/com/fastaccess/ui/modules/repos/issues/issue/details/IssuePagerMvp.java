@@ -39,6 +39,8 @@ public interface IssuePagerMvp {
         void onShowAssignees(@NonNull List<User> items);
 
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
+
+        void onFinishActivity();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -80,6 +82,8 @@ public interface IssuePagerMvp {
         String getRepoId();
 
         void onUpdateIssue(@NonNull Issue issueModel);
+
+        void onSubscribeOrMute(boolean mute);
     }
 
 }

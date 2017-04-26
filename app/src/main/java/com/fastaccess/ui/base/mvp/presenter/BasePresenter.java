@@ -44,6 +44,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
+        apiCalled = true;
         throwable.printStackTrace();
         if (RestProvider.getErrorCode(throwable) == 401) {
             sendToView(BaseMvp.FAView::onRequireLogin);

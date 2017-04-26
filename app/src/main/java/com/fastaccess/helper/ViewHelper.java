@@ -18,7 +18,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v7.graphics.Palette;
 import android.text.Layout;
 import android.util.TypedValue;
 import android.view.View;
@@ -184,8 +183,12 @@ public class ViewHelper {
     }
 
     @ColorInt public static int generateTextColor(int background) {
-        Palette.Swatch swatch = new Palette.Swatch(background, 0);
-        return swatch.getTitleTextColor();
+        return getContrastColor(background);
+    }
+
+    @ColorInt private static int getContrastColor(@ColorInt int color) {
+        double a = 1 - (0.299 * Color.red(color) + 0.587 * Color.green(color) + 0.114 * Color.blue(color)) / 255;
+        return a < 0.5 ? Color.BLACK : Color.WHITE;
     }
 
     public static boolean isEllipsed(@NonNull TextView textView) {

@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
-import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
@@ -34,6 +33,7 @@ import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS_RAW;
 import static com.fastaccess.provider.scheme.LinkParserHelper.IGNORED_LIST;
 import static com.fastaccess.provider.scheme.LinkParserHelper.PROTOCOL_HTTPS;
 import static com.fastaccess.provider.scheme.LinkParserHelper.RAW_AUTHORITY;
+import static com.fastaccess.provider.scheme.LinkParserHelper.getBlobBuilder;
 import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
 
 /**
@@ -53,7 +53,7 @@ public class StackBuilderSchemeParser {
         if (intent != null) {
             intent.startActivities();
         } else {
-            ActivityHelper.forceOpenInBrowser(context, data);
+            ActivityHelper.openChooser(context, data);
         }
     }
 
@@ -99,6 +99,9 @@ public class StackBuilderSchemeParser {
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY)) {
+                if (data.getPathSegments() != null) {
+                    Logger.e(data.getPathSegments().size(), data.getPathSegments());
+                }
                 TaskStackBuilder userIntent = getUser(context, data);
                 TaskStackBuilder pullRequestIntent = getPullRequestIntent(context, data);
                 TaskStackBuilder createIssueIntent = getCreateIssueIntent(context, data);
@@ -122,23 +125,27 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;
-        if ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2))) {
+        if (segments.size() > 2 && ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3)))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
         } else {
             return null;
         }
-        if (InputHelper.isEmpty(number))
-            return null;
+        if (InputHelper.isEmpty(number)) {
+            return TaskStackBuilder.create(context)
+                    .addParentStack(MainActivity.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                    .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST));
+        }
         int issueNumber;
         try {
             issueNumber = Integer.parseInt(number);
@@ -155,23 +162,27 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;
-        if ("issues".equals(segments.get(2))) {
+        if (segments.size() > 2 && "issues".equals(segments.get(2))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("issues".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && "issues".equals(segments.get(3))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
         } else {
             return null;
         }
-        if (InputHelper.isEmpty(number))
-            return null;
+        if (InputHelper.isEmpty(number)) {
+            return TaskStackBuilder.create(context)
+                    .addParentStack(MainActivity.class)
+                    .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                    .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES));
+        }
         int issueNumber;
         try {
             issueNumber = Integer.parseInt(number);
@@ -208,12 +219,21 @@ public class StackBuilderSchemeParser {
             if (segments.size() == 1) {
                 return getUser(context, uri);
             } else if (segments.size() > 1) {
-                String owner = segments.get(0);
-                String repoName = segments.get(1);
-                return TaskStackBuilder.create(context)
-                        .addParentStack(MainActivity.class)
-                        .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
-                        .addNextIntent(RepoPagerActivity.createIntent(context, repoName, owner));
+                if (segments.get(0).equalsIgnoreCase("repos") && segments.size() >= 2) {
+                    String owner = segments.get(1);
+                    String repoName = segments.get(2);
+                    return TaskStackBuilder.create(context)
+                            .addParentStack(MainActivity.class)
+                            .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                            .addNextIntent(RepoPagerActivity.createIntent(context, repoName, owner));
+                } else {
+                    String owner = segments.get(0);
+                    String repoName = segments.get(1);
+                    return TaskStackBuilder.create(context)
+                            .addParentStack(MainActivity.class)
+                            .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                            .addNextIntent(RepoPagerActivity.createIntent(context, repoName, owner));
+                }
             }
         }
         return null;
@@ -278,27 +298,17 @@ public class StackBuilderSchemeParser {
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
-            StringBuilder fullUrl = new StringBuilder(uri.toString());
-            if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(fullUrl.toString()))) {
-                return null;
-            }
-            String owner = null;
-            String repo = null;
-            if (uri.getAuthority().equalsIgnoreCase(HOST_DEFAULT)) {
-                owner = segments.get(0);
-                repo = segments.get(1);
-                String branch = segments.get(3);
-                fullUrl = new StringBuilder("https://" + RAW_AUTHORITY + "/" + owner + "/" + repo + "/" + branch);
-                for (int i = 4; i < segments.size(); i++) {
-                    fullUrl.append("/").append(segments.get(i));
-                }
-            }
-            if (fullUrl.length() > 0 && owner != null && repo != null) return TaskStackBuilder.create(context)
+            String owner;
+            String repo;
+            Uri urlBuilder = getBlobBuilder(uri);
+            owner = segments.get(0);
+            repo = segments.get(1);
+            if (owner != null && repo != null) return TaskStackBuilder.create(context)
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
-                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, fullUrl.toString()))
-                    .addNextIntent(CodeViewerActivity.createIntent(context, fullUrl.toString()));
+                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, uri.toString()))
+                    .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString()));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {

@@ -28,7 +28,6 @@ import icepick.State;
 public class FontTextView extends AppCompatTextView {
 
     @State int tintColor = -1;
-
     @State boolean selected;
 
     public FontTextView(@NonNull Context context) {

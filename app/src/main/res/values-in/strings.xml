@@ -1,4 +1,8 @@
 <resources>
+    <!-- Tolong gunakan EYD untuk berkontribusi di terjemahan ini.
+         Jika Anda butuh seseorang untuk meninjau perubahan Anda, silakan menyebutkan nama pengguna
+         yang berkaitan dengan terjemahan Bahasa Indonesia ini di berkas language_contributors.md
+         yang lokasinya di direktori utama. -->
     <string name="in_progress">Memuat, mohon tunggu…</string>
     <string name="action">Tindakan</string>
     <string name="settings">Pengaturan</string>
@@ -33,26 +37,26 @@
     <string name="downloading">Mengunduh…</string>
     <string name="downloading_file">Mengunduh berkas…</string>
     <string name="released">Dirilis</string>
-    <string name="drafted">Draft</string>
+    <string name="drafted">Konsep</string>
     <string name="releases">Rilis</string>
     <string name="no_body">Tidak ada</string>
     <string name="contributors">Kontributor</string>
     <string name="by">Oleh</string>
-    <string name="close_issue">Tutup Masalah</string>
-    <string name="re_open_issue">Buka Kembali Masalah</string>
+    <string name="close_issue">Tutup Isu</string>
+    <string name="re_open_issue">Buka Kembali Isu</string>
     <string name="re_open">Buka Kembali</string>
     <string name="close">Tutup</string>
     <string name="success_re_opened">Berhasil dibuka kembali</string>
-    <string name="lock_issue_details">Maksud dari mengunci percakapan:\n&#183;Pengguna lain tidak dapat menambahkan komentar baru untuk masalah ini.\n&#183;Kamu dan kolaborator
-        lainnya yang mempunyai akses ke repositori ini masih bisa meninggalkan komentar yang bisa dilihat oleh orang lain.\n&#183;Anda selalu dapat membuka kembali masalah ini
+    <string name="lock_issue_details">Maksud dari mengunci percakapan:\n&#183;Pengguna lain tidak dapat menambahkan komentar baru untuk isu ini.\n&#183;Kamu dan kolaborator
+        lainnya yang mempunyai akses ke repositori ini masih bisa meninggalkan komentar yang bisa dilihat oleh orang lain.\n&#183;Anda selalu dapat membuka kembali isu ini
         di masa mendatang.\n</string>
-    <string name="unlock_issue_details">Maksud dari membuka kunci percakapan:\n&#183;Semua orang akan bisa mengomentari masalah ini sekali lagi.\n&#183;Anda selalu
-        dapat mengunci masalah ini lagi di masa mendatang.\n</string>
+    <string name="unlock_issue_details">Maksud dari membuka kunci percakapan:\n&#183;Semua orang akan bisa mengomentari isu ini sekali lagi.\n&#183;Anda selalu
+        dapat mengunci isu ini lagi di masa mendatang.\n</string>
     <string name="lock_issue">Kunci percakapan</string>
     <string name="unlock_issue">Membuka kunci percakapan</string>
-    <string name="error_closing_issue">Terjadi kesalahan saat menutup masalah, silakan coba lagi nanti.</string>
-    <string name="error_re_opening_issue">Terjadi kesalahan saat membuka kembali masalah, coba lagi nanti.</string>
-    <string name="success_closed">Berhasil menutup masalah</string>
+    <string name="error_closing_issue">Terjadi kesalahan saat menutup isu, silakan coba lagi nanti.</string>
+    <string name="error_re_opening_issue">Terjadi kesalahan saat membuka kembali isu, coba lagi nanti.</string>
+    <string name="success_closed">Berhasil menutup isu</string>
     <string name="no_description_provided"><p>Tidak ada deskripsi yang diberikan</p></string>
     <string name="header_one">Header Satu</string>
     <string name="header_two">Header Dua</string>
@@ -60,7 +64,7 @@
     <string name="bold">Tebal</string>
     <string name="italic">Miring</string>
     <string name="strike_through">Dicoret</string>
-    <string name="bullet">Daftar peluru</string>
+    <string name="bullet">Daftar bullet</string>
     <string name="numbered_list">Daftar nomor</string>
     <string name="header">Header</string>
     <string name="quote">Kutipan</string>
@@ -89,32 +93,32 @@
     <string name="big_file">Berkas besar</string>
     <string name="big_file_description">Berkas terlalu besar untuk dibuka.\nTekan "OK" untuk mengunduh sebagai gantinya.</string>
     <string name="viewer">Penampil</string>
-    <string name="submit">Mengajukan</string>
+    <string name="submit">Membuat</string>
     <string name="type_here">Ketik di sini</string>
     <string name="description">Deskripsi</string>
     <string name="file_name">Nama berkas</string>
     <string name="file_name_hint">Nama berkas dengan ekstensi</string>
     <string name="create_secret_gist">Gist Rahasia</string>
     <string name="create_public_gist">Gist Publik</string>
-    <string name="submit_as">Mengajukan sebagai</string>
+    <string name="submit_as">Membuat sebagai</string>
     <string name="delete_gist">Hapus</string>
     <string name="error_deleting_gist">Kesalahan menghapus Gist</string>
     <string name="no_files">Tidak ada berkas</string>
     <string name="required_field">Kolom yang harus diisi</string>
-    <string name="successfully_submitted">Berhasil diajukan</string>
+    <string name="successfully_submitted">Berhasil dibuat</string>
     <string name="create_gist">Membuat Gist</string>
     <string name="clear">Bersihkan</string>
     <string name="users">Pengguna</string>
     <string name="title">Judul</string>
     <string name="milestone">Milestone</string>
     <string name="assign_myself">Menugaskan diri saya</string>
-    <string name="submit_issue">Kirimkan Masalah</string>
-    <string name="error_creating_issue">Kesalahan membuat masalah</string>
-    <string name="create_issue">Membuat Masalah</string>
+    <string name="submit_issue">Kirimkan Isu</string>
+    <string name="error_creating_issue">Kesalahan membuat isu</string>
+    <string name="create_issue">Membuat Isu</string>
     <string name="error_highlighting_editor">Harap tidak memilih highlighting untuk terus mengedit.</string>
     <string name="notifications">Pemberitahuan</string>
     <string name="unread_notification">Anda memiliki pemberitahuan yang belum dibaca</string>
-    <string name="open">Buka</string>
+    <string name="open">Dibuka</string>
     <string name="notification_type">Jenis pemberitahuan</string>
     <string name="labels">Label</string>
     <string name="no_labels">Tidak ada label</string>
@@ -135,7 +139,7 @@
     <string name="click_here_to_download_release_hint">Unduh rilis</string>
     <string name="options">Opsi</string>
     <string name="click_file_option_hint">Unduh berkas atau bagikan direktori</string>
-    <string name="comment_hint">Ketuk komentar untuk memberi tag pengarangnya atau untuk mengedit komentar Anda.
+    <string name="comment_hint">Ketuk komentar untuk memberikan tag kepada penulis atau untuk mengedit komentar Anda.
         \nTekan lama komentar Anda untuk menghapusnya.</string>
     <string name="star_hint">Star/unstar repo</string>
     <string name="watch">Watch</string>
@@ -155,17 +159,17 @@
     <string name="unread">Belum dibaca</string>
     <string name="all">Semua</string>
     <string name="delete_repo">Hapus Repo</string>
-    <string name="delete_repo_warning">Menghapus repo ini tidak dapat dikembalikan</string>
+    <string name="delete_repo_warning">Menghapus repo ini tidak akan dapat dikembalikan</string>
     <string name="thirty_minutes">30 menit</string>
     <string name="twenty_minutes">20 menit</string>
     <string name="ten_minutes">10 menit</string>
     <string name="five_minutes">5 menit</string>
     <string name="one_minute">1 menit</string>
-    <string name="created_repo">Dibuat</string>
+    <string name="created_repo">Membuat</string>
     <string name="committed">Dikomit</string>
     <string name="downloaded">Diunduh</string>
     <string name="followed">Diikuti</string>
-    <string name="commented_on_issue">Komentar pada Issue</string>
+    <string name="commented_on_issue">Komentar pada Isu</string>
     <string name="member">Anggota</string>
     <string name="pr_comment_review">Komentar Pull Request</string>
     <string name="pushed">Push ke</string>
@@ -176,10 +180,10 @@
     <string name="switch_branch">Beralih cabang</string>
     <string name="assignees">Penerima</string>
     <string name="edit">Sunting</string>
-    <string name="update_issue">Perbarui Masalah</string>
+    <string name="update_issue">Perbarui Isu</string>
     <string name="update_pull_request">Perbarui Pull Request</string>
     <string name="no_milestones">Tidak ada milestone</string>
-    <string name="add">Tambahkan</string>
+    <string name="add">Tambah</string>
     <string name="done">Selesai</string>
     <string name="home">Beranda</string>
     <string name="create_milestone">Buat Milestone</string>
@@ -190,7 +194,7 @@
     <string name="commits_reflected">Komit telah beralih ke cabang yang dipilih</string>
     <string name="general_settings">Umum</string>
     <string name="background_job_summary">Ubah seberapa sering FastHub memeriksa pemberitahuan baru</string>
-    <string name="background_job_title">Jarak waktu sinkronisasi pemberitahuan</string>
+    <string name="background_job_title">Jangka waktu sinkronisasi pemberitahuan</string>
     <string name="every">Setiap</string>
     <string name="behavior">Tindakan</string>
     <string name="recycler_view_animation_summary">Aktifkan daftar animasi</string>
@@ -208,13 +212,13 @@
     <string name="question_concerning_fasthub">Pertanyaan tentang FastHub</string>
     <string name="feedback">Umpan balik</string>
     <string name="report_issue">Laporkan masalah</string>
-    <string name="report_issue_here">Mempunyai masalah? Laporkan di sini</string>
+    <string name="report_issue_here">Punya masalah? Laporkan di sini</string>
     <string name="about">Tentang</string>
     <string name="notification_settings">Pemberitahuan</string>
     <string name="turn_off">Matikan</string>
     <string name="unauthorized_user">Pengguna tidak sah</string>
     <string name="two_factors_otp_error">Dua faktor OTP diperlukan</string>
-    <string name="no_issue">Tidak ada masalah</string>
+    <string name="no_issue">Tidak ada isu</string>
     <string name="copy">Salin</string>
     <string name="success_copied">Disalin</string>
     <string name="commit_message">Pesan komit</string>
@@ -246,21 +250,21 @@
     <string name="no_followers">Tidak ada pengikut</string>
     <string name="no_followings">Tidak mengikuti siapapun</string>
     <string name="no_repos">Tidak ada repositori</string>
-    <string name="no_starred_repos">Tidak ada repositori yang berbintang</string>
+    <string name="no_starred_repos">Tidak ada repositori yang diberi bintang</string>
     <string name="no_commits">Tidak ada komit</string>
     <string name="no_contributors">Tidak ada kontributor</string>
     <string name="no_releases">Tidak ada rilis</string>
-    <string name="no_closed_issues">Tidak ada masalah tertutup</string>
-    <string name="no_opened_issues">Tidak ada masalah terbuka</string>
+    <string name="no_closed_issues">Tidak ada isu tertutup</string>
+    <string name="no_opened_issues">Tidak ada isu terbuka</string>
     <string name="no_events">Tidak ada peristiwa</string>
     <string name="no_open_pull_requests">Tidak ada pull request terbuka</string>
     <string name="no_closed_pull_request">Tidak ada pull request tertutup</string>
     <string name="no_search_results">Tidak ada hasil pencarian</string>
     <string name="read_write_permission_explanation">Tolong menerima perintah izin dari FastHub untuk menyimpan berkas di
-        perangkat Anda untuk dapat meninjau mereka</string>
+        perangkat Anda sehingga FastHub dapat meninjau mereka</string>
     <string name="public_gists">Gist Publik</string>
     <string name="enable_ads">Aktifkan Iklan</string>
-    <string name="no_issues">Tidak ada masalah</string>
+    <string name="no_issues">Tidak ada isu</string>
     <string name="no_unread_notifications">Tidak ada pemberitahuan yang belum dibaca.</string>
     <string name="my_gists">Gist Saya</string>
     <string name="changelog">Catatan Perubahan</string>
@@ -292,12 +296,12 @@
     <string name="sort">Urutkan</string>
     <string name="newest">Terbaru</string>
     <string name="oldest">Terlama</string>
-    <string name="most_commented">Paling besar dikomentari</string>
+    <string name="most_commented">Paling banyak dikomentari</string>
     <string name="least_commented">Paling sedikit dikomentari</string>
     <string name="recently_updated">Baru saja diperbarui</string>
     <string name="least_recent_updated">Baru-baru ini diperbarui</string>
     <string name="empty_search_error">Kolom pencarian tidak boleh kosong</string>
-    <string name="long_press_repo_fab_hint">Tekan lama untuk membuat tiket masalah dengan cepat</string>
+    <string name="long_press_repo_fab_hint">Tekan lama untuk membuat tiket isu dengan cepat</string>
     <string name="commit_can_be_merged">Pull request ini dapat digabungkan</string>
     <string name="reviewed">ditinjau</string>
     <string name="dismissed_review">menolak tinjauan mereka</string>
@@ -313,10 +317,10 @@
     <string name="login_with_personal_token">Masuk dengan token pribadi</string>
     <string name="personal_token">Token Pribadi</string>
     <string name="basic_login">Masuk melalui otentikasi dasar</string>
-    <string name="no_orgs_description">Jika Anda benar-benar terikat pada sebuah organisasi dan Anda tidak dapat melihatnya di sini
-        silakan ikuti tautan di bawah ini.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Alasan FastHub tidak menggunakan "Akses Token" adalah karena
-        fakta bahwa jika salah satu organisasi Anda memiliki pengaturan 2FA yang diaktifkan, Kode OTP tersebut hanya dapat bertahan maksimum satu menit atau lebih, yang akan menyebabkan
-        FastHub untuk mengeluarkan Anda dengan segera karena GitHub menanggapi hal tersebut dengan akses yang tidak sah.</string>
+    <string name="no_orgs_description">Jika Anda benar-benar terikat pada organisasi dan Anda tidak dapat melihatnya di sini,
+        silakan ikuti tautan di bawah ini.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nCatatan Tambahan: Alasan FastHub tidak menggunakan "Akses Token" adalah karena
+        jika salah satu organisasi Anda memiliki pengaturan 2FA yang diaktifkan, Kode OTP tersebut hanya dapat bertahan maksimum satu menit atau lebih, yang akan menyebabkan
+        FastHub untuk mengeluarkan Anda dengan segera karena GitHub menanggapi hal tersebut sebagai akses yang tidak sah.</string>
     <string name="insert">Memasukkan</string>
     <string name="select">Pilih</string>
     <string name="select_picture">Pilih Gambar</string>

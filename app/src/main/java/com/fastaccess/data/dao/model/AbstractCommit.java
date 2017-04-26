@@ -26,6 +26,7 @@ import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
+import io.requery.Nullable;
 import io.requery.Persistable;
 import io.requery.Table;
 import io.requery.rx.SingleEntityStore;
@@ -57,6 +58,7 @@ public abstract class AbstractCommit implements Parcelable {
     @Convert(UserConverter.class) User committer;
     @Convert(RepoConverter.class) Repo repo;
     @Column(name = "user_column") @Convert(UserConverter.class) User user;
+    @Nullable int commentCount;
 
     public Completable save(Commit modelEntity) {
         return App.getInstance()
@@ -156,6 +158,7 @@ public abstract class AbstractCommit implements Parcelable {
         dest.writeParcelable(this.committer, flags);
         dest.writeParcelable(this.repo, flags);
         dest.writeParcelable(this.user, flags);
+        dest.writeInt(this.commentCount);
     }
 
     protected AbstractCommit(Parcel in) {
@@ -178,6 +181,7 @@ public abstract class AbstractCommit implements Parcelable {
         this.committer = in.readParcelable(User.class.getClassLoader());
         this.repo = in.readParcelable(Repo.class.getClassLoader());
         this.user = in.readParcelable(User.class.getClassLoader());
+        this.commentCount = in.readInt();
     }
 
     public static final Creator<Commit> CREATOR = new Creator<Commit>() {

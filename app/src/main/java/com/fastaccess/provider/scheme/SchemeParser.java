@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
@@ -30,6 +29,7 @@ import static com.fastaccess.provider.scheme.LinkParserHelper.HOST_GISTS_RAW;
 import static com.fastaccess.provider.scheme.LinkParserHelper.IGNORED_LIST;
 import static com.fastaccess.provider.scheme.LinkParserHelper.PROTOCOL_HTTPS;
 import static com.fastaccess.provider.scheme.LinkParserHelper.RAW_AUTHORITY;
+import static com.fastaccess.provider.scheme.LinkParserHelper.getBlobBuilder;
 import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
 
 /**
@@ -47,15 +47,15 @@ public class SchemeParser {
     }
 
     public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn, boolean isService) {
+        Logger.e(data);
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
             if (isService) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
-            ActivityHelper.forceOpenInBrowser(context, data);
+            ActivityHelper.openChooser(context, data);
         }
     }
-
 
     @Nullable private static Intent convert(@NonNull Context context, Uri data, boolean showRepoBtn) {
         if (data == null) return null;
@@ -77,7 +77,6 @@ public class SchemeParser {
             }
         }
         if (!data.getPathSegments().isEmpty()) {
-            Logger.e(IGNORED_LIST.contains(data.getPath()), data.getPathSegments().get(0));
             if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
         } else {
             return null;
@@ -120,15 +119,15 @@ public class SchemeParser {
 
     @Nullable private static Intent getPullRequestIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;
-        if ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2))) {
+        if (segments.size() > 2 && ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3)))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
@@ -149,15 +148,15 @@ public class SchemeParser {
 
     @Nullable private static Intent getIssueIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 4) return null;
+        if (segments == null || segments.size() < 2) return null;
         String owner;
         String repo;
         String number;
-        if ("issues".equals(segments.get(2))) {
+        if (segments.size() > 2 && "issues".equals(segments.get(2))) {
             owner = segments.get(0);
             repo = segments.get(1);
             number = segments.get(3);
-        } else if ("issues".equals(segments.get(3))) {//notifications url.
+        } else if (segments.size() > 3 && "issues".equals(segments.get(3))) {//notifications url.
             owner = segments.get(1);
             repo = segments.get(2);
             number = segments.get(4);
@@ -195,9 +194,15 @@ public class SchemeParser {
             if (segments.size() == 1) {
                 return getUser(context, uri);
             } else if (segments.size() > 1) {
-                String owner = segments.get(0);
-                String repoName = segments.get(1);
-                return RepoPagerActivity.createIntent(context, repoName, owner);
+                if (segments.get(0).equalsIgnoreCase("repos") && segments.size() >= 2) {
+                    String owner = segments.get(1);
+                    String repoName = segments.get(2);
+                    return RepoPagerActivity.createIntent(context, repoName, owner);
+                } else {
+                    String owner = segments.get(0);
+                    String repoName = segments.get(1);
+                    return RepoPagerActivity.createIntent(context, repoName, owner);
+                }
             }
         }
         return null;
@@ -206,10 +211,19 @@ public class SchemeParser {
     @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.isEmpty() || segments.size() < 3) return null;
-        if (segments.get(3).equals("commits")) {
-            String login = segments.get(1);
-            String repoId = segments.get(2);
-            String sha = segments.get(4);
+        String login = null;
+        String repoId = null;
+        String sha = null;
+        if (segments.size() > 3 && segments.get(3).equals("commits")) {
+            login = segments.get(1);
+            repoId = segments.get(2);
+            sha = segments.get(4);
+        } else if (segments.size() > 2 && segments.get(2).equals("commits")) {
+            login = segments.get(0);
+            repoId = segments.get(1);
+            sha = uri.getLastPathSegment();
+        }
+        if (login != null && sha != null && repoId != null) {
             return CommitPagerActivity.createIntent(context, repoId, login, sha, showRepoBtn);
         }
         return null;
@@ -244,20 +258,8 @@ public class SchemeParser {
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
-            String fullUrl = uri.toString();
-            if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(fullUrl))) {
-                return null;
-            }
-            if (uri.getAuthority().equalsIgnoreCase(HOST_DEFAULT)) {
-                String owner = segments.get(0);
-                String repo = segments.get(1);
-                String branch = segments.get(3);
-                fullUrl = "https://" + RAW_AUTHORITY + "/" + owner + "/" + repo + "/" + branch;
-                for (int i = 4; i < segments.size(); i++) {
-                    fullUrl += "/" + segments.get(i);
-                }
-            }
-            if (fullUrl != null) return CodeViewerActivity.createIntent(context, fullUrl);
+            Uri urlBuilder = getBlobBuilder(uri);
+            return CodeViewerActivity.createIntent(context, urlBuilder.toString());
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
@@ -272,7 +274,6 @@ public class SchemeParser {
      */
     @Nullable private static Intent getCreateIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        Logger.e(segments);
         if (uri.getLastPathSegment() == null) return null;
         if (segments == null || segments.size() < 3 || !uri.getLastPathSegment().equalsIgnoreCase("new")) return null;
         if ("issues".equals(segments.get(2))) {

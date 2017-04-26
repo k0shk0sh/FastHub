@@ -24,7 +24,7 @@ public interface OrganizationService {
 
     @GET("orgs/{org}") Observable<User> getOrganization(@NonNull @Path("org") String org);
 
-    @GET("user/orgs") Observable<Pageable<User>> getMyOrganizations();
+    @GET("user/orgs?per_page=200") Observable<Pageable<User>> getMyOrganizations();
 
     @GET("users/{user}/orgs") Observable<Pageable<User>> getMyOrganizations(@NonNull @Path("user") String user);
 

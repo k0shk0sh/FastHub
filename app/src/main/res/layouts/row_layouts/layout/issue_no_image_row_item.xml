@@ -10,8 +10,7 @@
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal"
-    >
+    android:paddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,15 +28,35 @@
             android:textStyle="bold"
             tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/details"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary"
-            app:drawableColor="?android:attr/textColorSecondary"
-            tools:text="1000"/>
+            android:orientation="horizontal">
 
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/details"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="1000"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/commentsNo"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:drawableStart="@drawable/ic_comment_small"
+                android:gravity="center|start"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="1000"/>
+        </LinearLayout>
     </LinearLayout>
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

@@ -36,8 +36,7 @@ public class CodeBlockSpan extends ReplacementSpan implements LineHeightSpan {
         this.ls = lines;
     }
 
-    @Override
-    public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
+    @Override public int getSize(Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
         if (fm != null && lines == null) {
             lines = new ArrayList<>();
             for (CharSequence c : ls) {
@@ -47,8 +46,7 @@ public class CodeBlockSpan extends ReplacementSpan implements LineHeightSpan {
         return width;
     }
 
-    @Override
-    public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+    @Override public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
         drawable.setBounds((int) x, top, (int) x + width, bottom);
         drawable.draw(canvas);
         int lineNum = 0;
@@ -63,7 +61,6 @@ public class CodeBlockSpan extends ReplacementSpan implements LineHeightSpan {
             i += lineHeight;
         }
     }
-
 
     private int getTextInLineLen(CharSequence text, int start, int end, Paint paint) {
         int e = start;
@@ -81,12 +78,14 @@ public class CodeBlockSpan extends ReplacementSpan implements LineHeightSpan {
         if (rs > end) {
             return end;
         }
-        while (paint.measureText(text, start, e) < width - padding * 2) {
-            e++;
-            if (e > end || e > re) {
-                break;
+        try {
+            while (paint.measureText(text, start, e) < width - padding * 2) {
+                e++;
+                if (e > end || e > re) {
+                    break;
+                }
             }
-        }
+        } catch (Exception ignored) {}
         return e - 1;
     }
 
@@ -104,8 +103,7 @@ public class CodeBlockSpan extends ReplacementSpan implements LineHeightSpan {
         return lines;
     }
 
-    @Override
-    public void chooseHeight(CharSequence text, int start, int end, int spanstartv, int v, Paint.FontMetricsInt fm) {
+    @Override public void chooseHeight(CharSequence text, int start, int end, int spanstartv, int v, Paint.FontMetricsInt fm) {
         int num = lines.size();
         lineHeight = fm.bottom - fm.top;
         baseLine = -fm.top;

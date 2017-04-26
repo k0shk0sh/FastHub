@@ -17,11 +17,14 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
+import com.mikepenz.aboutlibraries.Libs;
+import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import es.dmoral.toasty.Toasty;
 
@@ -60,6 +63,16 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .subText(R.string.report_issue_here)
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_bug))
                 .setOnClickListener(b -> CreateIssueActivity.startForResult(this, CreateIssueActivity.startForResult(this), malRecyclerview))
+                .build());
+        appCardBuilder.addItem(new MaterialAboutActionItem.Builder()
+                .text(R.string.open_source_libs)
+                .icon(R.drawable.ic_github)
+                .setOnClickListener(b -> new LibsBuilder()
+                        .withActivityStyle(AppHelper.isNightMode(getResources()) ? Libs.ActivityStyle.DARK : Libs.ActivityStyle.LIGHT)
+                        .withAutoDetect(true)
+                        .withAboutIconShown(true)
+                        .withAboutVersionShown(true)
+                        .start(this))
                 .build());
 
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();

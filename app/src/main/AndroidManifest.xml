@@ -205,9 +205,12 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".ui.modules.main.donation.DonationActivity"/>
 
-        <activity android:name=".ui.modules.search.files.SearchFileActivity"
+        <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
+        
+	<activity android:name=".ui.modules.search.files.SearchFileActivity"
                   android:parentActivityName=".ui.modules.repos.RepoPagerActivity" />
 
         <service

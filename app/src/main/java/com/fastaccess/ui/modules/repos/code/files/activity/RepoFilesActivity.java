@@ -42,11 +42,22 @@ public class RepoFilesActivity extends BaseActivity {
     public static Intent getIntent(@NonNull Context context, @NonNull String url) {
         Uri uri = Uri.parse(url);
         if (uri.getPathSegments() != null && uri.getPathSegments().size() > 3) {
-            String login = uri.getPathSegments().get(0);
-            String repoId = uri.getPathSegments().get(1);
-            String branch = uri.getPathSegments().get(2);
+            String login;
+            String repoId;
+            String branch;
             StringBuilder path = new StringBuilder();
-            for (int i = 3; i < uri.getPathSegments().size() - 1; i++) {
+            boolean startWithRepo = false;
+            if (uri.getPathSegments().get(0).equalsIgnoreCase("repos")) {
+                login = uri.getPathSegments().get(1);
+                repoId = uri.getPathSegments().get(2);
+                branch = uri.getQueryParameter("ref");
+                startWithRepo = true;
+            } else {
+                login = uri.getPathSegments().get(0);
+                repoId = uri.getPathSegments().get(1);
+                branch = uri.getPathSegments().get(2);
+            }
+            for (int i = startWithRepo ? 4 : 3; i < uri.getPathSegments().size() - 1; i++) {
                 String appendedPath = uri.getPathSegments().get(i);
                 path.append("/").append(appendedPath);
             }

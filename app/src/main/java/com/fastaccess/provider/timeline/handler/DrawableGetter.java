@@ -1,158 +1,83 @@
 package com.fastaccess.provider.timeline.handler;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.Html;
 import android.view.View;
 import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.InputStream;
+import com.fastaccess.R;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+
 import java.lang.ref.WeakReference;
-import java.net.URI;
-import java.net.URL;
 
 /**
  * Created by Kosh on 22 Apr 2017, 7:44 PM
  */
 
 public class DrawableGetter implements Html.ImageGetter {
-    TextView container;
-    URI baseUri;
-    boolean matchParentWidth;
+    private WeakReference<TextView> container;
 
-    public DrawableGetter(TextView textView) {
-        this.container = textView;
-        this.matchParentWidth = false;
+    @Nullable TextView get() {
+        return container != null ? container.get() : null;
     }
 
-    public DrawableGetter(TextView textView, String baseUrl) {
-        this.container = textView;
-        if (baseUrl != null) {
-            this.baseUri = URI.create(baseUrl);
-        }
+    public DrawableGetter(TextView t) {
+        this.container = new WeakReference<>(t);
     }
 
-    public DrawableGetter(TextView textView, String baseUrl, boolean matchParentWidth) {
-        this.container = textView;
-        this.matchParentWidth = matchParentWidth;
-        if (baseUrl != null) {
-            this.baseUri = URI.create(baseUrl);
-        }
-    }
-
-    public Drawable getDrawable(String source) {
-        UrlDrawable urlDrawable = new UrlDrawable();
-        ImageGetterAsyncTask asyncTask = new ImageGetterAsyncTask(urlDrawable, this, container, matchParentWidth);
-        asyncTask.execute(source);
+    @Override public Drawable getDrawable(String source) {
+        TextView textView = get();
+        if (textView == null) return null;
+        UrlImageDownloader urlDrawable = new UrlImageDownloader(textView.getResources(), source);
+        urlDrawable.drawable = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_github_dark);
+        ImageLoader.getInstance().loadImage(source, new SimpleListener(urlDrawable));
         return urlDrawable;
     }
 
-    private static class ImageGetterAsyncTask extends AsyncTask<String, Void, Drawable> {
-        private final WeakReference<UrlDrawable> drawableReference;
-        private final WeakReference<DrawableGetter> imageGetterReference;
-        private final WeakReference<View> containerReference;
-        private final WeakReference<Resources> resources;
-        private String source;
-        private boolean matchParentWidth;
-        private float scale;
+    private class SimpleListener extends SimpleImageLoadingListener {
+        UrlImageDownloader urlImageDownloader;
 
-        public ImageGetterAsyncTask(UrlDrawable d, DrawableGetter imageGetter, View container, boolean matchParentWidth) {
-            this.drawableReference = new WeakReference<>(d);
-            this.imageGetterReference = new WeakReference<>(imageGetter);
-            this.containerReference = new WeakReference<>(container);
-            this.resources = new WeakReference<>(container.getResources());
-            this.matchParentWidth = matchParentWidth;
+        SimpleListener(UrlImageDownloader downloader) {
+            super();
+            urlImageDownloader = downloader;
         }
 
-        @Override protected Drawable doInBackground(String... params) {
-            source = params[0];
+        @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            int width = loadedImage.getWidth();
+            int height = loadedImage.getHeight();
+            int newWidth = (int) (width / 1.5);
+            int newHeight = (int) (height / 1.5);
+            TextView textView = get();
+            if (textView == null) return;
+            Drawable result = new BitmapDrawable(textView.getResources(), loadedImage);
+            result.setBounds(0, 0, newWidth, newHeight);
+            urlImageDownloader.setBounds(0, 0, newWidth, newHeight);
+            urlImageDownloader.drawable = result;
+            textView.invalidate();
+            textView.setText(textView.getText());
 
-            if (resources.get() != null) {
-                return fetchDrawable(resources.get(), source);
-            }
-
-            return null;
-        }
-
-        @Override protected void onPostExecute(Drawable result) {
-            if (result == null) {
-                return;
-            }
-            final UrlDrawable urlDrawable = drawableReference.get();
-            if (urlDrawable == null) {
-                return;
-            }
-            if (matchParentWidth) {
-                urlDrawable.setBounds(0, 0, (int) (result.getIntrinsicWidth() * scale), (int) (result.getIntrinsicHeight() * scale));
-            } else {
-                urlDrawable.setBounds(0, 0, (int) (result.getIntrinsicWidth() * 2.5), (int) (result.getIntrinsicHeight() * 2.5));
-            }
-            urlDrawable.drawable = result;
-
-            final DrawableGetter imageGetter = imageGetterReference.get();
-            if (imageGetter == null) {
-                return;
-            }
-            imageGetter.container.invalidate();
-            imageGetter.container.setText(imageGetter.container.getText());
-        }
-
-        Drawable fetchDrawable(Resources res, String urlString) {
-            try {
-                InputStream is = fetch(urlString);
-                Drawable drawable = new BitmapDrawable(res, is);
-                if (matchParentWidth) {
-                    scale = getScale(drawable);
-                    drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * scale), (int) (drawable.getIntrinsicHeight() * scale));
-                } else {
-                    drawable.setBounds(0, 0, (int) (drawable.getIntrinsicWidth() * 2.5), (int) (drawable.getIntrinsicHeight() * 2.5));
-                }
-                return drawable;
-            } catch (Exception e) {
-                return null;
-            }
-        }
-
-        private float getScale(Drawable drawable) {
-            View container = containerReference.get();
-            if (!matchParentWidth || container == null) {
-                return 1f;
-            }
-            float maxWidth = container.getWidth();
-            float originalDrawableWidth = drawable.getIntrinsicWidth();
-            return maxWidth / originalDrawableWidth;
-        }
-
-        private InputStream fetch(String urlString) throws IOException {
-            URL url;
-            final DrawableGetter imageGetter = imageGetterReference.get();
-            if (imageGetter == null) {
-                return null;
-            }
-            if (imageGetter.baseUri != null) {
-                url = imageGetter.baseUri.resolve(urlString).toURL();
-            } else {
-                url = URI.create(urlString).toURL();
-            }
-
-            return (InputStream) url.getContent();
         }
     }
 
-    @SuppressWarnings("deprecation")
-    public class UrlDrawable extends BitmapDrawable {
-        protected Drawable drawable;
+    private class UrlImageDownloader extends BitmapDrawable {
+        public Drawable drawable;
 
-        @Override
-        public void draw(Canvas canvas) {
-            // override the draw to facilitate refresh function later
+        UrlImageDownloader(Resources res, String filepath) {
+            super(res, filepath);
+            drawable = new BitmapDrawable(res, filepath);
+        }
+
+        @Override public void draw(Canvas canvas) {
             if (drawable != null) {
                 drawable.draw(canvas);
             }
         }
     }
-} 
+}

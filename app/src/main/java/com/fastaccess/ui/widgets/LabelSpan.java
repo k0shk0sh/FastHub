@@ -45,7 +45,7 @@ public class LabelSpan extends ReplacementSpan {
     private final int color;
     private final SpanDimensions dims;
 
-    public LabelSpan(int color, SpanDimensions dims) {
+    public LabelSpan(int color, @NonNull SpanDimensions dims) {
         this.color = color;
         txtPaint.bgColor = color;
         this.dims = dims;
@@ -54,15 +54,15 @@ public class LabelSpan extends ReplacementSpan {
     public LabelSpan(int color) {
         this(color, new SpanDimensions() {
             @Override public int getPadding() {
-                return 10;
+                return 6;
             }
 
             @Override public int getPaddingExtraWidth() {
-                return 4;
+                return 0;
             }
 
             @Override public int getPaddingAfter() {
-                return 4;
+                return 0;
             }
 
             @Override public int getMaxWidth() {
@@ -74,7 +74,7 @@ public class LabelSpan extends ReplacementSpan {
             }
 
             @Override public int getMarginTop() {
-                return 12;
+                return 8;
             }
 
             @Override public boolean isRtl() {

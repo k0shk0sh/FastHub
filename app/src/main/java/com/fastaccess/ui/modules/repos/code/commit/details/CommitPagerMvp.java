@@ -16,6 +16,8 @@ interface CommitPagerMvp {
     interface View extends BaseMvp.FAView {
 
         void onSetup();
+
+        void onFinishActivity();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

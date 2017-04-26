@@ -85,10 +85,6 @@
     <PreferenceCategory android:title="@string/about">
 
         <Preference
-            android:key="aboutLibs"
-            android:title="@string/open_source_libs"/>
-
-        <Preference
             android:key="about"
             android:title="@string/about">
             <intent
