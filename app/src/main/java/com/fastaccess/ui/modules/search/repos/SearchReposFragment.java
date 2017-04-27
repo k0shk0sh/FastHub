@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.search.repos;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -33,9 +35,22 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
+    private SearchMvp.View countCallback;
 
     public static SearchReposFragment newInstance() {
         return new SearchReposFragment();
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SearchMvp.View) {
+            countCallback = (SearchMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        countCallback = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<Repo> items, int page) {
@@ -49,6 +64,10 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
         } else {
             adapter.addItems(items);
         }
+    }
+
+    @Override public void onSetTabCount(int count) {
+        if (countCallback != null) countCallback.onSetCount(count, 0);
     }
 
     @Override protected int fragmentLayout() {
@@ -100,11 +119,6 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @Override public void onSetSearchQuery(@NonNull String query) {
         this.searchQuery = query;
         getLoadMore().reset();
@@ -131,5 +145,10 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

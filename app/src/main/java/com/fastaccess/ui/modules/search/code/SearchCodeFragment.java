@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.search.code;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.SearchCodeAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -36,9 +38,22 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private SearchCodeAdapter adapter;
+    private SearchMvp.View countCallback;
 
     public static SearchCodeFragment newInstance() {
         return new SearchCodeFragment();
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SearchMvp.View) {
+            countCallback = (SearchMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        countCallback = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<SearchCodeModel> items, int page) {
@@ -52,6 +67,10 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         } else {
             adapter.addItems(items);
         }
+    }
+
+    @Override public void onSetTabCount(int count) {
+        if (countCallback != null) countCallback.onSetCount(count, 3);
     }
 
     @Override protected int fragmentLayout() {

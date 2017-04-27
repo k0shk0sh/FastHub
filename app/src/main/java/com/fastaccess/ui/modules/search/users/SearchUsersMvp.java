@@ -21,6 +21,8 @@ interface SearchUsersMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
         void onNotifyAdapter(@Nullable List<User> items, int page);
 
+        void onSetTabCount(int count);
+
         void onSetSearchQuery(@NonNull String query);
 
         @NonNull OnLoadMore<String> getLoadMore();

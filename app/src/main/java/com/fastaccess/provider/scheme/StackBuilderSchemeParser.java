@@ -109,6 +109,8 @@ public class StackBuilderSchemeParser {
                     Logger.e(data.getPathSegments().size(), data.getPathSegments());
                 }
                 TaskStackBuilder userIntent = getUser(context, data);
+                TaskStackBuilder repoIssuesIntent = getRepoIssueIntent(context, data);
+                TaskStackBuilder repoPullsIntent = getRepoPullRequestIntent(context, data);
                 TaskStackBuilder pullRequestIntent = getPullRequestIntent(context, data);
                 TaskStackBuilder createIssueIntent = getCreateIssueIntent(context, data);
                 TaskStackBuilder issueIntent = getIssueIntent(context, data);
@@ -116,8 +118,8 @@ public class StackBuilderSchemeParser {
                 TaskStackBuilder commit = getCommit(context, data);
                 TaskStackBuilder commits = getCommits(context, data);
                 TaskStackBuilder blob = getBlob(context, data);
-                Optional<TaskStackBuilder> intentOptional = returnNonNull(userIntent, pullRequestIntent, commit, commits,
-                        createIssueIntent, issueIntent, repoIntent, blob);
+                Optional<TaskStackBuilder> intentOptional = returnNonNull(userIntent, repoIssuesIntent, repoPullsIntent, pullRequestIntent, commit,
+                        commits, createIssueIntent, issueIntent, repoIntent, blob);
                 Optional<TaskStackBuilder> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
@@ -131,26 +133,22 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 2) return null;
-        String owner;
-        String repo;
-        String number;
-        if (segments.size() > 2 && ("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
-            owner = segments.get(0);
-            repo = segments.get(1);
-            number = segments.get(3);
-        } else if (segments.size() > 3 && ("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3)))) {//notifications url.
-            owner = segments.get(1);
-            repo = segments.get(2);
-            number = segments.get(4);
-        } else {
-            return null;
-        }
-        if (InputHelper.isEmpty(number)) {
-            return TaskStackBuilder.create(context)
-                    .addParentStack(MainActivity.class)
-                    .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
-                    .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST));
+        if (segments == null || segments.size() < 3) return null;
+        String owner = null;
+        String repo = null;
+        String number = null;
+        if (segments.size() > 3) {
+            if (("pull".equals(segments.get(2)) || "pulls".equals(segments.get(2)))) {
+                owner = segments.get(0);
+                repo = segments.get(1);
+                number = segments.get(3);
+            } else if (("pull".equals(segments.get(3)) || "pulls".equals(segments.get(3))) && segments.size() > 4) {
+                owner = segments.get(1);
+                repo = segments.get(2);
+                number = segments.get(4);
+            } else {
+                return null;
+            }
         }
         int issueNumber;
         try {
@@ -158,7 +156,7 @@ public class StackBuilderSchemeParser {
         } catch (NumberFormatException nfe) {
             return null;
         }
-        if (issueNumber < 1) return null;
+        if (issueNumber < 1 || owner == null || repo == null) return null;
         return TaskStackBuilder.create(context)
                 .addParentStack(MainActivity.class)
                 .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
@@ -168,26 +166,22 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 2) return null;
-        String owner;
-        String repo;
-        String number;
-        if (segments.size() > 2 && "issues".equals(segments.get(2))) {
-            owner = segments.get(0);
-            repo = segments.get(1);
-            number = segments.get(3);
-        } else if (segments.size() > 3 && "issues".equals(segments.get(3))) {//notifications url.
-            owner = segments.get(1);
-            repo = segments.get(2);
-            number = segments.get(4);
-        } else {
-            return null;
-        }
-        if (InputHelper.isEmpty(number)) {
-            return TaskStackBuilder.create(context)
-                    .addParentStack(MainActivity.class)
-                    .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
-                    .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES));
+        if (segments == null || segments.size() < 3) return null;
+        String owner = null;
+        String repo = null;
+        String number = null;
+        if (segments.size() > 3) {
+            if (segments.get(2).equalsIgnoreCase("issues")) {
+                owner = segments.get(0);
+                repo = segments.get(1);
+                number = segments.get(3);
+            } else if (segments.get(3).equalsIgnoreCase("issues") && segments.size() > 4) {
+                owner = segments.get(1);
+                repo = segments.get(2);
+                number = segments.get(4);
+            } else {
+                return null;
+            }
         }
         int issueNumber;
         try {
@@ -195,7 +189,7 @@ public class StackBuilderSchemeParser {
         } catch (NumberFormatException nfe) {
             return null;
         }
-        if (issueNumber < 1) return null;
+        if (issueNumber < 1 || repo == null || owner == null) return null;
         return TaskStackBuilder.create(context)
                 .addParentStack(MainActivity.class)
                 .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
@@ -363,4 +357,35 @@ public class StackBuilderSchemeParser {
         List<String> segments = uri.getPathSegments();
         return segments != null && !segments.isEmpty() ? uri.getLastPathSegment() : null;
     }
+
+    @Nullable private static TaskStackBuilder getRepoIssueIntent(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments != null && segments.size() == 3 && uri.getLastPathSegment().equalsIgnoreCase("issues")) {
+            String owner = segments.get(0);
+            String repo = segments.get(1);
+            if (owner != null && repo != null) {
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainActivity.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                        .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES));
+            }
+        }
+        return null;
+    }
+
+    @Nullable private static TaskStackBuilder getRepoPullRequestIntent(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments != null && segments.size() == 3 && uri.getLastPathSegment().equalsIgnoreCase("pulls")) {
+            String owner = segments.get(0);
+            String repo = segments.get(1);
+            if (owner != null && repo != null) {
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainActivity.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                        .addNextIntent(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST));
+            }
+        }
+        return null;
+    }
+
 }

@@ -20,13 +20,13 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 interface MainMvp {
 
     int FEEDS = 0;
-    int PULL_REQUESTS = 1;
-    int ISSUES = 2;
+    int ISSUES = 1;
+    int PULL_REQUESTS = 2;
 
     @IntDef({
             FEEDS,
-            PULL_REQUESTS,
             ISSUES,
+            PULL_REQUESTS
     })
     @Retention(RetentionPolicy.SOURCE) @interface NavigationType {}
 

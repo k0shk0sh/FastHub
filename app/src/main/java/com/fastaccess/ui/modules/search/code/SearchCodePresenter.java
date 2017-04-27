@@ -54,11 +54,10 @@ class SearchCodePresenter extends BasePresenter<SearchCodeMvp.View> implements S
         makeRestCall(RestProvider.getSearchService().searchCode(parameter, page),
                 response -> {
                     lastPage = response.getLast();
-                    if (response.isIncompleteResults()) {
-                        sendToView(view -> view.showMessage(R.string.error, R.string.no_search_results));
-                        return;
-                    }
-                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
+                    sendToView(view -> {
+                        view.onNotifyAdapter(response.isIncompleteResults() ? null : response.getItems(), page);
+                        view.onSetTabCount(response.getTotalCount());
+                    });
                 });
     }
 

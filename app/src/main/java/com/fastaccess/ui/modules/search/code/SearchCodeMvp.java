@@ -21,6 +21,8 @@ interface SearchCodeMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
         void onNotifyAdapter(@Nullable List<SearchCodeModel> items, int page);
 
+        void onSetTabCount(int count);
+
         void onSetSearchQuery(@NonNull String query, boolean showRepoName);
 
         @NonNull OnLoadMore<String> getLoadMore();
