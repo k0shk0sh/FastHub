@@ -106,12 +106,7 @@
             android:name=".ui.modules.code.CodeViewerActivity"
             android:configChanges="keyboard|orientation|screenSize"
 
-            android:label="@string/viewer"
-            android:parentActivityName=".ui.modules.main.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainActivity"/>
-        </activity>
+            android:label="@string/viewer" />
 
         <activity
             android:name=".ui.modules.editor.EditorActivity"
@@ -214,6 +209,9 @@
         <activity android:name=".ui.modules.main.donation.DonationActivity"/>
 
         <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
+        
+	<activity android:name=".ui.modules.search.files.SearchFileActivity"
+                  android:parentActivityName=".ui.modules.repos.RepoPagerActivity" />
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"

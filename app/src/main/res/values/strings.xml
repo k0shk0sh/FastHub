@@ -105,7 +105,6 @@
     <string name="pull_request" translatable="false">Pull Request</string>
     <string name="commit" translatable="false">Commit</string>
     <string name="success_merge">Successfully merged</string>
-    <string name="file">File</string>
     <string name="file_menu">File menu</string>
     <string name="files">Files</string>
     <string name="download">Download</string>
@@ -135,6 +134,7 @@
     <string name="clear">Clear</string>
     <string name="users">Users</string>
     <string name="title">Title</string>
+    <string name="file">File</string>
     <string name="milestone">Milestone</string>
     <string name="assign_myself">Assign myself</string>
     <string name="submit_issue">Submit Issue</string>
