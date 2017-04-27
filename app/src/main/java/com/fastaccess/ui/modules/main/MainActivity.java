@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
@@ -60,6 +61,15 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         onInit(savedInstanceState);
         fab.setImageResource(R.drawable.ic_filter);
         showHideFab();
+        onNewIntent(getIntent());
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null && intent.getExtras() != null) {
+            boolean recreate = intent.getExtras().getBoolean(BundleConstant.YES_NO_EXTRA);
+            if (recreate) recreate();
+        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

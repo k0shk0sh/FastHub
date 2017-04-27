@@ -22,8 +22,8 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
+import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -80,7 +80,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
@@ -151,9 +151,8 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         String login = commit.getAuthor() != null ? commit.getAuthor().getLogin() : commit.getGitCommit().getAuthor().getName();
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
-        title.setText(commit.getGitCommit().getMessage());
-        boolean showIcon = commit.getGitCommit() != null && (!InputHelper.isEmpty(commit.getGitCommit().getMessage()));
-        detailsIcon.setVisibility(!showIcon ? View.GONE : ViewHelper.isEllipsed(title) ? View.VISIBLE : View.GONE);
+        HtmlHelper.parseHtmlIntoTextView(title, commit.getGitCommit().getMessage());
+        detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
         date.setText(ParseDateFormat.getTimeAgo(dateValue));
         avatarLayout.setUrl(avatar, login);

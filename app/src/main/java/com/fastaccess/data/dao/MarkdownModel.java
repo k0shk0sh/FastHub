@@ -15,7 +15,7 @@ import lombok.Setter;
 public class MarkdownModel implements Parcelable {
     private String text;
     private String mode = "gfm";
-    private String context = "markdown";
+    private String context;
 
     @Override public int describeContents() { return 0; }
 

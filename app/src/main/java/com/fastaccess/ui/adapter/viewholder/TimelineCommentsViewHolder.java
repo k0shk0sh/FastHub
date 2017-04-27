@@ -149,7 +149,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             avatar.setUrl(null, null);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            HtmlHelper.getComment(comment, commentsModel.getBodyHtml());
+            HtmlHelper.parseHtmlIntoTextView(comment, commentsModel.getBodyHtml());
         } else {
             comment.setText("");
         }

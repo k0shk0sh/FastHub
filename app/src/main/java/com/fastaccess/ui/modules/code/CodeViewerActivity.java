@@ -20,6 +20,7 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
+import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.prettifier.ViewerFragment;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -108,6 +109,8 @@ public class CodeViewerActivity extends BaseActivity {
                 if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty() && uri.getPathSegments().size() >= 1) {
                     GistActivity.createIntent(this, uri.getPathSegments().get(1));
                 }
+            } else {
+                RepoFilesActivity.startActivity(this, url);
             }
             finish();
             return true;

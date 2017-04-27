@@ -61,7 +61,7 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
             }
             if (!InputHelper.isEmpty(review.getBody())) {
                 body.setVisibility(View.VISIBLE);
-                HtmlHelper.getComment(body, review.getBody());
+                HtmlHelper.parseHtmlIntoTextView(body, review.getBody());
             } else {
                 body.setVisibility(View.GONE);
             }

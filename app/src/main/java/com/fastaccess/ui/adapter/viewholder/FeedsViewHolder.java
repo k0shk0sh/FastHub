@@ -55,15 +55,18 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             EventsType type = eventsModel.getType();
             date.setGravity(Gravity.CENTER);
             date.setEventsIcon(type.getDrawableRes());
-            String action;
+            String action = null;
             if (type == EventsType.WatchEvent) {
                 action = itemView.getResources().getString(type.getType()).toLowerCase();
             } else if (type == EventsType.PullRequestEvent) {
-                action = itemView.getResources().getString(type.getType());
                 if (eventsModel.getPayload().getPullRequest() != null) {
                     if (eventsModel.getPayload().getPullRequest().isMerged()) {
                         action = itemView.getResources().getString(R.string.merged);
+                    } else {
+                        action = eventsModel.getPayload() != null ? eventsModel.getPayload().getAction() : "";
                     }
+                } else {
+                    action = eventsModel.getPayload() != null ? eventsModel.getPayload().getAction() : "";
                 }
             } else {
                 action = eventsModel.getPayload() != null ? eventsModel.getPayload().getAction() : "";

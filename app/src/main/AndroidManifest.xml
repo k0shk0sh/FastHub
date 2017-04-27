@@ -210,7 +210,7 @@
 
         <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
         
-	<activity android:name=".ui.modules.search.files.SearchFileActivity"
+	<activity android:name=".ui.modules.search.repos.files.SearchFileActivity"
                   android:parentActivityName=".ui.modules.repos.RepoPagerActivity" />
 
         <service

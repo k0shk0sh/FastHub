@@ -18,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.webkit.CookieManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -187,7 +186,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        CookieManager.getInstance().removeAllCookies(null);
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
         PrefGetter.clear();
@@ -260,7 +258,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onThemeChanged() {
-        recreate();
+        if (this instanceof MainActivity) {
+            recreate();
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtras(Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).end());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override public void onOpenSettings() {

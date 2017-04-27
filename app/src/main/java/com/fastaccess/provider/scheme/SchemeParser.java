@@ -1,5 +1,6 @@
 package com.fastaccess.provider.scheme;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -53,7 +54,12 @@ public class SchemeParser {
             if (isService) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
-            ActivityHelper.openChooser(context, data);
+            Activity activity = ActivityHelper.getActivity(context);
+            if (activity != null) {
+                ActivityHelper.startCustomTab(activity, data);
+            } else {
+                ActivityHelper.openChooser(context, data);
+            }
         }
     }
 

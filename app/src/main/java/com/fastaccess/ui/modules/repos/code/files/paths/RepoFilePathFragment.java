@@ -1,7 +1,6 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +25,7 @@ import com.fastaccess.ui.adapter.BranchesAdapter;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
-import com.fastaccess.ui.modules.search.files.SearchFileActivity;
+import com.fastaccess.ui.modules.search.repos.files.SearchFileActivity;
 
 import java.util.List;
 

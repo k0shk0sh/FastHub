@@ -13,9 +13,9 @@ import android.widget.ArrayAdapter;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.helper.AnimHelper;
-import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.widgets.FontAutoCompleteEditText;
@@ -38,6 +38,8 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.pager) ViewPagerView pager;
+
+//    @State Set<TabsCountStateModel> tabsCountSet = new LinkedHashSet<>();
 
     private ArrayAdapter<SearchHistory> adapter;
 
@@ -62,7 +64,6 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
 
     @OnClick(value = {R.id.clear}) void onClear(View view) {
         if (view.getId() == R.id.clear) {
-            AppHelper.hideKeyboard(searchEditText);
             searchEditText.setText("");
         }
     }
@@ -99,6 +100,13 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
     @Override public void onNotifyAdapter(@Nullable SearchHistory query) {
         if (query == null) getAdapter().notifyDataSetChanged();
         else getAdapter().add(query);
+    }
+
+    @Override public void onSetCount(int count, int index) {
+        TabsCountStateModel model = new TabsCountStateModel();
+        model.setCount(count);
+        model.setTabIndex(index);
+//        tabsCountSet.add(model);
     }
 
     private ArrayAdapter<SearchHistory> getAdapter() {

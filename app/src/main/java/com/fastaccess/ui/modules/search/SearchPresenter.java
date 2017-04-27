@@ -54,7 +54,7 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
             repos.onSetSearchQuery(query);
             users.onSetSearchQuery(query);
             issues.onSetSearchQuery(query);
-            code.onSetSearchQuery(query);
+            code.onSetSearchQuery(query, true);
             boolean noneMatch = Stream.of(hints).noneMatch(value -> value.getText().equalsIgnoreCase(query));
             if (noneMatch) {
                 SearchHistory searchHistory = new SearchHistory(query);

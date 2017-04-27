@@ -18,6 +18,8 @@ interface SearchMvp {
 
     interface View extends BaseMvp.FAView {
         void onNotifyAdapter(@Nullable SearchHistory query);
+
+        void onSetCount(int count, int index);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

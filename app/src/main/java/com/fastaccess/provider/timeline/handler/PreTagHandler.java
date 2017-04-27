@@ -53,7 +53,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             builder.append(InputHelper.SPACE);
             builder.append(text);
             builder.append(InputHelper.SPACE);
-            builder.setSpan(new BackgroundColorSpan(color), start + 1, builder.length() - 1, SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new BackgroundColorSpan(color), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 }

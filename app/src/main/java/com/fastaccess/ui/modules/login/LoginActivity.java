@@ -43,8 +43,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @OnClick(R.id.browserLogin) void onOpenBrowser() {
         Uri uri = getPresenter().getAuthorizationUrl();
-        ActivityHelper.openChooser(this, uri);
-        Toasty.info(this, getString(R.string.open_in_browser)).show();
+        ActivityHelper.login(this, uri);
     }
 
     @OnClick(R.id.login) public void onClick() {
@@ -112,6 +111,18 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         super.onCreate(savedInstanceState);
     }
 
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        getPresenter().onHandleAuthIntent(intent);
+        setIntent(null);
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        getPresenter().onHandleAuthIntent(getIntent());
+        setIntent(null);
+    }
+
     @Override public void showErrorMessage(@NonNull String msgRes) {
         hideProgress();
         super.showErrorMessage(msgRes);
@@ -131,25 +142,12 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         login.hide();
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(login.getWindowToken(), 0);
-
         AnimHelper.animateVisibility(progress, true);
     }
 
     @Override public void hideProgress() {
         progress.setVisibility(View.GONE);
         login.show();
-    }
-
-    @Override protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        getPresenter().onHandleAuthIntent(intent);
-        setIntent(null);
-    }
-
-    @Override protected void onResume() {
-        super.onResume();
-        getPresenter().onHandleAuthIntent(getIntent());
-        setIntent(null);
     }
 
     private void doLogin() {

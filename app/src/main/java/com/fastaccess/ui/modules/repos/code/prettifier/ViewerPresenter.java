@@ -117,6 +117,8 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                     NameParser parser = new NameParser(url);
                     if (parser.getUsername() != null && parser.getName() != null) {
                         model.setContext(parser.getUsername() + "/" + parser.getName());
+                    } else {
+                        model.setContext("");
                     }
                     Logger.e(model.getContext());
                     makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {

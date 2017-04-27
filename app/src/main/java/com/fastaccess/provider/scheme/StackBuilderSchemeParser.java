@@ -1,5 +1,6 @@
 package com.fastaccess.provider.scheme;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -53,7 +54,12 @@ public class StackBuilderSchemeParser {
         if (intent != null) {
             intent.startActivities();
         } else {
-            ActivityHelper.openChooser(context, data);
+            Activity activity = ActivityHelper.getActivity(context);
+            if (activity != null) {
+                ActivityHelper.startCustomTab(activity, data);
+            } else {
+                ActivityHelper.openChooser(context, data);
+            }
         }
     }
 
@@ -307,8 +313,8 @@ public class StackBuilderSchemeParser {
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
-                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, uri.toString()))
-                    .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString()));
+                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, urlBuilder.toString()))
+                    .addNextIntent(CodeViewerActivity.createIntent(context, urlBuilder.toString()));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {

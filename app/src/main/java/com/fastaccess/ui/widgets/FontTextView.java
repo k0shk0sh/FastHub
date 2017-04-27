@@ -69,6 +69,7 @@ public class FontTextView extends AppCompatTextView {
             }
         }
         if (isInEditMode()) return;
+        setFreezesText(true);
         TypeFaceHelper.applyTypeface(this);
     }
 

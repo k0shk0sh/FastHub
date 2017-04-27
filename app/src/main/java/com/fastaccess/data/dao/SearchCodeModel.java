@@ -21,6 +21,7 @@ public class SearchCodeModel implements Parcelable {
     private String gitUrl;
     private Repo repository;
     private double score;
+    private String htmlUrl;
 
 
     public SearchCodeModel() {}
