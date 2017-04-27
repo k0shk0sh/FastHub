@@ -4,8 +4,6 @@ import android.support.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
 import android.text.style.BackgroundColorSpan;
 
-import com.fastaccess.helper.InputHelper;
-
 import net.nightwhistler.htmlspanner.TextUtil;
 import net.nightwhistler.htmlspanner.handlers.PreHandler;
 
@@ -45,15 +43,17 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             getPlainText(buffer, node);
             buffer.append("\n");//fake padding bottom + make sure, pre is always by itself
             builder.append(buffer);
+            builder.append("\n");
             builder.setSpan(new CodeBackgroundRoundedSpan(color), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.append("\n");
             this.appendNewLine(builder);
             this.appendNewLine(builder);
         } else {
             StringBuffer text = node.getText();
-            builder.append(InputHelper.SPACE);
+            builder.append("  ");
             builder.append(text);
-            builder.append(InputHelper.SPACE);
-            builder.setSpan(new BackgroundColorSpan(color), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.append("  ");
+            builder.setSpan(new BackgroundColorSpan(color), start + 1, builder.length() - 1, SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 }
