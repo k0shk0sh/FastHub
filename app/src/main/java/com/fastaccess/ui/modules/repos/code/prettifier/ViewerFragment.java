@@ -67,7 +67,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onSetCode(@NonNull String text) {
         stateLayout.hideProgress();
         webView.setVisibility(View.VISIBLE);
-        webView.setSource(text, isWrap);
+        webView.setSource(text, isWrap, getPresenter().url());
         getActivity().supportInvalidateOptionsMenu();
     }
 

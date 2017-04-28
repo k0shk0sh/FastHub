@@ -145,4 +145,8 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
     @Override public boolean isImage() {
         return isImage;
     }
+
+    @NonNull @Override public String url() {
+        return url;
+    }
 }

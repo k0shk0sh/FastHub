@@ -108,7 +108,7 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source, boolean wrap) {
+    public void setSource(@NonNull String source, boolean wrap, @Nullable String url) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -116,8 +116,28 @@ public class PrettifyWebView extends NestedWebView {
         settings.setBuiltInZoomControls(!wrap);
         if (!wrap) settings.setDisplayZoomControls(false);
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap, url);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
+            setOnContentChangedListener(progress -> {
+                Logger.e(progress);
+                if (progress == 100) {
+                    int lineNo = 0;
+                    if (url != null) {
+                        try {
+                            Uri uri = Uri.parse(url);
+                            String lineNumber = uri.getEncodedFragment();
+                            Logger.e(lineNumber);
+                            if (lineNumber != null) {
+                                lineNumber = lineNumber.replace("L", "");
+                                lineNo = Integer.valueOf(lineNumber);
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                    if (lineNo != 0) {
+                        if (isAttachedToWindow()) loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
+                    }
+                }
+            });
         }
     }
 

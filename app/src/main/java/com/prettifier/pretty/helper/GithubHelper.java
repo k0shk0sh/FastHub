@@ -6,7 +6,6 @@ import android.webkit.MimeTypeMap;
 
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,7 +36,6 @@ public class GithubHelper {
             if (src.startsWith("http://") || src.startsWith("https://")) {
                 continue;
             }
-            Logger.e(src);
             String finalSrc = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + src;
             source = source.replace("src=\"" + src + "\"", "src=\"" + finalSrc + "\"");
         }

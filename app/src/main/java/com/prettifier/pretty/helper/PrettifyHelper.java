@@ -1,6 +1,7 @@
 package com.prettifier.pretty.helper;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 /**
  * Created by Kosh on 25 Dec 2016, 9:12 PM
@@ -19,6 +20,19 @@ public class PrettifyHelper {
                     "<body onload=\"prettyPrint()\">\n" +
                     "<pre class=\"prettyprint linenums\">%s</pre>\n" +
                     "<script src=\"./js/prettify.js\"></script>\n" +
+                    "<script>\n" +
+                    "    function scrollToLineNumber(lineNo) {\n" +
+                    "        var lists = document.getElementsByTagName(\"li\");\n" +
+                    "        for (var i = 1; i < lists.length + 1; i++) {\n" +
+                    "            console.log(lineNo + \" : \" + i);\n" +
+                    "            if (lineNo === i) {\n" +
+                    "                lists[i - 1].scrollIntoView();\n" +
+                    "                break;\n" +
+                    "            }\n" +
+                    "        }\n" +
+                    "    }\n" +
+                    "\n" +
+                    "</script>" +
                     "</body>\n" +
                     "</html>";
 
@@ -53,7 +67,7 @@ public class PrettifyHelper {
             "</style>";
 
 
-    @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap) {
+    @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap, @Nullable String url) {
         return String.format(HTML_CONTENT, getStyle(isDark), wrap ? WRAPPED_STYLE : "", getFormattedSource(source));
     }
 
