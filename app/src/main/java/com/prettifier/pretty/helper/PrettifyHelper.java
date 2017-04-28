@@ -20,18 +20,14 @@ public class PrettifyHelper {
                     "<body onload=\"prettyPrint()\">\n" +
                     "<pre class=\"prettyprint linenums\">%s</pre>\n" +
                     "<script src=\"./js/prettify.js\"></script>\n" +
-                    "<script>\n" +
-                    "    function scrollToLineNumber(lineNo) {\n" +
-                    "        var lists = document.getElementsByTagName(\"li\");\n" +
-                    "        for (var i = 1; i < lists.length + 1; i++) {\n" +
-                    "            console.log(lineNo + \" : \" + i);\n" +
-                    "            if (lineNo === i) {\n" +
-                    "                lists[i - 1].scrollIntoView();\n" +
-                    "                break;\n" +
-                    "            }\n" +
-                    "        }\n" +
+                    "function scrollToLineNumber(lineNo) {\n" +
+                    "    var normalizedLineNo = (lineNo - 1) % 10;\n" +
+                    "    var nthLineNo = Math.floor((lineNo - 1) / 10);\n" +
+                    "    var elLines = document.querySelectorAll('li.L' + normalizedLineNo);\n" +
+                    "    if (elLines[nthLineNo]) {\n" +
+                    "        elLines[nthLineNo].scrollIntoView();\n" +
                     "    }\n" +
-                    "\n" +
+                    "}" +
                     "</script>" +
                     "</body>\n" +
                     "</html>";
