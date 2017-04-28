@@ -51,6 +51,24 @@
                     android:scheme="https"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.modules.login.LoginChooserActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="fast-for-github.firebaseapp.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.modules.user.UserPagerActivity"
@@ -106,7 +124,7 @@
             android:name=".ui.modules.code.CodeViewerActivity"
             android:configChanges="keyboard|orientation|screenSize"
 
-            android:label="@string/viewer" />
+            android:label="@string/viewer"/>
 
         <activity
             android:name=".ui.modules.editor.EditorActivity"
@@ -209,9 +227,10 @@
         <activity android:name=".ui.modules.main.donation.DonationActivity"/>
 
         <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
-        
-	<activity android:name=".ui.modules.search.repos.files.SearchFileActivity"
-                  android:parentActivityName=".ui.modules.repos.RepoPagerActivity" />
+
+        <activity
+            android:name=".ui.modules.search.repos.files.SearchFileActivity"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"/>
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"

@@ -36,6 +36,6 @@ interface LoginMvp {
 
         void onUserResponse(@Nullable Login response);
 
-        void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode);
+        void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode, boolean isBasicAuth);
     }
 }

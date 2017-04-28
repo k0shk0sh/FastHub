@@ -270,7 +270,7 @@
     <string name="un_staring" formatted="true" translatable="false">Unstaring %s</string>
     <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
     <string name="watching" formatted="true" translatable="false">Watching %s</string>
-    <string name="login_using_your_default_browser">Login using your default browser</string>
+    <string name="login_using_your_default_browser">Login using your default browser (OAuth)</string>
     <string name="or_character">OR</string>
     <string name="mark_notification_title">Disable Notification Read Status</string>
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
@@ -385,4 +385,7 @@
     <string name="in_value">in</string>
     <string name="subscribe">Subscribe</string>
     <string name="repo_issues_is_disabled">The repo has no issues tab</string>
+    <string name="access_token">Access Token</string>
+    <string name="basic_authentication">Basic Authentication</string>
+    <string name="choose_your_login_type">Choose your login type</string>
 </resources>

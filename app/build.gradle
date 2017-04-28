@@ -110,7 +110,7 @@ dependencies {
         lombokVersion = '1.12.6'
         supportVersion = "25.3.1"
         firebase = "10.2.0"
-        thirtyinchVersion = '0.8.0-rc3'
+        thirtyinchVersion = '0.8.0-rc4'
         retrofit = '2.1.0'
     }
     compile fileTree(include: ['*.jar'], dir: 'libs')

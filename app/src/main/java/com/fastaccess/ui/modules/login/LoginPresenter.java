@@ -73,7 +73,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
     }
 
     @Override public void onHandleAuthIntent(@Nullable Intent intent) {
-        Logger.e(intent);
+        Logger.e(intent, intent != null ? intent.getExtras() : "N/A");
         if (intent != null && intent.getData() != null) {
             Uri uri = intent.getData();
             Logger.e(uri.toString());
@@ -99,7 +99,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @Override public void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode) {
+    @Override public void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode, boolean isBasicAuth) {
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
         if (getView() == null) return;
@@ -107,21 +107,30 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         getView().onEmptyPassword(passwordIsEmpty);
         if (!usernameIsEmpty && !passwordIsEmpty) {
             String authToken = Credentials.basic(username, password);
-            AuthModel authModel = new AuthModel();
-            authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
-            authModel.setNote(BuildConfig.APPLICATION_ID);
-            authModel.setClientSecret(GithubConfigHelper.getSecret());
-            authModel.setClientId(GithubConfigHelper.getClientId());
-            authModel.setNoteUr(GithubConfigHelper.getRedirectUrl());
-            if (!InputHelper.isEmpty(twoFactorCode)) {
-                authModel.setOtpCode(twoFactorCode);
-            }
-            makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), accessTokenModel -> {
+            if (isBasicAuth) {
+                AuthModel authModel = new AuthModel();
+                authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
+                authModel.setNote(BuildConfig.APPLICATION_ID);
+                authModel.setClientSecret(GithubConfigHelper.getSecret());
+                authModel.setClientId(GithubConfigHelper.getClientId());
+                authModel.setNoteUr(GithubConfigHelper.getRedirectUrl());
                 if (!InputHelper.isEmpty(twoFactorCode)) {
-                    PrefGetter.setOtpCode(twoFactorCode);
+                    authModel.setOtpCode(twoFactorCode);
                 }
-                onTokenResponse(accessTokenModel);
-            });
+                makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), accessTokenModel -> {
+                    if (!InputHelper.isEmpty(twoFactorCode)) {
+                        PrefGetter.setOtpCode(twoFactorCode);
+                    }
+                    onTokenResponse(accessTokenModel);
+                });
+            } else {
+                makeRestCall(LoginProvider.getLoginRestService(authToken, null).loginAccessToken(), login -> {
+                    if (login != null) {
+                        PrefGetter.setToken(InputHelper.toString(password));
+                    }
+                    onUserResponse(login);
+                });
+            }
         }
     }
 }

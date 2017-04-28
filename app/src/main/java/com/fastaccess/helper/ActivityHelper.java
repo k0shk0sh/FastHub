@@ -48,7 +48,7 @@ public class ActivityHelper {
             i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(i);
         } catch (ActivityNotFoundException e) {
-            Toasty.info(activity, "Chrome is required").show();
+            Toasty.info(activity, "Chrome is required to login").show();
             e.printStackTrace();
         }
     }
@@ -60,7 +60,6 @@ public class ActivityHelper {
                     .setToolbarColor(ViewHelper.getPrimaryColor(context))
                     .setShowTitle(true)
                     .build();
-            customTabsIntent.intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             customTabsIntent.intent.setPackage(packageNameToUse);
             customTabsIntent.launchUrl(context, url);
         } else {

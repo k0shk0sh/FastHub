@@ -227,7 +227,7 @@
     <string name="request_error">Terjadi kesalahan saat meminta ke server, coba lagi nanti</string>
     <string name="marking_as_read">Menandai pemberitahuan telah dibaca</string>
     <string name="forking_gist">Forking gist</string>
-    <string name="login_using_your_default_browser">Masuk menggunakan browser default Anda</string>
+    <string name="login_using_your_default_browser">Masuk menggunakan browser default Anda (OAuth)</string>
     <string name="or_character">Atau</string>
     <string name="mark_notification_title">Nonaktifkan Pemberitahuan Status Baca</string>
     <string name="mark_notification_summary">Nonaktifkan tandai telah dibaca saat mengklik pemberitahuan.</string>

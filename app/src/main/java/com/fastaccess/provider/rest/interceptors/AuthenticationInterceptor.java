@@ -2,7 +2,6 @@ package com.fastaccess.provider.rest.interceptors;
 
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,7 +28,6 @@ public class AuthenticationInterceptor implements Interceptor {
             if (!InputHelper.isEmpty(otp)) {
                 builder.addHeader("X-GitHub-OTP", otp.trim());
             }
-            Logger.e(authToken);
             Request request = builder.build();
             return chain.proceed(request);
         }

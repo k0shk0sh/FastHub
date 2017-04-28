@@ -45,14 +45,13 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         }
         setCurrentPage(page);
         if (Login.getUser() == null) return;// I can't understand how this could possibly be reached lol.
-        makeRestCall(RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page),
-                response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        manageSubscription(Event.save(response.getItems()).subscribe());
-                    }
-                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
-                });
+        makeRestCall(RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page), response -> {
+            lastPage = response.getLast();
+            if (getCurrentPage() == 1) {
+                manageSubscription(Event.save(response.getItems()).subscribe());
+            }
+            sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
+        });
     }
 
     @Override public int getCurrentPage() {

@@ -35,7 +35,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
-import com.fastaccess.ui.modules.login.LoginActivity;
+import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
@@ -95,8 +95,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         if (!isSecured()) {
             if (!isLoggedIn()) {
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                onRequireLogin();
                 return;
             }
         }
@@ -193,7 +192,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 .delete(Login.class)
                 .get()
                 .value();
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginChooserActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finishAffinity();

@@ -220,7 +220,7 @@
     <string name="request_error">Konnte Server nicht erreichen, versuche es später erneut</string>
     <string name="marking_as_read">Benachrichtigung als gelesen markieren</string>
     <string name="forking_gist">gist forken</string>
-    <string name="login_using_your_default_browser">Mit dem Standardbrowser anmelden</string>
+    <string name="login_using_your_default_browser">Mit dem Standardbrowser anmelden (OAuth)</string>
     <string name="or_character">ODER</string>
     <string name="mark_notification_title">Lesestatus deaktivieren</string>
     <string name="mark_notification_summary">Benachrichtigung als gelesen markieren sobald sie angetippt wurde.</string>
