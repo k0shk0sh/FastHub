@@ -21,7 +21,7 @@ ol {
 }
 
 ol li:nth-child(-n+9) {
-	padding-left: 4px;
+	padding-left: 8px;
 }
 
 ol li {

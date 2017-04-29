@@ -19,13 +19,13 @@ public class SearchFilePresenter extends BasePresenter<SearchFileMvp.View> imple
         super.onAttachView(view);
     }
 
-    @Override public void onSearchClicked(@NonNull FontEditText editText) {
+    @Override public void onSearchClicked(@NonNull FontEditText editText, boolean inPath) {
         boolean isEmpty = InputHelper.isEmpty(editText) || InputHelper.toString(editText).length() < 3;
         editText.setError(isEmpty ? editText.getResources().getString(R.string.minimum_three_chars) : null);
         if (!isEmpty) {
             AppHelper.hideKeyboard(editText);
             String query = InputHelper.toString(editText);
-            if (getView() != null && isViewAttached()) getView().onValidSearchQuery(modifyQueryForFileSearch(query));
+            if (getView() != null && isViewAttached()) getView().onValidSearchQuery(modifyQueryForFileSearch(query, inPath));
         }
     }
 
@@ -34,8 +34,8 @@ public class SearchFilePresenter extends BasePresenter<SearchFileMvp.View> imple
         login = extras.getString(BundleConstant.EXTRA);
     }
 
-    @NonNull private String modifyQueryForFileSearch(@NonNull String query) {
+    @NonNull private String modifyQueryForFileSearch(@NonNull String query, boolean inPath) {
         //restrict the search to file paths and the current repo user is looking at
-        return query + "+" + "in:path" + "+" + "repo:" + login + "/" + repoId;
+        return query + "+" + "in:" + (inPath ? "path" : "" + "file") + "+" + "repo:" + login + "/" + repoId;
     }
 }

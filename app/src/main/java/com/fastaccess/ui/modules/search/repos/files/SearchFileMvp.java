@@ -14,7 +14,7 @@ interface SearchFileMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
-        void onSearchClicked(@NonNull FontEditText editText);
+        void onSearchClicked(@NonNull FontEditText editText, boolean inPath);
 
         void onActivityCreated(Bundle extras);
     }

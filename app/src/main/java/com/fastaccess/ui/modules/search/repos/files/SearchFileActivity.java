@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatSpinner;
 import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,12 +22,16 @@ import com.fastaccess.ui.widgets.ForegroundImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
+import butterknife.OnItemSelected;
 import butterknife.OnTextChanged;
+import butterknife.OnTouch;
 
 public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchFilePresenter> implements SearchFileMvp.View {
 
     @BindView(R.id.searchEditText) FontEditText searchEditText;
     @BindView(R.id.clear) ForegroundImageView clear;
+    @BindView(R.id.searchOptions) AppCompatSpinner searchOptions;
+    private boolean onSpinnerTouched;
 
     private SearchCodeFragment searchCodeFragment;
 
@@ -35,6 +40,17 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
         intent.putExtra(BundleConstant.ID, repoId);
         intent.putExtra(BundleConstant.EXTRA, login);
         return intent;
+    }
+
+    @OnTouch(R.id.searchOptions) boolean onTouch() {
+        onSpinnerTouched = true;
+        return false;
+    }
+
+    @OnItemSelected(R.id.searchOptions) void onOptionSelected(int position) {
+        if (onSpinnerTouched) {
+            onSearch();
+        }
     }
 
     @Override protected int layout() {
@@ -69,11 +85,15 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
 
     @OnEditorAction(R.id.searchEditText) boolean onEditor(int actionId, KeyEvent keyEvent) {
         if (keyEvent != null && keyEvent.getAction() == KeyEvent.KEYCODE_SEARCH) {
-            getPresenter().onSearchClicked(searchEditText);
+            onSearch();
         } else if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            getPresenter().onSearchClicked(searchEditText);
+            onSearch();
         }
         return false;
+    }
+
+    private void onSearch() {
+        getPresenter().onSearchClicked(searchEditText, searchOptions.getSelectedItemPosition() == 0);
     }
 
     @OnClick(value = {R.id.clear}) void onClear(View view) {

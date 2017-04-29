@@ -80,4 +80,10 @@
         <item>ru</item>
     </string-array>
 
+    <string-array name="files_search_options">
+        <item>@string/paths_only</item>
+        <item>@string/files_only</item>
+        <item>@string/all</item>
+    </string-array>
+
 </resources>

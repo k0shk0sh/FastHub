@@ -116,7 +116,7 @@ public class PrettifyWebView extends NestedWebView {
         settings.setBuiltInZoomControls(!wrap);
         if (!wrap) settings.setDisplayZoomControls(false);
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap, url);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
             setOnContentChangedListener(progress -> {
                 Logger.e(progress);

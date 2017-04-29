@@ -388,4 +388,6 @@
     <string name="access_token">Access Token</string>
     <string name="basic_authentication">Basic Authentication</string>
     <string name="choose_your_login_type">Choose your login type</string>
+    <string name="files_only">In Files</string>
+    <string name="paths_only">In Paths</string>
 </resources>
