@@ -8,63 +8,68 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * Created by kosh20111 on 3/11/2015. CopyRights @ Innov8tif
+ * Created by kosh20111 on 3/11/2015. CopyRights @
  * <p>
  * Input Helper to validate stuff related to input fields.
  */
 public class InputHelper {
 
+    public static final String SPACE = "\u202F\u202F";
 
-    private static boolean isWhiteSpaces(String s) {
+    private static boolean isWhiteSpaces(@Nullable String s) {
         return s != null && s.matches("\\s+");
     }
 
-    public static boolean isEmpty(String text) {
+    public static boolean isEmpty(@Nullable String text) {
         return text == null || TextUtils.isEmpty(text) || isWhiteSpaces(text) || text.equalsIgnoreCase("null");
     }
 
-    public static boolean isEmpty(Object text) {
+    public static boolean isEmpty(@Nullable Object text) {
         return text == null || isEmpty(text.toString());
     }
 
-    public static boolean isEmpty(EditText text) {
+    public static boolean isEmpty(@Nullable EditText text) {
         return text == null || isEmpty(text.getText().toString());
     }
 
-    public static boolean isEmpty(TextView text) {
+    public static boolean isEmpty(@Nullable TextView text) {
         return text == null || isEmpty(text.getText().toString());
     }
 
-    public static boolean isEmpty(TextInputLayout txt) {
+    public static boolean isEmpty(@Nullable TextInputLayout txt) {
         return txt == null || isEmpty(txt.getEditText());
     }
 
-    public static String toString(EditText editText) {
+    public static String toString(@NonNull EditText editText) {
         return editText.getText().toString();
     }
 
-    public static String toString(TextView editText) {
+    public static String toString(@NonNull TextView editText) {
         return editText.getText().toString();
     }
 
-    public static String toString(TextInputLayout textInputLayout) {
-        return toString(textInputLayout.getEditText());
+    public static String toString(@NonNull TextInputLayout textInputLayout) {
+        return textInputLayout.getEditText() != null ? toString(textInputLayout.getEditText()) : "";
     }
 
-    public static String toNA(@Nullable String value) {
+    @NonNull public static String toNA(@Nullable String value) {
         return isEmpty(value) ? "N/A" : value;
     }
 
-    @NonNull public static String toString(@NonNull Object object) {
+    @NonNull public static String toString(@Nullable Object object) {
         return !isEmpty(object) ? object.toString() : "";
     }
 
-    public static long toLong(TextView textView) {
+    public static long toLong(@NonNull TextView textView) {
         if (!isEmpty(textView)) {
             try {
                 return Long.valueOf(toString(textView).replace(".", "").replaceAll(",", ""));
             } catch (NumberFormatException ignored) {}
         }
         return 0;
+    }
+
+    public static int getSafeIntId(long id) {
+        return id > Integer.MAX_VALUE ? (int) (id - Integer.MAX_VALUE) : (int) id;
     }
 }

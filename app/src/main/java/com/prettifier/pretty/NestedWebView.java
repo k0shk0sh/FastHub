@@ -1,5 +1,6 @@
 package com.prettifier.pretty;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -39,7 +40,7 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    @Override public boolean onTouchEvent(MotionEvent ev) {
+    @SuppressLint("ClickableViewAccessibility") @Override public boolean onTouchEvent(MotionEvent ev) {
         boolean returnValue;
 
         MotionEvent event = MotionEvent.obtain(ev);

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/grid_spacing"
+    android:foreground="?android:selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal"
+    tools:ignore="RtlSymmetry">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <com.fastaccess.ui.widgets.AvatarLayout
+            android:id="@+id/avatarLayout"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:transitionName="@string/icon_transition"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="?android:textColorPrimary"
+                android:transitionName="@string/title_transition"
+                tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/description"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:textColor="?android:attr/textColorSecondary"
+                android:visibility="gone"
+                tools:text="Hello World"
+                tools:visibility="visible"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/date"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:textColor="?android:attr/textColorTertiary"
+                tools:drawableStart="@drawable/ic_notification"
+                tools:text="50 minutes ago"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

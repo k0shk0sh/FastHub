@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 /**
@@ -16,11 +16,13 @@ interface CommitPagerMvp {
     interface View extends BaseMvp.FAView {
 
         void onSetup();
+
+        void onFinishActivity();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        @Nullable CommitModel getCommit();
+        @Nullable Commit getCommit();
 
         void onActivityCreated(@Nullable Intent intent);
 
@@ -29,6 +31,8 @@ interface CommitPagerMvp {
         String getLogin();
 
         String getRepoId();
+
+        boolean showToRepoBtn();
 
     }
 

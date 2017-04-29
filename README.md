@@ -1,84 +1,127 @@
-# Welcome to FastHub <a href='https://play.google.com/store/apps/details?id=com.fastaccess.github&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' height="80px"/></a> 
+## FastHub is back to the play store.
 
 
-![Logo](https://github.com/k0shk0sh/FastHub/blob/master/art/feature_graphic.png?raw=true "Logo")
+[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
+[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Slack Status](https://fasthub.herokuapp.com/badge.svg)](https://fasthub.herokuapp.com)
 
-**FastHub** is yet another **open source** GitHub client app but unlike any other app, FastHub built from ground up.
+![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
+
+# FastHub  
+
+Yet another **open-source** GitHub client app but unlike any other app, FastHub was built from scratch.
  
  
+## Download
+ 
+ **FastHub** can be downloaded on [Google Play](https://play.google.com/store/apps/details?id=com.fastaccess.github):
+ 
+ <a href="https://play.google.com/store/apps/details?id=com.fastaccess.github">
+     <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80px"/>
+ </a>
+ 
+_(To download the app from here, please look at the [latest release](https://github.com/k0shk0sh/FastHub/releases/latest).)_
  
 # Features
 
-- Offline Mode.
-- Browse/Search Repos.
-- Watch, Star and Fork Repos.
-- Close, Open, Label and Create Issues.
-- Close, Open and Label Pull Requests.
-- Lock & Unlock conversations on Issues and Pull Requests.
-- Comment on Issues, Pull Requests, Commits and Gists
-- Edit and Delete Comments.
-- Create/Delete Gists.
-- View Gists and their files.
-- Follow and Unfollow users.
-- Search Users, Repos, Issues,Pull Requests and Code.
-- Download releases and any sort of files.
-- Markdown and code highlighting support.
-- Receive notifications.
-- Loads more...
+- **App**
+  - Two login types (Basic Auth) or via (Browser)
+  - Themes mode
+  - Offline-mode
+  - Markdown and code highlighting support
+  - Notifications overview and "Mark all as read"
+  - Search users/orgs, repos, issues/prs & code.
+  - Pinned Repos
+- **Repositories**
+  - Search Repos
+  - Browse and search Repos
+  - See your public, private and forked Repos
+  - Filter Branches and Commits
+  - Watch, star and fork Repos
+  - Download releases, files and branches
+- **Issues and Pull Requests** 
+  - Search Issues/PRs
+  - Filter Issues/PRs
+  - Open/close Issues/PRs
+  - Comment on Issues/PRs
+  - Manage Issue/PR comments
+  - React to comments with reactions
+  - Edit Issues/PRs
+  - Lock/unlock conversation in Issues/PRs
+  - Assign people and add Labels and Milestones to Issues/PRs
+  - Manage Milestones
+  - Merge PRs
+  - PRs reviews
+  - PRs statuses
+- **Commits and Gists**
+  - Search Code/Gists
+  - View Gists and their files
+  - Comment on Commits/Gists
+  - Manage Commit/Gist comments
+  - Create/Delete Gists
+- **Orgs**
+    - Overview
+    - Feeds
+    - Teams & Teams repos
+    - Repos
+- **Users**
+  - Follow/unfollow users
+  - Search Users, Repos, Issues,Pull Requests and Code
+- _**Much more...**_
+  - _FastHub is actively developed. More features will come!_
 
+> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.
 
-# FastHub made of:
+# Specs / Open-source libraries:
 
-- Min SDK(21) but Appcompat is used all the way.
-- MVP architecture'd (using Thirtyinch lib) for the easiness of maintaining and following one structure throughout the project.
-- Lambda expressions because __you know why__.
-- RxJava & RxAndroid for Retrofit & Background threads.
-- Retrofit for consuming rest api.
-- SqliteMagic for offline mode.
-- Stream API for dealing with `ArrayLists`.
-- JobScheduler using Firebase JobDispatcher for notifications service.
-- ButterKnife for views binding.
-- Icepick for saving instance of objects.
-- Lombok for (getters/setters).
-- BottomNavigationView for `Fragments` navigation.
-- UIL for image loading.
-- AndDown for comments markdown highlighting.
-- Toasty for displaying error/success messages.
-- CircleImageView for avatar images.
-- MatrialTapTargetPrompt for displying guides throughout the app.
-- Firebase analytics, crash reporting, ads & messaging. (analytics & messaging not yet implemented.)
-- The mighty Android support libs.
-
-> To download the app from here, please visit the releases page.
+- Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
+- **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) is used to simplify maintaining and adding features.
+- **Lambda** expressions because _you know why :-)_
+- [**RxJava**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
+- [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
+- [**Requery**](https://github.com/requery/requery/) for offline-mode
+- [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `ArrayLists`
+- [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding
+- [**Icepick**](https://github.com/frankiesardo/icepick) for saving instance states
+- [**Lombok**](https://projectlombok.github.io) for getters and setters
+- [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `Fragment` navigation
+- [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images
+- [**MarkDown**](https://github.com/zzhoujay/Markdown) for _Markdown_ editor highlighting
+- [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
+- [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
+- [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
+- **Firebase** analytics, crash reporting, ads
+- **Android Support Libraries**, the almighty ;-)
 
 # Contribution
 
-You love FastHub? You want new features or bug fixes? Please contribute to the  project either by creating PR or submitting an issue ticket.
+You love FastHub? You want new features or bug fixes?  
+Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
+Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
 
-[Contribution Guide](CONTRIBUTE.md) 
+- [Translation contributors list](https://github.com/k0shk0sh/FastHub/blob/master/language_contributors.md)
 
-> **FastHub** contain Ads, but they are disabled by default, you could enable them if you like to support development.
+# License
 
-# Copyright Notice
-
-Copyright (C) 2017 Kosh. 
-
-Licensed under the [GPL-3.0](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE)
-license (see the LICENSE file).
+> Copyright (C) 2017 Kosh. 
+> Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html) license.
+> (See the [LICENSE](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE) file for the whole license text.)
 
 # Screenshots
 
-#### Mobile Portrait
-![MainScreen](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main.png?raw=true "MainScreen")
+| Mobile Light | Mobile Dark |
+|:-:|:-:|
+| ![Main Screen Light](/.github/assets/mobile_light.png?raw=true) | ![Main Screen Dark](/.github/assets/mobile_night.png?raw=true) |
 
-#### Mobile Landscape
-![MainScreenLandscape](https://github.com/k0shk0sh/FastHub/blob/master/art/mobile_main_landscape.png?raw=true "MainScreenLandscape")
+| Tablet Light | Tablet Dark |
+|:-:|:-:|
+| ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
 
-#### Tablet-Repo 
-![MainScreenRepo](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_repo.png?raw=true "MainScreen")
+# FastHub Logo
 
-#### Tablet-Commit
+**FastHub** logo is designed by 
 
-![MainScreenCommit](https://github.com/k0shk0sh/FastHub/blob/master/art/tablet_commits.png?raw=true "MainScreenCommit")
+**Kevin Aguilar** [Google+](https://plus.google.com/+KevinAguilarC) [Twitter](https://twitter.com/kevttob)
+ 
+Designer at [221 Pixels](https://www.221pixels.com/)
 
-
+Laus Deo Semper

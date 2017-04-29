@@ -2,6 +2,7 @@ package com.fastaccess.helper;
 
 import android.os.Bundle;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.util.SparseArray;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 
 public class Bundler {
 
-    private Bundle bundle;
+    private final Bundle bundle;
 
     private Bundler() {
         bundle = new Bundle();
@@ -188,8 +189,16 @@ public class Bundler {
         return bundle;
     }
 
-    public Bundle end() {
+    @NonNull public Bundle end() {
+        Parcel parcel = Parcel.obtain();
+        bundle.writeToParcel(parcel, 0);
+        int size = parcel.dataSize();
+        Logger.e(size);
+        if (size > 800000) {
+            bundle.clear();
+        }
         return get();
     }
+
 
 }

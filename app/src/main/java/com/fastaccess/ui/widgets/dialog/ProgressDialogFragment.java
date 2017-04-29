@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.Bundler;
 
 /**
@@ -18,11 +19,11 @@ public class ProgressDialogFragment extends DialogFragment {
 
     public static final String TAG = ProgressDialogFragment.class.getSimpleName();
 
-    public static ProgressDialogFragment newInstance(@NonNull Resources resources, @StringRes int msgId, boolean isCancelable) {
+    @NonNull public static ProgressDialogFragment newInstance(@NonNull Resources resources, @StringRes int msgId, boolean isCancelable) {
         return newInstance(resources.getString(msgId), isCancelable);
     }
 
-    public static ProgressDialogFragment newInstance(@NonNull String msg, boolean isCancelable) {
+    @NonNull public static ProgressDialogFragment newInstance(@NonNull String msg, boolean isCancelable) {
         ProgressDialogFragment fragment = new ProgressDialogFragment();
         fragment.setArguments(Bundler.start()
                 .put("msg", msg)
@@ -36,6 +37,10 @@ public class ProgressDialogFragment extends DialogFragment {
         progressDialog.setMessage(getArguments().getString("msg"));
         progressDialog.setCancelable(getArguments().getBoolean("isCancelable"));
         setCancelable(getArguments().getBoolean("isCancelable"));
+        if (getActivity() != null && !getActivity().isFinishing()) {
+            progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog,
+                    getResources().getInteger(android.R.integer.config_shortAnimTime)));
+        }
         return progressDialog;
     }
 }

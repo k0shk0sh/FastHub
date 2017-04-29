@@ -37,7 +37,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_xs_large"
-                app:contentPadding="@dimen/spacing_xs_large">
+                app:cardBackgroundColor="?card_background"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal">
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/description"
@@ -49,7 +53,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/description"
-                        android:inputType="textMultiLine"/>
+                        android:inputType="textMultiLine|textCapSentences"/>
 
                 </android.support.design.widget.TextInputLayout>
             </android.support.v7.widget.CardView>
@@ -65,7 +69,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_xs_large"
-                app:contentPadding="@dimen/spacing_xs_large">
+                app:cardBackgroundColor="?card_background"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -82,6 +90,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/file_name_hint"
+                            android:inputType="textCapSentences"
                             android:maxLines="1"/>
 
                     </android.support.design.widget.TextInputLayout>
@@ -116,42 +125,27 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <com.fastaccess.ui.widgets.FontButton
+                <android.support.design.widget.FloatingActionButton
                     android:id="@+id/createSecretGist"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/spacing_normal"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:text="@string/create_secret_gist"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="?colorAccent"/>
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_incognito"
+                    android:tint="@color/white"/>
 
-                <com.fastaccess.ui.widgets.FontButton
+                <android.support.design.widget.FloatingActionButton
                     android:id="@+id/createPublicGist"
-                    style="@style/Widget.AppCompat.Button.Borderless.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="@dimen/spacing_normal"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:text="@string/create_public_gist"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                    android:textColor="?colorAccent"/>
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_brower"
+                    android:tint="@color/white"/>
+
             </LinearLayout>
         </LinearLayout>
 
     </ScrollView>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"/>
+    <include layout="@layout/add_banner_layout"/>
 
 </LinearLayout>

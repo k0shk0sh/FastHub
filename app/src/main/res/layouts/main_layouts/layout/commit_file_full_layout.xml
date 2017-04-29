@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/appbar_elevation_dark"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/layout_margin"
+        android:orientation="vertical"
+        app:layout_behavior="@string/scroll_behavior">
+
+        <com.fastaccess.ui.widgets.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:background="@drawable/bottom_border"
+            android:paddingBottom="@dimen/spacing_xs_large"
+            app:auto_gravity="center"
+            app:auto_orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/changes"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:gravity="center"
+                tools:text="Changes\n100"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/addition"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:gravity="center"
+                tools:text="Addition\n100"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/deletion"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:gravity="center"
+                tools:text="Deletion\n100"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/status"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:gravity="center"
+                tools:text="Status\nModified"/>
+
+        </com.fastaccess.ui.widgets.AutoLinearLayout>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

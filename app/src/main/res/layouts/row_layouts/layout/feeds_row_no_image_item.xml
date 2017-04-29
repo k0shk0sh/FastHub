@@ -5,13 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal"
-    android:stateListAnimator="@animator/raise_selector">
+    android:paddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,8 +22,9 @@
             style="@style/TextAppearance.AppCompat.Subhead"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:maxLines="3"
-            android:textColor="@color/primary_text"
+            android:textColor="?android:textColorPrimary"
             android:transitionName="@string/title_transition"
             tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
 
@@ -34,10 +33,8 @@
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/secondary_text"
+            android:textColor="?android:attr/textColorSecondary"
             tools:text="50 minutes ago"/>
-
     </LinearLayout>
-
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

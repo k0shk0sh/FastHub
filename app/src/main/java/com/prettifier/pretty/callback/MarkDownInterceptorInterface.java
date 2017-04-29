@@ -2,7 +2,6 @@ package com.prettifier.pretty.callback;
 
 import android.webkit.JavascriptInterface;
 
-import com.fastaccess.helper.Logger;
 import com.prettifier.pretty.PrettifyWebView;
 
 /**
@@ -17,17 +16,14 @@ public class MarkDownInterceptorInterface {
     }
 
     @JavascriptInterface public void startIntercept() {
-
         if (prettifyWebView != null) {
             prettifyWebView.setInterceptTouch(true);
         }
     }
 
     @JavascriptInterface public void stopIntercept() {
-
         if (prettifyWebView != null) {
             prettifyWebView.setInterceptTouch(false);
         }
     }
-
 }

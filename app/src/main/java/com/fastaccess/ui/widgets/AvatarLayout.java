@@ -11,12 +11,12 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.ui.modules.user.UserPagerView;
+import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -25,7 +25,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import de.hdodenhof.circleimageview.CircleImageView;
+import cn.gavinliu.android.lib.shapedimageview.ShapedImageView;
 
 /**
  * Created by Kosh on 14 Nov 2016, 7:59 PM
@@ -33,17 +33,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
-    @BindView(R.id.avatar) CircleImageView avatar;
-    @BindView(R.id.avatarProgress) ProgressBar avatarProgress;
-    private String login;
+    @BindView(R.id.avatar) ShapedImageView avatar;
+    @Nullable private String login;
+    private boolean isOrg;
     private Toast toast;
 
-    @OnClick(R.id.avatar) void onClick(View view) {
+    @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
-        UserPagerView.startActivity(view.getContext(), login);
+        UserPagerActivity.startActivity(view.getContext(), login, isOrg);
     }
 
-    @OnLongClick(R.id.avatar) boolean onLongClick(View view) {
+    @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return false;
         if (toast != null) toast.cancel();
         toast = Toast.makeText(getContext(), view.getContentDescription(), Toast.LENGTH_SHORT);
@@ -77,29 +77,50 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         inflate(getContext(), R.layout.avatar_layout, this);
         if (isInEditMode()) return;
         ButterKnife.bind(this);
+        if (PrefGetter.isRectAvatar()) {
+            avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 15);
+        }
     }
 
     @Override public void onLoadingStarted(String imageUri, View view) {
-        setBackgroundResource(R.drawable.circle_shape);
+        setBackground(false);
     }
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-        avatar.setImageResource(R.drawable.ic_github_black);
+        setBackground(true);
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-        setBackgroundColor(Color.TRANSPARENT);
+        setBackground(true);
     }
 
     @Override public void onLoadingCancelled(String imageUri, View view) {}
 
     public void setUrl(@Nullable String url, @Nullable String login) {
+        setUrl(url, login, false);
+    }
+
+    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg) {
         this.login = login;
+        this.isOrg = isOrg;
         avatar.setContentDescription(login);
         if (url != null) {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
+            avatar.setImageResource(R.drawable.ic_github_dark);
+        }
+    }
+
+    private void setBackground(boolean clear) {
+        if (clear) {
+            setBackgroundColor(Color.TRANSPARENT);
+        } else {
+            if (PrefGetter.isRectAvatar()) {
+                setBackgroundResource(R.drawable.rect_shape);
+            } else {
+                setBackgroundResource(R.drawable.circle_shape);
+            }
         }
     }
 }

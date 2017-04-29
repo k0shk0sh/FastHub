@@ -13,5 +13,77 @@
         <item>@string/twenty_minutes</item>
         <item>@string/thirty_minutes</item>
     </string-array>
-    <string name="turn_off">Turn Off</string>
+
+    <string-array name="theme_modes">
+        <item>@string/light_theme_mode</item>
+        <item>@string/dark_theme_mode</item>
+    </string-array>
+
+    <string-array name="issues_filter">
+        <item>@string/created</item>
+        <item>@string/assigned</item>
+        <item>@string/mentioned</item>
+    </string-array>
+
+    <string-array name="label_colors" translatable="false">
+        <item>#2A456B</item>
+        <item>#213755</item>
+        <item>#3f51b5</item>
+        <item>#9e9e9e</item>
+        <item>#424242</item>
+        <item>#1c1c1c</item>
+        <item>#000000</item>
+        <item>#607d8b</item>
+        <item>#37474f</item>
+        <item>#795548</item>
+        <item>#d32f2f</item>
+        <item>#e91e63</item>
+        <item>#9c27b0</item>
+        <item>#5e35b1</item>
+        <item>#1976d2</item>
+        <item>#03a9f4</item>
+        <item>#00bcd4</item>
+        <item>#009688</item>
+        <item>#43a047</item>
+        <item>#7cb342</item>
+        <item>#c0ca33</item>
+        <item>#fbc02d</item>
+        <item>#ffb300</item>
+        <item>#fb8c00</item>
+        <item>#f4511e</item>
+    </string-array>
+
+    <string-array name="sort_prs_issues">
+        <item>@string/newest</item>
+        <item>@string/oldest</item>
+        <item>@string/most_commented</item>
+        <item>@string/least_commented</item>
+        <item>@string/recently_updated</item>
+        <item>@string/least_recent_updated</item>
+    </string-array>
+
+    <string-array name="languages_array" translatable="false">
+        <item>English</item>
+        <item>German</item>
+        <item>Turkish</item>
+        <item>Chinese</item>
+        <item>Bahasa Indonesia</item>
+        <item>Russian</item>
+    </string-array>
+
+    <string-array name="languages_array_values" translatable="false">
+        <item>en</item>
+        <item>de</item>
+        <item>tr</item>
+        <item>zh</item>
+        <item>in</item>
+        <item>ru</item>
+    </string-array>
+
+    <string-array name="files_search_options">
+        <item>@string/paths_only</item>
+        <item>@string/files_only</item>
+        <item>@string/all</item>
+    </string-array>
+
 </resources>

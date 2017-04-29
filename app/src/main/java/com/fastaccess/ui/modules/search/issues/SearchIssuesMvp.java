@@ -1,14 +1,16 @@
 package com.fastaccess.ui.modules.search.issues;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:45 PM
@@ -17,7 +19,9 @@ import java.util.ArrayList;
 interface SearchIssuesMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener {
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<Issue> items, int page);
+
+        void onSetTabCount(int count);
 
         void onSetSearchQuery(@NonNull String query);
 
@@ -25,10 +29,10 @@ interface SearchIssuesMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseViewHolder.OnItemClickListener<IssueModel>,
+            BaseViewHolder.OnItemClickListener<Issue>,
             BaseMvp.PaginationListener<String> {
 
-        @NonNull ArrayList<IssueModel> getIssues();
+        @NonNull ArrayList<Issue> getIssues();
 
     }
 }

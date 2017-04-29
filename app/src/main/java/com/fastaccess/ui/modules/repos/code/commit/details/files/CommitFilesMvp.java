@@ -6,9 +6,11 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitFileModel;
-import com.fastaccess.ui.adapter.CommitFilesAdapter;
+import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
+
+import java.util.List;
 
 /**
  * Created by Kosh on 20 Nov 2016, 11:10 AM
@@ -16,14 +18,13 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 interface CommitFilesMvp {
 
-    interface View extends BaseMvp.FAView, CommitFilesAdapter.OnTogglePatch {
+    interface View extends BaseMvp.FAView, OnToggleView {
 
-        void onNotifyAdapter();
+        void onNotifyAdapter(@Nullable List<CommitFileModel> items);
 
     }
 
-    interface Presenter extends BaseMvp.FAPresenter,
-            BaseMvp.PaginationListener<String>, BaseViewHolder.OnItemClickListener<CommitFileModel> {
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommitFileModel> {
 
         void onFragmentCreated(@Nullable Bundle bundle);
 

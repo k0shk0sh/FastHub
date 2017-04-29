@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/windowBackground"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="@dimen/spacing_xs_large">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/title"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_title"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/title"
+                    android:inputType="textCapSentences"
+                    android:maxLines="1"/>
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/title"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_insert_link"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/link"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:hintTextAppearance="@style/TextAppearance.AppCompat.Title"
+                app:passwordToggleEnabled="false">
+
+                <android.support.design.widget.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/link"
+                    android:inputType="textWebEditText"
+                    android:maxLines="1"/>
+
+            </android.support.design.widget.TextInputLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.fastaccess.ui.widgets.FontButton
+            android:id="@+id/select"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:text="@string/select"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/material_orange_accent_400"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end">
+
+            <com.fastaccess.ui.widgets.FontButton
+                android:id="@+id/cancel"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/cancel"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/material_pink_700"/>
+
+            <com.fastaccess.ui.widgets.FontButton
+                android:id="@+id/insert"
+                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:text="@string/insert"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="?colorAccent"/>
+
+        </LinearLayout>
+    </FrameLayout>
+</LinearLayout>

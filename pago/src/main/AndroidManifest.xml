@@ -1,0 +1,14 @@
+<manifest package="io.octo.bear.pago"
+          xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="com.android.vending.BILLING"/>
+
+    <application>
+
+        <activity
+            android:name=".BillingActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+
+    </application>
+
+</manifest>

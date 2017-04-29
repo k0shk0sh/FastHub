@@ -17,7 +17,7 @@ import java.util.Date;
  */
 
 public class CreateMilestonePresenter extends BasePresenter<CreateMilestoneMvp.View> implements CreateMilestoneMvp.Presenter {
-    @Override public void onSubmit(@Nullable String title, @Nullable String dueOn,
+    @Override public void onSubmit(@Nullable String title, @Nullable String dueOn, @Nullable String description,
                                    @NonNull String login, @NonNull String repo) {
         if (getView() != null) {
             boolean isEmptyTitle = InputHelper.isEmpty(title);
@@ -28,6 +28,9 @@ public class CreateMilestonePresenter extends BasePresenter<CreateMilestoneMvp.V
                 if (!InputHelper.isEmpty(dueOn)) {
                     Date date = ParseDateFormat.getDateFromString(dueOn);
                     if (date != null) createMilestoneModel.setDueOn(ParseDateFormat.toGithubDate(date));
+                }
+                if (!InputHelper.isEmpty(description)) {
+                    createMilestoneModel.setDescription(description);
                 }
                 makeRestCall(RestProvider.getRepoService().createMilestone(login, repo, createMilestoneModel),
                         milestoneModel -> {

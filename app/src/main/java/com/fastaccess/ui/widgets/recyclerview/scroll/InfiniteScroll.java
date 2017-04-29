@@ -1,11 +1,12 @@
 package com.fastaccess.ui.widgets.recyclerview.scroll;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by Kosh on 8/2/2015. copyrights are reserved @Innov8tif
+ * Created by Kosh on 8/2/2015. copyrights are reserved @
  */
-public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
+@SuppressWarnings("FieldCanBeLocal") public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     private int previousTotal = 0;
     private boolean loading = true;
     private int visibleThreshold = 2;
@@ -17,17 +18,15 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     private static final int HIDE_THRESHOLD = 20;
     private int scrolledDistance = 0;
     private boolean controlsVisible = true;
-    private final int PAGING_SIZE = 30;
 
     public InfiniteScroll() {}
 
-    @Override public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+    @Override public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
         super.onScrollStateChanged(recyclerView, newState);
         mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
         visibleItemCount = recyclerView.getChildCount();
         totalItemCount = mRecyclerViewHelper.getItemCount();
         firstVisibleItem = mRecyclerViewHelper.findFirstVisibleItemPosition();
-        if (PAGING_SIZE > totalItemCount) return;
         if (loading) {
             if (totalItemCount > previousTotal) {
                 loading = false;
@@ -60,9 +59,7 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
         }
     }
 
-    @SuppressWarnings("WeakerAccess") protected void onScrollToLast(RecyclerView recyclerView) {
-
-    }
+    @SuppressWarnings("WeakerAccess") protected void onScrollToLast(RecyclerView recyclerView) {}
 
     @SuppressWarnings("WeakerAccess") protected void onShow(RecyclerView recyclerView) {}
 

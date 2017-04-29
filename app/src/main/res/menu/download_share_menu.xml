@@ -15,4 +15,10 @@
         android:title="@string/share"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/copy"
+        android:icon="@drawable/ic_copy"
+        android:title="@string/copy"
+        app:showAsAction="ifRoom"/>
+
 </menu>

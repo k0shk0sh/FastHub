@@ -71,6 +71,12 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             case R.id.image:
                 MarkDownProvider.addPhoto(editText);
                 break;
+            case R.id.checkbox:
+                MarkDownProvider.addList(editText, "- [x]");
+                break;
+            case R.id.unCheckbox:
+                MarkDownProvider.addList(editText, "- [ ]");
+                break;
         }
     }
 
@@ -79,7 +85,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
             makeRestCall(RestProvider.getGistService().editGistComment(gistId, id, requestModel),
-                    commentsModel -> sendToView(view -> view.onSendResultAndFinish(commentsModel, false)));
+                    Comment -> sendToView(view -> view.onSendResultAndFinish(Comment, false)));
         }
     }
 
@@ -88,7 +94,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
             makeRestCall(RestProvider.getGistService().createGistComment(gistId, requestModel),
-                    commentsModel -> sendToView(view -> view.onSendResultAndFinish(commentsModel, true)));
+                    Comment -> sendToView(view -> view.onSendResultAndFinish(Comment, true)));
         }
     }
 
@@ -146,7 +152,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
             makeRestCall(RestProvider.getIssueService().createIssueComment(login, itemId, issueNumber, requestModel),
-                    commentsModel -> sendToView(view -> view.onSendResultAndFinish(commentsModel, true)));
+                    Comment -> sendToView(view -> view.onSendResultAndFinish(Comment, true)));
         }
     }
 
@@ -155,7 +161,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
             makeRestCall(RestProvider.getIssueService().editIssueComment(login, itemId, id, requestModel),
-                    commentsModel -> sendToView(view -> view.onSendResultAndFinish(commentsModel, false)));
+                    Comment -> sendToView(view -> view.onSendResultAndFinish(Comment, false)));
         }
     }
 
@@ -164,7 +170,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
             makeRestCall(RestProvider.getRepoService().postCommitComment(login, itemId, sha, requestModel),
-                    commentsModel -> sendToView(view -> view.onSendResultAndFinish(commentsModel, true)));
+                    Comment -> sendToView(view -> view.onSendResultAndFinish(Comment, true)));
         }
     }
 
@@ -173,7 +179,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
             makeRestCall(RestProvider.getRepoService().editCommitComment(login, itemId, id, requestModel),
-                    commentsModel -> sendToView(view -> view.onSendResultAndFinish(commentsModel, true)));
+                    Comment -> sendToView(view -> view.onSendResultAndFinish(Comment, true)));
         }
     }
 }

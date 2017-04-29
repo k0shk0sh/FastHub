@@ -3,9 +3,7 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.siimkinks.sqlitemagic.annotation.Column;
-import com.siimkinks.sqlitemagic.annotation.Id;
-import com.siimkinks.sqlitemagic.annotation.Table;
+import com.fastaccess.data.dao.model.User;
 
 import java.util.Date;
 
@@ -17,32 +15,32 @@ import lombok.Setter;
  * Created by Kosh on 08 Dec 2016, 8:47 PM
  */
 
-@Getter @Setter @NoArgsConstructor @Table(persistAll = true)
+@Getter @Setter @NoArgsConstructor
 public class MilestoneModel implements Parcelable {
 
-    @Column String url;
-    @Column String title;
-    @Column String state;
-    @Column String description;
-    @Column @Id(autoIncrement = false) long id;
-    @Column int number;
-    @Column UserModel creator;
-    @Column String htmlUr;
-    @Column int openIssues;
-    @Column int closedIssues;
-    @Column Date createdAt;
-    @Column Date updatedAt;
-    @Column Date closedAt;
-    @Column Date dueOn;
+    long id;
+    String url;
+    String title;
+    String state;
+    String description;
+    int number;
+    User creator;
+    String htmlUr;
+    int openIssues;
+    int closedIssues;
+    Date createdAt;
+    Date updatedAt;
+    Date closedAt;
+    Date dueOn;
 
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(this.id);
         dest.writeString(this.url);
         dest.writeString(this.title);
         dest.writeString(this.state);
         dest.writeString(this.description);
-        dest.writeLong(this.id);
         dest.writeInt(this.number);
         dest.writeParcelable(this.creator, flags);
         dest.writeString(this.htmlUr);
@@ -55,13 +53,13 @@ public class MilestoneModel implements Parcelable {
     }
 
     protected MilestoneModel(Parcel in) {
+        this.id = in.readLong();
         this.url = in.readString();
         this.title = in.readString();
         this.state = in.readString();
         this.description = in.readString();
-        this.id = in.readLong();
         this.number = in.readInt();
-        this.creator = in.readParcelable(UserModel.class.getClassLoader());
+        this.creator = in.readParcelable(User.class.getClassLoader());
         this.htmlUr = in.readString();
         this.openIssues = in.readInt();
         this.closedIssues = in.readInt();

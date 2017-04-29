@@ -6,13 +6,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
-    android:clickable="true"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/spacing_xs_large"
-    android:paddingTop="@dimen/spacing_normal"
-    android:stateListAnimator="@animator/raise_selector">
+    android:paddingTop="@dimen/spacing_normal">
 
 
     <LinearLayout
@@ -25,8 +23,9 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
             android:maxLines="3"
-            android:textColor="@color/primary_text"
+            android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
             tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
 
@@ -43,12 +42,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:drawableStart="@drawable/ic_star"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_star_small"
                 android:gravity="start|center"
-                android:textColor="@color/secondary_text"
-                app:drawableColor="@color/secondary_text"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
                 tools:text="1000"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -57,12 +56,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:drawableStart="@drawable/ic_fork"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_fork_small"
                 android:gravity="start|center"
-                android:textColor="@color/secondary_text"
-                app:drawableColor="@color/secondary_text"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
                 tools:text="5000"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -71,13 +70,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:drawableStart="@drawable/ic_time"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_time_small"
                 android:gravity="start|center"
-                android:textColor="@color/secondary_text"
-                app:drawableColor="@color/secondary_text"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
                 tools:text="50 minutes ago"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/size"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_storage_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="100 MB"
+                tools:visibility="visible"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/language"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                android:visibility="gone"
+                tools:text="TypeScript"
+                tools:visibility="visible"/>
 
         </com.fastaccess.ui.widgets.AutoLinearLayout>
     </LinearLayout>

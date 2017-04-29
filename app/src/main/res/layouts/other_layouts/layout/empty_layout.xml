@@ -8,18 +8,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/spacing_s_large"
-        android:background="@color/transparent"
+        android:layout_marginBottom="?actionBarSize"
         android:gravity="center"
+        android:minHeight="250dp"
         android:orientation="vertical">
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/empty_text"
-            style="@style/TextAppearance.AppCompat.Title"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_xs_large"
+            android:autoLink="all"
             android:gravity="center"
+            android:padding="@dimen/spacing_xs_large"
             android:text="@string/no_data"
             android:textColor="?colorAccent"/>
 

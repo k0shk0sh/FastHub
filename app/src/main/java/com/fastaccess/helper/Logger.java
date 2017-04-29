@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Created by Kosh on 04/12/15 11:52 PM. copyrights @ Innov8tif
+ * Created by Kosh on 04/12/15 11:52 PM. copyrights @
  */
 public class Logger {
 
@@ -32,8 +32,6 @@ public class Logger {
         if (!DEBUG) return;
         Log.i(tag, text != null ? text.toString() : "LOGGER IS NULL");//avoid null
     }
-
-    public static void e(@Nullable Object text) {e(getCurrentClassName() + " || " + getCurrentMethodName(), text);}
 
     public static void d(@Nullable Object text) {
         d(getCurrentClassName() + " || " + getCurrentMethodName(), text);//avoid null
@@ -69,7 +67,7 @@ public class Logger {
     private static String getCurrentClassName() {
         try {
             String className = Thread.currentThread().getStackTrace()[4].getClassName();
-            String[] temp = className.split("[\\.]");
+            String[] temp = className.split("[.]");
             className = temp[temp.length - 1];
             return className;
         } catch (Exception ignored) {}

@@ -6,7 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.IssueModel;
+import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -22,36 +23,60 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class IssuesViewHolder extends BaseViewHolder<IssueModel> {
+public class IssuesViewHolder extends BaseViewHolder<Issue> {
 
     @BindView(R.id.title) FontTextView title;
-    @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.details) FontTextView details;
+    @BindView(R.id.commentsNo) FontTextView commentsNo;
     @BindString(R.string.by) String by;
 
-    private IssuesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private boolean withAvatar;
+    private boolean showRepoName;
+
+    private IssuesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
+                             boolean withAvatar, boolean showRepoName) {
         super(itemView, adapter);
+        this.withAvatar = withAvatar;
+        this.showRepoName = showRepoName;
     }
 
-    public static IssuesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new IssuesViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter);
+    public static IssuesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar, boolean showRepoName) {
+        if (withAvatar) {
+            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true, showRepoName);
+        } else {
+            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false, showRepoName);
+        }
     }
 
-    public void bind(@NonNull IssueModel issueModel, boolean withAvatar) {
+    @Override public void bind(@NonNull Issue issueModel) {
         title.setText(issueModel.getTitle());
         if (issueModel.getState() != null) {
             CharSequence data = ParseDateFormat.getTimeAgo(issueModel.getState() == IssueState.open
                                                            ? issueModel.getCreatedAt() : issueModel.getClosedAt());
-            details.setText(SpannableBuilder.builder()
+            SpannableBuilder builder = SpannableBuilder.builder();
+            if (showRepoName) {
+                PullsIssuesParser parser = PullsIssuesParser.getForIssue(issueModel.getHtmlUrl());
+                if (parser != null) builder.bold(parser.getLogin())
+                        .append("/")
+                        .bold(parser.getRepoId())
+                        .append(" ");
+            }
+            if (!showRepoName) {
+                builder.append("#")
+                        .append(String.valueOf(issueModel.getNumber())).append(" ")
+                        .append(issueModel.getUser().getLogin())
+                        .append(" ");
+            }
+            details.setText(builder
                     .append(itemView.getResources().getString(issueModel.getState().getStatus()))
                     .append(" ")
                     .append(data));
+            commentsNo.setText(String.valueOf(issueModel.getComments()));
         }
-        if (withAvatar) {
+        if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }
-
-    @Override public void bind(@NonNull IssueModel issueModel) {}
 }

@@ -16,10 +16,7 @@ public class TabletBehavior extends VerticalScrollingBehavior<BottomNavigation> 
         super(context, attrs);
     }
 
-    public void setLayoutValues(int bottomNavWidth, int topInset, boolean translucentStatus) {
-        boolean translucentStatus1 = translucentStatus;
-        int topInset1 = 0;
-    }
+    public void setLayoutValues(int bottomNavWidth, int topInset, boolean translucentStatus) {}
 
     public boolean layoutDependsOn(CoordinatorLayout parent, BottomNavigation child, View dependency) {
         return AppBarLayout.class.isInstance(dependency) || Toolbar.class.isInstance(dependency);

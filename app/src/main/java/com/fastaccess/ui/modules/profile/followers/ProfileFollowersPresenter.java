@@ -4,14 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -19,7 +17,7 @@ import rx.Observable;
 
 class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> implements ProfileFollowersMvp.Presenter {
 
-    private ArrayList<UserModel> users = new ArrayList<>();
+    private ArrayList<User> users = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -40,13 +38,13 @@ class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> 
         this.previousTotal = previousTotal;
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         sendToView(view -> {
             if (view.getLoadMore().getParameter() != null) {
                 onWorkOffline(view.getLoadMore().getParameter());
             }
         });
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onCallApi(int page, @Nullable String parameter) {
@@ -66,30 +64,26 @@ class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> 
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        users.clear();
-                        manageSubscription(UserModel.saveFollowers(response.getItems(), parameter).subscribe());
+                        manageSubscription(User.saveUserFollowerList(response.getItems(), parameter).subscribe());
                     }
-                    users.addAll(response.getItems());
-                    sendToView(ProfileFollowersMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
     }
 
-    @NonNull @Override public ArrayList<UserModel> getFollowers() {
+    @NonNull @Override public ArrayList<User> getFollowers() {
         return users;
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(UserModel.getFollowers(login)).subscribe(userModels -> {
-                users.addAll(userModels);
-                sendToView(ProfileFollowersMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(User.getUserFollowerList(login)).subscribe(userModels ->
+                    sendToView(view -> view.onNotifyAdapter(userModels, 1))));
         } else {
             sendToView(ProfileFollowersMvp.View::hideProgress);
         }
     }
 
-    @Override public void onItemClick(int position, View v, UserModel item) {}
+    @Override public void onItemClick(int position, View v, User item) {}
 
-    @Override public void onItemLongClick(int position, View v, UserModel item) {}
+    @Override public void onItemLongClick(int position, View v, User item) {}
 }

@@ -3,6 +3,8 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.model.Repo;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,9 +19,12 @@ public class SearchCodeModel implements Parcelable {
     private String sha;
     private String url;
     private String gitUrl;
-    private RepoModel repository;
+    private Repo repository;
     private double score;
+    private String htmlUrl;
 
+
+    public SearchCodeModel() {}
 
     @Override public int describeContents() { return 0; }
 
@@ -33,19 +38,17 @@ public class SearchCodeModel implements Parcelable {
         dest.writeDouble(this.score);
     }
 
-    public SearchCodeModel() {}
-
-    @SuppressWarnings("WeakerAccess") protected SearchCodeModel(Parcel in) {
+    protected SearchCodeModel(Parcel in) {
         this.name = in.readString();
         this.path = in.readString();
         this.sha = in.readString();
         this.url = in.readString();
         this.gitUrl = in.readString();
-        this.repository = in.readParcelable(RepoModel.class.getClassLoader());
+        this.repository = in.readParcelable(Repo.class.getClassLoader());
         this.score = in.readDouble();
     }
 
-    public static final Parcelable.Creator<SearchCodeModel> CREATOR = new Parcelable.Creator<SearchCodeModel>() {
+    public static final Creator<SearchCodeModel> CREATOR = new Creator<SearchCodeModel>() {
         @Override public SearchCodeModel createFromParcel(Parcel source) {return new SearchCodeModel(source);}
 
         @Override public SearchCodeModel[] newArray(int size) {return new SearchCodeModel[size];}

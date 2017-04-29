@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 /**
@@ -27,7 +27,7 @@ interface GistMvp {
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        @Nullable GistsModel getGist();
+        @Nullable Gist getGist();
 
         @NonNull String gistId();
 

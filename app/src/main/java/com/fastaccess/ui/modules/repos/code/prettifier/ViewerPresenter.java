@@ -5,16 +5,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.FileModel;
 import com.fastaccess.data.dao.MarkdownModel;
+import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.ViewerFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 27 Nov 2016, 3:43 PM
@@ -27,7 +27,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
     private boolean isImage;
     private String url;
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();
         int code = RestProvider.getErrorCode(throwable);
         if (code == 404) {
@@ -35,12 +35,11 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         } else {
             if (code == 406) {
                 sendToView(view -> view.openUrl(url));
-                return null;
+                return;
             }
             onWorkOffline();
-            return super.onError(throwable, observable);
+            super.onError(throwable);
         }
-        return null;
     }
 
     @Override public void onHandleIntent(@Nullable Bundle intent) {
@@ -55,7 +54,6 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             if (isRepo) {
                 url = url.endsWith("/") ? (url + "readme") : (url + "/readme");
             }
-//            url = url.contains("/blobs/") ? url : url.endsWith("/") ? url : url + "/";
             onWorkOnline();
         }
     }
@@ -70,7 +68,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
 
     @Override public void onWorkOffline() {
         if (downloadedStream == null) {
-            manageSubscription(RxHelper.getObserver(FileModel.get(url))
+            manageSubscription(RxHelper.getObserver(ViewerFile.get(url))
                     .subscribe(fileModel -> {
                         if (fileModel != null) {
                             isImage = MarkDownProvider.isImage(fileModel.getFullUrl());
@@ -81,10 +79,8 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                                 isRepo = fileModel.isRepo();
                                 isMarkdown = fileModel.isMarkdown();
                                 sendToView(view -> {
-                                    if (isRepo) {
+                                    if (isRepo || isMarkdown) {
                                         view.onSetMdText(downloadedStream, fileModel.getFullUrl());
-                                    } else if (isMarkdown) {
-                                        view.onSetMdText(downloadedStream, null);
                                     } else {
                                         view.onSetCode(downloadedStream);
                                     }
@@ -101,43 +97,45 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             sendToView(view -> view.onSetImageUrl(url));
             return;
         }
-        makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url) : RestProvider.getRepoService().getFileAsStream(url),
-                content -> {
-                    downloadedStream = content;
-                    FileModel fileModel = new FileModel();
-                    fileModel.setContent(downloadedStream);
-                    fileModel.setFullUrl(url);
-                    fileModel.setRepo(isRepo);
-                    if (isRepo) {
-                        fileModel.setMarkdown(true);
-                        isMarkdown = true;
-                        isRepo = true;
-                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+        makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url)
+                            : RestProvider.getRepoService().getFileAsStream(url), content -> {
+            downloadedStream = content;
+            ViewerFile fileModel = new ViewerFile();
+            fileModel.setContent(downloadedStream);
+            fileModel.setFullUrl(url);
+            fileModel.setRepo(isRepo);
+            if (isRepo) {
+                fileModel.setMarkdown(true);
+                isMarkdown = true;
+                isRepo = true;
+                sendToView(view -> view.onSetMdText(downloadedStream, url));
+            } else {
+                isMarkdown = MarkDownProvider.isMarkdown(url);
+                if (isMarkdown) {
+                    MarkdownModel model = new MarkdownModel();
+                    model.setText(downloadedStream);
+                    NameParser parser = new NameParser(url);
+                    if (parser.getUsername() != null && parser.getName() != null) {
+                        model.setContext(parser.getUsername() + "/" + parser.getName());
                     } else {
-                        isMarkdown = MarkDownProvider.isMarkdown(url);
-                        if (isMarkdown) {
-                            MarkdownModel model = new MarkdownModel();
-                            model.setText(downloadedStream);
-                            makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model),
-                                    s -> {
-                                        isMarkdown = true;
-                                        downloadedStream = s;
-                                        fileModel.setMarkdown(true);
-                                        fileModel.setContent(downloadedStream);
-                                        manageSubscription(fileModel.save().subscribe());
-                                        sendToView(view -> view.onSetMdText(downloadedStream, url));
-                                    });
-                            return;
-                        }
-                        fileModel.setMarkdown(false);
-                        if (isMarkdown) {
-                            sendToView(view -> view.onSetMdText(downloadedStream, null));
-                        } else {
-                            sendToView(view -> view.onSetCode(downloadedStream));
-                        }
+                        model.setContext("");
                     }
-                    manageSubscription(fileModel.save().subscribe());
-                });
+                    Logger.e(model.getContext());
+                    makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
+                        isMarkdown = true;
+                        downloadedStream = string;
+                        fileModel.setMarkdown(true);
+                        fileModel.setContent(downloadedStream);
+                        manageSubscription(fileModel.save(fileModel).subscribe());
+                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                    });
+                    return;
+                }
+                fileModel.setMarkdown(false);
+                sendToView(view -> view.onSetCode(downloadedStream));
+            }
+            manageSubscription(fileModel.save(fileModel).subscribe());
+        });
     }
 
     @Override public boolean isRepo() {
@@ -146,5 +144,9 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
 
     @Override public boolean isImage() {
         return isImage;
+    }
+
+    @NonNull @Override public String url() {
+        return url;
     }
 }

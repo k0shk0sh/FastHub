@@ -1,27 +1,22 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.PullRequestModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -29,7 +24,7 @@ import rx.Observable;
 
 class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> implements RepoPullRequestMvp.Presenter {
 
-    private ArrayList<PullRequestModel> pullRequests = new ArrayList<>();
+    private ArrayList<PullRequest> pullRequests = new ArrayList<>();
     private String login;
     private String repoId;
     private int page;
@@ -53,12 +48,17 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         this.previousTotal = previousTotal;
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onCallApi(int page, @Nullable IssueState parameter) {
+        if (parameter == null) {
+            sendToView(RepoPullRequestMvp.View::hideProgress);
+            return;
+        }
+        this.issueState = parameter;
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -69,16 +69,13 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestSerice().getPullRequests(login, repoId, issueState.name(), page),
-                response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        getPullRequests().clear();
-                        manageSubscription(PullRequestModel.save(response.getItems(), login, repoId).subscribe());
-                    }
-                    getPullRequests().addAll(response.getItems());
-                    sendToView(RepoPullRequestMvp.View::onNotifyAdapter);
-                });
+        makeRestCall(RestProvider.getPullRequestSerice().getPullRequests(login, repoId, parameter.name(), page), response -> {
+            lastPage = response.getLast();
+            if (getCurrentPage() == 1) {
+                manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
+            }
+            sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
+        });
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
@@ -86,36 +83,46 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         login = bundle.getString(BundleConstant.EXTRA);
         issueState = (IssueState) bundle.getSerializable(BundleConstant.EXTRA_TWO);
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            onCallApi(1, null);
+            onCallApi(1, issueState);
+            onCallCountApi(issueState);
         }
+    }
+
+    private void onCallCountApi(@NonNull IssueState issueState) {
+        manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestSerice()
+                .getPullsWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, true), 0))
+                .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
+                        Throwable::printStackTrace));
     }
 
     @Override public void onWorkOffline() {
         if (pullRequests.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(PullRequestModel.getPullRequests(repoId, login, issueState))
-                    .subscribe(pulls -> {
-                        pullRequests.addAll(pulls);
-                        sendToView(RepoPullRequestMvp.View::onNotifyAdapter);
-                    }));
+            manageSubscription(RxHelper.getObserver(PullRequest.getPullRequests(repoId, login, issueState))
+                    .subscribe(pulls -> sendToView(view -> {
+                        view.onNotifyAdapter(pulls, 1);
+                        view.onUpdateCount(pulls.size());
+                    })));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }
     }
 
-    @NonNull public ArrayList<PullRequestModel> getPullRequests() {
+    @NonNull public ArrayList<PullRequest> getPullRequests() {
         return pullRequests;
     }
 
-    @Override public void onItemClick(int position, View v, PullRequestModel item) {
-        Logger.e(Bundler.start().put("item", item).end().size());
+    @NonNull @Override public IssueState getIssueState() {
+        return issueState;
+    }
+
+    @Override public void onItemClick(int position, View v, PullRequest item) {
         PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
-        if (parser != null) {
-            Intent intent = PullRequestPagerView.createIntent(v.getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber());
-            v.getContext().startActivity(intent);
+        if (parser != null && getView() != null) {
+            getView().onOpenPullRequest(parser);
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, PullRequestModel item) {
+    @Override public void onItemLongClick(int position, View v, PullRequest item) {
         onItemClick(position, v, item);
     }
 }

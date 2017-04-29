@@ -3,13 +3,20 @@ package com.fastaccess;
 import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
-import com.commonsware.cwac.anddown.AndDown;
+import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
-import com.fastaccess.provider.tasks.NotificationJobTask;
+import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.provider.uil.UILProvider;
-import com.siimkinks.sqlitemagic.SqliteMagic;
+
+import io.requery.Persistable;
+import io.requery.android.sqlite.DatabaseSource;
+import io.requery.meta.EntityModel;
+import io.requery.rx.RxSupport;
+import io.requery.rx.SingleEntityStore;
+import io.requery.sql.Configuration;
+import io.requery.sql.EntityDataStore;
+import io.requery.sql.TableCreationMode;
 
 
 /**
@@ -18,34 +25,33 @@ import com.siimkinks.sqlitemagic.SqliteMagic;
 
 public class App extends Application {
     private static App instance;
-    private AndDown andDown;
+    private SingleEntityStore<Persistable> dataStore;
 
     @Override public void onCreate() {
         super.onCreate();
         instance = this;
+        deleteDatabase("database.db");
+        getDataStore();//init requery before anything.
         PreferenceManager.setDefaultValues(this, R.xml.fasthub_settings, false);
-        SqliteMagic.setLoggingEnabled(BuildConfig.DEBUG);
-        SqliteMagic.init(this);
         UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
-        NotificationJobTask.scheduleJob(this);//schedule the job for the notifications
-        if (BuildConfig.DEBUG) {//disable crash reporting while developing.
-            Thread.setDefaultUncaughtExceptionHandler((paramThread, paramThrowable) -> {
-                Log.e("Crash", paramThrowable.getMessage(), paramThrowable);
-                System.exit(2);
-            });
-        }
+        NotificationSchedulerJobTask.scheduleJob(this);//schedule the job for the notifications
     }
 
     @NonNull public static App getInstance() {
         return instance;
     }
 
-    @NonNull public AndDown getAndDown() {
-        if (andDown == null) {
-            andDown = new AndDown();
+    public SingleEntityStore<Persistable> getDataStore() {
+        if (dataStore == null) {
+            EntityModel model = Models.DEFAULT;
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 7);
+            Configuration configuration = source.getConfiguration();
+            if (BuildConfig.DEBUG) {
+                source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);
+            }
+            dataStore = RxSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }
-        return andDown;
+        return dataStore;
     }
-
 }

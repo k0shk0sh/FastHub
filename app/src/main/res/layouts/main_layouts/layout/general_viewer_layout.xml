@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/textViewHolder"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/textView"
@@ -25,11 +26,11 @@
 
     </android.support.v4.widget.NestedScrollView>
 
-
     <com.prettifier.pretty.PrettifyWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        app:webview_background="?android:windowBackground"/>
 
     <include layout="@layout/state_layout"/>
 </FrameLayout>

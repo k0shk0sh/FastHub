@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawerLayout"
+    android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.fastaccess.ui.modules.main.MainView">
+    tools:context="com.fastaccess.ui.modules.main.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -30,58 +29,10 @@
 
         </android.support.design.widget.CoordinatorLayout>
 
-        <com.google.android.gms.ads.AdView
-            android:id="@+id/adView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:background="?colorPrimary"
-            android:visibility="gone"
-            app:adSize="BANNER"
-            app:adUnitId="@string/banner_ad_unit_id"/>
+        <include layout="@layout/add_banner_layout"/>
     </LinearLayout>
 
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:clickable="true"
-        android:clipToPadding="false"
-        android:fitsSystemWindows="true"
-        android:paddingBottom="76dp"
-        app:headerLayout="@layout/drawer_header"
-        app:itemIconTint="?colorAccent"
-        app:itemTextColor="?colorAccent"
-        app:menu="@menu/drawer_menu">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginBottom="-76dp"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/spacing_xs_large">
-
-            <include layout="@layout/enable_ads_swift"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                style="@style/TextAppearance.AppCompat.Title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing_micro"
-                android:gravity="center"
-                android:text="@string/app_name"/>
-
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/versionText"
-                style="@style/TextAppearance.AppCompat.Medium"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"/>
-
-        </LinearLayout>
-    </android.support.design.widget.NavigationView>
+    <include layout="@layout/nav_menu_layout"/>
 
 </android.support.v4.widget.DrawerLayout>

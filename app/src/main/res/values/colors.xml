@@ -1,28 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="primary">#F5F5F5</color>
-    <color name="primary_dark">#9E9E9E</color>
-    <color name="primary_light">#FAFAFA</color>
-    <color name="accent">@color/material_blue_accent_700</color>
-    <color name="universal_primary_dark_color">#E0E0E0</color>
-    <color name="bluish_primary">#FF2A456B</color>
-    <color name="bluish_primary_dark">#213755</color>
-    <color name="bluish_primary_light">#C5CAE9</color>
-    <color name="bluish_accent">#448AFF</color>
-    <color name="primary_text">#212121</color>
-    <color name="secondary_text">#727272</color>
-    <color name="icons">@color/white</color>
-    <color name="divider">#B6B6B6</color>
     <color name="transparent">#00000000</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="black_translucent">#80000000</color>
-    <color name="drawer_activated_color">@color/primary_light</color>
-    <color name="windowBackground">@color/primary_light</color>
     <color name="light_gray">#ffb2b2b2</color>
-    <color name="dark_bluish">#111C2C</color>
     <color name="carrot">@color/material_amber_800</color>
-    <color name="dark_gray">#FF616161</color>
     <color name="material_amber_100">#FFECB3</color>
     <color name="material_amber_200">#FFE082</color>
     <color name="material_amber_300">#FFD54F</color>
@@ -273,4 +255,5 @@
     <color name="material_yellow_accent_200">#FFFF00</color>
     <color name="material_yellow_accent_400">#FFEA00</color>
     <color name="material_yellow_accent_700">#FFD600</color>
+
 </resources>

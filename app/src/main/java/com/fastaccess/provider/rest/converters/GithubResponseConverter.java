@@ -38,6 +38,4 @@ public class GithubResponseConverter extends Converter.Factory {
             return value.string();
         }
     }
-
-
 }

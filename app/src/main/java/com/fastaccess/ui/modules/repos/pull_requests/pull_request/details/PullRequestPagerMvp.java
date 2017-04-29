@@ -8,11 +8,12 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
-import com.fastaccess.data.dao.PullRequestModel;
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullReqeustMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
@@ -22,10 +23,10 @@ import java.util.List;
  * Created by Kosh on 10 Dec 2016, 9:21 AM
  */
 
-interface PullRequestPagerMvp {
+public interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
-            AssigneesMvp.SelectedAssigneesListener {
+            AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback {
 
         void onSetupIssue();
 
@@ -39,12 +40,16 @@ interface PullRequestPagerMvp {
 
         void onUpdateTimeline();
 
-        void onShowAssignees(@NonNull List<UserModel> items);
+        void onShowAssignees(@NonNull List<User> items);
+
+        void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
+
+        void onFinishActivity();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        @Nullable PullRequestModel getPullRequest();
+        @Nullable PullRequest getPullRequest();
 
         void onActivityCreated(@Nullable Intent intent);
 
@@ -58,15 +63,17 @@ interface PullRequestPagerMvp {
 
         boolean isMergeable();
 
+        boolean showToRepoBtn();
+
         void onHandleConfirmDialog(@Nullable Bundle bundle);
 
         void onOpenCloseIssue();
 
         void onLockUnlockConversations();
 
-        @NonNull SpannableBuilder getMergeBy(@NonNull PullRequestModel pullRequest, @NonNull Context context);
+        @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
-        void onMerge();
+        void onMerge(String msg);
 
         void onLoadLabels();
 
@@ -76,7 +83,7 @@ interface PullRequestPagerMvp {
 
         void onPutMilestones(@NonNull MilestoneModel milestone);
 
-        void onPutAssignees(@NonNull ArrayList<UserModel> users);
+        void onPutAssignees(@NonNull ArrayList<User> users);
 
         String getLogin();
 
@@ -84,7 +91,7 @@ interface PullRequestPagerMvp {
 
         boolean isCollaborator();
 
-        void onUpdatePullRequest(@NonNull PullRequestModel pullRequestModel);
+        void onUpdatePullRequest(@NonNull PullRequest pullRequestModel);
     }
 
 }

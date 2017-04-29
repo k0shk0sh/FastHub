@@ -35,11 +35,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="36dp"
+                        app:cardBackgroundColor="?card_background"
                         app:cardUseCompatPadding="true"
-                        app:contentPaddingBottom="@dimen/spacing_xs_large"
+                        app:contentPaddingBottom="@dimen/spacing_normal"
                         app:contentPaddingLeft="@dimen/spacing_xs_large"
                         app:contentPaddingRight="@dimen/spacing_xs_large"
-                        app:contentPaddingTop="@dimen/spacing_s_large">
+                        app:contentPaddingTop="@dimen/spacing_normal">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -52,8 +53,9 @@
                                 style="@style/Base.TextAppearance.AppCompat.Title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:layout_marginTop="@dimen/spacing_normal"
                                 android:gravity="center"
-                                android:paddingTop="@dimen/spacing_normal"
                                 android:textStyle="bold"
                                 android:transitionName="@string/title_transition"
                                 tools:text="Cum classis nocere"/>
@@ -63,8 +65,7 @@
                                 style="@style/Base.TextAppearance.AppCompat.Small"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/spacing_micro"
-                                android:layout_marginTop="@dimen/spacing_micro"
+                                android:autoLink="all"
                                 tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
                         </LinearLayout>
 
@@ -84,6 +85,7 @@
                         android:layout_gravity="start|bottom|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:layout_marginTop="@dimen/spacing_micro"
                         android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         tools:text="Following\n40"/>
@@ -103,11 +105,29 @@
                         android:layout_gravity="end|bottom|center"
                         android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:layout_marginTop="@dimen/spacing_micro"
                         android:background="?selectableItemBackgroundBorderless"
                         android:gravity="center"
                         tools:text="Followers\n140"/>
                 </FrameLayout>
             </FrameLayout>
+
+            <com.fastaccess.ui.widgets.FontButton
+                android:id="@+id/followBtn"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_xs_large"
+                android:drawablePadding="@dimen/spacing_normal"
+                android:drawableStart="@drawable/asl_follow"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:paddingStart="@dimen/spacing_xs_large"
+                android:paddingTop="@dimen/spacing_normal"
+                android:text="@string/follow"
+                android:textColor="@color/white"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,11 +136,12 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?card_background"
                     app:cardUseCompatPadding="true"
-                    app:contentPaddingBottom="@dimen/spacing_xs_large"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
                     app:contentPaddingLeft="@dimen/spacing_xs_large"
                     app:contentPaddingRight="@dimen/spacing_xs_large"
-                    app:contentPaddingTop="@dimen/spacing_s_large">
+                    app:contentPaddingTop="@dimen/spacing_normal">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -190,7 +211,7 @@
             android:id="@+id/progress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?android:windowBackground"
+            android:background="?android:attr/windowBackground"
             android:visibility="gone">
 
             <ProgressBar

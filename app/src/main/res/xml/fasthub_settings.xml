@@ -1,23 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory android:title="General Setting">
+    <PreferenceCategory android:title="@string/notification_settings">
 
         <ListPreference
             android:defaultValue="@string/thirty_minutes"
-            android:dialogTitle="Every"
+            android:dialogTitle="@string/every"
             android:entries="@array/notification_duration"
             android:entryValues="@array/notification_duration"
             android:key="notificationTime"
-            android:summary="Change the background notification task time"
-            android:title="Background Notification Sync"/>
+            android:summary="@string/background_job_summary"
+            android:title="@string/background_job_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="markNotificationAsRead"
+            android:summary="@string/mark_notification_summary"
+            android:title="@string/mark_notification_title"/>
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="notificationSound"
+            android:summary="@string/enable_notification_sound_summary"
+            android:title="@string/enable_notification_sound_title"/>
+
+    </PreferenceCategory>
+
+
+    <PreferenceCategory android:title="@string/behavior">
+
+        <ListPreference
+            android:defaultValue="@string/light_theme_mode"
+            android:dialogTitle="@string/theme_title"
+            android:entries="@array/theme_modes"
+            android:entryValues="@array/theme_modes"
+            android:key="appTheme"
+            android:summary="@string/theme_summary"
+            android:title="@string/theme_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="wrap_code"
+            android:summary="@string/wrap_code_summary"
+            android:title="@string/wrap_code_title"/>
+
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="rect_avatar"
+            android:summary="@string/rect_avatar_summary"
+            android:title="@string/rect_avatar_title"/>
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="back_button"
+            android:summary="@string/back_button_summary"
+            android:title="@string/back_button_title"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/app_language">
+
+        <ListPreference
+            android:defaultValue="en"
+            android:entries="@array/languages_array"
+            android:entryValues="@array/languages_array_values"
+            android:key="app_language"
+            android:summary="@string/choose_language_summary"
+            android:title="@string/choose_language_title"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/animations">
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="recylerViewAnimation"
-            android:summary="Disable RecyclerView animation."
-            android:title="RecylerView Animation"/>
+            android:summary="@string/recycler_view_animation_summary"
+            android:title="@string/recycler_view_animation_title"/>
 
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/about">
+
+        <Preference
+            android:key="about"
+            android:title="@string/about">
+            <intent
+                android:targetClass="com.fastaccess.ui.modules.about.FastHubAboutActivity"
+                android:targetPackage="com.fastaccess.github"/>
+        </Preference>
+
+        <Preference
+            android:key="currentVersion"
+            android:title="@string/app_name"
+            app:summary="@string/current_version"/>
     </PreferenceCategory>
 
 

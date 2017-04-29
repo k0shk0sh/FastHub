@@ -21,6 +21,8 @@ public class BundleConstant {
     public static final String EXTRA_THREE = "extra2_id";
     public static final String EXTRA_FOUR = "extra3_id";
     public static final String EXTRA_TYPE = "extra_type";
+    public static final String YES_NO_EXTRA = "yes_no_extra";
+    public static final String NOTIFICATION_ID = "notification_id";
     public static final int REQUEST_CODE = 2016;
 
 

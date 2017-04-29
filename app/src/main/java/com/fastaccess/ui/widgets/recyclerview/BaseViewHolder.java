@@ -21,9 +21,9 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder implemen
         void onItemLongClick(int position, View v, T item);
     }
 
-    protected BaseRecyclerAdapter adapter;
+    @Nullable protected final BaseRecyclerAdapter adapter;
 
-    public static View getView(ViewGroup parent, @LayoutRes int layoutRes) {
+    public static View getView(@NonNull ViewGroup parent, @LayoutRes int layoutRes) {
         return LayoutInflater.from(parent.getContext()).inflate(layoutRes, parent, false);
     }
 
@@ -40,16 +40,16 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder implemen
     }
 
     @SuppressWarnings("unchecked") @Override public void onClick(View v) {
-        int position = getAdapterPosition();
         if (adapter != null && adapter.getListener() != null) {
+            int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION && position < adapter.getItemCount())
                 adapter.getListener().onItemClick(position, v, adapter.getItem(position));
         }
     }
 
     @SuppressWarnings("unchecked") @Override public boolean onLongClick(View v) {
-        int position = getAdapterPosition();
         if (adapter != null && adapter.getListener() != null) {
+            int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION && position < adapter.getItemCount())
                 adapter.getListener().onItemLongClick(position, v, adapter.getItem(position));
         }
@@ -57,4 +57,5 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder implemen
     }
 
     public abstract void bind(@NonNull T t);
+
 }

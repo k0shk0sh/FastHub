@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.AppBarLayout
+    android:id="@+id/appbar"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/bbn_bottom_navigation_width"
+    android:background="@color/transparent"
+    android:theme="?android:toolbarStyle"
+    app:elevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_scrollFlags="scroll|enterAlways">
+
+        <include layout="@layout/title_header_layout"/>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:minHeight="?actionBarSize"
+            android:theme="?android:toolbarStyle">
+
+            <include layout="@layout/repo_header_icons_layout"/>
+
+        </android.support.v7.widget.Toolbar>
+    </LinearLayout>
+</android.support.design.widget.AppBarLayout>

@@ -1,15 +1,25 @@
 package com.fastaccess.ui.base;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.BackstackReader;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fastaccess.R;
+import com.fastaccess.helper.AnimHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -52,18 +62,38 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setStyle(STYLE_NO_TITLE, AppHelper.isNightMode(getResources()) ? R.style.DialogThemeDark : R.style.DialogThemeLight);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
         }
     }
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public void dismiss() {
+        AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
+            @Override public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                BaseDialogFragment.super.dismiss();
+            }
+        });
+    }
+
+    @SuppressLint("RestrictedApi") @Nullable @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (fragmentLayout() != 0) {
-            View view = inflater.inflate(fragmentLayout(), container, false);
+            final Context contextThemeWrapper = new ContextThemeWrapper(getContext(), getContext().getTheme());
+            LayoutInflater themeAwareInflater = inflater.cloneInContext(contextThemeWrapper);
+            View view = themeAwareInflater.inflate(fragmentLayout(), container, false);
             unbinder = ButterKnife.bind(this, view);
             return view;
         }
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+        final Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
+                getResources().getInteger(android.R.integer.config_longAnimTime)));
+        return dialog;
     }
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -103,8 +133,38 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     }
 
+    @Override public void onRequireLogin() {
+        callback.onRequireLogin();
+    }
+
+    @Override public void onLogoutPressed() {
+        callback.onLogoutPressed();
+    }
+
+    @Override public void onThemeChanged() {
+        callback.onThemeChanged();
+    }
+
+    @Override public void onOpenSettings() {
+        callback.onOpenSettings();
+    }
+
     @Override public void onDestroyView() {
         super.onDestroyView();
         if (unbinder != null) unbinder.unbind();
     }
+
+    @Override public boolean isFragmentRemoving() {
+        return isRemoving();
+    }
+
+    @Override public boolean isFragmentInBackstack() {
+        return BackstackReader.isInBackStack(this);
+    }
+
+    @Override public Activity getHostingActivity() {
+        return getActivity();
+    }
+
+
 }

@@ -2,12 +2,12 @@ package com.prettifier.pretty;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
@@ -16,18 +16,20 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.fastaccess.R;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
-import com.fastaccess.ui.modules.code.CodeViewerView;
+import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.prettifier.pretty.callback.MarkDownInterceptorInterface;
 import com.prettifier.pretty.helper.GithubHelper;
 import com.prettifier.pretty.helper.PrettifyHelper;
 
 
 public class PrettifyWebView extends NestedWebView {
-    private String content;
     private OnContentChangedListener onContentChangedListener;
     private boolean interceptTouch;
 
@@ -38,32 +40,41 @@ public class PrettifyWebView extends NestedWebView {
     public PrettifyWebView(Context context) {
         super(context);
         if (isInEditMode()) return;
-        initView();
+        initView(null);
     }
 
     public PrettifyWebView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView();
+        initView(attrs);
     }
 
     public PrettifyWebView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView();
+        initView(attrs);
     }
 
     @Override public boolean onInterceptTouchEvent(MotionEvent p_event) {
         return true;
     }
 
-    @Override public boolean onTouchEvent(MotionEvent event) {
+    @SuppressLint("ClickableViewAccessibility") @Override public boolean onTouchEvent(MotionEvent event) {
         if (getParent() != null) {
             getParent().requestDisallowInterceptTouchEvent(interceptTouch);
         }
         return super.onTouchEvent(event);
     }
 
-    @SuppressLint("SetJavaScriptEnabled") private void initView() {
+    @SuppressLint("SetJavaScriptEnabled") private void initView(@Nullable AttributeSet attrs) {
         if (isInEditMode()) return;
+        if (attrs != null) {
+            TypedArray tp = getContext().obtainStyledAttributes(attrs, R.styleable.PrettifyWebView);
+            try {
+                int color = tp.getColor(R.styleable.PrettifyWebView_webview_background, ViewHelper.getWindowBackground(getContext()));
+                setBackgroundColor(color);
+            } finally {
+                tp.recycle();
+            }
+        }
         setWebChromeClient(new ChromeClient());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             setWebViewClient(new WebClient());
@@ -71,38 +82,77 @@ public class PrettifyWebView extends NestedWebView {
             setWebViewClient(new WebClientCompat());
         }
         WebSettings settings = getSettings();
+        settings.setJavaScriptEnabled(true);
         settings.setAppCachePath(getContext().getCacheDir().getPath());
         settings.setAppCacheEnabled(true);
         settings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
         settings.setDefaultTextEncodingName("utf-8");
-        settings.setJavaScriptEnabled(true);
         settings.setLoadsImagesAutomatically(true);
         settings.setBlockNetworkImage(false);
+        setOnLongClickListener((view) -> {
+            WebView.HitTestResult result = getHitTestResult();
+            if (hitLinkResult(result) && !InputHelper.isEmpty(result.getExtra())) {
+                AppHelper.copyToClipboard(getContext(), result.getExtra());
+                return true;
+            }
+            return false;
+        });
+    }
+
+    private boolean hitLinkResult(WebView.HitTestResult result) {
+        return result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE || result.getType() == HitTestResult.IMAGE_TYPE ||
+                result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE;
     }
 
     public void setOnContentChangedListener(@NonNull OnContentChangedListener onContentChangedListener) {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source) {
+    public void setSource(@NonNull String source, boolean wrap, @Nullable String url) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setDisplayZoomControls(false);
+        settings.setSupportZoom(!wrap);
+        settings.setBuiltInZoomControls(!wrap);
+        if (!wrap) settings.setDisplayZoomControls(false);
         if (!InputHelper.isEmpty(source)) {
-            this.content = source;
-            String page = PrettifyHelper.generateContent(source);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
-        } else Log.e(getClass().getSimpleName(), "Source can't be null or empty.");
+            setOnContentChangedListener(progress -> {
+                Logger.e(progress);
+                if (progress == 100) {
+                    int lineNo = 0;
+                    if (url != null) {
+                        try {
+                            Uri uri = Uri.parse(url);
+                            String lineNumber = uri.getEncodedFragment();
+                            Logger.e(lineNumber);
+                            if (lineNumber != null) {
+                                lineNumber = lineNumber.replace("L", "");
+                                lineNo = Integer.valueOf(lineNumber);
+                            }
+                        } catch (Exception ignored) {}
+                    }
+                    if (lineNo != 0) {
+                        if (isAttachedToWindow()) loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
+                    }
+                }
+            });
+        }
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
+        setGithubContent(source, baseUrl, false);
+    }
+
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
+        if (wrap) {
+            setScrollbarFadingEnabled(false);
+            setVerticalScrollBarEnabled(false);
+        }
         if (!InputHelper.isEmpty(source)) {
-            addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
-            this.content = source;
-            String page = GithubHelper.generateContent(source, baseUrl);
+            if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
+            String page = GithubHelper.generateContent(source, baseUrl, wrap, AppHelper.isNightMode(getResources()));
             post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
         }
     }
@@ -119,13 +169,6 @@ public class PrettifyWebView extends NestedWebView {
         loadData(html, "text/html", null);
     }
 
-    public void refresh() {
-        if (content != null) {
-            loadUrl("about:blank");
-            setSource(content);
-        }
-    }
-
     public void setInterceptTouch(boolean interceptTouch) {
         this.interceptTouch = interceptTouch;
     }
@@ -139,13 +182,17 @@ public class PrettifyWebView extends NestedWebView {
         }
     }
 
-    private void startActivity(Uri url) {
+    private void startActivity(@Nullable Uri url) {
         if (url == null) return;
         Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
-            CodeViewerView.startActivity(getContext(), url.toString());
+            CodeViewerActivity.startActivity(getContext(), url.toString());
         } else {
-            SchemeParser.launchUri(getContext(), url);
+            String lastSegment = url.getEncodedFragment();
+            if (lastSegment != null || url.toString().startsWith("#") || url.toString().indexOf('#') != -1) {
+                return;
+            }
+            SchemeParser.launchUri(getContext(), url, true);
         }
     }
 

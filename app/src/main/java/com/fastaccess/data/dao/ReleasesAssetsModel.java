@@ -3,6 +3,8 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.model.User;
+
 import java.util.Date;
 
 import lombok.Getter;
@@ -12,7 +14,7 @@ import lombok.Setter;
  * Created by Kosh on 31 Dec 2016, 1:28 PM
  */
 
-@Getter @Setter class ReleasesAssetsModel implements Parcelable {
+@Getter @Setter public class ReleasesAssetsModel implements Parcelable {
     private String url;
     private String browserDownloadUrl;
     private long id;
@@ -24,8 +26,7 @@ import lombok.Setter;
     private int downloadCount;
     private Date createdAt;
     private Date updatedAt;
-    private UserModel uploader;
-
+    private User uploader;
 
     @Override public int describeContents() { return 0; }
 
@@ -60,7 +61,7 @@ import lombok.Setter;
         this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
         long tmpUpdatedAt = in.readLong();
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
-        this.uploader = in.readParcelable(UserModel.class.getClassLoader());
+        this.uploader = in.readParcelable(User.class.getClassLoader());
     }
 
     public static final Creator<ReleasesAssetsModel> CREATOR = new Creator<ReleasesAssetsModel>() {

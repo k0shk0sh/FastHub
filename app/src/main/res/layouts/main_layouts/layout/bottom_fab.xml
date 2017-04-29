@@ -11,5 +11,6 @@
     android:src="@drawable/ic_add"
     android:tint="@color/white"
     android:visibility="gone"
+    app:fabSize="normal"
     app:layout_behavior="@string/bbn_fab_default_behavior"
     tools:visibility="visible"/>

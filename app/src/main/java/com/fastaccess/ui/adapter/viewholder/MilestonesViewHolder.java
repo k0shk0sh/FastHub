@@ -29,7 +29,7 @@ public class MilestonesViewHolder extends BaseViewHolder<MilestoneModel> {
     }
 
     public static MilestonesViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter) {
-        return new MilestonesViewHolder(getView(viewGroup, R.layout.notifications_row_item), adapter);
+        return new MilestonesViewHolder(getView(viewGroup, R.layout.milestone_row_item), adapter);
     }
 
     @Override public void bind(@NonNull MilestoneModel milestoneModel) {
@@ -37,7 +37,7 @@ public class MilestonesViewHolder extends BaseViewHolder<MilestoneModel> {
         notificationTitle.setText(milestoneModel.getDescription());
         if (milestoneModel.getDueOn() != null) {
             date.setText(ParseDateFormat.getTimeAgo(milestoneModel.getDueOn()));
-        } else {
+        } else if (milestoneModel.getCreatedAt() != null) {
             date.setText(ParseDateFormat.getTimeAgo(milestoneModel.getCreatedAt()));
         }
     }

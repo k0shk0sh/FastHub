@@ -7,7 +7,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
 window.onload = function() {
     addTouchEvents(document.getElementsByTagName("pre"));
     addTouchEvents(document.getElementsByTagName("table"));
-    addEventListener(document.getElementsByClassName("highlight"));
+    var hash = window.location.hash.substr(1);
+    if (hash != ""){
+        scrollTo(hash);
+    }
 };
 
 function addTouchEvents(elements) {

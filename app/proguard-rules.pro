@@ -1,9 +1,6 @@
--renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
--dontpreverify
--repackageclasses ''
--allowaccessmodification
--optimizations !code/simplification/arithmetic
+-dontobfuscate
+-optimizations !code/simplification/arithmetic,!field/*,!class/merging/*,!code/allocation/variable
 -keepattributes *Annotation*,Signature
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;
@@ -79,4 +76,32 @@
 -keepclassmembers class com.prettifier.pretty.callback.MarkDownInterceptorInterface {
    public *;
 }
-#-keep class com.siimkinks.sqlitemagic.** {*;}
+-dontwarn java.lang.FunctionalInterface
+-dontwarn java.util.**
+-dontwarn java.time.**
+-dontwarn javax.annotation.**
+-dontwarn javax.cache.**
+-dontwarn javax.naming.**
+-dontwarn javax.transaction.**
+-dontwarn java.sql.**
+-dontwarn android.support.**
+-dontwarn io.requery.cache.**
+-dontwarn io.requery.rx.**
+-dontwarn io.requery.reactivex.**
+-dontwarn io.requery.reactor.**
+-dontwarn io.requery.query.**
+-dontwarn io.requery.android.sqlcipher.**
+-dontwarn io.requery.android.sqlitex.**
+-keepclassmembers enum io.requery.** {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}
+
+-keep class net.nightwhistler.** {*;}
+-keep class org.htmlcleaner.** {*;}
+-dontwarn org.jaxen.**
+-dontwarn org.jdom.**

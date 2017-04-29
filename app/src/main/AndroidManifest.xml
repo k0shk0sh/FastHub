@@ -5,19 +5,28 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="com.android.vending.BILLING"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+
+    <meta-data
+        android:name="com.google.firebase.messaging.default_notification_icon"
+        android:resource="@drawable/ic_notification"/>
 
     <application
         android:name=".App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:resizeableActivity="true"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        tools:replace="android:allowBackup">
+        android:theme="@style/SplashTheme"
+        tools:replace="android:allowBackup"
+        tools:targetApi="n">
         <activity
-            android:name="com.fastaccess.ui.modules.main.MainView"
-            android:theme="@style/SplashTheme">
+            android:name="com.fastaccess.ui.modules.main.MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
@@ -25,10 +34,30 @@
         </activity>
 
         <activity
-            android:name=".ui.modules.login.LoginView"
+            android:name=".ui.modules.login.LoginActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/app_name"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data
+                    android:host="fast-for-github.firebaseapp.com"
+                    android:scheme="https"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.modules.login.LoginChooserActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/LoginTheme">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -42,113 +71,124 @@
         </activity>
 
         <activity
-            android:name=".ui.modules.user.UserPagerView"
-            android:excludeFromRecents="true"
+            android:name=".ui.modules.user.UserPagerActivity"
             android:label="@string/user"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.RepoPagerView"
-            android:excludeFromRecents="true"
+            android:name=".ui.modules.repos.RepoPagerActivity"
             android:label="@string/repo"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.issues.issue.details.IssuePagerView"
-            android:excludeFromRecents="true"
+            android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
-            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerView"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-        <activity
-            android:name=".ui.modules.repos.issues.create.CreateIssueView"
-            android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/create_issue"
-            android:theme="@style/WhenLargeTheme"/>
 
         <activity
-            android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerView"
-            android:excludeFromRecents="true"
+            android:name=".ui.modules.repos.issues.create.CreateIssueActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/create_issue"/>
+
+        <activity
+            android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity"
             android:label="@string/pull_request"
-            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerView"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.code.commit.details.CommitPagerView"
-            android:excludeFromRecents="true"
+            android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
-            android:parentActivityName=".ui.modules.repos.RepoPagerView">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerView"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.code.CodeViewerView"
+            android:name=".ui.modules.code.CodeViewerActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:excludeFromRecents="true"
-            android:label="@string/viewer"
-            android:parentActivityName=".ui.modules.main.MainView">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
-        </activity>
+
+            android:label="@string/viewer"/>
 
         <activity
-            android:name=".ui.modules.editor.EditorView"
+            android:name=".ui.modules.editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/markdown"
-            android:theme="@style/WhenLargeTheme"/>
+            android:label="@string/markdown"/>
 
         <activity
-            android:name=".ui.modules.gists.create.CreateGistView"
+            android:name=".ui.modules.gists.create.CreateGistActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/create_gist"
-            android:theme="@style/WhenLargeTheme"/>
+            android:label="@string/create_gist"/>
 
         <activity
-            android:name=".ui.modules.gists.gist.GistView"
-            android:excludeFromRecents="true"
+            android:name=".ui.modules.gists.gist.GistActivity"
             android:label="@string/gist"
-            android:parentActivityName=".ui.modules.main.MainView">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
-        </activity>
-
-        <activity android:name=".ui.modules.search.SearchView"/>
-
-        <activity
-            android:name=".ui.modules.notification.NotificationActivityView"
-            android:excludeFromRecents="true"
-            android:label="@string/notifictions"
-            android:parentActivityName=".ui.modules.main.MainView">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainView"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.extras.milestone.create.MilestoneActivityView"
-            android:theme="@style/WhenLargeTheme"/>
+            android:name=".ui.modules.search.SearchActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ui.modules.notification.NotificationActivity"
+            android:label="@string/notifications"
+            android:parentActivityName=".ui.modules.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ui.modules.about.FastHubAboutActivity"
+            android:theme="@style/AppTheme.AboutActivity.Light"/>
+
+        <activity
+            android:name=".ui.modules.pinned.PinnedReposActivity"
+            android:label="@string/pinned"/>
+
+        <activity
+            android:name=".ui.modules.gists.GistsListActivity"
+            android:label="@string/public_gists"/>
+
+        <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerActivity"/>
+
+        <activity
+            android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+
+        <activity android:name=".ui.modules.filter.issues.FilterIssuesActivity"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:excludeFromRecents="true"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay">
 
@@ -169,6 +209,14 @@
                     android:host="gist.github.com"
                     android:scheme="https"/>
 
+                <data
+                    android:host="raw.githubusercontent.com"
+                    android:scheme="https"/>
+
+                <data
+                    android:host="gist.githubusercontent.com"
+                    android:scheme="https"/>
+
                 <data android:pathPattern=".*"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -176,14 +224,26 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".ui.modules.main.donation.DonationActivity"/>
+
+        <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
+
+        <activity
+            android:name=".ui.modules.search.repos.files.SearchFileActivity"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"/>
+
         <service
-            android:name=".provider.tasks.NotificationJobTask"
-            android:exported="false">
+            android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <service android:name=".provider.tasks.notification.ReadNotificationService"/>
+        <service android:name=".provider.tasks.git.GithubActionService"/>
+        <service android:name=".provider.tasks.git.ReactionService"/>
+        <service
+            android:name=".provider.fcm.PushNotificationService">
             <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.fastaccess.ui.widgets;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -18,7 +19,8 @@ public class ForegroundRelativeLayout extends RelativeLayout {
 
     private Drawable foreground;
 
-    public ForegroundRelativeLayout(Context context, AttributeSet attrs) {
+    @SuppressLint("CustomViewStyleable")
+    public ForegroundRelativeLayout(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.ForegroundView);
         final Drawable d = a.getDrawable(R.styleable.ForegroundView_android_foreground);
@@ -84,7 +86,7 @@ public class ForegroundRelativeLayout extends RelativeLayout {
         }
     }
 
-    @Override public void draw(Canvas canvas) {
+    @Override public void draw(@NonNull Canvas canvas) {
         super.draw(canvas);
         if (foreground != null) {
             foreground.draw(canvas);

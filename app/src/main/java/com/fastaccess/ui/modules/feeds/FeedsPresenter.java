@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.feeds;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,29 +8,28 @@ import android.view.View;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
-import com.fastaccess.data.dao.EventsModel;
-import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.SimpleUrlsModel;
+import com.fastaccess.data.dao.model.Event;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.types.EventsType;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
 class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Presenter {
-    private ArrayList<EventsModel> eventsModels = new ArrayList<>();
+    private ArrayList<Event> eventsModels = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -44,16 +44,14 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getUserService().getReceivedEvents(LoginModel.getUser().getLogin(), page),
-                response -> {
-                    lastPage = response.getLast();
-                    if (getCurrentPage() == 1) {
-                        manageSubscription(EventsModel.save(response.getItems()).subscribe());
-                        eventsModels.clear();
-                    }
-                    eventsModels.addAll(response.getItems());
-                    sendToView(FeedsMvp.View::onNotifyAdapter);
-                });
+        if (Login.getUser() == null) return;// I can't understand how this could possibly be reached lol.
+        makeRestCall(RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page), response -> {
+            lastPage = response.getLast();
+            if (getCurrentPage() == 1) {
+                manageSubscription(Event.save(response.getItems()).subscribe());
+            }
+            sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
+        });
     }
 
     @Override public int getCurrentPage() {
@@ -80,21 +78,20 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         sendToView(view -> view.showProgress(0));
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
-    @NonNull @Override public ArrayList<EventsModel> getEvents() {
+    @NonNull @Override public ArrayList<Event> getEvents() {
         return eventsModels;
     }
 
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(EventsModel.getEvents()).subscribe(modelList -> {
+            manageSubscription(RxHelper.getObserver(Event.getEvents()).subscribe(modelList -> {
                 if (modelList != null) {
-                    eventsModels.addAll(modelList);
-                    sendToView(FeedsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(modelList, 1));
                 }
             }));
         } else {
@@ -102,23 +99,35 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         }
     }
 
-    @Override public void onItemClick(int position, View v, EventsModel item) {
+    @Override public void onItemClick(int position, View v, Event item) {
         if (item.getType() == EventsType.ForkEvent) {
             NameParser parser = new NameParser(item.getPayload().getForkee().getHtmlUrl());
-            RepoPagerView.startRepoPager(v.getContext(), parser);
+            RepoPagerActivity.startRepoPager(v.getContext(), parser);
         } else {
-            if (item.getPayload() != null && item.getPayload().getIssue() != null) {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()));
-            } else {
-                RepoModel repoModel = item.getRepo();
-                String name = InputHelper.isEmpty(repoModel.getName()) ? repoModel.getFullName() : repoModel.getName();
-                if (name == null) return;
-                if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(name));
+            PayloadModel payloadModel = item.getPayload();
+            if (payloadModel != null) {
+                if (payloadModel.getHead() != null) {
+                    Repo repoModel = item.getRepo();
+                    Uri uri = Uri.parse(repoModel.getName());
+                    if (uri == null || uri.getPathSegments().size() < 1) return;
+                    Intent intent = CommitPagerActivity.createIntent(v.getContext(), uri.getLastPathSegment(), uri.getPathSegments().get(0),
+                            payloadModel.getHead(), true);
+                    v.getContext().startActivity(intent);
+                } else if (item.getPayload().getIssue() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()), true);
+                } else if (item.getPayload().getPullRequest() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()), true);
+                } else if (item.getPayload().getComment() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getComment().getHtmlUrl()), true);
+                } else {
+                    Repo repoModel = item.getRepo();
+                    if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(repoModel.getName()), true);
+                }
             }
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, EventsModel item) {
+    @Override public void onItemLongClick(int position, View v, Event item) {
         if (item.getType() == EventsType.ForkEvent) {
             if (getView() != null) {
                 getView().onOpenRepoChooser(Stream.of(new SimpleUrlsModel(item.getRepo().getName(), item.getRepo().getUrl()),

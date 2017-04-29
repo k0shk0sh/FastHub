@@ -5,17 +5,15 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -23,7 +21,7 @@ import rx.Observable;
 
 class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implements ProfileReposMvp.Presenter {
 
-    private ArrayList<RepoModel> repos = new ArrayList<>();
+    private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -45,18 +43,18 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
         this.previousTotal = previousTotal;
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         sendToView(view -> {
             if (view.getLoadMore().getParameter() != null) {
                 onWorkOffline(view.getLoadMore().getParameter());
             }
         });
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onCallApi(int page, @Nullable String parameter) {
         if (currentLoggedIn == null) {
-            currentLoggedIn = LoginModel.getUser().getLogin();
+            currentLoggedIn = Login.getUser().getLogin();
         }
         if (parameter == null) {
             throw new NullPointerException("Username is null");
@@ -76,34 +74,30 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        getRepos().clear();
-                        manageSubscription(RepoModel.saveMyRepos(repoModelPageable.getItems(), parameter).subscribe());
+                        manageSubscription(Repo.saveMyRepos(repoModelPageable.getItems(), parameter).subscribe());
                     }
-                    getRepos().addAll(repoModelPageable.getItems());
-                    sendToView(ProfileReposMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
     }
 
-    @NonNull @Override public ArrayList<RepoModel> getRepos() {
+    @NonNull @Override public ArrayList<Repo> getRepos() {
         return repos;
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(RepoModel.getMyRepos(login)).subscribe(repoModels -> {
-                repos.addAll(repoModels);
-                sendToView(ProfileReposMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(Repo.getMyRepos(login)).subscribe(repoModels ->
+                    sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileReposMvp.View::hideProgress);
         }
     }
 
-    @Override public void onItemClick(int position, View v, RepoModel item) {
-        RepoPagerView.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+    @Override public void onItemClick(int position, View v, Repo item) {
+        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoModel item) {
+    @Override public void onItemLongClick(int position, View v, Repo item) {
         onItemClick(position, v, item);
     }
 }

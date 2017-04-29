@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 
 import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.model.IssueEvent;
+import com.fastaccess.data.dao.model.PullRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,25 +25,27 @@ public class PullRequestAdapterModel implements Parcelable {
     public static final int ROW = 2;
     private int type;
 
-    private IssueEventModel issueEvent;
-    private PullRequestModel pullRequest;
+    private IssueEvent issueEvent;
+    private PullRequest pullRequest;
 
-    private PullRequestAdapterModel(int type, IssueEventModel model) {
+    private PullRequestAdapterModel(int type, IssueEvent model) {
         this.type = type;
         this.issueEvent = model;
     }
 
-    public PullRequestAdapterModel(int type, PullRequestModel pullRequest) {
+    public PullRequestAdapterModel(int type, PullRequest pullRequest) {
         this.type = type;
         this.pullRequest = pullRequest;
     }
 
-    public static ArrayList<PullRequestAdapterModel> addEvents(@Nullable List<IssueEventModel> modelList) {
+    public static ArrayList<PullRequestAdapterModel> addEvents(@Nullable List<IssueEvent> modelList) {
         ArrayList<PullRequestAdapterModel> models = new ArrayList<>();
         if (modelList == null || modelList.isEmpty()) return models;
         Stream.of(modelList).forEach(issueEventModel -> models.add(new PullRequestAdapterModel(ROW, issueEventModel)));
         return models;
     }
+
+    public PullRequestAdapterModel() {}
 
     @Override public int describeContents() { return 0; }
 
@@ -51,12 +55,10 @@ public class PullRequestAdapterModel implements Parcelable {
         dest.writeParcelable(this.pullRequest, flags);
     }
 
-    public PullRequestAdapterModel() {}
-
-    @SuppressWarnings("WeakerAccess") protected PullRequestAdapterModel(Parcel in) {
+    protected PullRequestAdapterModel(Parcel in) {
         this.type = in.readInt();
-        this.issueEvent = in.readParcelable(IssueEventModel.class.getClassLoader());
-        this.pullRequest = in.readParcelable(IssueModel.class.getClassLoader());
+        this.issueEvent = in.readParcelable(IssueEvent.class.getClassLoader());
+        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
     }
 
     public static final Creator<PullRequestAdapterModel> CREATOR = new Creator<PullRequestAdapterModel>() {

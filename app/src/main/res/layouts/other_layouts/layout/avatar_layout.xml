@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:foreground="?selectableItemBackgroundBorderless">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
         android:id="@+id/avatar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@color/primary"/>
-
-    <ProgressBar
-        android:id="@+id/avatarProgress"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:src="?colorPrimaryDark"
+        android:transitionName="@string/icon_transition"
+        app:shape_mode="circle"/>
 </merge>

@@ -1,12 +1,14 @@
 package com.fastaccess.ui.base;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialogFragment;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +29,7 @@ import icepick.Icepick;
 @SuppressWarnings("RestrictedApi") public abstract class BaseBottomSheetDialog extends BottomSheetDialogFragment {
 
     protected BottomSheetBehavior<View> bottomSheetBehavior;
-    private BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
+    private final BottomSheetBehavior.BottomSheetCallback bottomSheetCallback = new BottomSheetBehavior.BottomSheetCallback() {
         @Override public void onStateChanged(@NonNull View bottomSheet, int newState) {
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                 isAlreadyHidden = true;
@@ -64,7 +66,9 @@ import icepick.Icepick;
     }
 
     @Nullable @Override public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(layoutRes(), container, false);
+        final Context contextThemeWrapper = new ContextThemeWrapper(getContext(), getContext().getTheme());
+        LayoutInflater themeAwareInflater = inflater.cloneInContext(contextThemeWrapper);
+        View view = themeAwareInflater.inflate(layoutRes(), container, false);
         unbinder = ButterKnife.bind(this, view);
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override public void onGlobalLayout() {
@@ -121,11 +125,13 @@ import icepick.Icepick;
     }
 
     protected void onHidden() {
-        dismiss();
-    }//helper method to notify dialogs
+        try {
+            dismiss();
+        } catch (IllegalStateException ignored) {} //FML FIXME
+    }
 
-    protected void onDismissedByScrolling() {}//helper method to notify dialogs
+    protected void onDismissedByScrolling() {}
 
-    protected void onDialogIsShowing() {}//helper method to notify dialogs
+    protected void onDialogIsShowing() {}
 
 }

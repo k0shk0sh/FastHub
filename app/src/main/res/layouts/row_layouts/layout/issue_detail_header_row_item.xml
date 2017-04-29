@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/spacing_normal"
-    android:clickable="true"
+    android:layout_marginBottom="@dimen/spacing_micro"
+    android:layout_marginEnd="@dimen/grid_spacing"
+    android:layout_marginStart="@dimen/grid_spacing"
+    android:background="?card_background"
     android:foreground="?android:selectableItemBackground"
-    app:contentPaddingBottom="@dimen/spacing_normal"
-    app:contentPaddingLeft="@dimen/spacing_xs_large"
-    app:contentPaddingRight="@dimen/spacing_xs_large"
-    app:contentPaddingTop="@dimen/spacing_normal">
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal"
+    app:cardBackgroundColor="?card_background"
+    tools:ignore="RtlSymmetry">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +29,9 @@
             <com.fastaccess.ui.widgets.AvatarLayout
                 android:id="@+id/avatarView"
                 android:layout_width="48dp"
-                android:layout_height="48dp"/>
+                android:layout_height="48dp"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
+                android:layout_marginStart="@dimen/avatar_margin"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/name"
@@ -34,11 +39,11 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_xs_large"
-                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
+                android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/primary_text"
+                android:textColor="?android:textColorPrimary"
                 tools:text="When one acquires"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -48,19 +53,17 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:maxLines="1"
-                android:textColor="@color/secondary_text"
+                android:textColor="?android:attr/textColorSecondary"
                 tools:text="50 minutes ago"/>
 
         </LinearLayout>
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/description"
-            style="@style/Base.TextAppearance.AppCompat.Body1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
-            android:autoLink="all"
-            android:linksClickable="true"/>
+            android:layout_marginStart="@dimen/avatar_margin"
+            app:webview_background="?card_background"
+            android:layout_marginTop="@dimen/spacing_normal"/>
     </LinearLayout>
-
-</android.support.v7.widget.CardView>
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

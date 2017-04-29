@@ -1,98 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:fitsSystemWindows="true">
 
-    <android.support.design.widget.CoordinatorLayout
-        android:id="@+id/coordinatorLayout"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <android.support.design.widget.CoordinatorLayout
+            android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/transparent"
-            android:theme="@style/ToolbarStyleDark"
-            app:elevation="0dp">
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-            <include layout="@layout/title_header_layout"/>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?actionBarSize"
-                android:background="?colorPrimary">
-
-                <com.fastaccess.ui.widgets.ForegroundImageView
-                    android:id="@+id/startGist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center|end"
-                    android:contentDescription="@string/star"
-                    android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_star"/>
-
-                <com.fastaccess.ui.widgets.ForegroundImageView
-                    android:id="@+id/forkGist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center|end"
-                    android:contentDescription="@string/fork"
-                    android:foreground="?selectableItemBackgroundBorderless"
-                    android:padding="@dimen/spacing_xs_large"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/ic_fork"/>
-            </android.support.v7.widget.Toolbar>
-
-            <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/appbar"
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?colorPrimary"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="?colorAccent"
-                app:tabTextColor="@color/dark_gray"/>
+                android:theme="?android:toolbarStyle">
 
-            <View
+                <include layout="@layout/title_header_layout"/>
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize"
+                    android:background="?colorPrimary">
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/startGist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/star"
+                        android:padding="@dimen/spacing_normal"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_star"/>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/forkGist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center|end"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/fork"
+                        android:padding="@dimen/spacing_normal"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_fork"/>
+                </android.support.v7.widget.Toolbar>
+
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?colorPrimary"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="?colorAccent"
+                    app:tabTextColor="?android:textColorTertiary"/>
+            </android.support.design.widget.AppBarLayout>
+
+            <com.fastaccess.ui.widgets.ViewPagerView
+                android:id="@+id/pager"
                 android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="@drawable/toolbar_shadow"/>
-        </android.support.design.widget.AppBarLayout>
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/scroll_behavior"/>
 
-        <com.fastaccess.ui.widgets.ViewPagerView
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/scroll_behavior"/>
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_comment"
+                android:tint="@color/white"
+                app:fabSize="auto"/>
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end|bottom"
-            android:layout_margin="@dimen/fab_margin"
-            android:src="@drawable/ic_comment"
-            android:tint="@color/white"
-            app:fabSize="auto"/>
+        </android.support.design.widget.CoordinatorLayout>
 
-    </android.support.design.widget.CoordinatorLayout>
+        <include layout="@layout/add_banner_layout"/>
+    </LinearLayout>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"/>
-</LinearLayout>
+    <include layout="@layout/nav_menu_layout"/>
+</android.support.v4.widget.DrawerLayout>

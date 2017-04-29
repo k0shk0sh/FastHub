@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.PullRequestModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -19,29 +19,39 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
 
-public class PullRequestViewHolder extends BaseViewHolder<PullRequestModel> {
+public class PullRequestViewHolder extends BaseViewHolder<PullRequest> {
 
     @BindView(R.id.title) FontTextView title;
-    @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.details) FontTextView details;
+    @BindView(R.id.commentsNo) FontTextView commentsNo;
     @BindString(R.string.by) String by;
+    private boolean withAvatar;
+    private boolean showRepoName;
 
-    private PullRequestViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private PullRequestViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean withAvatar, boolean showRepoName) {
         super(itemView, adapter);
+        this.withAvatar = withAvatar;
+        this.showRepoName = showRepoName;
     }
 
-    public static PullRequestViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter);
-    }
-
-    public void bind(@NonNull PullRequestModel pullRequest, boolean withAvatar) {
-        title.setText(pullRequest.getTitle());
-        details.setText(PullRequestModel.getMergeBy(pullRequest, details.getContext()));
+    public static PullRequestViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar,
+                                                    boolean showRepoName) {
         if (withAvatar) {
+            return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true, showRepoName);
+        }
+        return new PullRequestViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false, showRepoName);
+    }
+
+    @Override public void bind(@NonNull PullRequest pullRequest) {
+        title.setText(pullRequest.getTitle());
+        details.setText(PullRequest.getMergeBy(pullRequest, details.getContext(), showRepoName));
+        commentsNo.setText(String.valueOf(pullRequest.getComments()));
+        if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }
 
-    @Override public void bind(@NonNull PullRequestModel issueModel) {}
+
 }

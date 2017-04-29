@@ -17,9 +17,9 @@ public class RxHelper {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static <T> Observable<T> getObserverComputation(@NonNull Observable<T> observable) {
-        return observable
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread());
+    public static <T> Observable<T> safeObservable(@NonNull Observable<T> observable) {
+        return getObserver(observable)
+                .subscribeOn(Schedulers.io())
+                .onErrorReturn(throwable -> null);
     }
 }

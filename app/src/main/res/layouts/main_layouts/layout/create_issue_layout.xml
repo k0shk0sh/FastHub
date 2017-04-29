@@ -28,7 +28,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_xs_large"
-                app:contentPadding="@dimen/spacing_xs_large">
+                app:cardBackgroundColor="?card_background"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -45,7 +49,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/title"
-                            android:inputType="textMultiLine"/>
+                            android:inputType="textMultiLine|textCapSentences"/>
 
                     </android.support.design.widget.TextInputLayout>
                 </LinearLayout>
@@ -55,7 +59,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_xs_large"
-                app:contentPadding="@dimen/spacing_xs_large">
+                app:cardBackgroundColor="?card_background"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -75,29 +83,18 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <com.fastaccess.ui.widgets.FontButton
-                android:id="@+id/createSecretGist"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/submit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:layout_marginStart="@dimen/spacing_normal"
-                android:text="@string/submit_issue"
-                android:textAppearance="@style/TextAppearance.AppCompat.Title"/>
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_send"
+                android:tint="@color/white"/>
 
         </LinearLayout>
 
     </ScrollView>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        ads:adSize="BANNER"
-        ads:adUnitId="@string/banner_ad_unit_id"/>
+    <include layout="@layout/add_banner_layout"/>
 
 </LinearLayout>

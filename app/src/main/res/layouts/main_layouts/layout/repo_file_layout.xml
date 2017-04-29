@@ -11,7 +11,7 @@
 
     <fragment
         android:id="@+id/filesFragment"
-        android:name="com.fastaccess.ui.modules.repos.code.files.RepoFilesView"
+        android:name="com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/spacing_micro"

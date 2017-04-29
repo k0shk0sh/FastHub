@@ -6,14 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.MenuItem;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.LoginModel;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.feeds.FeedsView;
-import com.fastaccess.ui.modules.gists.GistsView;
-import com.fastaccess.ui.modules.profile.ProfilePagerView;
+import com.fastaccess.ui.modules.feeds.FeedsFragment;
+import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerView;
+import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -31,29 +29,29 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
     @SuppressWarnings("ConstantConditions")
     @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
-        FeedsView homeView = (FeedsView) getFragmentByTag(fragmentManager, FeedsView.TAG);
-        GistsView gistsView = (GistsView) getFragmentByTag(fragmentManager, GistsView.TAG);
-        ProfilePagerView profileView = (ProfilePagerView) getFragmentByTag(fragmentManager, ProfilePagerView.TAG);
+        FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
+        MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag(fragmentManager, MyPullsPagerFragment.TAG);
+        MyIssuesPagerView issuesView = (MyIssuesPagerView) getFragmentByTag(fragmentManager, MyIssuesPagerView.TAG);
         switch (type) {
             case MainMvp.FEEDS:
                 if (homeView == null) {
-                    onAddAndHide(fragmentManager, FeedsView.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, homeView, currentVisible);
                 }
                 break;
-            case MainMvp.GISTS:
-                if (gistsView == null) {
-                    onAddAndHide(fragmentManager, GistsView.newInstance(), currentVisible);
+            case MainMvp.PULL_REQUESTS:
+                if (pullRequestView == null) {
+                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(), currentVisible);
                 } else {
-                    onShowHideFragment(fragmentManager, gistsView, currentVisible);
+                    onShowHideFragment(fragmentManager, pullRequestView, currentVisible);
                 }
                 break;
-            case MainMvp.PROFILE:
-                if (profileView == null) {
-                    onAddAndHide(fragmentManager, ProfilePagerView.newInstance(LoginModel.getUser().getLogin()), currentVisible);
+            case MainMvp.ISSUES:
+                if (issuesView == null) {
+                    onAddAndHide(fragmentManager, MyIssuesPagerView.newInstance(), currentVisible);
                 } else {
-                    onShowHideFragment(fragmentManager, profileView, currentVisible);
+                    onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }
                 break;
         }
@@ -77,24 +75,6 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 .add(R.id.container, toAdd, toAdd.getClass().getSimpleName())
                 .commit();
         toAdd.onHiddenChanged(false);
-    }
-
-    @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (getView() != null) {
-            getView().onCloseDrawer();
-            if (item.getItemId() == R.id.feedback) {
-                getView().onSubmitFeedback();
-                return true;
-            } else if (item.getItemId() == R.id.logout) {
-                getView().onLogout();
-                return true;
-            } else if (item.getItemId() == R.id.fhRepo) {
-                getView().openFasHubRepo();
-            } else if (item.getItemId() == R.id.settings) {
-                getView().onOpenSettings();
-            }
-        }
-        return false;
     }
 
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {

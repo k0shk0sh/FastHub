@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_follow">
+
+    <target
+        android:name="plus_minus"
+        android:animation="@animator/plus_minus_rotate" />
+
+    <target
+        android:name="plus"
+        android:animation="@animator/plus_to_minus" />
+
+</animated-vector>

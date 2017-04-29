@@ -5,12 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/universal_primary_dark_color"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_micro"
-    android:paddingEnd="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/spacing_normal"
     android:paddingTop="@dimen/spacing_micro"
+    tools:ignore="RtlSymmetry"
     tools:showIn="@layout/repo_file_layout">
 
     <LinearLayout
@@ -25,19 +24,44 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/home"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_home"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="@string/linear_layout_manager"
+            tools:ignore="NestedWeights"
             tools:listitem="@layout/file_path_row_item"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/downloadRepoFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_download"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/searchRepoFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_search"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -45,7 +69,6 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.6"
         android:background="@drawable/left_border"
-        android:clickable="true"
         android:orientation="horizontal">
 
         <com.fastaccess.ui.widgets.ForegroundImageView
@@ -61,12 +84,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
             android:layout_weight="1"
             android:spinnerMode="dialog"
             app:backgroundTint="?colorAccent"
-            tools:entries="@array/notification_types"/>
+            tools:entries="@array/notification_types"
+            tools:ignore="NestedWeights"/>
 
         <ProgressBar
             android:id="@+id/branchesProgress"

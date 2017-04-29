@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/universal_primary_dark_color"
     android:orientation="vertical"
     android:paddingBottom="@dimen/spacing_micro"
     android:paddingEnd="@dimen/spacing_xs_large"
@@ -23,26 +22,47 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/home"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_home"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="@string/linear_layout_manager"
             tools:listitem="@layout/file_path_row_item"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/downloadRepoFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_download"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/searchRepoFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_search"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/grid_spacing"
-        android:clickable="true"
         android:orientation="horizontal">
 
         <com.fastaccess.ui.widgets.ForegroundImageView
@@ -51,6 +71,7 @@
             android:layout_gravity="center"
             android:contentDescription="@string/switch_branch"
             android:padding="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
             android:src="@drawable/ic_branch"/>
 
         <android.support.v7.widget.AppCompatSpinner
@@ -58,8 +79,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
             android:layout_weight="1"
             android:spinnerMode="dialog"
             app:backgroundTint="?colorAccent"

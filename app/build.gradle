@@ -1,16 +1,29 @@
+def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
+def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
+
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
-apply plugin: "com.neenbedankt.android-apt"
-apply plugin: 'com.siimkinks.sqlitemagic'
-apply plugin: 'com.google.firebase.firebase-crash'
+if (isGms) {
+    apply plugin: 'com.google.firebase.firebase-crash'
+}
+
+apply plugin: 'com.novoda.build-properties'
+
+buildProperties {
+    notThere {
+        file rootProject.file('debug_gradle.properties')
+    }
+    secrets {
+        file rootProject.file('gradle.properties')
+    }
+}
 
 android {
     signingConfigs {
         signing {
-            keyAlias ANDROID_KEY_ALIAS
-            keyPassword ANDROID_STORE_PASSWORD
+            keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
+            keyPassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
             storeFile file('fastaccess-key')
-            storePassword ANDROID_STORE_PASSWORD
+            storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
     compileSdkVersion 25
@@ -19,15 +32,18 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 106
-        versionName "1.0.6"
+        versionCode 195
+        versionName "1.9.5"
         signingConfig signingConfigs.signing
-        buildConfigField "String", "GITHUB_CLIENT_ID", "\"${GITHUB_CLIENT_ID}\""
-        buildConfigField "String", "GITHUB_SECRET", "\"${GITHUB_SECRET}\""
-        buildConfigField "String", "REDIRECT_URL", "\"${REDIRECT_URL}\""
+        buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
+        buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
+        buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
+        buildConfigString "IMGUR_SECRET", (buildProperties.secrets['imgur_secret'] | buildProperties.notThere['imgur_secret']).string
         buildConfigField "String", "REST_URL", '"https://api.github.com/"'
-        buildConfigField "int", "DB_VERSION", "2"
+        buildConfigField "String", "IMGUR_URL", '"https://api.imgur.com/3/"'
+        multiDexEnabled true
     }
+
     buildTypes {
         release {
             minifyEnabled true
@@ -36,10 +52,16 @@ android {
         }
     }
 
-
     productFlavors {
-        debuggingApp {}
-        productionApp {}
+        // includes gms
+        gms {
+            buildConfigField "boolean", "FDROID", "false"
+        }
+
+        // only foss
+        fdroid {
+            buildConfigField "boolean", "FDROID", "true"
+        }
     }
 
     sourceSets {
@@ -49,6 +71,7 @@ android {
                     "src/main/res/layouts/main_layouts",
                     "src/main/res/layouts/row_layouts",
                     "src/main/res/layouts/other_layouts",
+                    "src/main/res/translations",
                     "src/main/res"
             ]
         }
@@ -68,60 +91,74 @@ android {
     configurations {
         all*.exclude module: 'annotations'
     }
-}
 
-retrolambda {
-    oldJdk System.getenv("JAVA7_HOME")
+    dexOptions {
+        jumboMode true
+    }
 }
 
 repositories {
     maven { url "https://clojars.org/repo/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-    maven { url "http://dl.bintray.com/amulyakhare/maven" }
     maven { url "https://jitpack.io" }
-    maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
-    maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
 }
 
 dependencies {
     ext {
-        supportVerion = "25.2.0"
+        butterKnifeVersion = '8.5.1'
+        icepickVersion = '3.2.0'
+        lombokVersion = '1.12.6'
+        supportVersion = "25.3.1"
         firebase = "10.2.0"
-        thirtyinchVersion = '0.8.0-rc2'
+        thirtyinchVersion = '0.8.0-rc4'
         retrofit = '2.1.0'
     }
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "com.android.support:appcompat-v7:${supportVerion}"
-    compile "com.android.support:design:${supportVerion}"
-    compile "com.android.support:cardview-v7:${supportVerion}"
-    compile "com.android.support:recyclerview-v7:${supportVerion}"
-    compile "com.android.support:preference-v14:${supportVerion}"
-    compile "com.android.support:customtabs:${supportVerion}"
-    compile "com.google.firebase:firebase-ads:${firebase}"
-    releaseCompile "com.google.firebase:firebase-crash:${firebase}"
+    compile "com.android.support:appcompat-v7:${supportVersion}"
+    compile "com.android.support:design:${supportVersion}"
+    compile "com.android.support:cardview-v7:${supportVersion}"
+    compile "com.android.support:recyclerview-v7:${supportVersion}"
+    compile "com.android.support:preference-v14:${supportVersion}"
+    compile "com.android.support:customtabs:${supportVersion}"
+    compile "com.android.support:palette-v7:${supportVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
-    compile 'com.firebase:firebase-jobdispatcher:0.5.2'
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
-    compile 'de.hdodenhof:circleimageview:2.1.0'
-    compile 'com.jakewharton:butterknife:8.4.0'
-    compile 'frankiesardo:icepick:3.1.0'
+    compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
+    compile "frankiesardo:icepick:${icepickVersion}"
+    compile "com.jakewharton:butterknife:${butterKnifeVersion}"
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
     compile 'io.reactivex:rxandroid:1.2.1'
     compile 'io.reactivex:rxjava:1.2.2'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
-    compile 'com.annimon:stream:1.1.4'
-    compile 'com.commonsware.cwac:anddown:0.3.0'
+    compile 'com.annimon:stream:1.1.7'
     compile 'com.github.GrenderG:Toasty:1.1.3'
     compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.2'
     compile 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
-    apt 'org.projectlombok:lombok:1.12.6'
-    apt 'frankiesardo:icepick-processor:3.1.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
-    provided 'org.projectlombok:lombok:1.12.6'
+    compile 'com.github.daniel-stoneuk:material-about-library:1.8.1'
+    compile 'io.requery:requery:1.3.0'
+    compile 'io.requery:requery-android:1.3.0'
+    compile('com.mikepenz:aboutlibraries:5.9.5@aar') { transitive = true }
+    compile 'com.github.nightwhistler:HtmlSpanner:0.4'
+    compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
+    compile 'me.saket:better-link-movement-method:1.2'
+    compile project(':pago')
+    compile project(':markdown')
+    annotationProcessor 'io.requery:requery-processor:1.2.0'
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    provided "org.projectlombok:lombok:${lombokVersion}"
+    if (isGms) {
+        compile "com.google.firebase:firebase-ads:${firebase}"
+        compile "com.google.firebase:firebase-messaging:${firebase}"
+        releaseCompile "com.google.firebase:firebase-crash:${firebase}"
+    }
 }
 
-apply plugin: "com.google.gms.google-services"
+if (isGms) {
+    apply plugin: 'com.google.gms.google-services'
+}

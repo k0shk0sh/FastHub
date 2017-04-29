@@ -3,9 +3,6 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.siimkinks.sqlitemagic.annotation.Column;
-import com.siimkinks.sqlitemagic.annotation.Table;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,11 +11,11 @@ import lombok.Setter;
  * Created by Kosh on 08 Dec 2016, 8:57 PM
  */
 
-@Getter @Setter @NoArgsConstructor @Table(persistAll = true)
+@Getter @Setter @NoArgsConstructor
 public class GithubState implements Parcelable {
-    @Column int additions;
-    @Column int deletions;
-    @Column int total;
+    private int additions;
+    private int deletions;
+    private int total;
 
     @Override public int describeContents() { return 0; }
 

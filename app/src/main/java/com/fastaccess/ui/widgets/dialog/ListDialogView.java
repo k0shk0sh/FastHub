@@ -39,7 +39,7 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
         void onItemSelected(O item);
     }
 
-    private onSimpleItemSelection onSimpleItemSelection;
+    @Nullable private onSimpleItemSelection onSimpleItemSelection;
 
     @Override protected int fragmentLayout() {
         return R.layout.simple_list_dialog;

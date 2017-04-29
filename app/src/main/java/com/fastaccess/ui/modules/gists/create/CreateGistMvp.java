@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
 
 import com.fastaccess.data.dao.CreateGistModel;
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 /**
@@ -23,7 +23,7 @@ interface CreateGistMvp {
 
         void onFileContentError(boolean isEmptyDesc);
 
-        void onSuccessSubmission(GistsModel gistsModel);
+        void onSuccessSubmission(Gist gistsModel);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

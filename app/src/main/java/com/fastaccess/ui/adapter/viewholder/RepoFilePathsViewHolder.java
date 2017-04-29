@@ -5,7 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.RepoFilesModel;
+import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -17,7 +17,7 @@ import butterknife.BindView;
  * Created by Kosh on 18 Feb 2017, 2:53 AM
  */
 
-public class RepoFilePathsViewHolder extends BaseViewHolder<RepoFilesModel> {
+public class RepoFilePathsViewHolder extends BaseViewHolder<RepoFile> {
 
     @BindView(R.id.pathName) FontTextView pathName;
 
@@ -29,7 +29,7 @@ public class RepoFilePathsViewHolder extends BaseViewHolder<RepoFilesModel> {
         return new RepoFilePathsViewHolder(getView(viewGroup, R.layout.file_path_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull RepoFilesModel filesModel) {
+    @Override public void bind(@NonNull RepoFile filesModel) {
         Logger.e(filesModel.getPath());
         pathName.setText(filesModel.getName());
     }

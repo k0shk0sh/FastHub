@@ -4,21 +4,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.GistsModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
-
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
 class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implements ProfileGistsMvp.Presenter {
-    private ArrayList<GistsModel> gistsModels = new ArrayList<>();
+    private ArrayList<Gist> gistsModels = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -39,13 +37,13 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
         this.previousTotal = previousTotal;
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         sendToView(view -> {
             if (view.getLoadMore().getParameter() != null) {
                 onWorkOffline(view.getLoadMore().getParameter());
             }
         });
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onCallApi(int page, @Nullable String parameter) {
@@ -65,34 +63,30 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        getGists().clear();
-                        manageSubscription(GistsModel.save(listResponse.getItems(), parameter).subscribe());
+                        manageSubscription(Gist.save(listResponse.getItems(), parameter).subscribe());
                     }
-                    getGists().addAll(listResponse.getItems());
-                    sendToView(ProfileGistsMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
     }
 
-    @NonNull @Override public ArrayList<GistsModel> getGists() {
+    @NonNull @Override public ArrayList<Gist> getGists() {
         return gistsModels;
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (gistsModels.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(GistsModel.getMyGists(login)).subscribe(gistsModels1 -> {
-                gistsModels.addAll(gistsModels1);
-                sendToView(ProfileGistsMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(Gist.getMyGists(login)).subscribe(gistsModels1 ->
+                    sendToView(view -> view.onNotifyAdapter(gistsModels1, 1))));
         } else {
             sendToView(ProfileGistsMvp.View::hideProgress);
         }
     }
 
-    @Override public void onItemClick(int position, View v, GistsModel item) {
+    @Override public void onItemClick(int position, View v, Gist item) {
         if (getView() != null) getView().onStartGistView(item.getGistId());
     }
 
-    @Override public void onItemLongClick(int position, View v, GistsModel item) {
+    @Override public void onItemLongClick(int position, View v, Gist item) {
         onItemClick(position, v, item);
     }
 }

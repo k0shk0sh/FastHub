@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.UserModel;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 /**
@@ -14,14 +14,27 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 interface ProfileOverviewMvp {
 
     interface View extends BaseMvp.FAView {
-        void onInitViews(@Nullable UserModel userModel);
+        void onInitViews(@Nullable User userModel);
+
+        void onInvalidateMenuItem();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
+
         void onFragmentCreated(@Nullable Bundle bundle);
 
         void onWorkOffline(@NonNull String login);
 
-        void onSendUserToView(@Nullable UserModel userModel);
+        void onCheckFollowStatus(@NonNull String login);
+
+        boolean isSuccessResponse();
+
+        boolean isFollowing();
+
+        void onFollowButtonClicked(@NonNull String login);
+
+        void onSendUserToView(@Nullable User userModel);
+
+        @NonNull String getLogin();
     }
 }

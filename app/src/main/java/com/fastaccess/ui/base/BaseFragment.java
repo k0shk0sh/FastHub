@@ -1,15 +1,18 @@
 package com.fastaccess.ui.base;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v7.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -57,9 +60,12 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
         }
     }
 
-    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @SuppressLint("RestrictedApi") @Nullable @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (fragmentLayout() != 0) {
-            View view = inflater.inflate(fragmentLayout(), container, false);
+            final Context contextThemeWrapper = new ContextThemeWrapper(getContext(), getContext().getTheme());
+            LayoutInflater themeAwareInflater = inflater.cloneInContext(contextThemeWrapper);
+            View view = themeAwareInflater.inflate(fragmentLayout(), container, false);
             unbinder = ButterKnife.bind(this, view);
             return view;
         }
@@ -68,7 +74,9 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onFragmentCreated(view, savedInstanceState);
+        if (Login.getUser() != null) {
+            onFragmentCreated(view, savedInstanceState);
+        }
     }
 
     @Override public void onDestroyView() {
@@ -100,12 +108,28 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
         return callback.isLoggedIn();
     }
 
+    @Override public void onRequireLogin() {
+        callback.onRequireLogin();
+    }
+
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
 
     }
 
     @Override public void onDialogDismissed() {
 
+    }
+
+    @Override public void onLogoutPressed() {
+        callback.onLogoutPressed();
+    }
+
+    @Override public void onThemeChanged() {
+        callback.onThemeChanged();
+    }
+
+    @Override public void onOpenSettings() {
+        callback.onOpenSettings();
     }
 
     protected boolean isSafe() {

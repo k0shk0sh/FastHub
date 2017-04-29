@@ -12,17 +12,12 @@ import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 public interface UserPagerMvp {
 
     interface View extends BaseMvp.FAView, ProfilePagerMvp.View {
-        void onInvalidateMenuItem();
+        void onInitOrg(boolean isMember);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
-        void onCheckFollowStatus(@NonNull String login);
 
-        boolean isSuccessResponse();
-
-        boolean isFollowing();
-
-        void onFollowMenuItemClicked(@NonNull String login);
+        void checkOrgMembership(@NonNull String org);
     }
 
 }

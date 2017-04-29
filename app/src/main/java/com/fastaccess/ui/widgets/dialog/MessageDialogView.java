@@ -7,10 +7,12 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
+import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -24,13 +26,18 @@ public class MessageDialogView extends BaseBottomSheetDialog {
     public static final String TAG = MessageDialogView.class.getSimpleName();
 
     public interface MessageDialogViewActionCallback {
+
         void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle);
 
         void onDialogDismissed();
+
     }
 
+    @BindView(R.id.prettifyWebView) PrettifyWebView prettifyWebView;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.message) FontTextView message;
+    @BindView(R.id.cancel) FontButton cancel;
+    @BindView(R.id.ok) FontButton ok;
 
     @Nullable private MessageDialogViewActionCallback callback;
 
@@ -48,7 +55,7 @@ public class MessageDialogView extends BaseBottomSheetDialog {
         callback = null;
     }
 
-    @OnClick({R.id.cancel, R.id.ok}) public void onClick(View view) {
+    @OnClick({R.id.cancel, R.id.ok}) public void onClick(@NonNull View view) {
         if (callback != null) {
             isAlreadyHidden = true;
             callback.onMessageDialogActionClicked(view.getId() == R.id.ok, getArguments().getBundle("bundle"));
@@ -67,8 +74,19 @@ public class MessageDialogView extends BaseBottomSheetDialog {
         String msg = bundle.getString("bundleMsg");
         if (bundle.getBoolean("isMarkDown")) {
             if (msg != null) {
-                MarkDownProvider.setMdText(message, msg);
+                message.setVisibility(View.GONE);
+                prettifyWebView.setVisibility(View.VISIBLE);
+                prettifyWebView.setGithubContent(msg, null, true);
+                prettifyWebView.setNestedScrollingEnabled(false);
                 return;
+            }
+        }
+        if (bundle.getBundle("bundle") != null) {
+            @SuppressWarnings("ConstantConditions")
+            boolean yesNo = bundle.getBundle("bundle").getBoolean(BundleConstant.YES_NO_EXTRA);
+            if (yesNo) {
+                ok.setText(R.string.yes);
+                cancel.setText(R.string.no);
             }
         }
         message.setText(msg);
@@ -111,11 +129,5 @@ public class MessageDialogView extends BaseBottomSheetDialog {
                 .put("bundle", bundle)
                 .put("isMarkDown", isMarkDown)
                 .end();
-    }
-
-    public void initMessage() {
-        Bundle bundle = getArguments();
-        title.setText(bundle.getString("bundleTitle"));
-        message.setText(bundle.getString("bundleMsg"));
     }
 }

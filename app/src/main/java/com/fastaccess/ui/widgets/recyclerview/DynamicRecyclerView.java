@@ -1,12 +1,15 @@
 package com.fastaccess.ui.widgets.recyclerview;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.fastaccess.R;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.StateLayout;
 
 
@@ -19,6 +22,7 @@ public class DynamicRecyclerView extends RecyclerView {
 
     private StateLayout emptyView;
     @Nullable private View parentView;
+    private BottomPaddingDecoration bottomPaddingDecoration;
 
     @NonNull private AdapterDataObserver observer = new AdapterDataObserver() {
         @Override public void onChanged() {
@@ -36,18 +40,17 @@ public class DynamicRecyclerView extends RecyclerView {
         }
     };
 
-    public DynamicRecyclerView(Context context) {
+    public DynamicRecyclerView(@NonNull Context context) {
         this(context, null);
     }
 
-    public DynamicRecyclerView(Context context, AttributeSet attrs) {
+    public DynamicRecyclerView(@NonNull Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public DynamicRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+    public DynamicRecyclerView(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         if (isInEditMode()) return;
-        addItemDecoration(BottomPaddingDecoration.with(context));
     }
 
     @Override public void setAdapter(@Nullable Adapter adapter) {
@@ -57,6 +60,18 @@ public class DynamicRecyclerView extends RecyclerView {
             adapter.registerAdapterDataObserver(observer);
             observer.onChanged();
         }
+    }
+
+    public void removeBottomDecoration() {
+        if (bottomPaddingDecoration != null) {
+            removeItemDecoration(bottomPaddingDecoration);
+            bottomPaddingDecoration = null;
+        }
+    }
+
+    public void addDecoration() {
+        bottomPaddingDecoration = BottomPaddingDecoration.with(getContext());
+        addItemDecoration(bottomPaddingDecoration);
     }
 
     public void showEmptyView() {
@@ -101,5 +116,33 @@ public class DynamicRecyclerView extends RecyclerView {
 
     public void showProgress(@NonNull StateLayout view) {
         view.showProgress();
+    }
+
+    public void addKeyLineDivider() {
+        if (!ViewHelper.isTablet(getContext())) {
+            Resources resources = getResources();
+            addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height),
+                    resources.getDimensionPixelSize(R.dimen.keyline_2), ViewHelper.getListDivider(getContext())));
+        }
+    }
+
+    public void addDivider() {
+        if (!ViewHelper.isTablet(getContext())) {
+            Resources resources = getResources();
+            addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
+                    ViewHelper.getListDivider(getContext())));
+        }
+    }
+
+    public void addNormalSpacingDivider() {
+        addDivider();
+    }
+
+    public void addDivider(@NonNull Class toDivide) {
+        if (!ViewHelper.isTablet(getContext())) {
+            Resources resources = getResources();
+            addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
+                    ViewHelper.getListDivider(getContext()), toDivide));
+        }
     }
 }

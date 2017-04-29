@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,8 +26,9 @@ public class StateLayout extends NestedScrollView {
     private static final int HIDE_PROGRESS_STATE = 2;
     private static final int HIDE_RELOAD_STATE = 3;
     private static final int SHOW_RELOAD_STATE = 4;
+    private static final int SHOW_EMPTY_STATE = 7;
     private static final int HIDDEN = 5;
-    private static final int SHOWEN = 6;
+    private static final int SHOWN = 6;
     private OnClickListener onReloadListener;
 
     @BindView(R.id.empty_text) FontTextView emptyText;
@@ -35,7 +37,7 @@ public class StateLayout extends NestedScrollView {
 
     @State int layoutState = HIDDEN;
     @State String emptyTextValue;
-    @State int adapterSize;
+    @State boolean showReload = true;
 
     @OnClick(R.id.reload) void onReload() {
         if (onReloadListener != null && !progressBar.isShown()) {
@@ -79,9 +81,13 @@ public class StateLayout extends NestedScrollView {
     }
 
     public void showReload(int adapterCount) {
-        this.adapterSize = adapterCount;
+        showReload = adapterCount == 0;
+        showReload();
+    }
+
+    protected void showReload() {
         hideProgress();
-        if (adapterCount == 0) {
+        if (showReload) {
             layoutState = SHOW_RELOAD_STATE;
             reload.setVisibility(VISIBLE);
             emptyText.setVisibility(VISIBLE);
@@ -98,6 +104,14 @@ public class StateLayout extends NestedScrollView {
         emptyText.setText(text);
     }
 
+    public void showEmptyState() {
+        hideProgress();
+        hideReload();
+        setVisibility(VISIBLE);
+        emptyText.setVisibility(VISIBLE);
+        layoutState = SHOW_EMPTY_STATE;// last so it override visibility state.
+    }
+
     public void setOnReloadListener(OnClickListener onReloadListener) {
         this.onReloadListener = onReloadListener;
     }
@@ -107,7 +121,7 @@ public class StateLayout extends NestedScrollView {
         if (visibility == GONE || visibility == INVISIBLE) {
             layoutState = HIDDEN;
         } else {
-            layoutState = SHOWEN;
+            layoutState = SHOWN;
         }
     }
 
@@ -134,6 +148,7 @@ public class StateLayout extends NestedScrollView {
     }
 
     private void onHandleLayoutState() {
+        Logger.e(layoutState);
         setEmptyText(emptyTextValue);
         switch (layoutState) {
             case SHOW_PROGRESS_STATE:
@@ -146,16 +161,18 @@ public class StateLayout extends NestedScrollView {
                 hideReload();
                 break;
             case SHOW_RELOAD_STATE:
-                showReload(adapterSize);
+                showReload();
                 break;
             case HIDDEN:
                 setVisibility(GONE);
                 break;
-            case SHOWEN:
+            case SHOW_EMPTY_STATE:
+                showEmptyState();
+                break;
+            case SHOWN:
                 setVisibility(VISIBLE);
-                showReload(adapterSize);
+                showReload();
                 break;
         }
     }
 }
-

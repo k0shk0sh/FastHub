@@ -1,0 +1,24 @@
+language: android
+android:
+   components:
+   - tools
+   - tools
+   - platform-tools
+   - android-25
+   - build-tools-25.0.2
+   - extra
+
+jdk: oraclejdk8
+
+sudo: required
+
+script:
+  - ./gradlew clean assembleFdroidDebug
+  - ./gradlew clean assembleGmsDebug
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
+notifications:
+  slack: fasthub:mjJWGD8UpgSgKawKa5OqMNlR
+  email: false

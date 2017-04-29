@@ -5,16 +5,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.RepoModel;
-import com.fastaccess.helper.Logger;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerView;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
-
-import rx.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -22,7 +19,7 @@ import rx.Observable;
 
 class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> implements ProfileStarredMvp.Presenter {
 
-    private ArrayList<RepoModel> repos = new ArrayList<>();
+    private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -43,13 +40,13 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         this.previousTotal = previousTotal;
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
+    @Override public void onError(@NonNull Throwable throwable) {
         sendToView(view -> {
             if (view.getLoadMore().getParameter() != null) {
                 onWorkOffline(view.getLoadMore().getParameter());
             }
         });
-        return super.onError(throwable, observable);
+        super.onError(throwable);
     }
 
     @Override public void onCallApi(int page, @Nullable String parameter) {
@@ -69,35 +66,30 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        getRepos().clear();
-                        manageSubscription(RepoModel.saveStarred(repoModelPageable.getItems(), parameter).subscribe());
+                        manageSubscription(Repo.saveStarred(repoModelPageable.getItems(), parameter).subscribe());
                     }
-                    getRepos().addAll(repoModelPageable.getItems());
-                    sendToView(ProfileStarredMvp.View::onNotifyAdapter);
+                    sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
     }
 
-    @NonNull @Override public ArrayList<RepoModel> getRepos() {
+    @NonNull @Override public ArrayList<Repo> getRepos() {
         return repos;
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(RepoModel.getStarred(login)).subscribe(repoModels -> {
-                repos.addAll(repoModels);
-                Logger.e(repoModels);
-                sendToView(ProfileStarredMvp.View::onNotifyAdapter);
-            }));
+            manageSubscription(RxHelper.getObserver(Repo.getStarred(login)).subscribe(repoModels ->
+                    sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileStarredMvp.View::hideProgress);
         }
     }
 
-    @Override public void onItemClick(int position, View v, RepoModel item) {
-        RepoPagerView.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+    @Override public void onItemClick(int position, View v, Repo item) {
+        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoModel item) {
+    @Override public void onItemLongClick(int position, View v, Repo item) {
         onItemClick(position, v, item);
     }
 }

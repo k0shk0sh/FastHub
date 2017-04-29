@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.GistsModel;
-import com.fastaccess.data.dao.LoginModel;
+import com.fastaccess.data.dao.model.Gist;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -21,10 +21,10 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     private boolean isGistStarred;
     private boolean isGistForked;
-    private GistsModel gist;
+    private Gist gist;
     private String gistId;
 
-    @Nullable @Override public GistsModel getGist() {
+    @Nullable @Override public Gist getGist() {
         return gist;
     }
 
@@ -73,34 +73,17 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public boolean isOwner() {
         return getGist() != null && getGist().getOwner() != null &&
-                getGist().getOwner().getLogin().equals(LoginModel.getUser().getLogin());
+                getGist().getOwner().getLogin().equals(Login.getUser().getLogin());
     }
 
     @Override public void onStarGist() {
-        if (getGist() != null) {
-            makeRestCall(!isGistStarred ? RestProvider.getGistService().starGist(gistId)
-                                        : RestProvider.getGistService().unStarGist(gistId),
-                    booleanResponse -> {
-                        if (!isGistStarred) {
-                            isGistStarred = booleanResponse.code() == 204;
-                        } else {
-                            isGistStarred = booleanResponse.code() != 204;
-                        }
-                        sendToView(view -> view.onGistStarred(isGistStarred));
-                    });
-        }
+        isGistStarred = !isGistStarred;
+        sendToView(view -> view.onGistStarred(isGistStarred));
     }
 
     @Override public void onForkGist() {
-        if (getGist() != null) {
-            if (!isGistForked) {
-                makeRestCall(RestProvider.getGistService().forkGist(gistId),
-                        gistsModelResponse -> {
-                            isGistForked = gistsModelResponse.code() == 201;
-                            sendToView(view -> view.onGistForked(isGistForked));
-                        });
-            }
-        }
+        isGistForked = !isGistForked;
+        sendToView(view -> view.onGistForked(isGistForked));
     }
 
     @Override public boolean isForked() {
@@ -121,7 +104,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (gist == null) {
-            manageSubscription(RxHelper.getObserver(GistsModel.getGist(gistId))
+            manageSubscription(RxHelper.getObserver(Gist.getGist(gistId))
                     .subscribe(gistsModel -> {
                         this.gist = gistsModel;
                         sendToView(GistMvp.View::onSetupDetails);

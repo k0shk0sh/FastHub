@@ -25,7 +25,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     @NonNull private List<M> data;
     @Nullable private P listener;
     private int lastKnowingPosition = -1;
-    private boolean enableAnimation = !PrefGetter.isRVAnimationEnabled();
+    private boolean enableAnimation = PrefGetter.isRVAnimationEnabled();
     private boolean showedGuide;
     private GuideListener guideListener;
 
@@ -62,7 +62,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         return viewHolder(parent, viewType);
     }
 
-    @Override public void onBindViewHolder(VH holder, int position) {
+    @Override public void onBindViewHolder(@NonNull VH holder, int position) {
         animate(holder, position);
         onBindView(holder, position);
         onShowGuide(holder, position);
@@ -80,61 +80,60 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         }
     }
 
-    private void animate(VH holder, int position) {
+    private void animate(@NonNull VH holder, int position) {
         if (isEnableAnimation() && position > lastKnowingPosition) {
             AnimHelper.startBeatsAnimation(holder.itemView);
             lastKnowingPosition = position;
         }
     }
 
-    public void insertItems(List<M> items) {
+    public void insertItems(@NonNull List<M> items) {
         data.clear();
-        addItems(items);
+        data.addAll(items);
+        notifyDataSetChanged();
     }
 
     public void addItem(M item, int position) {
         data.add(position, item);
-        notifyItemInserted(position);
-        notifyItemRangeInserted(position, getItemCount());
+        notifyItemInserted(data.size() - 1);
     }
 
     public void addItem(M item) {
         data.add(item);
-        notifyItemInserted(getItemCount() - 1);
-        notifyItemRangeInserted(getItemCount() - 1, getItemCount());
+        notifyItemInserted(data.size() - 1);
     }
 
-    @SuppressWarnings("WeakerAccess") public void addItems(List<M> items) {
+    @SuppressWarnings("WeakerAccess") public void addItems(@NonNull List<M> items) {
         data.addAll(items);
-        notifyDataSetChanged();
+        notifyItemRangeInserted(getItemCount(), (getItemCount() + items.size()) - 1);
     }
 
     @SuppressWarnings("WeakerAccess") public void removeItem(int position) {
         data.remove(position);
         notifyItemRemoved(position);
-        notifyItemRangeRemoved(position, getItemCount());
     }
 
     public void removeItem(M item) {
         int position = data.indexOf(item);
-        removeItem(position);
+        if (position != -1) removeItem(position);
     }
 
-    public void removeItems(List<M> items) {
-//        int prevSize = data.size();
+    public void removeItems(@NonNull List<M> items) {
+        int prevSize = getItemCount();
         data.removeAll(items);
-        notifyDataSetChanged();
-//        notifyItemRangeRemoved(prevSize, Math.abs(data.size() - prevSize));
+        notifyItemRangeRemoved(prevSize, Math.abs(data.size() - prevSize));
     }
 
-    public void swapItem(M model) {
+    public void swapItem(@NonNull M model) {
         int index = getItem(model);
         swapItem(model, index);
     }
 
-    public void swapItem(M model, int position) {
-        data.set(position, model);
-        notifyDataSetChanged();
+    public void swapItem(@NonNull M model, int position) {
+        if (position != -1) {
+            data.set(position, model);
+            notifyItemChanged(position);
+        }
     }
 
     public void subList(int fromPosition, int toPosition) {
@@ -144,7 +143,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void clear() {
         data.clear();
-        notifyItemRangeRemoved(0, getItemCount());
+        notifyDataSetChanged();
     }
 
     public void setEnableAnimation(boolean enableAnimation) {

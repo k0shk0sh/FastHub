@@ -4,7 +4,8 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.CommitModel;
+import com.fastaccess.data.dao.MarkdownModel;
+import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -18,18 +19,23 @@ import rx.Observable;
  */
 
 class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements CommitPagerMvp.Presenter {
-    private CommitModel commitModel;
+    private Commit commitModel;
     private String sha;
     private String login;
     private String repoId;
+    private boolean showToRepoBtn;
 
-    @Nullable @Override public CommitModel getCommit() {
+    @Nullable @Override public Commit getCommit() {
         return commitModel;
     }
 
-    @Override public <T> T onError(@NonNull Throwable throwable, @NonNull Observable<T> observable) {
-        onWorkOffline(sha, repoId, login);
-        return super.onError(throwable, observable);
+    @Override public void onError(@NonNull Throwable throwable) {
+        if (RestProvider.getErrorCode(throwable) == 404) {
+            sendToView(CommitPagerMvp.View::onFinishActivity);
+        } else {
+            onWorkOffline(sha, repoId, login);
+        }
+        super.onError(throwable);
     }
 
     @Override public void onActivityCreated(@Nullable Intent intent) {
@@ -37,17 +43,36 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
             sha = intent.getExtras().getString(BundleConstant.ID);
             login = intent.getExtras().getString(BundleConstant.EXTRA);
             repoId = intent.getExtras().getString(BundleConstant.EXTRA_TWO);
+            showToRepoBtn = intent.getExtras().getBoolean(BundleConstant.EXTRA_THREE);
             if (commitModel != null) {
                 sendToView(CommitPagerMvp.View::onSetup);
                 return;
             } else if (!InputHelper.isEmpty(sha) && !InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                makeRestCall(RestProvider.getRepoService().getCommit(login, repoId, sha),
+                makeRestCall(RestProvider.getRepoService()
+                                .getCommit(login, repoId, sha)
+                                .flatMap(commit -> {
+                                    if (commit.getGitCommit() != null && commit.getGitCommit().getMessage() != null) {
+                                        if (commit.getGitCommit().getMessage().contains("#")) {
+                                            MarkdownModel markdownModel = new MarkdownModel();
+                                            markdownModel.setContext(login + "/" + repoId);
+                                            markdownModel.setText(commit.getGitCommit().getMessage());
+                                            return RestProvider.getRepoService().convertReadmeToHtml(markdownModel)
+                                                    .onErrorReturn(throwable -> null);
+                                        }
+                                    }
+                                    return Observable.just(commit);
+                                }, (commit, u) -> {
+                                    if (!InputHelper.isEmpty(u) && u instanceof String) {
+                                        commit.getGitCommit().setMessage(u.toString());
+                                    }
+                                    return commit;
+                                }),
                         commit -> {
                             commitModel = commit;
                             commitModel.setRepoId(repoId);
                             commitModel.setLogin(login);
                             sendToView(CommitPagerMvp.View::onSetup);
-                            manageSubscription(commitModel.save().subscribe());
+                            manageSubscription(commitModel.save(commitModel).subscribe());
                         });
                 return;
             }
@@ -56,7 +81,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
     }
 
     @Override public void onWorkOffline(@NonNull String sha, @NonNull String repoId, @NonNull String login) {
-        manageSubscription(RxHelper.getObserver(CommitModel.getCommit(sha, repoId, login))
+        manageSubscription(RxHelper.getObserver(Commit.getCommit(sha, repoId, login))
                 .subscribe(commit -> {
                     commitModel = commit;
                     sendToView(CommitPagerMvp.View::onSetup);
@@ -69,6 +94,10 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
 
     @Override public String getRepoId() {
         return repoId;
+    }
+
+    @Override public boolean showToRepoBtn() {
+        return showToRepoBtn;
     }
 
 }
