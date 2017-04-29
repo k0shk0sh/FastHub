@@ -282,9 +282,9 @@
     <string name="dialog_animation_title">Popup-Animation</string>
     <string name="milestones">Meilensteine</string>
     <string name="assignee">Bevollmächtigte</string>
-    <string name="checks_failed">Alle Checks sind fehgeschlagen</string>
+    <string name="checks_failed">Alle Checks sind fehlgeschlagen</string>
     <string name="checks_pending">Die Checks laufen noch</string>
-    <string name="checks_passed">Alle Checks wurden erfolgreich beendet</string>
+    <string name="checks_passed">Die Checks wurden erfolgreich beendet</string>
     <string name="sort">Sortieren</string>
     <string name="newest">Neu</string>
     <string name="oldest">Alt</string>
@@ -321,6 +321,16 @@
     <string name="app_language">App Sprache</string>
     <string name="choose_language_title">Spracheinstellung</string>
     <string name="choose_language_summary">Wähle deine bevorzugte Sprache</string>
+    <string name="un_subscribe">Deabbonieren</string>
+    <string name="from">von</string>
+    <string name="in_value">in</string>
+    <string name="subscribe">Abbonieren</string>
+    <string name="repo_issues_is_disabled">Diese Repo hat Issues deaktiviert</string>
+    <string name="access_token">Zugriffstoken</string>
+    <string name="basic_authentication">Standardauthentifizierung</string>
+    <string name="choose_your_login_type">Wähle einen Authentifizierungstyp</string>
+    <string name="files_only">In Dateien</string>
+    <string name="paths_only">In Dateipfaden</string>
 </resources>
 
 
