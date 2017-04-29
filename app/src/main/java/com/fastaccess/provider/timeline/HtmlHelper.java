@@ -34,9 +34,9 @@ public class HtmlHelper {
         });
         int windowBackground = ViewHelper.getWindowBackground(textView.getContext());
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true));
+        mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false));
         mySpanner.registerHandler("img", new DrawableHandler(textView));
         mySpanner.registerHandler("g-emoji", new DrawableHandler(textView));
-        mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false));
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
         mySpanner.registerHandler("strong", new BoldHandler());
@@ -45,10 +45,8 @@ public class HtmlHelper {
         WindowManager windowManager = (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
         windowManager.getDefaultDisplay().getRealSize(point);
-        tableHandler.setTableWidth(point.x - (textView.getPaddingLeft() + textView.getPaddingRight()));
-        if (textView.getTextSize() != 0) {
-            tableHandler.setTextSize(18.0F);
-        }
+        tableHandler.setTableWidth((int) (point.x / 1.2));
+        tableHandler.setTextSize(18.0F);
         mySpanner.registerHandler("table", tableHandler);
         textView.setText(mySpanner.fromHtml(html));
     }
