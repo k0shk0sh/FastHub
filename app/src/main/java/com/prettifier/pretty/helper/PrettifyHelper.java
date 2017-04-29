@@ -20,6 +20,7 @@ public class PrettifyHelper {
                     "<body onload=\"prettyPrint()\">\n" +
                     "<pre class=\"prettyprint linenums\">%s</pre>\n" +
                     "<script src=\"./js/prettify.js\"></script>\n" +
+                    "<script>\n" +
                     "function scrollToLineNumber(lineNo) {\n" +
                     "    var normalizedLineNo = (lineNo - 1) % 10;\n" +
                     "    var nthLineNo = Math.floor((lineNo - 1) / 10);\n" +
@@ -30,36 +31,18 @@ public class PrettifyHelper {
                     "}" +
                     "</script>" +
                     "</body>\n" +
-                    "</html>";
+                "</html>";
 
-    @NonNull private static final String WRAPPED_STYLE = "<style>\n " +
-            "pre {\n" +
-            "    word-wrap: break-all !important;\n" +
-            "    white-space: pre-wrap !important;\n" +
-            "    white-space: -moz-pre-wrap !important;\n" +
-            "    white-space: -pre-wrap !important;\n" +
-            "    white-space: -o-pre-wrap !important;\n" +
-            "    word-wrap: break-word !important;\n" +
-            "}\n" +
-            "pre code {\n" +
-            "    word-wrap: break-all !important;\n" +
-            "    white-space: pre-wrap !important;\n" +
-            "    white-space: -moz-pre-wrap !important;\n" +
-            "    white-space: -pre-wrap !important;\n" +
-            "    white-space: -o-pre-wrap !important;\n" +
-            "    word-wrap: break-word !important;\n" +
-            "}\n" +
-            "img {\n" +
-            "    max-width: 100% !important;\n" +
-            "}\n" +
-            "table {\n" +
-            "    word-wrap: break-all !important;\n" +
-            "    white-space: pre-wrap !important;\n" +
-            "    white-space: -moz-pre-wrap !important;\n" +
-            "    white-space: -pre-wrap !important;\n" +
-            "    white-space: -o-pre-wrap !important;\n" +
-            "    word-wrap: break-word !important;\n" +
-            "}\n" +
+    @NonNull private static final String WRAPPED_STYLE =
+            "<style>\n " +
+                "pre, pre code, table {\n" +
+                "    white-space: pre-wrap !important;\n" +
+                "    word-wrap: break-all !important;\n" +
+                "    word-wrap: break-word !important;\n" +
+                "}\n" +
+                "img {\n" +
+                "    max-width: 100% !important;\n" +
+                "}\n" +
             "</style>";
 
 
