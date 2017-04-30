@@ -12,7 +12,6 @@ import butterknife.OnClick;
 
 public class LoginChooserActivity extends LoginActivity {
 
-
     @Override protected int layout() {
         return R.layout.login_chooser_layout;
     }
@@ -23,6 +22,10 @@ public class LoginChooserActivity extends LoginActivity {
 
     @OnClick(R.id.basicAuth) public void onBasicAuthClicked() {
         LoginActivity.start(this, true);
+    }
+
+    @Override public void onBackPressed() {
+        finish();
     }
 
     @OnClick(R.id.accessToken) public void onAccessTokenClicked() {

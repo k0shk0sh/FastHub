@@ -144,13 +144,14 @@ dependencies {
     compile('com.mikepenz:aboutlibraries:5.9.5@aar') { transitive = true }
     compile 'com.github.nightwhistler:HtmlSpanner:0.4'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
-    compile 'me.saket:better-link-movement-method:1.2'
+    compile 'com.github.matthiasrobbers:shortbread:1.0.1'
     compile project(':pago')
     compile project(':markdown')
     annotationProcessor 'io.requery:requery-processor:1.2.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     provided "org.projectlombok:lombok:${lombokVersion}"
     if (isGms) {
         compile "com.google.firebase:firebase-ads:${firebase}"
