@@ -8,7 +8,6 @@
     android:layout_margin="@dimen/grid_spacing"
     android:background="?card_background"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
     app:cardBackgroundColor="?card_background"
     tools:ignore="RtlSymmetry">
@@ -16,7 +15,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/spacing_xs_large">
 
         <LinearLayout
             android:id="@+id/toggleHolder"
@@ -60,8 +60,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_micro"
                 android:background="?selectableItemBackgroundBorderless"
-                android:scaleType="centerCrop"
                 android:src="@drawable/ic_arrow_drop_down"/>
         </LinearLayout>
 
@@ -78,14 +78,13 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
             android:gravity="start"
             android:paddingStart="@dimen/spacing_xs_large"
             android:visibility="gone"
             tools:ignore="RtlSymmetry"
-            tools:text="Hello World"/>
-
-        <include layout="@layout/comments_dropdown_layout"/>
-
+            tools:text="U+1F602"
+            tools:visibility="visible"/>
     </LinearLayout>
+
+    <include layout="@layout/comments_dropdown_layout"/>
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

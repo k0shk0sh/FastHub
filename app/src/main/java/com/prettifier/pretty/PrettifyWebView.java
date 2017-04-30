@@ -118,27 +118,38 @@ public class PrettifyWebView extends NestedWebView {
         if (!InputHelper.isEmpty(source)) {
             String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
-            setOnContentChangedListener(progress -> {
-                Logger.e(progress);
-                if (progress == 100) {
-                    int lineNo = 0;
-                    if (url != null) {
-                        try {
-                            Uri uri = Uri.parse(url);
-                            String lineNumber = uri.getEncodedFragment();
-                            Logger.e(lineNumber);
-                            if (lineNumber != null) {
-                                lineNumber = lineNumber.replace("L", "");
-                                lineNo = Integer.valueOf(lineNumber);
-                            }
-                        } catch (Exception ignored) {}
-                    }
-                    if (lineNo != 0) {
+            int lineNo = getLineNo(url);
+            if (lineNo != 0) {
+                setOnContentChangedListener(progress -> {
+                    Logger.e(progress);
+                    if (progress == 100) {
                         if (isAttachedToWindow()) loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
                     }
-                }
-            });
+                });
+            }
         }
+    }
+
+    private int getLineNo(@Nullable String url) {
+        int lineNo = 0;
+        if (url != null) {
+            try {
+                Uri uri = Uri.parse(url);
+                String lineNumber = uri.getEncodedFragment();
+                Logger.e(lineNumber);
+                if (lineNumber != null) {
+                    String[] toSplit = lineNumber.split("-");
+                    if (toSplit.length > 1) {
+                        lineNumber = toSplit[toSplit.length - 1];
+                    }
+                    Logger.e(lineNumber);
+                    lineNumber = lineNumber.replace("L", "");
+                    lineNo = Integer.valueOf(lineNumber);
+                    Logger.e(lineNo);
+                }
+            } catch (Exception ignored) {}
+        }
+        return lineNo;
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
@@ -173,15 +184,6 @@ public class PrettifyWebView extends NestedWebView {
         this.interceptTouch = interceptTouch;
     }
 
-    private class ChromeClient extends WebChromeClient {
-        @Override public void onProgressChanged(WebView view, int progress) {
-            super.onProgressChanged(view, progress);
-            if (onContentChangedListener != null) {
-                onContentChangedListener.onContentChanged(progress);
-            }
-        }
-    }
-
     private void startActivity(@Nullable Uri url) {
         if (url == null) return;
         Logger.e(url);
@@ -193,6 +195,15 @@ public class PrettifyWebView extends NestedWebView {
                 return;
             }
             SchemeParser.launchUri(getContext(), url, true);
+        }
+    }
+
+    private class ChromeClient extends WebChromeClient {
+        @Override public void onProgressChanged(WebView view, int progress) {
+            super.onProgressChanged(view, progress);
+            if (onContentChangedListener != null) {
+                onContentChangedListener.onContentChanged(progress);
+            }
         }
     }
 

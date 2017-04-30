@@ -69,7 +69,7 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                         .append(" ");
             }
             details.setText(builder
-                    .append(itemView.getResources().getString(issueModel.getState().getStatus()))
+                    .append(itemView.getResources().getString(issueModel.getState().getStatus()).toLowerCase())
                     .append(" ")
                     .append(data));
             if (issueModel.getComments() > 0) {

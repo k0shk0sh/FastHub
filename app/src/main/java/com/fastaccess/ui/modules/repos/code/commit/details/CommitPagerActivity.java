@@ -168,6 +168,14 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
             }
         });
         hideShowFab();
+        TabLayout.Tab tabOne = tabs.getTabAt(0);
+        TabLayout.Tab tabTwo = tabs.getTabAt(1);
+        if (tabOne != null && commit.getFiles() != null) {
+            tabOne.setText(getString(R.string.commits) + " (" + commit.getFiles().size() + ")");
+        }
+        if (tabTwo != null && commit.getGitCommit() != null && commit.getGitCommit().getCommentCount() > 0) {
+            tabTwo.setText(getString(R.string.comments) + " (" + commit.getGitCommit().getCommentCount() + ")");
+        }
     }
 
     @Override public void onFinishActivity() {
