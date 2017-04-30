@@ -89,8 +89,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         int number = getHeader().getNumber();
         Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
                 RestProvider.getIssueService().getIssueComments(login, repoId, number),
-                RestProvider.getPullRequestSerice().getPullStatus(login, repoId, getHeader().getHead().getSha()),
-                RestProvider.getPullRequestSerice().getReviews(login, repoId, number),
+                RestProvider.getPullRequestService().getPullStatus(login, repoId, getHeader().getHead().getSha()),
+                RestProvider.getPullRequestService().getReviews(login, repoId, number),
                 (issueEventPageable, commentPageable, statuses, reviews) -> {
                     if (statuses != null) {
                         statuses.setMergable(getHeader().isMergeable());

@@ -70,7 +70,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 sendToView(PullRequestPagerMvp.View::onSetupIssue);
                 return;
             } else if (issueNumber > 0 && !InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                makeRestCall(RestProvider.getPullRequestSerice().getPullRequest(login, repoId, issueNumber)
+                makeRestCall(RestProvider.getPullRequestService().getPullRequest(login, repoId, issueNumber)
                         , pullRequestModelResponse -> {
                             pullRequest = pullRequestModelResponse;
                             pullRequest.setRepoId(repoId);
@@ -160,7 +160,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onOpenCloseIssue() {
         if (getPullRequest() != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(getPullRequest(), true);
-            manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestSerice().editPullRequest(login, repoId,
+            manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestService().editPullRequest(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
                     .doOnNext(issue -> {
@@ -230,7 +230,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {
         pullRequest.setMilestone(milestone);
         IssueRequestModel issueRequestModel = IssueRequestModel.clone(pullRequest, false);
-        makeRestCall(RestProvider.getPullRequestSerice().editIssue(login, repoId, issueNumber, issueRequestModel),
+        makeRestCall(RestProvider.getPullRequestService().editIssue(login, repoId, issueNumber, issueRequestModel),
                 pr -> {
                     this.pullRequest = pr;
                     pullRequest.setLogin(login);
@@ -246,7 +246,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         ArrayList<String> assignees = new ArrayList<>();
         Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
         assigneesRequestModel.setAssignees(assignees);
-        makeRestCall(RestProvider.getPullRequestSerice().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+        makeRestCall(RestProvider.getPullRequestService().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
                 issue -> {
                     this.pullRequest = issue;
                     pullRequest.setLogin(login);
@@ -267,7 +267,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             mergeRequestModel.setSha(getPullRequest().getHead().getSha());
             mergeRequestModel.setCommitMessage(msg);
             manageSubscription(
-                    RxHelper.getObserver(RestProvider.getPullRequestSerice().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
+                    RxHelper.getObserver(RestProvider.getPullRequestService().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
                             .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
                             .doOnNext(mergeResponseModel -> {
                                 if (mergeResponseModel.isMerged()) {

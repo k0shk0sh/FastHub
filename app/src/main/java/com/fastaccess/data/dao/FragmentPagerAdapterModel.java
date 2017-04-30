@@ -14,7 +14,7 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
-import com.fastaccess.ui.modules.main.issues.MyIssuesView;
+import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersFragment;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingFragment;
@@ -149,8 +149,8 @@ import lombok.Setter;
     }
 
     public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open), MyIssuesView.newInstance(IssueState.open))
-                , new FragmentPagerAdapterModel(context.getString(R.string.closed), MyIssuesView.newInstance(IssueState.closed)))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open), MyIssuesFragment.newInstance(IssueState.open))
+                , new FragmentPagerAdapterModel(context.getString(R.string.closed), MyIssuesFragment.newInstance(IssueState.closed)))
                 .collect(Collectors.toList());
     }
 

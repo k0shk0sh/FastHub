@@ -10,7 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import com.fastaccess.R;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
-import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerView;
+import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
@@ -31,7 +31,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         Fragment currentVisible = getVisibleFragment(fragmentManager);
         FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
         MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag(fragmentManager, MyPullsPagerFragment.TAG);
-        MyIssuesPagerView issuesView = (MyIssuesPagerView) getFragmentByTag(fragmentManager, MyIssuesPagerView.TAG);
+        MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag(fragmentManager, MyIssuesPagerFragment.TAG);
         switch (type) {
             case MainMvp.FEEDS:
                 if (homeView == null) {
@@ -49,7 +49,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 break;
             case MainMvp.ISSUES:
                 if (issuesView == null) {
-                    onAddAndHide(fragmentManager, MyIssuesPagerView.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }
