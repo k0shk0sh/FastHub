@@ -91,10 +91,10 @@
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerActivity"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
@@ -105,19 +105,19 @@
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity"
             android:label="@string/pull_request"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerActivity"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerActivity"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity
@@ -178,13 +178,25 @@
 
         <activity
             android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerActivity"/>
+                android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
         <activity android:name=".ui.modules.filter.issues.FilterIssuesActivity"/>
+
+        <activity android:name=".ui.modules.main.donation.DonationActivity"/>
+
+        <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
+
+        <activity
+            android:name=".ui.modules.search.repos.files.SearchFileActivity"
+            android:parentActivityName=".ui.modules.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainActivity"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
@@ -223,14 +235,6 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.modules.main.donation.DonationActivity"/>
-
-        <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
-
-        <activity
-            android:name=".ui.modules.search.repos.files.SearchFileActivity"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"/>
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"

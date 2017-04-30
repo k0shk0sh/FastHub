@@ -375,7 +375,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupDrawer() {
-        if (drawer != null) {
+        if (drawer != null && !(this instanceof MainActivity)) {
             if (!PrefGetter.isNavDrawerHintShowed()) {
                 drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                     @Override public boolean onPreDraw() {

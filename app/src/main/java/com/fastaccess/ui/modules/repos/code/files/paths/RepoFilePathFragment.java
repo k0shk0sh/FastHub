@@ -26,6 +26,7 @@ import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
 import com.fastaccess.ui.modules.search.repos.files.SearchFileActivity;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.util.List;
 
@@ -75,21 +76,17 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         if (InputHelper.isEmpty(ref)) {
             ref = getPresenter().getDefaultBranch();
         }
-        Uri uri = new Uri.Builder()
-                .scheme("https")
-                .authority("github.com")
-                .appendPath(getPresenter().getLogin())
-                .appendPath(getPresenter().getRepoId())
-                .appendPath("archive")
-                .appendPath(ref + ".zip")
-                .build();
         if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
-            RestProvider.downloadFile(getContext(), uri.toString());
+            MessageDialogView.newInstance(getString(R.string.download), getString(R.string.confirm_message),
+                    Bundler.start()
+                            .put(BundleConstant.YES_NO_EXTRA, true)
+                            .end())
+                    .show(getChildFragmentManager(), MessageDialogView.TAG);
         }
     }
 
     @OnClick(R.id.searchRepoFiles) void onSearchClicked() {
-        startActivity(SearchFileActivity.createIntent(getContext(), getPresenter().getLogin(), getPresenter().getRepoId() ));
+        startActivity(SearchFileActivity.createIntent(getContext(), getPresenter().getLogin(), getPresenter().getRepoId()));
     }
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {
@@ -225,6 +222,24 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
             getPresenter().onFragmentCreated(getArguments());
         }
         setBranchesData(getPresenter().getBranches(), false);
+    }
+
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk && bundle != null) {
+            boolean isDownload = bundle.getBoolean(BundleConstant.YES_NO_EXTRA);
+            if (isDownload) {
+                Uri uri = new Uri.Builder()
+                        .scheme("https")
+                        .authority("github.com")
+                        .appendPath(getPresenter().getLogin())
+                        .appendPath(getPresenter().getRepoId())
+                        .appendPath("archive")
+                        .appendPath(ref + ".zip")
+                        .build();
+                RestProvider.downloadFile(getContext(), uri.toString());
+            }
+        }
     }
 
     @NonNull @Override public RepoFilePathPresenter providePresenter() {

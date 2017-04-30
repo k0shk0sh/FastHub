@@ -174,6 +174,10 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         AnimHelper.animateVisibility(progress, true);
     }
 
+    @Override public void onBackPressed() {
+        startActivity(new Intent(this, LoginChooserActivity.class));
+    }
+
     @Override public void hideProgress() {
         if (login == null || progress == null) return;
         progress.setVisibility(View.GONE);
