@@ -53,8 +53,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     private RepoFilesFragment repoFilesView;
     private boolean canSelectSpinner;
 
-    public static RepoFilePathFragment newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String
-            defaultBranch) {
+    public static RepoFilePathFragment newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path,
+                                                   @NonNull String defaultBranch) {
         return newInstance(login, repoId, path, defaultBranch, false);
     }
 
@@ -92,8 +92,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @OnClick(R.id.toParentFolder) void onBackClicked() {
         if (adapter.getItemCount() > 0) {
             adapter.clear();
-            adapter.notifyItemRangeRemoved(0, adapter.getItemCount());
-            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, false);
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, false, null);
         }
     }
 
@@ -105,7 +104,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @OnItemSelected(R.id.branches) void onBranchSelected(int position) {
         if (canSelectSpinner) {
             ref = ((BranchesModel) branches.getItemAtPosition(position)).getName();
-            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, true);
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, true, null);
             onBackClicked();
         }
     }
@@ -134,7 +133,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
 
     @Override public void onItemClicked(@NonNull RepoFile model, int position) {
         if (getRepoFilesView().isRefreshing()) return;
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref, false);
+        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
+                Objects.toString(model.getPath(), ""), ref, false, null);
         if ((position + 1) < adapter.getItemCount()) {
             adapter.subList(position + 1, adapter.getItemCount());
         }
@@ -142,9 +142,15 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     }
 
     @Override public void onAppendPath(@NonNull RepoFile model) {
-        adapter.addItem(model);
-        recycler.scrollToPosition(adapter.getItemCount() - 1); //smoothScrollToPosition(index) hides the recyclerview? MIND-BLOWING??.
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref, false);
+        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
+                Objects.toString(model.getPath(), ""), ref, false, model);
+    }
+
+    @Override public void onAppenedtab(@Nullable RepoFile repoFile) {
+        if (repoFile != null) {
+            adapter.addItem(repoFile);
+            recycler.scrollToPosition(adapter.getItemCount() - 1);
+        }
     }
 
     @Override public void onSendData() {
@@ -152,7 +158,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
             ref = getPresenter().getDefaultBranch();
         }
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
-                Objects.toString(getPresenter().getPath(), ""), ref, false);
+                Objects.toString(getPresenter().getPath(), ""), ref, false, null);
     }
 
     @Override public boolean canPressBack() {
