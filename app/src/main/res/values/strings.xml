@@ -390,4 +390,5 @@
     <string name="choose_your_login_type">Choose your login type</string>
     <string name="files_only">In Files</string>
     <string name="paths_only">In Paths</string>
+    <string name="review_requests">Review Requests</string>
 </resources>

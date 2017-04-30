@@ -151,7 +151,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         String login = commit.getAuthor() != null ? commit.getAuthor().getLogin() : commit.getGitCommit().getAuthor().getName();
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
-        HtmlHelper.parseHtmlIntoTextView(title, commit.getGitCommit().getMessage());
+        HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
         date.setText(ParseDateFormat.getTimeAgo(dateValue));

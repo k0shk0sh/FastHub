@@ -31,20 +31,24 @@ import net.nightwhistler.htmlspanner.handlers.BoldHandler;
  */
 
 public class HtmlHelper {
-    public static void parseHtmlIntoTextView(@NonNull TextView textView, @NonNull String html) {
-        HtmlSpanner mySpanner = new HtmlSpanner();
-        mySpanner.setStripExtraWhiteSpace(true);
+
+    public static void htmlIntoTextView(@NonNull TextView textView, @NonNull String html) {
+        registerClickEvent(textView);
+        textView.setText(initHtml(textView).fromHtml(html));
+    }
+
+    private static void registerClickEvent(@NonNull TextView textView) {
         BetterLinkMovementExtended betterLinkMovementMethod = BetterLinkMovementExtended.linkifyHtml(textView);
         betterLinkMovementMethod.setOnLinkClickListener((view, url) -> {
             SchemeParser.launchUri(view.getContext(), Uri.parse(url));
             return true;
         });
-        int windowBackground = ViewHelper.getWindowBackground(textView.getContext());
-        registerHandlers(textView, mySpanner, windowBackground);
-        textView.setText(mySpanner.fromHtml(html));
     }
 
-    private static void registerHandlers(@NonNull TextView textView, @NonNull HtmlSpanner mySpanner, @ColorInt int windowBackground) {
+    private static HtmlSpanner initHtml(@NonNull TextView textView) {
+        @ColorInt int windowBackground = ViewHelper.getWindowBackground(textView.getContext());
+        HtmlSpanner mySpanner = new HtmlSpanner();
+        mySpanner.setStripExtraWhiteSpace(true);
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true));
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false));
         mySpanner.registerHandler("img", new DrawableHandler(textView));
@@ -69,5 +73,6 @@ public class HtmlHelper {
         tableHandler.setTableWidth((int) (point.x / 1.2));
         tableHandler.setTextSize(18.0F);
         mySpanner.registerHandler("table", tableHandler);
+        return mySpanner;
     }
 }

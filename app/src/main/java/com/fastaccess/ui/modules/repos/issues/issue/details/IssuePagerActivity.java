@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -248,7 +249,11 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                 parsedDate = ParseDateFormat.getTimeAgo(issueModel.getCreatedAt());
                 username = issueModel.getUser() != null ? issueModel.getUser().getLogin() : "N/A";
             }
-            date.setText(SpannableBuilder.builder().append(getString(issueModel.getState().getStatus()))
+            date.setText(SpannableBuilder.builder()
+                    .append(ContextCompat.getDrawable(this,
+                            issueModel.getState() == IssueState.open ? R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small))
+                    .append(" ")
+                    .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
                     .append(parsedDate));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());

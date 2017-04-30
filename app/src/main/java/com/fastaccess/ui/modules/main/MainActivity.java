@@ -60,7 +60,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
         fab.setImageResource(R.drawable.ic_filter);
-        showHideFab();
         onNewIntent(getIntent());
     }
 
@@ -97,19 +96,10 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
         this.navType = navType;
-        showHideFab();
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
         hideShowShadow(navType == MainMvp.FEEDS);
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
-    }
-
-    private void showHideFab() {
-//        if (navType == MainMvp.ISSUES || navType == MainMvp.PULL_REQUESTS) {
-//            fab.show();
-//        } else {
-//            fab.hide();
-//        }
     }
 
     private void onInit(@Nullable Bundle savedInstanceState) {

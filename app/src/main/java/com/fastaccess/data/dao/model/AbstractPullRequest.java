@@ -150,8 +150,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                 .toObservable();
     }
 
-    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context,
-                                                       boolean showRepoName) {
+    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context, boolean showRepoName) {
         boolean isMerge = pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.mergedAt);
         if (isMerge) {
             User merger = pullRequest.getMergedBy();

@@ -135,7 +135,7 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
             avatar.setUrl(null, null);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            HtmlHelper.parseHtmlIntoTextView(comment, commentsModel.getBodyHtml());
+            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());
         } else {
             comment.setText("");
         }
@@ -214,8 +214,10 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         }
         if (spannableBuilder.length() > 0) {
             reactionsText.setText(spannableBuilder);
-            if (!onToggleView.isCollapsed(getAdapterPosition())) {
+            if (!onToggleView.isCollapsed(getAdapterPosition()) && !emojiesList.isShown()) {
                 reactionsText.setVisibility(View.VISIBLE);
+            } else {
+                reactionsText.setVisibility(View.GONE);
             }
         } else {
             reactionsText.setVisibility(View.GONE);

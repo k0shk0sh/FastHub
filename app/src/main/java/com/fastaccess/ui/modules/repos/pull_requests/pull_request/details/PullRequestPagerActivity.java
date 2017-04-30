@@ -92,6 +92,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @OnClick(R.id.fab) void onAddComment() {
+        if (pager == null || pager.getAdapter() == null) return;
         PullRequestTimelineFragment view = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
         if (view != null) {
             view.onStartNewComment();
