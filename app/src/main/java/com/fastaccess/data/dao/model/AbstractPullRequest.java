@@ -185,10 +185,12 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
             SpannableBuilder builder = SpannableBuilder.builder();
             if (showRepoName) {
                 PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(pullRequest.getHtmlUrl());
-                if (parser != null) builder.bold(parser.getLogin())
-                        .append("/")
-                        .bold(parser.getRepoId())
-                        .append(" ");
+                if (parser != null) {
+                    builder.bold(parser.getLogin())
+                            .append("/")
+                            .bold(parser.getRepoId())
+                            .append(" ");
+                }
             } else {
                 builder.bold("#" + pullRequest.getNumber())
                         .append(" ")
@@ -197,6 +199,8 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
             }
             return builder
                     .bold(status.toLowerCase())
+                    .append(" ")
+                    .bold(pullRequest.getHead() != null ? pullRequest.getHead().getRef() : "")
                     .append(" ")
                     .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
                                                        ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));

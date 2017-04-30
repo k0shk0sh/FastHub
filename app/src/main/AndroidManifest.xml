@@ -81,10 +81,10 @@
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainActivity"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
@@ -95,19 +95,19 @@
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity"
             android:label="@string/pull_request"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainActivity"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainActivity"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
@@ -168,13 +168,14 @@
 
         <activity
             android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainActivity"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity android:name=".ui.modules.filter.issues.FilterIssuesActivity"/>
+
 
         <activity android:name=".ui.modules.main.donation.DonationActivity"/>
 
@@ -182,10 +183,10 @@
 
         <activity
             android:name=".ui.modules.search.repos.files.SearchFileActivity"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainActivity"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
@@ -232,13 +233,13 @@
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
+        <service android:name=".provider.tasks.slack.SlackInvitationService"/>
         <service
             android:name=".provider.fcm.PushNotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service android:name=".provider.tasks.slack.SlackInvitationService"/>
     </application>
 
 </manifest>
