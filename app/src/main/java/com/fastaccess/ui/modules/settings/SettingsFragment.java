@@ -48,6 +48,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             new ChangelogBottomSheetDialog().show(getChildFragmentManager(), "ChangelogBottomSheetDialog");
             return true;
         });
+        findPreference("joinSlack").setOnPreferenceClickListener(preference -> {
+            new SlackBottomSheetDialog().show(getChildFragmentManager(), "SlackBottomSheetDialog");
+            return true;
+        });
         findPreference("currentVersion").setSummary(SpannableBuilder.builder()
                 .append(getString(R.string.current_version))
                 .append("(")

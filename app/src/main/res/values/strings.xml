@@ -391,4 +391,7 @@
     <string name="files_only">In Files</string>
     <string name="paths_only">In Paths</string>
     <string name="review_requests">Review Requests</string>
+    <string name="join_slack">Join Slack</string>
+    <string name="join_slack_message" formatted="true">Would you like to join FastHub Slack group?\nInvitation link will be sent to %s.</string>
+    <string name="successfully_invited">Successfully invited</string>
 </resources>

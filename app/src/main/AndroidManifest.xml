@@ -51,24 +51,14 @@
                     android:scheme="https"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.modules.login.LoginChooserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="fast-for-github.firebaseapp.com"
-                    android:scheme="https"/>
-            </intent-filter>
-        </activity>
+            android:theme="@style/LoginTheme"/>
 
         <activity
             android:name=".ui.modules.user.UserPagerActivity"
@@ -248,6 +238,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+        <service android:name=".provider.tasks.slack.SlackInvitationService"/>
     </application>
 
 </manifest>

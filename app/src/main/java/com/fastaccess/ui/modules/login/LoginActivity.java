@@ -23,6 +23,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -122,10 +123,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @Override public void onSuccessfullyLoggedIn() {
         hideProgress();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finishAffinity();
+        new SlackBottomSheetDialog().show(getSupportFragmentManager(), "SlackBottomSheetDialog");
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +180,13 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         if (login == null || progress == null) return;
         progress.setVisibility(View.GONE);
         login.show();
+    }
+
+    @Override public void onDismissed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finishAffinity();
     }
 
     private void doLogin() {
