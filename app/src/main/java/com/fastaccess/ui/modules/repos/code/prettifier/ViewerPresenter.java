@@ -97,8 +97,8 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             sendToView(view -> view.onSetImageUrl(url));
             return;
         }
-        makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url)
-                            : RestProvider.getRepoService().getFileAsStream(url), content -> {
+        makeRestCall(isRepo ? RestProvider.getRepoService(true).getReadmeHtml(url)
+                            : RestProvider.getRepoService(true).getFileAsStream(url), content -> {
             downloadedStream = content;
             ViewerFile fileModel = new ViewerFile();
             fileModel.setContent(downloadedStream);

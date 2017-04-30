@@ -28,7 +28,7 @@ import butterknife.BindView;
  * Created by Kosh on 25 Mar 2017, 11:48 PM
  */
 
-public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresenter> implements MyIssuesMvp.View {
+public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPresenter> implements MyIssuesMvp.View {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
@@ -38,8 +38,8 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
     private IssueState issueState;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
-    public static MyIssuesView newInstance(@NonNull IssueState issueState) {
-        MyIssuesView view = new MyIssuesView();
+    public static MyIssuesFragment newInstance(@NonNull IssueState issueState) {
+        MyIssuesFragment view = new MyIssuesFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, issueState).end());
         return view;
     }
@@ -98,11 +98,6 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
@@ -144,5 +139,10 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
             issueState = (IssueState) getArguments().getSerializable(BundleConstant.EXTRA);
         }
         return issueState;
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

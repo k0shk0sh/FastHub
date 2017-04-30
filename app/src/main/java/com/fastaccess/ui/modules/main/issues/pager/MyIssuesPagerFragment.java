@@ -26,16 +26,16 @@ import icepick.State;
  * Created by Kosh on 26 Mar 2017, 12:14 AM
  */
 
-public class MyIssuesPagerView extends BaseFragment<MyIssuesPagerMvp.View, MyIssuesPagerPresenter> implements MyIssuesPagerMvp.View {
+public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, MyIssuesPagerPresenter> implements MyIssuesPagerMvp.View {
 
-    public static final String TAG = MyIssuesPagerView.class.getSimpleName();
+    public static final String TAG = MyIssuesPagerFragment.class.getSimpleName();
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
     @State HashSet<TabsCountStateModel> counts = new HashSet<>();
 
-    public static MyIssuesPagerView newInstance() {
-        return new MyIssuesPagerView();
+    public static MyIssuesPagerFragment newInstance() {
+        return new MyIssuesPagerFragment();
     }
 
     @Override protected int fragmentLayout() {

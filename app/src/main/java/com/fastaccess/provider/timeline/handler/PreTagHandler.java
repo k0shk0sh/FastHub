@@ -36,13 +36,20 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
     }
 
     private String replace(String text) {
-        return text.replaceAll("&nbsp;", " ")
+        return text.replaceAll("&nbsp;", "\u00A0")
                 .replaceAll("&amp;", "&")
                 .replaceAll("&quot;", "\"")
                 .replaceAll("&cent;", "¢")
                 .replaceAll("&lt;", "<")
                 .replaceAll("&gt;", ">")
-                .replaceAll("&gt;", "§");
+                .replaceAll("&sect;", "§")
+                .replaceAll("&ldquo;", "“")
+                .replaceAll("&rdquo;", "”")
+                .replaceAll("&lsquo;", "‘")
+                .replaceAll("&rsquo;", "’")
+                .replaceAll("&ndash;", "\u2013")
+                .replaceAll("&mdash;", "\u2014")
+                .replaceAll("&horbar;", "\u2015");
     }
 
     @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
@@ -65,4 +72,5 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             builder.setSpan(new BackgroundColorSpan(color), start + 1, builder.length() - 1, SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
+
 }

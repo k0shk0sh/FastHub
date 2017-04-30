@@ -71,14 +71,14 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(RepoQueryProvider.getMyIssuesPullRequestQuery(Login.getUser().getLogin(),
-                parameter, false), page),
-                issues -> {
-                    lastPage = issues.getLast();
-                    if (getCurrentPage() == 1) {
-                        sendToView(view -> view.onSetCount(issues.getTotalCount()));
-                    }
-                    sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
-                });
+        String searchQuery = RepoQueryProvider.getMyIssuesPullRequestQuery(Login.getUser().getLogin(),
+                parameter, false);
+        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(searchQuery, page), issues -> {
+            lastPage = issues.getLast();
+            if (getCurrentPage() == 1) {
+                sendToView(view -> view.onSetCount(issues.getTotalCount()));
+            }
+            sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
+        });
     }
 }
