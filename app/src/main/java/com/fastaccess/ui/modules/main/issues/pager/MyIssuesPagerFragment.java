@@ -45,7 +45,7 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.centered_tabbed_viewpager;
+        return R.layout.tabbed_viewpager;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

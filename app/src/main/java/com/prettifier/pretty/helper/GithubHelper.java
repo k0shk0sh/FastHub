@@ -6,6 +6,7 @@ import android.webkit.MimeTypeMap;
 
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,6 +20,7 @@ public class GithubHelper {
     private static Pattern IMAGE_TAG_MATCHER = Pattern.compile("src=\"(.*?)\"");
 
     @NonNull public static String generateContent(@NonNull String source, @Nullable String baseUrl, boolean wrap, boolean dark) {
+        Logger.e(baseUrl);
         if (baseUrl == null) {
             return mergeContent(source, wrap, dark);
         } else {
