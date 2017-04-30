@@ -184,12 +184,12 @@
     <string name="due_on">Fällig am</string>
     <string name="no_assignees">Keine Bevollmächtigten</string>
     <string name="this_value">dies</string>
-    <string name="commits_reflected">Commit wurden auf den ausgewählten Branch verschoben</string>
+    <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
     <string name="background_job_summary">Wähle wie regelmäßig FastHub nach einem Update sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
-    <string name="behavior">Verhalten</string>
+    <string name="behavior">Verhalten & Aussehen</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
     <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub ausversehen verlässt</string>
