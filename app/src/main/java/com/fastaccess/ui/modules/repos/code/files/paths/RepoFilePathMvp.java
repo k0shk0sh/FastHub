@@ -25,6 +25,8 @@ interface RepoFilePathMvp {
 
         void onAppendPath(@NonNull RepoFile model);
 
+        void onAppenedtab(@Nullable RepoFile repoFile);
+
         void onSendData();
 
         boolean canPressBack();

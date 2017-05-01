@@ -227,8 +227,9 @@ public class MarkDownProvider {
         name = name.toLowerCase();
         for (String value : MARKDOWN_EXTENSIONS) {
             String extension = MimeTypeMap.getFileExtensionFromUrl(name);
-            if ((extension != null && value.replace(".", "").equals(extension)) || name.equalsIgnoreCase("README") ||
-                    name.endsWith(value)) return true;
+            if ((extension != null && value.replace(".", "").equals(extension)) ||
+                    name.equalsIgnoreCase("README") || name.endsWith(value))
+                return true;
         }
         return false;
     }

@@ -10,9 +10,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.style.LineBackgroundSpan;
 import android.text.style.MetricAffectingSpan;
+import android.text.style.TypefaceSpan;
 
 import com.fastaccess.helper.InputHelper;
 
@@ -69,14 +71,13 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     } else if (token.startsWith("@@")) {
                         color = patchRefColor;
                     }
-//                    String noNewLine = "\\No newline at end of file";
-//                    if (token.endsWith(noNewLine)) {
-//                        token = token.replace(noNewLine, "");
-//                    }
+                    String noNewLine = "\\No newline at end of file";
+                    token = token.replace(noNewLine, "");
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
                         DiffLineSpan span = new DiffLineSpan(color);
                         spannableDiff.setSpan(span, 0, token.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
+                        spannableDiff.setSpan(new TypefaceSpan("monospace"), 0, token.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                     builder.append(spannableDiff);
                 }

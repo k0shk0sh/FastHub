@@ -46,12 +46,16 @@ public class NotificationSchedulerJobTask extends JobService {
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
 
     @Override public boolean onStartJob(JobParameters job) {
-        if (PrefGetter.getNotificationTaskDuration(this) != -1) {
+        if (PrefGetter.getNotificationTaskDuration(this) == -1) {
             scheduleJob(this, -1, false);
             finishJob(job);
             return true;
         }
-        if (Login.getUser() != null) {
+        Login login = null;
+        try {
+            login = Login.getUser();
+        } catch (Exception ignored) {}
+        if (login != null) {
             RestProvider.getNotificationService()
                     .getNotifications(ParseDateFormat.getLastWeekDate())
                     .subscribeOn(Schedulers.io())

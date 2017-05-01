@@ -29,6 +29,8 @@ public interface FilterIssuesMvp {
         @NonNull OnLoadMore<String> getLoadMore();
 
         void onSetCount(int totalCount);
+
+        void onItemClicked(@NonNull Issue item);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

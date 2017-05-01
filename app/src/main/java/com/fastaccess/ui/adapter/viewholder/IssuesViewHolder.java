@@ -69,10 +69,15 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                         .append(" ");
             }
             details.setText(builder
-                    .append(itemView.getResources().getString(issueModel.getState().getStatus()))
+                    .append(itemView.getResources().getString(issueModel.getState().getStatus()).toLowerCase())
                     .append(" ")
                     .append(data));
-            commentsNo.setText(String.valueOf(issueModel.getComments()));
+            if (issueModel.getComments() > 0) {
+                commentsNo.setText(String.valueOf(issueModel.getComments()));
+                commentsNo.setVisibility(View.VISIBLE);
+            } else {
+                commentsNo.setVisibility(View.GONE);
+            }
         }
         if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());

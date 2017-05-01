@@ -46,7 +46,12 @@ public class PullRequestViewHolder extends BaseViewHolder<PullRequest> {
     @Override public void bind(@NonNull PullRequest pullRequest) {
         title.setText(pullRequest.getTitle());
         details.setText(PullRequest.getMergeBy(pullRequest, details.getContext(), showRepoName));
-        commentsNo.setText(String.valueOf(pullRequest.getComments()));
+        if (pullRequest.getComments() > 0) {
+            commentsNo.setText(String.valueOf(pullRequest.getComments()));
+            commentsNo.setVisibility(View.VISIBLE);
+        } else {
+            commentsNo.setVisibility(View.GONE);
+        }
         if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);

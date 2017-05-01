@@ -24,9 +24,12 @@ interface RepoFilesMvp {
 
         void onMenuClicked(@NonNull RepoFile model, android.view.View view);
 
-        void onSetData(@NonNull String login, @NonNull String repoId, @NonNull String path, @NonNull String ref, boolean clear);
+        void onSetData(@NonNull String login, @NonNull String repoId, @NonNull String path, @NonNull String ref,
+                       boolean clear, @Nullable RepoFile toAppend);
 
         boolean isRefreshing();
+
+        void onUpdateTab(@Nullable RepoFile toAppend);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -36,10 +39,10 @@ interface RepoFilesMvp {
 
         void onWorkOffline();
 
-        void onCallApi();
+        void onCallApi(@Nullable RepoFile toAppend);
 
         void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @NonNull String path,
-                                  @NonNull String ref, boolean clear);
+                                  @NonNull String ref, boolean clear, @Nullable RepoFile toAppend);
 
         @Nullable List<RepoFile> getCachedFiles(@NonNull String url, @NonNull String ref);
     }

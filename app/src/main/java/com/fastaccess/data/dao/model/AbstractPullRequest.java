@@ -150,37 +150,47 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                 .toObservable();
     }
 
-    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context,
-                                                       boolean showRepoName) {
+    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context, boolean showRepoName) {
         boolean isMerge = pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.mergedAt);
         if (isMerge) {
             User merger = pullRequest.getMergedBy();
             SpannableBuilder builder = SpannableBuilder.builder();
             if (showRepoName) {
                 PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(pullRequest.getHtmlUrl());
-                if (parser != null) builder.bold(parser.getLogin())
-                        .append("/")
-                        .bold(parser.getRepoId())
-                        .append(" ");
+                if (parser != null)
+                    builder.bold(parser.getLogin())
+                            .append("/")
+                            .bold(parser.getRepoId())
+                            .append(" ");
             } else {
                 builder.bold("#" + pullRequest.getNumber())
                         .append(" ")
                         .append(merger != null ? merger.getLogin() + " " : "");
             }
-            return builder
-                    .bold(context.getString(R.string.merged))
-                    .append(" ")
-                    .append(ParseDateFormat.getTimeAgo(pullRequest.getMergedAt()));
+            builder.append(context.getString(R.string.merged).toLowerCase())
+                    .append(" ");
+            if (pullRequest.getHead() != null) {
+                builder.bold(pullRequest.getHead().getRef())
+                        .append(" ")
+                        .append(context.getString(R.string.to))
+                        .append(" ")
+                        .bold(pullRequest.getBase().getRef())
+                        .append(" ");
+            }
+            builder.append(ParseDateFormat.getTimeAgo(pullRequest.getMergedAt()));
+            return builder;
         } else {
             User user = pullRequest.getUser();
             String status = context.getString(pullRequest.getState().getStatus());
             SpannableBuilder builder = SpannableBuilder.builder();
             if (showRepoName) {
                 PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(pullRequest.getHtmlUrl());
-                if (parser != null) builder.bold(parser.getLogin())
-                        .append("/")
-                        .bold(parser.getRepoId())
-                        .append(" ");
+                if (parser != null) {
+                    builder.bold(parser.getLogin())
+                            .append("/")
+                            .bold(parser.getRepoId())
+                            .append(" ");
+                }
             } else {
                 builder.bold("#" + pullRequest.getNumber())
                         .append(" ")
@@ -188,11 +198,12 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                         .append(" ");
             }
             return builder
-                    .bold(status)
+                    .bold(status.toLowerCase())
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo(
-                            pullRequest.getState() == IssueState.closed
-                            ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+                    .bold(pullRequest.getHead() != null ? pullRequest.getHead().getRef() : "")
+                    .append(" ")
+                    .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
+                                                       ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
         }
     }
 

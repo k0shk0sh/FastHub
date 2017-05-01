@@ -190,7 +190,10 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
                     getSparseBooleanArray().clear();
-                    if (commentsModel == null) return;
+                    if (commentsModel == null) {
+                        onRefresh(); // bundle size is too large? refresh the api
+                        return;
+                    }
                     if (isNew) {
                         adapter.addItem(commentsModel);
                         recycler.smoothScrollToPosition(adapter.getItemCount());
@@ -204,6 +207,8 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
                             recycler.smoothScrollToPosition(adapter.getItemCount());
                         }
                     }
+                } else {
+                    onRefresh(); // bundle size is too large? refresh the api
                 }
             }
         }

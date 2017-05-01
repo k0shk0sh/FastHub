@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
+import com.fastaccess.data.dao.types.MyIssuesType;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
 import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
@@ -81,7 +82,8 @@ import lombok.Setter;
                                                                    @NonNull String login, @NonNull String url,
                                                                    @NonNull String defaultBranch) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.readme), ViewerFragment.newInstance(url, true)),
-                new FragmentPagerAdapterModel(context.getString(R.string.files), RepoFilePathFragment.newInstance(login, repoId, null, defaultBranch)),
+                new FragmentPagerAdapterModel(context.getString(R.string.files), RepoFilePathFragment.newInstance(login, repoId, null,
+                        defaultBranch)),
                 new FragmentPagerAdapterModel(context.getString(R.string.commits), RepoCommitsFragment.newInstance(repoId, login, defaultBranch)),
                 new FragmentPagerAdapterModel(context.getString(R.string.releases), RepoReleasesFragment.newInstance(repoId, login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.contributors), RepoContributorsFragment.newInstance(repoId, login)))
@@ -149,14 +151,24 @@ import lombok.Setter;
     }
 
     public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open), MyIssuesFragment.newInstance(IssueState.open))
-                , new FragmentPagerAdapterModel(context.getString(R.string.closed), MyIssuesFragment.newInstance(IssueState.closed)))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
+                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
+                new FragmentPagerAdapterModel(context.getString(R.string.assigned),
+                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.ASSIGNED)),
+                new FragmentPagerAdapterModel(context.getString(R.string.mentioned),
+                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.MENTIONED)))
                 .collect(Collectors.toList());
     }
 
     public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open), MyPullRequestFragment.newInstance(IssueState.open))
-                , new FragmentPagerAdapterModel(context.getString(R.string.closed), MyPullRequestFragment.newInstance(IssueState.closed)))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
+                        MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
+                new FragmentPagerAdapterModel(context.getString(R.string.assigned),
+                        MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.ASSIGNED)),
+                new FragmentPagerAdapterModel(context.getString(R.string.mentioned),
+                        MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.MENTIONED)),
+                new FragmentPagerAdapterModel(context.getString(R.string.review_requests),
+                        MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.REVIEW)))
                 .collect(Collectors.toList());
     }
 

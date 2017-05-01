@@ -51,7 +51,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         name.setText(issueModel.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));
         if (!InputHelper.isEmpty(issueModel.getBodyHtml())) {
-            HtmlHelper.parseHtmlIntoTextView(description, issueModel.getBodyHtml());
+            HtmlHelper.htmlIntoTextView(description, issueModel.getBodyHtml());
         } else {
             description.setText(R.string.no_description_provided);
         }
@@ -62,7 +62,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         name.setText(pullRequest.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(pullRequest.getCreatedAt()));
         if (!InputHelper.isEmpty(pullRequest.getBodyHtml())) {
-            HtmlHelper.parseHtmlIntoTextView(description, pullRequest.getBodyHtml());
+            HtmlHelper.htmlIntoTextView(description, pullRequest.getBodyHtml());
         } else {
             description.setText(R.string.no_description_provided);
         }

@@ -7,7 +7,6 @@
     <color name="light_patch_deletion_color">#FFDDDD</color>
     <color name="light_patch_ref_color">#EEEEEE</color>
 
-
     <style name="ThemeLight" parent="ThemeLight.Base"/>
 
     <style name="ThemeLight.Base" parent="Theme.AppCompat.Light.NoActionBar">

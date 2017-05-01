@@ -124,8 +124,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 }
                 commentId = bundle.getLong(BundleConstant.EXTRA_FOUR);
                 String textToUpdate = bundle.getString(BundleConstant.EXTRA);
-                editText.setText(textToUpdate);
                 if (!InputHelper.isEmpty(textToUpdate)) {
+                    editText.setText(String.format("%s ", textToUpdate));
                     editText.setSelection(InputHelper.toString(editText).length());
                 }
             }
@@ -193,6 +193,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (InputHelper.isEmpty(editText)) {
             super.onBackPressed();
         } else {
+            ViewHelper.hideKeyboard(editText);
             MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
                     Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
