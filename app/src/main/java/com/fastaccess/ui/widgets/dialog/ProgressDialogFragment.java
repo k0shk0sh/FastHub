@@ -38,8 +38,7 @@ public class ProgressDialogFragment extends DialogFragment {
         progressDialog.setCancelable(getArguments().getBoolean("isCancelable"));
         setCancelable(getArguments().getBoolean("isCancelable"));
         if (getActivity() != null && !getActivity().isFinishing()) {
-            progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog,
-                    getResources().getInteger(android.R.integer.config_shortAnimTime)));
+            progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog, 200));
         }
         return progressDialog;
     }

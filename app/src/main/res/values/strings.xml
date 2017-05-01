@@ -395,4 +395,5 @@
     <string name="join_slack_message" formatted="true">Would you like to join FastHub Slack group?\nInvitation link will be sent to %s.</string>
     <string name="successfully_invited">Successfully invited</string>
     <string name="reply">Reply</string>
+    <string name="failed_selecting_image">Failed to load image.</string>
 </resources>

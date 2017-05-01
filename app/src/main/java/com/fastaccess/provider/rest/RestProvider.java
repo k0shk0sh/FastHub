@@ -23,7 +23,6 @@ import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
@@ -88,7 +87,6 @@ public class RestProvider {
                 Request request = requestBuilder.build();
                 return chain.proceed(request);
             }
-            Logger.e(original.url());
             return chain.proceed(original);
         });
         return client.build();

@@ -229,11 +229,17 @@
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
+            android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
+
         <service android:name=".provider.tasks.git.GithubActionService"/>
+
         <service android:name=".provider.tasks.git.ReactionService"/>
+
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
+
         <service
             android:name=".provider.fcm.PushNotificationService">
             <intent-filter>

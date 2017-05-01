@@ -51,7 +51,11 @@ public class NotificationSchedulerJobTask extends JobService {
             finishJob(job);
             return true;
         }
-        if (Login.getUser() != null) {
+        Login login = null;
+        try {
+            login = Login.getUser();
+        } catch (Exception ignored) {}
+        if (login != null) {
             RestProvider.getNotificationService()
                     .getNotifications(ParseDateFormat.getLastWeekDate())
                     .subscribeOn(Schedulers.io())

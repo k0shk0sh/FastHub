@@ -124,8 +124,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 }
                 commentId = bundle.getLong(BundleConstant.EXTRA_FOUR);
                 String textToUpdate = bundle.getString(BundleConstant.EXTRA);
-                editText.setText(textToUpdate);
                 if (!InputHelper.isEmpty(textToUpdate)) {
+                    editText.setText(String.format("%s ", textToUpdate));
                     editText.setSelection(InputHelper.toString(editText).length());
                 }
             }

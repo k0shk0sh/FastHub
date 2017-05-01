@@ -22,6 +22,7 @@ import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Kosh on 15 Apr 2017, 9:14 PM
@@ -84,6 +85,8 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
                 String path = FileHelper.getPath(getContext(), data.getData());
                 if (!InputHelper.isEmpty(path)) {
                     getPresenter().onSubmit(InputHelper.toString(title), new File(path));
+                } else {
+                    Toasty.error(getContext(), getString(R.string.failed_selecting_image)).show();
                 }
             }
         }
