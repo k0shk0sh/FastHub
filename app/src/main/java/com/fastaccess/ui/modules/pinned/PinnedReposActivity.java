@@ -9,13 +9,17 @@ import android.support.annotation.Nullable;
 import com.fastaccess.R;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.main.MainActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
+
+import shortbread.Shortcut;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:14 PM
  */
 
+@Shortcut(id = "pinned", icon = R.drawable.ic_pin_shortcut, shortLabelRes = R.string.pinned, backStack = {MainActivity.class}, rank = 5)
 public class PinnedReposActivity extends BaseActivity {
 
     public static void startActivity(@NonNull Context context) {
@@ -44,6 +48,7 @@ public class PinnedReposActivity extends BaseActivity {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        selectPinned();
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()

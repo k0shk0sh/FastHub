@@ -51,24 +51,14 @@
                     android:scheme="https"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.modules.login.LoginChooserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/app_name"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:theme="@style/LoginTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
-                <data
-                    android:host="fast-for-github.firebaseapp.com"
-                    android:scheme="https"/>
-            </intent-filter>
-        </activity>
+            android:theme="@style/LoginTheme"/>
 
         <activity
             android:name=".ui.modules.user.UserPagerActivity"
@@ -186,6 +176,19 @@
 
         <activity android:name=".ui.modules.filter.issues.FilterIssuesActivity"/>
 
+
+        <activity android:name=".ui.modules.main.donation.DonationActivity"/>
+
+        <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
+
+        <activity
+            android:name=".ui.modules.search.repos.files.SearchFileActivity"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -224,20 +227,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ui.modules.main.donation.DonationActivity"/>
-
-        <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
-
-        <activity
-            android:name=".ui.modules.search.repos.files.SearchFileActivity"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"/>
-
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
+            android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
+
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
+
         <service android:name=".provider.tasks.git.GithubActionService"/>
+
         <service android:name=".provider.tasks.git.ReactionService"/>
+
+        <service android:name=".provider.tasks.slack.SlackInvitationService"/>
+
         <service
             android:name=".provider.fcm.PushNotificationService">
             <intent-filter>

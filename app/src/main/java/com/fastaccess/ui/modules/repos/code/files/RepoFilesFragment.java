@@ -97,12 +97,16 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     }
 
     @Override public void onSetData(@NonNull String login, @NonNull String repoId, @NonNull String path,
-                                    @NonNull String ref, boolean clear) {
-        getPresenter().onInitDataAndRequest(login, repoId, path, ref, clear);
+                                    @NonNull String ref, boolean clear, @Nullable RepoFile toAppend) {
+        getPresenter().onInitDataAndRequest(login, repoId, path, ref, clear, toAppend);
     }
 
     @Override public boolean isRefreshing() {
         return refresh.isRefreshing();
+    }
+
+    @Override public void onUpdateTab(@Nullable RepoFile toAppend) {
+        getParent().onAppenedtab(toAppend);
     }
 
     @Override protected int fragmentLayout() {
@@ -161,7 +165,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi();
+        getPresenter().onCallApi(null);
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

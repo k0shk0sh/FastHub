@@ -52,39 +52,48 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if ((repoId == null || login == null) || !files.isEmpty()) return;
-        manageSubscription(RxHelper.getObserver(RepoFile.getFiles(login, repoId)).subscribe(
-                models -> {
-                    files.addAll(models);
-                    sendToView(RepoFilesMvp.View::onNotifyAdapter);
-                }
-        ));
+        manageSubscription(RxHelper.getObserver(RepoFile.getFiles(login, repoId))
+                .flatMap(response -> {
+                    if (response != null) {
+                        return Observable.from(response).sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
+                    }
+                    return Observable.empty();
+                })
+                .toList()
+                .subscribe(models -> {
+                            files.addAll(models);
+                            sendToView(RepoFilesMvp.View::onNotifyAdapter);
+                        }
+                ));
     }
 
-    @Override public void onCallApi() {
+    @Override public void onCallApi(@Nullable RepoFile toAppend) {
         if (repoId == null || login == null) return;
         makeRestCall(RestProvider.getRepoService().getRepoFiles(login, repoId, path, ref)
-                        .flatMap(response -> {
-                            if (response != null && response.getItems() != null) {
-                                return Observable.from(response.getItems())
-                                        .sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
-                            }
-                            return Observable.empty();
-                        })
-                        .toList(),
-                response -> {
-                    files.clear();
-                    if (response != null) {
-                        manageSubscription(RepoFile.save(response, login, repoId).subscribe());
-                        pathsModel.setFiles(ref, path, response);
-                        files.addAll(response);
+                .flatMap(response -> {
+                    if (response != null && response.getItems() != null) {
+                        return Observable.from(response.getItems())
+                                .sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
                     }
-                    sendToView(RepoFilesMvp.View::onNotifyAdapter);
-                });
+                    return Observable.empty();
+                })
+                .toList(), response -> {
+            files.clear();
+            if (response != null) {
+                manageSubscription(RepoFile.save(response, login, repoId).subscribe());
+                pathsModel.setFiles(ref, path, response);
+                files.addAll(response);
+            }
+            sendToView(view -> {
+                view.onNotifyAdapter();
+                view.onUpdateTab(toAppend);
+            });
+        });
 
     }
 
     @Override public void onInitDataAndRequest(@NonNull String login, @NonNull String repoId, @NonNull String path,
-                                               @NonNull String ref, boolean clear) {
+                                               @NonNull String ref, boolean clear, @NonNull RepoFile toAppend) {
         if (clear) pathsModel.clear();
         this.login = login;
         this.repoId = repoId;
@@ -94,9 +103,12 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         if (cachedFiles != null && !cachedFiles.isEmpty()) {
             files.clear();
             files.addAll(cachedFiles);
-            sendToView(RepoFilesMvp.View::onNotifyAdapter);
+            sendToView(view -> {
+                view.onNotifyAdapter();
+                view.onUpdateTab(toAppend);
+            });
         } else {
-            onCallApi();
+            onCallApi(toAppend);
         }
     }
 

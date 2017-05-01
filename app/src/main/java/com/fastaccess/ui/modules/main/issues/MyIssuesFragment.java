@@ -11,6 +11,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
+import com.fastaccess.data.dao.types.MyIssuesType;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -23,24 +24,29 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
+import icepick.State;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:48 PM
  */
 
-public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresenter> implements MyIssuesMvp.View {
+public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPresenter> implements MyIssuesMvp.View {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @State IssueState issueState;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
-    private IssueState issueState;
+    private MyIssuesType issuesType;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
-    public static MyIssuesView newInstance(@NonNull IssueState issueState) {
-        MyIssuesView view = new MyIssuesView();
-        view.setArguments(Bundler.start().put(BundleConstant.EXTRA, issueState).end());
+    public static MyIssuesFragment newInstance(@NonNull IssueState issueState, @NonNull MyIssuesType issuesType) {
+        MyIssuesFragment view = new MyIssuesFragment();
+        view.setArguments(Bundler.start()
+                .put(BundleConstant.EXTRA, issueState)
+                .put(BundleConstant.EXTRA_TWO, issuesType)
+                .end());
         return view;
     }
 
@@ -59,7 +65,7 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, getIssueState());
+        getPresenter().onCallApi(1, issueState);
     }
 
     @Override public void onClick(View view) {
@@ -98,16 +104,11 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter());
         }
-        onLoadMore.setParameter(getIssueState());
+        onLoadMore.setParameter(issueState);
         return onLoadMore;
     }
 
@@ -116,6 +117,10 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            issueState = (IssueState) getArguments().getSerializable(BundleConstant.EXTRA);
+        }
+        getPresenter().onSetIssueType(getIssuesType());
         stateLayout.setEmptyText(R.string.no_issues);
         recycler.setEmptyView(stateLayout, refresh);
         stateLayout.setOnReloadListener(this);
@@ -136,13 +141,40 @@ public class MyIssuesView extends BaseFragment<MyIssuesMvp.View, MyIssuesPresent
     }
 
     @Override public void onSetCount(int totalCount) {
-        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(getIssueState() == IssueState.open ? 0 : 1, totalCount);
+        if (tabsBadgeListener != null) {
+            switch (getIssuesType()) {
+                case CREATED:
+                    tabsBadgeListener.onSetBadge(0, totalCount);
+                    break;
+                case ASSIGNED:
+                    tabsBadgeListener.onSetBadge(1, totalCount);
+                    break;
+                case MENTIONED:
+                    tabsBadgeListener.onSetBadge(2, totalCount);
+                    break;
+            }
+        }
     }
 
-    public IssueState getIssueState() {
-        if (issueState == null) {
-            issueState = (IssueState) getArguments().getSerializable(BundleConstant.EXTRA);
+    @Override public void onFilterIssue(@NonNull IssueState issueState) {
+        if (this.issueState != null && this.issueState != issueState) {
+            this.issueState = issueState;
+            getArguments().putSerializable(BundleConstant.ITEM, issueState);
+            getLoadMore().reset();
+            adapter.clear();
+            onRefresh();
         }
-        return issueState;
+    }
+
+    private MyIssuesType getIssuesType() {
+        if (issuesType == null) {
+            issuesType = (MyIssuesType) getArguments().getSerializable(BundleConstant.EXTRA_TWO);
+        }
+        return issuesType;
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

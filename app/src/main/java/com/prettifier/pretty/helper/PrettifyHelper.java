@@ -42,6 +42,15 @@ public class PrettifyHelper {
                     "img {\n" +
                     "    max-width: 100% !important;\n" +
                     "}\n" +
+                    "ol {\n" +
+                    "    margin-left: 0 !important;\n" +
+                    "    padding-left: 6px !important;\n" +
+                    "}\n" +
+                    "ol li {\n" +
+                    "    margin-left: 0  !important;\n" +
+                    "    padding-left: 0  !important;\n" +
+                    "    text-indent: -12px !important;\n" +
+                    "}" +
                     "</style>";
 
 

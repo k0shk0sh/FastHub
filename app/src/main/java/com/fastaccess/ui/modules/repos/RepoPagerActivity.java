@@ -16,7 +16,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LicenseModel;
@@ -77,12 +76,12 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @BindView(R.id.watchRepoImage) ForegroundImageView watchRepoImage;
     @BindView(R.id.starRepoImage) ForegroundImageView starRepoImage;
     @BindView(R.id.forkRepoImage) ForegroundImageView forkRepoImage;
-    @BindView(R.id.licenseLayout) LinearLayout licenseLayout;
-    @BindView(R.id.watchRepoLayout) LinearLayout watchRepoLayout;
-    @BindView(R.id.starRepoLayout) LinearLayout starRepoLayout;
-    @BindView(R.id.forkRepoLayout) LinearLayout forkRepoLayout;
+    @BindView(R.id.licenseLayout) View licenseLayout;
+    @BindView(R.id.watchRepoLayout) View watchRepoLayout;
+    @BindView(R.id.starRepoLayout) View starRepoLayout;
+    @BindView(R.id.forkRepoLayout) View forkRepoLayout;
     @BindView(R.id.pinImage) ForegroundImageView pinImage;
-    @BindView(R.id.pinLayout) LinearLayout pinLayout;
+    @BindView(R.id.pinLayout) View pinLayout;
     @BindView(R.id.pinText) FontTextView pinText;
     @BindView(R.id.filterLayout) View filterLayout;
     @State @RepoPagerMvp.RepoNavigationType int navType;

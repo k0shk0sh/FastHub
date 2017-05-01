@@ -182,7 +182,10 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
-                    if (commentsModel == null) return;
+                    if (commentsModel == null) {
+                        onRefresh(); // bundle size is too large? refresh the api
+                        return;
+                    }
                     getSparseBooleanArray().clear();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
@@ -197,6 +200,8 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                             recycler.smoothScrollToPosition(adapter.getItemCount());
                         }
                     }
+                } else {
+                    onRefresh(); // bundle size is too large? refresh the api
                 }
             }
         }

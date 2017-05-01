@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/opened"
+        android:icon="@drawable/ic_issue_opened"
+        android:title="@string/opened"/>
+
+    <item
+        android:id="@+id/closed"
+        android:icon="@drawable/ic_issue_closed"
+        android:title="@string/closed"/>
+
+
+</menu>

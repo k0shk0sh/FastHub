@@ -5,10 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@drawable/bottom_border"
     android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_xs_large"
     tools:ignore="RtlSymmetry"
     tools:showIn="@layout/comments_row_item">
+
 
     <HorizontalScrollView
         android:id="@+id/emojiesList"
@@ -25,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -35,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -45,6 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -55,6 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -65,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -86,17 +95,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/spacing_normal"
         android:gravity="end"
-        android:orientation="horizontal"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_normal">
+        android:orientation="horizontal">
 
         <android.support.v7.widget.AppCompatImageView
             android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/delete"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_trash"
             android:visibility="gone"
@@ -107,6 +116,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/reply"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_undo"/>
 
@@ -115,6 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/edit"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_edit"
             android:visibility="gone"

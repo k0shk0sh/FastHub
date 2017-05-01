@@ -14,15 +14,18 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
 import icepick.State;
+import shortbread.Shortcut;
 
 /**
  * Created by Kosh on 03 Dec 2016, 8:00 AM
  */
 
+@Shortcut(id = "profile", icon = R.drawable.ic_profile_shortcut, shortLabelRes = R.string.profile, backStack = {MainActivity.class}, rank = 4)
 public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPagerPresenter> implements UserPagerMvp.View {
 
 
@@ -75,10 +78,14 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            login = getIntent().getExtras().getString(BundleConstant.EXTRA);
-            isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
-            if (!InputHelper.isEmpty(login) && isOrg) {
-                getPresenter().checkOrgMembership(login);
+            if (getIntent() != null && getIntent().getExtras() != null) {
+                login = getIntent().getExtras().getString(BundleConstant.EXTRA);
+                isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
+                if (!InputHelper.isEmpty(login) && isOrg) {
+                    getPresenter().checkOrgMembership(login);
+                }
+            } else {
+                login = Login.getUser().getLogin();
             }
         }
         if (InputHelper.isEmpty(login)) {
@@ -87,7 +94,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         }
         setTitle(login);
         if (login.equalsIgnoreCase(Login.getUser().getLogin())) {
-            hideProfileMenuItem();
+            selectProfile();
         }
         if (!isOrg) {
             FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),

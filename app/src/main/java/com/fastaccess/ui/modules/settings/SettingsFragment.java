@@ -11,6 +11,7 @@ import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import es.dmoral.toasty.Toasty;
@@ -43,6 +44,14 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         findPreference("rect_avatar").setOnPreferenceChangeListener(this);
         findPreference("appTheme").setOnPreferenceChangeListener(this);
         findPreference("app_language").setOnPreferenceChangeListener(this);
+        findPreference("showChangelog").setOnPreferenceClickListener(preference -> {
+            new ChangelogBottomSheetDialog().show(getChildFragmentManager(), "ChangelogBottomSheetDialog");
+            return true;
+        });
+        findPreference("joinSlack").setOnPreferenceClickListener(preference -> {
+            new SlackBottomSheetDialog().show(getChildFragmentManager(), "SlackBottomSheetDialog");
+            return true;
+        });
         findPreference("currentVersion").setSummary(SpannableBuilder.builder()
                 .append(getString(R.string.current_version))
                 .append("(")

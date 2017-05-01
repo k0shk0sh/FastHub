@@ -52,13 +52,11 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
                                 .getCommit(login, repoId, sha)
                                 .flatMap(commit -> {
                                     if (commit.getGitCommit() != null && commit.getGitCommit().getMessage() != null) {
-                                        if (commit.getGitCommit().getMessage().contains("#")) {
-                                            MarkdownModel markdownModel = new MarkdownModel();
-                                            markdownModel.setContext(login + "/" + repoId);
-                                            markdownModel.setText(commit.getGitCommit().getMessage());
-                                            return RestProvider.getRepoService().convertReadmeToHtml(markdownModel)
-                                                    .onErrorReturn(throwable -> null);
-                                        }
+                                        MarkdownModel markdownModel = new MarkdownModel();
+                                        markdownModel.setContext(login + "/" + repoId);
+                                        markdownModel.setText(commit.getGitCommit().getMessage());
+                                        return RestProvider.getRepoService().convertReadmeToHtml(markdownModel)
+                                                .onErrorReturn(throwable -> null);
                                     }
                                     return Observable.just(commit);
                                 }, (commit, u) -> {

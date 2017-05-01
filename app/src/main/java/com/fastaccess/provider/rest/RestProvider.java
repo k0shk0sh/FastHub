@@ -20,9 +20,9 @@ import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
 import com.fastaccess.data.service.SearchService;
+import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
@@ -69,37 +69,40 @@ public class RestProvider {
         return cache;
     }
 
-    private static OkHttpClient provideOkHttpClient() {
+    private static OkHttpClient provideOkHttpClient(boolean isRawString) {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             client.addInterceptor(new HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
-        client.addInterceptor(new PaginationInterceptor())
-                .addInterceptor(chain -> {
-                    Request original = chain.request();
-                    if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
-                        Request.Builder requestBuilder = original.newBuilder();
-                        requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
-                                .addHeader("Content-type", "application/vnd.github.v3+json");
-                        requestBuilder.method(original.method(), original.body());
-                        Request request = requestBuilder.build();
-                        return chain.proceed(request);
-                    }
-                    Logger.e(original.url());
-                    return chain.proceed(original);
-                });
+        if (!isRawString) client.addInterceptor(new PaginationInterceptor());
+        client.addInterceptor(chain -> {
+            Request original = chain.request();
+            if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
+                Request.Builder requestBuilder = original.newBuilder();
+                requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
+                        .addHeader("Content-type", "application/vnd.github.v3+json");
+                requestBuilder.method(original.method(), original.body());
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            }
+            return chain.proceed(original);
+        });
         return client.build();
     }
 
-    private static Retrofit provideRetrofit() {
+    private static Retrofit provideRetrofit(boolean isRawString) {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.REST_URL)
-                .client(provideOkHttpClient())
+                .client(provideOkHttpClient(isRawString))
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
+    }
+
+    private static Retrofit provideRetrofit() {
+        return provideRetrofit(false);
     }
 
     public static void downloadFile(@NonNull Context context, @NonNull String url) {
@@ -145,14 +148,18 @@ public class RestProvider {
     }
 
     @NonNull public static RepoService getRepoService() {
-        return provideRetrofit().create(RepoService.class);
+        return getRepoService(false);
+    }
+
+    @NonNull public static RepoService getRepoService(boolean isRawString) {
+        return provideRetrofit(isRawString).create(RepoService.class);
     }
 
     @NonNull public static IssueService getIssueService() {
         return provideRetrofit().create(IssueService.class);
     }
 
-    @NonNull public static PullRequestService getPullRequestSerice() {
+    @NonNull public static PullRequestService getPullRequestService() {
         return provideRetrofit().create(PullRequestService.class);
     }
 
@@ -184,4 +191,14 @@ public class RestProvider {
         }
         return null;
     }
+
+    @NonNull public static SlackService getSlackService() {
+        return new Retrofit.Builder()
+                .baseUrl("https://ok13pknpj4.execute-api.eu-central-1.amazonaws.com/prod/")
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build()
+                .create(SlackService.class);
+    }
+
 }

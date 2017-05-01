@@ -40,6 +40,9 @@ public interface RepoService {
     @NonNull @GET @Headers("Accept: application/vnd.github.VERSION.raw")
     Observable<String> getFileAsStream(@Url String url);
 
+    @NonNull @GET @Headers("Accept: application/vnd.github.html")
+    Observable<String> getFileAsHtmlStream(@Url String url);
+
     @NonNull @POST("markdown")
     Observable<String> convertReadmeToHtml(@Body MarkdownModel model);
 

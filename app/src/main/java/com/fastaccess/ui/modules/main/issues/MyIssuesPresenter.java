@@ -8,6 +8,7 @@ import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.types.IssueState;
+import com.fastaccess.data.dao.types.MyIssuesType;
 import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -25,6 +26,8 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    private MyIssuesType issuesType;
+    @NonNull private String login = Login.getUser().getLogin();
 
     @Override public void onItemClick(int position, View v, Issue item) {
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
@@ -40,6 +43,10 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
 
     @NonNull @Override public ArrayList<Issue> getIssues() {
         return issues;
+    }
+
+    @Override public void onSetIssueType(@NonNull MyIssuesType issuesType) {
+        this.issuesType = issuesType;
     }
 
     @Override public int getCurrentPage() {
@@ -71,14 +78,24 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(RepoQueryProvider.getMyIssuesPullRequestQuery(Login.getUser().getLogin(),
-                parameter, false), page),
-                issues -> {
-                    lastPage = issues.getLast();
-                    if (getCurrentPage() == 1) {
-                        sendToView(view -> view.onSetCount(issues.getTotalCount()));
-                    }
-                    sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
-                });
+        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(getUrl(parameter), page), issues -> {
+            lastPage = issues.getLast();
+            if (getCurrentPage() == 1) {
+                sendToView(view -> view.onSetCount(issues.getTotalCount()));
+            }
+            sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
+        });
+    }
+
+    @NonNull private String getUrl(@NonNull IssueState parameter) {
+        switch (issuesType) {
+            case CREATED:
+                return RepoQueryProvider.getMyIssuesPullRequestQuery(login, parameter, false);
+            case ASSIGNED:
+                return RepoQueryProvider.getAssigned(login, parameter, false);
+            case MENTIONED:
+                return RepoQueryProvider.getMentioned(login, parameter, false);
+        }
+        return RepoQueryProvider.getMyIssuesPullRequestQuery(login, parameter, false);
     }
 }
