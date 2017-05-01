@@ -59,7 +59,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideHome();
+        selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);

@@ -272,8 +272,41 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         SettingsBottomSheetDialog.show(getSupportFragmentManager());
     }
 
-    protected void hideHome() {
-        if (extraNav != null) extraNav.getMenu().removeGroup(R.id.home_group);
+    protected void selectHome(boolean hideRepo) {
+        if (extraNav != null) {
+            if (hideRepo) {
+                extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
+                extraNav.getMenu().findItem(R.id.mainView).setVisible(true);
+                return;
+            }
+            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
+            extraNav.getMenu().findItem(R.id.mainView).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.mainView).setChecked(true);
+        }
+    }
+
+    protected void selectProfile() {
+        selectHome(true);
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.profile).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.profile).setChecked(true);
+        }
+    }
+
+    protected void selectGists(boolean publicGists) {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.gists).setCheckable(publicGists);
+            extraNav.getMenu().findItem(R.id.gists).setChecked(publicGists);
+            extraNav.getMenu().findItem(R.id.myGists).setCheckable(!publicGists);
+            extraNav.getMenu().findItem(R.id.myGists).setChecked(!publicGists);
+        }
+    }
+
+    protected void selectPinned() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.pinnedMenu).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.pinnedMenu).setChecked(true);
+        }
     }
 
     protected void onOpenOrgsDialog() {
@@ -365,12 +398,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             } else {
                 extraNav.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
             }
-        }
-    }
-
-    protected void hideProfileMenuItem() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.profile).setVisible(false);
         }
     }
 

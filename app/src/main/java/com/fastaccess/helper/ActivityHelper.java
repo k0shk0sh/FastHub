@@ -63,7 +63,7 @@ public class ActivityHelper {
             customTabsIntent.intent.setPackage(packageNameToUse);
             customTabsIntent.launchUrl(context, url);
         } else {
-            openChooser(context, url);
+            openChooser(context, url, true);
         }
     }
 
@@ -72,50 +72,67 @@ public class ActivityHelper {
     }
 
     public static void openChooser(@NonNull Context context, @NonNull Uri url) {
+        openChooser(context, url, false);
+    }
+
+    private static void openChooser(@NonNull Context context, @NonNull Uri url, boolean fromCustomTab) {
         Intent i = new Intent(Intent.ACTION_VIEW, url);
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent finalIntent = chooserIntent(context, i, url);
-        context.startActivity(finalIntent);
+        if (finalIntent != null) {
+            context.startActivity(finalIntent);
+        } else {
+            if (!fromCustomTab) {
+                Activity activity = ActivityHelper.getActivity(context);
+                if (activity == null) {
+                    context.startActivity(i);
+                    return;
+                }
+                startCustomTab(activity, url);
+            } else {
+                context.startActivity(i);
+            }
+        }
     }
 
     public static void openChooser(@NonNull Context context, @NonNull String url) {
         openChooser(context, Uri.parse(url));
     }
 
-    @SafeVarargs public static void start(Activity activity, Class cl, Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, Class cl, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(activity, cl);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
     }
 
-    public static void start(Activity activity, Intent intent, View sharedElement) {
+    public static void start(@NonNull Activity activity, Intent intent, @NonNull View sharedElement) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity,
                 sharedElement, ViewHelper.getTransitionName(sharedElement));
         activity.startActivity(intent, options.toBundle());
     }
 
-    public static void startReveal(Activity activity, Intent intent, View sharedElement, int requestCode) {
+    public static void startReveal(@NonNull Activity activity, Intent intent, @NonNull View sharedElement, int requestCode) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
                 sharedElement.getHeight() / 2,
                 sharedElement.getWidth(), sharedElement.getHeight());
         activity.startActivityForResult(intent, requestCode, options.toBundle());
     }
 
-    public static void startReveal(Fragment fragment, Intent intent, View sharedElement, int requestCode) {
+    public static void startReveal(@NonNull Fragment fragment, Intent intent, @NonNull View sharedElement, int requestCode) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
                 sharedElement.getHeight() / 2,
                 sharedElement.getWidth(), sharedElement.getHeight());
         fragment.startActivityForResult(intent, requestCode, options.toBundle());
     }
 
-    public static void startReveal(Activity activity, Intent intent, View sharedElement) {
+    public static void startReveal(@NonNull Activity activity, Intent intent, @NonNull View sharedElement) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
                 sharedElement.getHeight() / 2,
                 sharedElement.getWidth(), sharedElement.getHeight());
         activity.startActivity(intent, options.toBundle());
     }
 
-    @SafeVarargs public static void start(Activity activity, Intent intent, Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent, @NonNull Pair<View, String>... sharedElements) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
 

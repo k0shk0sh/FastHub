@@ -94,7 +94,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         }
         setTitle(login);
         if (login.equalsIgnoreCase(Login.getUser().getLogin())) {
-            hideProfileMenuItem();
+            selectProfile();
         }
         if (!isOrg) {
             FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),

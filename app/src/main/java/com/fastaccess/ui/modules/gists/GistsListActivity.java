@@ -68,6 +68,7 @@ public class GistsListActivity extends BaseActivity {
                                                              : GistsFragment.newInstance(), GistsFragment.TAG)
                     .commit();
         }
+        selectGists(!myGists);
         setTitle(myGists ? R.string.my_gists : R.string.public_gists);
         fab.show();
     }

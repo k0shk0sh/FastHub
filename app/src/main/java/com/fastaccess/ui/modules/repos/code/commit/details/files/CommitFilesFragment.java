@@ -78,7 +78,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
 
     @Override public void onToggle(int position, boolean isCollapsed) {
         if (adapter.getItem(position).getPatch() == null) {
-            ActivityHelper.openChooser(getContext(), adapter.getItem(position).getBlobUrl());
+            ActivityHelper.openChooser(getContext(), adapter.getItem(position).getRawUrl());
         }
         getSparseBooleanArray().put(position, isCollapsed);
     }

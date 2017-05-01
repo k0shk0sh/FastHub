@@ -15,8 +15,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingEnd="@dimen/spacing_xs_large">
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/toggleHolder"
@@ -62,8 +61,11 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/spacing_micro"
                 android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/spacing_normal"
                 android:src="@drawable/ic_arrow_drop_down"/>
         </LinearLayout>
+
+        <include layout="@layout/comments_dropdown_layout"/>
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/comment"
@@ -71,6 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
             android:textIsSelectable="true"/>
 
         <com.fastaccess.ui.widgets.FontTextView
@@ -78,7 +81,9 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:gravity="start"
+            android:paddingEnd="@dimen/spacing_xs_large"
             android:paddingStart="@dimen/spacing_xs_large"
             android:visibility="gone"
             tools:ignore="RtlSymmetry"
@@ -86,5 +91,4 @@
             tools:visibility="visible"/>
     </LinearLayout>
 
-    <include layout="@layout/comments_dropdown_layout"/>
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

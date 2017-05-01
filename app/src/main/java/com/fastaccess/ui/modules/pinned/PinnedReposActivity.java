@@ -48,6 +48,7 @@ public class PinnedReposActivity extends BaseActivity {
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        selectPinned();
         if (savedInstanceState == null) {
             getSupportFragmentManager()
                     .beginTransaction()
