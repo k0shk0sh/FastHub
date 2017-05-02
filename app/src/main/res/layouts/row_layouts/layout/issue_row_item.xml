@@ -22,9 +22,9 @@
             android:id="@+id/avatarLayout"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:visibility="gone"
             android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"
+            android:visibility="gone"
             tools:visibility="visible"/>
 
         <LinearLayout
@@ -43,14 +43,36 @@
                 android:textStyle="bold"
                 tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/details"
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?android:attr/textColorSecondary"
-                app:drawableColor="?android:attr/textColorSecondary"
-                tools:text="1000"/>
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/details"
+                    android:layout_gravity="center"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:drawableColor="?android:attr/textColorSecondary"
+                    tools:text="1000"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/commentsNo"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:drawableStart="@drawable/ic_comment_small"
+                    android:gravity="center|start"
+                    android:textColor="?android:attr/textColorSecondary"
+                    app:drawableColor="?android:attr/textColorSecondary"
+                    tools:text="1000"/>
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

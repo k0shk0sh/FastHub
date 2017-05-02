@@ -28,7 +28,6 @@ import icepick.State;
 public class FontTextView extends AppCompatTextView {
 
     @State int tintColor = -1;
-
     @State boolean selected;
 
     public FontTextView(@NonNull Context context) {
@@ -70,6 +69,7 @@ public class FontTextView extends AppCompatTextView {
             }
         }
         if (isInEditMode()) return;
+        setFreezesText(true);
         TypeFaceHelper.applyTypeface(this);
     }
 

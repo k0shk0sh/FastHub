@@ -9,7 +9,7 @@ import com.fastaccess.R;
 
 
 /**
- * Created by kosh on 7/30/2015. CopyRights @ Innov8tif
+ * Created by kosh on 7/30/2015. CopyRights @
  */
 public class AppbarRefreshLayout extends SwipeRefreshLayout {
 

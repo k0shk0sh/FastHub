@@ -52,6 +52,20 @@ import rx.Observable;
                         .toCompletable());
     }
 
+    public static Completable markAsRead(long id) {
+        return Completable.fromAction(() -> {
+            Notification notification = App.getInstance().getDataStore()
+                    .select(Notification.class)
+                    .where(Notification.ID.eq(id))
+                    .get()
+                    .firstOrNull();
+            if (notification != null) {
+                notification.setUnread(false);
+                notification.save(notification).toObservable().toBlocking().firstOrDefault(null);
+            }
+        });
+    }
+
     public static Observable<Object> save(@NonNull List<Notification> models) {
         return RxHelper.safeObservable(
                 Observable.create(subscriber -> {
@@ -65,12 +79,22 @@ import rx.Observable;
         );
     }
 
-    public static Observable<List<Notification>> getNotifications() {
+    public static Observable<List<Notification>> getUnreadNotifications() {
         return App.getInstance()
                 .getDataStore()
                 .select(Notification.class)
-                .orderBy(Notification.UPDATED_AT.desc(),
-                        Notification.UNREAD.eq(false).getLeftOperand())
+                .where(Notification.UNREAD.eq(true))
+                .orderBy(Notification.UPDATED_AT.desc())
+                .get()
+                .toObservable()
+                .toList();
+    }
+
+    public static Observable<List<Notification>> getAlltNotifications() {
+        return App.getInstance()
+                .getDataStore()
+                .select(Notification.class)
+                .orderBy(Notification.UPDATED_AT.desc(), Notification.UNREAD.eq(false).getLeftOperand())
                 .get()
                 .toObservable()
                 .toList();

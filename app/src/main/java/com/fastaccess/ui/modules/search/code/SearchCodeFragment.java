@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.search.code;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.SearchCodeAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -29,14 +31,29 @@ import icepick.State;
 public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchCodePresenter> implements SearchCodeMvp.View {
 
     @State String searchQuery;
+    @State boolean showRepoName;
+
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private SearchCodeAdapter adapter;
+    private SearchMvp.View countCallback;
 
     public static SearchCodeFragment newInstance() {
         return new SearchCodeFragment();
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SearchMvp.View) {
+            countCallback = (SearchMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        countCallback = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<SearchCodeModel> items, int page) {
@@ -52,6 +69,10 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         }
     }
 
+    @Override public void onSetTabCount(int count) {
+        if (countCallback != null) countCallback.onSetCount(count, 3);
+    }
+
     @Override protected int fragmentLayout() {
         return R.layout.small_grid_refresh_list;
     }
@@ -63,6 +84,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new SearchCodeAdapter(getPresenter().getCodes());
+        adapter.showRepoName(showRepoName);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         recycler.addDivider();
@@ -98,10 +120,12 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         super.showMessage(titleRes, msgRes);
     }
 
-    @Override public void onSetSearchQuery(@NonNull String query) {
+    @Override public void onSetSearchQuery(@NonNull String query, boolean showRepoName) {
         this.searchQuery = query;
+        this.showRepoName = showRepoName;
         getLoadMore().reset();
         adapter.clear();
+        adapter.showRepoName(showRepoName);
         recycler.scrollToPosition(0);
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());

@@ -14,15 +14,15 @@
         android:title="@string/feeds"/>
 
     <item
-        android:id="@+id/pullRequests"
-        android:color="?colorPrimary"
-        android:icon="@drawable/ic_pull_requests"
-        android:title="@string/pull_requests"/>
-
-    <item
         android:id="@+id/pinned"
         android:color="?colorPrimary"
         android:icon="@drawable/ic_issues"
         android:title="@string/issues"/>
+
+    <item
+        android:id="@+id/pullRequests"
+        android:color="?colorPrimary"
+        android:icon="@drawable/ic_pull_requests"
+        android:title="@string/pull_requests"/>
 
 </menu>

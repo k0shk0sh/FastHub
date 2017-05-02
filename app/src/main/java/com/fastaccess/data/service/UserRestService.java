@@ -29,10 +29,11 @@ public interface UserRestService {
     @GET("users/{username}/received_events")
     Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
 
-    @GET("users/{username}/repos?sort=pushed&direction=desc")
+    @GET("users/{username}/repos?affiliation=owner,collaborator&sort=pushed&direction=desc")
     Observable<Pageable<Repo>> getRepos(@Path("username") @NonNull String username, @Query("page") int page);
 
-    @GET("/user/repos?sort=pushed&direction=desc") Observable<Pageable<Repo>> getRepos(@Query("page") int page);
+    @GET("/user/repos?affiliation=owner,collaborator&sort=pushed&direction=desc")
+    Observable<Pageable<Repo>> getRepos(@Query("page") int page);
 
     @GET("users/{username}/starred") Observable<Pageable<Repo>>
     getStarred(@Path("username") @NonNull String username, @Query("page") int page);

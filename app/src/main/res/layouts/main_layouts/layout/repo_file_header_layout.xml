@@ -47,6 +47,17 @@
             android:contentDescription="@string/download"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_download"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/searchRepoFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_search"/>
+
     </LinearLayout>
 
     <LinearLayout

@@ -6,12 +6,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.MenuItem;
 
 import com.fastaccess.R;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
-import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerView;
+import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
@@ -32,7 +31,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         Fragment currentVisible = getVisibleFragment(fragmentManager);
         FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
         MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag(fragmentManager, MyPullsPagerFragment.TAG);
-        MyIssuesPagerView issuesView = (MyIssuesPagerView) getFragmentByTag(fragmentManager, MyIssuesPagerView.TAG);
+        MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag(fragmentManager, MyIssuesPagerFragment.TAG);
         switch (type) {
             case MainMvp.FEEDS:
                 if (homeView == null) {
@@ -50,7 +49,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 break;
             case MainMvp.ISSUES:
                 if (issuesView == null) {
-                    onAddAndHide(fragmentManager, MyIssuesPagerView.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }
@@ -76,41 +75,6 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 .add(R.id.container, toAdd, toAdd.getClass().getSimpleName())
                 .commit();
         toAdd.onHiddenChanged(false);
-    }
-
-    @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (getView() != null) {
-            getView().onCloseDrawer();
-            if (item.getItemId() == R.id.logout) {
-                getView().onLogoutPressed();
-                return true;
-            } else if (item.getItemId() == R.id.fhRepo) {
-                getView().openFasHubRepo();
-            } else if (item.getItemId() == R.id.settings) {
-                getView().onOpenSettings();
-            } else if (item.getItemId() == R.id.supportDev) {
-                getView().onSupportDevelopment();
-            } else if (item.getItemId() == R.id.enableAds) {
-                getView().onEnableAds();
-                return true;
-            } else if (item.getItemId() == R.id.gists) {
-                getView().onOpenGists(false);
-                return true;
-            } else if (item.getItemId() == R.id.myGists) {
-                getView().onOpenGists(true);
-                return true;
-            } else if (item.getItemId() == R.id.pinnedMenu) {
-                getView().onOpenPinnedRepos();
-                return true;
-            } else if (item.getItemId() == R.id.profile) {
-                getView().onOpenProfile();
-                return true;
-            } else if (item.getItemId() == R.id.orgs) {
-                getView().onOpenOrgs();
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {

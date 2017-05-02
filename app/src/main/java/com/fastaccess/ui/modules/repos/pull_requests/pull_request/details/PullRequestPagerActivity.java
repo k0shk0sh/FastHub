@@ -92,6 +92,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @OnClick(R.id.fab) void onAddComment() {
+        if (pager == null || pager.getAdapter() == null) return;
         PullRequestTimelineFragment view = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
         if (view != null) {
             view.onStartNewComment();
@@ -123,7 +124,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            onSetupIssue();
+            if (getPresenter().isApiCalled()) onSetupIssue();
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
@@ -228,7 +229,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public void onSetupIssue() {
         hideProgress();
         if (getPresenter().getPullRequest() == null) {
-            finish();
             return;
         }
         supportInvalidateOptionsMenu();
@@ -350,6 +350,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
         getPresenter().onPutMilestones(milestoneModel);
+    }
+
+    @Override public void onFinishActivity() {
+        hideProgress();
+        finish();
     }
 
     @Override public void onMerge(@NonNull String msg) {

@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.notification;
+package com.fastaccess.ui.modules.notification.all;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,7 +19,7 @@ import java.util.List;
  * Created by Kosh on 19 Feb 2017, 7:53 PM
  */
 
-public interface NotificationsMvp {
+public interface AllNotificationsMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener {
 

@@ -1,12 +1,7 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.SpannableString;
-import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -35,6 +30,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     @BindView(R.id.deletion) FontTextView deletion;
     @BindView(R.id.status) FontTextView status;
     @BindView(R.id.toggle) View toggle;
+    @BindView(R.id.open) View open;
     @BindString(R.string.changes) String changesText;
     @BindString(R.string.addition) String additionText;
     @BindString(R.string.delete) String deletionText;
@@ -47,9 +43,13 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     private OnToggleView onToggleView;
 
     @Override public void onClick(View v) {
-        int position = getAdapterPosition();
-        onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-        onToggle(onToggleView.isCollapsed(position));
+        if (v.getId() != R.id.open) {
+            int position = getAdapterPosition();
+            onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
+            onToggle(onToggleView.isCollapsed(position));
+        } else {
+            super.onClick(v);
+        }
     }
 
     private void onToggle(boolean expanded) {
@@ -67,6 +67,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     private CommitFilesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
                                   @NonNull OnToggleView onToggleView) {
         super(itemView, adapter);
+        open.setOnClickListener(this);
         this.onToggleView = onToggleView;
         patchAdditionColor = ViewHelper.getPatchAdditionColor(itemView.getContext());
         patchDeletionColor = ViewHelper.getPatchDeletionColor(itemView.getContext());
@@ -101,35 +102,6 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     }
 
     private void setPatchText(@NonNull String text) {
-        if (!TextUtils.isEmpty(text)) {
-            String[] split = text.split("\\r?\\n|\\r");
-            if (split.length > 0) {
-                SpannableStringBuilder builder = new SpannableStringBuilder();
-                int lines = split.length;
-                for (int i = 0; i < lines; i++) {
-                    String token = split[i];
-                    if (i < (lines - 1)) {
-                        token = token.concat("\n");
-                    }
-                    char firstChar = token.charAt(0);
-                    int color = Color.TRANSPARENT;
-                    if (firstChar == '+') {
-                        color = patchAdditionColor;
-                    } else if (firstChar == '-') {
-                        color = patchDeletionColor;
-                    } else if (token.startsWith("@@")) {
-                        color = patchRefColor;
-                    }
-                    SpannableString spannableDiff = new SpannableString(token);
-                    if (color != Color.TRANSPARENT) {
-                        DiffLineSpan span = new DiffLineSpan(color, patch.getPaddingLeft());
-                        spannableDiff.setSpan(span, 0, token.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                    builder.append(spannableDiff);
-                }
-                patch.setTypeface(Typeface.MONOSPACE, Typeface.NORMAL);
-                patch.setText(builder);
-            }
-        }
+        patch.setText(DiffLineSpan.getSpannable(text, patchAdditionColor, patchDeletionColor, patchRefColor));
     }
 }

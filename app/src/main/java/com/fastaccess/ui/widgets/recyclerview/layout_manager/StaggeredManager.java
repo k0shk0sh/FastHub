@@ -21,12 +21,6 @@ public class StaggeredManager extends StaggeredGridLayoutManager {
     @Override public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
         try {
             super.onLayoutChildren(recycler, state);
-        } catch (IndexOutOfBoundsException ignored) {}
+        } catch (Exception ignored) {}
     }
-
-    public void reverse(){
-        setReverseLayout(true);
-    }
-
-
 }

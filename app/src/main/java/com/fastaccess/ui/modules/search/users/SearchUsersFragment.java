@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.search.users;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -32,9 +34,22 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private UsersAdapter adapter;
+    private SearchMvp.View countCallback;
 
     public static SearchUsersFragment newInstance() {
         return new SearchUsersFragment();
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SearchMvp.View) {
+            countCallback = (SearchMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        countCallback = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<User> items, int page) {
@@ -48,6 +63,10 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
         } else {
             adapter.addItems(items);
         }
+    }
+
+    @Override public void onSetTabCount(int count) {
+        if (countCallback != null) countCallback.onSetCount(count, 1);
     }
 
     @Override protected int fragmentLayout() {

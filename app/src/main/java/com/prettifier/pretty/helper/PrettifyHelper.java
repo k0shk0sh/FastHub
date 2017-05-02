@@ -19,38 +19,39 @@ public class PrettifyHelper {
                     "<body onload=\"prettyPrint()\">\n" +
                     "<pre class=\"prettyprint linenums\">%s</pre>\n" +
                     "<script src=\"./js/prettify.js\"></script>\n" +
+                    "<script>\n" +
+                    "function scrollToLineNumber(lineNo) {\n" +
+                    "    var normalizedLineNo = (lineNo - 1) %% 10;\n" +
+                    "    var nthLineNo = Math.floor((lineNo - 1) / 10);\n" +
+                    "    var elLines = document.querySelectorAll('li.L' + normalizedLineNo);\n" +
+                    "    if (elLines[nthLineNo]) {\n" +
+                    "        elLines[nthLineNo].scrollIntoView();\n" +
+                    "    }\n" +
+                    "}" +
+                    "</script>" +
                     "</body>\n" +
                     "</html>";
 
-    @NonNull private static final String WRAPPED_STYLE = "<style>\n " +
-            "pre {\n" +
-            "    word-wrap: break-all !important;\n" +
-            "    white-space: pre-wrap !important;\n" +
-            "    white-space: -moz-pre-wrap !important;\n" +
-            "    white-space: -pre-wrap !important;\n" +
-            "    white-space: -o-pre-wrap !important;\n" +
-            "    word-wrap: break-word !important;\n" +
-            "}\n" +
-            "pre code {\n" +
-            "    word-wrap: break-all !important;\n" +
-            "    white-space: pre-wrap !important;\n" +
-            "    white-space: -moz-pre-wrap !important;\n" +
-            "    white-space: -pre-wrap !important;\n" +
-            "    white-space: -o-pre-wrap !important;\n" +
-            "    word-wrap: break-word !important;\n" +
-            "}\n" +
-            "img {\n" +
-            "    max-width: 100% !important;\n" +
-            "}\n" +
-            "table {\n" +
-            "    word-wrap: break-all !important;\n" +
-            "    white-space: pre-wrap !important;\n" +
-            "    white-space: -moz-pre-wrap !important;\n" +
-            "    white-space: -pre-wrap !important;\n" +
-            "    white-space: -o-pre-wrap !important;\n" +
-            "    word-wrap: break-word !important;\n" +
-            "}\n" +
-            "</style>";
+    @NonNull private static final String WRAPPED_STYLE =
+            "<style>\n " +
+                    "pre, pre code, table {\n" +
+                    "    white-space: pre-wrap !important;\n" +
+                    "    word-wrap: break-all !important;\n" +
+                    "    word-wrap: break-word !important;\n" +
+                    "}\n" +
+                    "img {\n" +
+                    "    max-width: 100% !important;\n" +
+                    "}\n" +
+                    "ol {\n" +
+                    "    margin-left: 0 !important;\n" +
+                    "    padding-left: 6px !important;\n" +
+                    "}\n" +
+                    "ol li {\n" +
+                    "    margin-left: 0  !important;\n" +
+                    "    padding-left: 0  !important;\n" +
+                    "    text-indent: -12px !important;\n" +
+                    "}" +
+                    "</style>";
 
 
     @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap) {

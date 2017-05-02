@@ -6,6 +6,7 @@
     <item
         android:id="@+id/readAll"
         android:icon="@drawable/ic_clear_all"
+        android:visible="false"
         android:title="@string/mark_all_as_read"
         app:showAsAction="ifRoom"/>
 

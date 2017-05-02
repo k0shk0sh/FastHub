@@ -28,7 +28,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnItemSelected;
-import icepick.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -40,7 +39,6 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.branches) AppCompatSpinner branches;
     @BindView(R.id.branchesProgress) ProgressBar branchesProgress;
-    @State long commitCount = -1;
     private OnLoadMore onLoadMore;
     private CommitsAdapter adapter;
     private RepoPagerMvp.View repoCallback;
@@ -116,8 +114,6 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getCommits().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
-        } else {
-            if (commitCount != -1) onShowCommitCount(commitCount);
         }
         setBranchesData(getPresenter().getBranches(), false);
     }
@@ -185,7 +181,6 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     }
 
     @Override public void onShowCommitCount(long sum) {
-        this.commitCount = sum;
         if (tabsBadgeListener != null) {
             tabsBadgeListener.onSetBadge(2, (int) sum);
         }

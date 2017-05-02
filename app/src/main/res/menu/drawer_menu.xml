@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <group android:id="@+id/home_group">
+        <item
+            android:id="@+id/navToRepo"
+            android:icon="@drawable/ic_repo"
+            android:title="@string/repo"
+            android:visible="false"/>
+        <item
+            android:id="@+id/mainView"
+            android:icon="@drawable/ic_home"
+            android:title="@string/home"
+            android:visible="true"/>
+    </group>
 
     <group android:id="@+id/profile_group">
         <item
@@ -12,6 +24,7 @@
             android:icon="@drawable/ic_people"
             android:title="@string/organizations"/>
     </group>
+
 
     <group
         android:id="@+id/group_one"
@@ -47,7 +60,6 @@
             android:id="@+id/supportDev"
             android:icon="@drawable/ic_heart"
             android:title="@string/support_development"/>
-
         <item
             android:id="@+id/enableAds"
             android:icon="@drawable/ic_heart_full"

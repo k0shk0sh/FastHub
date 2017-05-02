@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
-    android:id="@+id/drawerLayout"
+    android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,17 +33,6 @@
     </LinearLayout>
 
 
-    <android.support.design.widget.NavigationView
-        android:id="@+id/navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:clickable="true"
-        android:fitsSystemWindows="true"
-        android:focusable="true"
-        app:headerLayout="@layout/drawer_header"
-        app:itemIconTint="?colorAccent"
-        app:itemTextColor="?colorAccent"
-        app:menu="@menu/drawer_menu"/>
+    <include layout="@layout/nav_menu_layout"/>
 
 </android.support.v4.widget.DrawerLayout>

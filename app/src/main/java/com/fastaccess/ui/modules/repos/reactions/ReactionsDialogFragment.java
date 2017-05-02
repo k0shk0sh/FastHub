@@ -13,7 +13,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.provider.comments.CommentsHelper;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;

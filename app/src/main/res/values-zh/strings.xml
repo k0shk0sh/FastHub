@@ -228,7 +228,7 @@
     <string name="un_staring" formatted="true">不查看 %s</string>
     <string name="un_watching" formatted="true">屏蔽 %s</string>
     <string name="watching" formatted="true">关注 %s</string>
-    <string name="login_using_your_default_browser">使用默认的浏览器登陆</string>
+    <string name="login_using_your_default_browser">使用默认的浏览器登陆 (OAuth)</string>
     <string name="or_character">或</string>
     <string name="mark_notification_title">关闭通知阅读状态</string>
     <string name="mark_notification_summary">点击通知后，禁止标记为已读。</string>

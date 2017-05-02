@@ -50,9 +50,28 @@
     </item>
 
     <item
+        android:icon="@drawable/ic_subscribe"
+        android:title="@string/subscribe"
+        android:visible="false"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/subscribe"
+                android:icon="@drawable/ic_subscribe"
+                android:title="@string/subscribe"/>
+
+            <item
+                android:id="@+id/mute"
+                android:icon="@drawable/ic_unsubscribe"
+                android:title="@string/un_subscribe"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
 </menu>

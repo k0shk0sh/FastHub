@@ -8,13 +8,11 @@ import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.widgets.SpannableBuilder;
-import com.mikepenz.aboutlibraries.Libs;
-import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import es.dmoral.toasty.Toasty;
 
@@ -46,21 +44,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         findPreference("rect_avatar").setOnPreferenceChangeListener(this);
         findPreference("appTheme").setOnPreferenceChangeListener(this);
         findPreference("app_language").setOnPreferenceChangeListener(this);
+        findPreference("showChangelog").setOnPreferenceClickListener(preference -> {
+            new ChangelogBottomSheetDialog().show(getChildFragmentManager(), "ChangelogBottomSheetDialog");
+            return true;
+        });
+        findPreference("joinSlack").setOnPreferenceClickListener(preference -> {
+            new SlackBottomSheetDialog().show(getChildFragmentManager(), "SlackBottomSheetDialog");
+            return true;
+        });
         findPreference("currentVersion").setSummary(SpannableBuilder.builder()
                 .append(getString(R.string.current_version))
                 .append("(")
                 .bold(BuildConfig.VERSION_NAME)
                 .append(")"));
-        findPreference("aboutLibs").setOnPreferenceClickListener(preference -> {
-            new LibsBuilder()
-                    .withActivityStyle(AppHelper.isNightMode(getResources()) ? Libs.ActivityStyle.DARK :
-                                       Libs.ActivityStyle.LIGHT)
-                    .withAutoDetect(true)
-                    .withAboutIconShown(true)
-                    .withAboutVersionShown(true)
-                    .start(getActivity());
-            return true;
-        });
     }
 
     @Override public boolean onPreferenceChange(Preference preference, Object newValue) {

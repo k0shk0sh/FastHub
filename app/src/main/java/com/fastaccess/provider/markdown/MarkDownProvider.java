@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.timeline.handler.DrawableGetter;
 import com.zzhoujay.markdown.MarkDown;
 
 /**
@@ -33,7 +34,8 @@ public class MarkDownProvider {
         try {
             textView.setText(MarkDown.fromMarkdown(value, textView,
                     ViewHelper.getCardBackground(textView.getContext()),
-                    ViewHelper.getPrimaryTextColor(textView.getContext())));
+                    ViewHelper.getPrimaryTextColor(textView.getContext()),
+                    new DrawableGetter(textView)));
         } catch (IndexOutOfBoundsException exception) {
             exception.printStackTrace();
             textView.setText(value);
@@ -225,8 +227,9 @@ public class MarkDownProvider {
         name = name.toLowerCase();
         for (String value : MARKDOWN_EXTENSIONS) {
             String extension = MimeTypeMap.getFileExtensionFromUrl(name);
-            if ((extension != null && value.replace(".", "").equals(extension)) || name.equalsIgnoreCase("README") ||
-                    name.endsWith(value)) return true;
+            if ((extension != null && value.replace(".", "").equals(extension)) ||
+                    name.equalsIgnoreCase("README") || name.endsWith(value))
+                return true;
         }
         return false;
     }

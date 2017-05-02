@@ -11,11 +11,11 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
-import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
 
@@ -28,7 +28,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.avatarView) AvatarLayout avatarView;
     @BindView(R.id.name) FontTextView name;
     @BindView(R.id.date) FontTextView date;
-    @BindView(R.id.description) PrettifyWebView description;
+    @BindView(R.id.description) FontTextView description;
 
     private IssueDetailsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -51,22 +51,20 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         name.setText(issueModel.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));
         if (!InputHelper.isEmpty(issueModel.getBodyHtml())) {
-            description.setNestedScrollingEnabled(false);
-            description.setGithubContent(issueModel.getBodyHtml(), issueModel.getHtmlUrl(), true);
+            HtmlHelper.htmlIntoTextView(description, issueModel.getBodyHtml());
         } else {
-            description.setGithubContent(itemView.getResources().getString(R.string.no_description_provided), null, true);
+            description.setText(R.string.no_description_provided);
         }
     }
 
-    private void bind(@NonNull PullRequest issueModel) {
-        avatarView.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
-        name.setText(issueModel.getUser().getLogin());
-        date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));
-        if (!InputHelper.isEmpty(issueModel.getBodyHtml())) {
-            description.setNestedScrollingEnabled(false);
-            description.setGithubContent(issueModel.getBodyHtml(), issueModel.getHtmlUrl(), true);
+    private void bind(@NonNull PullRequest pullRequest) {
+        avatarView.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
+        name.setText(pullRequest.getUser().getLogin());
+        date.setText(ParseDateFormat.getTimeAgo(pullRequest.getCreatedAt()));
+        if (!InputHelper.isEmpty(pullRequest.getBodyHtml())) {
+            HtmlHelper.htmlIntoTextView(description, pullRequest.getBodyHtml());
         } else {
-            description.setGithubContent(itemView.getResources().getString(R.string.no_description_provided), null, true);
+            description.setText(R.string.no_description_provided);
         }
     }
 }

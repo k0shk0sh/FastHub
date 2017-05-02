@@ -1,5 +1,6 @@
 package com.fastaccess.ui.adapter.viewholder;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.format.Formatter;
@@ -12,7 +13,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
-import com.fastaccess.ui.widgets.RoundBackgroundSpan;
+import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.color.ColorGenerator;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -62,14 +63,14 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
     @Override public void bind(@NonNull Repo repo) {
         if (repo.isFork() && !isStarred) {
             title.setText(SpannableBuilder.builder()
-                    .append(" " + forked + " ", new RoundBackgroundSpan(forkColor))
+                    .append(" " + forked + " ", new LabelSpan(forkColor))
                     .append(" ")
-                    .append(repo.getName()));
+                    .append(repo.getName(), new LabelSpan(Color.TRANSPARENT)));
         } else if (repo.isPrivateX()) {
             title.setText(SpannableBuilder.builder()
-                    .append(" " + privateRepo + " ", new RoundBackgroundSpan(privateColor))
+                    .append(" " + privateRepo + " ", new LabelSpan(privateColor))
                     .append(" ")
-                    .append(repo.getName()));
+                    .append(repo.getName(), new LabelSpan(Color.TRANSPARENT)));
         } else {
             title.setText(!isStarred ? repo.getName() : repo.getFullName());
         }

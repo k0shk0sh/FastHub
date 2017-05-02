@@ -35,9 +35,7 @@ public class LoginProvider {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         if (BuildConfig.DEBUG) {
             client.addInterceptor(new HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY))
-                    .addInterceptor(new HttpLoggingInterceptor()
-                            .setLevel(HttpLoggingInterceptor.Level.HEADERS));
+                    .setLevel(HttpLoggingInterceptor.Level.BODY));
         }
         client.addInterceptor(new AuthenticationInterceptor(authToken, otp));
         return client.build();

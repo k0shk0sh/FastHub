@@ -8,8 +8,10 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.annimon.stream.Objects;
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -20,7 +22,10 @@ import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
+import java.util.HashSet;
+
 import butterknife.BindView;
+import icepick.State;
 
 /**
  * Created by Kosh on 31 Dec 2016, 1:36 AM
@@ -31,6 +36,7 @@ public class RepoCodePagerFragment extends BaseFragment<RepoCodePagerMvp.View, R
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
+    @State HashSet<TabsCountStateModel> counts = new HashSet<>();
 
     public static RepoCodePagerFragment newInstance(@NonNull String repoId, @NonNull String login,
                                                     @NonNull String htmlLink, @NonNull String defaultBranch) {
@@ -58,9 +64,13 @@ public class RepoCodePagerFragment extends BaseFragment<RepoCodePagerMvp.View, R
                 throw new NullPointerException();
             }
             pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(),
-                    FragmentPagerAdapterModel.buildForRepoCode(getContext(), repoId, login, htmlLink, Objects.toString(defaultBranch, "master"))));
+                    FragmentPagerAdapterModel.buildForRepoCode(getContext(), repoId, login, htmlLink,
+                            Objects.toString(defaultBranch, "master"))));
             tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
             tabs.setupWithViewPager(pager);
+        }
+        if (savedInstanceState != null && !counts.isEmpty()) {
+            Stream.of(counts).forEach(this::updateCount);
         }
     }
 
@@ -82,14 +92,22 @@ public class RepoCodePagerFragment extends BaseFragment<RepoCodePagerMvp.View, R
     }
 
     @Override public void onSetBadge(int tabIndex, int count) {
-        if (tabs != null && tabIndex == 2) {
-            TextView tv = ViewHelper.getTabTextView(tabs, tabIndex);
-            tv.setText(SpannableBuilder.builder()
-                    .append(getString(R.string.commits))
-                    .append("   ")
-                    .append("(")
-                    .bold(String.valueOf(count))
-                    .append(")"));
+        TabsCountStateModel model = new TabsCountStateModel();
+        model.setTabIndex(tabIndex);
+        model.setCount(count);
+        counts.add(model);
+        if (tabs != null) {
+            updateCount(model);
         }
+    }
+
+    private void updateCount(@NonNull TabsCountStateModel model) {
+        TextView tv = ViewHelper.getTabTextView(tabs, model.getTabIndex());
+        tv.setText(SpannableBuilder.builder()
+                .append(getString(R.string.commits))
+                .append("   ")
+                .append("(")
+                .bold(String.valueOf(model.getCount()))
+                .append(")"));
     }
 }

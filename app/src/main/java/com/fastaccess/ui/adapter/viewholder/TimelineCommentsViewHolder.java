@@ -14,7 +14,8 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.provider.comments.CommentsHelper;
+import com.fastaccess.provider.timeline.CommentsHelper;
+import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
@@ -22,7 +23,6 @@ import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
-import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
 
@@ -35,7 +35,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.avatarView) AvatarLayout avatar;
     @BindView(R.id.date) FontTextView date;
     @BindView(R.id.name) FontTextView name;
-    @BindView(R.id.comment) PrettifyWebView comment;
+    @BindView(R.id.comment) FontTextView comment;
     @BindView(R.id.thumbsUp) FontTextView thumbsUp;
     @BindView(R.id.thumbsDown) FontTextView thumbsDown;
     @BindView(R.id.laugh) FontTextView laugh;
@@ -54,7 +54,6 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
-    private boolean isPaused;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder || v.getId() == R.id.reactionsText) {
@@ -149,8 +148,11 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         } else {
             avatar.setUrl(null, null);
         }
-        comment.setNestedScrollingEnabled(false);
-        comment.setGithubContent(commentsModel.getBodyHtml(), null, true);
+        if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
+            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());
+        } else {
+            comment.setText("");
+        }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
         if (showEmojies) {
@@ -244,15 +246,14 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
 
     public void pauseWebView() {
         if (comment != null) {
-            comment.onPause();
-            isPaused = true;
+//            comment.onPause();
         }
     }
 
     public void resumeWebView() {
         if (comment != null) {
-            comment.onResume();
-            isPaused = false;
+//            comment.onResume();
         }
     }
+
 }

@@ -8,12 +8,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 /**
- * Created by kosh20111 on 3/11/2015. CopyRights @ Innov8tif
+ * Created by kosh20111 on 3/11/2015. CopyRights @
  * <p>
  * Input Helper to validate stuff related to input fields.
  */
 public class InputHelper {
 
+    public static final String SPACE = "\u202F\u202F";
 
     private static boolean isWhiteSpaces(@Nullable String s) {
         return s != null && s.matches("\\s+");

@@ -1,6 +1,7 @@
 package com.fastaccess.ui.widgets.color;
 
 import android.content.Context;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -31,7 +32,7 @@ public class ColorGenerator {
         MATERIAL_DARK = create(Arrays.asList(
                 0xffffc107,
                 0xffffc400,
-                -14575885,
+                0xff2196f3,
                 0xff2979ff,
                 0xffa1887f,
                 0xff4dd0e1,
@@ -57,7 +58,7 @@ public class ColorGenerator {
         return colors.get(Math.abs(key.hashCode()) % colors.size());
     }
 
-    public static int getColor(@NonNull Context context, @Nullable Object object) {
+    @ColorInt public static int getColor(@NonNull Context context, @Nullable Object object) {
         if (AppHelper.isNightMode(context.getResources())) {
             return MATERIAL_DARK.getColor(object);
         } else {

@@ -14,7 +14,7 @@ import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.ui.widgets.RoundBackgroundSpan;
+import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
@@ -175,14 +175,13 @@ import lombok.Setter;
                             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                                 LabelModel labelModel = issueEventModel.getLabel();
                                 int color = Color.parseColor("#" + labelModel.getColor());
-                                spannableBuilder
-                                        .append(" ")
-                                        .append(" " + labelModel.getName() + " ", new RoundBackgroundSpan(color))
+                                spannableBuilder.append(" ")
+                                        .append(" " + labelModel.getName() + " ", new LabelSpan(color))
                                         .append(" ");
                             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
-                                spannableBuilder
-                                        .append(" ")
-                                        .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "");
+                                spannableBuilder.append(" ")
+                                        .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "",
+                                                new LabelSpan(Color.TRANSPARENT));
                             }
                         } else {
                             models.add(new TimelineModel(issueEventModel));
@@ -195,18 +194,19 @@ import lombok.Setter;
             if (toAdd != null) {
                 SpannableBuilder builder = SpannableBuilder.builder();
                 if (toAdd.getAssignee() != null && toAdd.getAssigner() != null) {
-                    builder.bold(toAdd.getAssigner().getLogin());
+                    builder.bold(toAdd.getAssigner().getLogin(), new LabelSpan(Color.TRANSPARENT));
                 } else {
                     if (toAdd.getActor() != null) {
-                        builder.bold(toAdd.getActor().getLogin());
+                        builder.bold(toAdd.getActor().getLogin(), new LabelSpan(Color.TRANSPARENT));
                     }
                 }
                 builder.append(" ")
-                        .append(toAdd.getEvent().name().replaceAll("_", " "));
-                toAdd.setLabels(SpannableBuilder.builder().append(builder)
+                        .append(toAdd.getEvent().name().replaceAll("_", " "), new LabelSpan(Color.TRANSPARENT));
+                toAdd.setLabels(SpannableBuilder.builder()
+                        .append(builder)
                         .append(spannableBuilder)
                         .append(" ")
-                        .append(ParseDateFormat.getTimeAgo(toAdd.getCreatedAt())));
+                        .append(ParseDateFormat.getTimeAgo(toAdd.getCreatedAt()), new LabelSpan(Color.TRANSPARENT)));
                 models.add(new TimelineModel(toAdd));
             }
         }

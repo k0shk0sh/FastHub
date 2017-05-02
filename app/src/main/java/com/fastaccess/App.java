@@ -17,6 +17,7 @@ import io.requery.rx.SingleEntityStore;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import io.requery.sql.TableCreationMode;
+import shortbread.Shortbread;
 
 
 /**
@@ -30,22 +31,27 @@ public class App extends Application {
     @Override public void onCreate() {
         super.onCreate();
         instance = this;
-        deleteDatabase("database.db");
-        getDataStore();//init requery before anything.
-        PreferenceManager.setDefaultValues(this, R.xml.fasthub_settings, false);
-        UILProvider.initUIL(this);
-        TypeFaceHelper.generateTypeface(this);
-        NotificationSchedulerJobTask.scheduleJob(this);//schedule the job for the notifications
+        init();
     }
 
     @NonNull public static App getInstance() {
         return instance;
     }
 
+    private void init() {
+        deleteDatabase("database.db");
+        getDataStore();//init requery before anything.
+        PreferenceManager.setDefaultValues(this, R.xml.fasthub_settings, false);
+        UILProvider.initUIL(this);
+        TypeFaceHelper.generateTypeface(this);
+        NotificationSchedulerJobTask.scheduleJob(this);
+        Shortbread.create(this);
+    }
+
     public SingleEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 5);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 7);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

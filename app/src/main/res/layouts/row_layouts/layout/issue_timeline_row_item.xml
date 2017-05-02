@@ -7,7 +7,8 @@
     android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/layout_margin"
     android:layout_marginStart="@dimen/layout_margin"
-    android:layout_marginTop="@dimen/spacing_normal">
+    android:layout_marginTop="@dimen/spacing_normal"
+    android:clipChildren="false">
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/stateImage"
@@ -50,7 +51,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="top"
                 android:orientation="vertical">
 
                 <com.fastaccess.ui.widgets.FontTextView
@@ -58,8 +59,6 @@
                     style="@style/TextAppearance.AppCompat.Body1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:lineSpacingExtra="@dimen/spacing_micro"
                     android:ellipsize="end"
                     android:maxLines="5"
                     tools:text="For a divided large loaf, add some champaign and cinnamon."/>
@@ -69,9 +68,9 @@
                     style="@style/TextAppearance.AppCompat.Small"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:visibility="gone"
-                    tools:text="For a divided large loaf, add some champaign and cinnamon."/>
+                    tools:text="For a divided large loaf, add some champaign and cinnamon."
+                    tools:visibility="visible"/>
             </LinearLayout>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>

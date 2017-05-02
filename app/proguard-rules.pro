@@ -100,3 +100,8 @@
 -keep class **.R$* {
     <fields>;
 }
+
+-keep class net.nightwhistler.** {*;}
+-keep class org.htmlcleaner.** {*;}
+-dontwarn org.jaxen.**
+-dontwarn org.jdom.**

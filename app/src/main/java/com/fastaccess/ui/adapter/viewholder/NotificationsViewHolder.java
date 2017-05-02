@@ -31,15 +31,17 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
     @BindView(R.id.unsubsribe) ForegroundImageView unSubscribe;
     @BindView(R.id.markAsRead) ForegroundImageView markAsRead;
     @BindView(R.id.notificationType) ForegroundImageView notificationType;
+    private boolean showUnreadState;
 
-    private NotificationsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private NotificationsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean showUnreadState) {
         super(itemView, adapter);
         unSubscribe.setOnClickListener(this);
         markAsRead.setOnClickListener(this);
+        this.showUnreadState = showUnreadState;
     }
 
-    public static NotificationsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter) {
-        return new NotificationsViewHolder(getView(viewGroup, R.layout.notifications_row_item), adapter);
+    public static NotificationsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter, boolean showUnreadState) {
+        return new NotificationsViewHolder(getView(viewGroup, R.layout.notifications_row_item), adapter, showUnreadState);
     }
 
     @Override public void bind(@NonNull GroupedNotificationModel model) {
@@ -50,18 +52,21 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
             int cardBackground = ViewHelper.getCardBackground(itemView.getContext());
             int color;
             markAsRead.setVisibility(thread.isUnread() ? View.VISIBLE : View.GONE);
+//            unSubscribe.setImageResource(thread.isIsSubscribed() ? R.drawable.ic_unsubscribe : R.drawable.ic_subscribe);
             if (thread.getSubject().getType() != null) {
                 notificationType.setImageResource(thread.getSubject().getType().getDrawableRes());
                 notificationType.setContentDescription(thread.getSubject().getType().name());
             } else {
                 notificationType.setImageResource(R.drawable.ic_info_outline);
             }
-            if (AppHelper.isNightMode(itemView.getResources())) {
-                color = ContextCompat.getColor(itemView.getContext(), R.color.material_blue_grey_800);
-            } else {
-                color = ContextCompat.getColor(itemView.getContext(), R.color.material_blue_grey_200);
+            if (showUnreadState) {
+                if (AppHelper.isNightMode(itemView.getResources())) {
+                    color = ContextCompat.getColor(itemView.getContext(), R.color.material_blue_grey_800);
+                } else {
+                    color = ContextCompat.getColor(itemView.getContext(), R.color.material_blue_grey_200);
+                }
+                ((CardView) itemView).setCardBackgroundColor(thread.isUnread() ? color : cardBackground);
             }
-            ((CardView) itemView).setCardBackgroundColor(thread.isUnread() ? color : cardBackground);
         }
     }
 }

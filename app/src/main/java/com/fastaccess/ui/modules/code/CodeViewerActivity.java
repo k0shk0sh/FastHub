@@ -52,7 +52,7 @@ public class CodeViewerActivity extends BaseActivity {
     }
 
     @Override protected boolean isTransparent() {
-        return false;
+        return true;
     }
 
     @Override protected boolean canBack() {
@@ -95,7 +95,7 @@ public class CodeViewerActivity extends BaseActivity {
             }
             return true;
         } else if (item.getItemId() == R.id.browser) {
-            ActivityHelper.forceOpenInBrowser(this, url);
+            ActivityHelper.openChooser(this, url);
             return true;
         } else if (item.getItemId() == R.id.copy) {
             AppHelper.copyToClipboard(this, url);

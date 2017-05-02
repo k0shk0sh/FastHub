@@ -15,7 +15,7 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.provider.comments.ReactionsProvider;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -89,8 +89,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         int number = getHeader().getNumber();
         Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
                 RestProvider.getIssueService().getIssueComments(login, repoId, number),
-                RestProvider.getPullRequestSerice().getPullStatus(login, repoId, getHeader().getHead().getSha()),
-                RestProvider.getPullRequestSerice().getReviews(login, repoId, number),
+                RestProvider.getPullRequestService().getPullStatus(login, repoId, getHeader().getHead().getSha()),
+                RestProvider.getPullRequestService().getReviews(login, repoId, number),
                 (issueEventPageable, commentPageable, statuses, reviews) -> {
                     if (statuses != null) {
                         statuses.setMergable(getHeader().isMergeable());

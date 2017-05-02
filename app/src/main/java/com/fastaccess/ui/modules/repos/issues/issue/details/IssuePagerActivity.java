@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -125,7 +126,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            onSetupIssue();
+            if (getPresenter().isApiCalled()) onSetupIssue();
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
@@ -188,6 +189,12 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         } else if (item.getItemId() == R.id.assignees) {
             getPresenter().onLoadAssignees();
             return true;
+        } else if (item.getItemId() == R.id.subscribe) {
+            getPresenter().onSubscribeOrMute(false);
+            return true;
+        } else if (item.getItemId() == R.id.mute) {
+            getPresenter().onSubscribeOrMute(true);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -223,7 +230,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public void onSetupIssue() {
         hideProgress();
         if (getPresenter().getIssue() == null) {
-            finish();
             return;
         }
         supportInvalidateOptionsMenu();
@@ -243,7 +249,11 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                 parsedDate = ParseDateFormat.getTimeAgo(issueModel.getCreatedAt());
                 username = issueModel.getUser() != null ? issueModel.getUser().getLogin() : "N/A";
             }
-            date.setText(SpannableBuilder.builder().append(getString(issueModel.getState().getStatus()))
+            date.setText(SpannableBuilder.builder()
+                    .append(ContextCompat.getDrawable(this,
+                            issueModel.getState() == IssueState.open ? R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small))
+                    .append(" ")
+                    .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
                     .append(parsedDate));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
@@ -309,6 +319,11 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
         getPresenter().onPutMilestones(milestoneModel);
+    }
+
+    @Override public void onFinishActivity() {
+        hideProgress();
+        finish();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

@@ -1,7 +1,5 @@
 package com.fastaccess.ui.widgets.dialog;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.res.Resources;
@@ -34,23 +32,13 @@ public class ProgressDialogFragment extends DialogFragment {
         return fragment;
     }
 
-    @Override public void dismiss() {
-        AnimHelper.dismissDialog(this, 40, new AnimatorListenerAdapter() {
-            @Override public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                ProgressDialogFragment.super.dismiss();
-            }
-        });
-    }
-
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(getArguments().getString("msg"));
         progressDialog.setCancelable(getArguments().getBoolean("isCancelable"));
         setCancelable(getArguments().getBoolean("isCancelable"));
         if (getActivity() != null && !getActivity().isFinishing()) {
-            progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog,
-                    getResources().getInteger(android.R.integer.config_shortAnimTime)));
+            progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog, 200));
         }
         return progressDialog;
     }

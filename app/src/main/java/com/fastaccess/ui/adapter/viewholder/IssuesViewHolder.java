@@ -28,6 +28,7 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
     @BindView(R.id.title) FontTextView title;
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.details) FontTextView details;
+    @BindView(R.id.commentsNo) FontTextView commentsNo;
     @BindString(R.string.by) String by;
 
     private boolean withAvatar;
@@ -62,12 +63,21 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                         .append(" ");
             }
             if (!showRepoName) {
-                builder.bold("#" + issueModel.getNumber()).append(" ");
+                builder.append("#")
+                        .append(String.valueOf(issueModel.getNumber())).append(" ")
+                        .append(issueModel.getUser().getLogin())
+                        .append(" ");
             }
             details.setText(builder
-                    .append(itemView.getResources().getString(issueModel.getState().getStatus()))
+                    .append(itemView.getResources().getString(issueModel.getState().getStatus()).toLowerCase())
                     .append(" ")
                     .append(data));
+            if (issueModel.getComments() > 0) {
+                commentsNo.setText(String.valueOf(issueModel.getComments()));
+                commentsNo.setVisibility(View.VISIBLE);
+            } else {
+                commentsNo.setVisibility(View.GONE);
+            }
         }
         if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());

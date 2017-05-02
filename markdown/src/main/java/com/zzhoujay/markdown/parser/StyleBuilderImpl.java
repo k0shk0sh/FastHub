@@ -50,10 +50,11 @@ public class StyleBuilderImpl implements StyleBuilder {
     private WeakReference<TextView> textViewWeakReference;
     private Html.ImageGetter imageGetter;
 
-    public StyleBuilderImpl(TextView textView, int codeColor, int h1_color) {
+    public StyleBuilderImpl(TextView textView, int codeColor, int h1_color, Html.ImageGetter imageGetter) {
         this.textViewWeakReference = new WeakReference<>(textView);
         this.code_color = codeColor;
         this.h1_color = h1_color;
+        this.imageGetter = imageGetter;
     }
 
     public StyleBuilderImpl(TextView textView, Html.ImageGetter imageGetter) {

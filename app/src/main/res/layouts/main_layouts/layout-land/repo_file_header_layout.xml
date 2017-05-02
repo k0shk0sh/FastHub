@@ -7,10 +7,10 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_micro"
-    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/spacing_normal"
     android:paddingTop="@dimen/spacing_micro"
-    tools:showIn="@layout/repo_file_layout"
-    tools:ignore="RtlSymmetry">
+    tools:ignore="RtlSymmetry"
+    tools:showIn="@layout/repo_file_layout">
 
     <LinearLayout
         android:layout_width="0dp"
@@ -39,8 +39,8 @@
             android:layout_weight="1"
             android:orientation="horizontal"
             app:layoutManager="@string/linear_layout_manager"
-            tools:listitem="@layout/file_path_row_item"
-            tools:ignore="NestedWeights"/>
+            tools:ignore="NestedWeights"
+            tools:listitem="@layout/file_path_row_item"/>
 
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/downloadRepoFiles"
@@ -51,6 +51,17 @@
             android:contentDescription="@string/download"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_download"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/searchRepoFiles"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackgroundBorderless"
+            android:contentDescription="@string/download"
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_search"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -64,8 +75,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/avatar_margin_end"
-            android:layout_marginStart="@dimen/avatar_margin"
             android:contentDescription="@string/switch_branch"
             android:padding="@dimen/spacing_normal"
             android:src="@drawable/ic_branch"/>

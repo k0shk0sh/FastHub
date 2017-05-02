@@ -2,6 +2,7 @@ package com.fastaccess.ui.base;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -17,7 +18,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.webkit.CookieManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +35,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
-import com.fastaccess.ui.modules.login.LoginActivity;
+import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
@@ -55,7 +55,6 @@ import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
 import icepick.Icepick;
 import icepick.State;
-import rx.Subscription;
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -64,12 +63,13 @@ import rx.Subscription;
 public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
-    private Subscription themeSubscription;
     @State boolean isProgressShowing;
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
-    @Nullable @BindView(R.id.appbar) AppBarLayout shadowView;
-    @Nullable @BindView(R.id.drawer) DrawerLayout drawer;
+    @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
+    @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
+
+    private long backPressTimer;
     private Toast toast;
 
     @LayoutRes protected abstract int layout();
@@ -95,8 +95,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         if (!isSecured()) {
             if (!isLoggedIn()) {
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                onRequireLogin();
                 return;
             }
         }
@@ -186,7 +185,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        CookieManager.getInstance().removeAllCookies(null);
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
         PrefGetter.clear();
@@ -194,7 +192,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 .delete(Login.class)
                 .get()
                 .value();
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginChooserActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finishAffinity();
@@ -204,50 +202,48 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        if (item.getItemId() == R.id.navToRepo) {
-            onNavToRepoClicked();
-            return true;
-        } else if (item.getItemId() == R.id.fhRepo) {
-            startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
-        } else if (item.getItemId() == R.id.supportDev) {
-            startActivity(new Intent(this, DonationActivity.class));
-        } else if (item.getItemId() == R.id.gists) {
-            GistsListActivity.startActivity(this, false);
-            return true;
-        } else if (item.getItemId() == R.id.myGists) {
-            GistsListActivity.startActivity(this, true);
-            return true;
-        } else if (item.getItemId() == R.id.pinnedMenu) {
-            PinnedReposActivity.startActivity(this);
-            return true;
-        } else if (item.getItemId() == R.id.mainView) {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-            finish();
-            return true;
-        } else if (item.getItemId() == R.id.profile) {
-            startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
-            return true;
-        } else if (item.getItemId() == R.id.logout) {
-            onLogoutPressed();
-            return true;
-        } else if (item.getItemId() == R.id.settings) {
-            onOpenSettings();
-            return true;
-        } else if (item.getItemId() == R.id.orgs) {
-            onOpenOrgsDialog();
-            return true;
-        }
+        new Handler().postDelayed(() -> {
+            if (isFinishing()) return;
+            if (item.getItemId() == R.id.navToRepo) {
+                onNavToRepoClicked();
+            } else if (item.getItemId() == R.id.fhRepo) {
+                startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
+            } else if (item.getItemId() == R.id.supportDev) {
+                startActivity(new Intent(this, DonationActivity.class));
+            } else if (item.getItemId() == R.id.gists) {
+                GistsListActivity.startActivity(this, false);
+            } else if (item.getItemId() == R.id.myGists) {
+                GistsListActivity.startActivity(this, true);
+            } else if (item.getItemId() == R.id.pinnedMenu) {
+                PinnedReposActivity.startActivity(this);
+            } else if (item.getItemId() == R.id.mainView) {
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            } else if (item.getItemId() == R.id.profile) {
+                startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
+            } else if (item.getItemId() == R.id.logout) {
+                onLogoutPressed();
+            } else if (item.getItemId() == R.id.settings) {
+                onOpenSettings();
+            } else if (item.getItemId() == R.id.orgs) {
+                onOpenOrgsDialog();
+            } else if (item.getItemId() == R.id.enableAds) {
+                boolean isEnabled = !PrefGetter.isAdsEnabled();
+                PrefGetter.setAdsEnabled(isEnabled);
+                showHideAds();
+                item.setChecked(isEnabled);
+            }
+        }, 300);
         return false;
     }
 
     @Override public void onBackPressed() {
-        if (drawer == null || !drawer.isDrawerOpen(GravityCompat.START)) {
-            super.onBackPressed();
-        } else if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
+        if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            boolean clickTwiceToExit = !PrefGetter.isTwiceBackButtonDisabled();
+            superOnBackPressed(clickTwiceToExit);
         }
     }
 
@@ -261,11 +257,56 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onThemeChanged() {
-        recreate();
+        if (this instanceof MainActivity) {
+            recreate();
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtras(Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).end());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override public void onOpenSettings() {
         SettingsBottomSheetDialog.show(getSupportFragmentManager());
+    }
+
+    protected void selectHome(boolean hideRepo) {
+        if (extraNav != null) {
+            if (hideRepo) {
+                extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
+                extraNav.getMenu().findItem(R.id.mainView).setVisible(true);
+                return;
+            }
+            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
+            extraNav.getMenu().findItem(R.id.mainView).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.mainView).setChecked(true);
+        }
+    }
+
+    protected void selectProfile() {
+        selectHome(true);
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.profile).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.profile).setChecked(true);
+        }
+    }
+
+    protected void selectGists(boolean publicGists) {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.gists).setCheckable(publicGists);
+            extraNav.getMenu().findItem(R.id.gists).setChecked(publicGists);
+            extraNav.getMenu().findItem(R.id.myGists).setCheckable(!publicGists);
+            extraNav.getMenu().findItem(R.id.myGists).setChecked(!publicGists);
+        }
+    }
+
+    protected void selectPinned() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.pinnedMenu).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.pinnedMenu).setChecked(true);
+        }
     }
 
     protected void onOpenOrgsDialog() {
@@ -312,8 +353,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     protected void hideShowShadow(boolean show) {
-        if (shadowView != null) {
-            shadowView.setElevation(show ? getResources().getDimension(R.dimen.spacing_micro) : 0.0f);
+        if (appbar != null) {
+            appbar.setElevation(show ? getResources().getDimension(R.dimen.spacing_micro) : 0.0f);
         }
     }
 
@@ -350,17 +391,18 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
                 }
             }
-        }
-    }
-
-    protected void hideProfileMenuItem() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.profile).setVisible(false);
+            if (BuildConfig.FDROID) {
+                Menu menu = extraNav.getMenu();
+                menu.findItem(R.id.enableAds).setVisible(false);
+                menu.findItem(R.id.supportDev).setVisible(false);
+            } else {
+                extraNav.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
+            }
         }
     }
 
     private void setupDrawer() {
-        if (drawer != null) {
+        if (drawer != null && !(this instanceof MainActivity)) {
             if (!PrefGetter.isNavDrawerHintShowed()) {
                 drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                     @Override public boolean onPreDraw() {
@@ -382,6 +424,30 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 });
             }
         }
+    }
+
+    private void superOnBackPressed(boolean didClickTwice) {
+        if (this instanceof MainActivity) {
+            if (didClickTwice) {
+                if (canExit()) {
+                    super.onBackPressed();
+                }
+            } else {
+                super.onBackPressed();
+            }
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private boolean canExit() {
+        if (backPressTimer + 2000 > System.currentTimeMillis()) {
+            return true;
+        } else {
+            Toast.makeText(getBaseContext(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+        }
+        backPressTimer = System.currentTimeMillis();
+        return false;
     }
 
     @Nullable private View getToolbarNavigationIcon(Toolbar toolbar) {

@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 
 /**
- * Created by Kosh on 8/2/2015. copyrights are reserved @Innov8tif
+ * Created by Kosh on 8/2/2015. copyrights are reserved @
  */
 @SuppressWarnings("FieldCanBeLocal") public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     private int previousTotal = 0;

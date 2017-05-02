@@ -28,7 +28,7 @@ public class StateLayout extends NestedScrollView {
     private static final int SHOW_RELOAD_STATE = 4;
     private static final int SHOW_EMPTY_STATE = 7;
     private static final int HIDDEN = 5;
-    private static final int SHOWEN = 6;
+    private static final int SHOWN = 6;
     private OnClickListener onReloadListener;
 
     @BindView(R.id.empty_text) FontTextView emptyText;
@@ -37,7 +37,7 @@ public class StateLayout extends NestedScrollView {
 
     @State int layoutState = HIDDEN;
     @State String emptyTextValue;
-    @State int adapterSize;
+    @State boolean showReload = true;
 
     @OnClick(R.id.reload) void onReload() {
         if (onReloadListener != null && !progressBar.isShown()) {
@@ -81,9 +81,13 @@ public class StateLayout extends NestedScrollView {
     }
 
     public void showReload(int adapterCount) {
-        this.adapterSize = adapterCount;
+        showReload = adapterCount == 0;
+        showReload();
+    }
+
+    protected void showReload() {
         hideProgress();
-        if (adapterCount == 0) {
+        if (showReload) {
             layoutState = SHOW_RELOAD_STATE;
             reload.setVisibility(VISIBLE);
             emptyText.setVisibility(VISIBLE);
@@ -117,7 +121,7 @@ public class StateLayout extends NestedScrollView {
         if (visibility == GONE || visibility == INVISIBLE) {
             layoutState = HIDDEN;
         } else {
-            layoutState = SHOWEN;
+            layoutState = SHOWN;
         }
     }
 
@@ -157,7 +161,7 @@ public class StateLayout extends NestedScrollView {
                 hideReload();
                 break;
             case SHOW_RELOAD_STATE:
-                showReload(adapterSize);
+                showReload();
                 break;
             case HIDDEN:
                 setVisibility(GONE);
@@ -165,11 +169,10 @@ public class StateLayout extends NestedScrollView {
             case SHOW_EMPTY_STATE:
                 showEmptyState();
                 break;
-            case SHOWEN:
+            case SHOWN:
                 setVisibility(VISIBLE);
-                showReload(adapterSize);
+                showReload();
                 break;
         }
     }
 }
-

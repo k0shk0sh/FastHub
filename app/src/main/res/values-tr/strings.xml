@@ -218,7 +218,7 @@
     <string name="request_error">Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyiniz</string>
     <string name="marking_as_read">Bildirim okundu olarak işaretleniyor</string>
     <string name="forking_gist">Gist fork\'lanıyor</string>
-    <string name="login_using_your_default_browser">Varsayılan İnternet tarayıcısı kullanılarak giriş yap</string>
+    <string name="login_using_your_default_browser">Varsayılan İnternet tarayıcısı kullanılarak giriş yap (OAuth)</string>
     <string name="or_character">VEYA</string>
     <string name="mark_notification_title">Okundu Durumunu Devre Dışı Bırak</string>
     <string name="mark_notification_summary">Bildirimlere dokunmayla okundu olarak işaretlenmesini devre dışı bırak.</string>

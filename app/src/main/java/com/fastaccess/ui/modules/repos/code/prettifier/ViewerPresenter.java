@@ -5,14 +5,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.ViewerFile;
 import com.fastaccess.data.dao.MarkdownModel;
+import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.ViewerFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+
+import rx.Observable;
 
 /**
  * Created by Kosh on 27 Nov 2016, 3:43 PM
@@ -77,10 +81,8 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                                 isRepo = fileModel.isRepo();
                                 isMarkdown = fileModel.isMarkdown();
                                 sendToView(view -> {
-                                    if (isRepo) {
+                                    if (isRepo || isMarkdown) {
                                         view.onSetMdText(downloadedStream, fileModel.getFullUrl());
-                                    } else if (isMarkdown) {
-                                        view.onSetMdText(downloadedStream, null);
                                     } else {
                                         view.onSetCode(downloadedStream);
                                     }
@@ -97,7 +99,11 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             sendToView(view -> view.onSetImageUrl(url));
             return;
         }
-        makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url) : RestProvider.getRepoService().getFileAsStream(url),
+        Observable<String> streamObservable = MarkDownProvider.isMarkdown(url)
+                                              ? RestProvider.getRepoService(true).getFileAsHtmlStream(url)
+                                              : RestProvider.getRepoService(true).getFileAsStream(url);
+        makeRestCall(isRepo ? RestProvider.getRepoService(true).getReadmeHtml(url)
+                            : streamObservable,
                 content -> {
                     downloadedStream = content;
                     ViewerFile fileModel = new ViewerFile();
@@ -114,23 +120,25 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         if (isMarkdown) {
                             MarkdownModel model = new MarkdownModel();
                             model.setText(downloadedStream);
-                            makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model),
-                                    s -> {
-                                        isMarkdown = true;
-                                        downloadedStream = s;
-                                        fileModel.setMarkdown(true);
-                                        fileModel.setContent(downloadedStream);
-                                        manageSubscription(fileModel.save(fileModel).subscribe());
-                                        sendToView(view -> view.onSetMdText(downloadedStream, url));
-                                    });
+                            NameParser parser = new NameParser(url);
+                            if (parser.getUsername() != null && parser.getName() != null) {
+                                model.setContext(parser.getUsername() + "/" + parser.getName());
+                            } else {
+                                model.setContext("");
+                            }
+                            Logger.e(model.getContext());
+                            makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
+                                isMarkdown = true;
+                                downloadedStream = string;
+                                fileModel.setMarkdown(true);
+                                fileModel.setContent(downloadedStream);
+                                manageSubscription(fileModel.save(fileModel).subscribe());
+                                sendToView(view -> view.onSetMdText(downloadedStream, url));
+                            });
                             return;
                         }
                         fileModel.setMarkdown(false);
-                        if (isMarkdown) {
-                            sendToView(view -> view.onSetMdText(downloadedStream, null));
-                        } else {
-                            sendToView(view -> view.onSetCode(downloadedStream));
-                        }
+                        sendToView(view -> view.onSetCode(downloadedStream));
                     }
                     manageSubscription(fileModel.save(fileModel).subscribe());
                 });
@@ -142,5 +150,9 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
 
     @Override public boolean isImage() {
         return isImage;
+    }
+
+    @NonNull @Override public String url() {
+        return url;
     }
 }

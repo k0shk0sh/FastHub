@@ -1,4 +1,4 @@
-package com.fastaccess.provider.comments;
+package com.fastaccess.provider.timeline;
 
 import android.content.Context;
 import android.support.annotation.IdRes;
@@ -49,7 +49,7 @@ public class CommentsHelper {
         }
     }
 
-    private static String getEmojiByUnicode(int unicode) {
+    public static String getEmojiByUnicode(int unicode) {
         return new String(Character.toChars(unicode));
     }
 

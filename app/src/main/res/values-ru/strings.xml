@@ -223,7 +223,7 @@
     <string name="request_error">Произошла ошибка при запросе на сервер, повторите попытку позже</string>
     <string name="marking_as_read">Маркировка уведомления как прочтённое</string>
     <string name="forking_gist">Ответвление Gist\'a</string>
-    <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию</string>
+    <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию  (OAuth)</string>
     <string name="or_character">ИЛИ</string>
     <string name="mark_notification_title">Отключить статус о прочтении</string>
     <string name="mark_notification_summary">Отключить маркировку как прочтённое до клика на уведомление.</string>

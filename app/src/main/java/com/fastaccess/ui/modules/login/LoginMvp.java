@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.AccessTokenModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 
 /**
  * Created by Kosh on 09 Nov 2016, 9:41 PM
@@ -15,7 +16,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 
 interface LoginMvp {
 
-    interface View extends BaseMvp.FAView {
+    interface View extends BaseMvp.FAView, SlackBottomSheetDialog.SlackDialogListener {
 
         void onRequire2Fa();
 
@@ -36,6 +37,6 @@ interface LoginMvp {
 
         void onUserResponse(@Nullable Login response);
 
-        void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode);
+        void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode, boolean isBasicAuth);
     }
 }

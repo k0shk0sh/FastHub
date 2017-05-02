@@ -64,6 +64,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         stateLayout.setEmptyText(R.string.no_files);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this);
+        adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         if (savedInstanceState == null) {
             sparseBooleanArray = new SparseBooleanArrayParcelable();
@@ -77,7 +78,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
 
     @Override public void onToggle(int position, boolean isCollapsed) {
         if (adapter.getItem(position).getPatch() == null) {
-            ActivityHelper.forceOpenInBrowser(getContext(), adapter.getItem(position).getBlobUrl());
+            ActivityHelper.openChooser(getContext(), adapter.getItem(position).getRawUrl());
         }
         getSparseBooleanArray().put(position, isCollapsed);
     }

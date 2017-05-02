@@ -85,8 +85,12 @@
     <PreferenceCategory android:title="@string/about">
 
         <Preference
-            android:key="aboutLibs"
-            android:title="@string/open_source_libs"/>
+            android:key="joinSlack"
+            android:title="@string/join_slack"/>
+
+        <Preference
+            android:key="showChangelog"
+            android:title="@string/changelog"/>
 
         <Preference
             android:key="about"

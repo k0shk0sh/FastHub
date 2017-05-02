@@ -72,7 +72,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                     pullRequestModel.setBody(InputHelper.toString(description));
                     pullRequestModel.setTitle(title);
                     IssueRequestModel requestModel = IssueRequestModel.clone(pullRequestModel, false);
-                    makeRestCall(RestProvider.getPullRequestSerice().editPullRequest(login, repo, number, requestModel),
+                    makeRestCall(RestProvider.getPullRequestService().editPullRequest(login, repo, number, requestModel),
                             pr -> {
                                 if (pr != null) {
                                     sendToView(view -> view.onSuccessSubmission(pr));

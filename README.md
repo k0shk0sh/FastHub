@@ -1,4 +1,4 @@
-### FastHub has been suspended from the playstore, Please update your app from the releases page to _1.9.1_ until this sorted out. :cry:
+## FastHub is back to the play store.
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
@@ -88,7 +88,7 @@ _(To download the app from here, please look at the [latest release](https://git
 - [**MarkDown**](https://github.com/zzhoujay/Markdown) for _Markdown_ editor highlighting
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
-- [**MatrialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
+- [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
 - **Firebase** analytics, crash reporting, ads
 - **Android Support Libraries**, the almighty ;-)
 

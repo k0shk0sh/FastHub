@@ -7,8 +7,10 @@ import android.support.design.widget.TabLayout;
 import android.view.View;
 import android.widget.TextView;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.ViewHelper;
@@ -16,6 +18,8 @@ import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
+
+import java.util.HashSet;
 
 import butterknife.BindView;
 import icepick.State;
@@ -31,8 +35,8 @@ public class RepoPullRequestPagerFragment extends BaseFragment<RepoPullRequestPa
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
-    @State int openCount = -1;
-    @State int closeCount = -1;
+    @State HashSet<TabsCountStateModel> counts = new HashSet<>();
+
 
 
     public static RepoPullRequestPagerFragment newInstance(@NonNull String repoId, @NonNull String login) {
@@ -55,9 +59,8 @@ public class RepoPullRequestPagerFragment extends BaseFragment<RepoPullRequestPa
         pager.setAdapter(new FragmentsPagerAdapter(getChildFragmentManager(),
                 FragmentPagerAdapterModel.buildForRepoPullRequest(getContext(), login, repoId)));
         tabs.setupWithViewPager(pager);
-        if (savedInstanceState != null && openCount != -1 && closeCount != -1) {
-            onSetBadge(0, openCount);
-            onSetBadge(1, closeCount);
+        if (savedInstanceState != null && !counts.isEmpty()) {
+            Stream.of(counts).forEach(this::updateCount);
         }
     }
 
@@ -66,20 +69,23 @@ public class RepoPullRequestPagerFragment extends BaseFragment<RepoPullRequestPa
     }
 
     @Override public void onSetBadge(int tabIndex, int count) {
-        if (tabIndex == 0) {
-            openCount = count;
-        } else {
-            closeCount = count;
-        }
+        TabsCountStateModel model = new TabsCountStateModel();
+        model.setTabIndex(tabIndex);
+        model.setCount(count);
+        counts.add(model);
         if (tabs != null) {
-            TextView tv = ViewHelper.getTabTextView(tabs, tabIndex);
-            tv.setText(SpannableBuilder.builder()
-                    .append(tabIndex == 0 ? getString(R.string.opened) : getString(R.string.closed))
-                    .append("   ")
-                    .append("(")
-                    .bold(String.valueOf(count))
-                    .append(")"));
+            updateCount(model);
         }
+    }
+
+    private void updateCount(@NonNull TabsCountStateModel model) {
+        TextView tv = ViewHelper.getTabTextView(tabs, model.getTabIndex());
+        tv.setText(SpannableBuilder.builder()
+                .append(model.getTabIndex() == 0 ? getString(R.string.opened) : getString(R.string.closed))
+                .append("   ")
+                .append("(")
+                .bold(String.valueOf(model.getCount()))
+                .append(")"));
     }
 
     @Override public int getCurrentItem() {

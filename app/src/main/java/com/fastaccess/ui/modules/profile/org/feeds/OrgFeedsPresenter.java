@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.org.feeds;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 
 import java.util.ArrayList;
 
@@ -60,7 +62,14 @@ class OrgFeedsPresenter extends BasePresenter<OrgFeedsMvp.View> implements OrgFe
         setCurrentPage(page);
         if (Login.getUser() == null) return;
         makeRestCall(RestProvider.getOrgService().getReceivedEvents(parameter, page),
-                response -> sendToView(view -> view.onNotifyAdapter(response.getItems(), page)));
+                response -> {
+                    if (response != null) {
+                        lastPage = response.getLast();
+                        sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
+                    } else {
+                        sendToView(OrgFeedsMvp.View::hideProgress);
+                    }
+                });
     }
 
     @Override public void onSubscribed() {
@@ -87,7 +96,14 @@ class OrgFeedsPresenter extends BasePresenter<OrgFeedsMvp.View> implements OrgFe
         } else {
             PayloadModel payloadModel = item.getPayload();
             if (payloadModel != null) {
-                if (item.getPayload().getIssue() != null) {
+                if (payloadModel.getHead() != null) {
+                    Repo repoModel = item.getRepo();
+                    Uri uri = Uri.parse(repoModel.getName());
+                    if (uri == null || uri.getPathSegments().size() < 1) return;
+                    Intent intent = CommitPagerActivity.createIntent(v.getContext(), uri.getLastPathSegment(), uri.getPathSegments().get(0),
+                            payloadModel.getHead(), true);
+                    v.getContext().startActivity(intent);
+                } else if (item.getPayload().getIssue() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()), true);
                 } else if (item.getPayload().getPullRequest() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()), true);
