@@ -328,9 +328,9 @@
     <string name="personal_token">Личный токен</string>
     <string name="basic_login">Войти через основную форму авторизации</string>
     <string name="no_orgs_description">Если вы состоите в каких-либо организациях, но они здесь отсутствуют, то перейдите по ссылке ниже.
-        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Причиной того, что FastHub не использовал "Access Token", была
-        включённая двухфакторная аутентификация: её одноразовый код действителен только в течение минуты, что заставляет FastHub выходить вызывает
-        у FastHub выход из аккаунта из-за ответа GitHub об ошибке неавторизированного доступа.</string>
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Причиной тому, что FastHub не использовал "Access Token", являлась
+        включённая двухфакторная аутентификация: её одноразовый код действителен только в течение минуты, что вызывает у GitHub ошибку неавторизированного доступа
+        с последующим выходом из аккаунта в FastHub.</string>
     <string name="insert">Вставить</string>
     <string name="select">Выбрать</string>
     <string name="select_picture">Выберите картинку</string>
