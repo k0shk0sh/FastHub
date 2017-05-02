@@ -1,6 +1,6 @@
 <resources>
     <string name="in_progress">Загрузка. Пожалуйста, подождите…</string>
-    <string name="action">Действие</string>
+    <string name="action">Действия</string>
     <string name="settings">Настройки</string>
     <string name="cancel">Отмена</string>
     <string name="ok">OK</string>
@@ -12,7 +12,7 @@
     <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
     <string name="reload">Обновить</string>
-    <string name="feeds">Новости</string>
+    <string name="feeds">Лента</string>
     <string name="profile">Профиль</string>
     <string name="error">Ошибка</string>
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
@@ -40,7 +40,7 @@
 +   <string name="reply">Ответить</string>
 +   <string name="failed_selecting_image">Не удалось загрузить изображение.</string>
     <string name="user">Пользователь</string>
-    <string name="details">Детали</string>
+    <string name="details">Подробности</string>
     <string name="archive_file_detected_error">Обнаружен файл архива. Пожалуйста, скачайте этот файл, чтобы посмотреть его содержимое.</string>
     <string name="minimum_three_chars">Минимум 3 символа</string>
     <string name="no_file_found">Файлы не найдены</string>
@@ -81,13 +81,13 @@
     <string name="quote">Цитата</string>
     <string name="link">Ссылка</string>
     <string name="image">Изображение</string>
-    <string name="deletion">Удаление</string>
-    <string name="addition">Добавление</string>
+    <string name="deletion">Удаления</string>
+    <string name="addition">Добавления</string>
     <string name="changes">Изменения</string>
     <string name="status">Статус</string>
     <string name="confirm_message">Вы уверены?</string>
     <string name="success">Успех</string>
-    <string name="to">to</string>
+    <string name="to">в</string>
     <string name="error_deleting_comment">Ошибка удаления комментария</string>
     <string name="delete">Удалить</string>
     <string name="comments">Комментарии</string>
@@ -248,30 +248,30 @@
     <string name="success_purchase_message">Спасибо за то, что Вы есть!</string>
     <string name="change_theme_warning">Если тема применится некорректно, то, пожалуйста, принудительно закройте приложение и снова его запустите.</string>
     <string name="pin">Закрепить</string>
-    <string name="pinned">Избранное</string>
+    <string name="pinned">Закреплённые</string>
     <string name="unpin">Открепить</string>
     <string name="empty_pinned_repos">Нет закреплённых репозиториев. Закреплённые репозитории будут показаны здесь</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="no_feeds">Новости отсутствуют</string>
+    <string name="no_feeds">Новостей нет</string>
     <string name="no_gists">Gist\'ы отсутствуют</string>
-    <string name="no_comments">Комментарии отсутствуют</string>
-    <string name="no_notifications">Уведомления отсутствуют</string>
-    <string name="no_followers">Подписки отсутствуют</string>
-    <string name="no_followings">Подписки отсутствуют</string>
-    <string name="no_repos">Репозитории отсутствуют</string>
-    <string name="no_starred_repos">Избранные репозитории отсутствуют</string>
-    <string name="no_commits">Коммиты отсутствуют</string>
-    <string name="no_contributors">Вкладчики отсутствуют</string>
-    <string name="no_releases">Релизы отсутствуют</string>
-    <string name="no_closed_issues">Закрытые Вопросы отсутствуют</string>
-    <string name="no_opened_issues">Открытые Вопросы отсутствуют</string>
-    <string name="no_events">События отсутствуют</string>
-    <string name="no_open_pull_requests">Запросы на слияние отсутствуют</string>
-    <string name="no_closed_pull_request">Закрытые Запросы на слияние отсутствуют</string>
-    <string name="no_search_results">Результаты поиска отсутствуют</string>
-    <string name="read_write_permission_explanation">Пожалуйста, дайте FastHub доступ к следующим разрешениям, чтобы появилась возможность
-        хранить файлы на вашей SD карте и просматривать их</string>
+    <string name="no_comments">Нет комментариев</string>
+    <string name="no_notifications">Нет уведомлений</string>
+    <string name="no_followers">Нет подписчиков</string>
+    <string name="no_followings">Нет подписок</string>
+    <string name="no_repos">Нет репозиториев</string>
+    <string name="no_starred_repos">Нет избранных репозиториев</string>
+    <string name="no_commits">Нет коммитов</string>
+    <string name="no_contributors">Нет Вкладчиков</string>
+    <string name="no_releases">Нет Релизов</string>
+    <string name="no_closed_issues">Нет закрытых Вопросов</string>
+    <string name="no_opened_issues">Нет открытых Вопросов</string>
+    <string name="no_events">Нет событий</string>
+    <string name="no_open_pull_requests">Нет Запросов на слияние</string>
+    <string name="no_closed_pull_request">Нет закрытых Запросов на слияние</string>
+    <string name="no_search_results">Нет результатов</string>
+    <string name="read_write_permission_explanation">Пожалуйста, предоставьте FastHub доступ к следующим разрешениям, чтобы появилась возможность
+        хранить файлы на вашей SD карте, а также просматривать их</string>
     <string name="public_gists">Публичные Gist\'ы</string>
     <string name="enable_ads">Включить рекламу</string>
     <string name="no_issues">Нет Вопросов</string>
@@ -280,9 +280,9 @@
     <string name="changelog">Список изменений</string>
     <string name="notifications_hint">Нажмите, чтобы открыть список уведомлений или сделайте свайп, чтобы отклонить</string>
     <string name="home_long_click_hint">Сделайте долгое нажатие, чтобы вернуться к главному экрану откуда угодно</string>
-    <string name="created">Создано</string>
+    <string name="created">Создан</string>
     <string name="assigned">Назначен</string>
-    <string name="mentioned">Упомянуто</string>
+    <string name="mentioned">Упомянут</string>
     <string name="name">Название</string>
     <string name="color">Цвет</string>
     <string name="create_label">Создать метку</string>
@@ -300,16 +300,16 @@
     <string name="dialog_animation_title">Всплывающая анимация</string>
     <string name="milestones">Теги</string>
     <string name="assignee">Назначенные</string>
-    <string name="checks_failed">Все проверки провалены</string>
-    <string name="checks_pending">Все проверки ожидаются</string>
-    <string name="checks_passed">Все проверки успешны</string>
+    <string name="checks_failed">Одна или несколько проверок не пройдены</string>
+    <string name="checks_pending">Ожидаются результаты проверок</string>
+    <string name="checks_passed">Все проверки успешно пройдены</string>
     <string name="sort">Сортировка</string>
-    <string name="newest">Новее</string>
-    <string name="oldest">Старее</string>
-    <string name="most_commented">Наиболее комментируемые</string>
-    <string name="least_commented">Наимение комментируемые</string>
+    <string name="newest">Самые новые</string>
+    <string name="oldest">Самые старые</string>
+    <string name="most_commented">Самые комментируемые</string>
+    <string name="least_commented">Наименее комментируемые</string>
     <string name="recently_updated">Недавно обновлённые</string>
-    <string name="least_recent_updated">Давно обновлённые</string>
+    <string name="least_recent_updated">Самые необновляемые</string>
     <string name="empty_search_error">Поле поиска не может быть пустым</string>
     <string name="long_press_repo_fab_hint">Долгое нажатие мгновенно создаёт новый Вопрос</string>
     <string name="commit_can_be_merged">Этот Запрос на слияние может быть объединён</string>
@@ -322,14 +322,14 @@
     <string name="wrap_code_summary">Переносить строки в средстве просмотра кода по умолчанию</string>
     <string name="wrap_code_title">Перенос строк</string>
     <string name="open_source_libs">Библиотеки с открытым исходным кодом</string>
-    <string name="enable_notification_sound_summary">Включить звуковое опевещение при получении уведомлений.</string>
-    <string name="enable_notification_sound_title">Включить звук уведомлений</string>
+    <string name="enable_notification_sound_summary">Включить звуковые опевещения при получении новых уведомлений.</string>
+    <string name="enable_notification_sound_title">Включить звуковые опевещения</string>
     <string name="login_with_personal_token">Войти при помощи личного токена</string>
     <string name="personal_token">Личный токен</string>
     <string name="basic_login">Войти через основную форму авторизации</string>
-    <string name="no_orgs_description">Если вы состоите в организациях, но не видите их здесь, то проследуйте по ссылке ниже.
-        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Причиной тому, что FastHub не использовал "Access Token", была
-        включённая двухфакторная аутентификация: её одноразовый код действителен только в течение минуты, что вызывает
+    <string name="no_orgs_description">Если вы состоите в каких-либо организациях, но они здесь отсутствуют, то перейдите по ссылке ниже.
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Причиной того, что FastHub не использовал "Access Token", была
+        включённая двухфакторная аутентификация: её одноразовый код действителен только в течение минуты, что заставляет FastHub выходить вызывает
         у FastHub выход из аккаунта из-за ответа GitHub об ошибке неавторизированного доступа.</string>
     <string name="insert">Вставить</string>
     <string name="select">Выбрать</string>
