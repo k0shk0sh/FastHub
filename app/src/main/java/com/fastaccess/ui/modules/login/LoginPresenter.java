@@ -27,7 +27,7 @@ import retrofit2.adapter.rxjava.HttpException;
  * Created by Kosh on 09 Nov 2016, 9:43 PM
  */
 
-class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
+public class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
 
     @Override public void onError(@NonNull Throwable throwable) {
         if (RestProvider.getErrorCode(throwable) == 401 && throwable instanceof HttpException) {

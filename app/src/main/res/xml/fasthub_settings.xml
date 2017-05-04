@@ -28,8 +28,13 @@
 
     </PreferenceCategory>
 
-
     <PreferenceCategory android:title="@string/behavior">
+
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enable_ads"
+            android:title="@string/enable_ads"/>
 
         <ListPreference
             android:defaultValue="@string/light_theme_mode"

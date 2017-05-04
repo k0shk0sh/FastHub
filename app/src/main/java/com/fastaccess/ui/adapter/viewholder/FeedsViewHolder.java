@@ -83,7 +83,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .append(" ")
                             .append(to)
                             .append(" ");
-                } else if (type == EventsType.PushEvent && eventsModel.getPayload() != null) {
+                } else if ((type == EventsType.PushEvent || type == EventsType.DeleteEvent) && eventsModel.getPayload() != null) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")
@@ -93,8 +93,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .append(" ");
                 } else {
                     spannableBuilder.bold(itemView.getResources().getString(type
-                            .getType())
-                            .toLowerCase())
+                            .getType()).toLowerCase())
                             .append(" ");
                     if (eventsModel.getPayload() != null) {
                         PayloadModel payloadModel = eventsModel.getPayload();

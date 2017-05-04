@@ -308,7 +308,7 @@ public class StackBuilderSchemeParser {
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
                     .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, urlBuilder.toString()))
-                    .addNextIntent(CodeViewerActivity.createIntent(context, urlBuilder.toString()));
+                    .addNextIntent(CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString()));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
@@ -319,7 +319,7 @@ public class StackBuilderSchemeParser {
                         .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                         .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
                         .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, uri.toString()))
-                        .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString()));
+                        .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString(), uri.toString()));
             }
         }
         return null;
@@ -348,7 +348,7 @@ public class StackBuilderSchemeParser {
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(GistActivity.createIntent(context, uri.getPathSegments().get(1)))
-                    .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString()));
+                    .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString(), uri.toString()));
         }
         return null;
     }

@@ -7,6 +7,7 @@ if (isGms) {
 }
 
 apply plugin: 'com.novoda.build-properties'
+apply plugin: 'jacoco-android'
 
 buildProperties {
     notThere {
@@ -42,6 +43,12 @@ android {
         buildConfigField "String", "REST_URL", '"https://api.github.com/"'
         buildConfigField "String", "IMGUR_URL", '"https://api.imgur.com/3/"'
         multiDexEnabled true
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath true
+            }
+        }
     }
 
     buildTypes {
@@ -95,6 +102,10 @@ android {
     dexOptions {
         jumboMode true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 repositories {
@@ -104,15 +115,6 @@ repositories {
 }
 
 dependencies {
-    ext {
-        butterKnifeVersion = '8.5.1'
-        icepickVersion = '3.2.0'
-        lombokVersion = '1.12.6'
-        supportVersion = "25.3.1"
-        firebase = "10.2.0"
-        thirtyinchVersion = '0.8.0-rc4'
-        retrofit = '2.1.0'
-    }
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile "com.android.support:appcompat-v7:${supportVersion}"
     compile "com.android.support:design:${supportVersion}"
@@ -123,6 +125,7 @@ dependencies {
     compile "com.android.support:palette-v7:${supportVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
+    testCompile "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
@@ -145,19 +148,23 @@ dependencies {
     compile 'com.github.nightwhistler:HtmlSpanner:0.4'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     compile 'com.github.matthiasrobbers:shortbread:1.0.1'
-    compile project(':pago')
-    compile project(':markdown')
+    provided "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor 'io.requery:requery-processor:1.2.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
-    provided "org.projectlombok:lombok:${lombokVersion}"
     if (isGms) {
         compile "com.google.firebase:firebase-ads:${firebase}"
         compile "com.google.firebase:firebase-messaging:${firebase}"
         releaseCompile "com.google.firebase:firebase-crash:${firebase}"
     }
+    testCompile "junit:junit:$junitVersion"
+    testCompile "org.mockito:mockito-core:$mockitoVersion"
+    testCompile "org.assertj:assertj-core:$assertjVersion"
+    androidTestCompile "com.android.support:support-annotations:${supportVersion}"
+    androidTestCompile 'com.android.support.test:runner:0.5'
+    androidTestCompile "org.mockito:mockito-core:$mockitoVersion"
 }
 
 if (isGms) {

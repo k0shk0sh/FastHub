@@ -57,6 +57,9 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                 .append("(")
                 .bold(BuildConfig.VERSION_NAME)
                 .append(")"));
+        if (BuildConfig.FDROID) {
+            findPreference("enable_ads").setVisible(false);
+        }
     }
 
     @Override public boolean onPreferenceChange(Preference preference, Object newValue) {

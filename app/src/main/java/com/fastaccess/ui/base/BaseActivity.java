@@ -39,6 +39,7 @@ import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
+import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
@@ -202,6 +203,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
+        if (item.isChecked()) return false;
         new Handler().postDelayed(() -> {
             if (isFinishing()) return;
             if (item.getItemId() == R.id.navToRepo) {
@@ -218,6 +220,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 PinnedReposActivity.startActivity(this);
             } else if (item.getItemId() == R.id.mainView) {
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             } else if (item.getItemId() == R.id.profile) {
@@ -228,13 +231,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 onOpenSettings();
             } else if (item.getItemId() == R.id.orgs) {
                 onOpenOrgsDialog();
-            } else if (item.getItemId() == R.id.enableAds) {
-                boolean isEnabled = !PrefGetter.isAdsEnabled();
-                PrefGetter.setAdsEnabled(isEnabled);
-                showHideAds();
-                item.setChecked(isEnabled);
+            } else if (item.getItemId() == R.id.notifications) {
+                startActivity(new Intent(this, NotificationActivity.class));
             }
-        }, 300);
+        }, 250);
         return false;
     }
 
@@ -306,6 +306,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (extraNav != null) {
             extraNav.getMenu().findItem(R.id.pinnedMenu).setCheckable(true);
             extraNav.getMenu().findItem(R.id.pinnedMenu).setChecked(true);
+        }
+    }
+
+    protected void onSelectNotifications() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.notifications).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.notifications).setChecked(true);
         }
     }
 
@@ -390,13 +397,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                     view.findViewById(R.id.userHolder).setOnClickListener(v -> UserPagerActivity.startActivity(this, userModel.getLogin()));
 
                 }
-            }
-            if (BuildConfig.FDROID) {
-                Menu menu = extraNav.getMenu();
-                menu.findItem(R.id.enableAds).setVisible(false);
-                menu.findItem(R.id.supportDev).setVisible(false);
-            } else {
-                extraNav.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
             }
         }
     }

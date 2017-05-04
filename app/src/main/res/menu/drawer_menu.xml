@@ -23,6 +23,11 @@
             android:id="@+id/orgs"
             android:icon="@drawable/ic_people"
             android:title="@string/organizations"/>
+
+        <item
+            android:id="@+id/notifications"
+            android:icon="@drawable/ic_ring"
+            android:title="@string/notifications"/>
     </group>
 
 
@@ -55,15 +60,6 @@
             android:id="@+id/fhRepo"
             android:icon="@drawable/ic_github"
             android:title="@string/app_name"/>
-
-        <item
-            android:id="@+id/supportDev"
-            android:icon="@drawable/ic_heart"
-            android:title="@string/support_development"/>
-        <item
-            android:id="@+id/enableAds"
-            android:icon="@drawable/ic_heart_full"
-            android:title="@string/enable_ads"/>
     </group>
 
     <group
@@ -71,6 +67,12 @@
         android:checkableBehavior="none">
         <item android:title="@string/action">
             <menu>
+
+                <item
+                    android:id="@+id/supportDev"
+                    android:icon="@drawable/ic_heart"
+                    android:title="@string/support_development"/>
+
                 <item
                     android:id="@+id/settings"
                     android:icon="@drawable/ic_settings"

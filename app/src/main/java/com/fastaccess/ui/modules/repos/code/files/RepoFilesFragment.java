@@ -66,7 +66,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                                 .end())
                         .show(getChildFragmentManager(), "MessageDialogView");
             } else {
-                CodeViewerActivity.startActivity(getContext(), url);
+                CodeViewerActivity.startActivity(getContext(), url, model.getHtmlUrl());
             }
         }
     }

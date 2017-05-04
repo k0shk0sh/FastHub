@@ -151,4 +151,12 @@ public interface RepoService {
     @NonNull @GET("repos/{owner}/{repo}/commits?per_page=1")
     Observable<Pageable<Commit>> getCommitCounts(@Path("owner") String owner, @Path("repo") String repo, @Query("sha") String ref);
 
+    @NonNull @GET("/repos/{owner}/{repo}/stargazers")
+    Observable<Pageable<User>> getStargazers(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("/repos/{owner}/{repo}/subscribers")
+    Observable<Pageable<User>> getWatchers(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("/repos/{owner}/{repo}/forks")
+    Observable<Pageable<Repo>> getForks(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 }

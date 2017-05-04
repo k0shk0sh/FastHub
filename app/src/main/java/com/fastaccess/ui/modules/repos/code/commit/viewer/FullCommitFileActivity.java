@@ -115,7 +115,7 @@ public class FullCommitFileActivity extends BaseActivity {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.open:
-                startActivity(CodeViewerActivity.createIntent(this, commitFileModel.getContentsUrl()));
+                startActivity(CodeViewerActivity.createIntent(this, commitFileModel.getContentsUrl(), commitFileModel.getBlobUrl()));
                 return true;
             case R.id.share:
                 ActivityHelper.shareUrl(this, commitFileModel.getBlobUrl());

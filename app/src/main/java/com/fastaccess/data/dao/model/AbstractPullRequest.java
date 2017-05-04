@@ -197,13 +197,27 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                         .append(user.getLogin())
                         .append(" ");
             }
-            return builder
-                    .bold(status.toLowerCase())
-                    .append(" ")
-                    .bold(pullRequest.getHead() != null ? pullRequest.getHead().getRef() : "")
-                    .append(" ")
-                    .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
-                                                       ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+            if (pullRequest.getState() == IssueState.open && pullRequest.getHead() != null && pullRequest.getBase() != null) {
+                return builder
+                        .append(context.getString(R.string.want_to_merge))
+                        .append(" ")
+                        .bold(pullRequest.getHead().getRef())
+                        .append(" ")
+                        .append(context.getString(R.string.to))
+                        .append(" ")
+                        .bold(pullRequest.getBase().getRef())
+                        .append(" ")
+                        .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
+                                                           ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+            } else {
+                return builder
+                        .bold(status.toLowerCase())
+                        .append(" ")
+                        .bold(pullRequest.getHead() != null ? pullRequest.getHead().getRef() : "")
+                        .append(" ")
+                        .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
+                                                           ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+            }
         }
     }
 

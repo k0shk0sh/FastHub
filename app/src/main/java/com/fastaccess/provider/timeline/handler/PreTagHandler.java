@@ -1,14 +1,11 @@
 package com.fastaccess.provider.timeline.handler;
 
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
-import android.text.style.ReplacementSpan;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.TypefaceSpan;
 
 import net.nightwhistler.htmlspanner.handlers.PreHandler;
 
@@ -76,31 +73,13 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             builder.append("  ");
             builder.append(replace(text.toString()));
             builder.append("  ");
-            builder.setSpan(new CodeBackground(color, isDark), start + 1, builder.length() - 1, SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-    }
-
-    private static class CodeBackground extends ReplacementSpan {
-        private int color;
-        private boolean isDark;
-
-        CodeBackground(int color, boolean isDark) {
-            this.color = color;
-            this.isDark = isDark;
-        }
-
-        @Override public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, @Nullable Paint.FontMetricsInt fm) {
-            return (int) paint.measureText(text, start, end);
-        }
-
-        @Override public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end,
-                                   float x, int top, int y, int bottom, @NonNull Paint paint) {
-            int tempColor = paint.getColor();
-            RectF rectF = new RectF(x, top, x + paint.measureText(text, start, end), bottom);
-            paint.setColor(color);
-            canvas.drawRoundRect(rectF, 5, 5, paint);
-            paint.setColor(isDark ? tempColor : Color.RED);
-            canvas.drawText(text, start, end, x, y, paint);
+            final int stringStart = start + 1;
+            final int stringEnd = builder.length() - 1;
+            builder.setSpan(new BackgroundColorSpan(color), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
+            if (!isDark) {
+                builder.setSpan(new ForegroundColorSpan(Color.RED), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
+            }
+            builder.setSpan(new TypefaceSpan("monospace"), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 }

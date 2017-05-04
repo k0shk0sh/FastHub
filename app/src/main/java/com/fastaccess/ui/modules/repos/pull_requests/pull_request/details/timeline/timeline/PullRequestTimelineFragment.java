@@ -72,23 +72,22 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        stateLayout.setEmptyText(R.string.no_events);
-        recycler.setEmptyView(stateLayout, refresh);
-        refresh.setOnRefreshListener(this);
-        stateLayout.setOnReloadListener(this);
-        recycler.setItemViewCacheSize(30);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
-        adapter.setListener(getPresenter());
-        fastScroller.setVisibility(View.VISIBLE);
-        fastScroller.attachRecyclerView(recycler);
-        recycler.setAdapter(adapter);
-        recycler.addDivider(TimelineCommentsViewHolder.class);
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getEvents().size() == 1 && !getPresenter().isApiCalled()) {
             onRefresh();
         }
-
+        stateLayout.setEmptyText(R.string.no_events);
+        recycler.setEmptyView(stateLayout, refresh);
+        refresh.setOnRefreshListener(this);
+        stateLayout.setOnReloadListener(this);
+        boolean isMerged = getPresenter().isMerged();
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this, isMerged);
+        adapter.setListener(getPresenter());
+        fastScroller.setVisibility(View.VISIBLE);
+        fastScroller.attachRecyclerView(recycler);
+        recycler.setAdapter(adapter);
+        recycler.addDivider(TimelineCommentsViewHolder.class);
     }
 
     @NonNull @Override public PullRequestTimelinePresenter providePresenter() {
