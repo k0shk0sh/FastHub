@@ -271,11 +271,11 @@ public class SchemeParser {
         String segmentTwo = segments.get(2);
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
             Uri urlBuilder = getBlobBuilder(uri);
-            return CodeViewerActivity.createIntent(context, urlBuilder.toString());
+            return CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString());
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
-                return CodeViewerActivity.createIntent(context, uri.toString());
+                return CodeViewerActivity.createIntent(context, uri.toString(), uri.toString());
             }
         }
         return null;
@@ -318,7 +318,7 @@ public class SchemeParser {
 
     @Nullable private static Intent getGistFile(@NonNull Context context, @NonNull Uri uri) {
         if (uri.getHost().equalsIgnoreCase(HOST_GISTS_RAW)) {
-            return CodeViewerActivity.createIntent(context, uri.toString());
+            return CodeViewerActivity.createIntent(context, uri.toString(), uri.toString());
         }
         return null;
     }

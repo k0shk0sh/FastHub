@@ -62,5 +62,7 @@ public interface PullRequestTimelineMvp {
         boolean isPreviouslyReacted(long commentId, int vId);
 
         void onHandleReaction(int id, long commentId);
+
+        boolean isMerged();
     }
 }

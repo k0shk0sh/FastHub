@@ -14,7 +14,7 @@ import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
  * Created by Kosh on 09 Nov 2016, 9:41 PM
  */
 
-interface LoginMvp {
+public interface LoginMvp {
 
     interface View extends BaseMvp.FAView, SlackBottomSheetDialog.SlackDialogListener {
 

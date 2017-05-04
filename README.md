@@ -96,9 +96,9 @@ _(To download the app from here, please look at the [latest release](https://git
 
 You love FastHub? You want new features or bug fixes?  
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
-Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
+Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-- [Translation contributors list](https://github.com/k0shk0sh/FastHub/blob/master/language_contributors.md)
+- [Translation contributors list](.github/language_contributors.md)
 
 # License
 

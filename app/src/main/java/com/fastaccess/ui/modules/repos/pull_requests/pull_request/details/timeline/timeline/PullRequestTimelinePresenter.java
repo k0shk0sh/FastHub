@@ -15,9 +15,9 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -160,6 +160,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         String repoId = repoId();
         Observable observable = getReactionsProvider().onHandleReaction(id, commentId, login, repoId);
         if (observable != null) manageSubscription(observable.subscribe());
+    }
+
+    @Override public boolean isMerged() {
+        return getHeader() != null && (getHeader().isMerged() || !InputHelper.isEmpty(getHeader().getMergedAt()));
     }
 
     private ReactionsProvider getReactionsProvider() {

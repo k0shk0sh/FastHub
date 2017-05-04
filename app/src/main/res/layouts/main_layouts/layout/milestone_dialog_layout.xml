@@ -10,5 +10,4 @@
 
     <include layout="@layout/vertical_refresh_list"/>
 
-
 </LinearLayout>

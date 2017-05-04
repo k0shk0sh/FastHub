@@ -181,7 +181,8 @@ import lombok.Setter;
                             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                                 spannableBuilder.append(" ")
                                         .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "",
-                                                new LabelSpan(Color.TRANSPARENT));
+                                                new LabelSpan(Color.TRANSPARENT))
+                                        .append(" ");
                             }
                         } else {
                             models.add(new TimelineModel(issueEventModel));

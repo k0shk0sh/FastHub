@@ -60,7 +60,9 @@
     <string name="merged" translatable="false">Merged</string>
     <string name="by">By</string>
     <string name="star" translatable="false">Star</string>
+    <string name="stars" translatable="false">Stars</string>
     <string name="fork" translatable="false">Fork</string>
+    <string name="forks" translatable="false">Forks</string>
     <string name="close_issue">Close Issue</string>
     <string name="re_open_issue">Reopen Issue</string>
     <string name="re_open">Reopen</string>
@@ -396,4 +398,7 @@
     <string name="successfully_invited">Successfully invited</string>
     <string name="reply">Reply</string>
     <string name="failed_selecting_image">Failed to load image.</string>
+    <string name="want_to_merge">wants to merge</string>
+    <string name="watchers">Watchers</string>
+
 </resources>

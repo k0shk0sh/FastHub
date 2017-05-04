@@ -29,21 +29,28 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     private final String login;
     private final boolean showEmojies;
     private final ReactionsCallback reactionsCallback;
+    private final boolean isMerged;
 
     public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
-                                     ReactionsCallback reactionsCallback) {
+                                     ReactionsCallback reactionsCallback, boolean isMerged) {
         super(data);
         this.onToggleView = onToggleView;
         this.login = Login.getUser().getLogin();
         this.showEmojies = showEmojies;
         this.reactionsCallback = reactionsCallback;
+        this.isMerged = isMerged;
+    }
+
+    public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
+                                     ReactionsCallback reactionsCallback) {
+        this(data, onToggleView, showEmojies, reactionsCallback, false);
     }
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
         if (viewType == TimelineModel.HEADER) {
             return IssueDetailsViewHolder.newInstance(parent, this);
         } else if (viewType == TimelineModel.EVENT) {
-            return IssueTimelineViewHolder.newInstance(parent, this);
+            return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
         } else if (viewType == TimelineModel.STATUS) {
             return PullStatusViewHolder.newInstance(parent);
         } else if (viewType == TimelineModel.REVIEW) {

@@ -13,6 +13,7 @@ buildscript {
             classpath 'com.google.firebase:firebase-plugins:1.0.5'
         }
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
     }
 }
 
@@ -24,4 +25,17 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    butterKnifeVersion = '8.5.1'
+    icepickVersion = '3.2.0'
+    lombokVersion = '1.12.6'
+    supportVersion = "25.3.1"
+    firebase = "10.2.0"
+    thirtyinchVersion = '0.8.0-rc4'
+    retrofit = '2.1.0'
+    junitVersion = '4.12'
+    mockitoVersion = '1.10.19'
+    assertjVersion = '2.5.0'
 }

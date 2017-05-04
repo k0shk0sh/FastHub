@@ -37,6 +37,8 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
+import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscMVp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -218,6 +220,22 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                 getPresenter().onPinUnpinRepo();
                 break;
         }
+    }
+
+    @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout})
+    boolean onLongClick(View view) {
+        switch (view.getId()) {
+            case R.id.forkRepoLayout:
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.FORKS);
+                return true;
+            case R.id.starRepoLayout:
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.STARS);
+                return true;
+            case R.id.watchRepoLayout:
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.WATCHERS);
+                return true;
+        }
+        return false;
     }
 
     @Override protected int layout() {

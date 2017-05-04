@@ -144,7 +144,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
 
     @Override public void onItemClicked(@NonNull SearchCodeModel item) {
         if (item.getUrl() != null) {
-            CodeViewerActivity.startActivity(getContext(), item.getUrl());
+            CodeViewerActivity.startActivity(getContext(), item.getUrl(), item.getHtmlUrl());
         } else {
             showErrorMessage(getString(R.string.no_url));
         }
