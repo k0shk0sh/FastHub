@@ -69,6 +69,7 @@
         <item>Chinese</item>
         <item>Bahasa Indonesia</item>
         <item>Russian</item>
+        <item>Italian</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -78,6 +79,7 @@
         <item>zh</item>
         <item>in</item>
         <item>ru</item>
+        <item>it</item>
     </string-array>
 
     <string-array name="files_search_options">
