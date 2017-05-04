@@ -69,7 +69,7 @@
     <string name="status">Status</string>
     <string name="confirm_message">Bist du sicher?</string>
     <string name="success">Erfolg</string>
-    <string name="to">an</string>
+    <string name="to">mit</string>
     <string name="error_deleting_comment">Kommentar konnte nicht gelöscht werden</string>
     <string name="delete">Löschen</string>
     <string name="comments">Kommentare</string>
