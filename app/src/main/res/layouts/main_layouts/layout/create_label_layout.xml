@@ -2,9 +2,9 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="?android:attr/windowBackground"
     android:minWidth="300dp"
     android:orientation="vertical"
@@ -70,9 +70,10 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:scrollbars="vertical"
             app:layoutManager="@string/grid_layout_manager"
-            tools:listitem="@layout/simple_color_row_item"
-            app:spanCount="3"/>
+            app:spanCount="3"
+            tools:listitem="@layout/simple_color_row_item"/>
 
     </LinearLayout>
 

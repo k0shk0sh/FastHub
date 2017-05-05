@@ -159,12 +159,15 @@ dependencies {
         compile "com.google.firebase:firebase-messaging:${firebase}"
         releaseCompile "com.google.firebase:firebase-crash:${firebase}"
     }
-    testCompile "junit:junit:$junitVersion"
-    testCompile "org.mockito:mockito-core:$mockitoVersion"
-    testCompile "org.assertj:assertj-core:$assertjVersion"
+    testCompile "junit:junit:${junitVersion}"
+    testCompile "org.mockito:mockito-core:${mockitoVersion}"
+    testCompile "org.assertj:assertj-core:${assertjVersion}"
     androidTestCompile "com.android.support:support-annotations:${supportVersion}"
+    androidTestCompile "org.mockito:mockito-core:${mockitoVersion}"
     androidTestCompile 'com.android.support.test:runner:0.5'
-    androidTestCompile "org.mockito:mockito-core:$mockitoVersion"
+    androidTestCompile 'com.android.support.test:rules:0.5'
+    androidTestCompile "com.android.support.test.espresso:espresso-intents:${espresseVersion}"
+    androidTestCompile "com.android.support.test.espresso:espresso-core:${espresseVersion}"
 }
 
 if (isGms) {

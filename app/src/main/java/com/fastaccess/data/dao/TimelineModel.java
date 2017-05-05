@@ -150,9 +150,8 @@ import lombok.Setter;
     @NonNull private static List<TimelineModel> constructLabels(@NonNull List<IssueEvent> eventList) {
         List<TimelineModel> models = new ArrayList<>();
         Map<String, List<IssueEvent>> issueEventMap = Stream.of(eventList)
-                .filter(value -> value.getEvent() != null)
-                .filter(value -> value.getEvent() != IssueEventType.subscribed && value.getEvent() != IssueEventType.unsubscribed
-                        && value.getEvent() != IssueEventType.mentioned)
+                .filter(value -> value.getEvent() != null && value.getEvent() != IssueEventType.subscribed &&
+                        value.getEvent() != IssueEventType.unsubscribed && value.getEvent() != IssueEventType.mentioned)
                 .collect(Collectors.groupingBy(issueEvent -> {
                     if (issueEvent.getAssigner() != null && issueEvent.getAssignee() != null) {
                         return issueEvent.getAssigner().getLogin();
