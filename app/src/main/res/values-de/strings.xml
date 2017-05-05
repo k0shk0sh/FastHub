@@ -69,7 +69,7 @@
     <string name="status">Status</string>
     <string name="confirm_message">Bist du sicher?</string>
     <string name="success">Erfolg</string>
-    <string name="to">an</string>
+    <string name="to">mit</string>
     <string name="error_deleting_comment">Kommentar konnte nicht gelöscht werden</string>
     <string name="delete">Löschen</string>
     <string name="comments">Kommentare</string>
@@ -184,12 +184,12 @@
     <string name="due_on">Fällig am</string>
     <string name="no_assignees">Keine Bevollmächtigten</string>
     <string name="this_value">dies</string>
-    <string name="commits_reflected">Commit wurden auf den ausgewählten Branch verschoben</string>
+    <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
     <string name="background_job_summary">Wähle wie regelmäßig FastHub nach einem Update sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
-    <string name="behavior">Verhalten</string>
+    <string name="behavior">Verhalten &amp; Aussehen</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
     <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub ausversehen verlässt</string>
@@ -331,6 +331,12 @@
     <string name="choose_your_login_type">Wähle einen Authentifizierungstyp</string>
     <string name="files_only">In Dateien</string>
     <string name="paths_only">In Dateipfaden</string>
+    <string name="review_requests">Anfragen überprüfen</string>
+    <string name="join_slack">Slackgruppe beitreten</string>
+    <string name="join_slack_message" formatted="true">Möchtest du der FastHub Slackgruppe beitreten?\nEin Link wird an %s geschickt.</string>
+    <string name="successfully_invited">Erfolgreich eingeladen!</string>
+    <string name="reply">Antworten</string>
+    <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>
 </resources>
 
 
