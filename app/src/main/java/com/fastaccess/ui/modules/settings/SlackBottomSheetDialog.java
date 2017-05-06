@@ -21,10 +21,11 @@ import butterknife.OnClick;
  */
 
 public class SlackBottomSheetDialog extends BaseBottomSheetDialog {
-
     public interface SlackDialogListener {
         void onDismissed();
     }
+
+    public static final String TAG = SlackBottomSheetDialog.class.getSimpleName();
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.message) FontTextView message;

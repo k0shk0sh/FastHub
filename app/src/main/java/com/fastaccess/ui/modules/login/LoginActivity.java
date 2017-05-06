@@ -123,7 +123,11 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @Override public void onSuccessfullyLoggedIn() {
         hideProgress();
-        new SlackBottomSheetDialog().show(getSupportFragmentManager(), "SlackBottomSheetDialog");
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(SlackBottomSheetDialog.TAG, true);
+        startActivity(intent);
+        finishAffinity();
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -180,13 +184,6 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         if (login == null || progress == null) return;
         progress.setVisibility(View.GONE);
         login.show();
-    }
-
-    @Override public void onDismissed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finishAffinity();
     }
 
     private void doLogin() {
