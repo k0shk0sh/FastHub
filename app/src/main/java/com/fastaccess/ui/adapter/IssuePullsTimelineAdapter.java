@@ -5,7 +5,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.TimelineModel;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
@@ -26,7 +25,6 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         BaseViewHolder.OnItemClickListener<TimelineModel>> {
 
     private final OnToggleView onToggleView;
-    private final String login;
     private final boolean showEmojies;
     private final ReactionsCallback reactionsCallback;
     private final boolean isMerged;
@@ -35,7 +33,6 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
                                      ReactionsCallback reactionsCallback, boolean isMerged) {
         super(data);
         this.onToggleView = onToggleView;
-        this.login = Login.getUser().getLogin();
         this.showEmojies = showEmojies;
         this.reactionsCallback = reactionsCallback;
         this.isMerged = isMerged;
@@ -48,7 +45,7 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
         if (viewType == TimelineModel.HEADER) {
-            return IssueDetailsViewHolder.newInstance(parent, this);
+            return IssueDetailsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback);
         } else if (viewType == TimelineModel.EVENT) {
             return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
         } else if (viewType == TimelineModel.STATUS) {
@@ -56,7 +53,7 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         } else if (viewType == TimelineModel.REVIEW) {
             return ReviewsViewHolder.newInstance(parent, this);
         }
-        return TimelineCommentsViewHolder.newInstance(parent, this, login, onToggleView, showEmojies, reactionsCallback);
+        return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies, reactionsCallback);
     }
 
     @Override protected void onBindView(BaseViewHolder holder, int position) {
@@ -84,20 +81,6 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
 
     @Override public int getItemViewType(int position) {
         return getData().get(position).getType();
-    }
-
-    @Override public void onViewDetachedFromWindow(BaseViewHolder holder) {
-        if (holder instanceof TimelineCommentsViewHolder) {
-            ((TimelineCommentsViewHolder) holder).pauseWebView();
-        }
-        super.onViewDetachedFromWindow(holder);
-    }
-
-    @Override public void onViewAttachedToWindow(BaseViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        if (holder instanceof TimelineCommentsViewHolder) {
-            ((TimelineCommentsViewHolder) holder).resumeWebView();
-        }
     }
 
     @Override public void insertItems(@NonNull List<TimelineModel> items) {

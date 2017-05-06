@@ -21,6 +21,11 @@ public class CommentsHelper {
     private static final int HOORAY = 0x1f389;
     private static final int HEART = 0x2764;
 
+
+    public static boolean isOwner(@NonNull String currentLogin, @NonNull String repoOwner, @NonNull String commentUser) {
+        return currentLogin.equalsIgnoreCase(repoOwner) || currentLogin.equalsIgnoreCase(commentUser);
+    }
+
     public static void handleReactions(@NonNull Context context, @NonNull String login, @NonNull String repoId,
                                        @IdRes int id, long commentId, boolean commit, boolean isDelete) {
         ReactionTypes type = null;

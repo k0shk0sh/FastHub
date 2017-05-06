@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.issues.issue.details.timeline;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -38,7 +39,7 @@ public interface IssueTimelineMvp {
 
         void onTagUser(@Nullable User user);
 
-        void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long id);
+        void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, boolean isHeadre);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel> {
@@ -61,6 +62,6 @@ public interface IssueTimelineMvp {
 
         int number();
 
-        void onHandleReaction(int id, long commentId);
+        void onHandleReaction(@IdRes int viewId, long id, boolean isHeader);
     }
 }

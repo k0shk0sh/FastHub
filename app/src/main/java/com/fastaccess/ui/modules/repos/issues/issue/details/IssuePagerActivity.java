@@ -187,7 +187,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), "MilestoneDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
-            getPresenter().onLoadAssignees();
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getLogin(), true)
+                    .show(getSupportFragmentManager(), "AssigneesDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.subscribe) {
             getPresenter().onSubscribeOrMute(false);
@@ -311,12 +312,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         supportInvalidateOptionsMenu();
     }
 
-    @Override public void onShowAssignees(@NonNull List<User> items) {
-        hideProgress();
-        AssigneesDialogFragment.newInstance(items)
-                .show(getSupportFragmentManager(), "AssigneesDialogFragment");
-    }
-
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
         getPresenter().onPutMilestones(milestoneModel);
     }
@@ -337,7 +332,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users, boolean isAssignee) {
         getPresenter().onPutAssignees(users);
     }
 

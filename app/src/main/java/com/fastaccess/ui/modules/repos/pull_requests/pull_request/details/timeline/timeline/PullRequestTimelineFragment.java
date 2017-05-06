@@ -48,9 +48,9 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     private IssuePullsTimelineAdapter adapter;
     @State SparseBooleanArrayParcelable sparseBooleanArray;
 
-    public static PullRequestTimelineFragment newInstance(@NonNull PullRequest issueModel) {
+    public static PullRequestTimelineFragment newInstance(@NonNull PullRequest pullRequest) {
         PullRequestTimelineFragment view = new PullRequestTimelineFragment();
-        view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());//TODO fix this
+        view.setArguments(Bundler.start().put(BundleConstant.ITEM, pullRequest).end());//TODO fix this
         return view;
     }
 
@@ -176,8 +176,12 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data == null) {
+                    onRefresh();
+                    return;
+                }
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
@@ -187,6 +191,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                         return;
                     }
                     getSparseBooleanArray().clear();
+                    adapter.notifyDataSetChanged();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
                         recycler.smoothScrollToPosition(adapter.getItemCount());
@@ -219,8 +224,8 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login,
-                                             @NonNull String repoId, long id) {
-        ReactionsDialogFragment.newInstance(login, repoId, type, id).show(getChildFragmentManager(), "ReactionsDialogFragment");
+                                             @NonNull String repoId, long idOrNumber, boolean isHeader) {
+        ReactionsDialogFragment.newInstance(login, repoId, type, idOrNumber, isHeader).show(getChildFragmentManager(), "ReactionsDialogFragment");
     }
 
     private void showReload() {

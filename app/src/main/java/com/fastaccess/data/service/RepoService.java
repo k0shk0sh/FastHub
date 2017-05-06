@@ -132,6 +132,10 @@ public interface RepoService {
     Observable<Response<Boolean>> isCollaborator(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                  @NonNull @Path("username") String username);
 
+    @NonNull @GET("repos/{owner}/{repo}/collaborators?per_page=100")
+    Observable<Pageable<User>> getCollaborator(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+
+
     @NonNull @GET("repos/{owner}/{repo}/branches")
     Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 

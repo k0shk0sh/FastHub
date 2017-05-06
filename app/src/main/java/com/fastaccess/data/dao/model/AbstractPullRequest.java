@@ -15,6 +15,7 @@ import com.fastaccess.data.dao.converters.CommitConverter;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
 import com.fastaccess.data.dao.converters.MilestoneConverter;
 import com.fastaccess.data.dao.converters.PullRequestConverter;
+import com.fastaccess.data.dao.converters.ReactionsConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.converters.UsersConverter;
 import com.fastaccess.data.dao.types.IssueState;
@@ -86,6 +87,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     @Convert(CommitConverter.class) Commit base;
     @Convert(CommitConverter.class) Commit head;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
+    @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single save(PullRequest entity) {
         return App.getInstance().getDataStore()
@@ -255,6 +257,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
         dest.writeParcelable(this.base, flags);
         dest.writeParcelable(this.head, flags);
         dest.writeParcelable(this.pullRequest, flags);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected AbstractPullRequest(Parcel in) {
@@ -303,6 +306,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
         this.base = in.readParcelable(Commit.class.getClassLoader());
         this.head = in.readParcelable(Commit.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
     public static final Creator<PullRequest> CREATOR = new Creator<PullRequest>() {

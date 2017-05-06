@@ -23,22 +23,28 @@ import rx.Observable;
 public class ReactionsProvider {
     private Map<Long, ReactionsModel> reactionsMap = new LinkedHashMap<>();
 
-    @Nullable public Observable onHandleReaction(@IdRes int id, long commentId, @Nullable String login, @Nullable String repoId) {
+    @Nullable public Observable onHandleReaction(@IdRes int viewId, long idOrNumber, @Nullable String login,
+                                                 @Nullable String repoId, boolean isHeader) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            if (!isPreviouslyReacted(commentId, id)) {
-                ReactionTypes reactionTypes = ReactionTypes.get(id);
+            if (!isPreviouslyReacted(idOrNumber, viewId)) {
+                ReactionTypes reactionTypes = ReactionTypes.get(viewId);
                 if (reactionTypes != null) {
-                    return RxHelper.safeObservable(RestProvider.getReactionsService()
-                            .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, commentId))
-                            .doOnNext(response -> getReactionsMap().put(commentId, response));
+                    Observable<ReactionsModel> observable = RestProvider.getReactionsService()
+                            .postIssueCommentReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                    if (isHeader) {
+                        observable = RestProvider.getReactionsService()
+                                .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                    }
+                    return RxHelper.safeObservable(observable)
+                            .doOnNext(response -> getReactionsMap().put(idOrNumber, response));
                 }
             } else {
-                ReactionsModel reactionsModel = getReactionsMap().get(commentId);
+                ReactionsModel reactionsModel = getReactionsMap().get(idOrNumber);
                 if (reactionsModel != null) {
                     return RxHelper.safeObservable(RestProvider.getReactionsService().delete(reactionsModel.getId()))
                             .doOnNext(booleanResponse -> {
                                 if (booleanResponse.code() == 204) {
-                                    getReactionsMap().remove(commentId);
+                                    getReactionsMap().remove(idOrNumber);
                                 }
                             });
                 }
@@ -47,8 +53,8 @@ public class ReactionsProvider {
         return null;
     }
 
-    public boolean isPreviouslyReacted(long commentId, int vId) {
-        ReactionsModel reactionsModel = getReactionsMap().get(commentId);
+    public boolean isPreviouslyReacted(long idOrNumber, @IdRes int vId) {
+        ReactionsModel reactionsModel = getReactionsMap().get(idOrNumber);
         if (reactionsModel == null || InputHelper.isEmpty(reactionsModel.getContent())) {
             return false;
         }

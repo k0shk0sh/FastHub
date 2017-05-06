@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
@@ -14,6 +15,8 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
+
+import rx.Observable;
 
 /**
  * Created by Kosh on 11 Apr 2017, 11:20 AM
@@ -28,6 +31,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
     private String repoId;
     private long id;
     private ReactionTypes reactionType;
+    private boolean isHeader;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {
@@ -35,6 +39,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             login = bundle.getString(BundleConstant.EXTRA_TWO);
             id = bundle.getLong(BundleConstant.ID);
             reactionType = (ReactionTypes) bundle.getSerializable(BundleConstant.EXTRA_TYPE);
+            isHeader = bundle.getBoolean(BundleConstant.EXTRA_THREE);
             onCallApi(1, null);
         }
     }
@@ -69,7 +74,13 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getReactionsService().getIssueCommentReaction(login, repoId, id, reactionType.getContent()),
+        Observable<Pageable<ReactionsModel>> observable = RestProvider.getReactionsService()
+                .getIssueCommentReaction(login, repoId, id, reactionType.getContent());
+        if (isHeader) {
+            observable = RestProvider.getReactionsService()
+                    .getIssueReaction(login, repoId, id, reactionType.getContent());
+        }
+        makeRestCall(observable,
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(Stream.of(response.getItems())

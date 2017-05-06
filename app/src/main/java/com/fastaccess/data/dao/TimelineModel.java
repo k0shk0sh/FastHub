@@ -62,7 +62,7 @@ import lombok.Setter;
     private TimelineModel(Comment comment) {
         this.type = COMMENT;
         this.comment = comment;
-        this.sortedDate = comment.getCreatedAt();
+        this.sortedDate = comment.getCreatedAt() == null ? new Date() : comment.getCreatedAt();
     }
 
     private TimelineModel(IssueEvent event) {
@@ -219,7 +219,7 @@ import lombok.Setter;
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TimelineModel model = (TimelineModel) o;
-        return comment != null && model.getComment() != null && comment.getId() == model.comment.getId();
+        return (comment != null && model.getComment() != null) && (comment.getId() == model.comment.getId());
     }
 
     @Override public int hashCode() {

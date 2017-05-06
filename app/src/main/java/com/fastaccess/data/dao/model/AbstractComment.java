@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
+import com.fastaccess.data.dao.converters.ReactionsConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.helper.RxHelper;
 
@@ -51,7 +52,7 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     String gistId;
     String issueId;
     String pullRequestId;
-    ReactionsModel reactions;
+    @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single save(Comment modelEntity) {
         return App.getInstance().getDataStore()

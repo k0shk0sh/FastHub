@@ -2,8 +2,6 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatImageView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -41,14 +39,11 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     @BindView(R.id.hurray) FontTextView hooray;
     @BindView(R.id.heart) FontTextView heart;
     @BindView(R.id.toggle) View toggle;
-    @BindView(R.id.delete) AppCompatImageView delete;
-    @BindView(R.id.reply) AppCompatImageView reply;
-    @BindView(R.id.edit) AppCompatImageView edit;
+    @BindView(R.id.commentMenu) View commentMenu;
     @BindView(R.id.commentOptions) View commentOptions;
     @BindView(R.id.toggleHolder) View toggleHolder;
     @BindView(R.id.emojiesList) View emojiesList;
     @BindView(R.id.reactionsText) TextView reactionsText;
-    private String login;
     private OnToggleView onToggleView;
     private boolean showEmojies;
 
@@ -101,16 +96,13 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     }
 
     private CommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
-                               @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
+                               @NonNull OnToggleView onToggleView, boolean showEmojies) {
         super(itemView, adapter);
-        this.login = login;
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
-        reply.setOnClickListener(this);
-        edit.setOnClickListener(this);
-        delete.setOnClickListener(this);
+        commentMenu.setOnClickListener(this);
         toggleHolder.setOnClickListener(this);
         laugh.setOnClickListener(this);
         sad.setOnClickListener(this);
@@ -118,19 +110,16 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         thumbsUp.setOnClickListener(this);
         hooray.setOnClickListener(this);
         heart.setOnClickListener(this);
-        reactionsText.setOnClickListener(this);
     }
 
     public static CommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                                 @NonNull String login, @NonNull OnToggleView onToggleView, boolean showEmojies) {
-        return new CommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login, onToggleView, showEmojies);
+                                                 @NonNull OnToggleView onToggleView, boolean showEmojies) {
+        return new CommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, onToggleView, showEmojies);
     }
 
     @Override public void bind(@NonNull Comment commentsModel) {
         if (commentsModel.getUser() != null) {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(), commentsModel.getUser().isOrganizationType());
-            delete.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);
-            edit.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);
         } else {
             avatar.setUrl(null, null);
         }

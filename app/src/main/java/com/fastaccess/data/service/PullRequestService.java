@@ -40,7 +40,7 @@ public interface PullRequestService {
                                                         @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<PullRequest> getPullRequest(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
 
     @PUT("repos/{owner}/{repo}/pulls/{number}/merge")
@@ -89,4 +89,9 @@ public interface PullRequestService {
     @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
     Observable<Pageable<ReviewCommentModel>> getReviewComments(@Path("owner") String owner, @Path("repo") String repo,
                                                                @Path("number") long number, @Path("id") long reviewId);
+
+    @POST("repos/{owner}/{repo}/pulls/{number}/requested_reviewers")
+    @Headers("Accept: application/vnd.github.black-cat-preview+json")
+    Observable<PullRequest> putReviewers(@Path("owner") String owner, @Path("repo") String repo,
+                                               @Path("number") int number, @Body AssigneesRequestModel body);
 }

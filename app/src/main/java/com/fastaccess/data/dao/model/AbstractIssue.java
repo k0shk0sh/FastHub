@@ -11,6 +11,7 @@ import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
 import com.fastaccess.data.dao.converters.MilestoneConverter;
 import com.fastaccess.data.dao.converters.PullRequestConverter;
+import com.fastaccess.data.dao.converters.ReactionsConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.converters.UsersConverter;
@@ -65,6 +66,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     @Convert(RepoConverter.class) Repo repository;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
     @Convert(UserConverter.class) User closedBy;
+    @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single save(Issue entity) {
         return App.getInstance().getDataStore()
@@ -147,6 +149,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
         dest.writeParcelable(this.repository, flags);
         dest.writeParcelable(this.pullRequest, flags);
         dest.writeParcelable(this.closedBy, flags);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected AbstractIssue(Parcel in) {
@@ -180,6 +183,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
         this.repository = in.readParcelable(Repo.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
         this.closedBy = in.readParcelable(User.class.getClassLoader());
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
     public static final Creator<Issue> CREATOR = new Creator<Issue>() {

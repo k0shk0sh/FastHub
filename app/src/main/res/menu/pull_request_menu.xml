@@ -40,6 +40,12 @@
                 android:id="@+id/assignees"
                 android:icon="@drawable/ic_profile"
                 android:title="@string/assignees"/>
+
+            <item
+                android:id="@+id/reviewers"
+                android:icon="@drawable/ic_eye"
+                android:title="@string/reviewers"/>
+
             <item
                 android:id="@+id/merge"
                 android:icon="@drawable/ic_merge"

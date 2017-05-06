@@ -4,14 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.PopupMenu;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
-import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -114,18 +115,26 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     }
 
     @Override public void onItemClick(int position, View v, Comment item) {
-        Login user = Login.getUser();
         if (getView() != null) {
-            if (v.getId() == R.id.delete) {
-                if (user != null && item.getUser().getLogin().equals(user.getLogin())) {
-                    if (getView() != null) getView().onShowDeleteMsg(item.getId());
-                }
-            } else if (v.getId() == R.id.reply) {
-                getView().onTagUser(item.getUser());
-            } else if (v.getId() == R.id.edit) {
-                if (user != null && item.getUser().getLogin().equals(user.getLogin())) {
-                    getView().onEditComment(item);
-                }
+            if (v.getId() == R.id.commentMenu) {
+                PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+                popupMenu.inflate(R.menu.comments_menu);
+                String username = Login.getUser().getLogin();
+                boolean isOwner = CommentsHelper.isOwner(username, login, item.getUser().getLogin());
+                popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
+                popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
+                popupMenu.setOnMenuItemClickListener(item1 -> {
+                    if (getView() == null) return false;
+                    if (item1.getItemId() == R.id.delete) {
+                        getView().onShowDeleteMsg(item.getId());
+                    } else if (item1.getItemId() == R.id.reply) {
+                        getView().onTagUser(item.getUser());
+                    } else if (item1.getItemId() == R.id.edit) {
+                        getView().onEditComment(item);
+                    }
+                    return true;
+                });
+                popupMenu.show();
             } else {
                 CommentsHelper.handleReactions(v.getContext(), login, repoId, v.getId(), item.getId(), true, false);
             }

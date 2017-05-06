@@ -67,7 +67,7 @@ public class ReactionService extends IntentService {
 
     private void post(@NonNull ReactionTypes reactionType, @NonNull String login, @NonNull String repo, long commentId) {
         RxHelper.safeObservable(RestProvider.getReactionsService()
-                .postIssueReaction(new PostReactionModel(reactionType.getContent()), login, repo, commentId))
+                .postIssueCommentReaction(new PostReactionModel(reactionType.getContent()), login, repo, commentId))
                 .doOnSubscribe(() -> showNotificatin(getNotification(reactionType), (int) commentId))
                 .subscribe(response -> hideNotificat((int) commentId), throwable -> hideNotificat((int) commentId));
     }

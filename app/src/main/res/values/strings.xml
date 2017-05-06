@@ -400,5 +400,7 @@
     <string name="failed_selecting_image">Failed to load image.</string>
     <string name="want_to_merge">wants to merge</string>
     <string name="watchers">Watchers</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="no_reviewers">No reviewers</string>
 
 </resources>

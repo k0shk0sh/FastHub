@@ -40,8 +40,6 @@ public interface PullRequestPagerMvp {
 
         void onUpdateTimeline();
 
-        void onShowAssignees(@NonNull List<User> items);
-
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
 
         void onFinishActivity();
@@ -77,13 +75,11 @@ public interface PullRequestPagerMvp {
 
         void onLoadLabels();
 
-        void onLoadAssignees();
-
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
 
         void onPutMilestones(@NonNull MilestoneModel milestone);
 
-        void onPutAssignees(@NonNull ArrayList<User> users);
+        void onPutAssignees(@NonNull ArrayList<User> users, boolean isAssignee);
 
         String getLogin();
 

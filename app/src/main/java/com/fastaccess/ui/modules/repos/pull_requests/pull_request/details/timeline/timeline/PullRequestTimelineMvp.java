@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -37,7 +38,7 @@ public interface PullRequestTimelineMvp {
 
         void onTagUser(@Nullable User user);
 
-        void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long id);
+        void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, boolean isHeader);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel> {
@@ -61,7 +62,7 @@ public interface PullRequestTimelineMvp {
 
         boolean isPreviouslyReacted(long commentId, int vId);
 
-        void onHandleReaction(int id, long commentId);
+        void onHandleReaction(@IdRes int vId, long idOrNumber, boolean isHeader);
 
         boolean isMerged();
     }
