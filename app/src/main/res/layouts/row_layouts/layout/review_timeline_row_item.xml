@@ -36,24 +36,25 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingEnd="@dimen/spacing_xs_large"
             android:paddingTop="@dimen/spacing_normal"
             tools:ignore="RtlSymmetry">
 
-            <com.fastaccess.ui.widgets.AvatarLayout
-                android:id="@+id/avatarLayout"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/avatar_margin_end"
-                android:layout_marginStart="@dimen/avatar_margin"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.AvatarLayout
+                    android:id="@+id/avatarLayout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="top"
+                    android:layout_marginEnd="@dimen/avatar_margin_end"
+                    android:layout_marginStart="@dimen/avatar_margin"/>
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/stateText"
@@ -63,16 +64,18 @@
                     android:ellipsize="end"
                     android:maxLines="5"
                     tools:text="For a divided large loaf, add some champaign and cinnamon."/>
-
-                <com.fastaccess.ui.widgets.FontTextView
-                    android:id="@+id/body"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:text="For a divided large loaf, add some champaign and cinnamon."
-                    tools:visibility="visible"/>
             </LinearLayout>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/body"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/avatar_margin"
+                android:visibility="gone"
+                android:layout_marginTop="@dimen/spacing_micro"
+                tools:text="For a divided large loaf, add some champaign and cinnamon."
+                tools:visibility="visible"/>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>
 

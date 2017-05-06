@@ -80,17 +80,23 @@ public class ActivityHelper {
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Intent finalIntent = chooserIntent(context, i, url);
         if (finalIntent != null) {
-            context.startActivity(finalIntent);
+            try {
+                context.startActivity(finalIntent);
+            } catch (ActivityNotFoundException ignored) {}
         } else {
             if (!fromCustomTab) {
                 Activity activity = ActivityHelper.getActivity(context);
                 if (activity == null) {
-                    context.startActivity(i);
+                    try {
+                        context.startActivity(i);
+                    } catch (ActivityNotFoundException ignored) {}
                     return;
                 }
                 startCustomTab(activity, url);
             } else {
-                context.startActivity(i);
+                try {
+                    context.startActivity(i);
+                } catch (ActivityNotFoundException ignored) {}
             }
         }
     }

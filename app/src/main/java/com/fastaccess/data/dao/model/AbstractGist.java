@@ -27,9 +27,8 @@ import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
-import rx.schedulers.Schedulers;
+import rx.Single;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:32 PM
@@ -56,42 +55,38 @@ import rx.schedulers.Schedulers;
     @Column(name = "user_column") @Convert(UserConverter.class) User user;
     @Convert(UserConverter.class) User owner;
 
-    public Completable save(Gist modelEntity) {
+    public Single save(Gist modelEntity) {
         return App.getInstance().getDataStore()
                 .delete(Gist.class)
                 .where(Gist.ID.eq(modelEntity.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(modelEntity)
-                        .toCompletable());
+                .flatMap(integer -> App.getInstance().getDataStore().insert(modelEntity));
     }
 
-    public static Completable save(@NonNull List<Gist> gists) {
-        return Completable.fromAction(() -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Gist.class)
-                    .where(Gist.OWNER_NAME.isNull())
-                    .get()
-                    .value();
-            Stream.of(gists).forEach(gist -> gist.save(gist));
-        }).subscribeOn(Schedulers.io());
+    public static Observable save(@NonNull List<Gist> gists) {
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
+                .where(Gist.OWNER_NAME.isNull())
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(gists))
+                .flatMap(gist -> singleEntityStore.insert(gist).toObservable()));
     }
 
     public static Observable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        return RxHelper.safeObservable(Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Gist.class)
-                    .where(Gist.OWNER_NAME.equal(ownerName))
-                    .get()
-                    .value();
-            Stream.of(gists)
-                    .forEach(gistsModel -> {
-                        gistsModel.setOwnerName(ownerName);
-                        gistsModel.save(gistsModel).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        }));
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
+                .where(Gist.OWNER_NAME.equal(ownerName))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(gists))
+                .flatMap(gist -> {
+                    gist.setOwnerName(ownerName);
+                    return gist.save(gist).toObservable();
+                }));
     }
 
     @NonNull public static Observable<List<Gist>> getMyGists(@NonNull String ownerName) {

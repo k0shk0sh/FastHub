@@ -15,6 +15,12 @@ public class FontSpan extends StyleSpan implements ParcelableSpan {
     private final float size;
     private final int color;
 
+    public FontSpan(float size, int style) {
+        super(style);
+        this.size = size;
+        this.color = -1;
+    }
+
     public FontSpan(float size, int style, int color) {
         super(style);
         this.size = size;
@@ -31,6 +37,6 @@ public class FontSpan extends StyleSpan implements ParcelableSpan {
     public void updateDrawState(TextPaint tp) {
         super.updateDrawState(tp);
         updateMeasureState(tp);
-        tp.setColor(color);
+        if (color != -1) tp.setColor(color);
     }
 }

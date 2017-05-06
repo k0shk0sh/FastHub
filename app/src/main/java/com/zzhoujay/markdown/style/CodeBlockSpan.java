@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.NonNull;
 import android.text.style.LineHeightSpan;
 import android.text.style.ReplacementSpan;
 import android.util.Pair;
@@ -46,19 +47,22 @@ public class CodeBlockSpan extends ReplacementSpan implements LineHeightSpan {
         return width;
     }
 
-    @Override public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
+    @Override public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x,
+                               int top, int y, int bottom, @NonNull Paint paint) {
         drawable.setBounds((int) x, top, (int) x + width, bottom);
         drawable.draw(canvas);
         int lineNum = 0;
         x = x + padding;
         int i = baseLine + lineHeight / 2 + top;
         for (Pair<Integer, Integer> line : lines) {
-            CharSequence t = ls[lineNum];
-            canvas.drawText(t, line.first, line.second, x + padding, i, paint);
-            if (line.second >= t.length()) {
-                lineNum++;
-            }
-            i += lineHeight;
+            try {
+                CharSequence t = ls[lineNum];
+                canvas.drawText(t, line.first, line.second, x + padding, i, paint);
+                if (line.second >= t.length()) {
+                    lineNum++;
+                }
+                i += lineHeight;
+            } catch (IndexOutOfBoundsException ignored) {}
         }
     }
 

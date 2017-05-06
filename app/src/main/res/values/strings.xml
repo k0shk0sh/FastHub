@@ -58,7 +58,7 @@
     <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">Contributors</string>
     <string name="merged" translatable="false">Merged</string>
-    <string name="by">By</string>
+    <string name="by">by</string>
     <string name="star" translatable="false">Star</string>
     <string name="stars" translatable="false">Stars</string>
     <string name="fork" translatable="false">Fork</string>

@@ -85,6 +85,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     }
 
     @OnClick(R.id.fab) void onAddComment() {
+        if (pager == null || pager.getAdapter() == null) return;
         CommitCommentsFragments view = (CommitCommentsFragments) pager.getAdapter().instantiateItem(pager, 1);
         if (view != null) {
             view.onStartNewComment();

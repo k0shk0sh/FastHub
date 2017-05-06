@@ -33,7 +33,7 @@ ext {
     lombokVersion = '1.12.6'
     supportVersion = "25.3.1"
     firebase = "10.2.0"
-    thirtyinchVersion = '0.8.0-rc4'
+    thirtyinchVersion = '0.8.0'
     retrofit = '2.1.0'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'

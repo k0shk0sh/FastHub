@@ -37,7 +37,7 @@
     <string name="releases">Yayınlananlar</string>
     <string name="no_body">İçerik yok</string>
     <string name="contributors">Katkıda bulunanlar</string>
-    <string name="by">By</string>
+    <string name="by">by</string>
     <string name="close_issue">Issue\'yu kapat</string>
     <string name="re_open_issue">Issue\'yu yeniden aç</string>
     <string name="re_open">Yeniden aç</string>

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -28,8 +27,8 @@ import io.requery.Persistable;
 import io.requery.Transient;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.IssueEvent.CREATED_AT;
 import static com.fastaccess.data.dao.model.IssueEvent.ID;
@@ -62,38 +61,32 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     String login;
     @Transient CharSequence labels;
 
-    public Completable save(IssueEvent entity) {
+    public Single save(IssueEvent entity) {
         return App.getInstance().getDataStore()
                 .delete(IssueEvent.class)
                 .where(ID.eq(entity.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity)
-                        .toCompletable());
+                .flatMap(i -> App.getInstance().getDataStore().update(entity));
     }
 
     public static Observable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
                                   @NonNull String login, @NonNull String issueId) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(IssueEvent.class)
-                            .where(LOGIN.equal(login)
-                                    .and(REPO_ID.equal(repoId))
-                                    .and(ISSUE_ID.equal(issueId)))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(issueEventModel -> {
-                                issueEventModel.setIssueId(issueId);
-                                issueEventModel.setLogin(login);
-                                issueEventModel.setRepoId(repoId);
-                                issueEventModel.save(issueEventModel).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(IssueEvent.class)
+                .where(LOGIN.equal(login)
+                        .and(REPO_ID.equal(repoId))
+                        .and(ISSUE_ID.equal(issueId)))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models))
+                .flatMap(issueEventModel -> {
+                    issueEventModel.setIssueId(issueId);
+                    issueEventModel.setLogin(login);
+                    issueEventModel.setRepoId(repoId);
+                    return issueEventModel.save(issueEventModel).toObservable();
+                }));
     }
 
     public static Observable<List<IssueEvent>> get(@NonNull String repoId, @NonNull String login,

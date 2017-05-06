@@ -38,7 +38,7 @@
     <string name="releases">发行列表</string>
     <string name="no_body">没有内容</string>
     <string name="contributors">贡献者</string>
-    <string name="by">By</string>
+    <string name="by">by</string>
     <string name="close_issue">撤回问题</string>
     <string name="re_open_issue">重新提交问题</string>
     <string name="re_open">重新提交</string>

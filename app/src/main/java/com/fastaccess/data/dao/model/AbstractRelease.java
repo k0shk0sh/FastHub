@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.ReleasesAssetsListModel;
 import com.fastaccess.data.dao.converters.ReleasesAssetsConverter;
@@ -24,6 +23,7 @@ import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.Release.CREATED_AT;
 import static com.fastaccess.data.dao.model.Release.ID;
@@ -56,34 +56,28 @@ public abstract class AbstractRelease implements Parcelable {
     @Convert(UserConverter.class) User author;
     @Convert(ReleasesAssetsConverter.class) ReleasesAssetsListModel assets;
 
-    public Completable save(Release entity) {
+    public Single save(Release entity) {
         return App.getInstance().getDataStore()
                 .delete(Release.class)
                 .where(ID.eq(entity.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity)
-                        .toCompletable());
+                .flatMap(i -> App.getInstance().getDataStore().insert(entity));
     }
 
     public static Observable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(Release.class)
-                            .where(REPO_ID.eq(login))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(releasesModel -> {
-                                releasesModel.setRepoId(repoId);
-                                releasesModel.setLogin(login);
-                                releasesModel.save(releasesModel).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(Release.class)
+                .where(REPO_ID.eq(login))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models))
+                .flatMap(releasesModel -> {
+                    releasesModel.setRepoId(repoId);
+                    releasesModel.setLogin(login);
+                    return releasesModel.save(releasesModel).toObservable();
+                }));
 
     }
 

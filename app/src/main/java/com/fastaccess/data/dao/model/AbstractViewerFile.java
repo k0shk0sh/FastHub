@@ -11,8 +11,8 @@ import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Kosh on 06 Dec 2016, 10:42 PM
@@ -25,16 +25,13 @@ import rx.Observable;
     @Column(unique = true) String fullUrl;
     boolean repo;
 
-    public Completable save(ViewerFile modelEntity) {
+    public Single save(ViewerFile modelEntity) {
         return App.getInstance().getDataStore()
                 .delete(ViewerFile.class)
                 .where(ViewerFile.FULL_URL.eq(modelEntity.getFullUrl()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(modelEntity)
-                        .toCompletable());
+                .flatMap(i -> App.getInstance().getDataStore().insert(modelEntity));
     }
 
     public static Observable<ViewerFile> get(@NonNull String url) {

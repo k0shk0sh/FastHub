@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LicenseModel;
 import com.fastaccess.data.dao.RepoPermissionsModel;
@@ -25,8 +24,8 @@ import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.Repo.FULL_NAME;
 import static com.fastaccess.data.dao.model.Repo.ID;
@@ -116,13 +115,12 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     String starredUser;
     String reposOwner;
 
-    public Completable save(@NonNull Repo entity) {
+    public Single save(@NonNull Repo entity) {
         return App.getInstance().getDataStore().delete(Repo.class)
                 .where(ID.eq(entity.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore().insert(entity).toCompletable());
+                .flatMap(i -> App.getInstance().getDataStore().insert(entity));
     }
 
     public static Observable<Repo> getRepo(@NonNull String name, @NonNull String login) {
@@ -142,37 +140,31 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     }
 
     public static Observable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(Repo.class)
-                            .where(STARRED_USER.eq(starredUser))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(repo -> {
-                                repo.setStarredUser(starredUser);
-                                repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
+                .where(STARRED_USER.eq(starredUser))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models))
+                .flatMap(repo -> {
+                    repo.setStarredUser(starredUser);
+                    return repo.save(repo).toObservable();
+                }));
     }
 
     public static Observable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(Repo.class)
-                            .where(REPOS_OWNER.eq(reposOwner))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(repo -> {
-                                repo.setReposOwner(reposOwner);
-                                repo.save(repo).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
+                .where(REPOS_OWNER.eq(reposOwner))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models))
+                .flatMap(repo -> {
+                    repo.setReposOwner(reposOwner);
+                    return repo.save(repo).toObservable();
+                }));
     }
 
     public static Observable<List<Repo>> getStarred(@NonNull String starredUser) {

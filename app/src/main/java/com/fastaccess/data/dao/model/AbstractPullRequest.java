@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelListModel;
@@ -34,8 +33,8 @@ import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.PullRequest.ID;
 import static com.fastaccess.data.dao.model.PullRequest.LOGIN;
@@ -88,35 +87,29 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     @Convert(CommitConverter.class) Commit head;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
 
-    public Completable save(PullRequest entity) {
+    public Single save(PullRequest entity) {
         return App.getInstance().getDataStore()
                 .delete(PullRequest.class)
                 .where(ID.eq(entity.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity)
-                        .toCompletable());
+                .flatMap(integer -> App.getInstance().getDataStore().insert(entity));
     }
 
     public static Observable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(PullRequest.class)
-                            .where(REPO_ID.equal(repoId)
-                                    .and(LOGIN.equal(login)))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(pulRequest -> {
-                                pulRequest.setRepoId(repoId);
-                                pulRequest.setLogin(login);
-                                pulRequest.save(pulRequest).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(PullRequest.class)
+                .where(REPO_ID.equal(repoId)
+                        .and(LOGIN.equal(login)))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models))
+                .flatMap(pulRequest -> {
+                    pulRequest.setRepoId(repoId);
+                    pulRequest.setLogin(login);
+                    return pulRequest.save(pulRequest).toObservable();
+                }));
     }
 
     public static Observable<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,

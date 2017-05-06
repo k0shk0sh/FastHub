@@ -138,11 +138,6 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @Override public void onDownload(@NonNull Release item) {
         ArrayList<SimpleUrlsModel> models = new ArrayList<>();
         if (!InputHelper.isEmpty(item.getZipBallUrl())) {
@@ -154,7 +149,8 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         if (item.getAssets() != null && !item.getAssets().isEmpty()) {
             ArrayList<SimpleUrlsModel> mapped = Stream.of(item.getAssets())
                     .filter(value -> value != null && value.getBrowserDownloadUrl() != null)
-                    .map(assetsModel -> new SimpleUrlsModel(assetsModel.getName(), assetsModel.getBrowserDownloadUrl()))
+                    .map(assetsModel -> new SimpleUrlsModel(String.format("%s (%s)", assetsModel.getName(), assetsModel.getDownloadCount()),
+                            assetsModel.getBrowserDownloadUrl()))
                     .collect(Collectors.toCollection(ArrayList::new));
             if (mapped != null && !mapped.isEmpty()) {
                 models.addAll(mapped);
@@ -187,5 +183,10 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
             RestProvider.downloadFile(getContext(), item.getUrl());
         }
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }
