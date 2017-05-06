@@ -14,10 +14,15 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
 ## Download
  
  **FastHub** can be downloaded on [Google Play](https://play.google.com/store/apps/details?id=com.fastaccess.github):
- 
- <a href="https://play.google.com/store/apps/details?id=com.fastaccess.github">
-     <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80px"/>
- </a>
+
+<p>
+    <a href="https://play.google.com/store/apps/details?id=com.fastaccess.github"><img alt="Get it on Google Play"
+            src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+            height="80px"/></a>
+    <a href="https://f-droid.org/app/com.fastaccess.github"><img src="https://f-droid.org/badge/get-it-on.png"
+            alt="Get it on F-Droid"
+            height="80px"/></a>
+</p>
  
 _(To download the app from here, please look at the [latest release](https://github.com/k0shk0sh/FastHub/releases/latest).)_
  
