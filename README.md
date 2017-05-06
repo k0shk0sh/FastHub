@@ -2,7 +2,7 @@
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
-[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
+[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
