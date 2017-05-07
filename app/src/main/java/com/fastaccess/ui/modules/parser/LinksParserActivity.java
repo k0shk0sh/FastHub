@@ -33,7 +33,7 @@ public class LinksParserActivity extends Activity {
         setVisible(true);
     }
 
-    private void onCreate(Intent intent) {
+    private void onCreate(@Nullable Intent intent) {
         if (intent == null || intent.getAction() == null) {
             finish();
             return;

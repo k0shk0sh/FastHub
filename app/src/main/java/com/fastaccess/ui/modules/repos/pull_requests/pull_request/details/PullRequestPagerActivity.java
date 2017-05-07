@@ -152,14 +152,16 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onNavToRepoClicked();
-        } else if (item.getItemId() == R.id.share) {
-            if (getPresenter().getPullRequest() != null) ActivityHelper.shareUrl(this, getPresenter().getPullRequest().getHtmlUrl());
+            return true;
+        }
+        PullRequest pullRequest = getPresenter().getPullRequest();
+        if (pullRequest == null) return false;
+        if (item.getItemId() == R.id.share) {
+            ActivityHelper.shareUrl(this, pullRequest.getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            PullRequest issueModel = getPresenter().getPullRequest();
-            if (issueModel == null) return true;
             MessageDialogView.newInstance(
-                    issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
+                    pullRequest.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
                     getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
@@ -176,7 +178,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             getPresenter().onLoadLabels();
             return true;
         } else if (item.getItemId() == R.id.edit) {
-            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPullRequest());
+            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), pullRequest);
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())
@@ -195,6 +197,9 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 String msg = getPresenter().getPullRequest().getTitle();
                 MergePullRequestDialogFragment.newInstance(msg).show(getSupportFragmentManager(), "MergePullRequestDialogFragment");
             }
+        } else if (item.getItemId() == R.id.browser) {
+            ActivityHelper.startCustomTab(this, pullRequest.getHtmlUrl());
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }

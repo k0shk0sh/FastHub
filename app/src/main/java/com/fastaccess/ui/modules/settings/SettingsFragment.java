@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -21,7 +22,6 @@ import es.dmoral.toasty.Toasty;
  */
 
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
-
 
     private BaseMvp.FAView callback;
 
@@ -49,7 +49,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             return true;
         });
         findPreference("joinSlack").setOnPreferenceClickListener(preference -> {
-            new SlackBottomSheetDialog().show(getChildFragmentManager(), "SlackBottomSheetDialog");
+            ActivityHelper.startCustomTab(getActivity(), "http://rebrand.ly/fasthub");
             return true;
         });
         findPreference("currentVersion").setSummary(SpannableBuilder.builder()

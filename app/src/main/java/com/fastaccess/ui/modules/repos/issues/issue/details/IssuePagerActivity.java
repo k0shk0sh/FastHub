@@ -155,12 +155,14 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onNavToRepoClicked();
-        } else if (item.getItemId() == R.id.share) {
-            if (getPresenter().getIssue() != null) ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
+            return true;
+        }
+        Issue issueModel = getPresenter().getIssue();
+        if (issueModel == null) return false;
+        if (item.getItemId() == R.id.share) {
+            ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            Issue issueModel = getPresenter().getIssue();
-            if (issueModel == null) return true;
             MessageDialogView.newInstance(
                     issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
                     getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true)
@@ -195,6 +197,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             return true;
         } else if (item.getItemId() == R.id.mute) {
             getPresenter().onSubscribeOrMute(true);
+            return true;
+        } else if (item.getItemId() == R.id.browser) {
+            ActivityHelper.startCustomTab(this, issueModel.getHtmlUrl());
             return true;
         }
         return super.onOptionsItemSelected(item);

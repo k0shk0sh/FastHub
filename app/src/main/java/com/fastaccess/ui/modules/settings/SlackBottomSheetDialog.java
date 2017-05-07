@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
 import com.fastaccess.ui.widgets.FontButton;
@@ -65,7 +64,7 @@ public class SlackBottomSheetDialog extends BaseBottomSheetDialog {
         cancel.setText(R.string.no);
         ok.setText(R.string.yes);
         title.setText(R.string.join_slack);
-        message.setText(getString(R.string.join_slack_message, Login.getUser().getEmail()));
+        message.setText(getString(R.string.join_slack_message, ""));
     }
 
     @Override protected void onHidden() {

@@ -53,7 +53,7 @@ public interface IssueService {
                                   @Body IssueRequestModel issue);
 
     @PATCH("repos/{owner}/{repo}/issues/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Issue> editIssue(@Path("owner") String owner, @Path("repo") String repo,
                                 @Path("number") int number,
                                 @Body IssueRequestModel issue);

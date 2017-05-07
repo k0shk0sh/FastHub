@@ -63,13 +63,13 @@ public interface PullRequestService {
                                                            @Path("number") long number);
 
     @PATCH("repos/{owner}/{repo}/pulls/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<PullRequest> editPullRequest(@Path("owner") String owner, @Path("repo") String repo,
                                             @Path("number") int number,
                                             @Body IssueRequestModel issue);
 
     @PATCH("repos/{owner}/{repo}/issues/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<PullRequest> editIssue(@Path("owner") String owner, @Path("repo") String repo,
                                       @Path("number") int number,
                                       @Body IssueRequestModel issue);
