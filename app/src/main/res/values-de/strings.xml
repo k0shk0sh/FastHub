@@ -333,7 +333,7 @@
     <string name="paths_only">In Dateipfaden</string>
     <string name="review_requests">Anfragen überprüfen</string>
     <string name="join_slack">Slackgruppe beitreten</string>
-    <string name="join_slack_message" formatted="true">Möchtest du der FastHub Slackgruppe beitreten?\nEin Link wird an %s geschickt.</string>
+    <string name="join_slack_message">Möchtest du der FastHub Slackgruppe beitreten?</string>
     <string name="successfully_invited">Erfolgreich eingeladen!</string>
     <string name="reply">Antworten</string>
     <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>

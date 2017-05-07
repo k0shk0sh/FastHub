@@ -64,7 +64,7 @@ public class SlackBottomSheetDialog extends BaseBottomSheetDialog {
         cancel.setText(R.string.no);
         ok.setText(R.string.yes);
         title.setText(R.string.join_slack);
-        message.setText(getString(R.string.join_slack_message, ""));
+        message.setText(getString(R.string.join_slack_message));
     }
 
     @Override protected void onHidden() {

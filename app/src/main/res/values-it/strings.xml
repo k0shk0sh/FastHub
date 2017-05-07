@@ -339,7 +339,7 @@
     <string name="paths_only">Nei Percorsi</string>
     <string name="review_requests">Rivedi Richieste</string>
     <string name="join_slack">Unisciti a Slack</string>
-    <string name="join_slack_message" formatted="true">Vorresti unirti al gruppo Slack di FastHub?\nIl link di invito verrà inviato a %s.</string>
+    <string name="join_slack_message">Vorresti unirti al gruppo Slack di FastHub?</string>
     <string name="successfully_invited">Invitato con successo</string>
     <string name="reply">Rispondi</string>
     <string name="failed_selecting_image">Caricamento immagine fallito.</string>
