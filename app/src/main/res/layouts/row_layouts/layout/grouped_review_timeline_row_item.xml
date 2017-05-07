@@ -14,8 +14,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_xs_large"
         android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingStart="@dimen/spacing_xs_large"
         android:paddingTop="@dimen/spacing_normal">
 
         <LinearLayout
@@ -27,7 +27,6 @@
                 android:id="@+id/stateImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
                 android:layout_gravity="top"
                 android:layout_marginEnd="@dimen/avatar_margin"
                 android:minHeight="24dp"
@@ -40,7 +39,7 @@
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="top|center"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
@@ -52,7 +51,7 @@
                 android:id="@+id/toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="top"
                 android:src="@drawable/ic_arrow_drop_down"/>
 
         </LinearLayout>

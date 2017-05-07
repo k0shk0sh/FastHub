@@ -40,7 +40,7 @@ import rx.Single;
     Date lastReadAt;
     @Nullable boolean isSubscribed;
 
-    public Single save(Notification notification) {
+    public Single<Notification> save(Notification notification) {
         return App.getInstance().getDataStore()
                 .delete(Notification.class)
                 .where(Notification.ID.eq(notification.getId()))
@@ -64,7 +64,7 @@ import rx.Single;
         });
     }
 
-    public static Observable save(@NonNull List<Notification> models) {
+    public static Observable<Notification> save(@NonNull List<Notification> models) {
         SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
         return RxHelper.safeObservable(dataSource.delete(Notification.class)
                 .get()

@@ -2,12 +2,14 @@ package com.fastaccess.ui.widgets.dialog;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.app.DialogFragment;
 
+import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.Bundler;
 
@@ -40,6 +42,7 @@ public class ProgressDialogFragment extends DialogFragment {
         if (getActivity() != null && !getActivity().isFinishing()) {
             progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog, 200));
         }
+        progressDialog.setButton(DialogInterface.BUTTON_NEUTRAL, getString(R.string.close), (dialog, which) -> dismiss());
         return progressDialog;
     }
 }
