@@ -1,6 +1,8 @@
 package com.fastaccess.ui.base;
 
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.DrawableRes;
@@ -378,6 +380,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         } else if (themeMode == PrefGetter.DARK) {
             setTheme(R.style.ThemeDark);
         }
+        setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
+                BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(this)));
     }
 
     protected void setupNavigationView(@Nullable NavigationView extraNav) {

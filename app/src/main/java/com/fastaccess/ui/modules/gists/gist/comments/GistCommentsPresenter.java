@@ -95,9 +95,8 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Comment.getGistComments(gistId)).subscribe(
-                    localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))
-            ));
+            manageSubscription(RxHelper.getObserver(Comment.getGistComments(gistId))
+                    .subscribe(localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }
@@ -105,7 +104,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onItemClick(int position, View v, Comment item) {
         if (getView() == null) return;
-        if (v.getId() == R.id.commentMenu) {
+        if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             popupMenu.inflate(R.menu.comments_menu);
             String username = Login.getUser().getLogin();

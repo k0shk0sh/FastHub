@@ -11,15 +11,18 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
-import com.fastaccess.ui.adapter.CommentsAdapter;
+import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
+import com.fastaccess.ui.modules.repos.reactions.ReactionsDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -40,7 +43,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State SparseBooleanArrayParcelable sparseBooleanArray;
 
-    private CommentsAdapter adapter;
+    private IssuePullsTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
 
     public static CommitCommentsFragments newInstance(@NonNull String login, @NonNull String repoId, @NonNull String sha) {
@@ -64,7 +67,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments(), this, true);
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true, this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -80,7 +83,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         getPresenter().onCallApi(1, null);
     }
 
-    @Override public void onNotifyAdapter(@Nullable List<Comment> items, int page) {
+    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items, int page) {
         hideProgress();
         if (items == null || items.isEmpty()) {
             adapter.clear();
@@ -93,7 +96,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         }
     }
 
-    @Override public void onRemove(@NonNull Comment comment) {
+    @Override public void onRemove(@NonNull TimelineModel comment) {
         hideProgress();
         adapter.removeItem(comment);
     }
@@ -172,6 +175,11 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
+    @Override public void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId) {
+        ReactionsDialogFragment.newInstance(login, repoId, reactionTypes, commentId, false, true)
+                .show(getChildFragmentManager(), "ReactionsDialogFragment");
+    }
+
     @Override public void onDestroyView() {
         recycler.removeOnScrollListener(getLoadMore());
         super.onDestroyView();
@@ -183,8 +191,12 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data == null) {
+                    onRefresh();
+                    return;
+                }
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
@@ -195,15 +207,15 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
                         return;
                     }
                     if (isNew) {
-                        adapter.addItem(commentsModel);
+                        adapter.addItem(TimelineModel.constructComment(commentsModel));
                         recycler.smoothScrollToPosition(adapter.getItemCount());
                     } else {
-                        int position = adapter.getItem(commentsModel);
+                        int position = adapter.getItem(TimelineModel.constructComment(commentsModel));
                         if (position != -1) {
-                            adapter.swapItem(commentsModel, position);
+                            adapter.swapItem(TimelineModel.constructComment(commentsModel), position);
                             recycler.smoothScrollToPosition(position);
                         } else {
-                            adapter.addItem(commentsModel);
+                            adapter.addItem(TimelineModel.constructComment(commentsModel));
                             recycler.smoothScrollToPosition(adapter.getItemCount());
                         }
                     }
@@ -239,5 +251,9 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    @Override public boolean isPreviouslyReacted(long id, int vId) {
+        return getPresenter().isPreviouslyReacted(id, vId);
     }
 }

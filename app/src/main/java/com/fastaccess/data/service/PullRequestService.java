@@ -93,5 +93,6 @@ public interface PullRequestService {
     @POST("repos/{owner}/{repo}/pulls/{number}/requested_reviewers")
     @Headers("Accept: application/vnd.github.black-cat-preview+json")
     Observable<PullRequest> putReviewers(@Path("owner") String owner, @Path("repo") String repo,
-                                               @Path("number") int number, @Body AssigneesRequestModel body);
+                                         @Path("number") int number, @Body AssigneesRequestModel body);
+
 }

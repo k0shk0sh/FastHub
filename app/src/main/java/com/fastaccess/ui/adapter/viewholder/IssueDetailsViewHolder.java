@@ -76,7 +76,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
 
     public static IssueDetailsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
                                                      @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
-        return new IssueDetailsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, onToggleView, reactionsCallback);
+        return new IssueDetailsViewHolder(getView(viewGroup, R.layout.issue_detail_header_row_item), adapter, onToggleView, reactionsCallback);
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {

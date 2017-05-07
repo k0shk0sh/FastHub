@@ -59,5 +59,12 @@ public interface ReactionsService {
                                                           @Path("repo") @NonNull String repo,
                                                           @Path("number") long id,
                                                           @Query("content") @NonNull String content);
+
+    @GET("repos/{owner}/{repo}/comments/{id}/reactions")
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview")
+    Observable<Pageable<ReactionsModel>> getCommitReaction(@NonNull @Path("owner") String owner,
+                                                           @Path("repo") @NonNull String repo,
+                                                           @Path("id") long id,
+                                                           @Query("content") @NonNull String content);
 }
 

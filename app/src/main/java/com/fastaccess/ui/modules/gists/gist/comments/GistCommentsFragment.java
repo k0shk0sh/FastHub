@@ -64,7 +64,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments(), this, false);
+        adapter = new CommentsAdapter(getPresenter().getComments());
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -117,11 +117,6 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @NonNull @Override public GistCommentsPresenter providePresenter() {
@@ -192,13 +187,16 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data == null) {
+                    onRefresh();
+                    return;
+                }
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
-                    getSparseBooleanArray().clear();
                     if (commentsModel == null) return;
                     if (isNew) {
                         adapter.addItem(commentsModel);
@@ -225,18 +223,8 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         }
     }
 
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        getSparseBooleanArray().put(position, isCollapsed);
-    }
-
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
-    }
-
-    private SparseBooleanArrayParcelable getSparseBooleanArray() {
-        if (sparseBooleanArray == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-        }
-        return sparseBooleanArray;
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

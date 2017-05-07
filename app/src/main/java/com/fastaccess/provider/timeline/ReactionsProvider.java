@@ -25,6 +25,11 @@ public class ReactionsProvider {
 
     @Nullable public Observable onHandleReaction(@IdRes int viewId, long idOrNumber, @Nullable String login,
                                                  @Nullable String repoId, boolean isHeader) {
+        return onHandleReaction(viewId, idOrNumber, login, repoId, isHeader, false);
+    }
+
+    @Nullable public Observable onHandleReaction(@IdRes int viewId, long idOrNumber, @Nullable String login,
+                                                 @Nullable String repoId, boolean isHeader, boolean isCommit) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             if (!isPreviouslyReacted(idOrNumber, viewId)) {
                 ReactionTypes reactionTypes = ReactionTypes.get(viewId);
@@ -34,6 +39,10 @@ public class ReactionsProvider {
                     if (isHeader) {
                         observable = RestProvider.getReactionsService()
                                 .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                    }
+                    if (isCommit) {
+                        observable = RestProvider.getReactionsService()
+                                .postCommitReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
                     }
                     return RxHelper.safeObservable(observable)
                             .doOnNext(response -> getReactionsMap().put(idOrNumber, response));

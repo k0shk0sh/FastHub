@@ -7,22 +7,28 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
+
+import rx.Observable;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
 class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> implements CommitCommentsMvp.Presenter {
-    private ArrayList<Comment> comments = new ArrayList<>();
+    private ArrayList<TimelineModel> comments = new ArrayList<>();
+    private ReactionsProvider reactionsProvider;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -57,11 +63,11 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getRepoService().getCommitComments(login, repoId, sha, page),
-                listResponse -> {
+        makeRestCall(RestProvider.getRepoService().getCommitComments(login, repoId, sha, page)
+                .flatMap(listResponse -> {
                     lastPage = listResponse.getLast();
-                    sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
-                });
+                    return Observable.just(TimelineModel.construct(listResponse.getItems()));
+                }), listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
     }
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
@@ -71,7 +77,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         sha = bundle.getString(BundleConstant.EXTRA_TWO);
     }
 
-    @NonNull @Override public ArrayList<Comment> getComments() {
+    @NonNull @Override public ArrayList<TimelineModel> getComments() {
         return comments;
     }
 
@@ -84,7 +90,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                view.onRemove(comment);
+                                view.onRemove(TimelineModel.constructComment(comment));
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -96,6 +102,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha))
+                    .flatMap(comments -> Observable.just(TimelineModel.construct(comments)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(CommitCommentsMvp.View::hideProgress);
@@ -114,8 +121,13 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         return sha;
     }
 
-    @Override public void onItemClick(int position, View v, Comment item) {
+    @Override public boolean isPreviouslyReacted(long commentId, int vId) {
+        return getReactionsProvider().isPreviouslyReacted(commentId, vId);
+    }
+
+    @Override public void onItemClick(int position, View v, TimelineModel timelineModel) {
         if (getView() != null) {
+            Comment item = timelineModel.getComment();
             if (v.getId() == R.id.commentMenu) {
                 PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                 popupMenu.inflate(R.menu.comments_menu);
@@ -136,12 +148,29 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                 });
                 popupMenu.show();
             } else {
-                CommentsHelper.handleReactions(v.getContext(), login, repoId, v.getId(), item.getId(), true, false);
+                onHandleReaction(v.getId(), item.getId());
             }
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, Comment item) {
-        onItemClick(position, v, item);
+    @Override public void onItemLongClick(int position, View v, TimelineModel item) {
+        ReactionTypes reactionTypes = ReactionTypes.get(v.getId());
+        if (reactionTypes != null) {
+            getView().showReactionsPopup(reactionTypes, login, repoId, item.getComment().getId());
+        } else {
+            onItemClick(position, v, item);
+        }
+    }
+
+    @NonNull private ReactionsProvider getReactionsProvider() {
+        if (reactionsProvider == null) {
+            reactionsProvider = new ReactionsProvider();
+        }
+        return reactionsProvider;
+    }
+
+    private void onHandleReaction(int viewId, long id) {
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, false, true);
+        if (observable != null) manageSubscription(observable.subscribe());
     }
 }

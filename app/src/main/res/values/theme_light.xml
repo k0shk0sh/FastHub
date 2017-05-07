@@ -2,10 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <color name="lightWindowBackground">#FAFAFA</color>
-    <color name="lightDivider">#88B6B6B6</color>
+    <color name="lightDivider">#80949494</color>
     <color name="light_patch_addition_color">#CCFFCC</color>
     <color name="light_patch_deletion_color">#FFDDDD</color>
     <color name="light_patch_ref_color">#EEEEEE</color>
+    <color name="light_primary">#F5F5F5</color>
+    <color name="light_primary_dark">#E0E0E0</color>
+    <color name="light_accent">#2962FF</color>
 
     <style name="ThemeLight" parent="ThemeLight.Base"/>
 
@@ -18,9 +21,9 @@
         <item name="patch_ref">@color/light_patch_ref_color</item>
         <item name="dividerColor">@color/lightDivider</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
-        <item name="colorPrimary">#F5F5F5</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#2962FF</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorAccent">@color/light_accent</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="actionModeBackground">?colorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
@@ -57,16 +60,16 @@
 
 
     <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorPrimary">#F5F5F5</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#2962FF</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorAccent">@color/light_accent</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
     </style>
 
     <style name="AppTheme.AboutActivity.Light" parent="ThemeLight">
-        <item name="colorPrimary">#F5F5F5</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#2962FF</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorAccent">@color/light_accent</item>
         <item name="mal_lightActionBar">true</item>
         <item name="mal_popupOverlay">@style/Theme.Mal.Light.PopupOverlay</item>
         <item name="mal_color_primary">#212121</item>

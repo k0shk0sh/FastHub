@@ -32,6 +32,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
     private long id;
     private ReactionTypes reactionType;
     private boolean isHeader;
+    private boolean isCommit;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {
@@ -40,6 +41,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             id = bundle.getLong(BundleConstant.ID);
             reactionType = (ReactionTypes) bundle.getSerializable(BundleConstant.EXTRA_TYPE);
             isHeader = bundle.getBoolean(BundleConstant.EXTRA_THREE);
+            isCommit = bundle.getBoolean(BundleConstant.EXTRA_FOUR);
             onCallApi(1, null);
         }
     }
@@ -80,14 +82,17 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             observable = RestProvider.getReactionsService()
                     .getIssueReaction(login, repoId, id, reactionType.getContent());
         }
-        makeRestCall(observable,
-                response -> {
-                    lastPage = response.getLast();
-                    sendToView(view -> view.onNotifyAdapter(Stream.of(response.getItems())
-                            .filter(reactionsModel -> reactionsModel.getUser() != null)
-                            .map(ReactionsModel::getUser)
-                            .collect(Collectors.toList()), page));
-                });
+        if (isCommit) {
+            observable = RestProvider.getReactionsService()
+                    .getCommitReaction(login, repoId, id, reactionType.getContent());
+        }
+        makeRestCall(observable, response -> {
+            lastPage = response.getLast();
+            sendToView(view -> view.onNotifyAdapter(Stream.of(response.getItems())
+                    .filter(reactionsModel -> reactionsModel.getUser() != null)
+                    .map(ReactionsModel::getUser)
+                    .collect(Collectors.toList()), page));
+        });
     }
 
     ReactionTypes getReactionType() {

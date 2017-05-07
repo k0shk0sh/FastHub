@@ -95,6 +95,16 @@ import lombok.Setter;
         return new TimelineModel(comment);
     }
 
+    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList) {
+        ArrayList<TimelineModel> list = new ArrayList<>();
+        if (commentList != null && !commentList.isEmpty()) {
+            list.addAll(Stream.of(commentList)
+                    .map(TimelineModel::new)
+                    .collect(Collectors.toList()));
+        }
+        return list;
+    }
+
     @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
         ArrayList<TimelineModel> list = new ArrayList<>();
         if (!commentList.isEmpty()) {

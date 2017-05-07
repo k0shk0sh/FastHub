@@ -43,12 +43,18 @@ public class ReactionsDialogFragment extends BaseDialogFragment<ReactionsDialogM
 
     public static ReactionsDialogFragment newInstance(@NonNull String login, @NonNull String repoId,
                                                       @NonNull ReactionTypes type, long idOrNumber, boolean isHeader) {
+        return newInstance(login, repoId, type, idOrNumber, isHeader, false);
+    }
+
+    public static ReactionsDialogFragment newInstance(@NonNull String login, @NonNull String repoId,
+                                                      @NonNull ReactionTypes type, long idOrNumber, boolean isHeader, boolean isCommit) {
         ReactionsDialogFragment view = new ReactionsDialogFragment();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, type)
                 .put(BundleConstant.EXTRA, repoId)
                 .put(BundleConstant.EXTRA_TWO, login)
                 .put(BundleConstant.EXTRA_THREE, isHeader)
+                .put(BundleConstant.EXTRA_FOUR, isCommit)
                 .put(BundleConstant.ID, idOrNumber)
                 .end());
         return view;
