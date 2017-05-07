@@ -19,6 +19,7 @@ import com.fastaccess.data.service.OrganizationService;
 import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
+import com.fastaccess.data.service.ReviewService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
@@ -177,6 +178,10 @@ public class RestProvider {
 
     @NonNull public static OrganizationService getOrgService() {
         return provideRetrofit().create(OrganizationService.class);
+    }
+
+    @NonNull public static ReviewService getReviewService() {
+        return provideRetrofit().create(ReviewService.class);
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {

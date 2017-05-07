@@ -17,6 +17,7 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import rx.Observable;
 
 import static com.annimon.stream.Collectors.toList;
 
@@ -58,9 +59,7 @@ import static com.annimon.stream.Collectors.toList;
         List<GroupedNotificationModel> models = new ArrayList<>();
         if (items == null || items.isEmpty()) return models;
         Map<Repo, List<Notification>> grouped = Stream.of(items)
-                .collect(Collectors.groupingBy(
-                        Notification::getRepository,
-                        LinkedHashMap::new,
+                .collect(Collectors.groupingBy(Notification::getRepository, LinkedHashMap::new,
                         Collectors.mapping(o -> o, toList())));
         Stream.of(grouped)
                 .filter(repoListEntry -> repoListEntry.getValue() != null && !repoListEntry.getValue().isEmpty())
@@ -75,10 +74,10 @@ import static com.annimon.stream.Collectors.toList;
         return models;
     }
 
-    @NonNull public static List<GroupedNotificationModel> onlyNotifications(@Nullable List<Notification> items) {
-        if (items == null || items.isEmpty()) return new ArrayList<>();
-        return Stream.of(items)
+    @NonNull public static Observable<List<GroupedNotificationModel>> onlyNotifications(@Nullable List<Notification> items) {
+        if (items == null || items.isEmpty()) return Observable.empty();
+        return Observable.from(items)
                 .map(GroupedNotificationModel::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 }

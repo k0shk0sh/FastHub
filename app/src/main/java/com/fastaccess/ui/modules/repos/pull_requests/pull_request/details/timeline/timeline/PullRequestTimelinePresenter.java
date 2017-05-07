@@ -9,12 +9,14 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.ReactionTypes;
+import com.fastaccess.data.dao.types.ReviewStateType;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -129,22 +131,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         String login = getHeader().getLogin();
         String repoId = getHeader().getRepoId();
         int number = getHeader().getNumber();
-        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
-                RestProvider.getIssueService().getIssueComments(login, repoId, number),
-                RestProvider.getPullRequestService().getPullStatus(login, repoId, getHeader().getHead().getSha()),
-                RestProvider.getPullRequestService().getReviews(login, repoId, number),
-                (issueEventPageable, commentPageable, statuses, reviews) -> {
-                    if (statuses != null) {
-                        statuses.setMergable(getHeader().isMergeable());
-                    }
-                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses, reviews.getItems());
-                });
-        makeRestCall(observable, models -> {
-            if (models != null) {
-                models.add(0, TimelineModel.constructHeader(pullRequest));
-            }
-            sendToView(view -> view.onNotifyAdapter(models));
-        });
+        loadEverything(login, repoId, number, getHeader().getHead().getSha(), getHeader().isMergeable());
     }
 
     @NonNull @Override public ArrayList<TimelineModel> getEvents() {
@@ -208,14 +195,42 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return getHeader() != null && (getHeader().isMerged() || !InputHelper.isEmpty(getHeader().getMergedAt()));
     }
 
-    private ReactionsProvider getReactionsProvider() {
+    @Override public boolean isPreviouslyReacted(long commentId, int vId) {
+        return getReactionsProvider().isPreviouslyReacted(commentId, vId);
+    }
+
+    @NonNull private ReactionsProvider getReactionsProvider() {
         if (reactionsProvider == null) {
             reactionsProvider = new ReactionsProvider();
         }
         return reactionsProvider;
     }
 
-    @Override public boolean isPreviouslyReacted(long commentId, int vId) {
-        return getReactionsProvider().isPreviouslyReacted(commentId, vId);
+    private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable) {
+        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
+                RestProvider.getIssueService().getIssueComments(login, repoId, number),
+                RestProvider.getPullRequestService().getPullStatus(login, repoId, sha),
+                RestProvider.getReviewService().getReviews(login, repoId, number),
+                RestProvider.getReviewService().getPrReviewComments(login, repoId, number),
+                (issueEventPageable, commentPageable, statuses, reviews, reviewComments) -> {
+                    if (statuses != null) {
+                        statuses.setMergable(isMergeable);
+                    }
+                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses,
+                            reviews.getItems(), reviewComments.getItems());
+                });
+        makeRestCall(observable, models -> {
+            if (models != null) {
+                models.add(0, TimelineModel.constructHeader(pullRequest));
+            }
+            sendToView(view -> view.onNotifyAdapter(models));
+        });
+    }
+
+    private boolean reviewNeedComments(@NonNull ReviewModel reviewModel) {
+        return InputHelper.isEmpty(reviewModel.getBody()) &&
+                reviewModel.getState() != ReviewStateType.DISMISSED &&
+                reviewModel.getState() != ReviewStateType.APPROVE &&
+                reviewModel.getState() != ReviewStateType.APPROVED;
     }
 }

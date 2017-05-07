@@ -9,8 +9,6 @@ import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MergeResponseModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.PullRequestStatusModel;
-import com.fastaccess.data.dao.ReviewCommentModel;
-import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.PullRequest;
 
@@ -80,15 +78,6 @@ public interface PullRequestService {
 
     @GET("repos/{owner}/{repo}/commits/{ref}/status")
     Observable<PullRequestStatusModel> getPullStatus(@Path("owner") String owner, @Path("repo") String repo, @Path("ref") String ref);
-
-    @GET("repos/{owner}/{repo}/pulls/{number}/reviews?per_page=200")
-    @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
-    Observable<Pageable<ReviewModel>> getReviews(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
-
-    @GET("repos/{owner}/{repo}/pulls/{number}/reviews/{id}/comments")
-    @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
-    Observable<Pageable<ReviewCommentModel>> getReviewComments(@Path("owner") String owner, @Path("repo") String repo,
-                                                               @Path("number") long number, @Path("id") long reviewId);
 
     @POST("repos/{owner}/{repo}/pulls/{number}/requested_reviewers")
     @Headers("Accept: application/vnd.github.black-cat-preview+json")

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
+import com.fastaccess.ui.adapter.viewholder.GroupedReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
@@ -52,6 +53,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             return PullStatusViewHolder.newInstance(parent);
         } else if (viewType == TimelineModel.REVIEW) {
             return ReviewsViewHolder.newInstance(parent, this);
+        } else if (viewType == TimelineModel.GROUPED_REVIEW) {
+            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView);
         }
         return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies, reactionsCallback);
     }
@@ -70,6 +73,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             ((TimelineCommentsViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.REVIEW) {
             ((ReviewsViewHolder) holder).bind(model);
+        } else if (model.getType() == TimelineModel.GROUPED_REVIEW) {
+            ((GroupedReviewsViewHolder) holder).bind(model);
         } else {
             if (model.getStatus() != null) ((PullStatusViewHolder) holder).bind(model.getStatus());
         }
