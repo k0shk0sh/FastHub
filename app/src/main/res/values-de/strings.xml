@@ -76,7 +76,7 @@
     <string name="comment">Kommentar</string>
     <string name="success_merge">Erfolgreich gemerged</string>
     <string name="file">Datei</string>
-    <string name="file_menu">File menu</string>
+    <string name="file_menu">Dateimenü</string>
     <string name="files">Dateien</string>
     <string name="download">Herunterladen</string>
     <string name="back">Zurück</string>
@@ -84,7 +84,7 @@
     <string name="code_viewer">Code Betrachter</string>
     <string name="open_in_browser">In Browser öffnen</string>
     <string name="big_file">Große Datei</string>
-    <string name="big_file_description">Die Datei ist zu groß zum öffnen.\nKlicke auf "OK" um die Datei herunterzuladen</string>
+    <string name="big_file_description">Die Datei ist zu groß zum öffnen.\nWähle "OK" aus um die Datei herunterzuladen</string>
     <string name="viewer">Betrachter</string>
     <string name="submit">Abschicken</string>
     <string name="type_here">Hier schreiben</string>
@@ -129,14 +129,14 @@
     <string name="gist_description">Gist-Beschreibung</string>
     <string name="avatar_click_hint">Tippe auf einen Avatar um zu dem jeweiligen Profil zu gelangen</string>
     <string name="feeds_fork_hint">Tippe länger auf einen Fork um entweder die originale- oder die geforkte Repo anzuzeigen</string>
-    <string name="click_here_to_download_release_hint">Download releases</string>
+    <string name="click_here_to_download_release_hint">Releases herunterladen</string>
     <string name="options">Optionen</string>
-    <string name="click_file_option_hint">Download file or share directory</string>
+    <string name="click_file_option_hint">Datei herunterladen oder Ordner teilen</string> <!-- Unsure -->
     <string name="comment_hint">Tippe auf einen Kommentar um den jeweiligen Autor zu taggen oder deinen Kommentar zu bearbeiten
         \nTippe länger auf dem Kommentar um ihn zu löschen</string>
     <string name="star_hint">Repo favorisieren</string>
     <string name="watch">Beobachten</string>
-    <string name="watch_hint">Beobachten/Entbeobachten des Repos</string>
+    <string name="watch_hint">Repo Beobachten</string>
     <string name="pin_repo_hint">Pinne repos an um schneller auf sie zuzugreifen zu können</string>
     <string name="no_url">Keine URL gefunden</string>
     <string name="last_updated">Zuletzt geupdatet.</string>
@@ -171,7 +171,7 @@
     <string name="unknown">Unbekannt</string>
     <string name="commented_on_commit">Commit kommentieren</string>
     <string name="switch_branch">Branch wechseln</string>
-    <string name="assignees">Bevollmächtigte</string>
+    <string name="assignees">Bevollmächtigte</string> <!-- Unsure -->
     <string name="edit">Bearbeiten</string>
     <string name="update_issue">Issue aktualisieren</string>
     <string name="update_pull_request">Pull Request aktualisieren</string>
@@ -186,7 +186,7 @@
     <string name="this_value">dies</string>
     <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
-    <string name="background_job_summary">Wähle wie regelmäßig FastHub nach einem Update sucht.</string>
+    <string name="background_job_summary">Wähle wie regelmäßig FastHub nach neuen Benachrichtigungen sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
     <string name="behavior">Verhalten &amp; Aussehen</string>
@@ -259,7 +259,7 @@
     <string name="no_issues">Keine Issues</string>
     <string name="no_unread_notifications">Keine ungelesenen Benachrichtigungen.</string>
     <string name="my_gists">Meine Gists</string>
-    <string name="changelog">Letzte Änderungen</string>
+    <string name="changelog">Letzte Änderungen</string> <!-- Will change eventually -->
     <string name="notifications_hint">Tippe um die Benachrichtigungsliste zu öffnen oder wische zum verwerfen</string>
     <string name="home_long_click_hint">Tippe hier länger drauf um zum Hauptbildschirm zu gelangen</string>
     <string name="created">Erstellt</string>
