@@ -53,7 +53,7 @@ public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificati
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
             manageSubscription(RxHelper.getObserver(Notification.getUnreadNotifications())
-                    .flatMap(GroupedNotificationModel::onlyNotifications)
+                    .flatMap(notifications -> Observable.from(GroupedNotificationModel.onlyNotifications(notifications)).toList())
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
@@ -78,10 +78,9 @@ public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificati
 
     @Override public void onCallApi() {
         Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService()
-                .getNotifications(ParseDateFormat.getLastWeekDate())
-                .flatMap(response -> {
+                .getNotifications(ParseDateFormat.getLastWeekDate()).flatMap(response -> {
                     if (response.getItems() != null) manageSubscription(Notification.save(response.getItems()).subscribe());
-                    return GroupedNotificationModel.onlyNotifications(response.getItems());
+                    return Observable.just(GroupedNotificationModel.onlyNotifications(response.getItems()));
                 });
         makeRestCall(observable, response -> sendToView(view -> view.onNotifyAdapter(response)));
     }

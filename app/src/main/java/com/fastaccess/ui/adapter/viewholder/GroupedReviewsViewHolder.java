@@ -70,6 +70,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> {
             nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments()));
             nestedRecyclerView.addDivider();
         }
+        onToggle(onToggleView.isCollapsed(getAdapterPosition()));
     }
 
     private void onToggle(boolean expanded) {

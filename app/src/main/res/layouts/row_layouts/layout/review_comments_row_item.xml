@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fastaccess.ui.widgets.ForegroundRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?card_background"
-    android:elevation="1dp"
-    android:outlineProvider="background"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingTop="@dimen/spacing_normal"
-    app:cardBackgroundColor="?card_background"
-    tools:ignore="RtlSymmetry">
+    android:paddingTop="@dimen/spacing_normal">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,8 +24,7 @@
                 android:layout_width="34dp"
                 android:layout_height="34dp"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/avatar_margin_end"
-                android:layout_marginStart="@dimen/avatar_margin"/>
+                android:layout_marginEnd="@dimen/avatar_margin_end"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/name"
@@ -60,9 +54,7 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/spacing_xs_large"
             android:textIsSelectable="true"/>
 
     </LinearLayout>

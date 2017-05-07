@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.data.dao.types.ReviewStateType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.LabelSpan;
@@ -260,7 +261,7 @@ import static com.annimon.stream.Collectors.toList;
                 models.add(new TimelineModel(groupedReviewModel));
             }
             models.addAll(Stream.of(reviews)
-                    .filter(reviewModel -> !InputHelper.isEmpty(reviewModel.getBody()))
+                    .filter(reviewModel -> !InputHelper.isEmpty(reviewModel.getBody()) || reviewModel.getState() == ReviewStateType.APPROVED)
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }

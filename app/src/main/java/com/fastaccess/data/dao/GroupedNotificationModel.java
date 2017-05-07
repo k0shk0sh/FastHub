@@ -17,7 +17,6 @@ import java.util.Map;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import rx.Observable;
 
 import static com.annimon.stream.Collectors.toList;
 
@@ -74,10 +73,10 @@ import static com.annimon.stream.Collectors.toList;
         return models;
     }
 
-    @NonNull public static Observable<List<GroupedNotificationModel>> onlyNotifications(@Nullable List<Notification> items) {
-        if (items == null || items.isEmpty()) return Observable.empty();
-        return Observable.from(items)
+    @NonNull public static List<GroupedNotificationModel> onlyNotifications(@Nullable List<Notification> items) {
+        if (items == null || items.isEmpty()) return new ArrayList<>();
+        return Stream.of(items)
                 .map(GroupedNotificationModel::new)
-                .toList();
+                .collect(Collectors.toList());
     }
 }

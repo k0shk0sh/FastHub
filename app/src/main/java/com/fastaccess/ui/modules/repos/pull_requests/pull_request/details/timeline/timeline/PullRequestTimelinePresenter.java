@@ -9,14 +9,12 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.ReactionTypes;
-import com.fastaccess.data.dao.types.ReviewStateType;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -225,12 +223,5 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             }
             sendToView(view -> view.onNotifyAdapter(models));
         });
-    }
-
-    private boolean reviewNeedComments(@NonNull ReviewModel reviewModel) {
-        return InputHelper.isEmpty(reviewModel.getBody()) &&
-                reviewModel.getState() != ReviewStateType.DISMISSED &&
-                reviewModel.getState() != ReviewStateType.APPROVE &&
-                reviewModel.getState() != ReviewStateType.APPROVED;
     }
 }
