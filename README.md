@@ -102,6 +102,13 @@ Please **contribute** to the  project either by [_creating a PR_](https://github
 Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
 - [Translation contributors list](.github/language_contributors.md)
+### Language Contributors
+
+- Turkish [@kutsan](https://github.com/kutsan)
+- German [@failex234](https://github.com/failex234)
+- Chinese [@Devifish](https://github.com/Devifish)
+- Indonesian [@dikiaap](https://github.com/dikiaap)
+- Russian [@dedepete](https://github.com/dedepete)
 
 # License
 
