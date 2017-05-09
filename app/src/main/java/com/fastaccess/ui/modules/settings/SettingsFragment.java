@@ -43,6 +43,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         findPreference("recylerViewAnimation").setOnPreferenceChangeListener(this);
         findPreference("rect_avatar").setOnPreferenceChangeListener(this);
         findPreference("appTheme").setOnPreferenceChangeListener(this);
+        findPreference("appColor").setOnPreferenceChangeListener(this);
         findPreference("app_language").setOnPreferenceChangeListener(this);
         findPreference("showChangelog").setOnPreferenceClickListener(preference -> {
             new ChangelogBottomSheetDialog().show(getChildFragmentManager(), "ChangelogBottomSheetDialog");
@@ -74,6 +75,10 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
+            Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
+            restartActivity();
+            return true;
+        } else if (preference.getKey().equalsIgnoreCase("appColor")) {
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             restartActivity();
             return true;

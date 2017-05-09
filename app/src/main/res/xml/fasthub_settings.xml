@@ -45,6 +45,15 @@
             android:summary="@string/theme_summary"
             android:title="@string/theme_title"/>
 
+        <ListPreference
+            android:defaultValue="@string/blue_theme_mode"
+            android:dialogTitle="@string/theme_color_title"
+            android:entries="@array/theme_colors"
+            android:entryValues="@array/theme_colors"
+            android:key="appColor"
+            android:summary="@string/theme_color_summary"
+            android:title="@string/theme_color_title"/>
+
         <SwitchPreference
             android:defaultValue="false"
             android:key="wrap_code"
