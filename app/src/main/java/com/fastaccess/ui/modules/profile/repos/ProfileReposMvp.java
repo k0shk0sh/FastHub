@@ -22,6 +22,8 @@ interface ProfileReposMvp {
         void onNotifyAdapter(@Nullable List<Repo> items, int page);
 
         @NonNull OnLoadMore<String> getLoadMore();
+
+        void onRepoFilterClicked();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

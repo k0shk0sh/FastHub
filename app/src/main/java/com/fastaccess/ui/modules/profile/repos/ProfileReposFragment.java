@@ -53,7 +53,7 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.profile_repo_fragment;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -70,6 +70,7 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
+        getActivity().findViewById(R.id.fab);
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
@@ -109,6 +110,11 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
             onLoadMore = new OnLoadMore<>(getPresenter(), getArguments().getString(BundleConstant.EXTRA));
         }
         return onLoadMore;
+    }
+
+    @Override
+    public void onRepoFilterClicked() {
+
     }
 
     @Override public void onRefresh() {
