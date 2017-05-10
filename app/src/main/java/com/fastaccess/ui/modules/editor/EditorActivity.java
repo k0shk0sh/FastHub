@@ -175,9 +175,11 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
             if (sentVia.isChecked()) {
+                String sentFromFastHub = getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(),
+                        "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)");
                 String temp = savedText.toString();
-                String signature = "\n\n_" + sentVia.getText() + "_";
-                if (!temp.contains(signature)) {
+                String signature = "\n\n_" + sentFromFastHub + "_";
+                if (!temp.contains(signature) || !temp.contains(sentFromFastHub)) {
                     savedText = savedText + signature;
                 }
             }
