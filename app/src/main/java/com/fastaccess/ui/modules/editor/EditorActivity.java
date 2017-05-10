@@ -175,7 +175,10 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
             if (sentVia.isChecked()) {
-                savedText = savedText + "\n> " + sentVia.getText();
+                String temp = savedText.toString();
+                if (!temp.contains("\n> " + sentVia.getText())) {
+                    savedText = savedText + "\n> " + sentVia.getText();
+                }
             }
             getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
             return true;

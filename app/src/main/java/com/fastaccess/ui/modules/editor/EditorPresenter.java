@@ -179,7 +179,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
             makeRestCall(RestProvider.getRepoService().editCommitComment(login, itemId, id, requestModel),
-                    comment -> sendToView(view -> view.onSendResultAndFinish(comment, true)));
+                    comment -> sendToView(view -> view.onSendResultAndFinish(comment, false)));
         }
     }
 }
