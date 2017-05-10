@@ -10,6 +10,7 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
@@ -24,12 +25,17 @@ import es.dmoral.toasty.Toasty;
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     private BaseMvp.FAView callback;
+    private String appTheme, appColor, app_lauguage;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof BaseMvp.FAView) {
             callback = (BaseMvp.FAView) context;
         }
+
+        appTheme = PrefHelper.getString("appTheme");
+        appColor = PrefHelper.getString("appColor");
+        app_lauguage = PrefHelper.getString("app_language");
     }
 
     @Override public void onDetach() {
@@ -75,14 +81,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
+            if(appTheme.equalsIgnoreCase(newValue.toString()))
+                return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {
+            if(appColor.equalsIgnoreCase(newValue.toString()))
+                return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("app_language")) {
+            if(app_lauguage.equalsIgnoreCase(newValue.toString()))
+                return true;
             restartActivity();
             return true;
         }
