@@ -10,6 +10,7 @@ import java.util.Date;
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Key;
+import io.requery.Nullable;
 import lombok.NoArgsConstructor;
 
 /**
@@ -49,7 +50,7 @@ import lombok.NoArgsConstructor;
     Date updatedAt;
     String token;
     int contributions;
-    boolean isLoggedIn;
+    @Nullable boolean isLoggedIn;
 
     public void save(Login entity) {
 //        Login login = getUser();
