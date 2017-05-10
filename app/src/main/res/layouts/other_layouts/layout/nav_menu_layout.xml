@@ -10,6 +10,6 @@
     android:fitsSystemWindows="true"
     android:focusable="true"
     app:headerLayout="@layout/drawer_header"
-    app:itemIconTint="?colorAccent"
-    app:itemTextColor="?colorAccent"
+    app:itemIconTint="?android:textColorSecondary"
+    app:itemTextColor="?android:textColorPrimary"
     app:menu="@menu/drawer_menu"/>
