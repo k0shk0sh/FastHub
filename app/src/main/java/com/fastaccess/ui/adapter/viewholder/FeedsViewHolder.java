@@ -56,7 +56,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             EventsType type = eventsModel.getType();
             date.setGravity(Gravity.CENTER);
             date.setEventsIcon(type.getDrawableRes());
-            String action = null;
+            String action;
             if (type == EventsType.WatchEvent) {
                 action = itemView.getResources().getString(type.getType()).toLowerCase();
             } else if (type == EventsType.PullRequestEvent) {
@@ -115,6 +115,11 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             if (eventsModel.getPayload().getComment() != null) {
                 description.setText(eventsModel.getPayload().getComment().getBody());
                 description.setVisibility(View.VISIBLE);
+                if (eventsModel.getPayload().getIssue() != null) {
+                    number = "#" + eventsModel.getPayload().getIssue().getNumber();
+                } else if (eventsModel.getPayload().getPullRequest() != null) {
+                    number = "#" + eventsModel.getPayload().getPullRequest().getNumber();
+                }
             } else if (eventsModel.getPayload().getIssue() != null) {
                 number = "#" + eventsModel.getPayload().getIssue().getNumber();
                 description.setText(eventsModel.getPayload().getIssue().getTitle());
@@ -131,7 +136,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             description.setText("");
             description.setVisibility(View.GONE);
         }
-        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "").append(number);
+        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "")
+                .append(number);
         title.setText(spannableBuilder);
         date.setText(ParseDateFormat.getTimeAgo(eventsModel.getCreatedAt()));
     }

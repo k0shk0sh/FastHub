@@ -95,7 +95,6 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     }
 
     @Override public void onLoadingCancelled(String imageUri, View view) {}
-
     public void setUrl(@Nullable String url, @Nullable String login) {
         setUrl(url, login, false);
     }
