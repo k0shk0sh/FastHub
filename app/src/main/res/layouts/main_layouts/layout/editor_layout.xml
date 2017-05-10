@@ -222,11 +222,20 @@
             android:src="@drawable/ic_eye"/>
     </FrameLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?attr/dividerColor"/>
+
     <com.fastaccess.ui.widgets.FontCheckbox
         android:id="@+id/sentVia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:checked="true"
+        android:background="?attr/selectableItemBackground"
+        android:button="@null"
+        android:layout_gravity="end"
+        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
         android:paddingStart="@dimen/spacing_xs_large"
         android:paddingEnd="@dimen/spacing_xs_large"
         android:paddingBottom="@dimen/spacing_normal"

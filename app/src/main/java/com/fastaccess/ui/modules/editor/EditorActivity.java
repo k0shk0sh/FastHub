@@ -83,7 +83,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
             editText.setEnabled(false);
             sentVia.setEnabled(false);
-            MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
+            MarkDownProvider.setMdText(editText, InputHelper.toString(editText) +
+                    (sentVia.isChecked() ? "\n\n_"+sentVia.getText().toString()+"_" : ""));
             ViewHelper.hideKeyboard(editText);
             AnimHelper.animateVisibility(editorIconsHolder, false);
         } else {
@@ -109,19 +110,6 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
         } else {
             getPresenter().onActionClicked(editText, v.getId());
-        }
-    }
-
-    @OnCheckedChanged(R.id.sentVia) void onChecked(boolean isChecked) {
-        if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
-            if (isChecked) {
-                savedText = savedText + "\n> " + sentVia.getText();
-                editText.setText(savedText);
-            } else {
-                String text = InputHelper.toString(editText);
-                text = text.replace("\n> " + sentVia.getText().toString(), "");
-                editText.setText(text);
-            }
         }
     }
 
@@ -166,6 +154,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @Override public void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew) {
         hideProgress();
         Intent intent = new Intent();
+        if(sentVia.isChecked())
+            commentModel.setBodyHtml(commentModel.getBodyHtml()+"<br /><br /><i>"+sentVia.getText().toString()+"</i>");
+        commentModel.save(commentModel);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ITEM, commentModel)
                 .put(BundleConstant.EXTRA, isNew)
@@ -176,7 +167,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override public void onSendMarkDownResult() {
         Intent intent = new Intent();
-        intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, savedText).end());
+        intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, savedText +
+                (sentVia.isChecked() ? "\n\n_"+sentVia.getText().toString()+"_" : "")).end());
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -189,7 +181,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
             item.setEnabled(false);
-            getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
+            getPresenter().onHandleSubmission(savedText +
+                    (sentVia.isChecked() ? "\n\n_" + sentVia.getText() + "_" : ""),
+                    extraType, itemId, commentId, login, issueNumber, sha);
             return true;
         }
         return super.onOptionsItemSelected(item);
