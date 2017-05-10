@@ -11,6 +11,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -74,14 +75,13 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
             if (type != EventsType.WatchEvent) {
-                if (type == EventsType.CreateEvent && eventsModel.getPayload()
-                        .getRefType().equalsIgnoreCase("branch")) {
+                if (type == EventsType.CreateEvent && !InputHelper.isEmpty(eventsModel.getPayload().getRefType())) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")
                             .bold(eventsModel.getPayload().getRefType())
                             .append(" ")
-                            .append(to)
+                            .append(in)
                             .append(" ");
                 } else if ((type == EventsType.PushEvent || type == EventsType.DeleteEvent) && eventsModel.getPayload() != null) {
                     spannableBuilder

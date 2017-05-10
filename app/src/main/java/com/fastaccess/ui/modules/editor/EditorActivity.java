@@ -179,11 +179,13 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
+            String sentFromFastHub = getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(),
+                    "[" + getString(R.string.app_name_full) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)");
             item.setEnabled(false);
             getPresenter().onHandleSubmission(savedText +
                     (
                             savedText.toString().contains(sentVia.getText()) ? "" :
-                            sentVia.isChecked() ? "\n\n_" + sentVia.getText() + "_" : ""
+                            sentVia.isChecked() ? "\n\n_" + sentFromFastHub + "_" : ""
                     ),
                     extraType, itemId, commentId, login, issueNumber, sha);
             return true;
