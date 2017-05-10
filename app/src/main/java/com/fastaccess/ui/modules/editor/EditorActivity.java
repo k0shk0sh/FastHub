@@ -176,8 +176,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (item.getItemId() == R.id.submit) {
             if (sentVia.isChecked()) {
                 String temp = savedText.toString();
-                if (!temp.contains("\n> " + sentVia.getText())) {
-                    savedText = savedText + "\n> " + sentVia.getText();
+                String signature = "\n\n_" + sentVia.getText() + "_";
+                if (!temp.contains(signature)) {
+                    savedText = savedText + signature;
                 }
             }
             getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
