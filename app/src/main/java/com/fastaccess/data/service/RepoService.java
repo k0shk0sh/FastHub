@@ -46,7 +46,8 @@ public interface RepoService {
     @NonNull @POST("markdown")
     Observable<String> convertReadmeToHtml(@Body MarkdownModel model);
 
-    @NonNull @GET("repos/{login}/{repoId}") @Headers({"Accept: application/vnd.github.drax-preview+json"})
+    @NonNull @GET("repos/{login}/{repoId}")
+    @Headers({"Accept: application/vnd.github.drax-preview+json, application/vnd.github.mercy-preview+json"})
     Observable<Repo> getRepo(@Path("login") String login, @Path("repoId") String repoId);
 
     @NonNull @DELETE("repos/{login}/{repoId}")

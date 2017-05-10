@@ -66,5 +66,19 @@ public interface ReactionsService {
                                                            @Path("repo") @NonNull String repo,
                                                            @Path("id") long id,
                                                            @Query("content") @NonNull String content);
+
+    @GET("repos/{owner}/{repo}/pulls/comments/{id}/reactions")
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview, application/vnd.github.black-cat-preview")
+    Observable<Pageable<ReactionsModel>> getPullRequestReactions(@NonNull @Path("owner") String owner,
+                                                                 @Path("repo") @NonNull String repo,
+                                                                 @Path("id") long id,
+                                                                 @Query("content") @NonNull String content);
+
+    @POST("repos/{owner}/{repo}/pulls/comments/{id}/reactions")
+    @Headers("Accept: application/vnd.github.squirrel-girl-preview, application/vnd.github.black-cat-preview")
+    Observable<ReactionsModel> postCommentReviewReaction(@NonNull @Body PostReactionModel body,
+                                                         @NonNull @Path("owner") String owner,
+                                                         @Path("repo") @NonNull String repo,
+                                                         @Path("id") long id);
 }
 

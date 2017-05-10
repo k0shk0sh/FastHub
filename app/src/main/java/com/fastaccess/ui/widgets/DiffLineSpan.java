@@ -17,6 +17,7 @@ import android.text.style.MetricAffectingSpan;
 import android.text.style.TypefaceSpan;
 
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
@@ -52,12 +53,21 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
 
     @NonNull public static SpannableStringBuilder getSpannable(@Nullable String text, @ColorInt int patchAdditionColor,
                                                                @ColorInt int patchDeletionColor, @ColorInt int patchRefColor) {
+        return getSpannable(text, patchAdditionColor, patchDeletionColor, patchRefColor, false);
+    }
+
+    @NonNull public static SpannableStringBuilder getSpannable(@Nullable String text, @ColorInt int patchAdditionColor,
+                                                               @ColorInt int patchDeletionColor, @ColorInt int patchRefColor,
+                                                               boolean truncate) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         if (!InputHelper.isEmpty(text)) {
             String[] split = text.split("\\r?\\n|\\r");
             if (split.length > 0) {
                 int lines = split.length;
                 for (int i = 0; i < lines; i++) {
+                    Logger.e(lines, i, lines + i, lines - i);
+                    if (truncate && (lines - i) > 3) continue;
+//                    if(truncate && (lines - i))
                     String token = split[i];
                     if (i < (lines - 1)) {
                         token = token.concat("\n");
@@ -77,12 +87,13 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     if (color != Color.TRANSPARENT) {
                         DiffLineSpan span = new DiffLineSpan(color);
                         spannableDiff.setSpan(span, 0, token.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        spannableDiff.setSpan(new TypefaceSpan("monospace"), 0, token.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                     builder.append(spannableDiff);
                 }
             }
         }
+        builder.setSpan(new TypefaceSpan("monospace"), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
     }
+
 }

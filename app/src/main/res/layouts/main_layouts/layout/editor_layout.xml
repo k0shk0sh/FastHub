@@ -222,5 +222,17 @@
             android:src="@drawable/ic_eye"/>
     </FrameLayout>
 
+    <com.fastaccess.ui.widgets.FontCheckbox
+        android:id="@+id/sentVia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:paddingStart="@dimen/spacing_xs_large"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_normal"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        tools:text="@string/sent_from_fasthub"/>
+
     <include layout="@layout/add_banner_layout"/>
 </LinearLayout>

@@ -82,12 +82,14 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                             getView().onTagUser(item.getComment().getUser());
                         } else if (item1.getItemId() == R.id.edit) {
                             getView().onEditComment(item.getComment());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getComment().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getComment().getId(), false);
+                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
                 }
             } else if (item.getType() == TimelineModel.EVENT) {
                 IssueEvent issueEventModel = item.getEvent();
@@ -110,12 +112,14 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                             if (activity == null) return false;
                             CreateIssueActivity.startForResult(activity,
                                     item.getIssue().getLogin(), item.getIssue().getRepoId(), item.getIssue());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getIssue().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getIssue().getNumber(), true);
+                    onHandleReaction(v.getId(), item.getIssue().getNumber(), ReactionsProvider.HEADER);
                 }
             }
         }
@@ -193,11 +197,15 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         return issue;
     }
 
-    @Override public void onHandleReaction(int viewId, long id, boolean isHeader) {
+    @Override public void onHandleReaction(int viewId, long id, @ReactionsProvider.ReactionType int reactionType) {
         String login = login();
         String repoId = repoId();
-        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, isHeader);
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType);
         if (observable != null) manageSubscription(observable.subscribe());
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getReactionsProvider().isCallingApi(id, vId);
     }
 
     private ReactionsProvider getReactionsProvider() {

@@ -9,10 +9,12 @@ import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.AnimHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -21,12 +23,12 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.widgets.FontEditText;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import icepick.State;
@@ -42,6 +44,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
+    @BindView(R.id.sentVia) CheckBox sentVia;
 
     @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
@@ -79,6 +82,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @OnClick(R.id.view) void onViewMarkDown() {
         if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
             editText.setEnabled(false);
+            sentVia.setEnabled(false);
             MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
             ViewHelper.hideKeyboard(editText);
             AnimHelper.animateVisibility(editorIconsHolder, false);
@@ -86,6 +90,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             editText.setText(savedText);
             editText.setSelection(savedText.length());
             editText.setEnabled(true);
+            sentVia.setEnabled(true);
             ViewHelper.showKeyboard(editText);
             AnimHelper.animateVisibility(editorIconsHolder, true);
         }
@@ -107,8 +112,23 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         }
     }
 
+    @OnCheckedChanged(R.id.sentVia) void onChecked(boolean isChecked) {
+        if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
+            if (isChecked) {
+                savedText = savedText + "\n> " + sentVia.getText();
+                editText.setText(savedText);
+            } else {
+                String text = InputHelper.toString(editText);
+                text = text.replace("\n> " + sentVia.getText().toString(), "");
+                editText.setText(text);
+            }
+        }
+    }
+
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sentVia.setChecked(PrefGetter.isSentViaEnabled());
+        sentVia.setText(getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), getString(R.string.app_name)));
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             if (intent != null && intent.getExtras() != null) {

@@ -7,9 +7,11 @@ import android.support.annotation.NonNull;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LicenseModel;
 import com.fastaccess.data.dao.RepoPermissionsModel;
+import com.fastaccess.data.dao.TopicsModel;
 import com.fastaccess.data.dao.converters.LicenseConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.RepoPermissionConverter;
+import com.fastaccess.data.dao.converters.TopicsConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.helper.RxHelper;
 import com.google.gson.annotations.SerializedName;
@@ -104,6 +106,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     long openIssues;
     long watchers;
     String defaultBranch;
+    @Convert(TopicsConverter.class) TopicsModel topics;
     @Convert(UserConverter.class) User owner;
     @Convert(RepoPermissionConverter.class) RepoPermissionsModel permissions;
     @Convert(UserConverter.class) User organization;
@@ -187,6 +190,17 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
                 .toList();
     }
 
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractRepo that = (AbstractRepo) o;
+        return id == that.id;
+    }
+
+    @Override public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
@@ -256,6 +270,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         dest.writeLong(this.openIssues);
         dest.writeLong(this.watchers);
         dest.writeString(this.defaultBranch);
+        dest.writeList(this.topics);
         dest.writeParcelable(this.owner, flags);
         dest.writeParcelable(this.permissions, flags);
         dest.writeParcelable(this.organization, flags);
@@ -338,6 +353,8 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         this.openIssues = in.readLong();
         this.watchers = in.readLong();
         this.defaultBranch = in.readString();
+        this.topics = new TopicsModel();
+        in.readList(this.topics, this.topics.getClass().getClassLoader());
         this.owner = in.readParcelable(User.class.getClassLoader());
         this.permissions = in.readParcelable(RepoPermissionsModel.class.getClassLoader());
         this.organization = in.readParcelable(User.class.getClassLoader());
@@ -355,15 +372,4 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
 
         @Override public Repo[] newArray(int size) {return new Repo[size];}
     };
-
-    @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AbstractRepo that = (AbstractRepo) o;
-        return id == that.id;
-    }
-
-    @Override public int hashCode() {
-        return (int) (id ^ (id >>> 32));
-    }
 }

@@ -14,6 +14,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -61,6 +62,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onSetMdText(@NonNull String text, String baseUrl) {
         stateLayout.hideProgress();
         webView.setVisibility(View.VISIBLE);
+        Logger.e(!getPresenter().isRepo());
         webView.setGithubContent(text, baseUrl);
     }
 
@@ -107,6 +109,11 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         super.showMessage(titleRes, msgRes);
     }
 
+    @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
+        stateLayout.hideProgress();
+        super.showMessage(titleRes, msgRes);
+    }
+
     @Override protected int fragmentLayout() {
         return R.layout.general_viewer_layout;
     }
@@ -145,7 +152,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     @Override public void onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.wrap)
-                .setVisible(!getPresenter().isMarkDown())
+                .setVisible(!getPresenter().isMarkDown() || !getPresenter().isRepo())
                 .setChecked(isWrap);
         super.onPrepareOptionsMenu(menu);
     }

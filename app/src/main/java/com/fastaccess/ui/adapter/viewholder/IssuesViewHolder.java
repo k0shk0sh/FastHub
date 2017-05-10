@@ -65,7 +65,7 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
             if (!showRepoName) {
                 builder.append("#")
                         .append(String.valueOf(issueModel.getNumber())).append(" ")
-                        .append(issueModel.getUser().getLogin())
+                        .append(issueModel.getClosedBy() != null ? issueModel.getClosedBy().getLogin() : issueModel.getUser().getLogin())
                         .append(" ");
             }
             details.setText(builder

@@ -27,9 +27,7 @@ public class LoginPresenterTest {
         instructor.attachView(view);
     }
 
-    @Test public void onTokenResponse() throws Exception {
-
-    }
+    @Test public void onTokenResponse() throws Exception {}
 
     @Test public void onHandleAuthIntent() throws Exception {
 

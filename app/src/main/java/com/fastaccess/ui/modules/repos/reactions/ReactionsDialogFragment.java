@@ -15,6 +15,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
@@ -42,19 +43,14 @@ public class ReactionsDialogFragment extends BaseDialogFragment<ReactionsDialogM
     private OnLoadMore onLoadMore;
 
     public static ReactionsDialogFragment newInstance(@NonNull String login, @NonNull String repoId,
-                                                      @NonNull ReactionTypes type, long idOrNumber, boolean isHeader) {
-        return newInstance(login, repoId, type, idOrNumber, isHeader, false);
-    }
-
-    public static ReactionsDialogFragment newInstance(@NonNull String login, @NonNull String repoId,
-                                                      @NonNull ReactionTypes type, long idOrNumber, boolean isHeader, boolean isCommit) {
+                                                      @NonNull ReactionTypes type, long idOrNumber,
+                                                      @ReactionsProvider.ReactionType int reactionType) {
         ReactionsDialogFragment view = new ReactionsDialogFragment();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, type)
                 .put(BundleConstant.EXTRA, repoId)
                 .put(BundleConstant.EXTRA_TWO, login)
-                .put(BundleConstant.EXTRA_THREE, isHeader)
-                .put(BundleConstant.EXTRA_FOUR, isCommit)
+                .put(BundleConstant.EXTRA_THREE, reactionType)
                 .put(BundleConstant.ID, idOrNumber)
                 .end());
         return view;

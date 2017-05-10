@@ -106,6 +106,7 @@ public class StyleBuilderImpl implements StyleBuilder {
 
     @Override
     public SpannableStringBuilder code(CharSequence charSequence) {
+        Log.e("Char", charSequence.toString());
         SpannableStringBuilder builder = SpannableStringBuilder.valueOf(charSequence);
         CodeSpan span = new CodeSpan(code_color);
         builder.setSpan(span, 0, charSequence.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
