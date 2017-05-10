@@ -28,11 +28,11 @@ android {
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "26-rc1"
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 210
         versionName "2.1.0"
         signingConfig signingConfigs.signing
