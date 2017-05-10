@@ -25,7 +25,9 @@ import es.dmoral.toasty.Toasty;
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     private BaseMvp.FAView callback;
-    private String appTheme, appColor, app_lauguage;
+    private String appTheme;
+    private String appColor;
+    private String app_lauguage;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -81,19 +83,19 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
-            if(appTheme.equalsIgnoreCase(newValue.toString()))
+            if(newValue.toString().equalsIgnoreCase(appTheme))
                 return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {
-            if(appColor.equalsIgnoreCase(newValue.toString()))
+            if(newValue.toString().equalsIgnoreCase(appColor))
                 return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("app_language")) {
-            if(app_lauguage.equalsIgnoreCase(newValue.toString()))
+            if(newValue.toString().equalsIgnoreCase(app_lauguage))
                 return true;
             restartActivity();
             return true;
