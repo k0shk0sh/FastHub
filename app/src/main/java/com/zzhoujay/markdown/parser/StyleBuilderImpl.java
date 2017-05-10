@@ -7,16 +7,17 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
 import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.QuoteSpan;
 import android.text.style.StrikethroughSpan;
+import android.text.style.TypefaceSpan;
 import android.util.Log;
 import android.widget.TextView;
 
 import com.zzhoujay.markdown.style.CodeBlockSpan;
-import com.zzhoujay.markdown.style.CodeSpan;
 import com.zzhoujay.markdown.style.EmailSpan;
 import com.zzhoujay.markdown.style.FontSpan;
 import com.zzhoujay.markdown.style.LinkSpan;
@@ -106,10 +107,9 @@ public class StyleBuilderImpl implements StyleBuilder {
 
     @Override
     public SpannableStringBuilder code(CharSequence charSequence) {
-        Log.e("Char", charSequence.toString());
         SpannableStringBuilder builder = SpannableStringBuilder.valueOf(charSequence);
-        CodeSpan span = new CodeSpan(code_color);
-        builder.setSpan(span, 0, charSequence.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new BackgroundColorSpan(code_color), 0, charSequence.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new TypefaceSpan("monospace"), 0, charSequence.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
     }
 
@@ -188,6 +188,7 @@ public class StyleBuilderImpl implements StyleBuilder {
         SpannableStringBuilder builder = SpannableStringBuilder.valueOf("$");
         CodeBlockSpan codeBlockSpan = new CodeBlockSpan(getTextViewRealWidth(), code_color, charSequence);
         builder.setSpan(codeBlockSpan, 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new TypefaceSpan("monospace"), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
     }
 

@@ -575,6 +575,9 @@ public class TagHandlerImpl implements TagHandler {
     public boolean code(Line line) {
         line = line.get();
         SpannableStringBuilder builder = (SpannableStringBuilder) line.getStyle();
+        if (builder.toString().endsWith("```") || builder.toString().startsWith("```")) {
+            return codeBlock2(line);
+        }
         Matcher matcher = obtain(Tag.CODE, builder);
         if (matcher.find()) {
             String content = matcher.group(3);

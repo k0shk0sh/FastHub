@@ -28,7 +28,6 @@ import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import butterknife.BindView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import icepick.State;
@@ -112,19 +111,6 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         }
     }
 
-    @OnCheckedChanged(R.id.sentVia) void onChecked(boolean isChecked) {
-        if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
-            if (isChecked) {
-                savedText = savedText + "\n> " + sentVia.getText();
-                editText.setText(savedText);
-            } else {
-                String text = InputHelper.toString(editText);
-                text = text.replace("\n> " + sentVia.getText().toString(), "");
-                editText.setText(text);
-            }
-        }
-    }
-
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
@@ -188,7 +174,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
-            item.setEnabled(false);
+            if (sentVia.isChecked()) {
+                savedText = savedText + "\n> " + sentVia.getText();
+            }
             getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
             return true;
         }

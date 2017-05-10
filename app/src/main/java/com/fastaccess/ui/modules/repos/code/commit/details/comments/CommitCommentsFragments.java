@@ -202,11 +202,12 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
-                    getSparseBooleanArray().clear();
                     if (commentsModel == null) {
-                        onRefresh(); // bundle size is too large? refresh the api
+                        onRefresh(); // shit happens, refresh()?
                         return;
                     }
+                    getSparseBooleanArray().clear();
+                    adapter.notifyDataSetChanged();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
                         recycler.smoothScrollToPosition(adapter.getItemCount());
