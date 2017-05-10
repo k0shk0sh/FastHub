@@ -28,6 +28,7 @@ import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import icepick.State;
@@ -82,7 +83,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
             editText.setEnabled(false);
             sentVia.setEnabled(false);
-            MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
+            MarkDownProvider.setMdText(editText, InputHelper.toString(editText) +
+                    (sentVia.isChecked() ? "\n\n_"+sentVia.getText().toString()+"_" : ""));
             ViewHelper.hideKeyboard(editText);
             AnimHelper.animateVisibility(editorIconsHolder, false);
         } else {
@@ -152,6 +154,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @Override public void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew) {
         hideProgress();
         Intent intent = new Intent();
+        if(sentVia.isChecked())
+            commentModel.setBodyHtml(commentModel.getBodyHtml()+"<br /><br /><i>"+sentVia.getText().toString()+"</i>");
+        commentModel.save(commentModel);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ITEM, commentModel)
                 .put(BundleConstant.EXTRA, isNew)
@@ -174,16 +179,15 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
-            if (sentVia.isChecked()) {
-                String sentFromFastHub = getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(),
-                        "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)");
-                String temp = savedText.toString();
-                String signature = "\n\n_" + sentFromFastHub + "_";
-                if (!temp.contains(signature) || !temp.contains(sentFromFastHub)) {
-                    savedText = savedText + signature;
-                }
-            }
-            getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
+            String sentFromFastHub = getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(),
+                    "[" + getString(R.string.app_name_full) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)");
+            item.setEnabled(false);
+            getPresenter().onHandleSubmission(savedText +
+                    (
+                            savedText.toString().contains(sentVia.getText()) ? "" :
+                            sentVia.isChecked() ? "\n\n_" + sentFromFastHub + "_" : ""
+                    ),
+                    extraType, itemId, commentId, login, issueNumber, sha);
             return true;
         }
         return super.onOptionsItemSelected(item);

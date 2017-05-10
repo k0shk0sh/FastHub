@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.fastaccess"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          package="com.fastaccess">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -12,7 +12,6 @@
     <meta-data
         android:name="com.google.firebase.messaging.default_notification_icon"
         android:resource="@drawable/ic_notification"/>
-
 
     <application
         android:name=".App"
@@ -26,14 +25,23 @@
         android:theme="@style/SplashTheme"
         tools:replace="android:allowBackup"
         tools:targetApi="n">
-        <activity
-            android:name="com.fastaccess.ui.modules.main.MainActivity"
-            android:launchMode="singleTask">
+        <activity android:name=".ui.modules.splash.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.modules.splash.SplashActivityDark"
+                  android:theme="@style/SplashTheme.Dark">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.modules.main.MainActivity"
+            android:launchMode="singleTask"/>
 
         <activity
             android:name=".ui.modules.login.LoginActivity"
@@ -53,7 +61,6 @@
                     android:scheme="https"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.modules.login.LoginChooserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -61,7 +68,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/LoginTheme"/>
-
         <activity
             android:name=".ui.modules.user.UserPagerActivity"
             android:label="@string/user"
@@ -70,7 +76,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.repos.RepoPagerActivity"
             android:label="@string/repo"
@@ -79,7 +84,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
@@ -88,12 +92,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.repos.issues.create.CreateIssueActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/create_issue"/>
-
         <activity
             android:name=".ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity"
             android:label="@string/pull_request"
@@ -102,7 +104,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
@@ -111,23 +112,18 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.code.CodeViewerActivity"
             android:configChanges="keyboard|orientation|screenSize"
-
             android:label="@string/viewer"/>
-
         <activity
             android:name=".ui.modules.editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/markdown"/>
-
         <activity
             android:name=".ui.modules.gists.create.CreateGistActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:label="@string/create_gist"/>
-
         <activity
             android:name=".ui.modules.gists.gist.GistActivity"
             android:label="@string/gist"
@@ -136,7 +132,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.search.SearchActivity"
             android:parentActivityName=".ui.modules.main.MainActivity">
@@ -144,7 +139,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.notification.NotificationActivity"
             android:label="@string/notifications"
@@ -153,21 +147,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.about.FastHubAboutActivity"
             android:theme="@style/AppTheme.AboutActivity.Light"/>
-
         <activity
             android:name=".ui.modules.pinned.PinnedReposActivity"
             android:label="@string/pinned"/>
-
         <activity
             android:name=".ui.modules.gists.GistsListActivity"
             android:label="@string/public_gists"/>
-
         <activity android:name=".ui.modules.profile.org.teams.details.TeamPagerActivity"/>
-
         <activity
             android:name=".ui.modules.repos.code.files.activity.RepoFilesActivity"
             android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
@@ -175,14 +164,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity android:name=".ui.modules.filter.issues.FilterIssuesActivity"/>
-
-
         <activity android:name=".ui.modules.main.donation.DonationActivity"/>
-
         <activity android:name=".ui.modules.repos.code.commit.viewer.FullCommitFileActivity"/>
-
         <activity
             android:name=".ui.modules.search.repos.files.SearchFileActivity"
             android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
@@ -190,13 +174,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:noHistory="true"
             android:theme="@android:style/Theme.NoDisplay">
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -206,29 +188,24 @@
                 <data
                     android:host="github.com"
                     android:scheme="https"/>
-
                 <data
                     android:host="gist.github.com"
                     android:scheme="http"/>
                 <data
                     android:host="gist.github.com"
                     android:scheme="https"/>
-
                 <data
                     android:host="raw.githubusercontent.com"
                     android:scheme="https"/>
-
                 <data
                     android:host="gist.githubusercontent.com"
                     android:scheme="https"/>
-
                 <data android:pathPattern=".*"/>
 
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name="io.octo.bear.pago.BillingActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
@@ -237,22 +214,15 @@
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
             android:exported="true"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
-
         <service android:name=".provider.tasks.git.GithubActionService"/>
-
         <service android:name=".provider.tasks.git.ReactionService"/>
-
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
-
-        <service
-            android:name=".provider.fcm.PushNotificationService">
+        <service android:name=".provider.fcm.PushNotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

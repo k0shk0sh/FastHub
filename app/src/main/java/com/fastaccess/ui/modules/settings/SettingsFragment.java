@@ -1,6 +1,8 @@
 package com.fastaccess.ui.modules.settings;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
@@ -86,6 +88,21 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             if(newValue.toString().equalsIgnoreCase(appTheme))
                 return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
+
+            PackageManager p = getContext().getPackageManager();
+            ComponentName lightTheme = new ComponentName(BuildConfig.APPLICATION_ID, "com.fastaccess.ui.modules.splash.SplashActivity");
+            ComponentName darkTheme = new ComponentName(BuildConfig.APPLICATION_ID, "com.fastaccess.ui.modules.splash.SplashActivityDark");
+
+            if(newValue.toString().equalsIgnoreCase(getResources().getString(R.string.dark_theme_mode))) {
+                p.setComponentEnabledSetting(lightTheme, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                p.setComponentEnabledSetting(lightTheme, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED, PackageManager.DONT_KILL_APP);
+                p.setComponentEnabledSetting(darkTheme, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+            }else{
+                p.setComponentEnabledSetting(lightTheme, PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+                p.setComponentEnabledSetting(darkTheme, PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+                p.setComponentEnabledSetting(darkTheme, PackageManager.COMPONENT_ENABLED_STATE_DISABLED_UNTIL_USED, PackageManager.DONT_KILL_APP);
+            }
+
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {
