@@ -62,6 +62,8 @@ interface CommitCommentsMvp {
         String sha();
 
         boolean isPreviouslyReacted(long commentId, int vId);
+
+        boolean isCallingApi(long id, int vId);
     }
 
 

@@ -6,6 +6,8 @@ import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.ReviewModel;
 
+import retrofit2.Response;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
@@ -36,8 +38,14 @@ public interface ReviewService {
                                                                @Path("number") long number, @Path("id") long reviewId);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/comments")
-    @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html, "
+            + "application/vnd.github.squirrel-girl-preview")
     @NonNull
     Observable<Pageable<ReviewCommentModel>> getPrReviewComments(@Path("owner") String owner, @Path("repo") String repo,
                                                                  @Path("number") long number);
+
+    @DELETE("repos/{owner}/{repo}/pulls/{number}/comments/{id}")
+    @Headers("Accept: application/vnd.github.black-cat-preview")
+    Observable<Response<Boolean>> deleteComment(@Path("owner") String owner, @Path("repo") String repo,
+                                                @Path("number") long number, @Path("id") long id);
 }

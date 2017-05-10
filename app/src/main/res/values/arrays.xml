@@ -19,6 +19,25 @@
         <item>@string/dark_theme_mode</item>
     </string-array>
 
+    <string-array name="theme_colors">
+        <item>@string/red_theme_mode</item>
+        <item>@string/pink_theme_mode</item>
+        <item>@string/purple_theme_mode</item>
+        <item>@string/deep_purple_theme_mode</item>
+        <item>@string/indigo_theme_mode</item>
+        <item>@string/blue_theme_mode</item>
+        <item>@string/light_blue_theme_mode</item>
+        <item>@string/cyan_theme_mode</item>
+        <item>@string/teal_theme_mode</item>
+        <item>@string/green_theme_mode</item>
+        <item>@string/light_green_theme_mode</item>
+        <item>@string/lime_theme_mode</item>
+        <item>@string/yellow_theme_mode</item>
+        <item>@string/amber_theme_mode</item>
+        <item>@string/orange_theme_mode</item>
+        <item>@string/deep_orange_theme_mode</item>
+    </string-array>
+
     <string-array name="issues_filter">
         <item>@string/created</item>
         <item>@string/assigned</item>

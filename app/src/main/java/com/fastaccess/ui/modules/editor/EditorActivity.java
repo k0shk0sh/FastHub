@@ -9,10 +9,12 @@ import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.AnimHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -37,10 +39,13 @@ import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter> implements EditorMvp.View {
 
+    private String sentFromFastHub;
+
     private CharSequence savedText = "";
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
+    @BindView(R.id.sentVia) CheckBox sentVia;
 
     @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
@@ -78,6 +83,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @OnClick(R.id.view) void onViewMarkDown() {
         if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
             editText.setEnabled(false);
+            sentVia.setEnabled(false);
             MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
             ViewHelper.hideKeyboard(editText);
             AnimHelper.animateVisibility(editorIconsHolder, false);
@@ -85,6 +91,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             editText.setText(savedText);
             editText.setSelection(savedText.length());
             editText.setEnabled(true);
+            sentVia.setEnabled(true);
             ViewHelper.showKeyboard(editText);
             AnimHelper.animateVisibility(editorIconsHolder, true);
         }
@@ -108,6 +115,10 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sentFromFastHub = "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
+                "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
+        sentVia.setChecked(PrefGetter.isSentViaEnabled());
+        MarkDownProvider.setMdText(sentVia, sentFromFastHub);
         if (savedInstanceState == null) {
             Intent intent = getIntent();
             if (intent != null && intent.getExtras() != null) {
@@ -136,6 +147,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     .setPrimaryText(R.string.view_code)
                     .setSecondaryText(R.string.click_to_toggle_highlighting)
                     .setCaptureTouchEventOutsidePrompt(true)
+                    .setBackgroundColourAlpha(244)
+                    .setBackgroundColour(ViewHelper.getAccentColor(EditorActivity.this))
                     .show();
         }
     }
@@ -165,7 +178,12 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
-            item.setEnabled(false);
+            if (sentVia.isChecked()) {
+                String temp = savedText.toString();
+                if (!temp.contains(sentFromFastHub) && !InputHelper.isEmpty(savedText)) {
+                    savedText = savedText + sentFromFastHub;
+                }
+            }
             getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
             return true;
         }

@@ -126,6 +126,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             Comment comment = timelineModel.getComment();
             if (comment != null) {
                 boolean isReacted = reactionsCallback == null || reactionsCallback.isPreviouslyReacted(comment.getId(), v.getId());
+                boolean isCallingApi = reactionsCallback != null && reactionsCallback.isCallingApi(comment.getId(), v.getId());
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
                     case R.id.heart:

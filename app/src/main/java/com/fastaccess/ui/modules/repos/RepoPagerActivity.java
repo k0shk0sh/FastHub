@@ -342,6 +342,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                     .setPrimaryText(R.string.watch)
                     .setSecondaryText(R.string.watch_hint)
                     .setCaptureTouchEventOutsidePrompt(true)
+                    .setBackgroundColourAlpha(244)
+                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
                         @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
 
@@ -351,6 +353,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                                     .setPrimaryText(R.string.star)
                                     .setSecondaryText(R.string.star_hint)
                                     .setCaptureTouchEventOutsidePrompt(true)
+                                    .setBackgroundColourAlpha(244)
+                                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
                                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
                                         @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
 
@@ -360,6 +364,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                                                     .setPrimaryText(R.string.fork)
                                                     .setSecondaryText(R.string.fork_repo_hint)
                                                     .setCaptureTouchEventOutsidePrompt(true)
+                                                    .setBackgroundColourAlpha(244)
+                                                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
                                                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
                                                         @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
                                                             new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
@@ -367,6 +373,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                                                                     .setPrimaryText(R.string.pin)
                                                                     .setSecondaryText(R.string.pin_repo_hint)
                                                                     .setCaptureTouchEventOutsidePrompt(true)
+                                                                    .setBackgroundColourAlpha(244)
+                                                                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
                                                                     .show();
                                                         }
 
@@ -546,6 +554,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                         .setPrimaryText(R.string.create_issue)
                         .setSecondaryText(R.string.long_press_repo_fab_hint)
                         .setCaptureTouchEventOutsidePrompt(true)
+                        .setBackgroundColourAlpha(244)
+                        .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
                         .show();
             }
         } else if (navType == RepoPagerMvp.PULL_REQUEST) {

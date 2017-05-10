@@ -103,4 +103,15 @@ public class AppHelper {
         configuration.locale = locale;
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
+
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return InputHelper.capitalizeFirstLetter(model);
+        } else {
+            return InputHelper.capitalizeFirstLetter(manufacturer) + " " + model;
+        }
+    }
+
 }

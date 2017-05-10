@@ -16,10 +16,12 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -148,6 +150,8 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
                     .setTarget(itemView.findViewById(R.id.avatarLayout))
                     .setPrimaryText(R.string.users)
                     .setSecondaryText(R.string.avatar_click_hint)
+                    .setBackgroundColourAlpha(244)
+                    .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
                         @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
 
@@ -159,6 +163,8 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
                                     .setPrimaryText(R.string.fork)
                                     .setSecondaryText(R.string.feeds_fork_hint)
                                     .setCaptureTouchEventOutsidePrompt(true)
+                                    .setBackgroundColourAlpha(244)
+                                    .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
                                     .show();
                         }
                     })

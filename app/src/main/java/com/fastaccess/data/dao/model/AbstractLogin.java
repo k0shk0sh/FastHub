@@ -10,6 +10,7 @@ import java.util.Date;
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Key;
+import io.requery.Nullable;
 import lombok.NoArgsConstructor;
 
 /**
@@ -49,8 +50,19 @@ import lombok.NoArgsConstructor;
     Date updatedAt;
     String token;
     int contributions;
+    @Nullable boolean isLoggedIn;
 
     public void save(Login entity) {
+//        Login login = getUser();
+//        if (login != null) {
+//            if (!login.getLogin().equalsIgnoreCase(entity.getLogin())) {
+//                App.getInstance().getDataStore().delete(login).toBlocking().value();
+//            } else {
+//                login.setIsLoggedIn(false);
+//                App.getInstance().getDataStore().update(login).toBlocking().value();
+//            }
+//        }
+//        entity.setIsLoggedIn(true); TODO for multiple logins
         App.getInstance().getDataStore()
                 .insert(entity)
                 .toBlocking()
@@ -101,6 +113,7 @@ import lombok.NoArgsConstructor;
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
         dest.writeString(this.token);
         dest.writeInt(this.contributions);
+        dest.writeByte(this.isLoggedIn ? (byte) 1 : (byte) 0);
     }
 
     protected AbstractLogin(Parcel in) {
@@ -138,6 +151,7 @@ import lombok.NoArgsConstructor;
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
         this.token = in.readString();
         this.contributions = in.readInt();
+        this.isLoggedIn = in.readByte() != 0;
     }
 
     public static final Creator<Login> CREATOR = new Creator<Login>() {

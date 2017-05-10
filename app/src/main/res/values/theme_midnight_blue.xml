@@ -37,6 +37,66 @@
     </style>
 
 
+    <style name="ThemeMidNightBlue.Base.Red" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Pink" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Purple" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.DeepPurple" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Indigo" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.LightBlue" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Cyan" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Teal" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Green" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.LightGreen" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Lime" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Yellow" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Amber" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Orange" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.DeepOrange" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+    </style>
+
     <style name="TimeLineBackgroundMidNightBlue">
         <item name="android:background">@drawable/ic_timeline_arrow_left</item>
         <item name="android:backgroundTint">#213040</item>

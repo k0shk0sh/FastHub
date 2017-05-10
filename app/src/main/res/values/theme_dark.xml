@@ -41,6 +41,80 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
+    <style name="ThemeDark.Red" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Red</item>
+    </style>
+
+    <style name="ThemeDark.Pink" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Pink</item>
+    </style>
+
+    <style name="ThemeDark.Purple" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Purple</item>
+    </style>
+
+    <style name="ThemeDark.DeepPurple" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.DeepPurple</item>
+    </style>
+
+    <style name="ThemeDark.Indigo" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Indigo</item>
+    </style>
+
+    <style name="ThemeDark.LightBlue" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.LightBlue</item>
+    </style>
+
+    <style name="ThemeDark.Cyan" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Cyan</item>
+    </style>
+
+    <style name="ThemeDark.Teal" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Teal</item>
+    </style>
+
+    <style name="ThemeDark.Green" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Green</item>
+    </style>
+
+    <style name="ThemeDark.LightGreen" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.LightGreen</item>
+    </style>
+
+    <style name="ThemeDark.Lime" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Lime</item>
+    </style>
+
+    <style name="ThemeDark.Yellow" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Yellow</item>
+    </style>
+
+    <style name="ThemeDark.Amber" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Amber</item>
+    </style>
+
+    <style name="ThemeDark.Orange" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.Orange</item>
+    </style>
+
+    <style name="ThemeDark.DeepOrange" parent="ThemeDark.Base">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeDark.DeepOrange</item>
+    </style>
 
     <style name="ToolbarStyleDark">
         <item name="android:textColorPrimary">@color/white</item>
@@ -63,6 +137,66 @@
         <item name="colorPrimaryDark">#26282C</item>
         <item name="colorAccent">#2196F3</item>
         <item name="android:windowBackground">@color/darkWindowBackground</item>
+    </style>
+
+    <style name="DialogThemeDark.Red" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Pink" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Purple" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.DeepPurple" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Indigo" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.LightBlue" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Cyan" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Teal" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Green" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.LightGreen" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Lime" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Yellow" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Amber" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.Orange" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+    </style>
+
+    <style name="DialogThemeDark.DeepOrange" parent="DialogThemeDark">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
     </style>
 
     <style name="AppTheme.AboutActivity.Dark" parent="ThemeDark">
