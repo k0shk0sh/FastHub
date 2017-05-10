@@ -19,6 +19,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
@@ -176,7 +177,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId) {
-        ReactionsDialogFragment.newInstance(login, repoId, reactionTypes, commentId, false, true)
+        ReactionsDialogFragment.newInstance(login, repoId, reactionTypes, commentId, ReactionsProvider.COMMIT)
                 .show(getChildFragmentManager(), "ReactionsDialogFragment");
     }
 
@@ -255,5 +256,9 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
 
     @Override public boolean isPreviouslyReacted(long id, int vId) {
         return getPresenter().isPreviouslyReacted(id, vId);
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getPresenter().isCallingApi(id, vId);
     }
 }

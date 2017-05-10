@@ -70,16 +70,13 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             this.appendNewLine(builder);
         } else {
             StringBuffer text = node.getText();
-            builder.append("  ");
             builder.append(replace(text.toString()));
-            builder.append("  ");
-            final int stringStart = start + 1;
-            final int stringEnd = builder.length() - 1;
-            builder.setSpan(new BackgroundColorSpan(color), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
+            final int stringEnd = builder.length();
+            builder.setSpan(new BackgroundColorSpan(color), start, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
             if (!isDark) {
-                builder.setSpan(new ForegroundColorSpan(Color.RED), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
+                builder.setSpan(new ForegroundColorSpan(Color.RED), start, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
             }
-            builder.setSpan(new TypefaceSpan("monospace"), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
+            builder.setSpan(new TypefaceSpan("monospace"), start, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
         }
     }
 }

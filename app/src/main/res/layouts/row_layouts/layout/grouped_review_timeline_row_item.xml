@@ -6,16 +6,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spacing_micro"
-    android:foreground="?android:selectableItemBackground"
-    app:cardBackgroundColor="?card_background">
+    app:cardBackgroundColor="?card_background"
+    app:cardCornerRadius="@dimen/spacing_micro">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="@dimen/spacing_normal"
-        android:paddingEnd="@dimen/spacing_xs_large"
-        android:paddingStart="@dimen/spacing_xs_large"
         android:paddingTop="@dimen/spacing_normal">
 
         <LinearLayout
@@ -28,7 +26,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/avatar_margin"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
+                android:layout_marginStart="@dimen/avatar_margin"
                 android:minHeight="24dp"
                 android:minWidth="24dp"
                 android:scaleType="centerCrop"
@@ -52,6 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/spacing_normal"
                 android:src="@drawable/ic_arrow_drop_down"/>
 
         </LinearLayout>
@@ -62,6 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/avatar_margin"
             android:background="@drawable/bottom_border"
             android:paddingBottom="@dimen/spacing_normal"
             tools:text="..."/>
@@ -72,10 +75,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_normal"
             android:orientation="vertical"
-            tools:listitem="@layout/review_comments_row_item"
             android:visibility="gone"
             app:layoutManager="@string/staggered_layout_manager"
             app:spanCount="@integer/small_spans"
+            tools:listitem="@layout/review_comments_row_item"
             tools:visibility="visible"/>
 
     </LinearLayout>

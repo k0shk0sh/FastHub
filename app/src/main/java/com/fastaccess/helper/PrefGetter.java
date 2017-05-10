@@ -80,6 +80,7 @@ public class PrefGetter {
     private static final String WRAP_CODE = "wrap_code";
     private static final String OTP_CODE = "otp_code";
     private static final String APP_LANGUAGE = "app_language";
+    private static final String SENT_VIA = "sent_via";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -210,6 +211,10 @@ public class PrefGetter {
         return PrefHelper.getBoolean(WRAP_CODE);
     }
 
+    public static boolean isSentViaEnabled() {
+        return PrefHelper.getBoolean(SENT_VIA);
+    }
+
     @ThemeType public static int getThemeType(@NonNull Context context) {
         return getThemeType(context.getResources());
     }
@@ -230,7 +235,7 @@ public class PrefGetter {
         return LIGHT;
     }
 
-    @ThemeColor static int getThemeColor(@NonNull Resources resources) {
+    @ThemeColor private static int getThemeColor(@NonNull Resources resources) {
         String appColor = PrefHelper.getString("appColor");
         if (!InputHelper.isEmpty(appColor)) {
             if (appColor.equalsIgnoreCase(resources.getString(R.string.red_theme_mode)))

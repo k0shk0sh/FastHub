@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.IssueEvent;
@@ -54,17 +55,19 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
                         if (item1.getItemId() == R.id.delete) {
-                            getView().onShowDeleteMsg(item.getComment().getId());
+                            getView().onShowDeleteMsg(item.getComment().getId(), false);
                         } else if (item1.getItemId() == R.id.reply) {
                             getView().onTagUser(item.getComment().getUser());
                         } else if (item1.getItemId() == R.id.edit) {
                             getView().onEditComment(item.getComment());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getComment().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getComment().getId(), false);
+                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
                 }
             } else if (item.getType() == TimelineModel.EVENT) {
                 IssueEvent issueEventModel = item.getEvent();
@@ -88,12 +91,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             if (activity == null) return false;
                             CreateIssueActivity.startForResult(activity,
                                     item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(), item.getPullRequest());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getPullRequest().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getPullRequest().getNumber(), true);
+                    onHandleReaction(v.getId(), item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
                 }
             }
         }
@@ -108,9 +113,9 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 ReactionTypes type = ReactionTypes.get(v.getId());
                 if (type != null) {
                     if (item.getType() == TimelineModel.HEADER) {
-                        getView().showReactionsPopup(type, login, repoId, item.getPullRequest().getNumber(), true);
+                        getView().showReactionsPopup(type, login, repoId, item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
                     } else {
-                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), false);
+                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), ReactionsProvider.COMMENT);
                     }
                 } else {
                     onItemClick(position, v, item);
@@ -155,7 +160,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
         if (bundle != null) {
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
-            if (commId != 0) {
+            boolean isReviewComment = bundle.getBoolean(BundleConstant.EXTRA_TWO);
+            if (commId != 0 && !isReviewComment) {
                 makeRestCall(RestProvider.getIssueService().deleteIssueComment(login(), repoId(), commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
@@ -166,6 +172,11 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
                         }));
+            } else {
+                makeRestCall(RestProvider.getReviewService().deleteComment(login(), repoId(), number(), commId),
+                        booleanResponse -> {
+                            //TODO
+                        });
             }
         }
     }
@@ -182,15 +193,19 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return getHeader() != null ? getHeader().getNumber() : -1;
     }
 
-    @Override public void onHandleReaction(int vId, long idOrNumber, boolean isHeader) {
+    @Override public void onHandleReaction(int vId, long idOrNumber, @ReactionsProvider.ReactionType int reactionType) {
         String login = login();
         String repoId = repoId();
-        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, isHeader);
+        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType);
         if (observable != null) manageSubscription(observable.subscribe());
     }
 
     @Override public boolean isMerged() {
         return getHeader() != null && (getHeader().isMerged() || !InputHelper.isEmpty(getHeader().getMergedAt()));
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getReactionsProvider().isCallingApi(id, vId);
     }
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
@@ -223,5 +238,47 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             }
             sendToView(view -> view.onNotifyAdapter(models));
         });
+    }
+
+    @Override public void onClick(int groupPosition, int commentPosition, @NonNull View v, @NonNull ReviewCommentModel comment) {
+        if (getHeader() == null) return;
+        if (v.getId() == R.id.commentMenu) {
+            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+            popupMenu.inflate(R.menu.comments_menu);
+            String username = Login.getUser().getLogin();
+            boolean isOwner = CommentsHelper.isOwner(username, getHeader().getLogin(), comment.getUser().getLogin());
+            popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
+            popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
+            popupMenu.setOnMenuItemClickListener(item1 -> {
+                if (getView() == null) return false;
+                if (item1.getItemId() == R.id.delete) {
+                    getView().onShowDeleteMsg(comment.getId(), true);
+                } else if (item1.getItemId() == R.id.reply) {
+                    getView().onTagUser(comment.getUser());
+                } else if (item1.getItemId() == R.id.edit) {
+                    getView().onEditReviewComment(comment);
+                } else if (item1.getItemId() == R.id.share) {
+                    ActivityHelper.shareUrl(v.getContext(), comment.getHtmlUrl());
+                }
+                return true;
+            });
+            popupMenu.show();
+        } else {
+            onHandleReaction(v.getId(), comment.getId(), ReactionsProvider.REVIEW_COMMENT);
+        }
+    }
+
+    @Override public void onLongClick(int groupPosition, int commentPosition, @NonNull View v, @NonNull ReviewCommentModel model) {
+        if (getView() == null) return;
+        String login = login();
+        String repoId = repoId();
+        if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
+            ReactionTypes type = ReactionTypes.get(v.getId());
+            if (type != null) {
+                getView().showReactionsPopup(type, login, repoId, model.getId(), ReactionsProvider.REVIEW_COMMENT);
+            } else {
+                onClick(groupPosition, commentPosition, v, model);
+            }
+        }
     }
 }

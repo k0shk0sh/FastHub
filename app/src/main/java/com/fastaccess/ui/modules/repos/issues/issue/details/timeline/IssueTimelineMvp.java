@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -62,6 +63,8 @@ public interface IssueTimelineMvp {
 
         int number();
 
-        void onHandleReaction(@IdRes int viewId, long id, boolean isHeader);
+        void onHandleReaction(@IdRes int viewId, long id, @ReactionsProvider.ReactionType int reactionType);
+
+        boolean isCallingApi(long id, int vId);
     }
 }

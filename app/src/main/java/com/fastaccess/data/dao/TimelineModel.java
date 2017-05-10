@@ -52,6 +52,7 @@ import static com.annimon.stream.Collectors.toList;
     private PullRequestStatusModel status;
     private ReviewModel review;
     private GroupedReviewModel groupedReview;
+    private ReviewCommentModel reviewComment;
     private Date sortedDate;
 
     private TimelineModel(Issue issue) {

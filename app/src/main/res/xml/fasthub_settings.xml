@@ -30,7 +30,6 @@
 
     <PreferenceCategory android:title="@string/behavior">
 
-
         <SwitchPreference
             android:defaultValue="false"
             android:key="enable_ads"
@@ -53,6 +52,13 @@
             android:key="appColor"
             android:summary="@string/theme_color_summary"
             android:title="@string/theme_color_title"/>
+
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="sent_via"
+            android:summary="@string/enable_signature_summary"
+            android:title="@string/enable_signature"/>
 
         <SwitchPreference
             android:defaultValue="false"
