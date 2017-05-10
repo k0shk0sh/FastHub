@@ -19,11 +19,13 @@ import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -134,6 +136,8 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                                 .setPrimaryText(R.string.options)
                                 .setSecondaryText(R.string.click_file_option_hint)
                                 .setCaptureTouchEventOutsidePrompt(true)
+                                .setBackgroundColourAlpha(244)
+                                .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
             }

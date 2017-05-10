@@ -10,6 +10,7 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
@@ -24,12 +25,19 @@ import es.dmoral.toasty.Toasty;
 public class SettingsFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
     private BaseMvp.FAView callback;
+    private String appTheme;
+    private String appColor;
+    private String app_lauguage;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof BaseMvp.FAView) {
             callback = (BaseMvp.FAView) context;
         }
+
+        appTheme = PrefHelper.getString("appTheme");
+        appColor = PrefHelper.getString("appColor");
+        app_lauguage = PrefHelper.getString("app_language");
     }
 
     @Override public void onDetach() {
@@ -43,6 +51,7 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
         findPreference("recylerViewAnimation").setOnPreferenceChangeListener(this);
         findPreference("rect_avatar").setOnPreferenceChangeListener(this);
         findPreference("appTheme").setOnPreferenceChangeListener(this);
+        findPreference("appColor").setOnPreferenceChangeListener(this);
         findPreference("app_language").setOnPreferenceChangeListener(this);
         findPreference("showChangelog").setOnPreferenceClickListener(preference -> {
             new ChangelogBottomSheetDialog().show(getChildFragmentManager(), "ChangelogBottomSheetDialog");
@@ -74,10 +83,20 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
+            if(newValue.toString().equalsIgnoreCase(appTheme))
+                return true;
+            Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
+            restartActivity();
+            return true;
+        } else if (preference.getKey().equalsIgnoreCase("appColor")) {
+            if(newValue.toString().equalsIgnoreCase(appColor))
+                return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             restartActivity();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("app_language")) {
+            if(newValue.toString().equalsIgnoreCase(app_lauguage))
+                return true;
             restartActivity();
             return true;
         }

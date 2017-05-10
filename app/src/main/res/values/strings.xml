@@ -278,8 +278,26 @@
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
     <string name="light_theme_mode" translatable="false">Light Theme</string>
     <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="red_theme_mode" translatable="false">Red</string>
+    <string name="pink_theme_mode" translatable="false">Pink</string>
+    <string name="purple_theme_mode" translatable="false">Purple</string>
+    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
+    <string name="indigo_theme_mode" translatable="false">Indigo</string>
+    <string name="blue_theme_mode" translatable="false">Blue</string>
+    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
+    <string name="cyan_theme_mode" translatable="false">Cyan</string>
+    <string name="teal_theme_mode" translatable="false">Teal</string>
+    <string name="green_theme_mode" translatable="false">Green</string>
+    <string name="light_green_theme_mode" translatable="false">Light Green</string>
+    <string name="lime_theme_mode" translatable="false">Lime</string>
+    <string name="yellow_theme_mode" translatable="false">Yellow</string>
+    <string name="amber_theme_mode" translatable="false">Amber</string>
+    <string name="orange_theme_mode" translatable="false">Orange</string>
+    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
     <string name="theme_title">Choose Theme</string>
     <string name="theme_summary">Choose your default theme</string>
+    <string name="theme_color_summary">Choose theme accent color</string>
+    <string name="theme_color_title">Theme Accent Color</string>
     <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
     <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Website</string>
