@@ -167,8 +167,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override public void onSendMarkDownResult() {
         Intent intent = new Intent();
-        intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, savedText +
-                (sentVia.isChecked() ? "\n\n_"+sentVia.getText().toString()+"_" : "")).end());
+        intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, savedText).end());
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -182,7 +181,10 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (item.getItemId() == R.id.submit) {
             item.setEnabled(false);
             getPresenter().onHandleSubmission(savedText +
-                    (sentVia.isChecked() ? "\n\n_" + sentVia.getText() + "_" : ""),
+                    (
+                            savedText.toString().contains(sentVia.getText()) ? "" :
+                            sentVia.isChecked() ? "\n\n_" + sentVia.getText() + "_" : ""
+                    ),
                     extraType, itemId, commentId, login, issueNumber, sha);
             return true;
         }
