@@ -21,6 +21,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.widgets.FontEditText;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -136,6 +137,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     .setPrimaryText(R.string.view_code)
                     .setSecondaryText(R.string.click_to_toggle_highlighting)
                     .setCaptureTouchEventOutsidePrompt(true)
+                    .setBackgroundColourAlpha(244)
+                    .setBackgroundColour(ViewHelper.getAccentColor(EditorActivity.this))
                     .show();
         }
     }

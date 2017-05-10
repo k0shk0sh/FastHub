@@ -18,10 +18,12 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReleasesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -101,6 +103,8 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
                                 .setPrimaryText(R.string.download)
                                 .setSecondaryText(R.string.click_here_to_download_release_hint)
                                 .setCaptureTouchEventOutsidePrompt(true)
+                                .setBackgroundColourAlpha(244)
+                                .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
             }
