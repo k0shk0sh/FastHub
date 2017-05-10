@@ -297,6 +297,7 @@
     <string name="theme_title">Choose Theme</string>
     <string name="theme_summary">Choose your default theme</string>
     <string name="theme_color_summary">Choose theme color</string>
+    <string name="theme_color_title">Theme Color</string>
     <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
     <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Website</string>
@@ -419,6 +420,5 @@
     <string name="watchers">Watchers</string>
     <string name="reviewers">Reviewers</string>
     <string name="no_reviewers">No reviewers</string>
-    <string name="theme_color_title">Theme Color</string>
 
 </resources>
