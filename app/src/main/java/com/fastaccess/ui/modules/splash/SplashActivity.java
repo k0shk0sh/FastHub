@@ -12,8 +12,7 @@ import com.fastaccess.ui.modules.main.MainActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (PrefGetter.getThemeType(this) == PrefGetter.DARK) {
             PackageManager p = getPackageManager();

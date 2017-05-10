@@ -93,13 +93,6 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
             }
         }
         if (withAvatar && avatarLayout != null) {
-            if (issueModel.getState() != null) {
-                if (issueModel.getState() == IssueState.open) {
-
-                } else {
-
-                }
-            }
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }

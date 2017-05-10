@@ -180,7 +180,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (item.getItemId() == R.id.submit) {
             if (sentVia.isChecked()) {
                 String temp = savedText.toString();
-                if (!temp.contains(sentFromFastHub)) {
+                if (!temp.contains(sentFromFastHub) && !InputHelper.isEmpty(savedText)) {
                     savedText = savedText + sentFromFastHub;
                 }
             }
