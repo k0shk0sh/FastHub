@@ -11,11 +11,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.TextViewCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LicenseModel;
@@ -33,6 +35,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
+import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
@@ -51,6 +54,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import java.text.NumberFormat;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import icepick.State;
@@ -86,6 +90,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @BindView(R.id.pinLayout) View pinLayout;
     @BindView(R.id.pinText) FontTextView pinText;
     @BindView(R.id.filterLayout) View filterLayout;
+    @BindView(R.id.topicsList) RecyclerView topicsList;
+    @BindView(R.id.sortByUpdated) CheckBox sortByUpdated;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -176,14 +182,6 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         return super.dispatchTouchEvent(ev);
     }
 
-    private void hideFilterLayout() {
-        AnimHelper.mimicFabVisibility(false, filterLayout, new FloatingActionButton.OnVisibilityChangedListener() {
-            @Override public void onHidden(FloatingActionButton actionButton) {
-                fab.show();
-            }
-        });
-    }
-
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
@@ -236,6 +234,15 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                 return true;
         }
         return false;
+    }
+
+    @OnCheckedChanged(R.id.sortByUpdated) void onSortIssues(boolean isChecked) {
+        RepoIssuesPagerFragment pagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                RepoIssuesPagerFragment.TAG);
+        if (pagerView != null) {
+            pagerView.onChangeIssueSort(isChecked);
+        }
+        hideFilterLayout();
     }
 
     @Override protected int layout() {
@@ -300,12 +307,18 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void onInitRepo() {
+        hideProgress();
         if (getPresenter().getRepo() == null) {
             return;
         }
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
-        hideProgress();
+        if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
+            topicsList.setVisibility(View.VISIBLE);
+            topicsList.setAdapter(new TopicsAdapter(repoModel.getTopics()));
+        } else {
+            topicsList.setVisibility(View.GONE);
+        }
         onRepoPinned(AbstractPinnedRepos.isPinned(repoModel.getFullName()));
         pinText.setText(R.string.pin);
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
@@ -583,5 +596,13 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         } else {
             fab.hide();
         }
+    }
+
+    private void hideFilterLayout() {
+        AnimHelper.mimicFabVisibility(false, filterLayout, new FloatingActionButton.OnVisibilityChangedListener() {
+            @Override public void onHidden(FloatingActionButton actionButton) {
+                fab.show();
+            }
+        });
     }
 }

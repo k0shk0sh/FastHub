@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
@@ -21,6 +23,17 @@ import static com.fastaccess.helper.AppHelper.getFragmentByTag;
  */
 
 class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
+
+
+    MainPresenter() {
+        manageSubscription(RxHelper.getObserver(RestProvider.getUserService().getUser())
+                .flatMap(login -> login.update(login))
+                .subscribe(login -> {
+                    if (login != null) {
+                        sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
+                    }
+                }, Throwable::printStackTrace/*fail silently*/));
+    }
 
     @Override public boolean canBackPress(@NonNull DrawerLayout drawerLayout) {
         return !drawerLayout.isDrawerOpen(GravityCompat.START);
