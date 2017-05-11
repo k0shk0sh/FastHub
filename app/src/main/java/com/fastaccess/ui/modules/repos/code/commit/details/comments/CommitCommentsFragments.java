@@ -143,7 +143,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
                 .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_ISSUE_COMMENT_EXTRA)
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -243,6 +243,14 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         return getSparseBooleanArray().get(position);
     }
 
+    @Override public boolean isPreviouslyReacted(long id, int vId) {
+        return getPresenter().isPreviouslyReacted(id, vId);
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getPresenter().isCallingApi(id, vId);
+    }
+
     private SparseBooleanArrayParcelable getSparseBooleanArray() {
         if (sparseBooleanArray == null) {
             sparseBooleanArray = new SparseBooleanArrayParcelable();
@@ -253,13 +261,5 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
-    }
-
-    @Override public boolean isPreviouslyReacted(long id, int vId) {
-        return getPresenter().isPreviouslyReacted(id, vId);
-    }
-
-    @Override public boolean isCallingApi(long id, int vId) {
-        return getPresenter().isCallingApi(id, vId);
     }
 }
