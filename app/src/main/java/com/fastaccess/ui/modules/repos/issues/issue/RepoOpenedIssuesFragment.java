@@ -180,6 +180,11 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
                 parser.getNumber()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
     }
 
+    @Override public void onRefresh(boolean isLastUpdated) {
+        getPresenter().onSetSortBy(isLastUpdated);
+        getPresenter().onCallApi(1, IssueState.open);
+    }
+
     @Override public void onRefresh() {
         getPresenter().onCallApi(1, IssueState.open);
     }

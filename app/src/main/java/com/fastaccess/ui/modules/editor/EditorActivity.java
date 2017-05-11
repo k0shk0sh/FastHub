@@ -8,11 +8,13 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -115,6 +117,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setToolbarIcon(R.drawable.ic_clear);
         sentFromFastHub = "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
@@ -149,7 +152,19 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     .setCaptureTouchEventOutsidePrompt(true)
                     .setBackgroundColourAlpha(244)
                     .setBackgroundColour(ViewHelper.getAccentColor(EditorActivity.this))
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                        @Override
+                        public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                            ActivityHelper.hideDismissHints(EditorActivity.this);
+                        }
+
+                        @Override
+                        public void onHidePromptComplete() {
+
+                        }
+                    })
                     .show();
+            ActivityHelper.showDismissHints(this, () -> {});
         }
     }
 

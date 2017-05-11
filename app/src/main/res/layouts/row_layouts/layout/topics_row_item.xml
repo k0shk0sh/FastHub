@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.FontTextView
+    android:id="@+id/title"
+    style="@style/Base.TextAppearance.AppCompat.Small"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/spacing_micro"
+    android:background="?colorPrimaryDark"
+    android:maxLines="1"
+    android:padding="@dimen/spacing_normal"
+    android:textColor="?colorAccent"
+    tools:text="github-client"/>

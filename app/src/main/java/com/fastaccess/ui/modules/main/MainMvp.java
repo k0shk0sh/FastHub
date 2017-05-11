@@ -33,6 +33,8 @@ interface MainMvp {
     interface View extends BaseMvp.FAView {
 
         void onNavigationChanged(@NavigationType int navType);
+
+        void onUpdateDrawerMenuHeader();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

@@ -16,11 +16,4 @@
 
     </style>
 
-    <style name="SplashTheme.Dark" parent="SplashTheme">
-        <item name="android:statusBarColor">@color/transparent</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
-        <item name="android:windowBackground">@drawable/splash_screen_dark_drawable</item>
-
-    </style>
-
 </resources>
