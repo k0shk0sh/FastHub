@@ -86,7 +86,7 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        adapter = new NotificationsAdapter(getPresenter().getNotifications(),true);
+        adapter = new NotificationsAdapter(getPresenter().getNotifications(),true, true);
         adapter.setListener(getPresenter());
         refresh.setOnRefreshListener(this);
         stateLayout.setEmptyText(R.string.no_notifications);
