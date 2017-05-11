@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LicenseModel;
@@ -53,6 +54,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import java.text.NumberFormat;
 
 import butterknife.BindView;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import icepick.State;
@@ -89,6 +91,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @BindView(R.id.pinText) FontTextView pinText;
     @BindView(R.id.filterLayout) View filterLayout;
     @BindView(R.id.topicsList) RecyclerView topicsList;
+    @BindView(R.id.sortByUpdated) CheckBox sortByUpdated;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -179,14 +182,6 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         return super.dispatchTouchEvent(ev);
     }
 
-    private void hideFilterLayout() {
-        AnimHelper.mimicFabVisibility(false, filterLayout, new FloatingActionButton.OnVisibilityChangedListener() {
-            @Override public void onHidden(FloatingActionButton actionButton) {
-                fab.show();
-            }
-        });
-    }
-
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
@@ -239,6 +234,15 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                 return true;
         }
         return false;
+    }
+
+    @OnCheckedChanged(R.id.sortByUpdated) void onSortIssues(boolean isChecked) {
+        RepoIssuesPagerFragment pagerView = (RepoIssuesPagerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                RepoIssuesPagerFragment.TAG);
+        if (pagerView != null) {
+            pagerView.onChangeIssueSort(isChecked);
+        }
+        hideFilterLayout();
     }
 
     @Override protected int layout() {
@@ -573,5 +577,13 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         } else {
             fab.hide();
         }
+    }
+
+    private void hideFilterLayout() {
+        AnimHelper.mimicFabVisibility(false, filterLayout, new FloatingActionButton.OnVisibilityChangedListener() {
+            @Override public void onHidden(FloatingActionButton actionButton) {
+                fab.show();
+            }
+        });
     }
 }
