@@ -115,6 +115,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setToolbarIcon(R.drawable.ic_clear);
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
         sentVia.setText(getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), getString(R.string.app_name)));
         if (savedInstanceState == null) {
