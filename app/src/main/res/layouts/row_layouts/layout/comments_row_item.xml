@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:background="?card_background"
-    android:paddingBottom="@dimen/spacing_normal"
     android:paddingTop="@dimen/spacing_normal"
     tools:ignore="RtlSymmetry">
 
@@ -70,7 +69,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_xs_large"
+            android:layout_marginBottom="@dimen/spacing_xs_large"
             android:paddingEnd="@dimen/spacing_xs_large"
             android:textIsSelectable="true"/>
 
@@ -87,6 +87,13 @@
             tools:ignore="RtlSymmetry"
             tools:text="U+1F602"
             tools:visibility="visible"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:background="?dividerColor"/>
+
     </LinearLayout>
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

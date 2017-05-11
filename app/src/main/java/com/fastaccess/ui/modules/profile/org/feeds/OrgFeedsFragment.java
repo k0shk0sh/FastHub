@@ -12,6 +12,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.Logger;
@@ -146,6 +147,7 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
 
     @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {
         if (!PrefGetter.isUserIconGuideShowed()) {
+            final boolean[] dismissed = {false};
             new MaterialTapTargetPrompt.Builder(getActivity())
                     .setTarget(itemView.findViewById(R.id.avatarLayout))
                     .setPrimaryText(R.string.users)
@@ -158,6 +160,7 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
                         }
 
                         @Override public void onHidePromptComplete() {
+                            if(!dismissed[0])
                             new MaterialTapTargetPrompt.Builder(getActivity())
                                     .setTarget(itemView)
                                     .setPrimaryText(R.string.fork)
@@ -165,11 +168,24 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
                                     .setCaptureTouchEventOutsidePrompt(true)
                                     .setBackgroundColourAlpha(244)
                                     .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
+                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                        @Override
+                                        public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                            ActivityHelper.hideDismissHints(OrgFeedsFragment.this.getContext());
+                                        }
+
+                                        @Override
+                                        public void onHidePromptComplete() {
+
+                                        }
+                                    })
                                     .show();
+                            ActivityHelper.bringDismissAllToFront(getContext());
                         }
                     })
                     .setCaptureTouchEventOutsidePrompt(true)
                     .show();
+            ActivityHelper.showDismissHints(getContext(), () -> { dismissed[0] = true; });
         }
     }
 }
