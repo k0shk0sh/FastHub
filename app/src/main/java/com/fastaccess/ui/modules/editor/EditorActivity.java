@@ -8,11 +8,13 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -150,7 +152,19 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     .setCaptureTouchEventOutsidePrompt(true)
                     .setBackgroundColourAlpha(244)
                     .setBackgroundColour(ViewHelper.getAccentColor(EditorActivity.this))
+                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                        @Override
+                        public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                            ActivityHelper.hideDismissHints(EditorActivity.this);
+                        }
+
+                        @Override
+                        public void onHidePromptComplete() {
+
+                        }
+                    })
                     .show();
+            ActivityHelper.showDismissHints(this, () -> {});
         }
     }
 

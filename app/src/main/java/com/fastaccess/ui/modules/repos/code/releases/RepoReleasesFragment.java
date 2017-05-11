@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -105,8 +106,20 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
                                 .setCaptureTouchEventOutsidePrompt(true)
                                 .setBackgroundColourAlpha(244)
                                 .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
+                                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                    @Override
+                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                        ActivityHelper.hideDismissHints(RepoReleasesFragment.this.getContext());
+                                    }
+
+                                    @Override
+                                    public void onHidePromptComplete() {
+
+                                    }
+                                })
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
+                ActivityHelper.showDismissHints(getContext(), () -> {});
             }
         }
     }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.MenuInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupMenu;
 
@@ -130,6 +131,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         Logger.e(hidden);
         if (!hidden && adapter != null && isSafe()) {
             if (!PrefGetter.isFileOptionHintShow()) {
+                ActivityHelper.showDismissHints(getContext(), () -> {});
                 adapter.setGuideListener((itemView, model) ->
                         new MaterialTapTargetPrompt.Builder(getActivity())
                                 .setTarget(itemView.findViewById(R.id.menu))
@@ -138,6 +140,17 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                                 .setCaptureTouchEventOutsidePrompt(true)
                                 .setBackgroundColourAlpha(244)
                                 .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
+                                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                    @Override
+                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                        ActivityHelper.hideDismissHints(RepoFilesFragment.this.getContext());
+                                    }
+
+                                    @Override
+                                    public void onHidePromptComplete() {
+
+                                    }
+                                })
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
             }
