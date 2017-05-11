@@ -11,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.TextViewCompat;
+import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
+import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
@@ -86,6 +88,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @BindView(R.id.pinLayout) View pinLayout;
     @BindView(R.id.pinText) FontTextView pinText;
     @BindView(R.id.filterLayout) View filterLayout;
+    @BindView(R.id.topicsList) RecyclerView topicsList;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -300,12 +303,18 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void onInitRepo() {
+        hideProgress();
         if (getPresenter().getRepo() == null) {
             return;
         }
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
-        hideProgress();
+        if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
+            topicsList.setVisibility(View.VISIBLE);
+            topicsList.setAdapter(new TopicsAdapter(repoModel.getTopics()));
+        } else {
+            topicsList.setVisibility(View.GONE);
+        }
         onRepoPinned(AbstractPinnedRepos.isPinned(repoModel.getFullName()));
         pinText.setText(R.string.pin);
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);

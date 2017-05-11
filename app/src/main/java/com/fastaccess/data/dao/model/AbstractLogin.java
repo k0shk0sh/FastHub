@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fastaccess.App;
+import com.fastaccess.helper.PrefGetter;
 
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
 import lombok.NoArgsConstructor;
+import rx.Observable;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:36 PM
@@ -51,6 +53,13 @@ import lombok.NoArgsConstructor;
     String token;
     int contributions;
     @Nullable boolean isLoggedIn;
+
+    public Observable<Login> update(Login login) {
+        login.setToken(PrefGetter.getToken());
+        login.setIsLoggedIn(true);
+        return App.getInstance().getDataStore().update(login)
+                .toObservable();
+    }
 
     public void save(Login entity) {
 //        Login login = getUser();

@@ -70,7 +70,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
-    @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
+    @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
 
     private long backPressTimer;
     private Toast toast;
