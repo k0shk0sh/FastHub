@@ -25,23 +25,14 @@
         android:theme="@style/SplashTheme"
         tools:replace="android:allowBackup"
         tools:targetApi="n">
-        <activity android:name=".ui.modules.splash.SplashActivity"
-            android:theme="@style/SplashTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity android:name=".ui.modules.splash.SplashActivityDark"
-                  android:theme="@style/SplashTheme.Dark">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
         <activity
             android:name=".ui.modules.main.MainActivity"
-            android:launchMode="singleTask"/>
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.modules.login.LoginActivity"
