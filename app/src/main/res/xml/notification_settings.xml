@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ListPreference
+        android:defaultValue="@string/thirty_minutes"
+        android:dialogTitle="@string/every"
+        android:entries="@array/notification_duration"
+        android:entryValues="@array/notification_duration"
+        android:key="notificationTime"
+        android:icon="@drawable/ic_time"
+        android:summary="@string/background_job_summary"
+        android:title="@string/background_job_title"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="markNotificationAsRead"
+        android:icon="@drawable/ic_check"
+        android:summary="@string/mark_notification_summary"
+        android:title="@string/mark_notification_title"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="notificationSound"
+        android:icon="@drawable/ic_ring"
+        android:summary="@string/enable_notification_sound_summary"
+        android:title="@string/enable_notification_sound_title"/>
+
+
+</PreferenceScreen>

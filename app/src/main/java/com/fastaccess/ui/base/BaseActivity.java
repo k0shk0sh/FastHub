@@ -44,6 +44,7 @@ import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -71,6 +72,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+
+    private static int REFRESH_CODE = 64;
 
     private long backPressTimer;
     private Toast toast;
@@ -271,7 +274,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onOpenSettings() {
-        SettingsBottomSheetDialog.show(getSupportFragmentManager());
+        startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==REFRESH_CODE)
+            if(resultCode==RESULT_OK)
+                recreate();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     protected void selectHome(boolean hideRepo) {

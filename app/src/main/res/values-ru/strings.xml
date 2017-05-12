@@ -339,6 +339,7 @@
     <string name="support_with_10_00">Пожертвовать $10.00</string>
     <string name="support_with_20_00">Пожертвовать $20.00</string>
     <string name="app_language">Язык приложения</string>
+    <string name="language">Язык</string>
     <string name="choose_language_title">Выберите язык</string>
     <string name="choose_language_summary">Выберите нужный язык</string>
 </resources>
