@@ -7,7 +7,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
-    android:drawableEnd="@drawable/ic_clear_all"
     android:padding="@dimen/spacing_xs_large"
     android:textColor="?colorAccent"
     tools:text="k0shk0sh/FastHub"/>
