@@ -325,6 +325,7 @@
     <string name="support_with_10_00">Supporta con $10.00</string>
     <string name="support_with_20_00">Supporta con $20.00</string>
     <string name="app_language">Lingua app</string>
+    <string name="language">Lingua</string>
     <string name="choose_language_title">Scegli la lingua</string>
     <string name="choose_language_summary">Scegli la tua lingua preferita</string>
     <string name="un_subscribe">Disiscriviti</string>

@@ -11,18 +11,21 @@
             android:entries="@array/notification_duration"
             android:entryValues="@array/notification_duration"
             android:key="notificationTime"
+            android:icon="@drawable/ic_time"
             android:summary="@string/background_job_summary"
             android:title="@string/background_job_title"/>
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="markNotificationAsRead"
+            android:icon="@drawable/ic_check"
             android:summary="@string/mark_notification_summary"
             android:title="@string/mark_notification_title"/>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="notificationSound"
+            android:icon="@drawable/ic_ring"
             android:summary="@string/enable_notification_sound_summary"
             android:title="@string/enable_notification_sound_title"/>
 
@@ -41,6 +44,7 @@
             android:entries="@array/theme_modes"
             android:entryValues="@array/theme_modes"
             android:key="appTheme"
+            android:icon="@drawable/ic_brush"
             android:summary="@string/theme_summary"
             android:title="@string/theme_title"/>
 
@@ -50,6 +54,7 @@
             android:entries="@array/theme_colors"
             android:entryValues="@array/theme_colors"
             android:key="appColor"
+            android:icon="@drawable/ic_blank"
             android:summary="@string/theme_color_summary"
             android:title="@string/theme_color_title"/>
 
