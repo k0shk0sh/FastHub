@@ -152,15 +152,20 @@ public class ViewHelper {
         DisplayMetrics metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
-        float yInches= metrics.heightPixels/metrics.ydpi;
-        float xInches= metrics.widthPixels/metrics.xdpi;
-        double inches = Math.sqrt(xInches*xInches + yInches*yInches);
+        float yInches = metrics.heightPixels / metrics.ydpi;
+        float xInches = metrics.widthPixels / metrics.xdpi;
+        double inches = Math.sqrt(xInches * xInches + yInches * yInches);
         return inches >= 6.5;
     }
 
     @SuppressWarnings("ConstantConditions") public static boolean isTablet(@NonNull Context context) {
-        return context != null &&
-                (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+        if (context == null) return false;
+        Activity activity = ActivityHelper.getActivity(context);
+        if (activity != null) {
+            return isTablet(activity);
+        }
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     public static boolean isLandscape(@NonNull Resources resources) {
