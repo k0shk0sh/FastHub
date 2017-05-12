@@ -60,6 +60,8 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                 if (parser != null) builder.bold(parser.getLogin())
                         .append("/")
                         .bold(parser.getRepoId())
+                        .append("#")
+                        .append(String.valueOf(issueModel.getNumber())).append(" ")
                         .append(" ");
             }
             if (!showRepoName) {
