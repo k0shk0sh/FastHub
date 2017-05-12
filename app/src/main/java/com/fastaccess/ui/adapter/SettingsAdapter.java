@@ -1,16 +1,20 @@
 package com.fastaccess.ui.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Setting;
-import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.InputHelper;
+import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.ForegroundImageView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by JediB on 5/12/2017.
@@ -18,48 +22,52 @@ import com.fastaccess.helper.ActivityHelper;
 
 public class SettingsAdapter extends BaseAdapter {
 
-	private Setting[] settings;
-	private Context context;
+    private Setting[] settings;
+    private final LayoutInflater inflater;
 
-	public SettingsAdapter(Context context, Setting[] settings) {
-		this.context = context;
-		this.settings = settings;
-	}
+    public SettingsAdapter(@NonNull Context context, @NonNull Setting[] settings) {
+        this.settings = settings;
+        this.inflater = LayoutInflater.from(context);
+    }
 
-	@Override
-	public int getCount() {
+    @Override public int getCount() {
+        return settings.length;
+    }
 
-		return settings.length;
-	}
+    @Override public Setting getItem(int position) {
+        return settings[position];
+    }
 
-	@Override
-	public Setting getItem(int position) {
-		return settings[position];
-	}
+    @Override public long getItemId(int position) {
+        return position;
+    }
 
-	@Override
-	public long getItemId(int position) {
-		return position;
-	}
+    @Override public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
+        View row = convertView;
+        if (row == null) {
+            row = inflater.inflate(R.layout.icon_row_item, parent, false);
+            viewHolder = new ViewHolder(row);
+            row.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) row.getTag();
+        }
+        viewHolder.title.setText(settings[position].getTitle());
+        viewHolder.image.setImageResource(settings[position].getImage());
+        if (!InputHelper.isEmpty(settings[position].getSummary())) {
+            viewHolder.summary.setText(settings[position].getSummary());
+            viewHolder.summary.setVisibility(View.VISIBLE);
+        } else {
+            viewHolder.summary.setVisibility(View.GONE);
+        }
+        return row;
+    }
 
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater inflater = ActivityHelper.getActivity(context).getLayoutInflater();
-		View row;
-		row = inflater.inflate(R.layout.icon_row_item, parent, false);
-		TextView title;
-		TextView summary;
-		ImageView image;
-		image = (ImageView) row.findViewById(R.id.iconItemImage);
-		summary = (TextView) row.findViewById(R.id.iconItemSummary);
-		title = (TextView) row.findViewById(R.id.iconItemTitle);
-		title.setText(settings[position].getTitle());
-		summary.setText(settings[position].getSummary());
-		image.setImageResource(settings[position].getImage());
+    static class ViewHolder {
+        @BindView(R.id.iconItemImage) ForegroundImageView image;
+        @BindView(R.id.iconItemTitle) FontTextView title;
+        @BindView(R.id.iconItemSummary) FontTextView summary;
 
-		if(summary.getText().toString().length()<=0)
-			summary.setVisibility(View.GONE);
-
-		return row;
-	}
+        ViewHolder(View view) {ButterKnife.bind(this, view);}
+    }
 }
