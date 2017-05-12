@@ -71,7 +71,7 @@
         <item name="colorPrimaryDark">#1C1C1C</item>
         <item name="colorAccent">#2196F3</item>
         <item name="mal_lightActionBar">false</item>
-        <item name="mal_color_primary">#fff</item>
+        <item name="mal_color_primary">#eee</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>
     </style>
 

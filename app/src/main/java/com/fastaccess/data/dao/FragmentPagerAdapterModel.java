@@ -17,6 +17,8 @@ import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
 import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
+import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
+import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersFragment;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingFragment;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
@@ -148,6 +150,12 @@ import lombok.Setter;
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListFragment.newInstance(gistsModel.getFiles())),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), GistCommentsFragment.newInstance(gistsModel.getGistId())))
                 .collect(Collectors.toList());
+    }
+
+    public static List<FragmentPagerAdapterModel> buildForNotifications(@NonNull Context context) {
+
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.unread), new UnreadNotificationsFragment()),
+                new FragmentPagerAdapterModel(context.getString(R.string.all), new AllNotificationsFragment())).collect(Collectors.toList());
     }
 
     public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {

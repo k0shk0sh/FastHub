@@ -238,6 +238,7 @@
     <string name="background_job_title">Notification sync interval</string>
     <string name="every">Every</string>
     <string name="behavior">Behavior</string>
+    <string name="customization">Customization</string>
     <string name="recycler_view_animation_summary">Enable list animations</string>
     <string name="recycler_view_animation_title">List animation</string>
     <string name="back_button_summary">Disable dialog preventing accidental app closure</string>
@@ -400,6 +401,7 @@
     <string name="support_with_10_00">Support with $10.00</string>
     <string name="support_with_20_00">Support with $20.00</string>
     <string name="app_language">App Language</string>
+    <string name="language">Language</string>
     <string name="choose_language_title">Choose Language</string>
     <string name="choose_language_summary">Choose your preferred language</string>
     <string name="un_subscribe">Unsubscribe</string>

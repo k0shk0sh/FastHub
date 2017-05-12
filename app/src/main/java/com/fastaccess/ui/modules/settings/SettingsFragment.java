@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.settings;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -79,35 +80,30 @@ public class SettingsFragment extends PreferenceFragmentCompat implements Prefer
                     PrefGetter.notificationDurationMillis(getActivity().getApplicationContext(), (String) newValue), true);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("recylerViewAnimation")) {
-            restartActivity();
+            getActivity().setResult(Activity.RESULT_OK);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("rect_avatar")) {
-            restartActivity();
+            getActivity().setResult(Activity.RESULT_OK);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
             if(newValue.toString().equalsIgnoreCase(appTheme))
                 return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
-            restartActivity();
+            getActivity().setResult(Activity.RESULT_OK);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {
             if(newValue.toString().equalsIgnoreCase(appColor))
                 return true;
             Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
-            restartActivity();
+            getActivity().setResult(Activity.RESULT_OK);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("app_language")) {
             if(newValue.toString().equalsIgnoreCase(app_lauguage))
                 return true;
-            restartActivity();
+            getActivity().setResult(Activity.RESULT_OK);
             return true;
         }
         return false;
     }
 
-    private void restartActivity() {
-        if (callback != null) {
-            callback.onThemeChanged();
-        }
-    }
 }

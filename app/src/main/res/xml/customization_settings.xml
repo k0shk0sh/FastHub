@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:icon="@drawable/ic_support"
+        android:key="enable_ads"
+        android:title="@string/enable_ads"/>
+
+    <ListPreference
+        android:defaultValue="@string/light_theme_mode"
+        android:dialogTitle="@string/theme_title"
+        android:entries="@array/theme_modes"
+        android:entryValues="@array/theme_modes"
+        android:key="appTheme"
+        android:icon="@drawable/ic_brush"
+        android:summary="@string/theme_summary"
+        android:title="@string/theme_title"/>
+
+    <ListPreference
+        android:defaultValue="@string/blue_theme_mode"
+        android:dialogTitle="@string/theme_color_title"
+        android:entries="@array/theme_colors"
+        android:entryValues="@array/theme_colors"
+        android:key="appColor"
+        android:icon="@drawable/ic_color_lens"
+        android:summary="@string/theme_color_summary"
+        android:title="@string/theme_color_title"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="rect_avatar"
+        android:icon="@drawable/ic_crop_square"
+        android:summary="@string/rect_avatar_summary"
+        android:title="@string/rect_avatar_title"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="recylerViewAnimation"
+        android:icon="@drawable/ic_filter"
+        android:summary="@string/recycler_view_animation_summary"
+        android:title="@string/recycler_view_animation_title"/>
+
+</PreferenceScreen>

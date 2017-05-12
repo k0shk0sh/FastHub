@@ -30,10 +30,10 @@
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
+
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.modules.login.LoginActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -214,6 +214,13 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <activity android:name=".ui.modules.settings.SettingsActivity">
+        </activity>
+        <activity android:name=".ui.modules.settings.category.SettingsCategoryFragment">
+        </activity>
+        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity">
+        </activity>
     </application>
 
 </manifest>

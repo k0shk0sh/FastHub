@@ -11,7 +11,7 @@
 
     <style name="ThemeDark.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="card_background">#2D3035</item>
-        <item name="icon_color">#fff</item>
+        <item name="icon_color">#eee</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundDark</item>
         <item name="patch_addition">@color/dark_patch_addition_color</item>
         <item name="patch_deletion">@color/dark_patch_deletion_color</item>
@@ -26,7 +26,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
-        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:textColorPrimary">#eee</item>
         <item name="android:textColorSecondary">#9E9E9E</item>
         <item name="android:textColorTertiary">#ffe0e0e0</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -205,7 +205,7 @@
         <item name="colorPrimaryDark">#26282C</item>
         <item name="colorAccent">#2196F3</item>
         <item name="mal_lightActionBar">false</item>
-        <item name="mal_color_primary">#fff</item>
+        <item name="mal_color_primary">#eee</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>
     </style>
 

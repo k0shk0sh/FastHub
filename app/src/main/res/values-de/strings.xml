@@ -319,6 +319,7 @@
     <string name="support_with_10_00">Unterstützen mit 10$</string>
     <string name="support_with_20_00">Unterstützen mit 20$</string>
     <string name="app_language">App Sprache</string>
+    <string name="language">Sprache</string>
     <string name="choose_language_title">Spracheinstellung</string>
     <string name="choose_language_summary">Wähle deine bevorzugte Sprache</string>
     <string name="un_subscribe">Deabbonieren</string>
