@@ -51,28 +51,32 @@ public interface ReactionsService {
     Observable<Pageable<ReactionsModel>> getIssueCommentReaction(@NonNull @Path("owner") String owner,
                                                                  @Path("repo") @NonNull String repo,
                                                                  @Path("id") long id,
-                                                                 @Query("content") @NonNull String content);
+                                                                 @Query("content") @NonNull String content,
+                                                                 @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/issues/{number}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     Observable<Pageable<ReactionsModel>> getIssueReaction(@NonNull @Path("owner") String owner,
                                                           @Path("repo") @NonNull String repo,
                                                           @Path("number") long id,
-                                                          @Query("content") @NonNull String content);
+                                                          @Query("content") @NonNull String content,
+                                                          @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/comments/{id}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview")
     Observable<Pageable<ReactionsModel>> getCommitReaction(@NonNull @Path("owner") String owner,
                                                            @Path("repo") @NonNull String repo,
                                                            @Path("id") long id,
-                                                           @Query("content") @NonNull String content);
+                                                           @Query("content") @NonNull String content,
+                                                           @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/comments/{id}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview, application/vnd.github.black-cat-preview")
     Observable<Pageable<ReactionsModel>> getPullRequestReactions(@NonNull @Path("owner") String owner,
                                                                  @Path("repo") @NonNull String repo,
                                                                  @Path("id") long id,
-                                                                 @Query("content") @NonNull String content);
+                                                                 @Query("content") @NonNull String content,
+                                                                 @Query("page") int page);
 
     @POST("repos/{owner}/{repo}/pulls/comments/{id}/reactions")
     @Headers("Accept: application/vnd.github.squirrel-girl-preview, application/vnd.github.black-cat-preview")

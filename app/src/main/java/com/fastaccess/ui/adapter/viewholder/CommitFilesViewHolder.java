@@ -33,7 +33,7 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
     @BindView(R.id.open) View open;
     @BindString(R.string.changes) String changesText;
     @BindString(R.string.addition) String additionText;
-    @BindString(R.string.delete) String deletionText;
+    @BindString(R.string.deletion) String deletionText;
     @BindString(R.string.status) String statusText;
     private final int patchAdditionColor;
     private final int patchDeletionColor;
