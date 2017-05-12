@@ -92,11 +92,9 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     private void showParentOrSelf(boolean showRecyclerView) {
-        if (parentView == null) {
-            setVisibility(showRecyclerView ? VISIBLE : GONE);
-        } else {
-            parentView.setVisibility(showRecyclerView ? VISIBLE : GONE);
-        }
+        if(parentView!=null)
+            parentView.setVisibility(VISIBLE);
+        setVisibility(VISIBLE);
         emptyView.setVisibility(!showRecyclerView ? VISIBLE : GONE);
     }
 
