@@ -60,15 +60,15 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                 if (parser != null) builder.bold(parser.getLogin())
                         .append("/")
                         .bold(parser.getRepoId())
-                        .append("#")
-                        .append(String.valueOf(issueModel.getNumber())).append(" ")
+                        .bold("#")
+                        .bold(String.valueOf(issueModel.getNumber())).append(" ")
                         .append(" ");
             }
             if (!showRepoName) {
                 if (issueModel.getState() == IssueState.closed) {
                     if (issueModel.getClosedBy() == null) {
-                        builder.append("#")
-                                .append(String.valueOf(issueModel.getNumber())).append(" ")
+                        builder.bold("#")
+                                .bold(String.valueOf(issueModel.getNumber())).append(" ")
                                 .append(" ");
                     } else {
                         builder.append("#")
@@ -77,8 +77,8 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                                 .append(" ");
                     }
                 } else {
-                    builder.append("#")
-                            .append(String.valueOf(issueModel.getNumber())).append(" ")
+                    builder.bold("#")
+                            .bold(String.valueOf(issueModel.getNumber())).append(" ")
                             .append(issueModel.getUser().getLogin())
                             .append(" ");
                 }
