@@ -156,6 +156,8 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                     builder.bold(parser.getLogin())
                             .append("/")
                             .bold(parser.getRepoId())
+                            .append(" ")
+                            .append("#").append(String.valueOf(pullRequest.getNumber()))
                             .append(" ");
             } else {
                 builder.bold("#" + pullRequest.getNumber())
@@ -184,6 +186,8 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                     builder.bold(parser.getLogin())
                             .append("/")
                             .bold(parser.getRepoId())
+                            .append(" ")
+                            .append("#").append(String.valueOf(pullRequest.getNumber()))
                             .append(" ");
                 }
             } else {
