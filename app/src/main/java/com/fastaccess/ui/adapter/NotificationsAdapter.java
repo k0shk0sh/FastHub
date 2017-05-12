@@ -2,6 +2,7 @@ package com.fastaccess.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
@@ -47,8 +48,7 @@ public class NotificationsAdapter extends BaseRecyclerAdapter<GroupedNotificatio
             ((NotificationsHeaderViewHolder) holder).bind(getItem(position));
             if(hideClear)
                 if(getItem(Math.min(position+1, getItemCount()-1)).getNotification().isUnread())
-                    ((FontTextView)((NotificationsHeaderViewHolder) holder).itemView).
-                            setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_clear_all, 0);
+                    (((NotificationsHeaderViewHolder) holder).itemView).findViewById(R.id.markAsRead).setVisibility(View.VISIBLE);
         } else {
             ((NotificationsViewHolder) holder).bind(getItem(position));
         }
