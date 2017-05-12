@@ -33,14 +33,13 @@ public class StateLayout extends NestedScrollView {
 
     @BindView(R.id.empty_text) FontTextView emptyText;
     @BindView(R.id.reload) FontButton reload;
-    @BindView(R.id.progressBar) ProgressBar progressBar;
 
     @State int layoutState = HIDDEN;
     @State String emptyTextValue;
     @State boolean showReload = true;
 
     @OnClick(R.id.reload) void onReload() {
-        if (onReloadListener != null && !progressBar.isShown()) {
+        if (onReloadListener != null) {
             onReloadListener.onClick(reload);
         }
     }
@@ -62,14 +61,12 @@ public class StateLayout extends NestedScrollView {
         setVisibility(VISIBLE);
         emptyText.setVisibility(GONE);
         reload.setVisibility(GONE);
-        progressBar.setVisibility(VISIBLE);
     }
 
     public void hideProgress() {
         layoutState = HIDE_PROGRESS_STATE;
         emptyText.setVisibility(VISIBLE);
         reload.setVisibility(VISIBLE);
-        progressBar.setVisibility(GONE);
         setVisibility(GONE);
     }
 
