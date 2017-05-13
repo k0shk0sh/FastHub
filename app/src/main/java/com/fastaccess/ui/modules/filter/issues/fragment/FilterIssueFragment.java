@@ -156,6 +156,7 @@ refresh.setRefreshing(true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (savedInstanceState != null) {

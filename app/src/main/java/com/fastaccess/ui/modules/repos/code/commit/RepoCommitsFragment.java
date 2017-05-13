@@ -105,6 +105,7 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
+        recycler.addKeyLineDivider();
         adapter = new CommitsAdapter(getPresenter().getCommits());
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());

@@ -68,6 +68,7 @@ public class ProfileFollowersFragment extends BaseFragment<ProfileFollowersMvp.V
         adapter = new UsersAdapter(getPresenter().getFollowers());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (getPresenter().getFollowers().isEmpty() && !getPresenter().isApiCalled()) {

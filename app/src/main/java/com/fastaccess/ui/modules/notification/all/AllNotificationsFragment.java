@@ -93,6 +93,7 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
         stateLayout.setOnReloadListener(v -> onRefresh());
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addDivider(NotificationsViewHolder.class);
         if (savedInstanceState == null || !getPresenter().isApiCalled()) {
             onRefresh();

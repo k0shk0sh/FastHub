@@ -102,6 +102,7 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
         adapter.setListener(getPresenter());
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         if (savedInstanceState == null || (getPresenter().getMilestones().isEmpty() && !getPresenter().isApiCalled())) {
             getPresenter().onLoadMilestones(login, repo);
         }

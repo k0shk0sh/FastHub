@@ -68,6 +68,7 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         adapter = new ReposAdapter(getPresenter().getRepos(), false);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
