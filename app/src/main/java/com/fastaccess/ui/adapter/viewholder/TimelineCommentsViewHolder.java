@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -108,7 +109,11 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             comment.setText("");
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
-        date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
+        if (commentsModel.getCreatedAt().before(commentsModel.getUpdatedAt())) {
+            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()) + " " + App.getInstance().getResources().getString(R.string.edited));
+        } else {
+            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
+        }
         if (showEmojies) {
             if (commentsModel.getReactions() != null) {
                 ReactionsModel reaction = commentsModel.getReactions();

@@ -206,7 +206,11 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         avatarLayout.setUrl(url, login);
         title.setText(gistsModel.getDisplayTitle(false, true));
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
-        date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()));
+        if (gistsModel.getCreatedAt().before(gistsModel.getUpdatedAt())) {
+            date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()) + " " + getString(R.string.edited));
+        } else {
+            date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()));
+        }
         size.setText(Formatter.formatFileSize(this, gistsModel.getSize()));
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForGist(this, gistsModel)));
         tabs.setupWithViewPager(pager);
