@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginEnd="@dimen/layout_margin"
+    android:layout_marginStart="@dimen/layout_margin"
+    android:layout_marginTop="@dimen/spacing_normal"
+    android:clipChildren="false"
+    android:foreground="?selectableItemBackground">
+
+    <com.fastaccess.ui.widgets.ForegroundImageView
+        android:id="@+id/stateImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:minHeight="24dp"
+        android:minWidth="24dp"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_issue_opened"/>
+
+    <android.support.design.internal.ForegroundLinearLayout
+        style="?timeLineBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/stateImage"
+        android:layout_toStartOf="@+id/seeMore"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:paddingTop="@dimen/spacing_normal"
+            tools:ignore="RtlSymmetry">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.AvatarLayout
+                    android:id="@+id/avatarLayout"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="top"
+                    android:layout_marginEnd="@dimen/avatar_margin_end"
+                    android:layout_marginStart="@dimen/avatar_margin"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/stateText"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="5"
+                    tools:text="For a divided large loaf, add some champaign and cinnamon."/>
+            </LinearLayout>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/body"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/avatar_margin"
+                android:layout_marginTop="@dimen/spacing_micro"
+                android:visibility="gone"
+                tools:text="For a divided large loaf, add some champaign and cinnamon."
+                tools:visibility="visible"/>
+        </LinearLayout>
+    </android.support.design.internal.ForegroundLinearLayout>
+
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

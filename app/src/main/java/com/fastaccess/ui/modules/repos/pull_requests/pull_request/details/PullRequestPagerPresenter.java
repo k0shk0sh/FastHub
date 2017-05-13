@@ -70,20 +70,26 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 sendToView(PullRequestPagerMvp.View::onSetupIssue);
                 return;
             } else if (issueNumber > 0 && !InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                makeRestCall(RestProvider.getPullRequestService().getPullRequest(login, repoId, issueNumber)
-                        , pullRequestModelResponse -> {
-                            pullRequest = pullRequestModelResponse;
-                            pullRequest.setRepoId(repoId);
-                            pullRequest.setLogin(login);
-                            sendToView(PullRequestPagerMvp.View::onSetupIssue);
-                            manageSubscription(pullRequest.save(pullRequest).subscribe());
-                            manageSubscription(RxHelper.getObserver(RestProvider.getRepoService()
-                                    .isCollaborator(login, repoId, Login.getUser().getLogin()))
-                                    .subscribe(booleanResponse -> {
-                                        isCollaborator = booleanResponse.code() == 204;
-                                        sendToView(PullRequestPagerMvp.View::onUpdateMenu);
-                                    }, Throwable::printStackTrace));
-                        });
+                makeRestCall(RestProvider.getPullRequestService()
+                        .getPullRequest(login, repoId, issueNumber)
+                        .flatMap(pullRequest1 -> RestProvider.getRepoService().isCollaborator(login, repoId, Login.getUser().getLogin()),
+                                (pullRequest1, booleanResponse) -> {
+                                    isCollaborator = booleanResponse.code() == 204;
+                                    return pullRequest1;
+                                })
+                        .flatMap(pullRequest1 -> RestProvider.getIssueService().getIssue(login, repoId, issueNumber),
+                                (pullRequest1, issue) -> {//hack to get reactions from issue api
+                                    if (issue != null) {
+                                        pullRequest1.setReactions(issue.getReactions());
+                                    }
+                                    return pullRequest1;
+                                }), pullRequestModelResponse -> {
+                    pullRequest = pullRequestModelResponse;
+                    pullRequest.setRepoId(repoId);
+                    pullRequest.setLogin(login);
+                    sendToView(PullRequestPagerMvp.View::onSetupIssue);
+                    manageSubscription(pullRequest.save(pullRequest).subscribe());
+                });
                 return;
             }
         }
@@ -203,17 +209,6 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         );
     }
 
-    @Override public void onLoadAssignees() {
-        makeRestCall(RestProvider.getRepoService().getAssignees(login, repoId),
-                response -> {
-                    if (response != null && response.getItems() != null && !response.getItems().isEmpty()) {
-                        sendToView(view -> view.onShowAssignees(response.getItems()));
-                    } else {
-                        sendToView(view -> view.showMessage(R.string.error, R.string.no_assignees));
-                    }
-                });
-    }
-
     @Override public void onPutLabels(@NonNull ArrayList<LabelModel> labels) {
         makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
@@ -241,23 +236,31 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     }
 
-    @Override public void onPutAssignees(@NonNull ArrayList<User> users) {
+    @Override public void onPutAssignees(@NonNull ArrayList<User> users, boolean isAssignees) {
         AssigneesRequestModel assigneesRequestModel = new AssigneesRequestModel();
-        ArrayList<String> assignees = new ArrayList<>();
-        Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
-        assigneesRequestModel.setAssignees(assignees);
-        makeRestCall(RestProvider.getPullRequestService().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
-                issue -> {
-                    this.pullRequest = issue;
-                    pullRequest.setLogin(login);
-                    pullRequest.setRepoId(repoId);
-                    UsersListModel assignee = new UsersListModel();
-                    assignee.addAll(users);
-                    pullRequest.setAssignees(assignee);
-                    manageSubscription(pullRequest.save(pullRequest).subscribe());
-                    sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
-                }
-        );
+        ArrayList<String> assignees = Stream.of(users)
+                .map(User::getLogin)
+                .collect(Collectors.toCollection(ArrayList::new));
+        if (isAssignees) {
+            assigneesRequestModel.setAssignees(assignees);
+            makeRestCall(RestProvider.getPullRequestService().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+                    pullRequestResponse -> {
+                        this.pullRequest = pullRequestResponse;
+                        pullRequest.setLogin(login);
+                        pullRequest.setRepoId(repoId);
+                        UsersListModel assignee = new UsersListModel();
+                        assignee.addAll(users);
+                        pullRequest.setAssignees(assignee);
+                        manageSubscription(pullRequest.save(pullRequest).subscribe());
+                        sendToView(PullRequestPagerMvp.View::onUpdateTimeline);
+                    }
+            );
+        } else {
+            assigneesRequestModel.setReviewers(assignees);
+            makeRestCall(RestProvider.getPullRequestService().putReviewers(login, repoId, issueNumber, assigneesRequestModel),
+                    pullRequestResponse -> sendToView(PullRequestPagerMvp.View::onUpdateTimeline)
+            );
+        }
     }
 
     @Override public void onMerge(@NonNull String msg) {

@@ -44,7 +44,7 @@ public class FullCommitFileActivity extends BaseActivity {
     @BindView(R.id.status) FontTextView status;
     @BindString(R.string.changes) String changesText;
     @BindString(R.string.addition) String additionText;
-    @BindString(R.string.delete) String deletionText;
+    @BindString(R.string.deletion) String deletionText;
     @BindString(R.string.status) String statusText;
 
     public static void start(@NonNull Context context, @NonNull CommitFileModel fileModel) {
@@ -115,7 +115,7 @@ public class FullCommitFileActivity extends BaseActivity {
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.open:
-                startActivity(CodeViewerActivity.createIntent(this, commitFileModel.getContentsUrl()));
+                startActivity(CodeViewerActivity.createIntent(this, commitFileModel.getContentsUrl(), commitFileModel.getBlobUrl()));
                 return true;
             case R.id.share:
                 ActivityHelper.shareUrl(this, commitFileModel.getBlobUrl());

@@ -49,9 +49,11 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 }
             }
         } else {
-            Repo repo = model.getRepo();
-            if (repo == null) return;
-            getView().onMarkAllByRepo(repo);
+            if (v.getId() == R.id.markAsRead) {
+                Repo repo = model.getRepo();
+                if (repo == null) return;
+                getView().onMarkAllByRepo(repo);
+            }
         }
     }
 

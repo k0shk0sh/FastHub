@@ -3,7 +3,6 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.NotificationSubjectModel;
 import com.fastaccess.data.dao.converters.NotificationSubjectConverter;
@@ -24,6 +23,7 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:37 PM
@@ -40,20 +40,17 @@ import rx.Observable;
     Date lastReadAt;
     @Nullable boolean isSubscribed;
 
-    public Completable save(Notification notification) {
+    public Single<Notification> save(Notification notification) {
         return App.getInstance().getDataStore()
                 .delete(Notification.class)
                 .where(Notification.ID.eq(notification.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(notification)
-                        .toCompletable());
+                .flatMap(integer -> App.getInstance().getDataStore().insert(notification));
     }
 
     public static Completable markAsRead(long id) {
-        return Completable.fromAction(() -> {
+        return Completable.fromCallable(() -> {
             Notification notification = App.getInstance().getDataStore()
                     .select(Notification.class)
                     .where(Notification.ID.eq(id))
@@ -61,22 +58,20 @@ import rx.Observable;
                     .firstOrNull();
             if (notification != null) {
                 notification.setUnread(false);
-                notification.save(notification).toObservable().toBlocking().firstOrDefault(null);
+                return notification.save(notification);
             }
+            return Observable.empty().toSingle();
         });
     }
 
-    public static Observable<Object> save(@NonNull List<Notification> models) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-                    dataSource.delete(Notification.class)
-                            .get()
-                            .value();
-                    Stream.of(models).forEach(notification -> notification.save(notification).toObservable().toBlocking().singleOrDefault(null));
-                    subscriber.onCompleted();
-                })
-        );
+    public static Observable<Notification> save(@NonNull List<Notification> models) {
+        SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(dataSource.delete(Notification.class)
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models)))
+                .flatMap(notification -> notification.save(notification).toObservable());
     }
 
     public static Observable<List<Notification>> getUnreadNotifications() {

@@ -37,8 +37,8 @@
                 app:tabTextColor="?android:textColorTertiary"/>
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
-            android:id="@+id/fragmentContainer"
+        <com.fastaccess.ui.widgets.ViewPagerView
+            android:id="@+id/notificationContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/scroll_behavior"/>

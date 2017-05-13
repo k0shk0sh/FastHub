@@ -6,14 +6,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.AppHelper;
+import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
 import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
+import com.fastaccess.ui.widgets.ViewPagerView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -26,6 +30,8 @@ import butterknife.BindView;
 public class NotificationActivity extends BaseActivity {
 
     @BindView(R.id.tabs) TabLayout tabs;
+    @BindView(R.id.notificationContainer)
+    ViewPagerView pager;
 
     @Override protected int layout() {
         return R.layout.notification_activity_layout;
@@ -50,6 +56,7 @@ public class NotificationActivity extends BaseActivity {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppHelper.cancelNotification(this);
+        onSelectNotifications();
         setupTabs(savedInstanceState);
     }
 
@@ -65,7 +72,10 @@ public class NotificationActivity extends BaseActivity {
         TabLayout.Tab tab2 = getTab(R.string.all);
         tabs.addTab(tab1);
         tabs.addTab(tab2);
-        if (savedInstanceState == null) {
+        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapterModel.buildForNotifications(this)));
+        tabs.setupWithViewPager(pager);
+        /*if (savedInstanceState == null) {
             replaceWithAll(0);
         }
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -83,7 +93,7 @@ public class NotificationActivity extends BaseActivity {
             @Override public void onTabReselected(TabLayout.Tab tab) {
 
             }
-        });
+        });*/
     }
 
     private void replaceWithAll(int position) {

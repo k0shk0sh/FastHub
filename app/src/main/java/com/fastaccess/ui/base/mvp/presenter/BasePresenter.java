@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.helper.RxHelper;
@@ -32,7 +31,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @Override public void manageSubscription(@Nullable Subscription... subscription) {
         if (subscription != null) {
-            Stream.of(subscription).forEach(subscriptionHandler::manageSubscription);
+            subscriptionHandler.manageSubscriptions(subscription);
         }
     }
 

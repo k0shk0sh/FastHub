@@ -158,7 +158,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     private boolean isMeOrOrganization() {
-        return Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
+        return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
                 (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
     }
 }

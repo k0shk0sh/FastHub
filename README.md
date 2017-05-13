@@ -1,8 +1,8 @@
-## FastHub is back to the play store.
+## FastHub is back to the play store and up on F-Droid.
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
-[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Slack Status](https://fasthub.herokuapp.com/badge.svg)](https://fasthub.herokuapp.com)
+[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
@@ -13,11 +13,14 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
  
 ## Download
  
- **FastHub** can be downloaded on [Google Play](https://play.google.com/store/apps/details?id=com.fastaccess.github):
+ **FastHub** can be downloaded on [Google Play](https://play.google.com/store/apps/details?id=com.fastaccess.github) or [F-Droid](https://f-droid.org/repository/browse/?fdid=com.fastaccess.github):
  
- <a href="https://play.google.com/store/apps/details?id=com.fastaccess.github">
-     <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80px"/>
- </a>
+
+[<img alt="Get it on Google Play" 
+src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80px">](https://play.google.com/store/apps/details?id=com.fastaccess.github)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/app/com.fastaccess.github)
  
 _(To download the app from here, please look at the [latest release](https://github.com/k0shk0sh/FastHub/releases/latest).)_
  
@@ -96,9 +99,9 @@ _(To download the app from here, please look at the [latest release](https://git
 
 You love FastHub? You want new features or bug fixes?  
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
-Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
+Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-- [Translation contributors list](https://github.com/k0shk0sh/FastHub/blob/master/language_contributors.md)
+- [Translation contributors list](.github/language_contributors.md)
 
 # License
 

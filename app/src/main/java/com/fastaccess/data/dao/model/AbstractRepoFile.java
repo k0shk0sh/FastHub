@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.RxHelper;
@@ -17,8 +16,8 @@ import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.RepoFile.LOGIN;
 import static com.fastaccess.data.dao.model.RepoFile.REPO_ID;
@@ -44,29 +43,25 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
     String login;
 
 
-    public Completable save(RepoFile entity) {
+    public Single save(RepoFile entity) {
         return App.getInstance().getDataStore()
-                .insert(entity)
-                .toCompletable();
+                .insert(entity);
     }
 
     public static Observable save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(RepoFile.class)
-                            .where(REPO_ID.eq(repoId)
-                                    .and(LOGIN.eq(login)))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(filesModel -> {
-                                filesModel.setRepoId(repoId);
-                                filesModel.setLogin(login);
-                                filesModel.save(filesModel).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(RepoFile.class)
+                .where(REPO_ID.eq(repoId)
+                        .and(LOGIN.eq(login)))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models))
+                .flatMap(filesModel -> {
+                    filesModel.setRepoId(repoId);
+                    filesModel.setLogin(login);
+                    return filesModel.save(filesModel).toObservable();
+                }));
     }
 
     public static Observable<List<RepoFile>> getFiles(@NonNull String login, @NonNull String repoId) {

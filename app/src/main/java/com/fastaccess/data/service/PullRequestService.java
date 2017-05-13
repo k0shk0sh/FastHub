@@ -9,7 +9,6 @@ import com.fastaccess.data.dao.MergeRequestModel;
 import com.fastaccess.data.dao.MergeResponseModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.PullRequestStatusModel;
-import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.PullRequest;
 
@@ -39,7 +38,7 @@ public interface PullRequestService {
                                                         @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<PullRequest> getPullRequest(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
 
     @PUT("repos/{owner}/{repo}/pulls/{number}/merge")
@@ -62,13 +61,13 @@ public interface PullRequestService {
                                                            @Path("number") long number);
 
     @PATCH("repos/{owner}/{repo}/pulls/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<PullRequest> editPullRequest(@Path("owner") String owner, @Path("repo") String repo,
                                             @Path("number") int number,
                                             @Body IssueRequestModel issue);
 
     @PATCH("repos/{owner}/{repo}/issues/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.html")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<PullRequest> editIssue(@Path("owner") String owner, @Path("repo") String repo,
                                       @Path("number") int number,
                                       @Body IssueRequestModel issue);
@@ -80,7 +79,9 @@ public interface PullRequestService {
     @GET("repos/{owner}/{repo}/commits/{ref}/status")
     Observable<PullRequestStatusModel> getPullStatus(@Path("owner") String owner, @Path("repo") String repo, @Path("ref") String ref);
 
-    @GET("repos/{owner}/{repo}/pulls/{number}/reviews?per_page=200")
-    @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
-    Observable<Pageable<ReviewModel>> getReviews(@Path("owner") String owner, @Path("repo") String repo, @Path("number") long number);
+    @POST("repos/{owner}/{repo}/pulls/{number}/requested_reviewers")
+    @Headers("Accept: application/vnd.github.black-cat-preview+json")
+    Observable<PullRequest> putReviewers(@Path("owner") String owner, @Path("repo") String repo,
+                                         @Path("number") int number, @Body AssigneesRequestModel body);
+
 }

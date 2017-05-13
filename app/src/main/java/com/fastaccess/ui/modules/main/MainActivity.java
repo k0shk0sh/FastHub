@@ -21,6 +21,7 @@ import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
+import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -59,6 +60,11 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (savedInstanceState == null) {
+            if (getIntent() != null && getIntent().getBooleanExtra(SlackBottomSheetDialog.TAG, false)) {
+                new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
+            }
+        }
         selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
@@ -104,6 +110,10 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
         hideShowShadow(navType == MainMvp.FEEDS);
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
+    }
+
+    @Override public void onUpdateDrawerMenuHeader() {
+        setupNavigationView(extraNav);
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")

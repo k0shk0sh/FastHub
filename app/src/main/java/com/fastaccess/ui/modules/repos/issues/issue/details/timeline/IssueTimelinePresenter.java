@@ -1,10 +1,12 @@
 package com.fastaccess.ui.modules.repos.issues.issue.details.timeline;
 
+import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
+import android.widget.PopupMenu;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
@@ -13,13 +15,16 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.types.ReactionTypes;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
+import com.fastaccess.provider.timeline.CommentsHelper;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,34 +37,8 @@ import rx.Observable;
 
 public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private ReactionsProvider reactionsProvider;
     private Issue issue;
-
-    @Override public void onItemClick(int position, View v, TimelineModel item) {
-        if (item.getType() == TimelineModel.COMMENT) {
-            Login user = Login.getUser();
-            if (getView() != null) {
-                if (v.getId() == R.id.delete) {
-                    if (user != null && item.getComment().getUser().getLogin().equals(user.getLogin())) {
-                        if (getView() != null) getView().onShowDeleteMsg(item.getComment().getId());
-                    }
-                } else if (v.getId() == R.id.reply) {
-                    getView().onTagUser(item.getComment().getUser());
-                } else if (v.getId() == R.id.edit) {
-                    if (user != null && item.getComment().getUser().getLogin().equals(user.getLogin())) {
-                        getView().onEditComment(item.getComment());
-                    }
-                } else {
-                    onHandleReaction(v.getId(), item.getComment().getId());
-                }
-            }
-        } else if (item.getType() == TimelineModel.EVENT) {
-            IssueEvent issueEventModel = item.getEvent();
-            if (issueEventModel.getCommitUrl() != null) {
-                SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
-            }
-        }
-    }
+    private ReactionsProvider reactionsProvider;
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
@@ -84,15 +63,81 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         });
     }
 
+    @Override public void onItemClick(int position, View v, TimelineModel item) {
+        if (getView() != null) {
+            if (item.getType() == TimelineModel.COMMENT) {
+                if (getHeader() == null) return;
+                if (v.getId() == R.id.commentMenu) {
+                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+                    popupMenu.inflate(R.menu.comments_menu);
+                    String username = Login.getUser().getLogin();
+                    boolean isOwner = CommentsHelper.isOwner(username, getHeader().getLogin(), item.getComment().getUser().getLogin());
+                    popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
+                    popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
+                    popupMenu.setOnMenuItemClickListener(item1 -> {
+                        if (getView() == null) return false;
+                        if (item1.getItemId() == R.id.delete) {
+                            getView().onShowDeleteMsg(item.getComment().getId());
+                        } else if (item1.getItemId() == R.id.reply) {
+                            getView().onTagUser(item.getComment().getUser());
+                        } else if (item1.getItemId() == R.id.edit) {
+                            getView().onEditComment(item.getComment());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getComment().getHtmlUrl());
+                        }
+                        return true;
+                    });
+                    popupMenu.show();
+                } else {
+                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
+                }
+            } else if (item.getType() == TimelineModel.EVENT) {
+                IssueEvent issueEventModel = item.getEvent();
+                if (issueEventModel.getCommitUrl() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
+                }
+            } else if (item.getType() == TimelineModel.HEADER) {
+                if (v.getId() == R.id.commentMenu) {
+                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+                    popupMenu.inflate(R.menu.comments_menu);
+                    String username = Login.getUser().getLogin();
+                    boolean isOwner = CommentsHelper.isOwner(username, item.getIssue().getLogin(), item.getIssue().getUser().getLogin());
+                    popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
+                    popupMenu.setOnMenuItemClickListener(item1 -> {
+                        if (getView() == null) return false;
+                        if (item1.getItemId() == R.id.reply) {
+                            getView().onTagUser(item.getIssue().getUser());
+                        } else if (item1.getItemId() == R.id.edit) {
+                            Activity activity = ActivityHelper.getActivity(v.getContext());
+                            if (activity == null) return false;
+                            CreateIssueActivity.startForResult(activity,
+                                    item.getIssue().getLogin(), item.getIssue().getRepoId(), item.getIssue());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getIssue().getHtmlUrl());
+                        }
+                        return true;
+                    });
+                    popupMenu.show();
+                } else {
+                    onHandleReaction(v.getId(), item.getIssue().getNumber(), ReactionsProvider.HEADER);
+                }
+            }
+        }
+    }
+
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
         if (getView() == null) return;
-        if (item.getType() == TimelineModel.COMMENT) {
+        if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
             String login = login();
             String repoId = repoId();
             if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
                 ReactionTypes type = ReactionTypes.get(v.getId());
                 if (type != null) {
-                    getView().showReactionsPopup(type, login, repoId, item.getComment().getId());
+                    if (item.getType() == TimelineModel.HEADER) {
+                        getView().showReactionsPopup(type, login, repoId, item.getIssue().getNumber(), true);
+                    } else {
+                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), false);
+                    }
                 } else {
                     onItemClick(position, v, item);
                 }
@@ -152,11 +197,15 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         return issue;
     }
 
-    @Override public void onHandleReaction(int id, long commentId) {
+    @Override public void onHandleReaction(int viewId, long id, @ReactionsProvider.ReactionType int reactionType) {
         String login = login();
         String repoId = repoId();
-        Observable observable = getReactionsProvider().onHandleReaction(id, commentId, login, repoId);
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType);
         if (observable != null) manageSubscription(observable.subscribe());
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getReactionsProvider().isCallingApi(id, vId);
     }
 
     private ReactionsProvider getReactionsProvider() {

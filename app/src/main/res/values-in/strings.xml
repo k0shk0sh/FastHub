@@ -41,7 +41,7 @@
     <string name="releases">Rilis</string>
     <string name="no_body">Tidak ada</string>
     <string name="contributors">Kontributor</string>
-    <string name="by">Oleh</string>
+    <string name="by">oleh</string>
     <string name="close_issue">Tutup Isu</string>
     <string name="re_open_issue">Buka Kembali Isu</string>
     <string name="re_open">Buka Kembali</string>
@@ -329,6 +329,7 @@
     <string name="support_with_10_00">Dukung dengan $10.00</string>
     <string name="support_with_20_00">Dukung dengan $20.00</string>
     <string name="app_language">Bahasa Aplikasi</string>
+    <string name="language">Bahasa</string>
     <string name="choose_language_title">Pilih Bahasa</string>
     <string name="choose_language_summary">Pilih bahasa pilihan Anda</string>
     <string name="un_subscribe">Berhenti berlangganan</string>

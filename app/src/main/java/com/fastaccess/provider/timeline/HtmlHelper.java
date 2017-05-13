@@ -15,6 +15,8 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.handler.BetterLinkMovementExtended;
 import com.fastaccess.provider.timeline.handler.DrawableHandler;
+import com.fastaccess.provider.timeline.handler.ItalicHandler;
+import com.fastaccess.provider.timeline.handler.LinkHandler;
 import com.fastaccess.provider.timeline.handler.ListsHandler;
 import com.fastaccess.provider.timeline.handler.MarginHandler;
 import com.fastaccess.provider.timeline.handler.PreTagHandler;
@@ -61,6 +63,8 @@ public class HtmlHelper {
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
         mySpanner.registerHandler("strong", new BoldHandler());
+        mySpanner.registerHandler("i", new ItalicHandler());
+        mySpanner.registerHandler("em", new ItalicHandler());
         mySpanner.registerHandler("ul", new MarginHandler());
         mySpanner.registerHandler("ol", new MarginHandler());
         mySpanner.registerHandler("li", new ListsHandler());
@@ -70,6 +74,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("del", new StrikethroughHandler());
         mySpanner.registerHandler("sub", new SubScriptHandler());
         mySpanner.registerHandler("sup", new SuperScriptHandler());
+        mySpanner.registerHandler("a", new LinkHandler());
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
         WindowManager windowManager = (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);

@@ -5,15 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/spacing_micro"
+    android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/grid_spacing"
     android:layout_marginStart="@dimen/grid_spacing"
+    android:layout_marginTop="@dimen/grid_spacing"
     android:background="?card_background"
-    android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
-    app:cardBackgroundColor="?card_background"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -22,6 +20,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -30,6 +29,7 @@
                 android:id="@+id/avatarView"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
@@ -42,7 +42,7 @@
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="?android:textColorPrimary"
                 tools:text="When one acquires"/>
 
@@ -54,16 +54,42 @@
                 android:layout_gravity="center"
                 android:maxLines="1"
                 android:textColor="?android:attr/textColorSecondary"
-                tools:text="50 minutes ago"/>
+                tools:text="50 minutes"/>
 
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_micro"
+                android:background="?selectableItemBackgroundBorderless"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_arrow_drop_down"/>
         </LinearLayout>
 
+        <include layout="@layout/comments_dropdown_layout"/>
+
         <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/description"
+            android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
             android:layout_marginStart="@dimen/avatar_margin"
-            app:webview_background="?card_background"
-            android:layout_marginTop="@dimen/spacing_normal"/>
+            android:textIsSelectable="true"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/reactionsText"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:gravity="start"
+            android:visibility="gone"
+            tools:ignore="RtlSymmetry"
+            tools:text="U+1F602"
+            tools:visibility="visible"/>
     </LinearLayout>
+
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

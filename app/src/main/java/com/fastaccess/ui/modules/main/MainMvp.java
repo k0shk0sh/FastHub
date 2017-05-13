@@ -22,17 +22,21 @@ interface MainMvp {
     int FEEDS = 0;
     int ISSUES = 1;
     int PULL_REQUESTS = 2;
+    int PROFILE = 3;
 
     @IntDef({
             FEEDS,
             ISSUES,
-            PULL_REQUESTS
+            PULL_REQUESTS,
+            PROFILE
     })
     @Retention(RetentionPolicy.SOURCE) @interface NavigationType {}
 
     interface View extends BaseMvp.FAView {
 
         void onNavigationChanged(@NavigationType int navType);
+
+        void onUpdateDrawerMenuHeader();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

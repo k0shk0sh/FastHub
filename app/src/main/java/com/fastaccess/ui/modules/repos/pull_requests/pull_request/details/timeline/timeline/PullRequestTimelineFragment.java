@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -48,9 +49,9 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     private IssuePullsTimelineAdapter adapter;
     @State SparseBooleanArrayParcelable sparseBooleanArray;
 
-    public static PullRequestTimelineFragment newInstance(@NonNull PullRequest issueModel) {
+    public static PullRequestTimelineFragment newInstance(@NonNull PullRequest pullRequest) {
         PullRequestTimelineFragment view = new PullRequestTimelineFragment();
-        view.setArguments(Bundler.start().put(BundleConstant.ITEM, issueModel).end());//TODO fix this
+        view.setArguments(Bundler.start().put(BundleConstant.ITEM, pullRequest).end());//TODO fix this
         return view;
     }
 
@@ -72,23 +73,24 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        stateLayout.setEmptyText(R.string.no_events);
-        recycler.setEmptyView(stateLayout, refresh);
-        refresh.setOnRefreshListener(this);
-        stateLayout.setOnReloadListener(this);
-        recycler.setItemViewCacheSize(30);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
-        adapter.setListener(getPresenter());
-        fastScroller.setVisibility(View.VISIBLE);
-        fastScroller.attachRecyclerView(recycler);
-        recycler.setAdapter(adapter);
-        recycler.addDivider(TimelineCommentsViewHolder.class);
+        recycler.setVerticalScrollBarEnabled(false);
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getEvents().size() == 1 && !getPresenter().isApiCalled()) {
             onRefresh();
         }
-
+        stateLayout.setEmptyText(R.string.no_events);
+        recycler.setEmptyView(stateLayout, refresh);
+        refresh.setOnRefreshListener(this);
+        stateLayout.setOnReloadListener(this);
+        boolean isMerged = getPresenter().isMerged();
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this,
+                isMerged, getPresenter());
+        adapter.setListener(getPresenter());
+        fastScroller.setVisibility(View.VISIBLE);
+        fastScroller.attachRecyclerView(recycler);
+        recycler.setAdapter(adapter);
+        recycler.addDivider(TimelineCommentsViewHolder.class);
     }
 
     @NonNull @Override public PullRequestTimelinePresenter providePresenter() {
@@ -96,6 +98,8 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -142,6 +146,10 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
+    @Override public void onEditReviewComment(@NonNull ReviewCommentModel item) {
+
+    }
+
     @Override public void onRemove(@NonNull TimelineModel timelineModel) {
         hideProgress();
         adapter.removeItem(timelineModel);
@@ -151,11 +159,12 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         onTagUser(null);
     }
 
-    @Override public void onShowDeleteMsg(long id) {
+    @Override public void onShowDeleteMsg(long id, boolean isReviewComment) {
         MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
                 Bundler.start()
                         .put(BundleConstant.EXTRA, id)
                         .put(BundleConstant.YES_NO_EXTRA, true)
+                        .put(BundleConstant.EXTRA_TWO, isReviewComment)
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }
@@ -174,10 +183,19 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
+    @Override
+    public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, int reactionType) {
+        ReactionsDialogFragment.newInstance(login, repoId, type, idOrNumber, reactionType).show(getChildFragmentManager(), "ReactionsDialogFragment");
+    }
+
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data == null) {
+                    onRefresh();
+                    return;
+                }
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
@@ -187,6 +205,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                         return;
                     }
                     getSparseBooleanArray().clear();
+                    adapter.notifyDataSetChanged();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
                         recycler.smoothScrollToPosition(adapter.getItemCount());
@@ -218,9 +237,8 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         return getPresenter().isPreviouslyReacted(id, vId);
     }
 
-    @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login,
-                                             @NonNull String repoId, long id) {
-        ReactionsDialogFragment.newInstance(login, repoId, type, id).show(getChildFragmentManager(), "ReactionsDialogFragment");
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getPresenter().isCallingApi(id, vId);
     }
 
     private void showReload() {

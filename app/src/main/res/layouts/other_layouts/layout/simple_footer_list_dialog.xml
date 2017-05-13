@@ -76,10 +76,18 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
-    <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-        android:id="@+id/recycler"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="@string/linear_layout_manager"/>
+        android:layout_height="wrap_content">
+
+        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            app:layoutManager="@string/linear_layout_manager"/>
+
+        <include layout="@layout/state_layout"/>
+    </FrameLayout>
 
 </LinearLayout>

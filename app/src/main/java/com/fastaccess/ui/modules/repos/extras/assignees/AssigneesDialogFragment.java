@@ -2,9 +2,9 @@ package com.fastaccess.ui.modules.repos.extras.assignees;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -16,6 +16,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.AssigneesAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
@@ -36,9 +37,21 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
+    @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Integer, User> selectionMap;
+
     private AssigneesAdapter adapter;
     private AssigneesMvp.SelectedAssigneesListener callback;
+
+    public static AssigneesDialogFragment newInstance(@NonNull String login, @NonNull String repoId, boolean isAssignees) {
+        AssigneesDialogFragment fragment = new AssigneesDialogFragment();
+        fragment.setArguments(Bundler.start()
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.EXTRA_TWO, isAssignees)
+                .end());
+        return fragment;
+    }
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -56,24 +69,26 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
         callback = null;
     }
 
-    public static AssigneesDialogFragment newInstance(@NonNull List<User> models) {
-        AssigneesDialogFragment fragment = new AssigneesDialogFragment();
-        fragment.setArguments(Bundler.start().putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models).end());
-        return fragment;
-    }
-
     @Override protected int fragmentLayout() {
         return R.layout.simple_footer_list_dialog;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recycler.addKeyLineDivider();
-        title.setText(R.string.assignees);
-        List<User> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
-        if (list != null) {
-            adapter = new AssigneesAdapter(list, this);
-            recycler.setAdapter(adapter);
+        if (savedInstanceState == null) {
+            if (getArguments() != null) {
+                //noinspection ConstantConditions
+                getPresenter().onCallApi(getArguments().getString(BundleConstant.EXTRA),
+                        getArguments().getString(BundleConstant.ID),
+                        getArguments().getBoolean(BundleConstant.EXTRA_TWO));
+            }
         }
+        boolean isAssinees = getArguments().getBoolean(BundleConstant.EXTRA_TWO);
+        stateLayout.setEmptyText(isAssinees ? R.string.no_assignees : R.string.no_reviewers);
+        recycler.setEmptyView(stateLayout);
+        recycler.addKeyLineDivider();
+        title.setText(isAssinees ? R.string.assignees : R.string.reviewers);
+        adapter = new AssigneesAdapter(getPresenter().getList(), this);
+        recycler.setAdapter(adapter);
     }
 
     @NonNull @Override public AssigneesPresenter providePresenter() {
@@ -104,11 +119,43 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
                         .map(Map.Entry::getValue)
                         .collect(Collectors.toCollection(ArrayList::new));
                 if (labels != null && !labels.isEmpty()) {
-                    callback.onSelectedAssignees(labels);
+                    callback.onSelectedAssignees(labels, getArguments().getBoolean(BundleConstant.EXTRA_TWO));
                 }
                 dismiss();
                 break;
         }
+    }
+
+    @Override public void onNotifyAdapter(@Nullable List<User> items) {
+        hideProgress();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        adapter.insertItems(items);
+    }
+
+    @Override public void showProgress(@StringRes int resId) {
+        stateLayout.showProgress();
+    }
+
+    @Override public void hideProgress() {
+        stateLayout.hideProgress();
+    }
+
+    @Override public void showErrorMessage(@NonNull String message) {
+        showReload();
+        super.showErrorMessage(message);
+    }
+
+    @Override public void showMessage(int titleRes, int msgRes) {
+        showReload();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 
     public HashMap<Integer, User> getSelectionMap() {

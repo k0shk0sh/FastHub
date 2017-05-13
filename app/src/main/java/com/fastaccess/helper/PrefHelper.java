@@ -13,7 +13,7 @@ import java.util.Map;
 /**
  * Created by kosh20111 on 19 Feb 2017, 2:01 AM
  */
-class PrefHelper {
+public class PrefHelper {
 
     /**
      * @param key

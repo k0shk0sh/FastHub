@@ -9,8 +9,8 @@ import java.util.List;
 
 import io.requery.Column;
 import io.requery.Entity;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Kosh on 01 Jan 2017, 11:20 PM
@@ -21,15 +21,13 @@ import rx.Observable;
 public abstract class AbstractSearchHistory implements Parcelable {
     @Column(unique = true) String text;
 
-    public Completable save(SearchHistory entity) {
-        App.getInstance().getDataStore()
+    public Single save(SearchHistory entity) {
+        return App.getInstance().getDataStore()
                 .delete(SearchHistory.class)
                 .where(SearchHistory.TEXT.eq(entity.getText()))
                 .get()
-                .value();
-        return App.getInstance().getDataStore()
-                .insert(entity)
-                .toCompletable();
+                .toSingle()
+                .flatMap(integer -> App.getInstance().getDataStore().insert(entity));
     }
 
     public static Observable<List<SearchHistory>> getHistory() {

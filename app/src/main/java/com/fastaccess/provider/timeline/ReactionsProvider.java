@@ -1,6 +1,7 @@
 package com.fastaccess.provider.timeline;
 
 import android.support.annotation.IdRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
@@ -11,6 +12,8 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -21,24 +24,58 @@ import rx.Observable;
  */
 
 public class ReactionsProvider {
+
+    public static final int HEADER = 0;
+    public static final int COMMENT = 1;
+    public static final int REVIEW_COMMENT = 2;
+    public static final int COMMIT = 3;
+
+    @IntDef({
+            HEADER,
+            COMMENT,
+            REVIEW_COMMENT,
+            COMMIT
+    })
+    @Retention(RetentionPolicy.SOURCE) public @interface ReactionType {}
+
     private Map<Long, ReactionsModel> reactionsMap = new LinkedHashMap<>();
 
-    @Nullable public Observable onHandleReaction(@IdRes int id, long commentId, @Nullable String login, @Nullable String repoId) {
+    @Nullable public Observable onHandleReaction(@IdRes int viewId, long idOrNumber, @Nullable String login,
+                                                 @Nullable String repoId, @ReactionType int reactionType) {
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            if (!isPreviouslyReacted(commentId, id)) {
-                ReactionTypes reactionTypes = ReactionTypes.get(id);
+            if (!isPreviouslyReacted(idOrNumber, viewId)) {
+                ReactionTypes reactionTypes = ReactionTypes.get(viewId);
                 if (reactionTypes != null) {
-                    return RxHelper.safeObservable(RestProvider.getReactionsService()
-                            .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, commentId))
-                            .doOnNext(response -> getReactionsMap().put(commentId, response));
+                    Observable<ReactionsModel> observable = null;
+                    switch (reactionType) {
+                        case COMMENT:
+                            observable = RestProvider.getReactionsService()
+                                    .postIssueCommentReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                            break;
+                        case HEADER:
+                            observable = RestProvider.getReactionsService()
+                                    .postIssueReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                            break;
+                        case REVIEW_COMMENT:
+                            observable = RestProvider.getReactionsService()
+                                    .postCommentReviewReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                            break;
+                        case COMMIT:
+                            observable = RestProvider.getReactionsService()
+                                    .postCommitReaction(new PostReactionModel(reactionTypes.getContent()), login, repoId, idOrNumber);
+                            break;
+                    }
+                    if (observable == null) return null;
+                    return RxHelper.safeObservable(observable)
+                            .doOnNext(response -> getReactionsMap().put(idOrNumber, response));
                 }
             } else {
-                ReactionsModel reactionsModel = getReactionsMap().get(commentId);
+                ReactionsModel reactionsModel = getReactionsMap().get(idOrNumber);
                 if (reactionsModel != null) {
                     return RxHelper.safeObservable(RestProvider.getReactionsService().delete(reactionsModel.getId()))
                             .doOnNext(booleanResponse -> {
                                 if (booleanResponse.code() == 204) {
-                                    getReactionsMap().remove(commentId);
+                                    getReactionsMap().remove(idOrNumber);
                                 }
                             });
                 }
@@ -47,13 +84,23 @@ public class ReactionsProvider {
         return null;
     }
 
-    public boolean isPreviouslyReacted(long commentId, int vId) {
-        ReactionsModel reactionsModel = getReactionsMap().get(commentId);
+
+    public boolean isPreviouslyReacted(long idOrNumber, @IdRes int vId) {
+        ReactionsModel reactionsModel = getReactionsMap().get(idOrNumber);
         if (reactionsModel == null || InputHelper.isEmpty(reactionsModel.getContent())) {
             return false;
         }
         ReactionTypes type = ReactionTypes.get(vId);
         return type != null && type.getContent().equals(reactionsModel.getContent());
+    }
+
+    public boolean isCallingApi(long id, int vId) {
+        ReactionsModel reactionsModel = getReactionsMap().get(id);
+        if (reactionsModel == null || InputHelper.isEmpty(reactionsModel.getContent())) {
+            return false;
+        }
+        ReactionTypes type = ReactionTypes.get(vId);
+        return type != null && type.getContent().equals(reactionsModel.getContent()) && reactionsModel.isCallingApi();
     }
 
     @NonNull private Map<Long, ReactionsModel> getReactionsMap() {

@@ -25,20 +25,20 @@
     <string name="follow">Подписаться</string>
     <string name="unfollow">Отписаться</string>
     <string name="from">от</string>
-+   <string name="in_value">в</string>
-+   <string name="subscribe">Подписаться</string>
-+   <string name="repo_issues_is_disabled">Вкладка Вопросов отключена у этого репозитория</string>
-+   <string name="access_token">Токен доступа (Access Token)</string>
-+   <string name="basic_authentication">Базовая аутентификация</string>
-+   <string name="choose_your_login_type">Выберите тип входа</string>
-+   <string name="files_only">В Файлах</string>
-+   <string name="paths_only">В Расположениях</string>
-+   <string name="review_requests">Запросы на проверку</string>
-+   <string name="join_slack">Присоединиться к Slack</string>
-+   <string name="join_slack_message" formatted="true">Хотите присоединиться к группе FastHub в Slack?\nПриглашение будет отправлено на %s.</string>
-+   <string name="successfully_invited">Приглашение отправлено</string>
-+   <string name="reply">Ответить</string>
-+   <string name="failed_selecting_image">Не удалось загрузить изображение.</string>
+    <string name="in_value">в</string>
+    <string name="subscribe">Подписаться</string>
+    <string name="repo_issues_is_disabled">Вкладка Вопросов отключена у этого репозитория</string>
+    <string name="access_token">Токен доступа (Access Token)</string>
+    <string name="basic_authentication">Базовая аутентификация</string>
+    <string name="choose_your_login_type">Выберите тип входа</string>
+    <string name="files_only">В Файлах</string>
+    <string name="paths_only">В Расположениях</string>
+    <string name="review_requests">Запросы на проверку</string>
+    <string name="join_slack">Присоединиться к Slack</string>
+    <string name="join_slack_message">Хотите присоединиться к группе FastHub в Slack?</string>
+    <string name="successfully_invited">Приглашение отправлено</string>
+    <string name="reply">Ответить</string>
+    <string name="failed_selecting_image">Не удалось загрузить изображение.</string>
     <string name="user">Пользователь</string>
     <string name="details">Подробности</string>
     <string name="archive_file_detected_error">Обнаружен файл архива. Пожалуйста, скачайте этот файл, чтобы посмотреть его содержимое.</string>
@@ -339,6 +339,7 @@
     <string name="support_with_10_00">Пожертвовать $10.00</string>
     <string name="support_with_20_00">Пожертвовать $20.00</string>
     <string name="app_language">Язык приложения</string>
+    <string name="language">Язык</string>
     <string name="choose_language_title">Выберите язык</string>
     <string name="choose_language_summary">Выберите нужный язык</string>
 </resources>

@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
         android:layout_marginTop="@dimen/spacing_normal"
         android:minHeight="24dp"
         android:minWidth="24dp"
@@ -48,30 +48,15 @@
                 android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
-            <LinearLayout
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/stateText"
+                style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:orientation="vertical">
-
-                <com.fastaccess.ui.widgets.FontTextView
-                    android:id="@+id/stateText"
-                    style="@style/TextAppearance.AppCompat.Body1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:maxLines="5"
-                    tools:text="For a divided large loaf, add some champaign and cinnamon."/>
-
-                <com.fastaccess.ui.widgets.FontTextView
-                    android:id="@+id/body"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:text="For a divided large loaf, add some champaign and cinnamon."
-                    tools:visibility="visible"/>
-            </LinearLayout>
+                android:layout_gravity="center"
+                android:ellipsize="end"
+                android:maxLines="5"
+                tools:text="For a divided large loaf, add some champaign and cinnamon."/>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>
 

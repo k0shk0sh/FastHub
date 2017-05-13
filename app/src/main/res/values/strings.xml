@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">FastHub</string>
+    <string name="app_name_full">FastHub for Android</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
     <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
     <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
@@ -8,6 +9,7 @@
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
+    <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="no_data">No data available</string>
@@ -58,9 +60,11 @@
     <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">Contributors</string>
     <string name="merged" translatable="false">Merged</string>
-    <string name="by">By</string>
+    <string name="by">by</string>
     <string name="star" translatable="false">Star</string>
+    <string name="stars" translatable="false">Stars</string>
     <string name="fork" translatable="false">Fork</string>
+    <string name="forks" translatable="false">Forks</string>
     <string name="close_issue">Close Issue</string>
     <string name="re_open_issue">Reopen Issue</string>
     <string name="re_open">Reopen</string>
@@ -172,6 +176,7 @@
     <string name="watch_hint">Watch/unwatch repo</string>
     <string name="fork_repo_hint" translatable="false">Fork repo</string>
     <string name="pin_repo_hint">Pin repos to access them faster from the navigation drawer.</string>
+    <string name="dismiss_all">Dismiss All</string>
     <string name="no_url">No URL found</string>
     <string name="last_updated">Last updated</string>
     <string name="preview">Preview</string>
@@ -217,6 +222,7 @@
     <string name="switch_branch">Switch branch</string>
     <string name="assignees">Assignees</string>
     <string name="edit">Edit</string>
+    <string name="edited">( edited )</string>
     <string name="update_issue">Update Issue</string>
     <string name="update_pull_request">Update Pull Request</string>
     <string name="no_milestones">No milestones</string>
@@ -234,6 +240,7 @@
     <string name="background_job_title">Notification sync interval</string>
     <string name="every">Every</string>
     <string name="behavior">Behavior</string>
+    <string name="customization">Customization</string>
     <string name="recycler_view_animation_summary">Enable list animations</string>
     <string name="recycler_view_animation_title">List animation</string>
     <string name="back_button_summary">Disable dialog preventing accidental app closure</string>
@@ -276,8 +283,26 @@
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
     <string name="light_theme_mode" translatable="false">Light Theme</string>
     <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="red_theme_mode" translatable="false">Red</string>
+    <string name="pink_theme_mode" translatable="false">Pink</string>
+    <string name="purple_theme_mode" translatable="false">Purple</string>
+    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
+    <string name="indigo_theme_mode" translatable="false">Indigo</string>
+    <string name="blue_theme_mode" translatable="false">Blue</string>
+    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
+    <string name="cyan_theme_mode" translatable="false">Cyan</string>
+    <string name="teal_theme_mode" translatable="false">Teal</string>
+    <string name="green_theme_mode" translatable="false">Green</string>
+    <string name="light_green_theme_mode" translatable="false">Light Green</string>
+    <string name="lime_theme_mode" translatable="false">Lime</string>
+    <string name="yellow_theme_mode" translatable="false">Yellow</string>
+    <string name="amber_theme_mode" translatable="false">Amber</string>
+    <string name="orange_theme_mode" translatable="false">Orange</string>
+    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
     <string name="theme_title">Choose Theme</string>
     <string name="theme_summary">Choose your default theme</string>
+    <string name="theme_color_summary">Choose theme accent color</string>
+    <string name="theme_color_title">Theme Accent Color</string>
     <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
     <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Website</string>
@@ -378,6 +403,7 @@
     <string name="support_with_10_00">Support with $10.00</string>
     <string name="support_with_20_00">Support with $20.00</string>
     <string name="app_language">App Language</string>
+    <string name="language">Language</string>
     <string name="choose_language_title">Choose Language</string>
     <string name="choose_language_summary">Choose your preferred language</string>
     <string name="un_subscribe">Unsubscribe</string>
@@ -392,8 +418,17 @@
     <string name="paths_only">In Paths</string>
     <string name="review_requests">Review Requests</string>
     <string name="join_slack">Join Slack</string>
-    <string name="join_slack_message" formatted="true">Would you like to join FastHub Slack group?\nInvitation link will be sent to %s.</string>
+    <string name="join_slack_message">Would you like to join FastHub Slack group?</string>
     <string name="successfully_invited">Successfully invited</string>
     <string name="reply">Reply</string>
     <string name="failed_selecting_image">Failed to load image.</string>
+    <string name="want_to_merge">wants to merge</string>
+    <string name="watchers">Watchers</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="no_reviewers">No reviewers</string>
+    <string name="sent_from_fasthub">Sent from my %1$s using %2$s%3$s</string>
+    <string name="enable_signature">Enable Signature</string>
+    <string name="enable_signature_summary">Enable sent via signature</string>
+    <string name="enable_signature_box">Enable Signature Box</string>
+    <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
 </resources>

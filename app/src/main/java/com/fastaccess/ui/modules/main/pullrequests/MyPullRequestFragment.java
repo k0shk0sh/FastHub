@@ -91,6 +91,8 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -156,6 +158,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
         recycler.addDivider();
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null || (getPresenter().getPullRequests().isEmpty() && !getPresenter().isApiCalled())) {
             onRefresh();

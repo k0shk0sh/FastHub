@@ -13,12 +13,15 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.data.dao.types.ReviewStateType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +29,8 @@ import java.util.concurrent.TimeUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import static com.annimon.stream.Collectors.toList;
 
 /**
  * Created by Kosh on 30 Mar 2017, 9:03 PM
@@ -35,8 +40,9 @@ import lombok.Setter;
     public static final int HEADER = 0;
     public static final int STATUS = 1;
     public static final int REVIEW = 2;
-    public static final int EVENT = 3;
-    public static final int COMMENT = 4;
+    public static final int GROUPED_REVIEW = 3;
+    public static final int EVENT = 4;
+    public static final int COMMENT = 5;
 
     private int type;
     private Issue issue;
@@ -45,6 +51,8 @@ import lombok.Setter;
     private PullRequest pullRequest;
     private PullRequestStatusModel status;
     private ReviewModel review;
+    private GroupedReviewModel groupedReview;
+    private ReviewCommentModel reviewComment;
     private Date sortedDate;
 
     private TimelineModel(Issue issue) {
@@ -62,7 +70,7 @@ import lombok.Setter;
     private TimelineModel(Comment comment) {
         this.type = COMMENT;
         this.comment = comment;
-        this.sortedDate = comment.getCreatedAt();
+        this.sortedDate = comment.getCreatedAt() == null ? new Date() : comment.getCreatedAt();
     }
 
     private TimelineModel(IssueEvent event) {
@@ -83,6 +91,12 @@ import lombok.Setter;
         this.sortedDate = review.getSubmittedAt();
     }
 
+    private TimelineModel(GroupedReviewModel groupedReview) {
+        this.type = GROUPED_REVIEW;
+        this.groupedReview = groupedReview;
+        this.sortedDate = groupedReview.getDate();
+    }
+
     @NonNull public static TimelineModel constructHeader(@NonNull Issue issue) {
         return new TimelineModel(issue);
     }
@@ -93,6 +107,16 @@ import lombok.Setter;
 
     @NonNull public static TimelineModel constructComment(@NonNull Comment comment) {
         return new TimelineModel(comment);
+    }
+
+    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList) {
+        ArrayList<TimelineModel> list = new ArrayList<>();
+        if (commentList != null && !commentList.isEmpty()) {
+            list.addAll(Stream.of(commentList)
+                    .map(TimelineModel::new)
+                    .collect(Collectors.toList()));
+        }
+        return list;
     }
 
     @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
@@ -119,15 +143,14 @@ import lombok.Setter;
     }
 
     @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList,
-                                                         @Nullable PullRequestStatusModel status, @Nullable List<ReviewModel> reviews) {
+                                                         @Nullable PullRequestStatusModel status, @Nullable List<ReviewModel> reviews,
+                                                         @Nullable List<ReviewCommentModel> reviewComments) {
         ArrayList<TimelineModel> list = new ArrayList<>();
         if (status != null) {
             list.add(new TimelineModel(status));
         }
         if (reviews != null && !reviews.isEmpty()) {
-            list.addAll(Stream.of(reviews)
-                    .map(TimelineModel::new)
-                    .collect(Collectors.toList()));
+            list.addAll(constructReviews(reviews, reviewComments));
         }
         if (!commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
@@ -150,9 +173,8 @@ import lombok.Setter;
     @NonNull private static List<TimelineModel> constructLabels(@NonNull List<IssueEvent> eventList) {
         List<TimelineModel> models = new ArrayList<>();
         Map<String, List<IssueEvent>> issueEventMap = Stream.of(eventList)
-                .filter(value -> value.getEvent() != null)
-                .filter(value -> value.getEvent() != IssueEventType.subscribed && value.getEvent() != IssueEventType.unsubscribed
-                        && value.getEvent() != IssueEventType.mentioned)
+                .filter(value -> value.getEvent() != null && value.getEvent() != IssueEventType.subscribed &&
+                        value.getEvent() != IssueEventType.unsubscribed && value.getEvent() != IssueEventType.mentioned)
                 .collect(Collectors.groupingBy(issueEvent -> {
                     if (issueEvent.getAssigner() != null && issueEvent.getAssignee() != null) {
                         return issueEvent.getAssigner().getLogin();
@@ -181,7 +203,8 @@ import lombok.Setter;
                             } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                                 spannableBuilder.append(" ")
                                         .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "",
-                                                new LabelSpan(Color.TRANSPARENT));
+                                                new LabelSpan(Color.TRANSPARENT))
+                                        .append(" ");
                             }
                         } else {
                             models.add(new TimelineModel(issueEventModel));
@@ -215,11 +238,42 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
+    @NonNull private static List<TimelineModel> constructReviews(@NonNull List<ReviewModel> reviews, @Nullable List<ReviewCommentModel> comments) {
+        List<TimelineModel> models = new ArrayList<>();
+        if (comments == null || comments.isEmpty()) {
+            models.addAll(Stream.of(reviews)
+                    .map(TimelineModel::new)
+                    .collect(Collectors.toList()));
+        } else { // this is how bad github API is.
+            Map<Integer, List<ReviewCommentModel>> mappedComments = Stream.of(comments)
+                    .collect(Collectors.groupingBy(ReviewCommentModel::getOriginalPosition, LinkedHashMap::new,
+                            Collectors.mapping(o -> o, toList())));
+            for (Map.Entry<Integer, List<ReviewCommentModel>> entry : mappedComments.entrySet()) {
+                List<ReviewCommentModel> reviewCommentModels = entry.getValue();
+                GroupedReviewModel groupedReviewModel = new GroupedReviewModel();
+                if (!reviewCommentModels.isEmpty()) {
+                    ReviewCommentModel reviewCommentModel = reviewCommentModels.get(0);
+                    groupedReviewModel.setPath(reviewCommentModel.getPath());
+                    groupedReviewModel.setDiffText(reviewCommentModel.getDiffHunk());
+                    groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
+                    groupedReviewModel.setPosition(reviewCommentModel.getOriginalPosition());
+                }
+                groupedReviewModel.setComments(reviewCommentModels);
+                models.add(new TimelineModel(groupedReviewModel));
+            }
+            models.addAll(Stream.of(reviews)
+                    .filter(reviewModel -> !InputHelper.isEmpty(reviewModel.getBody()) || reviewModel.getState() == ReviewStateType.APPROVED)
+                    .map(TimelineModel::new)
+                    .collect(Collectors.toList()));
+        }
+        return models;
+    }
+
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TimelineModel model = (TimelineModel) o;
-        return comment != null && model.getComment() != null && comment.getId() == model.comment.getId();
+        return (comment != null && model.getComment() != null) && (comment.getId() == model.comment.getId());
     }
 
     @Override public int hashCode() {

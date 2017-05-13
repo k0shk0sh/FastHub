@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="amoledWindowBackground">#060606</color>
+    <color name="amoledDivider">#10000000</color>
+    <color name="amoled_patch_addition_color">@color/material_green_900</color>
+    <color name="amoled_patch_deletion_color">@color/material_red_900</color>
+    <color name="amoled_patch_ref_color">@color/material_blue_grey_500</color>
+
+    <style name="ThemeAmoled" parent="ThemeAmoled.Base"/>
+
+    <style name="ThemeAmoled.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="card_background">#000000</item>
+        <item name="icon_color">#E1E1E2</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundAmoled</item>
+        <item name="patch_addition">@color/amoled_patch_addition_color</item>
+        <item name="patch_deletion">@color/amoled_patch_deletion_color</item>
+        <item name="patch_ref">@color/amoled_patch_ref_color</item>
+        <item name="dividerColor">@color/amoledDivider</item>
+        <item name="android:windowBackground">@color/amoledWindowBackground</item>
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="colorControlNormal">?colorAccent</item>
+        <item name="actionModeBackground">?colorPrimary</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="android:textColorPrimary">#E1E1E2</item>
+        <item name="android:textColorSecondary">#B5B3B6</item>
+        <item name="android:textColorTertiary">#838186</item>
+        <item name="android:windowAllowEnterTransitionOverlap">true</item>
+        <item name="android:windowAllowReturnTransitionOverlap">true</item>
+        <item name="android:colorEdgeEffect">?colorPrimary</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@color/transparent</item>
+        <item name="android:windowContentTransitions">true</item>
+        <item name="android:dialogTheme">@style/DialogThemeAmoled</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmoled</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleAmoled</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+    </style>
+
+
+    <style name="ToolbarStyleAmoled">
+        <item name="android:textColorPrimary">#E1E1E2</item>
+        <item name="colorControlNormal">#E1E1E2</item>
+        <item name="colorControlHighlight">?colorAccent</item>
+        <item name="popupTheme">@style/PopupThemeAmoled</item>
+    </style>
+
+    <style name="PopupThemeAmoled" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/amoledWindowBackground</item>
+    </style>
+
+    <style name="TimeLineBackgroundAmoled">
+        <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+        <item name="android:backgroundTint">#000000</item>
+    </style>
+
+    <style name="DialogThemeAmoled" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorPrimary">#000000</item>
+        <item name="colorPrimaryDark">#000000</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="android:windowBackground">@color/amoledWindowBackground</item>
+    </style>
+
+    <style name="AppTheme.AboutActivity.Amoled" parent="ThemeAmoled">
+        <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
+        <item name="colorPrimary">#050109</item>
+        <item name="colorPrimaryDark">#1C1C1C</item>
+        <item name="colorAccent">#2196F3</item>
+        <item name="mal_lightActionBar">false</item>
+        <item name="mal_color_primary">#eee</item>
+        <item name="mal_color_secondary">#ffe0e0e0</item>
+    </style>
+
+</resources>

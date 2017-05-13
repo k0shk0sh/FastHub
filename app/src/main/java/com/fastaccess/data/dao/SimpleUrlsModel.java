@@ -16,7 +16,6 @@ public class SimpleUrlsModel implements Parcelable {
 
     private String item;
     private String url;
-
     public SimpleUrlsModel(String item, String url) {
         this.item = item;
         this.url = url;

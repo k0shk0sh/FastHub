@@ -53,7 +53,8 @@ import icepick.State;
  * Created by Kosh on 10 Dec 2016, 9:23 AM
  */
 
-public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.View, PullRequestPagerPresenter> implements PullRequestPagerMvp.View {
+public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.View, PullRequestPagerPresenter>
+        implements PullRequestPagerMvp.View {
 
     @BindView(R.id.startGist) ForegroundImageView startGist;
     @BindView(R.id.forkGist) ForegroundImageView forkGist;
@@ -151,14 +152,16 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onNavToRepoClicked();
-        } else if (item.getItemId() == R.id.share) {
-            if (getPresenter().getPullRequest() != null) ActivityHelper.shareUrl(this, getPresenter().getPullRequest().getHtmlUrl());
+            return true;
+        }
+        PullRequest pullRequest = getPresenter().getPullRequest();
+        if (pullRequest == null) return false;
+        if (item.getItemId() == R.id.share) {
+            ActivityHelper.shareUrl(this, pullRequest.getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            PullRequest issueModel = getPresenter().getPullRequest();
-            if (issueModel == null) return true;
             MessageDialogView.newInstance(
-                    issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
+                    pullRequest.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
                     getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
@@ -175,20 +178,28 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             getPresenter().onLoadLabels();
             return true;
         } else if (item.getItemId() == R.id.edit) {
-            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPullRequest());
+            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), pullRequest);
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())
                     .show(getSupportFragmentManager(), "MilestoneDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
-            getPresenter().onLoadAssignees();
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId(), true)
+                    .show(getSupportFragmentManager(), "AssigneesDialogFragment");
+            return true;
+        } else if (item.getItemId() == R.id.reviewers) {
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId(), false)
+                    .show(getSupportFragmentManager(), "AssigneesDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.merge) {
             if (getPresenter().getPullRequest() != null) {
                 String msg = getPresenter().getPullRequest().getTitle();
                 MergePullRequestDialogFragment.newInstance(msg).show(getSupportFragmentManager(), "MergePullRequestDialogFragment");
             }
+        } else if (item.getItemId() == R.id.browser) {
+            ActivityHelper.startCustomTab(this, pullRequest.getHtmlUrl());
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -202,12 +213,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         MenuItem edit = menu.findItem(R.id.edit);
         MenuItem editMenu = menu.findItem(R.id.editMenu);
         MenuItem merge = menu.findItem(R.id.merge);
+        MenuItem reviewers = menu.findItem(R.id.reviewers);
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
         boolean isRepoOwner = getPresenter().isRepoOwner();
         boolean isMergable = getPresenter().isMergeable();
         merge.setVisible(isMergable && (isRepoOwner || isCollaborator));
+        reviewers.setVisible((isRepoOwner || isCollaborator));
         editMenu.setVisible(isOwner || isCollaborator || isRepoOwner);
         milestone.setVisible(isCollaborator || isRepoOwner);
         labels.setVisible(isCollaborator || isRepoOwner);
@@ -308,10 +321,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
-        getPresenter().onPutAssignees(users);
-    }
-
     @Override public void showSuccessIssueActionMsg(boolean isClose) {
         hideProgress();
         if (isClose) {
@@ -342,12 +351,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         }
     }
 
-    @Override public void onShowAssignees(@NonNull List<User> items) {
-        hideProgress();
-        AssigneesDialogFragment.newInstance(items)
-                .show(getSupportFragmentManager(), "AssigneesDialogFragment");
-    }
-
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
         getPresenter().onPutMilestones(milestoneModel);
     }
@@ -374,6 +377,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 .end());
         setResult(RESULT_OK, intent);
         super.finish();
+    }
+
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users, boolean isAssignees) {
+        hideProgress();
+        getPresenter().onPutAssignees(users, isAssignees);
     }
 
     private void hideShowFab() {

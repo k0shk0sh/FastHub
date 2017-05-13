@@ -67,6 +67,7 @@ public class RepoContributorsFragment extends BaseFragment<RepoContributorsMvp.V
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
+        recycler.addKeyLineDivider();
         adapter = new UsersAdapter(getPresenter().getUsers(), true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
@@ -84,6 +85,8 @@ public class RepoContributorsFragment extends BaseFragment<RepoContributorsMvp.V
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

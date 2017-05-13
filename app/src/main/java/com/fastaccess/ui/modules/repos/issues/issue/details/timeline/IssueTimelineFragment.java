@@ -18,6 +18,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
@@ -71,6 +72,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        recycler.setVerticalScrollBarEnabled(false);
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
@@ -93,6 +95,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -160,14 +164,19 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login,
-                                             @NonNull String repoId, long id) {
-        ReactionsDialogFragment.newInstance(login, repoId, type, id).show(getChildFragmentManager(), "ReactionsDialogFragment");
+                                             @NonNull String repoId, long idOrNumber, boolean isHeader) {
+        ReactionsDialogFragment.newInstance(login, repoId, type, idOrNumber, isHeader ? ReactionsProvider.HEADER : ReactionsProvider.COMMENT)
+                .show(getChildFragmentManager(), "ReactionsDialogFragment");
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data == null) {
+                    onRefresh();
+                    return;
+                }
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
@@ -177,6 +186,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                         return;
                     }
                     getSparseBooleanArray().clear();
+                    adapter.notifyDataSetChanged();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
                         recycler.smoothScrollToPosition(adapter.getItemCount());
@@ -218,6 +228,10 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @Override public boolean isPreviouslyReacted(long id, int vId) {
         return getPresenter().isPreviouslyReacted(id, vId);
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getPresenter().isCallingApi(id, vId);
     }
 
     private void showReload() {

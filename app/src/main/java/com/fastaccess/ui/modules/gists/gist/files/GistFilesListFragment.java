@@ -66,6 +66,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
         }
         if (!filesListModel.isEmpty()) {
             recycler.setAdapter(new GistFilesAdapter(filesListModel, getPresenter()));
+            recycler.addKeyLineDivider();
         }
     }
 
@@ -76,7 +77,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
                         Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).put(BundleConstant.EXTRA, item.getRawUrl()).end())
                         .show(getChildFragmentManager(), "MessageDialogView");
             } else {
-                CodeViewerActivity.startActivity(getContext(), item.getRawUrl());
+                CodeViewerActivity.startActivity(getContext(), item.getRawUrl(), item.getRawUrl());
             }
         } else {
             showErrorMessage(getString(R.string.no_url));

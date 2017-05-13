@@ -63,6 +63,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         refresh.setEnabled(false);
         stateLayout.setEmptyText(R.string.no_files);
         recycler.setEmptyView(stateLayout, refresh);
+        recycler.addKeyLineDivider();
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

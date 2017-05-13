@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/spacing_micro"
+    app:cardBackgroundColor="?card_background"
+    app:cardCornerRadius="@dimen/spacing_micro">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/stateImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:layout_marginEnd="@dimen/avatar_margin"
+                android:layout_marginStart="@dimen/avatar_margin"
+                android:minHeight="24dp"
+                android:minWidth="24dp"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/ic_issue_opened"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/name"
+                style="@style/TextAppearance.AppCompat.Subhead"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:textColor="?android:textColorPrimary"
+                tools:text="When one acquires"/>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="?selectableItemBackgroundBorderless"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
+                android:src="@drawable/ic_arrow_drop_down"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/minimized"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/patch"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:layout_marginStart="@dimen/avatar_margin"
+                android:background="@drawable/bottom_border"
+                android:paddingBottom="@dimen/spacing_normal"
+                tools:text="..."/>
+
+            <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                android:id="@+id/nestedRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layoutManager="@string/staggered_layout_manager"
+                app:spanCount="@integer/small_spans"
+                tools:listitem="@layout/review_comments_row_item"
+                tools:visibility="visible"/>
+        </LinearLayout>
+    </LinearLayout>
+</android.support.v7.widget.CardView>

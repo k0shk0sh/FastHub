@@ -32,7 +32,11 @@ public class GithubResponseConverter extends Converter.Factory {
         if (type == String.class) {
             return new StringResponseConverter();
         }
-        return GsonConverterFactory.create(gson).responseBodyConverter(type, annotations, retrofit);
+        try {
+            return GsonConverterFactory.create(gson).responseBodyConverter(type, annotations, retrofit);
+        } catch (OutOfMemoryError ignored) {
+            return null;
+        }
     }
 
     @Override public Converter<?, RequestBody> requestBodyConverter(Type type, Annotation[] parameterAnnotations,
@@ -60,7 +64,7 @@ public class GithubResponseConverter extends Converter.Factory {
             }
         }
 
-        private int copy(Reader input, Writer output) throws IOException {
+        @SuppressWarnings("UnusedReturnValue") private int copy(Reader input, Writer output) throws IOException {
             long count = copyLarge(input, output);
             if (count > Integer.MAX_VALUE) {
                 return -1;

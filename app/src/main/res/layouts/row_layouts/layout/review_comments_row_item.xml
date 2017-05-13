@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/grid_spacing"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingTop="@dimen/spacing_normal"
+    tools:ignore="RtlSymmetry">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/toggleHolder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.AvatarLayout
+                android:id="@+id/avatarView"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
+                android:layout_marginStart="@dimen/avatar_margin"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/name"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="?android:textColorPrimary"
+                tools:text="When one acquires"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/date"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:maxLines="1"
+                android:textColor="?android:attr/textColorSecondary"
+                tools:text="50 minutes"/>
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_micro"
+                android:src="@drawable/ic_arrow_drop_down"/>
+        </LinearLayout>
+
+        <include layout="@layout/comments_dropdown_layout"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:textIsSelectable="true"
+            tools:text="Hello World"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/reactionsText"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/avatar_margin"
+            android:layout_marginTop="@dimen/spacing_micro"
+            android:gravity="start"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:visibility="gone"
+            tools:ignore="RtlSymmetry"
+            tools:text="U+1F602"
+            tools:visibility="visible"/>
+    </LinearLayout>
+
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

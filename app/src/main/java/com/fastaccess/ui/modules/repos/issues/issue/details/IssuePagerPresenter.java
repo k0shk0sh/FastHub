@@ -213,17 +213,6 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         );
     }
 
-    @Override public void onLoadAssignees() {
-        makeRestCall(RestProvider.getRepoService().getAssignees(login, repoId),
-                response -> {
-                    if (response != null && response.getItems() != null && !response.getItems().isEmpty()) {
-                        sendToView(view -> view.onShowAssignees(response.getItems()));
-                    } else {
-                        sendToView(view -> view.showMessage(R.string.error, R.string.no_assignees));
-                    }
-                });
-    }
-
     @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {
         issueModel.setMilestone(milestone);
         IssueRequestModel issueRequestModel = IssueRequestModel.clone(issueModel, false);

@@ -6,14 +6,18 @@ import android.support.annotation.Nullable;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
+
+import rx.Observable;
 
 /**
  * Created by Kosh on 11 Apr 2017, 11:20 AM
@@ -28,6 +32,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
     private String repoId;
     private long id;
     private ReactionTypes reactionType;
+    private @ReactionsProvider.ReactionType int reactionTypeMode;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {
@@ -35,6 +40,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             login = bundle.getString(BundleConstant.EXTRA_TWO);
             id = bundle.getLong(BundleConstant.ID);
             reactionType = (ReactionTypes) bundle.getSerializable(BundleConstant.EXTRA_TYPE);
+            reactionTypeMode = bundle.getInt(BundleConstant.EXTRA_THREE);
             onCallApi(1, null);
         }
     }
@@ -69,14 +75,35 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getReactionsService().getIssueCommentReaction(login, repoId, id, reactionType.getContent()),
-                response -> {
-                    lastPage = response.getLast();
-                    sendToView(view -> view.onNotifyAdapter(Stream.of(response.getItems())
-                            .filter(reactionsModel -> reactionsModel.getUser() != null)
-                            .map(ReactionsModel::getUser)
-                            .collect(Collectors.toList()), page));
-                });
+        Observable<Pageable<ReactionsModel>> observable = null;
+        switch (reactionTypeMode) {
+            case ReactionsProvider.COMMENT:
+                observable = RestProvider.getReactionsService()
+                        .getIssueCommentReaction(login, repoId, id, reactionType.getContent(), page);
+                break;
+            case ReactionsProvider.COMMIT:
+                observable = RestProvider.getReactionsService()
+                        .getCommitReaction(login, repoId, id, reactionType.getContent(), page);
+                break;
+            case ReactionsProvider.HEADER:
+                observable = RestProvider.getReactionsService()
+                        .getIssueReaction(login, repoId, id, reactionType.getContent(), page);
+                break;
+            case ReactionsProvider.REVIEW_COMMENT:
+                observable = RestProvider.getReactionsService()
+                        .getPullRequestReactions(login, repoId, id, reactionType.getContent(), page);
+                break;
+        }
+        if (observable == null) {
+            throw new NullPointerException("Reaction is null?");
+        }
+        makeRestCall(observable, response -> {
+            lastPage = response.getLast();
+            sendToView(view -> view.onNotifyAdapter(Stream.of(response.getItems())
+                    .filter(reactionsModel -> reactionsModel.getUser() != null)
+                    .map(ReactionsModel::getUser)
+                    .collect(Collectors.toList()), page));
+        });
     }
 
     ReactionTypes getReactionType() {

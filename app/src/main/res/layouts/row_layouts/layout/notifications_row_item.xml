@@ -8,6 +8,7 @@
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
     app:cardBackgroundColor="?card_background"
+    app:cardCornerRadius="0dp"
     app:contentPaddingBottom="@dimen/spacing_normal"
     app:contentPaddingLeft="@dimen/spacing_xs_large"
     app:contentPaddingRight="@dimen/spacing_normal"
@@ -48,49 +49,83 @@
                     android:textStyle="bold"
                     tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
 
-                <LinearLayout
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <com.fastaccess.ui.widgets.FontTextView
-                        android:id="@+id/date"
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="start|center"
-                        android:textColor="?android:attr/textColorSecondary"
-                        app:drawableColor="?android:attr/textColorSecondary"
-                        tools:text="50 minutes ago"/>
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="end"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toStartOf="@+id/iconsHolder"
                         android:orientation="horizontal">
 
-                        <com.fastaccess.ui.widgets.ForegroundImageView
-                            android:id="@+id/unsubsribe"
-                            android:layout_width="wrap_content"
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/repoName"
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/un_subscribe"
-                            android:padding="@dimen/spacing_normal"
-                            android:src="@drawable/ic_unsubscribe"/>
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:layout_weight="1"
+                            android:gravity="start|center"
+                            android:textColor="?android:textColorSecondary"
+                            android:visibility="gone"
+                            tools:text="50 minutes ago"
+                            tools:visibility="visible"/>
 
-                        <com.fastaccess.ui.widgets.ForegroundImageView
-                            android:id="@+id/markAsRead"
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/date"
+                            style="@style/TextAppearance.AppCompat.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/spacing_normal"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:contentDescription="@string/un_subscribe"
-                            android:padding="@dimen/spacing_normal"
-                            android:src="@drawable/ic_done"/>
+                            android:layout_gravity="center"
+                            android:gravity="start|center"
+                            android:textColor="?android:textColorTertiary"
+                            tools:text="50 minutes ago"/>
                     </LinearLayout>
-                </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/iconsHolder"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:orientation="horizontal">
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:gravity="end"
+                            android:orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.ForegroundImageView
+                                android:id="@+id/unsubsribe"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="?selectableItemBackgroundBorderless"
+                                android:contentDescription="@string/un_subscribe"
+                                android:padding="@dimen/spacing_normal"
+                                android:src="@drawable/ic_unsubscribe"/>
+
+                            <com.fastaccess.ui.widgets.ForegroundImageView
+                                android:id="@+id/markAsRead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:background="?selectableItemBackgroundBorderless"
+                                android:contentDescription="@string/un_subscribe"
+                                android:padding="@dimen/spacing_normal"
+                                android:src="@drawable/ic_done"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
             </LinearLayout>
 
         </LinearLayout>

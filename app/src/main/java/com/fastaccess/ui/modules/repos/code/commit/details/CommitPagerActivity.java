@@ -85,6 +85,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     }
 
     @OnClick(R.id.fab) void onAddComment() {
+        if (pager == null || pager.getAdapter() == null) return;
         CommitCommentsFragments view = (CommitCommentsFragments) pager.getAdapter().instantiateItem(pager, 1);
         if (view != null) {
             view.onStartNewComment();
@@ -124,14 +125,19 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
+        menu.findItem(R.id.browser).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onNavToRepoClicked();
+            return true;
         } else if (item.getItemId() == R.id.share) {
             if (getPresenter().getCommit() != null) ActivityHelper.shareUrl(this, getPresenter().getCommit().getHtmlUrl());
+            return true;
+        } else if (item.getItemId() == R.id.browser) {
+            if (getPresenter().getCommit() != null) ActivityHelper.startCustomTab(this, getPresenter().getCommit().getHtmlUrl());
             return true;
         }
         return super.onOptionsItemSelected(item);

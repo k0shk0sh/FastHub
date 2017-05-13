@@ -37,7 +37,7 @@
     <string name="releases">Yayınlananlar</string>
     <string name="no_body">İçerik yok</string>
     <string name="contributors">Katkıda bulunanlar</string>
-    <string name="by">By</string>
+    <string name="by">by</string>
     <string name="close_issue">Issue\'yu kapat</string>
     <string name="re_open_issue">Issue\'yu yeniden aç</string>
     <string name="re_open">Yeniden aç</string>
@@ -316,6 +316,7 @@
     <string name="select">Seç</string>
     <string name="select_picture">Resim Seç</string>
     <string name="app_language">Uygulama Dili</string>
+    <string name="language">Uygulama Dili</string>
     <string name="choose_language_title">Dil seçiniz</string>
     <string name="choose_language_summary">Tercih ettiğiniz dili seçin</string>
 </resources>

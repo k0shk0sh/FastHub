@@ -35,8 +35,8 @@ public class ProgressDialogFragment extends DialogFragment {
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         ProgressDialog progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage(getArguments().getString("msg"));
-        progressDialog.setCancelable(getArguments().getBoolean("isCancelable"));
-        setCancelable(getArguments().getBoolean("isCancelable"));
+//        progressDialog.setCancelable(getArguments().getBoolean("isCancelable"));
+//        setCancelable(getArguments().getBoolean("isCancelable"));
         if (getActivity() != null && !getActivity().isFinishing()) {
             progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog, 200));
         }

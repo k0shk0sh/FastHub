@@ -33,6 +33,8 @@ interface RepoIssuesMvp {
         void onUpdateCount(int totalCount);
 
         void onOpenIssue(@NonNull PullsIssuesParser parser);
+
+        void onRefresh(boolean isLastUpdated);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -48,5 +50,7 @@ interface RepoIssuesMvp {
         @NonNull String repoId();
 
         @NonNull String login();
+
+        void onSetSortBy(boolean isLastUpdated);
     }
 }
