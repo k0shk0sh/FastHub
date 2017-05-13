@@ -26,11 +26,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/avatar_margin_end"
+                android:layout_marginEnd="@dimen/avatar_margin"
                 android:layout_marginStart="@dimen/avatar_margin"
                 android:minHeight="24dp"
                 android:minWidth="24dp"
-                android:padding="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
                 android:scaleType="centerCrop"
                 tools:src="@drawable/ic_issue_opened"/>
 
@@ -44,7 +45,8 @@
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="2"
-                android:padding="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
                 android:textColor="?android:textColorPrimary"
                 tools:text="When one acquires"/>
 
@@ -54,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="?selectableItemBackgroundBorderless"
-                android:padding="@dimen/spacing_normal"
+                android:paddingTop="@dimen/spacing_normal"
+                android:paddingBottom="@dimen/spacing_normal"
                 android:src="@drawable/ic_arrow_drop_down"/>
 
         </LinearLayout>

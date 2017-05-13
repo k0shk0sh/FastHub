@@ -101,12 +101,13 @@ public class CommitFilesViewHolder extends BaseViewHolder<CommitFileModel> {
             TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
         }
         if (!expanded) {
-            patch.setText(".....");
+            patch.setVisibility(View.GONE);
             name.setMaxLines(2);
             toggle.setRotation(0.0f);
         } else {
             name.setMaxLines(5);
             setPatchText(pathText);
+            patch.setVisibility(View.VISIBLE);
             toggle.setRotation(180f);
         }
     }

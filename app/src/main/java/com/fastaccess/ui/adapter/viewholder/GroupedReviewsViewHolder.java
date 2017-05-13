@@ -110,11 +110,13 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
         }
         if (!expanded) {
             minimized.setVisibility(View.GONE);
-            patch.setText(".....");
+            patch.setText(null);
+            patch.setVisibility(View.GONE);
             name.setMaxLines(2);
             toggle.setRotation(0.0f);
         } else {
             minimized.setVisibility(View.VISIBLE);
+            patch.setVisibility(View.VISIBLE);
             name.setMaxLines(5);
             setPatchText(pathText);
             toggle.setRotation(180f);
