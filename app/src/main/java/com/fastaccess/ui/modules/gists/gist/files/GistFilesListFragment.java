@@ -66,6 +66,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
         }
         if (!filesListModel.isEmpty()) {
             recycler.setAdapter(new GistFilesAdapter(filesListModel, getPresenter()));
+            recycler.addKeyLineDivider();
         }
     }
 

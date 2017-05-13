@@ -68,6 +68,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
@@ -105,6 +106,8 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

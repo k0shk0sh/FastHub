@@ -81,6 +81,8 @@ public class TeamReposFragment extends BaseFragment<TeamReposMvp.View, TeamRepos
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

@@ -96,6 +96,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

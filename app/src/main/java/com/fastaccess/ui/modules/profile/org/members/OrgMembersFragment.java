@@ -80,6 +80,8 @@ public class OrgMembersFragment extends BaseFragment<OrgMembersMvp.View, OrgMemb
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

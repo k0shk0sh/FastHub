@@ -81,6 +81,7 @@ public class PrefGetter {
     private static final String OTP_CODE = "otp_code";
     private static final String APP_LANGUAGE = "app_language";
     private static final String SENT_VIA = "sent_via";
+    private static final String SENT_VIA_BOX = "sent_via_enabled";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -213,6 +214,10 @@ public class PrefGetter {
 
     public static boolean isSentViaEnabled() {
         return PrefHelper.getBoolean(SENT_VIA);
+    }
+
+    public static boolean isSentViaBoxEnabled() {
+        return PrefHelper.getBoolean(SENT_VIA_BOX);
     }
 
     @ThemeType public static int getThemeType(@NonNull Context context) {

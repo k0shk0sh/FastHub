@@ -87,6 +87,9 @@ public class MessageDialogView extends BaseBottomSheetDialog {
             if (yesNo) {
                 ok.setText(R.string.yes);
                 cancel.setText(R.string.no);
+            } else if (!bundle.getBundle("bundle").getString("primary_extra", "").isEmpty()){
+                ok.setText(bundle.getBundle("bundle").getString("primary_extra", ""));
+                cancel.setText(bundle.getBundle("bundle").getString("secondary_extra", ""));
             }
         }
         message.setText(msg);

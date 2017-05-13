@@ -30,7 +30,7 @@ import icepick.State;
 
 public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchCodePresenter> implements SearchCodeMvp.View {
 
-    @State String searchQuery;
+    @State String searchQuery = "";
     @State boolean showRepoName;
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
@@ -106,7 +106,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -151,6 +151,10 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
     }
 
     @Override public void onRefresh() {
+        if(searchQuery.length()==0){
+            refresh.setRefreshing(false);
+            return;
+        }
         getPresenter().onCallApi(1, searchQuery);
     }
 

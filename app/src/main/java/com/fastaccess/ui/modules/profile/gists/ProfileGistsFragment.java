@@ -59,6 +59,7 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         if (getPresenter().getGists().isEmpty() && !getPresenter().isApiCalled()) {
@@ -84,6 +85,8 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

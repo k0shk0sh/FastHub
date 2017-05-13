@@ -30,6 +30,8 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private String appColor;
     private String app_lauguage;
 
+    private Preference signatureVia;
+
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         this.callback = (BaseMvp.FAView) context;
@@ -47,6 +49,10 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 break;
             case 1:
                 addPreferencesFromResource(R.xml.behaviour_settings);
+                findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
+                signatureVia = findPreference("sent_via");
+                if(PrefHelper.getBoolean("sent_via_enabled"))
+                    getPreferenceScreen().removePreference(signatureVia);
                 break;
             case 2:
                 addPreferencesFromResource(R.xml.customization_settings);
@@ -108,18 +114,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 return true;
             callback.onThemeChanged();
             return true;
+        } else if (preference.getKey().equalsIgnoreCase("sent_via_enabled")) {
+            if((boolean)newValue)
+                getPreferenceScreen().removePreference(signatureVia);
+            else
+                getPreferenceScreen().addPreference(signatureVia);
+            return true;
         }
         return false;
     }
 
-
-	/*
-
-
-
-        findPreference("app_language").setOnPreferenceChangeListener(this);
-
-
-
-	 */
 }

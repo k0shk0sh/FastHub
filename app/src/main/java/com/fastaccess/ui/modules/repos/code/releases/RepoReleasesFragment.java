@@ -137,6 +137,8 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

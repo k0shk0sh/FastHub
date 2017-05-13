@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:ignore="MergeRootFrame">
 
-    <include layout="@layout/state_layout"/>
-
     <com.fastaccess.ui.widgets.AppbarRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
@@ -23,5 +21,7 @@
             app:spanCount="@integer/small_spans"/>
 
     </com.fastaccess.ui.widgets.AppbarRefreshLayout>
+
+    <include layout="@layout/state_layout"/>
 
 </FrameLayout>

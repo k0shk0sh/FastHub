@@ -9,6 +9,7 @@
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
+    <string name="discard">Discard</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="no_data">No data available</string>
@@ -221,6 +222,7 @@
     <string name="switch_branch">Switch branch</string>
     <string name="assignees">Assignees</string>
     <string name="edit">Edit</string>
+    <string name="edited">( edited )</string>
     <string name="update_issue">Update Issue</string>
     <string name="update_pull_request">Update Pull Request</string>
     <string name="no_milestones">No milestones</string>
@@ -427,4 +429,6 @@
     <string name="sent_from_fasthub">Sent from my %1$s using %2$s%3$s</string>
     <string name="enable_signature">Enable Signature</string>
     <string name="enable_signature_summary">Enable sent via signature</string>
+    <string name="enable_signature_box">Enable Signature Box</string>
+    <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
 </resources>
