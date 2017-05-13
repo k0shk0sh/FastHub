@@ -53,8 +53,6 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 Repo repo = model.getRepo();
                 if (repo == null) return;
                 getView().onMarkAllByRepo(repo);
-            } else {
-
             }
         }
     }

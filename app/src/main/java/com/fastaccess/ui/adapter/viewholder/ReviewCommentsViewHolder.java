@@ -2,6 +2,8 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
 import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,13 +51,14 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     @BindView(R.id.reactionsText) FontTextView reactionsText;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
+    private ViewGroup viewGroup;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
             if (onToggleView != null) {
                 int position = getAdapterPosition();
                 onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-                onToggle(onToggleView.isCollapsed(position));
+                onToggle(onToggleView.isCollapsed(position), true);
             }
         } else {
             addReactionCount(v);
@@ -63,10 +66,11 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         }
     }
 
-    private ReviewCommentsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
+    private ReviewCommentsViewHolder(@NonNull View itemView, ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
                                      @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
+        this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
@@ -88,7 +92,8 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
 
     public static ReviewCommentsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,
                                                        @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
-        return new ReviewCommentsViewHolder(getView(viewGroup, R.layout.review_comments_row_item), adapter, onToggleView, reactionsCallback);
+        return new ReviewCommentsViewHolder(getView(viewGroup, R.layout.review_comments_row_item),
+                viewGroup, adapter, onToggleView, reactionsCallback);
     }
 
     @Override public void bind(@NonNull ReviewCommentModel commentModel) {
@@ -104,7 +109,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
             ReactionsModel reaction = commentModel.getReactions();
             appendEmojies(reaction);
         }
-        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()));
+        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()), false);
     }
 
     private void addReactionCount(View v) {
@@ -211,7 +216,10 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         }
     }
 
-    private void onToggle(boolean expanded) {
+    private void onToggle(boolean expanded, boolean animate) {
+        if (animate) {
+            TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
+        }
         toggle.setRotation(!expanded ? 0.0F : 180F);
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(reactionsText)) {

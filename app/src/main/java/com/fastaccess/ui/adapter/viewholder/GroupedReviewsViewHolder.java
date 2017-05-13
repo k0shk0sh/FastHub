@@ -49,7 +49,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     @Override public void onClick(View v) {
         int position = getAdapterPosition();
         onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-        onToggle(onToggleView.isCollapsed(position));
+        onToggle(onToggleView.isCollapsed(position), true);
     }
 
     private GroupedReviewsViewHolder(@NonNull View itemView, ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
@@ -89,7 +89,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
             nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this, onToggleView, reactionsCallback));
             nestedRecyclerView.addDivider();
         }
-        onToggle(onToggleView.isCollapsed(getAdapterPosition()));
+        onToggle(onToggleView.isCollapsed(getAdapterPosition()), false);
     }
 
     @Override public void onItemClick(int position, View v, ReviewCommentModel item) {
@@ -104,8 +104,10 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
         }
     }
 
-    private void onToggle(boolean expanded) {
-        TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
+    private void onToggle(boolean expanded, boolean animate) {
+        if (animate) {
+            TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
+        }
         if (!expanded) {
             minimized.setVisibility(View.GONE);
             patch.setText(".....");

@@ -6,10 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
-import android.widget.ProgressBar;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -145,7 +143,6 @@ public class StateLayout extends NestedScrollView {
     }
 
     private void onHandleLayoutState() {
-        Logger.e(layoutState);
         setEmptyText(emptyTextValue);
         switch (layoutState) {
             case SHOW_PROGRESS_STATE:
