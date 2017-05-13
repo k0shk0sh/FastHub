@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
@@ -21,6 +22,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
@@ -120,7 +122,11 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         setToolbarIcon(R.drawable.ic_clear);
         sentFromFastHub = "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
+        sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : View.GONE);
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
+        sentVia.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            PrefHelper.set("sent_via", isChecked);
+		});
         MarkDownProvider.setMdText(sentVia, sentFromFastHub);
         if (savedInstanceState == null) {
             Intent intent = getIntent();
@@ -193,7 +199,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.submit) {
-            if (sentVia.isChecked()) {
+            if (PrefGetter.isSentViaEnabled()) {
                 String temp = savedText.toString();
                 if (!temp.contains(sentFromFastHub) && !InputHelper.isEmpty(savedText)) {
                     savedText = savedText + sentFromFastHub;

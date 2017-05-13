@@ -13,13 +13,18 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.Transformation;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import java.util.Arrays;
@@ -204,5 +209,77 @@ public class AnimHelper {
             view.setVisibility(View.GONE);
             if (listener != null) listener.onHidden(null);
         }
+    }
+
+    public static void expand(final View view) {
+        view.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final int target = view.getMeasuredHeight();
+        Log.d(AnimHelper.class.getSimpleName(), target+"");
+
+        view.getLayoutParams().height = 1;
+        view.setVisibility(View.VISIBLE);
+        Animation anim = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float time, Transformation t) {
+                view.getLayoutParams().height = time == 1
+                        ? LinearLayout.LayoutParams.WRAP_CONTENT
+                        : (int)(target * time);
+                view.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        anim.setDuration((int)(target / view.getContext().getResources().getDisplayMetrics().density));
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.invalidate();
+                if(view instanceof RecyclerView)
+                    ((RecyclerView)view).getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        anim.setInterpolator(FAST_OUT_LINEAR_IN_INTERPOLATOR);
+        view.startAnimation(anim);
+    }
+
+    public static void collapse(final View view) {
+        final int initialHeight = view.getMeasuredHeight();
+
+        Animation anim = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float time, Transformation t) {
+                if(time == 1){
+                    view.setVisibility(View.GONE);
+                }else{
+                    view.getLayoutParams().height = initialHeight - (int)(initialHeight * time);
+                    view.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        anim.setDuration((int)(initialHeight / view.getContext().getResources().getDisplayMetrics().density));
+        anim.setInterpolator(FAST_OUT_LINEAR_IN_INTERPOLATOR);
+        view.startAnimation(anim);
     }
 }

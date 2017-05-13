@@ -193,7 +193,10 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     @OnClick(R.id.tagsIcon) void onTagsClick() {
         if(topicsList.getAdapter().getItemCount()>0)
-            topicsList.setVisibility(topicsList.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
+            if(topicsList.getVisibility()==View.VISIBLE)
+                AnimHelper.collapse(topicsList);
+            else
+                AnimHelper.expand(topicsList);
     }
 
     @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout})

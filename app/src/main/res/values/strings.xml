@@ -429,4 +429,6 @@
     <string name="sent_from_fasthub">Sent from my %1$s using %2$s%3$s</string>
     <string name="enable_signature">Enable Signature</string>
     <string name="enable_signature_summary">Enable sent via signature</string>
+    <string name="enable_signature_box">Enable Signature Box</string>
+    <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
 </resources>
