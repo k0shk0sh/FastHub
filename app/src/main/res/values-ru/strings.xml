@@ -349,13 +349,13 @@
     <string name="language">Язык</string>
     <string name="choose_language_title">Выберите язык</string>
     <string name="choose_language_summary">Выберите нужный язык</string>
-    <string name="want_to_merge">хочет объединеть</string>
+    <string name="want_to_merge">хочет объединить</string>
     <string name="watchers">Наблюдатели</string>
     <string name="reviewers">Рецензенты</string>
     <string name="no_reviewers">Нет рецензентов</string>
-    <string name="sent_from_fasthub">Отправлено с моего %1$s через %2$s%3$s</string>
+    <string name="sent_from_fasthub">Отправлено с моего %1$s с помощью %2$s%3$s</string>
     <string name="enable_signature">Включить подпись</string>
-    <string name="enable_signature_summary">Включить подпись &quot;отправлено через&quot;</string>
+    <string name="enable_signature_summary">Включить подпись &quot;отправлено с помощью &quot;</string>
     <string name="enable_signature_box">Включить галочку подписи</string>
     <string name="enable_signature_box_summary">Отображать в редакторе галочку, которая включает подпись</string>
 </resources>
