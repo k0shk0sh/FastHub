@@ -32,5 +32,14 @@
         android:layout_height="match_parent"
         app:webview_background="?android:windowBackground"/>
 
+    <ProgressBar
+        android:id="@+id/readmeLoader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        style="@android:style/Widget.Material.ProgressBar.Large"
+        tools:visibility="visible"/>
+
     <include layout="@layout/state_layout"/>
 </FrameLayout>
