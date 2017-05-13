@@ -57,13 +57,14 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         webView.loadImage(url);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onSetMdText(@NonNull String text, String baseUrl) {
         stateLayout.hideProgress();
         webView.setVisibility(View.VISIBLE);
-        Logger.e(!getPresenter().isRepo());
         webView.setGithubContent(text, baseUrl);
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onSetCode(@NonNull String text) {
@@ -143,18 +144,24 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
                 onSetCode(getPresenter().downloadedStream());
             }
         }
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.wrap_menu_option, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.wrap_menu_option, menu);
+        menu.findItem(R.id.wrap).setVisible(false);
     }
 
     @Override public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.wrap)
-                .setVisible(!getPresenter().isMarkDown() || !getPresenter().isRepo())
-                .setChecked(isWrap);
         super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.wrap);
+        Logger.e(getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage());
+        if (getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage()) {
+            menuItem.setVisible(false);
+        } else {
+            menuItem.setVisible(true).setCheckable(true).setChecked(isWrap);
+        }
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
