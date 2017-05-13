@@ -110,6 +110,8 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

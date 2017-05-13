@@ -74,6 +74,8 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

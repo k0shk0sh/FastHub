@@ -103,6 +103,8 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
 
     @Override public void showProgress(@StringRes int resId) {
 
+        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

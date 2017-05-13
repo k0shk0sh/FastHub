@@ -85,6 +85,8 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

@@ -106,6 +106,8 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

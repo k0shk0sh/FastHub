@@ -90,6 +90,8 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

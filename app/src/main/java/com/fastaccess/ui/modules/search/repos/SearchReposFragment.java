@@ -106,6 +106,8 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

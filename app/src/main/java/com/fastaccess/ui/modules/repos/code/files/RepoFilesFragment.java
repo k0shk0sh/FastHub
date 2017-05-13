@@ -159,6 +159,8 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

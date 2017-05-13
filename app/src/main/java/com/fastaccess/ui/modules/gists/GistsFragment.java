@@ -76,6 +76,8 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

@@ -92,6 +92,8 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

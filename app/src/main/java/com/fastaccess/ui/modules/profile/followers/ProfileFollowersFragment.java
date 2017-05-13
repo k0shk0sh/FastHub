@@ -81,6 +81,8 @@ public class ProfileFollowersFragment extends BaseFragment<ProfileFollowersMvp.V
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

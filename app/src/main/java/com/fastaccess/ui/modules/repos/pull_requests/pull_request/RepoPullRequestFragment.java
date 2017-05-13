@@ -126,6 +126,8 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

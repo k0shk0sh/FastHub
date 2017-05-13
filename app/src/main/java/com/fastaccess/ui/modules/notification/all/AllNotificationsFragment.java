@@ -105,6 +105,8 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
 
     @Override public void showProgress(@StringRes int resId) {
 
+        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

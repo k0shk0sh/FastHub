@@ -124,6 +124,8 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 

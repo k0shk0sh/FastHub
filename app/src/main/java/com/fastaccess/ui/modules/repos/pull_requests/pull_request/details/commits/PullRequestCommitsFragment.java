@@ -87,6 +87,8 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
