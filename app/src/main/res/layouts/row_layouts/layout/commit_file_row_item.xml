@@ -27,7 +27,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="2"
@@ -36,10 +35,10 @@
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/toggle"
-                android:background="?selectableItemBackgroundBorderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:padding="@dimen/spacing_normal"
+                android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_arrow_drop_down"/>
 
             <com.fastaccess.ui.widgets.ForegroundImageView
