@@ -93,6 +93,19 @@
             </LinearLayout>
 
             <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/tagsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription=""
+                android:padding="@dimen/spacing_micro"
+                android:layout_marginRight="@dimen/spacing_xs_large"
+                android:src="@drawable/ic_tag"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/detailsIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

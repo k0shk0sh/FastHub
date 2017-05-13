@@ -79,6 +79,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.language) FontTextView language;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    @BindView(R.id.tagsIcon) View tagsIcon;
     @BindView(R.id.watchRepoImage) ForegroundImageView watchRepoImage;
     @BindView(R.id.starRepoImage) ForegroundImageView starRepoImage;
     @BindView(R.id.forkRepoImage) ForegroundImageView forkRepoImage;
@@ -188,6 +189,11 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
+    }
+
+    @OnClick(R.id.tagsIcon) void onTagsClick() {
+        if(topicsList.getAdapter().getItemCount()>0)
+            topicsList.setVisibility(topicsList.getVisibility() == View.GONE ? View.VISIBLE : View.GONE);
     }
 
     @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout})
@@ -314,7 +320,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
         if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
-            topicsList.setVisibility(View.VISIBLE);
+            tagsIcon.setVisibility(View.VISIBLE);
             topicsList.setAdapter(new TopicsAdapter(repoModel.getTopics()));
         } else {
             topicsList.setVisibility(View.GONE);
