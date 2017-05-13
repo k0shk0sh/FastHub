@@ -121,7 +121,6 @@
     <style name="ToolbarStyleLight">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/black</item>
-        <item name="colorControlHighlight">?colorAccent</item>
         <item name="popupTheme">@style/PopupThemeLight</item>
     </style>
 

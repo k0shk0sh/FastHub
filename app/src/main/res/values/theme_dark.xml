@@ -119,7 +119,6 @@
     <style name="ToolbarStyleDark">
         <item name="android:textColorPrimary">@color/white</item>
         <item name="colorControlNormal">@color/white</item>
-        <item name="colorControlHighlight">?colorAccent</item>
         <item name="popupTheme">@style/PopupThemeDark</item>
     </style>
 
