@@ -228,8 +228,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         } else {
             ViewHelper.hideKeyboard(editText);
             MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
-                    Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).put(BundleConstant.EXTRA, true).end())
-                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
+                    Bundler.start().put("primary_extra", getString(R.string.discard)).put("secondary_extra", getString(R.string.cancel))
+                    .put(BundleConstant.EXTRA, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
     }
 
