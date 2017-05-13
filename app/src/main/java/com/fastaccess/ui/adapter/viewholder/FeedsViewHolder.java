@@ -92,21 +92,31 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .append(in)
                             .append(" ");
                 } else {
-                    spannableBuilder.bold(itemView.getResources().getString(type
-                            .getType()).toLowerCase())
-                            .append(" ");
                     if (eventsModel.getPayload() != null) {
                         PayloadModel payloadModel = eventsModel.getPayload();
                         if (payloadModel.getTarget() != null) {
-                            spannableBuilder.append(payloadModel.getTarget().getLogin())
+                            spannableBuilder
+                                    .bold(payloadModel.getTarget().getLogin())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
                         } else if (payloadModel.getTeam() != null) {
-                            spannableBuilder.append(payloadModel.getTeam().getName())
+                            spannableBuilder
+                                    .bold(payloadModel.getTeam().getName())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
                         } else if (payloadModel.getMember() != null) {
-                            spannableBuilder.append(payloadModel.getMember().getName())
+                            spannableBuilder
+                                    .bold(payloadModel.getMember().getLogin())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
+                        } else {
+                            spannableBuilder.bold(itemView.getResources().getString(type.getType()).toLowerCase()).append(" ");
                         }
+                    } else {
+                        spannableBuilder.bold(itemView.getResources().getString(type.getType()).toLowerCase()).append(" ");
                     }
                 }
             }

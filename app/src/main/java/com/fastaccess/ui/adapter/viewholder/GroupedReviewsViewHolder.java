@@ -2,6 +2,8 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -34,6 +36,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     @BindView(R.id.name) FontTextView name;
     @BindView(R.id.toggle) ForegroundImageView toggle;
     @BindView(R.id.patch) FontTextView patch;
+    @BindView(R.id.minimized) View minimized;
     private final int patchAdditionColor;
     private final int patchDeletionColor;
     private final int patchRefColor;
@@ -41,6 +44,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     private ReactionsCallback reactionsCallback;
     private String pathText;
     private PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback;
+    private ViewGroup viewGroup;
 
     @Override public void onClick(View v) {
         int position = getAdapterPosition();
@@ -48,12 +52,13 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
         onToggle(onToggleView.isCollapsed(position));
     }
 
-    private GroupedReviewsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
+    private GroupedReviewsViewHolder(@NonNull View itemView, ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
                                      @NonNull OnToggleView onToggleView,
                                      @NonNull ReactionsCallback reactionsCallback,
                                      @NonNull PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
+        this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
         this.reviewCommentCallback = reviewCommentCallback;
         patchAdditionColor = ViewHelper.getPatchAdditionColor(itemView.getContext());
@@ -67,7 +72,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
                                                        @NonNull OnToggleView onToggleView,
                                                        @NonNull ReactionsCallback reactionsCallback,
                                                        @NonNull PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback) {
-        return new GroupedReviewsViewHolder(getView(viewGroup, R.layout.grouped_review_timeline_row_item), adapter,
+        return new GroupedReviewsViewHolder(getView(viewGroup, R.layout.grouped_review_timeline_row_item), viewGroup, adapter,
                 onToggleView, reactionsCallback, reviewCommentCallback);
     }
 
@@ -100,11 +105,14 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     }
 
     private void onToggle(boolean expanded) {
+        TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
         if (!expanded) {
+            minimized.setVisibility(View.GONE);
             patch.setText(".....");
             name.setMaxLines(2);
             toggle.setRotation(0.0f);
         } else {
+            minimized.setVisibility(View.VISIBLE);
             name.setMaxLines(5);
             setPatchText(pathText);
             toggle.setRotation(180f);
