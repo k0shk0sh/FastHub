@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.fastaccess.ui.widgets.FontTextView
-    android:id="@+id/headerTitle"
-    style="@style/TextAppearance.AppCompat.Title"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?selectableItemBackground"
-    android:drawableEnd="@drawable/ic_clear_all"
+    android:gravity="center_horizontal"
     android:padding="@dimen/spacing_xs_large"
-    android:textColor="?colorAccent"
-    tools:text="k0shk0sh/FastHub"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <com.fastaccess.ui.widgets.FontTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/headerTitle"
+        android:textColor="?colorAccent"
+        tools:text="k0shk0sh/FastHub"
+        style="@style/TextAppearance.AppCompat.Title"/>
+
+    <ImageButton
+        android:id="@+id/markAsRead"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/ic_clear_all"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/mark_all_as_read"/>
+
+</RelativeLayout>

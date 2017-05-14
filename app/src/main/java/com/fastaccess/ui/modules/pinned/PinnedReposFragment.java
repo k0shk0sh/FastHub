@@ -63,6 +63,7 @@ public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, Pinne
         stateLayout.setEmptyText(R.string.empty_pinned_repos);
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         refresh.setOnRefreshListener(() -> getPresenter().onReload());
         stateLayout.setOnReloadListener(v -> getPresenter().onReload());
         if (savedInstanceState == null) {

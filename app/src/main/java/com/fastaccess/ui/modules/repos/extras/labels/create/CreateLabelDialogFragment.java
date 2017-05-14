@@ -79,6 +79,7 @@ public class CreateLabelDialogFragment extends BaseDialogFragment<CreateLabelMvp
         }
         ;
         recycler.setAdapter(new LabelColorsAdapter(Arrays.asList(getResources().getStringArray(R.array.label_colors)), getPresenter()));
+        recycler.addKeyLineDivider();
         toolbar.setTitle(R.string.create_label);
         toolbar.setNavigationIcon(R.drawable.ic_clear);
         toolbar.setNavigationOnClickListener(item -> dismiss());

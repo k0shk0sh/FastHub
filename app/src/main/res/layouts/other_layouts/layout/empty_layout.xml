@@ -35,10 +35,5 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Title"
             android:textColor="@color/carrot"/>
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
     </LinearLayout>
 </merge>

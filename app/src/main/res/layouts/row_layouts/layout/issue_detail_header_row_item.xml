@@ -5,11 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/grid_spacing"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginEnd="@dimen/grid_spacing"
+    android:layout_marginStart="@dimen/grid_spacing"
+    android:layout_marginTop="@dimen/grid_spacing"
     android:background="?card_background"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingTop="@dimen/spacing_normal"
-    app:cardBackgroundColor="?card_background"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -21,7 +23,6 @@
             android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing_normal"
             android:orientation="horizontal">
 
             <com.fastaccess.ui.widgets.AvatarLayout
@@ -72,8 +73,8 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
             android:layout_marginStart="@dimen/avatar_margin"
-            android:paddingEnd="@dimen/spacing_xs_large"
             android:textIsSelectable="true"/>
 
         <com.fastaccess.ui.widgets.FontTextView
@@ -81,10 +82,10 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_micro"
             android:gravity="start"
-            android:paddingEnd="@dimen/spacing_xs_large"
-            android:paddingStart="@dimen/spacing_xs_large"
             android:visibility="gone"
             tools:ignore="RtlSymmetry"
             tools:text="U+1F602"

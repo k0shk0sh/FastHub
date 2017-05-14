@@ -91,6 +91,8 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -130,6 +132,7 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null || (getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled())) {
             onRefresh();

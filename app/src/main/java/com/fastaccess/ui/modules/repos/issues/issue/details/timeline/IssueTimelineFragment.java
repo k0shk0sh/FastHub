@@ -18,6 +18,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
@@ -95,6 +96,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
@@ -162,7 +165,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login,
                                              @NonNull String repoId, long idOrNumber, boolean isHeader) {
-        ReactionsDialogFragment.newInstance(login, repoId, type, idOrNumber, isHeader).show(getChildFragmentManager(), "ReactionsDialogFragment");
+        ReactionsDialogFragment.newInstance(login, repoId, type, idOrNumber, isHeader ? ReactionsProvider.HEADER : ReactionsProvider.COMMENT)
+                .show(getChildFragmentManager(), "ReactionsDialogFragment");
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -224,6 +228,10 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @Override public boolean isPreviouslyReacted(long id, int vId) {
         return getPresenter().isPreviouslyReacted(id, vId);
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getPresenter().isCallingApi(id, vId);
     }
 
     private void showReload() {

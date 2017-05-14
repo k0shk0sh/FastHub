@@ -7,7 +7,7 @@
 
     <style name="ThemeMidNightBlue.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="card_background">#213040</item>
-        <item name="icon_color">#fff</item>
+        <item name="icon_color">#eee</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundMidNightBlue</item>
         <item name="patch_addition">@color/dark_patch_addition_color</item>
         <item name="patch_deletion">@color/dark_patch_deletion_color</item>
@@ -22,7 +22,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
-        <item name="android:textColorPrimary">#fff</item>
+        <item name="android:textColorPrimary">#eee</item>
         <item name="android:textColorSecondary">#9E9E9E</item>
         <item name="android:textColorTertiary">#ffe0e0e0</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
@@ -36,6 +36,66 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
     </style>
 
+
+    <style name="ThemeMidNightBlue.Base.Red" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Pink" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Purple" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.DeepPurple" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Indigo" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.LightBlue" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Cyan" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Teal" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Green" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.LightGreen" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Lime" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Yellow" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Amber" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.Orange" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+    </style>
+
+    <style name="ThemeMidNightBlue.Base.DeepOrange" parent="ThemeMidNightBlue.Base">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+    </style>
 
     <style name="TimeLineBackgroundMidNightBlue">
         <item name="android:background">@drawable/ic_timeline_arrow_left</item>
@@ -54,7 +114,7 @@
         <item name="colorPrimaryDark">#4C5B6A</item>
         <item name="colorAccent">#2196F3</item>
         <item name="mal_lightActionBar">false</item>
-        <item name="mal_color_primary">#fff</item>
+        <item name="mal_color_primary">#eee</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>
     </style>
 </resources>

@@ -30,7 +30,6 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.stateText) FontTextView stateText;
     @BindView(R.id.body) FontTextView body;
-    @BindView(R.id.seeMore) View seeMore;
 
     private ReviewsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);
@@ -63,9 +62,7 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
             if (!InputHelper.isEmpty(review.getBody())) {
                 body.setVisibility(View.VISIBLE);
                 HtmlHelper.htmlIntoTextView(body, review.getBody());
-                seeMore.setVisibility(View.GONE);
             } else {
-                seeMore.setVisibility(View.VISIBLE);
                 body.setVisibility(View.GONE);
             }
         }

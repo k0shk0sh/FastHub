@@ -98,7 +98,7 @@ import icepick.Icepick;
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.setOnShowListener(dialogInterface -> {
-            if (ViewHelper.isTablet(getContext())) {
+            if (ViewHelper.isTablet(getActivity())) {
                 if (dialog.getWindow() != null) {
                     dialog.getWindow().setLayout(
                             ViewGroup.LayoutParams.WRAP_CONTENT,

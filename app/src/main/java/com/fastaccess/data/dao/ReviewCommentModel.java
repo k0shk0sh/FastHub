@@ -3,6 +3,7 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 
 import java.util.Date;
@@ -29,8 +30,9 @@ import lombok.Setter;
     private String bodyHtml;
     private Date createdAt;
     private Date updatedAt;
-    private String htmlUr;
+    private String htmlUrl;
     private String pullRequestUrl;
+    private ReactionsModel reactions;
 
     @Override public int describeContents() { return 0; }
 
@@ -48,7 +50,7 @@ import lombok.Setter;
         dest.writeString(this.bodyHtml);
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
-        dest.writeString(this.htmlUr);
+        dest.writeString(this.htmlUrl);
         dest.writeString(this.pullRequestUrl);
     }
 
@@ -70,7 +72,7 @@ import lombok.Setter;
         this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
         long tmpUpdatedAt = in.readLong();
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
-        this.htmlUr = in.readString();
+        this.htmlUrl = in.readString();
         this.pullRequestUrl = in.readString();
     }
 

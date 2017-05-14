@@ -29,6 +29,14 @@ import retrofit2.adapter.rxjava.HttpException;
 
 public class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
 
+    public LoginPresenter() {
+        RestProvider.clearHttpClient();
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+    }
+
     @Override public void onError(@NonNull Throwable throwable) {
         if (RestProvider.getErrorCode(throwable) == 401 && throwable instanceof HttpException) {
             retrofit2.Response response = ((HttpException) throwable).response();
@@ -99,7 +107,8 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @Override public void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode, boolean isBasicAuth) {
+    @Override public void login(@NonNull String username, @NonNull String password,
+                                @Nullable String twoFactorCode, boolean isBasicAuth) {
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
         if (getView() == null) return;

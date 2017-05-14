@@ -72,27 +72,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/avatar_margin"
-                android:visibility="gone"
                 android:layout_marginTop="@dimen/spacing_micro"
+                android:visibility="gone"
                 tools:text="For a divided large loaf, add some champaign and cinnamon."
                 tools:visibility="visible"/>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>
-
-    <com.fastaccess.ui.widgets.ForegroundImageView
-        android:id="@+id/seeMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="@dimen/spacing_normal"
-        android:minHeight="24dp"
-        android:minWidth="24dp"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_normal"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_arrow_right"/>
-
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

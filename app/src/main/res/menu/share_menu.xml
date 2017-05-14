@@ -8,4 +8,11 @@
         android:title="@string/share"
         app:showAsAction="always"/>
 
+    <item
+        android:id="@+id/browser"
+        android:icon="@drawable/ic_brower"
+        android:title="@string/open_in_browser"
+        android:visible="false"
+        app:showAsAction="always"/>
+
 </menu>

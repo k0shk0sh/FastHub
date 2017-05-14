@@ -2,10 +2,13 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -49,13 +52,14 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
+    private ViewGroup viewGroup;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
             if (onToggleView != null) {
                 int position = getAdapterPosition();
                 onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-                onToggle(onToggleView.isCollapsed(position));
+                onToggle(onToggleView.isCollapsed(position), true);
             }
         } else {
             addReactionCount(v);
@@ -63,10 +67,10 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
-    private TimelineCommentsViewHolder(@NonNull View itemView, @Nullable IssuePullsTimelineAdapter adapter,
-                                       @NonNull OnToggleView onToggleView,
-                                       boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
+    private TimelineCommentsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
+                                       @NonNull OnToggleView onToggleView, boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
         super(itemView, adapter);
+        this.viewGroup = viewGroup;
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
         this.reactionsCallback = reactionsCallback;
@@ -91,7 +95,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
                                                          @NonNull OnToggleView onToggleView, boolean showEmojies,
                                                          @NonNull ReactionsCallback reactionsCallback) {
-        return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter,
+        return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), viewGroup, adapter,
                 onToggleView, showEmojies, reactionsCallback);
     }
 
@@ -108,7 +112,11 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             comment.setText("");
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
-        date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
+        if (commentsModel.getCreatedAt().before(commentsModel.getUpdatedAt())) {
+            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()) + " " + App.getInstance().getResources().getString(R.string.edited));
+        } else {
+            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
+        }
         if (showEmojies) {
             if (commentsModel.getReactions() != null) {
                 ReactionsModel reaction = commentsModel.getReactions();
@@ -116,7 +124,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             }
         }
         emojiesList.setVisibility(showEmojies ? View.VISIBLE : View.GONE);
-        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()));
+        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()), false);
     }
 
     private void addReactionCount(View v) {
@@ -126,6 +134,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             Comment comment = timelineModel.getComment();
             if (comment != null) {
                 boolean isReacted = reactionsCallback == null || reactionsCallback.isPreviouslyReacted(comment.getId(), v.getId());
+                boolean isCallingApi = reactionsCallback != null && reactionsCallback.isCallingApi(comment.getId(), v.getId());
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
                     case R.id.heart:
@@ -225,7 +234,10 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
-    private void onToggle(boolean expanded) {
+    private void onToggle(boolean expanded, boolean animate) {
+        if (animate) {
+            TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
+        }
         toggle.setRotation(!expanded ? 0.0F : 180F);
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(reactionsText)) {

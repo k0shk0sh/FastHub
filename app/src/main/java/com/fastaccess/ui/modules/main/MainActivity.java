@@ -112,6 +112,10 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 
+    @Override public void onUpdateDrawerMenuHeader() {
+        setupNavigationView(extraNav);
+    }
+
     @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
     public void myIssues() {}//do nothing
 

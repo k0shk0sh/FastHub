@@ -34,6 +34,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private IssueState issueState;
+    private boolean isLastUpdated;
 
     @Override public int getCurrentPage() {
         return page;
@@ -71,8 +72,12 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             sendToView(RepoIssuesMvp.View::hideProgress);
             return;
         }
+        String sortBy = "created";
+        if (isLastUpdated) {
+            sortBy = "updated";
+        }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService().getRepositoryIssues(login, repoId, parameter.name(), page),
+        makeRestCall(RestProvider.getIssueService().getRepositoryIssues(login, repoId, parameter.name(), sortBy, page),
                 issues -> {
                     lastPage = issues.getLast();
                     List<Issue> filtered = Stream.of(issues.getItems())
@@ -124,6 +129,10 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
 
     @NonNull @Override public String login() {
         return login;
+    }
+
+    @Override public void onSetSortBy(boolean isLastUpdated) {
+        this.isLastUpdated = isLastUpdated;
     }
 
     @Override public void onItemClick(int position, View v, Issue item) {

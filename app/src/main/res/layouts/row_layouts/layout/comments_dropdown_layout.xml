@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginTop="@dimen/spacing_normal"
     android:background="?card_background"
     android:elevation="2dp"
     android:orientation="horizontal"

@@ -9,95 +9,125 @@
     android:clipChildren="false"
     android:clipToPadding="false"
     android:minHeight="?actionBarSize"
-    android:orientation="horizontal"
-    android:paddingBottom="@dimen/spacing_xs_large"
-    android:paddingEnd="@dimen/spacing_normal"
-    android:paddingTop="@dimen/spacing_xs_large"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingTop="@dimen/spacing_normal"
     app:layout_scrollFlags="scroll|enterAlways"
     tools:ignore="RtlSymmetry"
-    tools:showIn="@layout/repo_pager_activity">
-
-    <com.fastaccess.ui.widgets.AvatarLayout
-        android:id="@+id/avatarLayout"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="@dimen/avatar_margin_end"
-        android:layout_marginStart="@dimen/avatar_margin"/>
+    tools:showIn="@layout/header_title_with_toolbar">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top"
+        android:layout_marginEnd="@dimen/spacing_micro"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:orientation="vertical">
+        <com.fastaccess.ui.widgets.AvatarLayout
+            android:id="@+id/avatarLayout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="@dimen/avatar_margin_end"
+            android:layout_marginStart="@dimen/avatar_margin"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/headerTitle"
-                style="@style/TextAppearance.AppCompat.Subhead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:textColor="?android:textColorPrimary"
-                tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <com.fastaccess.ui.widgets.FontTextView
-                    android:id="@+id/date"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    tools:text="50 minutes ago"/>
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <com.fastaccess.ui.widgets.FontTextView
-                    android:id="@+id/size"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/headerTitle"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    tools:text="50 minutes ago"/>
+                    android:layout_gravity="top"
+                    android:layout_marginEnd="@dimen/spacing_normal"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="?android:textColorPrimary"
+                    tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
 
-                <com.fastaccess.ui.widgets.FontTextView
-                    android:id="@+id/language"
-                    style="@style/TextAppearance.AppCompat.Small"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/spacing_normal"
-                    android:visibility="gone"
-                    tools:text="Java"
-                    tools:visibility="visible"/>
+                    android:orientation="horizontal">
+
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/date"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        tools:text="50 minutes ago"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/size"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        tools:text="50 minutes ago"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/language"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:visibility="gone"
+                        tools:text="Java"
+                        tools:visibility="visible"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/tagsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription=""
+                android:padding="@dimen/spacing_micro"
+                android:layout_marginRight="@dimen/spacing_xs_large"
+                android:src="@drawable/ic_tag"
+                android:visibility="gone"
+                tools:visibility="visible"/>
 
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:id="@+id/detailsIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top"
-            android:background="?selectableItemBackgroundBorderless"
-            android:contentDescription="@string/description"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_info_outline"
-            android:visibility="gone"
-            tools:visibility="visible"/>
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/detailsIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/description"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_info_outline"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+        </LinearLayout>
     </LinearLayout>
+
+    <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+        android:id="@+id/topicsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/avatar_margin_end"
+        android:layout_marginStart="@dimen/avatar_margin"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layoutManager="@string/linear_layout_manager"/>
 
 </LinearLayout>

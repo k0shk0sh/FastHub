@@ -13,13 +13,18 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.Transformation;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 
 import java.util.Arrays;
@@ -32,26 +37,11 @@ import java.util.List;
 
 public class AnimHelper {
 
-    public interface AnimationCallback {
-        void onAnimationEnd();
-
-        void onAnimationStart();
-    }
-
     private static final Interpolator FAST_OUT_LINEAR_IN_INTERPOLATOR = new FastOutLinearInInterpolator();
     private static final Interpolator LINEAR_OUT_SLOW_IN_INTERPOLATOR = new LinearOutSlowInInterpolator();
     private static final Interpolator interpolator = new LinearInterpolator();
 
     @UiThread private static void animateVisibility(@Nullable final View view, final boolean show, int visibility) {
-        animateVisibility(view, show, visibility, null);
-    }
-
-    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show) {
-        animateVisibility(view, show, View.GONE);
-    }
-
-    @UiThread private static void animateVisibility(@Nullable final View view, final boolean show, int visibility,
-                                                    @Nullable final AnimationCallback callback) {
         if (view == null) {
             return;
         }
@@ -59,23 +49,25 @@ public class AnimHelper {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override public boolean onPreDraw() {
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
-                    animateSafeVisibility(show, view, visibility, callback);
+                    animateSafeVisibility(show, view, visibility);
                     return true;
                 }
             });
         } else {
-            animateSafeVisibility(show, view, visibility, callback);
+            animateSafeVisibility(show, view, visibility);
         }
     }
 
-    @UiThread private static void animateSafeVisibility(final boolean show, @NonNull final View view, int visibility,
-                                                        @Nullable final AnimationCallback callback) {
+    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show) {
+        animateVisibility(view, show, View.GONE);
+    }
+
+    @UiThread private static void animateSafeVisibility(final boolean show, @NonNull final View view, int visibility) {
         view.animate().cancel();
         ViewPropertyAnimator animator = view.animate().setDuration(200).alpha(show ? 1F : 0F).setInterpolator(new AccelerateInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override public void onAnimationStart(Animator animation) {
                         super.onAnimationStart(animation);
-                        if (callback != null) callback.onAnimationStart();
                         if (show) {
                             view.setScaleX(1);
                             view.setScaleY(1);
@@ -90,7 +82,6 @@ public class AnimHelper {
                             view.setScaleX(0);
                             view.setScaleY(0);
                         }
-                        if (callback != null) callback.onAnimationEnd();
                         animation.removeListener(this);
                         view.clearAnimation();
                     }
@@ -218,5 +209,77 @@ public class AnimHelper {
             view.setVisibility(View.GONE);
             if (listener != null) listener.onHidden(null);
         }
+    }
+
+    public static void expand(final View view) {
+        view.measure(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        final int target = view.getMeasuredHeight();
+        Log.d(AnimHelper.class.getSimpleName(), target+"");
+
+        view.getLayoutParams().height = 1;
+        view.setVisibility(View.VISIBLE);
+        Animation anim = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float time, Transformation t) {
+                view.getLayoutParams().height = time == 1
+                        ? LinearLayout.LayoutParams.WRAP_CONTENT
+                        : (int)(target * time);
+                view.requestLayout();
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        anim.setDuration((int)(target / view.getContext().getResources().getDisplayMetrics().density));
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                view.invalidate();
+                if(view instanceof RecyclerView)
+                    ((RecyclerView)view).getAdapter().notifyDataSetChanged();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        anim.setInterpolator(FAST_OUT_LINEAR_IN_INTERPOLATOR);
+        view.startAnimation(anim);
+    }
+
+    public static void collapse(final View view) {
+        final int initialHeight = view.getMeasuredHeight();
+
+        Animation anim = new Animation()
+        {
+            @Override
+            protected void applyTransformation(float time, Transformation t) {
+                if(time == 1){
+                    view.setVisibility(View.GONE);
+                }else{
+                    view.getLayoutParams().height = initialHeight - (int)(initialHeight * time);
+                    view.requestLayout();
+                }
+            }
+
+            @Override
+            public boolean willChangeBounds() {
+                return true;
+            }
+        };
+
+        anim.setDuration((int)(initialHeight / view.getContext().getResources().getDisplayMetrics().density));
+        anim.setInterpolator(FAST_OUT_LINEAR_IN_INTERPOLATOR);
+        view.startAnimation(anim);
     }
 }

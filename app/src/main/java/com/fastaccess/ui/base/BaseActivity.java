@@ -44,7 +44,7 @@ import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
-import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
+import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -70,7 +70,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
-    @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
+    @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+
+    private static int REFRESH_CODE = 64;
 
     private long backPressTimer;
     private Toast toast;
@@ -271,7 +273,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onOpenSettings() {
-        SettingsBottomSheetDialog.show(getSupportFragmentManager());
+        startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode==REFRESH_CODE)
+            if(resultCode==RESULT_OK)
+                recreate();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     protected void selectHome(boolean hideRepo) {
@@ -375,10 +385,113 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     private void setupTheme() {
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
+        int themeColor = PrefGetter.getThemeColor(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {
-            setTheme(R.style.ThemeLight);
+            switch (themeColor) {
+                case PrefGetter.RED:
+                    setTheme(R.style.ThemeLight_Red);
+                    break;
+                case PrefGetter.PINK:
+                    setTheme(R.style.ThemeLight_Pink);
+                    break;
+                case PrefGetter.PURPLE:
+                    setTheme(R.style.ThemeLight_Purple);
+                    break;
+                case PrefGetter.DEEP_PURPLE:
+                    setTheme(R.style.ThemeLight_DeepPurple);
+                    break;
+                case PrefGetter.INDIGO:
+                    setTheme(R.style.ThemeLight_Indigo);
+                    break;
+                case PrefGetter.BLUE:
+                    setTheme(R.style.ThemeLight);
+                    break;
+                case PrefGetter.LIGHT_BLUE:
+                    setTheme(R.style.ThemeLight_LightBlue);
+                    break;
+                case PrefGetter.CYAN:
+                    setTheme(R.style.ThemeLight_Cyan);
+                    break;
+                case PrefGetter.TEAL:
+                    setTheme(R.style.ThemeLight_Teal);
+                    break;
+                case PrefGetter.GREEN:
+                    setTheme(R.style.ThemeLight_Green);
+                    break;
+                case PrefGetter.LIGHT_GREEN:
+                    setTheme(R.style.ThemeLight_LightGreen);
+                    break;
+                case PrefGetter.LIME:
+                    setTheme(R.style.ThemeLight_Lime);
+                    break;
+                case PrefGetter.YELLOW:
+                    setTheme(R.style.ThemeLight_Yellow);
+                    break;
+                case PrefGetter.AMBER:
+                    setTheme(R.style.ThemeLight_Amber);
+                    break;
+                case PrefGetter.ORANGE:
+                    setTheme(R.style.ThemeLight_Orange);
+                    break;
+                case PrefGetter.DEEP_ORANGE:
+                    setTheme(R.style.ThemeLight_DeepOrange);
+                    break;
+                default:
+                    setTheme(R.style.ThemeLight);
+            }
         } else if (themeMode == PrefGetter.DARK) {
-            setTheme(R.style.ThemeDark);
+            switch (themeColor) {
+                case PrefGetter.RED:
+                    setTheme(R.style.ThemeDark_Red);
+                    break;
+                case PrefGetter.PINK:
+                    setTheme(R.style.ThemeDark_Pink);
+                    break;
+                case PrefGetter.PURPLE:
+                    setTheme(R.style.ThemeDark_Purple);
+                    break;
+                case PrefGetter.DEEP_PURPLE:
+                    setTheme(R.style.ThemeDark_DeepPurple);
+                    break;
+                case PrefGetter.INDIGO:
+                    setTheme(R.style.ThemeDark_Indigo);
+                    break;
+                case PrefGetter.BLUE:
+                    setTheme(R.style.ThemeDark);
+                    break;
+                case PrefGetter.LIGHT_BLUE:
+                    setTheme(R.style.ThemeDark_LightBlue);
+                    break;
+                case PrefGetter.CYAN:
+                    setTheme(R.style.ThemeDark_Cyan);
+                    break;
+                case PrefGetter.TEAL:
+                    setTheme(R.style.ThemeDark_Teal);
+                    break;
+                case PrefGetter.GREEN:
+                    setTheme(R.style.ThemeDark_Green);
+                    break;
+                case PrefGetter.LIGHT_GREEN:
+                    setTheme(R.style.ThemeDark_LightGreen);
+                    break;
+                case PrefGetter.LIME:
+                    setTheme(R.style.ThemeDark_Lime);
+                    break;
+                case PrefGetter.YELLOW:
+                    setTheme(R.style.ThemeDark_Yellow);
+                    break;
+                case PrefGetter.AMBER:
+                    setTheme(R.style.ThemeDark_Amber);
+                    break;
+                case PrefGetter.ORANGE:
+                    setTheme(R.style.ThemeDark_Orange);
+                    break;
+                case PrefGetter.DEEP_ORANGE:
+                    setTheme(R.style.ThemeDark_DeepOrange);
+                    break;
+                default:
+                    setTheme(R.style.ThemeDark);
+            }
         }
         setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
                 BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(this)));

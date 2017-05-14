@@ -24,7 +24,6 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
@@ -150,7 +149,6 @@ public class NotificationSchedulerJobTask extends JobService {
     private void finishJob(JobParameters job) {
         long duration = PrefGetter.getNotificationTaskDuration(getApplicationContext());
         boolean reschedule = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && duration < JobInfo.getMinPeriodMillis();
-        Logger.e(reschedule);
         if (reschedule) {
             scheduleJob(getApplicationContext());
         }

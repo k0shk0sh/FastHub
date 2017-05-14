@@ -1,6 +1,6 @@
 # How to contribute & build *FastHub*
 
-If you have a question in mind, feel free to come our public [Slack](https://fasthub.herokuapp.com) channel.
+If you have a question in mind, feel free to come our public [Slack](https://rebrand.ly/fasthub) channel.
 
 ### Registering GitHub Account
 

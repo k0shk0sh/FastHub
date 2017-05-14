@@ -92,6 +92,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
@@ -125,6 +126,8 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

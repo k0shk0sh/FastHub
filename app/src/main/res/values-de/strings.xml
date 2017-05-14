@@ -319,6 +319,7 @@
     <string name="support_with_10_00">Unterstützen mit 10$</string>
     <string name="support_with_20_00">Unterstützen mit 20$</string>
     <string name="app_language">App Sprache</string>
+    <string name="language">Sprache</string>
     <string name="choose_language_title">Spracheinstellung</string>
     <string name="choose_language_summary">Wähle deine bevorzugte Sprache</string>
     <string name="un_subscribe">Deabbonieren</string>
@@ -333,7 +334,7 @@
     <string name="paths_only">In Dateipfaden</string>
     <string name="review_requests">Anfragen überprüfen</string>
     <string name="join_slack">Slackgruppe beitreten</string>
-    <string name="join_slack_message" formatted="true">Möchtest du der FastHub Slackgruppe beitreten?\nEin Link wird an %s geschickt.</string>
+    <string name="join_slack_message">Möchtest du der FastHub Slackgruppe beitreten?</string>
     <string name="successfully_invited">Erfolgreich eingeladen!</string>
     <string name="reply">Antworten</string>
     <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>

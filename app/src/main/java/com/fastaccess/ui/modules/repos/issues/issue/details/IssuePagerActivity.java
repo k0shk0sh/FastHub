@@ -189,7 +189,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), "MilestoneDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
-            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getLogin(), true)
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId(), true)
                     .show(getSupportFragmentManager(), "AssigneesDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.subscribe) {
