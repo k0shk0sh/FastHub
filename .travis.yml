@@ -12,6 +12,9 @@ jdk: oraclejdk8
 
 sudo: required
 
+before_script:
+  - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;26.0.0-rc1" --channel=2 
+
 script:
   - ./gradlew clean assembleFdroidDebug
   - ./gradlew clean assembleGmsDebug
