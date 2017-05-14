@@ -338,6 +338,15 @@
     <string name="successfully_invited">Erfolgreich eingeladen!</string>
     <string name="reply">Antworten</string>
     <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>
+	<string name="want_to_merge">möchte mergen</string>
+    <string name="watchers">Betrachter</string>
+    <string name="reviewers">Reviewer</string>
+    <string name="no_reviewers">Keine Reviewer</string>
+    <string name="sent_from_fasthub">Gesendet von meinem %1$s mit %2$s%3$s</string>
+    <string name="enable_signature">Signatur aktivieren</string>
+    <string name="enable_signature_summary">&quot;Gesendet via&quot;-Signatur aktivieren</string>
+    <string name="enable_signature_box">Signaturbox aktivieren</string>
+    <string name="enable_signature_box_summary">Häkchen setzen, damit die Signatur im Editor angezeigt wird</string>
 </resources>
 
 
