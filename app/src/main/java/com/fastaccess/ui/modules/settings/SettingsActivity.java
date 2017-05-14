@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.settings;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,6 +18,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.adapter.SettingsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.settings.category.SettingsCategoryActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -83,45 +85,9 @@ public class SettingsActivity extends BaseActivity {
     }
 
     private void showLanguageList() {
-        final String language = PrefHelper.getString("app_language");
-
-        String names[] = getResources().getStringArray(R.array.languages_array);
-        String values[] = getResources().getStringArray(R.array.languages_array_values);
-
-        int selected = Arrays.asList(values).indexOf(PrefHelper.getString("app_language"));
-
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingsActivity.this);
-        LayoutInflater inflater = getLayoutInflater();
-        View convertView = inflater.inflate(R.layout.dialog_picker, null);
-        alertDialog.setView(convertView);
-        alertDialog.setTitle("List");
-        RadioGroup radioGroup = (RadioGroup) convertView.findViewById(R.id.picker);
-        radioGroup.setPadding((int) getResources().getDimension(R.dimen.spacing_xs_large), (int) getResources().getDimension(R.dimen
-                        .spacing_xs_large),
-                (int) getResources().getDimension(R.dimen.spacing_xs_large), (int) getResources().getDimension(R.dimen.spacing_xs_large));
-        for (int i = 0; i < names.length; i++) {
-            RadioButton radioButtonView = new RadioButton(this);
-            radioButtonView.setText(names[i]);
-            radioButtonView.setId(i);
-            radioButtonView.setGravity(Gravity.CENTER_VERTICAL);
-            radioButtonView.setPadding((int) getResources().getDimension(R.dimen.spacing_xs_large), (int) getResources().getDimension(R.dimen
-                            .spacing_xs_large),
-                    (int) getResources().getDimension(R.dimen.spacing_xs_large), (int) getResources().getDimension(R.dimen.spacing_xs_large));
-            radioGroup.addView(radioButtonView);
-            if (i == selected)
-                radioGroup.check(i);
-        }
-
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            int index = radioGroup.indexOfChild(radioGroup.findViewById(radioGroup.getCheckedRadioButtonId()));
-
-            PrefHelper.set("app_language", values[index]);
-            if (language != values[index])
-                setResult(RESULT_OK);
-        });
-
-        alertDialog.setView(convertView);
-        alertDialog.show();
+        LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
+        languageBottomSheetDialog.onAttach((Context) this);
+        languageBottomSheetDialog.show(getSupportFragmentManager(), "LanguageBottomSheetDialog");
     }
 
     @Override

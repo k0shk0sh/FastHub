@@ -7,11 +7,6 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
  */
 
 public interface SettingsCategoryMvp {
-	interface View extends BaseMvp.FAView {
-		@Override
-		void onThemeChanged();
-	}
-
 	interface Presenter extends BaseMvp.FAPresenter {
 
 	}

@@ -89,6 +89,7 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         stateLayout.setEmptyText(R.string.no_labels);
         recycler.setEmptyView(stateLayout);
+        recycler.addKeyLineDivider();
         title.setText(R.string.labels);
         add.setVisibility(View.VISIBLE);
         List<LabelModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);

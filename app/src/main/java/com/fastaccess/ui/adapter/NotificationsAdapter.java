@@ -9,7 +9,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.ui.adapter.viewholder.NotificationsHeaderViewHolder;
 import com.fastaccess.ui.adapter.viewholder.NotificationsViewHolder;
-import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -46,9 +45,10 @@ public class NotificationsAdapter extends BaseRecyclerAdapter<GroupedNotificatio
     @Override protected void onBindView(BaseViewHolder holder, int position) {
         if (getItemViewType(position) == GroupedNotificationModel.HEADER) {
             ((NotificationsHeaderViewHolder) holder).bind(getItem(position));
-            if(hideClear)
-                if(getItem(Math.min(position+1, getItemCount()-1)).getNotification().isUnread())
+            if (hideClear)
+                if (getItem(Math.min(position + 1, getItemCount() - 1)).getNotification().isUnread()) {
                     (((NotificationsHeaderViewHolder) holder).itemView).findViewById(R.id.markAsRead).setVisibility(View.VISIBLE);
+                }
         } else {
             ((NotificationsViewHolder) holder).bind(getItem(position));
         }

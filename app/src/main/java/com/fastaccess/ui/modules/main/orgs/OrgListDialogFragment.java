@@ -68,12 +68,15 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new UsersAdapter(getPresenter().getOrgs());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         if (savedInstanceState == null) {
             getPresenter().onLoadOrgs();
         }
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

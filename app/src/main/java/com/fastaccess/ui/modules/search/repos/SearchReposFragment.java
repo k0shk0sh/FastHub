@@ -29,7 +29,7 @@ import icepick.State;
 
 public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, SearchReposPresenter> implements SearchReposMvp.View {
 
-    @State String searchQuery;
+    @State String searchQuery = "";
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
@@ -105,7 +105,7 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -140,6 +140,10 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
     }
 
     @Override public void onRefresh() {
+        if(searchQuery.length()==0){
+            refresh.setRefreshing(false);
+            return;
+        }
         getPresenter().onCallApi(1, searchQuery);
     }
 

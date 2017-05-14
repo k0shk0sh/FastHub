@@ -1,13 +1,18 @@
 package com.fastaccess.ui.adapter;
 
+import android.content.Intent;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.view.ViewGroup;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.viewholder.SimpleViewHolder;
+import com.fastaccess.ui.modules.search.SearchActivity;
+import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -35,6 +40,12 @@ public class TopicsAdapter extends BaseRecyclerAdapter<String, SimpleViewHolder<
         if (isLightTheme) {
             holder.itemView.setBackgroundColor(cardBackground);
         }
+        holder.itemView.setOnClickListener((view) -> {
+            FontTextView topic = (FontTextView) view;
+            Intent intent = new Intent(new Intent(App.getInstance().getApplicationContext(), SearchActivity.class));
+            intent.putExtra("search", topic.getText().toString());
+            ActivityHelper.getActivity(view.getContext()).startActivity(intent);
+        });
         holder.bind(getItem(position));
     }
 }

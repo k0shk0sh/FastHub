@@ -80,6 +80,7 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
         stateLayout.setOnReloadListener(v -> onRefresh());
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addDivider(NotificationsViewHolder.class);
         if (savedInstanceState == null || !getPresenter().isApiCalled()) {
             onRefresh();
@@ -91,6 +92,8 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

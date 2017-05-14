@@ -2,6 +2,8 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -50,11 +52,13 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.reactionsText) TextView reactionsText;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
+    private ViewGroup viewGroup;
 
-    private IssueDetailsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
+    private IssueDetailsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
                                    @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
+        this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
@@ -76,7 +80,8 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
 
     public static IssueDetailsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
                                                      @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
-        return new IssueDetailsViewHolder(getView(viewGroup, R.layout.issue_detail_header_row_item), adapter, onToggleView, reactionsCallback);
+        return new IssueDetailsViewHolder(getView(viewGroup, R.layout.issue_detail_header_row_item), viewGroup,
+                adapter, onToggleView, reactionsCallback);
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {
@@ -85,7 +90,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         } else if (timelineModel.getPullRequest() != null) {
             bind(timelineModel.getPullRequest());
         }
-        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()));
+        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()), false);
     }
 
     @Override public void onClick(View v) {
@@ -93,7 +98,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
             if (onToggleView != null) {
                 int position = getAdapterPosition();
                 onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-                onToggle(onToggleView.isCollapsed(position));
+                onToggle(onToggleView.isCollapsed(position), true);
             }
         } else {
             addReactionCount(v);
@@ -251,7 +256,10 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
-    private void onToggle(boolean expanded) {
+    private void onToggle(boolean expanded, boolean animate) {
+        if (animate) {
+            TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
+        }
         toggle.setRotation(!expanded ? 0.0F : 180F);
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(reactionsText)) {

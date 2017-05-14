@@ -28,7 +28,7 @@ import icepick.State;
  */
 
 public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, SearchUsersPresenter> implements SearchUsersMvp.View {
-    @State String searchQuery;
+    @State String searchQuery = "";
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
@@ -103,7 +103,7 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -138,6 +138,10 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
     }
 
     @Override public void onRefresh() {
+        if(searchQuery.length()==0){
+            refresh.setRefreshing(false);
+            return;
+        }
         getPresenter().onCallApi(1, searchQuery);
     }
 
