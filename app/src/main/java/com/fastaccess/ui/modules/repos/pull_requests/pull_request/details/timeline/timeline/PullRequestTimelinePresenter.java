@@ -57,7 +57,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                         if (item1.getItemId() == R.id.delete) {
                             getView().onShowDeleteMsg(item.getComment().getId(), false);
                         } else if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getComment().getUser());
+                            getView().onReply(item.getComment().getUser(), item.getComment().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             getView().onEditComment(item.getComment());
                         } else if (item1.getItemId() == R.id.share) {
@@ -85,7 +85,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
                         if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getPullRequest().getUser());
+                            getView().onReply(item.getPullRequest().getUser(), item.getPullRequest().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             Activity activity = ActivityHelper.getActivity(v.getContext());
                             if (activity == null) return false;
@@ -254,7 +254,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 if (item1.getItemId() == R.id.delete) {
                     getView().onShowDeleteMsg(comment.getId(), true);
                 } else if (item1.getItemId() == R.id.reply) {
-                    getView().onTagUser(comment.getUser());
+                    getView().onReply(comment.getUser(), comment.getBodyHtml());
                 } else if (item1.getItemId() == R.id.edit) {
                     getView().onEditReviewComment(comment);
                 } else if (item1.getItemId() == R.id.share) {

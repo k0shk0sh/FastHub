@@ -150,7 +150,6 @@ public class ViewHelper {
 
     public static boolean isTablet(@NonNull Activity activity) {
         DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
         float yInches = metrics.heightPixels / metrics.ydpi;
         float xInches = metrics.widthPixels / metrics.xdpi;
