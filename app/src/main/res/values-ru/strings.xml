@@ -193,7 +193,7 @@
     <string name="switch_branch">Переключить ветвь</string>
     <string name="assignees">Назначения</string>
     <string name="edit">Редактировать</string>
-    <string name="edited">( отредактировано )</string>
+    <string name="edited">\u2022 отредактировано</string>
     <string name="update_issue">Обновить Вопрос</string>
     <string name="update_pull_request">Обновить Запрос на слияние</string>
     <string name="no_milestones">Нет тегов</string>
@@ -331,6 +331,7 @@
     <string name="open_source_libs">Библиотеки с открытым исходным кодом</string>
     <string name="enable_notification_sound_summary">Включить звуковые опевещения при получении новых уведомлений.</string>
     <string name="enable_notification_sound_title">Включить звуковые опевещения</string>
+    <string name="enable_notification_title">Включить уведомления</string>
     <string name="login_with_personal_token">Войти при помощи личного токена</string>
     <string name="personal_token">Личный токен</string>
     <string name="basic_login">Войти через основную форму авторизации</string>
