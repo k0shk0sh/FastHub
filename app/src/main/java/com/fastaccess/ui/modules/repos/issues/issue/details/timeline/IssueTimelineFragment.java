@@ -79,8 +79,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         participants.clear();
         participants.addAll(hashSet);
 
-        System.out.println("READ THIS: " + participants);
-
         if (items == null || items.isEmpty()) {
             adapter.clear();
             return;
