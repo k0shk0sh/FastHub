@@ -2,15 +2,12 @@ package com.fastaccess.ui.modules.repos.issues.issue.details.timeline;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.View;
 
-import com.annimon.stream.Collectors;
-import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.TimelineModel;
@@ -21,6 +18,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
@@ -33,9 +31,6 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -51,10 +46,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.fastScroller) RecyclerFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-    private IssuePullsTimelineAdapter adapter;
     @State SparseBooleanArrayParcelable sparseBooleanArray;
-
-    private ArrayList<String> participants;
+    private IssuePullsTimelineAdapter adapter;
 
     public static IssueTimelineFragment newInstance(@NonNull Issue issueModel) {
         IssueTimelineFragment view = new IssueTimelineFragment();
@@ -68,17 +61,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items) {
         hideProgress();
-
-        participants = null;
-        participants = (ArrayList<String>) Stream.of(items)
-                .filter(value -> value.getType() == TimelineModel.COMMENT)
-                .map(value -> value.getComment()).map(comment-> comment.getUser().getLogin())
-                .collect(Collectors.toList());
-        HashSet<String> hashSet = new HashSet<String>();
-        hashSet.addAll(participants);
-        participants.clear();
-        participants.addAll(hashSet);
-
         if (items == null || items.isEmpty()) {
             adapter.clear();
             return;
@@ -145,7 +127,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_ISSUE_COMMENT_EXTRA)
-                .putStringArrayList("participants", participants)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -165,7 +147,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 Bundler.start()
                         .put(BundleConstant.EXTRA, id)
                         .put(BundleConstant.YES_NO_EXTRA, true)
-                        .putStringArrayList("participants", participants)
+                        .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }
@@ -179,7 +161,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 .put(BundleConstant.EXTRA_THREE, getPresenter().number())
                 .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
-                .putStringArrayList("participants", participants)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -194,7 +176,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 .put(BundleConstant.EXTRA_THREE, getPresenter().number())
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
-                .putStringArrayList("participants", participants)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
