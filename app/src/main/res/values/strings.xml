@@ -222,7 +222,7 @@
     <string name="switch_branch">Switch branch</string>
     <string name="assignees">Assignees</string>
     <string name="edit">Edit</string>
-    <string name="edited">( edited )</string>
+    <string name="edited">\u2022 edited</string>
     <string name="update_issue">Update Issue</string>
     <string name="update_pull_request">Update Pull Request</string>
     <string name="no_milestones">No milestones</string>
