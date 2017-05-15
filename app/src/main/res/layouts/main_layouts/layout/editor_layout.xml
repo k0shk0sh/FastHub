@@ -26,6 +26,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/replyQuoteText"
+                    android:textIsSelectable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.6"

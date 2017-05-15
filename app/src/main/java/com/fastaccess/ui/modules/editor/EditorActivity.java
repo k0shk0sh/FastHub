@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
@@ -28,6 +29,7 @@ import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
 import com.fastaccess.ui.widgets.FontEditText;
+import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
@@ -36,6 +38,8 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import icepick.State;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+
+import static android.view.View.GONE;
 
 /**
  * Created by Kosh on 27 Nov 2016, 1:32 AM
@@ -46,6 +50,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     private String sentFromFastHub;
 
     private CharSequence savedText = "";
+    @BindView(R.id.replyQuote) LinearLayout replyQuote;
+    @BindView(R.id.replyQuoteText) FontTextView quote;
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
@@ -122,7 +128,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         setToolbarIcon(R.drawable.ic_clear);
         sentFromFastHub = "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
-        sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : View.GONE);
+        sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : GONE);
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
         sentVia.setOnCheckedChangeListener((buttonView, isChecked) -> {
             PrefHelper.set("sent_via", isChecked);
@@ -148,6 +154,10 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     editText.setText(String.format("%s ", textToUpdate));
                     editText.setSelection(InputHelper.toString(editText).length());
                 }
+                if(bundle.getString("message", "").isEmpty())
+                    replyQuote.setVisibility(GONE);
+                else
+                    MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
             }
         }
         if (!PrefGetter.isEditorHintShowed()) {

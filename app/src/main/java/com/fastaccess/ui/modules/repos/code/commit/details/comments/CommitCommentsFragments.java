@@ -179,6 +179,21 @@ refresh.setRefreshing(true);
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
+    @Override public void onReply(User user, String message) {
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, getPresenter().repoId())
+                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
+                .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
+                .put(BundleConstant.EXTRA, "@" + user.getLogin())
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
+                .put("message", message)
+                .end());
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+    }
+
     @Override public void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId) {
         ReactionsDialogFragment.newInstance(login, repoId, reactionTypes, commentId, ReactionsProvider.COMMIT)
                 .show(getChildFragmentManager(), "ReactionsDialogFragment");
