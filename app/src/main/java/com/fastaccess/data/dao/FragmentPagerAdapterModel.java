@@ -10,9 +10,11 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.dao.types.MyIssuesType;
+import com.fastaccess.ui.modules.gists.GistsFragment;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
 import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
@@ -156,6 +158,12 @@ import lombok.Setter;
 
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.unread), new UnreadNotificationsFragment()),
                 new FragmentPagerAdapterModel(context.getString(R.string.all), new AllNotificationsFragment())).collect(Collectors.toList());
+    }
+
+    public static List<FragmentPagerAdapterModel> buildForGists(@NonNull Context context) {
+
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.my_gists), ProfileGistsFragment.newInstance(Login.getUser().getLogin())),
+                new FragmentPagerAdapterModel(context.getString(R.string.public_gists), GistsFragment.newInstance())).collect(Collectors.toList());
     }
 
     public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {

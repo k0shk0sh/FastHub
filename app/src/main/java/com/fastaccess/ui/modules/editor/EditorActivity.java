@@ -11,8 +11,10 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.ActivityHelper;
@@ -27,15 +29,20 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
-import com.fastaccess.ui.widgets.FontEditText;
+import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
+import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig;
+import com.linkedin.android.spyglass.ui.MentionsEditText;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import es.dmoral.toasty.Toasty;
 import icepick.State;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+
+import static android.view.View.GONE;
 
 /**
  * Created by Kosh on 27 Nov 2016, 1:32 AM
@@ -45,11 +52,20 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     private String sentFromFastHub;
 
+    private static final WordTokenizerConfig tokenizerConfig = new WordTokenizerConfig
+            .Builder()
+            .setThreshold(1)
+            .build();
+
     private CharSequence savedText = "";
+    @BindView(R.id.replyQuote) LinearLayout replyQuote;
+    @BindView(R.id.replyQuoteText) FontTextView quote;
     @BindView(R.id.view) ForegroundImageView viewCode;
-    @BindView(R.id.editText) FontEditText editText;
+    @BindView(R.id.editText) MentionsEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
     @BindView(R.id.sentVia) CheckBox sentVia;
+    @BindView(R.id.autocomplete)
+    ListView mention;
 
     @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
@@ -112,6 +128,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
         } else if (v.getId() == R.id.image) {
             EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
+            if(BuildConfig.DEBUG)
+                // Doesn't need a string, will only show up in debug.
+                Toasty.warning(this, "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
         } else {
             getPresenter().onActionClicked(editText, v.getId());
         }
@@ -122,7 +141,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         setToolbarIcon(R.drawable.ic_clear);
         sentFromFastHub = "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
-        sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : View.GONE);
+        sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : GONE);
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
         sentVia.setOnCheckedChangeListener((buttonView, isChecked) -> {
             PrefHelper.set("sent_via", isChecked);
@@ -147,6 +166,11 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 if (!InputHelper.isEmpty(textToUpdate)) {
                     editText.setText(String.format("%s ", textToUpdate));
                     editText.setSelection(InputHelper.toString(editText).length());
+                }
+                if(bundle.getString("message", "").isEmpty())
+                    replyQuote.setVisibility(GONE);
+                else {
+                    MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
                 }
             }
         }
@@ -250,6 +274,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (isLink) {
             MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link));
         } else {
+            editText.append("\n");
             MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
         }
     }

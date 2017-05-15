@@ -31,6 +31,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private String app_lauguage;
 
     private Preference signatureVia;
+    private Preference notificationTime;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -45,7 +46,11 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         switch (settings) {
             case 0:
                 addPreferencesFromResource(R.xml.notification_settings);
+                notificationTime = findPreference("notificationTime");
                 findPreference("notificationTime").setOnPreferenceChangeListener(this);
+                findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
+                if(!PrefHelper.getBoolean("notificationEnabled"))
+                    getPreferenceScreen().removePreference(notificationTime);
                 break;
             case 1:
                 addPreferencesFromResource(R.xml.behaviour_settings);
@@ -87,7 +92,17 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     }
 
     @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
-        if (preference.getKey().equalsIgnoreCase("notificationTime")) {
+        if (preference.getKey().equalsIgnoreCase("notificationEnabled")) {
+            if ((boolean)newValue) {
+                getPreferenceScreen().addPreference(notificationTime);
+                NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
+                        PrefGetter.notificationDurationMillis(getActivity().getApplicationContext(), PrefHelper.getString("notificationTime")), true);
+            } else {
+                getPreferenceScreen().removePreference(notificationTime);
+                NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(), -1, true);
+            }
+            return true;
+        } else if (preference.getKey().equalsIgnoreCase("notificationTime")) {
             NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
                     PrefGetter.notificationDurationMillis(getActivity().getApplicationContext(), (String) newValue), true);
             return true;

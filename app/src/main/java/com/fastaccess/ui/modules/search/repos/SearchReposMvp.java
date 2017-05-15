@@ -25,6 +25,8 @@ interface SearchReposMvp {
 
         void onSetSearchQuery(@NonNull String query);
 
+        void onQueueSearch(@NonNull String query);
+
         @NonNull OnLoadMore<String> getLoadMore();
     }
 

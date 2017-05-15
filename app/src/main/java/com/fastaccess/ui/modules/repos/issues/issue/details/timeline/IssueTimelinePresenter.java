@@ -79,7 +79,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                         if (item1.getItemId() == R.id.delete) {
                             getView().onShowDeleteMsg(item.getComment().getId());
                         } else if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getComment().getUser());
+                            getView().onReply(item.getComment().getUser(), item.getComment().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             getView().onEditComment(item.getComment());
                         } else if (item1.getItemId() == R.id.share) {
@@ -106,7 +106,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
                         if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getIssue().getUser());
+                            getView().onReply(item.getIssue().getUser(), item.getIssue().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             Activity activity = ActivityHelper.getActivity(v.getContext());
                             if (activity == null) return false;

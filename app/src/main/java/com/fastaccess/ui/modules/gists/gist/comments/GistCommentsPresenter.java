@@ -115,7 +115,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                 if (item1.getItemId() == R.id.delete) {
                     getView().onShowDeleteMsg(item.getId());
                 } else if (item1.getItemId() == R.id.reply) {
-                    getView().onTagUser(item.getUser());
+                    getView().onReply(item.getUser(), item.getBody());
                 } else if (item1.getItemId() == R.id.edit) {
                     getView().onEditComment(item);
                 }

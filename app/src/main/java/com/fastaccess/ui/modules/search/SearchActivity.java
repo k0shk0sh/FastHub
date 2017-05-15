@@ -109,6 +109,7 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
         if(getIntent().hasExtra("search")){
             searchEditText.setText(getIntent().getStringExtra("search"));
             onTextChange(searchEditText.getEditableText());
+            getPresenter().onSearchClicked(pager, searchEditText);
         }
     }
 

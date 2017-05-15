@@ -222,7 +222,7 @@
     <string name="switch_branch">Switch branch</string>
     <string name="assignees">Assignees</string>
     <string name="edit">Edit</string>
-    <string name="edited">( edited )</string>
+    <string name="edited">\u2022 edited</string>
     <string name="update_issue">Update Issue</string>
     <string name="update_pull_request">Update Pull Request</string>
     <string name="no_milestones">No milestones</string>
@@ -388,6 +388,7 @@
     <string name="open_source_libs">Open source libraries</string>
     <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
     <string name="enable_notification_sound_title">Enable notification sound</string>
+    <string name="enable_notification_title">Enable notification</string>
     <string name="login_with_personal_token">Login with personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>

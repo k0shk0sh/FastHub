@@ -5,16 +5,20 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
+import com.fastaccess.ui.widgets.ViewPagerView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -28,6 +32,11 @@ import icepick.State;
 
 public class GistsListActivity extends BaseActivity {
 
+    @BindView(R.id.tabs)
+    TabLayout tabs;
+    @BindView(R.id.gistsContainer)
+    ViewPagerView pager;
+
     public static void startActivity(@NonNull Context context, boolean myGists) {
         Intent intent = new Intent(context, GistsListActivity.class);
         intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, myGists).end());
@@ -39,7 +48,7 @@ public class GistsListActivity extends BaseActivity {
     @BindView(R.id.fab) FloatingActionButton fab;
 
     @Override protected int layout() {
-        return R.layout.toolbar_activity_layout;
+        return R.layout.gists_activity_layout;
     }
 
     @Override protected boolean isTransparent() {
@@ -60,17 +69,23 @@ public class GistsListActivity extends BaseActivity {
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState == null) {
-            myGists = getIntent().getExtras().getBoolean(BundleConstant.EXTRA);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragmentContainer, myGists ? ProfileGistsFragment.newInstance(Login.getUser().getLogin())
-                                                             : GistsFragment.newInstance(), GistsFragment.TAG)
-                    .commit();
-        }
-        selectGists(!myGists);
-        setTitle(myGists ? R.string.my_gists : R.string.public_gists);
+        setTitle(R.string.gists);
+        setupTabs();
         fab.show();
+    }
+
+    private void setupTabs() {
+        TabLayout.Tab tab1 = getTab(R.string.my_gists);
+        TabLayout.Tab tab2 = getTab(R.string.public_gists);
+        tabs.addTab(tab1);
+        tabs.addTab(tab2);
+        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapterModel.buildForGists(this)));
+        tabs.setupWithViewPager(pager);
+    }
+
+    private TabLayout.Tab getTab(int titleId) {
+        return tabs.newTab().setText(titleId);
     }
 
     @OnClick(R.id.fab) public void onViewClicked() {

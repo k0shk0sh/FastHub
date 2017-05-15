@@ -14,16 +14,24 @@ import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog;
 import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
+import com.fastaccess.ui.widgets.FontEditText;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +46,7 @@ import icepick.State;
 
 public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> implements LoginMvp.View {
 
-
+    @Nullable @BindView(R.id.language_selector) RelativeLayout language_selector;
     @Nullable @BindView(R.id.usernameEditText) TextInputEditText usernameEditText;
     @Nullable @BindView(R.id.username) TextInputLayout username;
     @Nullable @BindView(R.id.passwordEditText) TextInputEditText passwordEditText;
@@ -82,6 +90,10 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     @Optional @OnEditorAction(R.id.twoFactorEditText) public boolean onSend2FA() {
         doLogin();
         return true;
+    }
+
+    @Optional @OnClick(R.id.language_selector_clicker) public void onChangeLanguage() {
+        showLanguage();
     }
 
     @Override protected int layout() {
@@ -139,6 +151,20 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
             }
         }
         if (password != null) password.setHint(isBasicAuth ? getString(R.string.password) : getString(R.string.access_token));
+        if (Arrays.asList(getResources().getStringArray(R.array.languages_array_values)).contains(Locale.getDefault().getLanguage())){
+            String language = PrefHelper.getString("app_language");
+            PrefHelper.set("app_language", Locale.getDefault().getLanguage());
+            if(!BuildConfig.DEBUG)
+                language_selector.setVisibility(View.GONE);
+            if(!Locale.getDefault().getLanguage().equals(language))
+                recreate();
+        }
+    }
+
+    private void showLanguage() {
+        LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
+        languageBottomSheetDialog.onAttach((Context) this);
+        languageBottomSheetDialog.show(getSupportFragmentManager(), "LanguageBottomSheetDialog");
     }
 
     @Override protected void onNewIntent(Intent intent) {

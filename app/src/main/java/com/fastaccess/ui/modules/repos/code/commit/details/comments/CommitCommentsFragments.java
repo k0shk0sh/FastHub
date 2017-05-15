@@ -2,6 +2,7 @@ package com.fastaccess.ui.modules.repos.code.commit.details.comments;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,8 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.TimelineModel;
@@ -28,6 +31,9 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,6 +52,8 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
 
     private IssuePullsTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
+
+    private ArrayList<String> participants;
 
     public static CommitCommentsFragments newInstance(@NonNull String login, @NonNull String repoId, @NonNull String sha) {
         CommitCommentsFragments view = new CommitCommentsFragments();
@@ -87,6 +95,17 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
 
     @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items, int page) {
         hideProgress();
+
+        participants = null;
+        participants = (ArrayList<String>) Stream.of(items)
+                .filter(value -> value.getType() == TimelineModel.COMMENT)
+                .map(value -> value.getComment()).map(comment-> comment.getUser().getLogin())
+                .collect(Collectors.toList());
+        HashSet<String> hashSet = new HashSet<String>();
+        hashSet.addAll(participants);
+        participants.clear();
+        participants.addAll(hashSet);
+
         if (items == null || items.isEmpty()) {
             adapter.clear();
             return;
@@ -147,6 +166,7 @@ refresh.setRefreshing(true);
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA)
+                .putStringArrayList("participants", participants)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -174,6 +194,23 @@ refresh.setRefreshing(true);
                 .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
                 .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
+                .putStringArrayList("participants", participants)
+                .end());
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+    }
+
+    @Override public void onReply(User user, String message) {
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, getPresenter().repoId())
+                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
+                .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
+                .put(BundleConstant.EXTRA, "@" + user.getLogin())
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
+                .putStringArrayList("participants", participants)
+                .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
