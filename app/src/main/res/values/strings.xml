@@ -388,6 +388,7 @@
     <string name="open_source_libs">Open source libraries</string>
     <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
     <string name="enable_notification_sound_title">Enable notification sound</string>
+    <string name="enable_notification_title">Enable notification</string>
     <string name="login_with_personal_token">Login with personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
