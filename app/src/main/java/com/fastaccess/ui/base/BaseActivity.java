@@ -212,8 +212,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             if (isFinishing()) return;
             if (item.getItemId() == R.id.navToRepo) {
                 onNavToRepoClicked();
-            } else if (item.getItemId() == R.id.fhRepo) {
-                startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
             } else if (item.getItemId() == R.id.supportDev) {
                 startActivity(new Intent(this, DonationActivity.class));
             } else if (item.getItemId() == R.id.gists) {
