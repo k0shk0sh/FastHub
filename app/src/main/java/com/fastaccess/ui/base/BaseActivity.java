@@ -35,6 +35,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.login.LoginChooserActivity;
@@ -216,8 +217,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 startActivity(new Intent(this, DonationActivity.class));
             } else if (item.getItemId() == R.id.gists) {
                 GistsListActivity.startActivity(this, false);
-            } else if (item.getItemId() == R.id.myGists) {
-                GistsListActivity.startActivity(this, true);
             } else if (item.getItemId() == R.id.pinnedMenu) {
                 PinnedReposActivity.startActivity(this);
             } else if (item.getItemId() == R.id.mainView) {
@@ -231,6 +230,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 onLogoutPressed();
             } else if (item.getItemId() == R.id.settings) {
                 onOpenSettings();
+            } else if (item.getItemId() == R.id.about) {
+                startActivity(new Intent(this, FastHubAboutActivity.class));
             } else if (item.getItemId() == R.id.orgs) {
                 onOpenOrgsDialog();
             } else if (item.getItemId() == R.id.notifications) {
@@ -300,15 +301,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (extraNav != null) {
             extraNav.getMenu().findItem(R.id.profile).setCheckable(true);
             extraNav.getMenu().findItem(R.id.profile).setChecked(true);
-        }
-    }
-
-    protected void selectGists(boolean publicGists) {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.gists).setCheckable(publicGists);
-            extraNav.getMenu().findItem(R.id.gists).setChecked(publicGists);
-            extraNav.getMenu().findItem(R.id.myGists).setCheckable(!publicGists);
-            extraNav.getMenu().findItem(R.id.myGists).setChecked(!publicGists);
         }
     }
 

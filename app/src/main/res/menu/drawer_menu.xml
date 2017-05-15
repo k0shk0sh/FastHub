@@ -46,11 +46,7 @@
         <item
             android:id="@+id/gists"
             android:icon="@drawable/ic_gists"
-            android:title="@string/public_gists"/>
-        <item
-            android:id="@+id/myGists"
-            android:icon="@drawable/ic_gists"
-            android:title="@string/my_gists"/>
+            android:title="@string/gists"/>
     </group>
 
     <group
