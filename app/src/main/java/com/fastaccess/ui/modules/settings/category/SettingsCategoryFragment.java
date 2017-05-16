@@ -32,6 +32,8 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     private Preference signatureVia;
     private Preference notificationTime;
+    private Preference notificationRead;
+    private Preference notificationSound;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -47,10 +49,15 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             case 0:
                 addPreferencesFromResource(R.xml.notification_settings);
                 notificationTime = findPreference("notificationTime");
+                notificationRead = findPreference("markNotificationAsRead");
+                notificationSound = findPreference("notificationSound");
                 findPreference("notificationTime").setOnPreferenceChangeListener(this);
                 findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
-                if(!PrefHelper.getBoolean("notificationEnabled"))
+                if(!PrefHelper.getBoolean("notificationEnabled")) {
                     getPreferenceScreen().removePreference(notificationTime);
+                    getPreferenceScreen().removePreference(notificationRead);
+                    getPreferenceScreen().removePreference(notificationSound);
+                }
                 break;
             case 1:
                 addPreferencesFromResource(R.xml.behaviour_settings);
@@ -95,10 +102,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         if (preference.getKey().equalsIgnoreCase("notificationEnabled")) {
             if ((boolean)newValue) {
                 getPreferenceScreen().addPreference(notificationTime);
+                getPreferenceScreen().addPreference(notificationRead);
+                getPreferenceScreen().addPreference(notificationSound);
                 NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
                         PrefGetter.notificationDurationMillis(getActivity().getApplicationContext(), PrefHelper.getString("notificationTime")), true);
             } else {
                 getPreferenceScreen().removePreference(notificationTime);
+                getPreferenceScreen().removePreference(notificationRead);
+                getPreferenceScreen().removePreference(notificationSound);
                 NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(), -1, true);
             }
             return true;
