@@ -6,10 +6,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -29,14 +31,16 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
+import com.fastaccess.ui.widgets.FontEditText;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
-import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig;
-import com.linkedin.android.spyglass.ui.MentionsEditText;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
 import es.dmoral.toasty.Toasty;
 import icepick.State;
@@ -52,20 +56,18 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     private String sentFromFastHub;
 
-    private static final WordTokenizerConfig tokenizerConfig = new WordTokenizerConfig
-            .Builder()
-            .setThreshold(1)
-            .build();
-
+    private ArrayList<String> participants;
+    private int inMentionMode = -1;
     private CharSequence savedText = "";
     @BindView(R.id.replyQuote) LinearLayout replyQuote;
     @BindView(R.id.replyQuoteText) FontTextView quote;
     @BindView(R.id.view) ForegroundImageView viewCode;
-    @BindView(R.id.editText) MentionsEditText editText;
+    @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
     @BindView(R.id.sentVia) CheckBox sentVia;
     @BindView(R.id.autocomplete)
     ListView mention;
+    @BindView(R.id.list_divider) View listDivider;
 
     @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
@@ -96,8 +98,53 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.TEXT_CHANGED) void onEdited(CharSequence charSequence) {
         if (editText.isEnabled()) {
+
             savedText = charSequence;
+
+            char lastChar = 0;
+            if(charSequence.length()>0) lastChar = charSequence.charAt(charSequence.length()-1);
+
+            if (lastChar!=0) {
+                if (lastChar == '@') {
+                    inMentionMode = editText.getSelectionEnd();
+                    mention.setVisibility(GONE);
+                    listDivider.setVisibility(GONE);
+                    return;
+                } else if (lastChar == ' ')
+                    inMentionMode = -1;
+                else if (inMentionMode > -1)
+                    updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                else {
+                    String copy = editText.getText().toString().substring(0, editText.getSelectionEnd());
+                    String[] list = copy.split("\\s+");
+                    String last = list[list.length-1];
+                    if(last.startsWith("@")) {
+                        inMentionMode = copy.lastIndexOf("@") + 1;
+                        updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                    }
+                }
+
+            } else {
+                inMentionMode = -1;
+            }
+
+            if(inMentionMode>-1)
+                if(mention!=null) {
+                    mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
+                    listDivider.setVisibility(mention.getVisibility());
+                }
+
         }
+    }
+
+    @OnItemClick(R.id.autocomplete) void onMentionSelection(int position){
+        String complete = mention.getAdapter().getItem(position).toString()+" ";
+        int end = editText.getSelectionEnd();
+
+        editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
+        inMentionMode = -1;
+        mention.setVisibility(GONE);
+        listDivider.setVisibility(GONE);
     }
 
     @OnClick(R.id.view) void onViewMarkDown() {
@@ -172,6 +219,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 else {
                     MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
                 }
+                participants = bundle.getStringArrayList("participants");
             }
         }
         if (!PrefGetter.isEditorHintShowed()) {
@@ -278,4 +326,19 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
         }
     }
+
+    private void updateMentionList(@NonNull String mentioning) {
+        if(participants!=null){
+            ArrayList<String> mentions = new ArrayList<>();
+            for(String participant : participants)
+                if(participant.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()))
+                    mentions.add(participant);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
+
+            mention.setAdapter(adapter);
+            Log.d(getLoggingTag(), mentions.toString());
+        }
+    }
+
 }

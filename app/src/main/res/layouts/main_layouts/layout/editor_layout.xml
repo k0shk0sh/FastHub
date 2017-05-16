@@ -39,7 +39,7 @@
                     android:background="?dividerColor"/>
             </LinearLayout>
 
-            <com.linkedin.android.spyglass.ui.MentionsEditText
+            <com.fastaccess.ui.widgets.FontEditText
                 android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -56,11 +56,18 @@
 
     </ScrollView>
 
+    <View
+        android:id="@+id/list_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?dividerColor"
+        android:visibility="gone"/>
+
     <ListView
         android:id="@+id/autocomplete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:visibility="gone"/>
+        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"
