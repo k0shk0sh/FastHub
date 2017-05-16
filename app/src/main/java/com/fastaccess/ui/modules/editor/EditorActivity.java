@@ -6,13 +6,17 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.ActivityHelper;
@@ -28,14 +32,21 @@ import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
 import com.fastaccess.ui.widgets.FontEditText;
+import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
+import es.dmoral.toasty.Toasty;
 import icepick.State;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
+
+import static android.view.View.GONE;
 
 /**
  * Created by Kosh on 27 Nov 2016, 1:32 AM
@@ -45,11 +56,18 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     private String sentFromFastHub;
 
+    private ArrayList<String> participants;
+    private int inMentionMode = -1;
     private CharSequence savedText = "";
+    @BindView(R.id.replyQuote) LinearLayout replyQuote;
+    @BindView(R.id.replyQuoteText) FontTextView quote;
     @BindView(R.id.view) ForegroundImageView viewCode;
     @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
     @BindView(R.id.sentVia) CheckBox sentVia;
+    @BindView(R.id.autocomplete)
+    ListView mention;
+    @BindView(R.id.list_divider) View listDivider;
 
     @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
@@ -80,8 +98,53 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.TEXT_CHANGED) void onEdited(CharSequence charSequence) {
         if (editText.isEnabled()) {
+
             savedText = charSequence;
+
+            char lastChar = 0;
+            if(charSequence.length()>0) lastChar = charSequence.charAt(charSequence.length()-1);
+
+            if (lastChar!=0) {
+                if (lastChar == '@') {
+                    inMentionMode = editText.getSelectionEnd();
+                    mention.setVisibility(GONE);
+                    listDivider.setVisibility(GONE);
+                    return;
+                } else if (lastChar == ' ')
+                    inMentionMode = -1;
+                else if (inMentionMode > -1)
+                    updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                else {
+                    String copy = editText.getText().toString().substring(0, editText.getSelectionEnd());
+                    String[] list = copy.split("\\s+");
+                    String last = list[list.length-1];
+                    if(last.startsWith("@")) {
+                        inMentionMode = copy.lastIndexOf("@") + 1;
+                        updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                    }
+                }
+
+            } else {
+                inMentionMode = -1;
+            }
+
+            if(inMentionMode>-1)
+                if(mention!=null) {
+                    mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
+                    listDivider.setVisibility(mention.getVisibility());
+                }
+
         }
+    }
+
+    @OnItemClick(R.id.autocomplete) void onMentionSelection(int position){
+        String complete = mention.getAdapter().getItem(position).toString()+" ";
+        int end = editText.getSelectionEnd();
+
+        editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
+        inMentionMode = -1;
+        mention.setVisibility(GONE);
+        listDivider.setVisibility(GONE);
     }
 
     @OnClick(R.id.view) void onViewMarkDown() {
@@ -112,6 +175,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
         } else if (v.getId() == R.id.image) {
             EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
+            if(BuildConfig.DEBUG)
+                // Doesn't need a string, will only show up in debug.
+                Toasty.warning(this, "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
         } else {
             getPresenter().onActionClicked(editText, v.getId());
         }
@@ -122,7 +188,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         setToolbarIcon(R.drawable.ic_clear);
         sentFromFastHub = "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
-        sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : View.GONE);
+        sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : GONE);
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
         sentVia.setOnCheckedChangeListener((buttonView, isChecked) -> {
             PrefHelper.set("sent_via", isChecked);
@@ -148,6 +214,12 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     editText.setText(String.format("%s ", textToUpdate));
                     editText.setSelection(InputHelper.toString(editText).length());
                 }
+                if(bundle.getString("message", "").isEmpty())
+                    replyQuote.setVisibility(GONE);
+                else {
+                    MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
+                }
+                participants = bundle.getStringArrayList("participants");
             }
         }
         if (!PrefGetter.isEditorHintShowed()) {
@@ -250,7 +322,23 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (isLink) {
             MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link));
         } else {
+            editText.append("\n");
             MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
         }
     }
+
+    private void updateMentionList(@NonNull String mentioning) {
+        if(participants!=null){
+            ArrayList<String> mentions = new ArrayList<>();
+            for(String participant : participants)
+                if(participant.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()))
+                    mentions.add(participant);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                    android.R.layout.simple_list_item_1, android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
+
+            mention.setAdapter(adapter);
+            Log.d(getLoggingTag(), mentions.toString());
+        }
+    }
+
 }

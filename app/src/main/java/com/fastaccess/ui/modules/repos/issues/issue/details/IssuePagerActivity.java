@@ -261,7 +261,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .append(" ")
                     .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
-                    .append(parsedDate));
+                    .append(parsedDate).append("\n").append(issueModel.getRepoId()));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
         }
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this, issueModel)));

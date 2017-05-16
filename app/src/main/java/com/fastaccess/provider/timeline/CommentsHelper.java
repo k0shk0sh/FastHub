@@ -4,9 +4,16 @@ import android.content.Context;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.TimelineModel;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.tasks.git.ReactionService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Kosh on 30 Mar 2017, 6:44 PM
@@ -99,6 +106,21 @@ public class CommentsHelper {
 
     public static String getHeart() {
         return getEmojiByUnicode(HEART);
+    }
+
+    @NonNull public static ArrayList<String> getUsers(@NonNull List<Comment> comments) {
+        return Stream.of(comments)
+                .map(comment -> comment.getUser().getLogin())
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    @NonNull public static ArrayList<String> getUsersByTimeline(@NonNull List<TimelineModel> comments) {
+        return Stream.of(comments)
+                .filter(timelineModel -> timelineModel.getComment() != null && timelineModel.getComment().getUser() != null)
+                .map(comment -> comment.getComment().getUser().getLogin())
+                .distinct()
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
 }

@@ -48,6 +48,8 @@ public interface PullRequestTimelineMvp {
 
         void onTagUser(@Nullable User user);
 
+        void onReply(User user, String message);
+
         void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, @ReactionsProvider
                 .ReactionType int reactionType);
     }

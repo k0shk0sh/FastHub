@@ -43,7 +43,7 @@ public class SettingsActivity extends BaseActivity {
             case 1:
                 ActivityHelper.startReveal(this, intent, settingsList, THEME_CHANGE);
                 break;
-            case 4:
+            case 5:
                 showLanguageList();
                 break;
             default:
@@ -78,6 +78,7 @@ public class SettingsActivity extends BaseActivity {
                 Setting.newInstance(R.drawable.ic_settings, getString(R.string.behavior), ""),
                 Setting.newInstance(R.drawable.ic_brush, getString(R.string.customization), ""),
                 Setting.newInstance(R.drawable.ic_info, getString(R.string.about), ""),
+                Setting.newInstance(R.drawable.ic_backup, getString(R.string.backup), ""),
                 Setting.newInstance(R.drawable.ic_language, getString(R.string.app_language), "")
         };
 

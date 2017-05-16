@@ -6,7 +6,6 @@
     </string-array>
 
     <string-array name="notification_duration">
-        <item>@string/turn_off</item>
         <item>@string/one_minute</item>
         <item>@string/five_minutes</item>
         <item>@string/ten_minutes</item>

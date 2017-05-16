@@ -19,6 +19,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -111,7 +112,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -147,6 +148,7 @@ refresh.setRefreshing(true);
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -174,6 +176,23 @@ refresh.setRefreshing(true);
                 .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
                 .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .end());
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+    }
+
+    @Override public void onReply(User user, String message) {
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, getPresenter().repoId())
+                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
+                .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
+                .put(BundleConstant.EXTRA, "@" + user.getLogin())
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);

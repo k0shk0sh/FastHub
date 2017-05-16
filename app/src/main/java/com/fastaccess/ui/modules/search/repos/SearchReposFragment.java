@@ -131,6 +131,13 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
         }
     }
 
+    @Override
+    public void onQueueSearch(@NonNull String query) {
+        this.searchQuery = query;
+        if(getView()!=null)
+            onSetSearchQuery(query);
+    }
+
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), searchQuery);
