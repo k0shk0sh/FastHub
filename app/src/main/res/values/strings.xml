@@ -245,6 +245,11 @@
     <string name="recycler_view_animation_title">List Animation</string>
     <string name="back_button_summary">Disable dialog preventing accidental app closure</string>
     <string name="back_button_title">Press Back to Exit</string>
+    <string name="restore">Restore</string>
+    <string name="backup">Backup</string>
+    <string name="select_backup">Select Backup to Restore</string>
+    <string name="permission_failed">Permission Not Granted.</string>
+    <string name="backup_summary">Last update: %s</string>
     <string name="unsaved_data_warning">Any unsaved changes will be discarded</string>
     <string name="private_repo">Private</string>
     <string name="rect_avatar_summary">Use rounded rectangle avatars instead of circular avatars</string>
