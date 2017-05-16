@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+                  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:icon="@drawable/ic_backup"
+        android:key="backup"
+        android:title="@string/backup"
+        app:summary="@string/backup_summary"/>
+
+    <Preference
+        android:icon="@drawable/ic_restore"
+        android:key="restore"
+        android:title="@string/restore"/>
+
+</PreferenceScreen>

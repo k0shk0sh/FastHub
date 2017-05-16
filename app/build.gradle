@@ -148,7 +148,6 @@ dependencies {
     compile 'com.github.nightwhistler:HtmlSpanner:0.4'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     compile 'com.github.matthiasrobbers:shortbread:1.0.1'
-    compile 'com.linkedin.android.spyglass:spyglass:1.4.0'
     provided "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor 'io.requery:requery-processor:1.2.0'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
