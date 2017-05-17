@@ -59,15 +59,19 @@ android {
         }
     }
 
+    flavorDimensions "platform"
+
     productFlavors {
         // includes gms
         gms {
             buildConfigField "boolean", "FDROID", "false"
+            dimension "platform"
         }
 
         // only foss
         fdroid {
             buildConfigField "boolean", "FDROID", "true"
+            dimension "platform"
         }
     }
 
