@@ -69,6 +69,5 @@
                     android:icon="@drawable/ic_logout"
                     android:title="@string/logout"/>
             </menu>
-        </item>
     </group>
 </menu>

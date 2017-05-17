@@ -244,6 +244,11 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     .show();
             ActivityHelper.showDismissHints(this, () -> {});
         }
+
+        if (editText.getText().toString().contains(sentFromFastHub)){
+            editText.setText(editText.getText().toString().replace(sentFromFastHub, ""));
+            sentVia.setChecked(true);
+        }
     }
 
     @Override public void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew) {
