@@ -266,7 +266,8 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     }
 
                     PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd").format(new Date()));
-                    findPreference("backup").setSummary(getString(R.string.backup_summary, PrefHelper.getString("backed_up")));
+                    findPreference("backup").setSummary(getString(R.string.backup_summary, getString(R.string.now)));
+                    Toasty.success(getContext(), getString(R.string.backed_up));
                 } else {
                     Toasty.error(getContext(), getString(R.string.permission_failed)).show();
                 }
