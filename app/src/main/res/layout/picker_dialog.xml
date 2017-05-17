@@ -22,7 +22,7 @@
             android:padding="@dimen/spacing_xs_large"
             android:textColor="?android:textColorPrimary"
             android:textStyle="bold"
-            tools:text="@string/language"/>
+            android:text="@string/language"/>
 
 
         <android.support.v4.widget.NestedScrollView
