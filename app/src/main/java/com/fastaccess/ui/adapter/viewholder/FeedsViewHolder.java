@@ -125,7 +125,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         }
         if (eventsModel.getPayload() != null) {
             if (eventsModel.getPayload().getComment() != null) {
-                MarkDownProvider.setMdText(description, eventsModel.getPayload().getComment().getBody());
+                MarkDownProvider.stripMdText(description, eventsModel.getPayload().getComment().getBody());
                 description.setVisibility(View.VISIBLE);
                 if (eventsModel.getPayload().getIssue() != null) {
                     number = "#" + eventsModel.getPayload().getIssue().getNumber();
