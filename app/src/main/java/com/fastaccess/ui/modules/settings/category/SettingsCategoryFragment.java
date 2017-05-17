@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Release;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
@@ -122,6 +124,17 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                         .append("(")
                         .bold(BuildConfig.VERSION_NAME)
                         .append(")"));
+                findPreference("currentVersion").setOnPreferenceClickListener(preference -> {
+                    Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
+                        if(releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
+                            Toasty.success(getContext(), getString(R.string.up_to_date)).show();
+                        else
+                            Toasty.warning(getContext(), getString(R.string.new_version)).show();
+                    });
+
+
+                    return true;
+                });
                 break;
             case 4:
                 addPreferencesFromResource(R.xml.backup_settings);
