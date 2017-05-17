@@ -1,6 +1,3 @@
-def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
-
 apply plugin: 'com.android.application'
 if (isGms) {
     apply plugin: 'com.google.firebase.firebase-crash'
