@@ -3,17 +3,12 @@ package com.fastaccess.provider.markdown;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.util.Log;
 import android.webkit.MimeTypeMap;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.ViewHelper;
-import com.fastaccess.provider.timeline.handler.DrawableGetter;
-import com.zzhoujay.markdown.MarkDown;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
