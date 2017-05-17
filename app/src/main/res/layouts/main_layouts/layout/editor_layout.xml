@@ -15,20 +15,59 @@
         android:clipToPadding="false"
         android:fillViewport="true">
 
-        <com.fastaccess.ui.widgets.FontEditText
-            android:id="@+id/editText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/transparent"
-            android:gravity="top|start"
-            android:hint="@string/type_here"
-            android:inputType="textMultiLine|textCapSentences"
-            android:minLines="5"
-            android:padding="@dimen/spacing_xs_large"
-            android:scrollbars="vertical"
-            tools:ignore="ScrollViewSize"/>
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/replyQuote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/replyQuoteText"
+                    android:textIsSelectable="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:alpha="0.6"
+                    android:padding="@dimen/spacing_xs_large"
+                    tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis sagittis purus. Cras pulvinar urna ut velit accumsan consectetur. Aenean mauris purus, rutrum eget luctus sit amet, efficitur vel mauris. Sed pulvinar nisl non ligula lacinia ultricies. Etiam quis purus sem. Morbi rutrum tristique ex sed commodo. Pellentesque volutpat laoreet urna et vestibulum. Vivamus id justo sed felis cursus venenatis id vitae felis. Praesent at condimentum erat. Vivamus vel est a dolor tincidunt porta. Mauris ut nisl tortor."/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="?dividerColor"/>
+            </LinearLayout>
+
+            <com.fastaccess.ui.widgets.FontEditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:gravity="top|start"
+                android:hint="@string/type_here"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="5"
+                android:padding="@dimen/spacing_xs_large"
+                android:scrollbars="vertical"
+                tools:ignore="ScrollViewSize"/>
+
+        </LinearLayout>
 
     </ScrollView>
+
+    <View
+        android:id="@+id/list_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?dividerColor"
+        android:visibility="gone"/>
+
+    <ListView
+        android:id="@+id/autocomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"

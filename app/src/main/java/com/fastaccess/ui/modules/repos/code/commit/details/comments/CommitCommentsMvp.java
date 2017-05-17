@@ -41,6 +41,8 @@ interface CommitCommentsMvp {
 
         void onTagUser(@Nullable User user);
 
+        void onReply(User user, String message);
+
         void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId);
     }
 

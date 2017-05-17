@@ -36,6 +36,8 @@ interface GistCommentsMvp {
         void onShowDeleteMsg(long id);
 
         void onTagUser(@NonNull User user);
+
+        void onReply(User user, String message);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

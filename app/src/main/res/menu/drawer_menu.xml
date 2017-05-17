@@ -38,34 +38,15 @@
             android:id="@+id/pinnedMenu"
             android:icon="@drawable/ic_pin_filled"
             android:title="@string/pinned"/>
-    </group>
-
-    <group
-        android:id="@+id/group_two"
-        android:checkableBehavior="none">
         <item
             android:id="@+id/gists"
             android:icon="@drawable/ic_gists"
-            android:title="@string/public_gists"/>
-        <item
-            android:id="@+id/myGists"
-            android:icon="@drawable/ic_gists"
-            android:title="@string/my_gists"/>
-    </group>
-
-    <group
-        android:id="@+id/fasthub_group"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/fhRepo"
-            android:icon="@drawable/ic_github"
-            android:title="@string/app_name"/>
+            android:title="@string/gists"/>
     </group>
 
     <group
         android:id="@+id/group_three"
         android:checkableBehavior="none">
-        <item android:title="@string/action">
             <menu>
 
                 <item
@@ -79,10 +60,14 @@
                     android:title="@string/settings"/>
 
                 <item
+                    android:id="@+id/about"
+                    android:icon="@drawable/ic_info"
+                    android:title="@string/about"/>
+
+                <item
                     android:id="@+id/logout"
                     android:icon="@drawable/ic_logout"
                     android:title="@string/logout"/>
             </menu>
-        </item>
     </group>
 </menu>

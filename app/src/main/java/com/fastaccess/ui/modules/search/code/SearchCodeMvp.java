@@ -25,6 +25,10 @@ interface SearchCodeMvp {
 
         void onSetSearchQuery(@NonNull String query, boolean showRepoName);
 
+        void onQueueSearch(@NonNull String query);
+
+        void onQueueSearch(@NonNull String query, boolean showRepoName);
+
         @NonNull OnLoadMore<String> getLoadMore();
 
         void onItemClicked(@NonNull SearchCodeModel item);

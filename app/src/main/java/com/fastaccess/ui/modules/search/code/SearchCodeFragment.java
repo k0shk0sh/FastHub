@@ -134,6 +134,20 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         }
     }
 
+    @Override
+    public void onQueueSearch(@NonNull String query) {
+        this.searchQuery = query;
+        if(getView()!=null)
+            onSetSearchQuery(query, false);
+    }
+
+    @Override
+    public void onQueueSearch(@NonNull String query, boolean showRepoName) {
+        this.searchQuery = query;
+        if(getView()!=null)
+            onSetSearchQuery(query, showRepoName);
+    }
+
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), searchQuery);

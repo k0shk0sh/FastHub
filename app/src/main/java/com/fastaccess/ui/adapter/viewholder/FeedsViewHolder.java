@@ -3,6 +3,7 @@ package com.fastaccess.ui.adapter.viewholder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -123,7 +125,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         }
         if (eventsModel.getPayload() != null) {
             if (eventsModel.getPayload().getComment() != null) {
-                description.setText(eventsModel.getPayload().getComment().getBody());
+                MarkDownProvider.setMdText(description, eventsModel.getPayload().getComment().getBody());
                 description.setVisibility(View.VISIBLE);
                 if (eventsModel.getPayload().getIssue() != null) {
                     number = "#" + eventsModel.getPayload().getIssue().getNumber();

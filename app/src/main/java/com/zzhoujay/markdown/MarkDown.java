@@ -1,7 +1,9 @@
 package com.zzhoujay.markdown;
 
 import android.text.Html;
+import android.text.Spannable;
 import android.text.Spanned;
+import android.text.style.CharacterStyle;
 import android.widget.TextView;
 
 import com.zzhoujay.markdown.parser.StyleBuilderImpl;

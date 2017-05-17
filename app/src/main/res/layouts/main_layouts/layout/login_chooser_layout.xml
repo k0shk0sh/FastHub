@@ -142,4 +142,28 @@
     </android.support.v4.widget.NestedScrollView>
 
 
+    <RelativeLayout
+        android:id="@+id/language_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_grey_200"
+        android:layout_gravity="bottom">
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white"
+            android:alpha="0.5"/>
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/language_selector_clicker"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/spacing_xs_large"
+            android:textAllCaps="true"
+            android:text="@string/choose_language_title"/>
+    </RelativeLayout>
+
 </android.support.design.widget.CoordinatorLayout>
