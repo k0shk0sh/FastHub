@@ -1,8 +1,10 @@
 language: android
+
 android:
    components:
    - tools
-   - tools
+   - platform-tools
+   - tools # Upgrade again after upgrading platform-tools.
 
 jdk: oraclejdk8
 
@@ -17,10 +19,13 @@ before_install:
        && exit 0 || true
 
 before_script:
-  - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "extras;android;m2repository" "extras;google;m2repository" "build-tools;26.0.0" "platforms;android-26"
+  - echo $ANDROID_HOME
+  - mkdir -p $ANDROID_HOME/licenses
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > $ANDROID_HOME/licenses/android-sdk-license
+  - echo -e "\n504667f4c0de7af1a06de9f4b1727b84351f2910" > $ANDROID_HOME/licenses/android-sdk-preview-license
 
 script:
-  - ./gradlew clean assembleDebug --stacktrace
+  - ./gradlew clean assembleDebug --no-daemon --stacktrace
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -30,6 +35,7 @@ cache:
   directories:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
