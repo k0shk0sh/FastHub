@@ -16,6 +16,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
@@ -28,6 +29,9 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -122,6 +126,7 @@ public class NotificationSchedulerJobTask extends JobService {
         int accentColor = ContextCompat.getColor(this, R.color.material_blue_700);
         Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
                 R.mipmap.ic_launcher);
+        String[] url = new String[1];
         Notification first = notificationThreadModels.get(0);
         Observable.from(notificationThreadModels)
                 .subscribeOn(Schedulers.io())
@@ -130,12 +135,12 @@ public class NotificationSchedulerJobTask extends JobService {
                 .flatMap(notification -> RestProvider.getNotificationService()
                         .getComment(notification.getSubject().getLatestCommentUrl())
                         .subscribeOn(Schedulers.io()), (thread, comment) -> {
+                    url[0] = comment.getUser().getAvatarUrl();
                     if (!InputHelper.isEmpty(thread.getSubject().getLatestCommentUrl())) {
-                        android.app.Notification toAdd = getNotificationWithComment(context, accentColor, largeIcon, thread, comment);
-                        showNotification(thread.getId(), toAdd);
+                        getNotificationWithComment(context, accentColor, thread, comment, url[0]);
                         return null;
                     }
-                    showNotificationWithoutComment(context, accentColor, thread, largeIcon);
+                    showNotificationWithoutComment(context, accentColor, thread, url[0]);
                     return thread;
                 })
                 .subscribeOn(Schedulers.io())
@@ -155,40 +160,135 @@ public class NotificationSchedulerJobTask extends JobService {
         jobFinished(job, false);
     }
 
-    private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, Bitmap largeIcon) {
-        android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
-                .setLargeIcon(largeIcon)
-                .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
-                .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(), thread
-                        .getSubject().getUrl()))
-                .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread
-                        .getSubject().getUrl()))
-                .setWhen(thread.getUpdatedAt() != null ? thread.getUpdatedAt().getTime() : System.currentTimeMillis())
-                .setShowWhen(true)
-                .setColor(accentColor)
-                .setGroup(NOTIFICATION_GROUP_ID)
-                .build();
-        showNotification(thread.getId(), toAdd);
+    private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, String iconUrl) {
+        ImageLoader.getInstance().loadImage(iconUrl, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
+                        .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                        .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(), thread
+                                .getSubject().getUrl()))
+                        .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread
+                                .getSubject().getUrl()))
+                        .setWhen(thread.getUpdatedAt() != null ? thread.getUpdatedAt().getTime() : System.currentTimeMillis())
+                        .setShowWhen(true)
+                        .setColor(accentColor)
+                        .setGroup(NOTIFICATION_GROUP_ID)
+                        .build();
+                showNotification(thread.getId(), toAdd);
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
+                        .setLargeIcon(bitmap)
+                        .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                        .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(), thread
+                                .getSubject().getUrl()))
+                        .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread
+                                .getSubject().getUrl()))
+                        .setWhen(thread.getUpdatedAt() != null ? thread.getUpdatedAt().getTime() : System.currentTimeMillis())
+                        .setShowWhen(true)
+                        .setColor(accentColor)
+                        .setGroup(NOTIFICATION_GROUP_ID)
+                        .build();
+                showNotification(thread.getId(), toAdd);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+
+                android.app.Notification toAdd = getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
+                        .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                        .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(), thread
+                                .getSubject().getUrl()))
+                        .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread
+                                .getSubject().getUrl()))
+                        .setWhen(thread.getUpdatedAt() != null ? thread.getUpdatedAt().getTime() : System.currentTimeMillis())
+                        .setShowWhen(true)
+                        .setColor(accentColor)
+                        .setGroup(NOTIFICATION_GROUP_ID)
+                        .build();
+                showNotification(thread.getId(), toAdd);
+
+            }
+        });
     }
 
-    private android.app.Notification getNotificationWithComment(Context context, int accentColor, Bitmap largeIcon,
-                                                                Notification thread, Comment comment) {
-        return getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody())
-                .setSmallIcon(R.drawable.ic_notification)
-                .setLargeIcon(largeIcon)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .setBigContentTitle(comment.getUser() != null ? comment.getUser().getLogin() : "")
-                        .bigText(comment.getBody()))
-                .setWhen(comment.getCreatedAt().getTime())
-                .setShowWhen(true)
-                .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(),
-                        thread.getSubject().getUrl()))
-                .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(),
-                        thread.getSubject().getUrl()))
-                .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
-                .setColor(accentColor)
-                .setGroup(NOTIFICATION_GROUP_ID)
-                .build();
+    private void getNotificationWithComment(Context context, int accentColor,
+                                                                Notification thread, Comment comment, String url) {
+        ImageLoader.getInstance().loadImage(url, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody())
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .setBigContentTitle(comment.getUser() != null ? comment.getUser().getLogin() : "")
+                                .bigText(comment.getBody()))
+                        .setWhen(comment.getCreatedAt().getTime())
+                        .setShowWhen(true)
+                        .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(),
+                                thread.getSubject().getUrl()))
+                        .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(),
+                                thread.getSubject().getUrl()))
+                        .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                        .setColor(accentColor)
+                        .setGroup(NOTIFICATION_GROUP_ID)
+                        .build();
+                showNotification(thread.getId(), toAdd);
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody())
+                        .setLargeIcon(bitmap)
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .setBigContentTitle(comment.getUser() != null ? comment.getUser().getLogin() : "")
+                                .bigText(comment.getBody()))
+                        .setWhen(comment.getCreatedAt().getTime())
+                        .setShowWhen(true)
+                        .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(),
+                                thread.getSubject().getUrl()))
+                        .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(),
+                                thread.getSubject().getUrl()))
+                        .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                        .setColor(accentColor)
+                        .setGroup(NOTIFICATION_GROUP_ID)
+                        .build();
+                showNotification(thread.getId(), toAdd);
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+                android.app.Notification toAdd = getNotification(comment.getUser() != null ? comment.getUser().getLogin() : "", comment.getBody())
+                        .setSmallIcon(R.drawable.ic_notification)
+                        .setStyle(new NotificationCompat.BigTextStyle()
+                                .setBigContentTitle(comment.getUser() != null ? comment.getUser().getLogin() : "")
+                                .bigText(comment.getBody()))
+                        .setWhen(comment.getCreatedAt().getTime())
+                        .setShowWhen(true)
+                        .addAction(R.drawable.ic_github, context.getString(R.string.open), getPendingIntent(thread.getId(),
+                                thread.getSubject().getUrl()))
+                        .addAction(R.drawable.ic_eye_off, context.getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(),
+                                thread.getSubject().getUrl()))
+                        .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                        .setColor(accentColor)
+                        .setGroup(NOTIFICATION_GROUP_ID)
+                        .build();
+                showNotification(thread.getId(), toAdd);
+            }
+        });
     }
 
     private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor) {
