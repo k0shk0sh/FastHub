@@ -2,16 +2,17 @@ package com.fastaccess.provider.markdown;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.webkit.MimeTypeMap;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.ViewHelper;
-import com.fastaccess.provider.timeline.handler.DrawableGetter;
-import com.zzhoujay.markdown.MarkDown;
+
+import org.commonmark.node.Node;
+import org.commonmark.parser.Parser;
+import org.commonmark.renderer.html.HtmlRenderer;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
@@ -31,15 +32,25 @@ public class MarkDownProvider {
 
     private MarkDownProvider() {}
 
-    public static void setMdText(@NonNull TextView textView, @NonNull String value) {
-        try {
-            textView.setText(MarkDown.fromMarkdown(value, textView,
-                    ViewHelper.getCardBackground(textView.getContext()),
-                    ViewHelper.getPrimaryTextColor(textView.getContext()),
-                    new DrawableGetter(textView)));
-        } catch (IndexOutOfBoundsException exception) {
-            exception.printStackTrace();
-            textView.setText(value);
+    public static void setMdText(@NonNull TextView textView, String markdown) {
+        Parser parser = Parser.builder().build();
+
+        Node node = parser.parse(markdown);
+        textView.setText(Html.fromHtml(HtmlRenderer.builder().build().render(node)));
+    }
+
+    public static void stripMdText(@NonNull TextView textView, String markdown) {
+        Parser parser = Parser.builder().build();
+
+        Node node = parser.parse(markdown);
+        textView.setText(stripHtml(HtmlRenderer.builder().build().render(node)));
+    }
+
+    private static String stripHtml(String html) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString();
+        } else {
+            return Html.fromHtml(html).toString();
         }
     }
 

@@ -76,8 +76,8 @@ public class LanguageBottomSheetDialog extends BaseBottomSheetDialog {
         super.onViewCreated(view, savedInstanceState);
         int selected = Arrays.asList(values).indexOf(PrefHelper.getString("app_language"));
         String language = PrefHelper.getString("app_language");
-        cancel.setText(R.string.no);
-        ok.setText(R.string.yes);
+        cancel.setText(R.string.cancel);
+        ok.setText(R.string.ok);
 
         for (int i = 0; i < names.length; i++) {
             RadioButton radioButtonView = new RadioButton(getContext());

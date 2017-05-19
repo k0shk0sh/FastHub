@@ -38,11 +38,6 @@
             android:id="@+id/pinnedMenu"
             android:icon="@drawable/ic_pin_filled"
             android:title="@string/pinned"/>
-    </group>
-
-    <group
-        android:id="@+id/group_two"
-        android:checkableBehavior="none">
         <item
             android:id="@+id/gists"
             android:icon="@drawable/ic_gists"
@@ -52,7 +47,6 @@
     <group
         android:id="@+id/group_three"
         android:checkableBehavior="none">
-        <item android:title="@string/action">
             <menu>
 
                 <item
@@ -75,6 +69,5 @@
                     android:icon="@drawable/ic_logout"
                     android:title="@string/logout"/>
             </menu>
-        </item>
     </group>
 </menu>
