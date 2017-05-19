@@ -22,9 +22,10 @@ buildscript {
     repositories {
         jcenter()
     }
-
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.4.0-alpha7'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha1'
+        def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
+        def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
         if (isGms) {
             classpath 'com.google.gms:google-services:3.0.0'
             classpath 'com.google.firebase:firebase-plugins:1.0.5'
