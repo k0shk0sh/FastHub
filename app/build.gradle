@@ -24,12 +24,12 @@ android {
             storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
-    compileSdkVersion 25
+    compileSdkVersion 'android-O'
     buildToolsVersion "26.0.0-rc1"
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 'O'
         versionCode 210
         versionName "2.1.0"
         signingConfig signingConfigs.signing

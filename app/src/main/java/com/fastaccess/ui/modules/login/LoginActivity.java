@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -150,7 +151,13 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
                 isBasicAuth = getIntent().getExtras().getBoolean(BundleConstant.YES_NO_EXTRA);
             }
         }
-        if (password != null) password.setHint(isBasicAuth ? getString(R.string.password) : getString(R.string.access_token));
+        if (username != null)
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                username.setAutofillHints(View.AUTOFILL_HINT_USERNAME);
+        if (password != null) {
+            password.setHint(isBasicAuth ? getString(R.string.password) : getString(R.string.access_token));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) password.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
+        }
         if (Arrays.asList(getResources().getStringArray(R.array.languages_array_values)).contains(Locale.getDefault().getLanguage())){
             String language = PrefHelper.getString("app_language");
             PrefHelper.set("app_language", Locale.getDefault().getLanguage());
