@@ -1,10 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">FastHub</string>
-    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
-    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
-    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
-    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
-    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
     <string name="in_progress">読み込み中、お待ちください…</string>
     <string name="action">アクション</string>
     <string name="settings">設定</string>
@@ -19,31 +13,19 @@
     <string name="share">共有</string>
     <string name="reload">再読み込み</string>
     <string name="feeds">フィード</string>
-    <string name="gists" translatable="false">Gists</string>
     <string name="profile">プロファイル</string>
     <string name="error">エラー</string>
     <string name="press_again_to_exit">もう一度押すと終了します</string>
-    <string name="readme" translatable="false">Readme</string>
     <string name="opened">Opened</string>
     <string name="closed">Closed</string>
     <string name="repo_chooser">レポジトリを選択</string>
-    <string name="commits" translatable="false">Commits</string>
     <string name="followers">フォロワー</string>
     <string name="following">フォロー中</string>
     <string name="overview">概要</string>
-    <string name="repos" translatable="false">Repositories</string>
-    <string name="forked" translatable="false">Forked</string>
-    <string name="starred" translatable="false">Starred</string>
     <string name="follow">フォロー</string>
     <string name="unfollow">フォロー解除</string>
     <string name="user">ユーザー</string>
-    <string name="icon_transition" translatable="false">profile_image_transition</string>
-    <string name="title_transition" translatable="false">profile_title_transition</string>
-    <string name="code" translatable="false">Code</string>
-    <string name="issues" translatable="false">Issues</string>
-    <string name="pull_requests" translatable="false">Pull Requests</string>
     <string name="details">詳細</string>
-    <string name="repo" translatable="false">Repository</string>
     <string name="archive_file_detected_error">アーカイブファイルが検出されました、内容を表示するためにファイルをダウンロードしてください。</string>
     <string name="minimum_three_chars">最小文字数 (3)</string>
     <string name="no_file_found">ファイルが見つかりません</string>
@@ -54,13 +36,10 @@
     <string name="drafted">作業中</string>
     <string name="releases">リリース</string>
     <string name="no_body">コンテンツなし</string>
-    <string name="download_as_zip" translatable="false">Source code (zip)</string>
-    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
+    <string name="download_as_zip">ソースコード (zip)</string>
+    <string name="download_as_tar">ソースコード (tar.gz)</string>
     <string name="contributors">貢献者</string>
-    <string name="merged" translatable="false">Merged</string>
     <string name="by">By</string>
-    <string name="star" translatable="false">Star</string>
-    <string name="fork" translatable="false">Fork</string>
     <string name="close_issue">Issueを閉じる</string>
     <string name="re_open_issue">Issueを再オープンする</string>
     <string name="re_open">再オープン</string>
@@ -97,10 +76,6 @@
     <string name="delete">削除</string>
     <string name="comments">コメント</string>
     <string name="comment">コメント</string>
-    <string name="issue" translatable="false">Issue</string>
-    <string name="merge" translatable="false">Merge</string>
-    <string name="pull_request" translatable="false">Pull Request</string>
-    <string name="commit" translatable="false">Commit</string>
     <string name="success_merge">マージに成功しました</string>
     <string name="file_menu">ファイルメニュー</string>
     <string name="files">ファイル</string>
@@ -112,7 +87,6 @@
     <string name="big_file">大きなファイル</string>
     <string name="big_file_description">このファイルは大きすぎて開けません。\n「OK」を押して代わりにダウンロードします。</string>
     <string name="viewer">ビューワー</string>
-    <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">送信</string>
     <string name="type_here">ここに入力</string>
     <string name="description">説明</string>
@@ -127,7 +101,6 @@
     <string name="required_field">必須項目</string>
     <string name="successfully_submitted">送信に成功しました</string>
     <string name="create_gist">Gistの作成</string>
-    <string name="gist" translatable="false">Gist</string>
     <string name="clear">クリア</string>
     <string name="users">ユーザー</string>
     <string name="title">タイトル</string>
@@ -142,7 +115,6 @@
     <string name="unread_notification">未読の通知があります</string>
     <string name="open">開く</string>
     <string name="notification_type">通知の種類</string>
-    <string name="back_slash" translatable="false">/</string>
     <string name="labels">ラベル</string>
     <string name="no_labels">ラベルがありません</string>
     <string name="labels_added_successfully">ラベルの追加に成功しました</string>
@@ -167,7 +139,6 @@
     <string name="star_hint">repoをStarまたは解除します</string>
     <string name="watch">Watch</string>
     <string name="watch_hint">repoをWatchまたは解除します</string>
-    <string name="fork_repo_hint" translatable="false">Fork repo</string>
     <string name="pin_repo_hint">ナビゲーションドロワーからより速くアクセスするためにrepoを固定する。</string>
     <string name="no_url">URLが見つかりません</string>
     <string name="last_updated">最終更新</string>
@@ -178,7 +149,6 @@
     <string name="creation_date">作成日</string>
     <string name="creation_date_hint">ファイルが作成された日</string>
     <string name="last_updated_hint">ファイルが最後に更新された日</string>
-    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
     <string name="mark_all_as_read">すべて既読にする</string>
     <string name="all_notifications">すべての通知</string>
     <string name="unread">未読</string>
@@ -194,23 +164,14 @@
     <string name="committed">コミットされた</string>
     <string name="downloaded">ダウンロードされた</string>
     <string name="followed">フォローされた</string>
-    <string name="created_gist" translatable="false">@string/gist</string>
-    <string name="gollum" translatable="false">Wiki</string>
     <string name="commented_on_issue">Issueをコミット</string>
-    <string name="created_issue" translatable="false">Issue</string>
     <string name="member">メンバー</string>
-    <string name="public_event" translatable="false">Open-sourced</string>
     <string name="pr_comment_review">Pull Requestのコメント</string>
     <string name="pushed">プッシュ先</string>
     <string name="team_event">チーム</string>
     <string name="deleted">削除された</string>
     <string name="unknown">不明</string>
     <string name="commented_on_commit">コミットにコメント</string>
-    <string name="organization_event" translatable="false">Organization</string>
-    <string name="card_event" translatable="false">Card</string>
-    <string name="project_event" translatable="false">Project</string>
-    <string name="pr_review_event" translatable="false">Pull Request</string>
-    <string name="repo_event" translatable="false">Repository</string>
     <string name="switch_branch">branchを切り替え</string>
     <string name="assignees">代理人</string>
     <string name="edit">編集</string>
@@ -243,7 +204,6 @@
     <string name="author">作者</string>
     <string name="fork_github">GitHubでフォークする</string>
     <string name="send_email">メールを送る</string>
-    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
     <string name="question_concerning_fasthub">FastHubについて質問する</string>
     <string name="feedback">フィードバック</string>
     <string name="report_issue">問題を報告</string>
@@ -262,23 +222,15 @@
     <string name="request_error">サーバーへのリクエスト中にエラーが発生しました、時間を空けて再試行してください</string>
     <string name="marking_as_read">通知を既読にする</string>
     <string name="forking_gist">Gistをフォーク</string>
-    <string name="forking" formatted="true" translatable="false">Forking %s</string>
-    <string name="staring" formatted="true" translatable="false">Staring %s</string>
-    <string name="un_staring" formatted="true" translatable="false">Unstaring %s</string>
-    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
-    <string name="watching" formatted="true" translatable="false">Watching %s</string>
     <string name="login_using_your_default_browser">デフォルトのブラウザを使用してログイン(OAuth)</string>
     <string name="or_character">OR</string>
     <string name="mark_notification_title">通知の確認ステータスを無効にする</string>
     <string name="mark_notification_summary">通知をタップした時の既読のマークを無効にする。</string>
-    <string name="light_theme_mode" translatable="false">明るいテーマ</string>
-    <string name="dark_theme_mode" translatable="false">暗いテーマ</string>
+    <string name="light_theme_mode">明るいテーマ</string>
+    <string name="dark_theme_mode">暗いテーマ</string>
     <string name="theme_title">テーマ選択</string>
     <string name="theme_summary">デフォルトテーマを選択する</string>
-    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
-    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">ウェブサイト</string>
-    <string name="twitter" translatable="false">Twitter</string>
     <string name="support_development">開発を支援する</string>
     <string name="success_purchase_message">ご支援にとても感謝します！</string>
     <string name="change_theme_warning">テーマが正常に適用されない場合、アプリをいったん手動で閉じて開き直してください。</string>
@@ -313,7 +265,6 @@
     <string name="my_gists">My Gists</string>
     <string name="changelog">更新履歴</string>
     <string name="notifications_hint">タップして通知リストを開くかスワイプして閉じます</string>
-    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
     <string name="home_long_click_hint">長押ししてどの画面からでもメイン画面に移動できます</string>
     <string name="created">作成された</string>
     <string name="assigned">割り当てられた</string>
@@ -362,17 +313,14 @@
     <string name="login_with_personal_token">パーソナルトークンでログイン</string>
     <string name="personal_token">パーソナルトークン</string>
     <string name="basic_login">基本認証でログイン</string>
-    <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
-        below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: The reason FastHub didn\'t use "Access Token" was
-        due to the fact that if one has 2FA enabled, their OTP code lifetime could only survive for a maximum of one minute or so, which will cause
-        FastHub to log you out immediately due to GitHub responding with an unauthorized access.</string>
+    <string name="no_orgs_description">組織に強制されている場合、これらを見ることはできません。詳しくはこのリンクを参照してください。https://help.github.com/articles/about-third-party-application-restrictions\n追記: FastHubが「アクセストークン」を使用しなかった理由は、2FAが有効になっている場合にOTPコードが最大でも1分ほどしか持たないため、FastHubがGitHubの認証されていないアクセスへの応答ですぐにログアウトしてしまうためです。</string>
     <string name="insert">挿入</string>
     <string name="select">選択</string>
     <string name="select_picture">写真を選択</string>
-    <string name="support_with_2_00">Support with $2.00</string>
-    <string name="support_with_5_00">Support with $5.00</string>
-    <string name="support_with_10_00">Support with $10.00</string>
-    <string name="support_with_20_00">Support with $20.00</string>
+    <string name="support_with_2_00">$2.00寄付する</string>
+    <string name="support_with_5_00">$5.00寄付する</string>
+    <string name="support_with_10_00">$10.00寄付する</string>
+    <string name="support_with_20_00">$20.00寄付する</string>
     <string name="app_language">アプリの言語</string>
     <string name="choose_language_title">言語を選択</string>
     <string name="choose_language_summary">利用する言語を選択してください</string>
