@@ -280,8 +280,8 @@
     <string name="marking_as_read">Marking notification as read</string>
     <string name="forking_gist">Forking gist</string>
     <string name="forking" formatted="true" translatable="false">Forking %s</string>
-    <string name="staring" formatted="true" translatable="false">Staring %s</string>
-    <string name="un_staring" formatted="true" translatable="false">Unstaring %s</string>
+    <string name="starring" formatted="true" translatable="false">Starring %s</string>
+    <string name="un_starring" formatted="true" translatable="false">Unstarring %s</string>
     <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
     <string name="watching" formatted="true" translatable="false">Watching %s</string>
     <string name="login_using_your_default_browser">Login using your default browser (OAuth)</string>
