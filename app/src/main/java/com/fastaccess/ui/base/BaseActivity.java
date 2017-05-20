@@ -143,8 +143,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             boolean logout = bundle.getBoolean("logout");
             if (logout){
                 onRequireLogin();
-                //if(App.getInstance().getGoogleApiClient().isConnected())
-                    //Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
+                if(App.getInstance().getGoogleApiClient().isConnected())
+                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
             }
         }
     }//pass
