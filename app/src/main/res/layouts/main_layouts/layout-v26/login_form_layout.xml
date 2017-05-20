@@ -69,7 +69,6 @@
                             android:id="@+id/usernameEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:autoFillMode="auto"
                             android:inputType="text"
                             android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>
@@ -89,7 +88,6 @@
                             android:layout_height="wrap_content"
                             android:imeOptions="actionSend"
                             android:inputType="textPassword"
-                            android:autoFillMode="auto"
                             android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>
 
