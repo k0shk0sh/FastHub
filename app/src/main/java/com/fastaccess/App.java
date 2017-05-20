@@ -8,6 +8,9 @@ import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.provider.uil.UILProvider;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.Scopes;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import io.requery.Persistable;
 import io.requery.android.sqlite.DatabaseSource;
@@ -27,6 +30,7 @@ import shortbread.Shortbread;
 public class App extends Application {
     private static App instance;
     private SingleEntityStore<Persistable> dataStore;
+    private static GoogleApiClient googleApiClient;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -46,6 +50,10 @@ public class App extends Application {
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.CREDENTIALS_API)
+                .build();
+        googleApiClient.connect();
     }
 
     public SingleEntityStore<Persistable> getDataStore() {
@@ -59,5 +67,9 @@ public class App extends Application {
             dataStore = RxSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }
         return dataStore;
+    }
+
+    public GoogleApiClient getGoogleApiClient() {
+        return googleApiClient;
     }
 }
