@@ -1,11 +1,9 @@
 package com.fastaccess.ui.base;
 
 import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.TextView;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.PrefGetter;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 import net.grandcentrix.thirtyinch.TiPresenter;
