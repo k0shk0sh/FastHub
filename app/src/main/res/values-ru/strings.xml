@@ -368,4 +368,6 @@
     <string name="enable_signature_summary">Включить подпись &quot;отправлено с помощью &quot;</string>
     <string name="enable_signature_box">Включить галочку подписи</string>
     <string name="enable_signature_box_summary">Отображать в редакторе галочку, которая включает подпись</string>
+    <string name="tags">Теги</string>
+    <string name="add_comment">Добавить комментарий</string>
 </resources>
