@@ -38,7 +38,7 @@ import rx.Observable;
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private PullRequest pullRequest;
+    @icepick.State PullRequest pullRequest;
     private ReactionsProvider reactionsProvider;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {

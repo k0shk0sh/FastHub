@@ -1,5 +1,6 @@
 package com.fastaccess.ui.base.mvp;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -43,6 +44,11 @@ public interface BaseMvp {
     }
 
     interface FAPresenter {
+
+        void onSaveInstanceState(Bundle outState);
+
+        void onRestoreInstanceState(Bundle outState);
+
         void manageSubscription(@Nullable Subscription... subscription);
 
         boolean isApiCalled();

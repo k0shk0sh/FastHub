@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.transition.TransitionManager;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,11 +18,16 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
+import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -44,6 +52,9 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.progress) View progress;
     @BindView(R.id.followBtn) Button followBtn;
     @State User userModel;
+    @BindView(R.id.orgsList) DynamicRecyclerView orgsList;
+    @BindView(R.id.orgsCard) CardView orgsCard;
+    @BindView(R.id.parentView) NestedScrollView parentView;
 
     private ProfilePagerMvp.View profileCallback;
 
@@ -83,6 +94,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        onInitOrgs(getPresenter().getOrgs());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -135,6 +147,21 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
+    @Override public void onInitOrgs(@Nullable List<User> orgs) {
+        if (orgs != null && !orgs.isEmpty()) {
+            orgsList.setNestedScrollingEnabled(false);
+            ProfileOrgsAdapter adapter = new ProfileOrgsAdapter();
+            adapter.addItems(orgs);
+            orgsList.setAdapter(adapter);
+            TransitionManager.beginDelayedTransition(parentView);
+            orgsCard.setVisibility(View.VISIBLE);
+            ((GridManager) orgsList.getLayoutManager()).setIconSize(getResources().getDimensionPixelSize(R.dimen.header_icon_zie) +
+                    getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
+        } else {
+            orgsCard.setVisibility(View.GONE);
+        }
+    }
+
     @Override public void showProgress(@StringRes int resId) {
         progress.setVisibility(View.VISIBLE);
     }
@@ -161,4 +188,5 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
                 (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
     }
+
 }
