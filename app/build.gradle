@@ -163,8 +163,8 @@ dependencies {
         compile "com.google.firebase:firebase-ads:${firebase}"
         compile "com.google.firebase:firebase-messaging:${firebase}"
         releaseCompile "com.google.firebase:firebase-crash:${firebase}"
-        compile "com.google.android.gms:play-services-auth:10.2.6"
     }
+    compile "com.google.android.gms:play-services-auth:10.2.6"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
     testCompile "org.assertj:assertj-core:${assertjVersion}"
