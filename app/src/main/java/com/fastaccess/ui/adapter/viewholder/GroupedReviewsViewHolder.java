@@ -37,6 +37,8 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     @BindView(R.id.toggle) ForegroundImageView toggle;
     @BindView(R.id.patch) FontTextView patch;
     @BindView(R.id.minimized) View minimized;
+    @BindView(R.id.addCommentPreview) View addCommentPreview;
+
     private final int patchAdditionColor;
     private final int patchDeletionColor;
     private final int patchRefColor;
@@ -66,6 +68,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
         patchRefColor = ViewHelper.getPatchRefColor(itemView.getContext());
         this.onToggleView = onToggleView;
         nestedRecyclerView.setNestedScrollingEnabled(false);
+        addCommentPreview.setOnClickListener(this);
     }
 
     public static GroupedReviewsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,

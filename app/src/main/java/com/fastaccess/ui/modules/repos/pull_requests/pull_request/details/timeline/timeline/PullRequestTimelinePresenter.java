@@ -19,6 +19,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -38,8 +39,8 @@ import rx.Observable;
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    @icepick.State PullRequest pullRequest;
     private ReactionsProvider reactionsProvider;
+    @icepick.State PullRequest pullRequest;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (getView() != null) {
@@ -99,6 +100,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     popupMenu.show();
                 } else {
                     onHandleReaction(v.getId(), item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
+                }
+            } else if (item.getType() == TimelineModel.GROUPED_REVIEW) {
+                if (v.getId() == R.id.addCommentPreview) {
+                    Logger.e();
                 }
             }
         }
