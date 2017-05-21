@@ -27,6 +27,7 @@ import shortbread.Shortbread;
 public class App extends Application {
     private static App instance;
     private SingleEntityStore<Persistable> dataStore;
+//    private static GoogleApiClient googleApiClient;
 
     @Override public void onCreate() {
         super.onCreate();
@@ -41,11 +42,24 @@ public class App extends Application {
     private void init() {
         deleteDatabase("database.db");
         getDataStore();//init requery before anything.
-        PreferenceManager.setDefaultValues(this, R.xml.fasthub_settings, false);
+        setupPreference();
         UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);
+//        googleApiClient = new GoogleApiClient.Builder(this)
+//                .addApi(Auth.CREDENTIALS_API)
+//                .build();
+//        googleApiClient.connect();
+    }
+
+    private void setupPreference() {
+        PreferenceManager.setDefaultValues(this, R.xml.fasthub_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.about_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.behaviour_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.customization_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.language_settings, false);
+        PreferenceManager.setDefaultValues(this, R.xml.notification_settings, false);
     }
 
     public SingleEntityStore<Persistable> getDataStore() {
@@ -60,4 +74,8 @@ public class App extends Application {
         }
         return dataStore;
     }
+
+//    public GoogleApiClient getGoogleApiClient() {
+//        return googleApiClient;
+//    }
 }

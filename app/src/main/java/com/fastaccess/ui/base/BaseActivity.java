@@ -32,6 +32,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -44,7 +45,6 @@ import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -68,7 +68,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
-    @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
+    @Nullable @BindView(R.id.toolbar) public Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
@@ -88,6 +88,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        getPresenter().onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
     }
 
@@ -108,6 +109,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(savedInstanceState);
         }
         setupToolbarAndStatusBar(toolbar);
         showHideAds();
@@ -139,7 +141,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         if (isOk && bundle != null) {
             boolean logout = bundle.getBoolean("logout");
-            if (logout) onRequireLogin();
+            if (logout){
+                onRequireLogin();
+//                if(App.getInstance().getGoogleApiClient().isConnected())
+//                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
+            }
         }
     }//pass
 
@@ -193,7 +199,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
-        PrefGetter.clear();
+        PrefHelper.clearKey("token");
         App.getInstance().getDataStore()
                 .delete(Login.class)
                 .get()

@@ -23,6 +23,8 @@ public interface LoginMvp {
 
         void onEmptyPassword(boolean isEmpty);
 
+        void onSuccessfullyLoggedIn(Login userModel);
+
         void onSuccessfullyLoggedIn();
     }
 
@@ -36,6 +38,6 @@ public interface LoginMvp {
 
         void onUserResponse(@Nullable Login response);
 
-        void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode, boolean isBasicAuth);
+        void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode, boolean isBasicAuth, @Nullable boolean ignore);
     }
 }

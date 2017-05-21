@@ -40,12 +40,12 @@ import rx.Observable;
  */
 
 class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> implements PullRequestPagerMvp.Presenter {
-    private PullRequest pullRequest;
-    private int issueNumber;
-    private String login;
-    private String repoId;
-    private boolean isCollaborator;
-    private boolean showToRepoBtn;
+    @icepick.State PullRequest pullRequest;
+    @icepick.State int issueNumber;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State boolean isCollaborator;
+    @icepick.State boolean showToRepoBtn;
 
     @Nullable @Override public PullRequest getPullRequest() {
         return pullRequest;

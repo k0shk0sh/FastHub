@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.fastaccess">
+<manifest package="com.fastaccess"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -216,8 +216,6 @@
         </service>
 
         <activity android:name=".ui.modules.settings.SettingsActivity">
-        </activity>
-        <activity android:name=".ui.modules.settings.category.SettingsCategoryFragment">
         </activity>
         <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity">
         </activity>

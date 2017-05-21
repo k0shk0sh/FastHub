@@ -134,7 +134,7 @@ public class GithubActionService extends IntentService {
 
     private void starGist(@Nullable String id) {
         if (id != null) {
-            String msg = getString(R.string.staring, getString(R.string.gist));
+            String msg = getString(R.string.starring, getString(R.string.gist));
             RestProvider.getGistService()
                     .starGist(id)
                     .doOnSubscribe(() -> showNotification(msg))
@@ -146,7 +146,7 @@ public class GithubActionService extends IntentService {
 
     private void starRepo(@Nullable String id, @Nullable String login) {
         if (id != null && login != null) {
-            String msg = getString(R.string.staring, id);
+            String msg = getString(R.string.starring, id);
             RestProvider.getRepoService()
                     .starRepo(login, id)
                     .doOnSubscribe(() -> showNotification(msg))
@@ -158,7 +158,7 @@ public class GithubActionService extends IntentService {
 
     private void unStarGist(@Nullable String id) {
         if (id != null) {
-            String msg = getString(R.string.un_staring, getString(R.string.gist));
+            String msg = getString(R.string.un_starring, getString(R.string.gist));
             RestProvider.getGistService()
                     .unStarGist(id)
                     .doOnSubscribe(() -> showNotification(msg))
@@ -170,7 +170,7 @@ public class GithubActionService extends IntentService {
 
     private void unStarRepo(@Nullable String id, @Nullable String login) {
         if (id != null && login != null) {
-            String msg = getString(R.string.un_staring, id);
+            String msg = getString(R.string.un_starring, id);
             RestProvider.getRepoService()
                     .unstarRepo(login, id)
                     .doOnSubscribe(() -> showNotification(msg))

@@ -1,16 +1,37 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
+    ext {
+        // See http://stackoverflow.com/questions/27372828/access-project-extra-properties-in-buildscript-closure
+        taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
+        isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
+
+        butterKnifeVersion = '8.5.1'
+        icepickVersion = '3.2.0'
+        lombokVersion = '1.12.6'
+        supportVersion = "26.0.0-beta1"
+        firebase = "10.2.0"
+        thirtyinchVersion = '0.8.0'
+        retrofit = '2.1.0'
+        junitVersion = '4.12'
+        mockitoVersion = '1.10.19'
+        assertjVersion = '2.5.0'
+        espresseVersion = '2.2.2'
+    }
+
     repositories {
         jcenter()
+        maven { url "https://maven.google.com" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.4.0-alpha7'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha1'
         def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
         def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
         if (isGms) {
             classpath 'com.google.gms:google-services:3.0.0'
-            classpath 'com.google.firebase:firebase-plugins:1.0.5'
+            classpath('com.google.firebase:firebase-plugins:1.0.5') {
+                exclude group: 'com.google.guava', module: 'guava-jdk5'
+            }
         }
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
@@ -25,18 +46,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-ext {
-    butterKnifeVersion = '8.5.1'
-    icepickVersion = '3.2.0'
-    lombokVersion = '1.12.6'
-    supportVersion = "25.3.1"
-    firebase = "10.2.0"
-    thirtyinchVersion = '0.8.0'
-    retrofit = '2.1.0'
-    junitVersion = '4.12'
-    mockitoVersion = '1.10.19'
-    assertjVersion = '2.5.0'
-    espresseVersion = '2.2.2'
 }

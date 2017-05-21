@@ -33,9 +33,9 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private String repoId;
-    private String login;
-    private String sha;
+    @icepick.State String repoId;
+    @icepick.State String login;
+    @icepick.State String sha;
 
 
     @Override public int getCurrentPage() {

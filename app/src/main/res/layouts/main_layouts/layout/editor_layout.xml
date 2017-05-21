@@ -273,13 +273,14 @@
         android:checked="true"
         android:background="?attr/selectableItemBackground"
         android:button="@null"
+        android:maxLines="1"
         android:layout_gravity="end"
-        android:drawableRight="?android:attr/listChoiceIndicatorMultiple"
+        android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
         android:paddingStart="@dimen/spacing_xs_large"
         android:paddingEnd="@dimen/spacing_xs_large"
         android:paddingBottom="@dimen/spacing_normal"
         android:paddingTop="@dimen/spacing_normal"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         tools:text="@string/sent_from_fasthub"/>
 
     <include layout="@layout/add_banner_layout"/>

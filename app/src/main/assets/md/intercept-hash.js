@@ -16,13 +16,11 @@ function scrollTo(hash) {
         } else {
             //HACK!!!
             var names = hash.trim().split("-").join(" ");
-            console.log(names);
             if (names) {
                 var elements = document.querySelectorAll("h1");
                 for (var index = 0; index < elements.length; index++) {
                     if (elements[index].innerText.toLowerCase() === names.toLowerCase()) {
                         elements[index].scrollIntoView();
-                        console.log(elements[index].innerText.toLowerCase());
                     }
                 }
             }

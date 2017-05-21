@@ -173,7 +173,7 @@ refresh.setRefreshing(true);
 
     @Override public void onRefresh(boolean isLastUpdated) {
         getPresenter().onSetSortBy(isLastUpdated);
-        getPresenter().onCallApi(1, IssueState.open);
+        getPresenter().onCallApi(1, IssueState.closed);
     }
 
     @Override public void onRefresh() {
