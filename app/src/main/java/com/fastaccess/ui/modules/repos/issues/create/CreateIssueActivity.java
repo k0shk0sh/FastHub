@@ -99,12 +99,12 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
         }
     }
 
-    @NonNull public static Intent getIntent(@NonNull Context context, @NonNull String login, @NonNull String repoId) {
+    @NonNull public static Intent getIntent(@NonNull Context context, @NonNull String login, @NonNull String repoId, boolean isFeedback) {
         Intent intent = new Intent(context, CreateIssueActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.ID, repoId)
-                .put(BundleConstant.EXTRA_TWO, true)
+                .put(BundleConstant.EXTRA_TWO, isFeedback)
                 .end());
         return intent;
     }
@@ -214,6 +214,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
             }
         }
         if (isFeedback) setTitle(R.string.submit_feedback);
+        if (toolbar != null) toolbar.setSubtitle(login + "/" + repoId);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

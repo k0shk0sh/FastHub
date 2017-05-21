@@ -21,11 +21,10 @@ import java.util.ArrayList;
  */
 
 class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.View> implements PullRequestCommitsMvp.Presenter {
-
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State long number;
     private ArrayList<Commit> commits = new ArrayList<>();
-    private String login;
-    private String repoId;
-    private long number;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;

@@ -13,7 +13,7 @@ import lombok.Getter;
  */
 
 @Getter class UserPagerPresenter extends BasePresenter<UserPagerMvp.View> implements UserPagerMvp.Presenter {
-    int isMember = -1;
+    @icepick.State int isMember = -1;
 
     @Override public void checkOrgMembership(@NonNull String org) {
         makeRestCall(RestProvider.getOrgService().isMember(org, Login.getUser().getLogin()),

@@ -10,7 +10,7 @@ buildscript {
         butterKnifeVersion = '8.5.1'
         icepickVersion = '3.2.0'
         lombokVersion = '1.12.6'
-        supportVersion = "25.3.1"
+        supportVersion = "26.0.0-beta1"
         firebase = "10.2.0"
         thirtyinchVersion = '0.8.0'
         retrofit = '2.1.0'
@@ -22,6 +22,7 @@ buildscript {
 
     repositories {
         jcenter()
+        maven { url "https://maven.google.com" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0-alpha1'
@@ -29,7 +30,9 @@ buildscript {
         def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
         if (isGms) {
             classpath 'com.google.gms:google-services:3.0.0'
-            classpath 'com.google.firebase:firebase-plugins:1.0.5'
+            classpath('com.google.firebase:firebase-plugins:1.0.5') {
+                exclude group: 'com.google.guava', module: 'guava-jdk5'
+            }
         }
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'

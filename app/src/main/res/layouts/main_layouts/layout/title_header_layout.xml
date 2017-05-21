@@ -97,11 +97,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
+                android:layout_marginEnd="@dimen/spacing_normal"
                 android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription=""
+                android:contentDescription="@string/tags"
                 android:padding="@dimen/spacing_micro"
-                android:layout_marginRight="@dimen/spacing_xs_large"
-                android:src="@drawable/ic_tag"
+                android:src="@drawable/ic_label"
                 android:visibility="gone"
                 tools:visibility="visible"/>
 

@@ -1,4 +1,5 @@
 <android.support.v4.widget.NestedScrollView
+    android:id="@+id/parentView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -131,11 +132,13 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_xs_large"
                     app:cardBackgroundColor="?card_background"
                     app:cardUseCompatPadding="true"
                     app:contentPaddingBottom="@dimen/spacing_normal"
@@ -201,6 +204,56 @@
                             android:drawableStart="@drawable/ic_time"
                             tools:text="Cum classis nocere"/>
                     </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/orgsCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="?card_background"
+                    app:cardUseCompatPadding="true"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:visibility="visible">
+
+                    <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                        android:id="@+id/orgsList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layoutManager="@string/grid_layout_manager"
+                        app:spanCount="3"
+                        tools:listitem="@layout/profile_org_row_item"/>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/contributionCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:cardBackgroundColor="?card_background"
+                    app:cardUseCompatPadding="true"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:visibility="visible">
+
+                    <com.fastaccess.ui.widgets.contributions.GitHubContributionsView
+                        android:id="@+id/contributionView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="400dp"
+                        app:displayMonth="true"
+                        app:baseColor="?colorAccent"
+                        app:baseEmptyColor="@color/material_grey_400"
+                        app:lastWeeks="53"
+                        app:textColor="?android:textColorPrimary"/>
 
                 </android.support.v7.widget.CardView>
             </LinearLayout>

@@ -28,11 +28,11 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<User> users = new ArrayList<>();
-    private String login;
-    private String repoId;
-    private long id;
-    private ReactionTypes reactionType;
-    private @ReactionsProvider.ReactionType int reactionTypeMode;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State long id;
+    @icepick.State ReactionTypes reactionType;
+    @icepick.State @ReactionsProvider.ReactionType int reactionTypeMode;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {

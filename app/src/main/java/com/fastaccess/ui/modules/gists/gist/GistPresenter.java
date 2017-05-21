@@ -17,12 +17,10 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
  */
 
 class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Presenter {
-
-
-    private boolean isGistStarred;
-    private boolean isGistForked;
-    private Gist gist;
-    private String gistId;
+    @icepick.State boolean isGistStarred;
+    @icepick.State boolean isGistForked;
+    @icepick.State Gist gist;
+    @icepick.State String gistId;
 
     @Nullable @Override public Gist getGist() {
         return gist;

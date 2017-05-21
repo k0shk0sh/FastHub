@@ -19,11 +19,11 @@ import rx.Observable;
  */
 
 class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements CommitPagerMvp.Presenter {
-    private Commit commitModel;
-    private String sha;
-    private String login;
-    private String repoId;
-    private boolean showToRepoBtn;
+    @icepick.State Commit commitModel;
+    @icepick.State String sha;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State boolean showToRepoBtn;
 
     @Nullable @Override public Commit getCommit() {
         return commitModel;

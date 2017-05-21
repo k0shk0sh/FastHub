@@ -36,8 +36,8 @@ import rx.Observable;
  */
 
 public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
+    @icepick.State Issue issue;
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private Issue issue;
     private ReactionsProvider reactionsProvider;
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {

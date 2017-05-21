@@ -41,12 +41,12 @@ import rx.Observable;
  */
 
 class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements IssuePagerMvp.Presenter {
-    private Issue issueModel;
-    private int issueNumber;
-    private String login;
-    private String repoId;
-    private boolean isCollaborator;
-    private boolean showToRepoBtn;
+    @icepick.State Issue issueModel;
+    @icepick.State int issueNumber;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State boolean isCollaborator;
+    @icepick.State boolean showToRepoBtn;
 
     @Nullable @Override public Issue getIssue() {
         return issueModel;
