@@ -68,7 +68,7 @@ public class ChangelogBottomSheetDialog extends BaseBottomSheetDialog {
         if (html != null) {
             message.setVisibility(View.GONE);
             prettifyWebView.setVisibility(View.VISIBLE);
-            prettifyWebView.setGithubContent(html, null, true);
+            prettifyWebView.setGithubContent(html, null);
             prettifyWebView.setNestedScrollingEnabled(false);
         }
     }

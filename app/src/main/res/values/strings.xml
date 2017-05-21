@@ -442,4 +442,5 @@
     <string name="enable_signature_box">Enable Signature Box</string>
     <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
     <string name="tags">Tags</string>
+    <string name="add_comment">Add comment</string>
 </resources>

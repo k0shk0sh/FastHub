@@ -25,8 +25,8 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private String repoId;
-    private String login;
+    @icepick.State String repoId;
+    @icepick.State String login;
 
     @Override public int getCurrentPage() {
         return page;

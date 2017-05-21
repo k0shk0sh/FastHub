@@ -137,6 +137,15 @@ public class RestProvider {
         return provideRetrofit().create(UserRestService.class);
     }
 
+    @NonNull public static UserRestService getContribution() {
+        return new Retrofit.Builder()
+                .baseUrl(BuildConfig.REST_URL)
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build()
+                .create(UserRestService.class);
+    }
+
     @NonNull public static GistService getGistService() {
         return provideRetrofit().create(GistService.class);
     }

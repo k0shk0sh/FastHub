@@ -7,7 +7,6 @@ import android.support.annotation.StringRes;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -34,12 +33,10 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @Override public void onSaveInstanceState(Bundle outState) {
         Icepick.saveInstanceState(this, outState);
-        Logger.e(outState);
     }
 
     @Override public void onRestoreInstanceState(Bundle outState) {
         Icepick.restoreInstanceState(this, outState);
-        Logger.e(outState);
     }
 
     @Override public void manageSubscription(@Nullable Subscription... subscription) {

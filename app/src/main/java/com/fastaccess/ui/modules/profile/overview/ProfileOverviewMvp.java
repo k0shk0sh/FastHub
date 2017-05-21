@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ interface ProfileOverviewMvp {
         void onInitViews(@Nullable User userModel);
 
         void onInvalidateMenuItem();
+
+        void onInitContributions(@Nullable List<ContributionsDay> items);
 
         void onInitOrgs(@Nullable List<User> orgs);
     }

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.transition.TransitionManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.view.View;
@@ -17,6 +16,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -24,6 +24,8 @@ import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
+import com.fastaccess.ui.widgets.contributions.ContributionsDay;
+import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
 
@@ -55,7 +57,8 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.orgsList) DynamicRecyclerView orgsList;
     @BindView(R.id.orgsCard) CardView orgsCard;
     @BindView(R.id.parentView) NestedScrollView parentView;
-
+    @BindView(R.id.contributionView) GitHubContributionsView contributionView;
+    @BindView(R.id.contributionCard) CardView contributionCard;
     private ProfilePagerMvp.View profileCallback;
 
     public static ProfileOverviewFragment newInstance(@NonNull String login) {
@@ -147,13 +150,22 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
+    @Override public void onInitContributions(@Nullable List<ContributionsDay> items) {
+        if (items != null && !items.isEmpty()) {
+            Logger.e(items);
+            contributionView.onResponse(items);
+            contributionCard.setVisibility(View.VISIBLE);
+        } else {
+            contributionCard.setVisibility(View.GONE);
+        }
+    }
+
     @Override public void onInitOrgs(@Nullable List<User> orgs) {
         if (orgs != null && !orgs.isEmpty()) {
             orgsList.setNestedScrollingEnabled(false);
             ProfileOrgsAdapter adapter = new ProfileOrgsAdapter();
             adapter.addItems(orgs);
             orgsList.setAdapter(adapter);
-            TransitionManager.beginDelayedTransition(parentView);
             orgsCard.setVisibility(View.VISIBLE);
             ((GridManager) orgsList.getLayoutManager()).setIconSize(getResources().getDimensionPixelSize(R.dimen.header_icon_zie) +
                     getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
@@ -188,5 +200,4 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
                 (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
     }
-
 }

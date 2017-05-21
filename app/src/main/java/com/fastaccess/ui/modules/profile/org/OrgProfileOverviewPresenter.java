@@ -15,7 +15,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
  */
 
 public class OrgProfileOverviewPresenter extends BasePresenter<OrgProfileOverviewMvp.View> implements OrgProfileOverviewMvp.Presenter {
-    private String login;
+    @icepick.State String login;
 
     @Override public void onError(@NonNull Throwable throwable) {
         if (!InputHelper.isEmpty(login)) {
@@ -35,7 +35,7 @@ public class OrgProfileOverviewPresenter extends BasePresenter<OrgProfileOvervie
         }
     }
 
-    @Override public void onWorkOffline(@NonNull String login) {;
+    @Override public void onWorkOffline(@NonNull String login) {
         onSendUserToView(User.getUser(login));
     }
 
