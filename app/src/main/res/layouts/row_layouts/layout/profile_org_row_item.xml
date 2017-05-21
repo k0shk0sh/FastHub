@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layout_margin="@dimen/spacing_micro"
+    android:orientation="vertical">
+
+    <com.fastaccess.ui.widgets.AvatarLayout
+        android:id="@+id/avatarLayout"
+        android:layout_width="@dimen/header_icon_zie"
+        android:layout_height="@dimen/header_icon_zie"/>
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/name"
+        style="@style/Base.TextAppearance.AppCompat.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:singleLine="true"
+        tools:text="Hello World"/>
+
+</LinearLayout>

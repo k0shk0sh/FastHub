@@ -13,14 +13,17 @@ import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
+import java.util.ArrayList;
+
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
  */
 
 class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> implements ProfileOverviewMvp.Presenter {
-    private boolean isSuccessResponse;
-    private boolean isFollowing;
-    private String login;
+    @icepick.State boolean isSuccessResponse;
+    @icepick.State boolean isFollowing;
+    @icepick.State String login;
+    @icepick.State ArrayList<User> userOrgs = new ArrayList<>();
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
         if (!TextUtils.equals(login, Login.getUser().getLogin()))
@@ -65,16 +68,16 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         }
         login = bundle.getString(BundleConstant.EXTRA);
         if (login != null) {
-            makeRestCall(RestProvider.getUserService().getUser(login),
-                    userModel -> {
-                        onSendUserToView(userModel);
-                        if (userModel != null) {
-                            userModel.save(userModel);
-                            if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
-                                onCheckFollowStatus(login);
-                            }
-                        }
-                    });
+            loadOrgs();
+            makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
+                onSendUserToView(userModel);
+                if (userModel != null) {
+                    userModel.save(userModel);
+                    if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
+                        onCheckFollowStatus(login);
+                    }
+                }
+            });
         }
     }
 
@@ -90,7 +93,23 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         sendToView(view -> view.onInitViews(userModel));
     }
 
+    @NonNull @Override public ArrayList<User> getOrgs() {
+        return userOrgs;
+    }
+
     @NonNull @Override public String getLogin() {
         return login;
+    }
+
+    private void loadOrgs() {
+        boolean isMe = login.equalsIgnoreCase(Login.getUser() != null ? Login.getUser().getLogin() : "");
+        manageSubscription(RxHelper.getObserver(isMe ? RestProvider.getOrgService().getMyOrganizations()
+                                                     : RestProvider.getOrgService().getMyOrganizations(login))
+                .subscribe(response -> {
+                    if (response != null && response.getItems() != null) {
+                        userOrgs.addAll(response.getItems());
+                    }
+                    sendToView(view -> view.onInitOrgs(userOrgs));
+                }, Throwable::printStackTrace));
     }
 }

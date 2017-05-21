@@ -28,13 +28,13 @@ import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
  */
 
 class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements RepoPagerMvp.Presenter {
-    private boolean isWatched;
-    private boolean isStarred;
-    private boolean isForked;
-    private String login;
-    private String repoId;
-    private Repo repo;
-    private int navTyp;
+    @icepick.State boolean isWatched;
+    @icepick.State boolean isStarred;
+    @icepick.State boolean isForked;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State Repo repo;
+    @icepick.State int navTyp;
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;

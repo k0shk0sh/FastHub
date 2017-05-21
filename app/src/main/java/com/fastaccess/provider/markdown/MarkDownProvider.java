@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.timeline.HtmlHelper;
 
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
@@ -34,14 +35,12 @@ public class MarkDownProvider {
 
     public static void setMdText(@NonNull TextView textView, String markdown) {
         Parser parser = Parser.builder().build();
-
         Node node = parser.parse(markdown);
-        textView.setText(Html.fromHtml(HtmlRenderer.builder().build().render(node)));
+        HtmlHelper.htmlIntoTextView(textView, HtmlRenderer.builder().build().render(node));
     }
 
     public static void stripMdText(@NonNull TextView textView, String markdown) {
         Parser parser = Parser.builder().build();
-
         Node node = parser.parse(markdown);
         textView.setText(stripHtml(HtmlRenderer.builder().build().render(node)));
     }

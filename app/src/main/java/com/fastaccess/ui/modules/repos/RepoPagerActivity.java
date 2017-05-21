@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.transition.TransitionManager;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.Formatter;
@@ -192,15 +193,12 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @OnClick(R.id.tagsIcon) void onTagsClick() {
-        if(topicsList.getAdapter().getItemCount()>0)
-            if(topicsList.getVisibility()==View.VISIBLE)
-                AnimHelper.collapse(topicsList);
-            else
-                AnimHelper.expand(topicsList);
+        if (topicsList.getAdapter().getItemCount() > 0)
+            TransitionManager.beginDelayedTransition(topicsList);
+        topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
-    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout})
-    void onClick(View view) {
+    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout}) void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
@@ -229,8 +227,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
     }
 
-    @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout})
-    boolean onLongClick(View view) {
+    @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout}) boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.FORKS);
@@ -371,63 +368,67 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                         @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
 
                         @Override public void onHidePromptComplete() {
-                            if(!dismissed[0])
-                            new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
-                                    .setTarget(starRepoLayout)
-                                    .setPrimaryText(R.string.star)
-                                    .setSecondaryText(R.string.star_hint)
-                                    .setCaptureTouchEventOutsidePrompt(true)
-                                    .setBackgroundColourAlpha(244)
-                                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
-                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
+                            if (!dismissed[0])
+                                new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
+                                        .setTarget(starRepoLayout)
+                                        .setPrimaryText(R.string.star)
+                                        .setSecondaryText(R.string.star_hint)
+                                        .setCaptureTouchEventOutsidePrompt(true)
+                                        .setBackgroundColourAlpha(244)
+                                        .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
+                                        .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                            @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
 
-                                        @Override public void onHidePromptComplete() {
-                                            if(!dismissed[0])
-                                            new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
-                                                    .setTarget(forkRepoLayout)
-                                                    .setPrimaryText(R.string.fork)
-                                                    .setSecondaryText(R.string.fork_repo_hint)
-                                                    .setCaptureTouchEventOutsidePrompt(true)
-                                                    .setBackgroundColourAlpha(244)
-                                                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
-                                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-                                                            if(!dismissed[0])
-                                                            new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
-                                                                    .setTarget(pinLayout)
-                                                                    .setPrimaryText(R.string.pin)
-                                                                    .setSecondaryText(R.string.pin_repo_hint)
-                                                                    .setCaptureTouchEventOutsidePrompt(true)
-                                                                    .setBackgroundColourAlpha(244)
-                                                                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
-                                                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                                                        @Override
-                                                                        public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                                                                            ActivityHelper.hideDismissHints(RepoPagerActivity.this);
-                                                                        }
+                                            @Override public void onHidePromptComplete() {
+                                                if (!dismissed[0])
+                                                    new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
+                                                            .setTarget(forkRepoLayout)
+                                                            .setPrimaryText(R.string.fork)
+                                                            .setSecondaryText(R.string.fork_repo_hint)
+                                                            .setCaptureTouchEventOutsidePrompt(true)
+                                                            .setBackgroundColourAlpha(244)
+                                                            .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
+                                                            .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                                                @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
+                                                                    if (!dismissed[0])
+                                                                        new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
+                                                                                .setTarget(pinLayout)
+                                                                                .setPrimaryText(R.string.pin)
+                                                                                .setSecondaryText(R.string.pin_repo_hint)
+                                                                                .setCaptureTouchEventOutsidePrompt(true)
+                                                                                .setBackgroundColourAlpha(244)
+                                                                                .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity
+                                                                                        .this))
+                                                                                .setOnHidePromptListener(new MaterialTapTargetPrompt
+                                                                                        .OnHidePromptListener() {
+                                                                                    @Override
+                                                                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                                                                        ActivityHelper.hideDismissHints(RepoPagerActivity.this);
+                                                                                    }
 
-                                                                        @Override
-                                                                        public void onHidePromptComplete() {
+                                                                                    @Override
+                                                                                    public void onHidePromptComplete() {
 
-                                                                        }
-                                                                    })
-                                                                    .show();
-                                                            ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
-                                                        }
+                                                                                    }
+                                                                                })
+                                                                                .show();
+                                                                    ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
+                                                                }
 
-                                                        @Override public void onHidePromptComplete() {
+                                                                @Override public void onHidePromptComplete() {
 
-                                                        }
-                                                    })
-                                                    .show();
-                                            ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
-                                        }
-                                    }).show();
+                                                                }
+                                                            })
+                                                            .show();
+                                                ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
+                                            }
+                                        }).show();
                             ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
                         }
                     }).show();
-            ActivityHelper.showDismissHints(this, () -> { dismissed[0] = true; });
+            ActivityHelper.showDismissHints(this, () -> {
+                dismissed[0] = true;
+            });
         }
         onRepoWatched(getPresenter().isWatched());
         onRepoStarred(getPresenter().isStarred());

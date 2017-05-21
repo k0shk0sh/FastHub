@@ -27,18 +27,12 @@ public class GridManager extends GridLayoutManager {
     }
 
     @Override public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        try {
-            updateCount();
-            super.onLayoutChildren(recycler, state);
-        } catch (Exception ignored) {}
+        super.onLayoutChildren(recycler, state);
+        updateCount();
     }
 
     @Override public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-        try {
-            super.onMeasure(recycler, state, widthSpec, heightSpec);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        super.onMeasure(recycler, state, widthSpec, heightSpec);
     }
 
     private void updateCount() {
