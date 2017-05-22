@@ -7,6 +7,7 @@
     <dimen name="spacing_large">32dp</dimen>
     <dimen name="spacing_xlarge">48dp</dimen>
     <dimen name="spacing_huge">64dp</dimen>
+    <dimen name="spacing_anti">96dp</dimen>
     <dimen name="keyline_1">72dp</dimen>
     <dimen name="keyline_2">76dp</dimen>
     <dimen name="fab_spacing">86dp</dimen> <!-- keyline + fab margin -->
