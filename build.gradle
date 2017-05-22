@@ -5,7 +5,6 @@ buildscript {
     ext {
         // See http://stackoverflow.com/questions/27372828/access-project-extra-properties-in-buildscript-closure
         taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-        isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
 
         butterKnifeVersion = '8.5.1'
         icepickVersion = '3.2.0'
@@ -26,13 +25,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.0-alpha1'
-        def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-        def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
-        if (isGms) {
-            classpath 'com.google.gms:google-services:3.0.0'
-            classpath('com.google.firebase:firebase-plugins:1.0.5') {
-                exclude group: 'com.google.guava', module: 'guava-jdk5'
-            }
+        classpath 'com.google.gms:google-services:3.0.0'
+        classpath('com.google.firebase:firebase-plugins:1.0.5') {
+            exclude group: 'com.google.guava', module: 'guava-jdk5'
         }
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
