@@ -1,8 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-if (isGms) {
-    apply plugin: 'com.google.firebase.firebase-crash'
-}
+apply plugin: 'com.google.firebase.firebase-crash'
 
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
@@ -58,20 +56,7 @@ android {
     }
 
     flavorDimensions "platform"
-
-    productFlavors {
-        // includes gms
-        gms {
-            buildConfigField "boolean", "FDROID", "false"
-            dimension "platform"
-        }
-
-        // only foss
-        fdroid {
-            buildConfigField "boolean", "FDROID", "true"
-            dimension "platform"
-        }
-    }
+    buildConfigField "boolean", "FDROID", "false"
 
     sourceSets {
         main {
@@ -158,19 +143,16 @@ dependencies {
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
     implementation 'com.atlassian.commonmark:commonmark:0.9.0'
-//    implementation "com.google.android.gms:play-services-auth:10.2.6"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor 'io.requery:requery-processor:1.3.2'
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
-    if (isGms) {
-        implementation "com.google.firebase:firebase-ads:${firebase}"
-        implementation "com.google.firebase:firebase-messaging:${firebase}"
-        releaseImplementation "com.google.firebase:firebase-crash:${firebase}"
-    }
-    compile "com.google.android.gms:play-services-auth:10.2.6"
+    implementation "com.google.firebase:firebase-ads:${gms}"
+    implementation "com.google.firebase:firebase-messaging:${gms}"
+    releaseImplementation "com.google.firebase:firebase-crash:${gms}"
+    compile "com.google.android.gms:play-services-auth:${gms}"
     testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
@@ -184,6 +166,4 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
-if (isGms) {
-    apply plugin: 'com.google.gms.google-services'
-}
+apply plugin: 'com.google.gms.google-services'
