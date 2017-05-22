@@ -9,7 +9,6 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
@@ -31,6 +30,8 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,7 +47,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.fastScroller) RecyclerFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-    @State SparseBooleanArrayParcelable sparseBooleanArray;
+    @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
     private IssuePullsTimelineAdapter adapter;
 
     public static IssueTimelineFragment newInstance(@NonNull Issue issueModel) {
@@ -147,7 +148,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 Bundler.start()
                         .put(BundleConstant.EXTRA, id)
                         .put(BundleConstant.YES_NO_EXTRA, true)
-                        .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }
@@ -205,7 +205,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                         onRefresh(); // shit happens, refresh()?
                         return;
                     }
-                    getSparseBooleanArray().clear();
                     adapter.notifyDataSetChanged();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
@@ -238,12 +237,13 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         onRefresh();
     }
 
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        getSparseBooleanArray().put(position, isCollapsed);
+    @Override public void onToggle(long position, boolean isCollapsed) {
+        toggleMap.put(position, isCollapsed);
     }
 
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
+    @Override public boolean isCollapsed(long position) {
+        Boolean toggle = toggleMap.get(position);
+        return toggle != null && toggle;
     }
 
     @Override public boolean isPreviouslyReacted(long id, int vId) {
@@ -257,12 +257,5 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
-    }
-
-    private SparseBooleanArrayParcelable getSparseBooleanArray() {
-        if (sparseBooleanArray == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-        }
-        return sparseBooleanArray;
     }
 }

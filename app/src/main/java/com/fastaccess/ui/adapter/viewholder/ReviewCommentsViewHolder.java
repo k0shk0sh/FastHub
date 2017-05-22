@@ -56,9 +56,9 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
             if (onToggleView != null) {
-                int position = getAdapterPosition();
-                onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-                onToggle(onToggleView.isCollapsed(position), true);
+                long id = getId();
+                onToggleView.onToggle(id, !onToggleView.isCollapsed(id));
+                onToggle(onToggleView.isCollapsed(id), true);
             }
         } else {
             addReactionCount(v);
@@ -109,7 +109,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
             ReactionsModel reaction = commentModel.getReactions();
             appendEmojies(reaction);
         }
-        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()), false);
+        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getId()), false);
     }
 
     private void addReactionCount(View v) {
@@ -207,12 +207,20 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         }
         if (spannableBuilder.length() > 0) {
             reactionsText.setText(spannableBuilder);
-            if (!onToggleView.isCollapsed(getAdapterPosition())) {
+            if (!onToggleView.isCollapsed(getId())) {
                 reactionsText.setVisibility(View.VISIBLE);
             }
         } else {
             reactionsText.setVisibility(View.GONE);
         }
+    }
+
+    private long getId() {
+        if (adapter != null) {
+            ReviewCommentModel comment = (ReviewCommentModel) adapter.getItem(getAdapterPosition());
+            return comment.getId();
+        }
+        return -1;
     }
 
     private void onToggle(boolean expanded, boolean animate) {
