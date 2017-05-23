@@ -16,7 +16,6 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -59,6 +58,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.parentView) NestedScrollView parentView;
     @BindView(R.id.contributionView) GitHubContributionsView contributionView;
     @BindView(R.id.contributionCard) CardView contributionCard;
+    @State boolean contributionIsShowing;
     private ProfilePagerMvp.View profileCallback;
 
     public static ProfileOverviewFragment newInstance(@NonNull String login) {
@@ -98,6 +98,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
+        contributionCard.setVisibility(contributionIsShowing ? View.VISIBLE : View.GONE);
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -152,7 +153,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override public void onInitContributions(@Nullable List<ContributionsDay> items) {
         if (items != null && !items.isEmpty()) {
-            Logger.e(items);
+            contributionIsShowing = true;
             contributionView.onResponse(items);
             contributionCard.setVisibility(View.VISIBLE);
         } else {

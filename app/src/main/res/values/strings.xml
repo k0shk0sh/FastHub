@@ -402,9 +402,8 @@
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
-        below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: The reason FastHub didn\'t use "Access Token" was
-        due to the fact that if one has 2FA enabled, their OTP code lifetime could only survive for a maximum of one minute or so, which will cause
-        FastHub to log you out immediately due to GitHub responding with an unauthorized access.</string>
+        below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
+        grant FastHub access to see list your organizations.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
