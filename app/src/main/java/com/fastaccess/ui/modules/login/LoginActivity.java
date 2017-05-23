@@ -3,7 +3,9 @@ package com.fastaccess.ui.modules.login;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,11 +13,13 @@ import android.support.annotation.StringRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
@@ -28,6 +32,10 @@ import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.credentials.Credential;
+import com.google.android.gms.auth.api.credentials.CredentialRequest;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -146,24 +154,24 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @Override public void onSuccessfullyLoggedIn(Login userModel) {
-//        Credential credential = new Credential.Builder(userModel.getLogin())
-//                .setPassword(pass)
-//                .setProfilePictureUri(Uri.parse(userModel.getAvatarUrl()))
-//                .build();
-//        Auth.CredentialsApi.save(App.getInstance().getGoogleApiClient(), credential).setResultCallback(status -> {
-//            if (status.isSuccess()) {
-//                onSuccessfullyLoggedIn();
-//            } else if (status.hasResolution()) {
-//                try {
-//                    status.startResolutionForResult(this, RESOLUTION_CODE);
-//                } catch (IntentSender.SendIntentException e) {
-//                    e.printStackTrace();
-//                }
-//            } else {
-//                Log.e(getLoggingTag(), status + "");
-//                onSuccessfullyLoggedIn();
-//            }
-//        });
+        Credential credential = new Credential.Builder(userModel.getLogin())
+                .setPassword(pass)
+                .setProfilePictureUri(Uri.parse(userModel.getAvatarUrl()))
+                .build();
+        Auth.CredentialsApi.save(App.getInstance().getGoogleApiClient(), credential).setResultCallback(status -> {
+            if (status.isSuccess()) {
+                onSuccessfullyLoggedIn();
+            } else if (status.hasResolution()) {
+                try {
+                    status.startResolutionForResult(this, RESOLUTION_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Log.e(getLoggingTag(), status + "");
+                onSuccessfullyLoggedIn();
+            }
+        });
         onSuccessfullyLoggedIn();
     }
 
@@ -171,10 +179,10 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         if (requestCode == RESOLUTION_CODE) {
             onSuccessfullyLoggedIn();
         } else if (requestCode == RESOLUTION_CHOOSER_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-//                doLogin(credential.getId(), credential.getPassword());
-//            }
+            if (resultCode == RESULT_OK) {
+                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+                doLogin(credential.getId(), credential.getPassword());
+            }
         }
     }
 
@@ -186,13 +194,13 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
                 isBasicAuth = getIntent().getExtras().getBoolean(BundleConstant.YES_NO_EXTRA);
             }
         }
-//        if (username != null)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                username.setAutofillHints(View.AUTOFILL_HINT_USERNAME);
-//            }
+        if (username != null)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                username.setAutofillHints(View.AUTOFILL_HINT_USERNAME);
+            }
         if (password != null) {
             password.setHint(isBasicAuth ? getString(R.string.password) : getString(R.string.access_token));
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) password.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) password.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
         }
         if (Arrays.asList(getResources().getStringArray(R.array.languages_array_values)).contains(Locale.getDefault().getLanguage())) {
             String language = PrefHelper.getString("app_language");
@@ -201,23 +209,23 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
             if (!Locale.getDefault().getLanguage().equals(language)) recreate();
         }
 
-//        if (isBasicAuth && getIntent() != null)
-//            if (getIntent().hasExtra("smartLock"))
-//                if (App.getInstance().getGoogleApiClient().isConnecting() &&
-//                        !App.getInstance().getGoogleApiClient().isConnected()) {
-//                    App.getInstance().getGoogleApiClient().registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-//                        @Override
-//                        public void onConnected(@Nullable Bundle bundle) {
-//                            doCredentialRequest();
-//                        }
-//
-//                        @Override
-//                        public void onConnectionSuspended(int i) {
-//                        }
-//                    });
-//                } else {
-//                    doCredentialRequest();
-//                }
+        if (isBasicAuth && getIntent() != null)
+            if (getIntent().hasExtra("smartLock"))
+                if (App.getInstance().getGoogleApiClient().isConnecting() &&
+                        !App.getInstance().getGoogleApiClient().isConnected()) {
+                    App.getInstance().getGoogleApiClient().registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                        @Override
+                        public void onConnected(@Nullable Bundle bundle) {
+                            doCredentialRequest();
+                        }
+
+                        @Override
+                        public void onConnectionSuspended(int i) {
+                        }
+                    });
+                } else {
+                    doCredentialRequest();
+                }
     }
 
     @Override protected void onNewIntent(Intent intent) {
@@ -269,25 +277,25 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         login.show();
     }
 
-//    private void doCredentialRequest() {
-//        CredentialRequest credentialRequest = new CredentialRequest.Builder()
-//                .setPasswordLoginSupported(true)
-//                .build();
-//        Auth.CredentialsApi.request(App.getInstance().getGoogleApiClient(), credentialRequest).setResultCallback(credentialRequestResult -> {
-//            if (credentialRequestResult.getStatus().isSuccess()) {
-//                doLogin(credentialRequestResult.getCredential().getId(),
-//                        credentialRequestResult.getCredential().getPassword());
-//            } else if (credentialRequestResult.getStatus().hasResolution())
-//                try {
-//                    credentialRequestResult.getStatus().startResolutionForResult(this, RESOLUTION_CHOOSER_CODE);
-//                } catch (IntentSender.SendIntentException e) {
-//                    e.printStackTrace();
-//                }
-//            else {
-//                Log.e(getLoggingTag(), credentialRequestResult.getStatus() + "");
-//            }
-//        });
-//    }
+    private void doCredentialRequest() {
+        CredentialRequest credentialRequest = new CredentialRequest.Builder()
+                .setPasswordLoginSupported(true)
+                .build();
+        Auth.CredentialsApi.request(App.getInstance().getGoogleApiClient(), credentialRequest).setResultCallback(credentialRequestResult -> {
+            if (credentialRequestResult.getStatus().isSuccess()) {
+                doLogin(credentialRequestResult.getCredential().getId(),
+                        credentialRequestResult.getCredential().getPassword());
+            } else if (credentialRequestResult.getStatus().hasResolution())
+                try {
+                    credentialRequestResult.getStatus().startResolutionForResult(this, RESOLUTION_CHOOSER_CODE);
+                } catch (IntentSender.SendIntentException e) {
+                    e.printStackTrace();
+                }
+            else {
+                Log.e(getLoggingTag(), credentialRequestResult.getStatus() + "");
+            }
+        });
+    }
 
     private void showLanguage() {
         LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
