@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fastaccess.R;
@@ -35,18 +34,12 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import icepick.State;
 
-import static android.view.View.GONE;
-
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
  */
 
 public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.View, ProfileOverviewPresenter> implements ProfileOverviewMvp.View {
 
-    @BindView(R.id.contributionsCaption)
-    FontTextView contributionsCaption;
-    @BindView(R.id.organizationsCaption)
-    FontTextView organizationsCaption;
     @BindView(R.id.username) FontTextView username;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -116,7 +109,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             }
         }
         if (isMeOrOrganization()) {
-            followBtn.setVisibility(GONE);
+            followBtn.setVisibility(View.GONE);
         }
     }
 
@@ -125,46 +118,18 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onInitViews(@Nullable User userModel) {
-        progress.setVisibility(GONE);
+        progress.setVisibility(View.GONE);
         if (userModel == null) return;
         this.userModel = userModel;
-        followBtn.setVisibility(!isMeOrOrganization() ? View.VISIBLE : GONE);
+        followBtn.setVisibility(!isMeOrOrganization() ? View.VISIBLE : View.GONE);
         username.setText(userModel.getLogin());
         description.setText(userModel.getBio());
-        if(userModel.getBio()==null)
-            description.setVisibility(GONE);
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
         organization.setText(InputHelper.toNA(userModel.getCompany()));
         location.setText(InputHelper.toNA(userModel.getLocation()));
         email.setText(InputHelper.toNA(userModel.getEmail()));
         link.setText(InputHelper.toNA(userModel.getBlog()));
         joined.setText(userModel.getCreatedAt() != null ? ParseDateFormat.getTimeAgo(userModel.getCreatedAt()) : "N/A");
-        ViewGroup parent = (ViewGroup) organization.getParent();
-        if(organization.getText().equals("N/A")) {
-            int i = parent.indexOfChild(organization);
-            ((ViewGroup)organization.getParent()).removeViewAt(i+1);
-            organization.setVisibility(GONE);
-        }
-        if(location.getText().equals("N/A")) {
-            int i = parent.indexOfChild(location);
-            ((ViewGroup)location.getParent()).removeViewAt(i+1);
-            location.setVisibility(GONE);
-        }
-        if(email.getText().equals("N/A")) {
-            int i = parent.indexOfChild(email);
-            ((ViewGroup)email.getParent()).removeViewAt(i+1);
-            email.setVisibility(GONE);
-        }
-        if(link.getText().equals("N/A")) {
-            int i = parent.indexOfChild(link);
-            ((ViewGroup)link.getParent()).removeViewAt(i+1);
-            link.setVisibility(GONE);
-        }
-        if(joined.getText().equals("N/A")) {
-            int i = parent.indexOfChild(joined);
-            ((ViewGroup)joined.getParent()).removeViewAt(i+1);
-            joined.setVisibility(GONE);
-        }
         followers.setText(SpannableBuilder.builder()
                 .append(getString(R.string.followers))
                 .append("\n")
@@ -189,10 +154,8 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (items != null && !items.isEmpty()) {
             contributionView.onResponse(items);
             contributionCard.setVisibility(View.VISIBLE);
-            contributionsCaption.setVisibility(View.VISIBLE);
         } else {
-            contributionCard.setVisibility(GONE);
-            contributionsCaption.setVisibility(GONE);
+            contributionCard.setVisibility(View.GONE);
         }
     }
 
@@ -203,12 +166,10 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             adapter.addItems(orgs);
             orgsList.setAdapter(adapter);
             orgsCard.setVisibility(View.VISIBLE);
-            organizationsCaption.setVisibility(View.VISIBLE);
             ((GridManager) orgsList.getLayoutManager()).setIconSize(getResources().getDimensionPixelSize(R.dimen.header_icon_zie) +
                     getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
         } else {
-            organizationsCaption.setVisibility(GONE);
-            orgsCard.setVisibility(GONE);
+            orgsCard.setVisibility(View.GONE);
         }
     }
 
@@ -217,7 +178,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void hideProgress() {
-        progress.setVisibility(GONE);
+        progress.setVisibility(View.GONE);
     }
 
     @Override public void showErrorMessage(@NonNull String message) {

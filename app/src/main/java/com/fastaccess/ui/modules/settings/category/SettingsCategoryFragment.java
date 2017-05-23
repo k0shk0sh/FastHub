@@ -101,7 +101,9 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 break;
             case 2:
                 addPreferencesFromResource(R.xml.customization_settings);
-                findPreference("enable_ads").setVisible(false);
+                if (BuildConfig.FDROID) {
+                    findPreference("enable_ads").setVisible(false);
+                }
                 findPreference("recylerViewAnimation").setOnPreferenceChangeListener(this);
                 findPreference("rect_avatar").setOnPreferenceChangeListener(this);
                 findPreference("appTheme").setOnPreferenceChangeListener(this);
