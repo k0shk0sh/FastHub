@@ -58,7 +58,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.parentView) NestedScrollView parentView;
     @BindView(R.id.contributionView) GitHubContributionsView contributionView;
     @BindView(R.id.contributionCard) CardView contributionCard;
-    @State boolean contributionIsShowing;
     private ProfilePagerMvp.View profileCallback;
 
     public static ProfileOverviewFragment newInstance(@NonNull String login) {
@@ -98,7 +97,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
-        contributionCard.setVisibility(contributionIsShowing ? View.VISIBLE : View.GONE);
+        onInitContributions(getPresenter().getContributions());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -153,7 +152,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override public void onInitContributions(@Nullable List<ContributionsDay> items) {
         if (items != null && !items.isEmpty()) {
-            contributionIsShowing = true;
             contributionView.onResponse(items);
             contributionCard.setVisibility(View.VISIBLE);
         } else {
