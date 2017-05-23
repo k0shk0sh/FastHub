@@ -1,4 +1,4 @@
-## FastHub is back to the play store and up on F-Droid.
+## FastHub is dropping support for F-Droid. [Read the announcement here.](https://github.com/k0shk0sh/FastHub/pull/525)
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
