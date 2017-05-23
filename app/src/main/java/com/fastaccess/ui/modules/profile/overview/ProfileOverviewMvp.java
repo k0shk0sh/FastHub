@@ -45,6 +45,8 @@ interface ProfileOverviewMvp {
 
         @NonNull ArrayList<User> getOrgs();
 
+        @NonNull ArrayList<ContributionsDay> getContributions();
+
         @NonNull String getLogin();
     }
 }

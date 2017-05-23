@@ -24,10 +24,6 @@ public class LoginChooserActivity extends LoginActivity {
         LoginActivity.start(this, true);
     }
 
-    @Override public void onBackPressed() {
-        finish();
-    }
-
     @OnClick(R.id.accessToken) public void onAccessTokenClicked() {
         LoginActivity.start(this, false);
     }

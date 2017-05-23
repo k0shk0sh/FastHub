@@ -154,9 +154,9 @@
             android:layout_height="1dp"
             android:alpha="0.5"
             android:background="@color/material_light_white"/>
-
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/language_selector_clicker"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"

@@ -7,7 +7,7 @@ import com.fastaccess.BuildConfig;
  */
 
 public class GithubConfigHelper {
-    private static final String REDIRECT_URL = "https://fast-for-github.firebaseapp.com/__/auth/handler";
+    private static final String REDIRECT_URL = "fasthub://login";
 
     public static String getRedirectUrl() {
         return REDIRECT_URL;

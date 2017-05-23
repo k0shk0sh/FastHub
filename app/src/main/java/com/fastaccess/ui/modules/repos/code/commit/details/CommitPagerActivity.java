@@ -80,7 +80,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true)
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true, false)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
