@@ -46,6 +46,8 @@ public class StackBuilderSchemeParser {
     public static void launchUri(@NonNull Context context, @NonNull Intent data) {
         if (data.getData() != null) {
             launchUri(context, data.getData());
+        } else {
+            try {context.startActivity(data);} catch (Exception ignored) {}
         }
     }
 

@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.EditReviewCommentModel;
+import com.fastaccess.data.dao.GroupedReviewModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -19,7 +21,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -56,7 +58,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
                         if (item1.getItemId() == R.id.delete) {
-                            getView().onShowDeleteMsg(item.getComment().getId(), false);
+                            getView().onShowDeleteMsg(item.getComment().getId());
                         } else if (item1.getItemId() == R.id.reply) {
                             getView().onReply(item.getComment().getUser(), item.getComment().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
@@ -102,8 +104,13 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     onHandleReaction(v.getId(), item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
                 }
             } else if (item.getType() == TimelineModel.GROUPED_REVIEW) {
+                GroupedReviewModel reviewModel = item.getGroupedReview();
                 if (v.getId() == R.id.addCommentPreview) {
-                    Logger.e();
+                    EditReviewCommentModel model = new EditReviewCommentModel();
+                    model.setCommentPosition(-1);
+                    model.setGroupPosition(position);
+                    model.setInReplyTo(reviewModel.getId());
+                    getView().onReplyOrCreateReview(null, null, position, -1, model);
                 }
             }
         }
@@ -165,7 +172,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
         if (bundle != null) {
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
-            boolean isReviewComment = bundle.getBoolean(BundleConstant.EXTRA_TWO);
+            boolean isReviewComment = bundle.getBoolean(BundleConstant.YES_NO_EXTRA);
             if (commId != 0 && !isReviewComment) {
                 makeRestCall(RestProvider.getIssueService().deleteIssueComment(login(), repoId(), commId),
                         booleanResponse -> sendToView(view -> {
@@ -178,10 +185,16 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             }
                         }));
             } else {
-                makeRestCall(RestProvider.getReviewService().deleteComment(login(), repoId(), number(), commId),
-                        booleanResponse -> {
-                            //TODO
-                        });
+                int groupPosition = bundle.getInt(BundleConstant.EXTRA_TWO);
+                int commentPosition = bundle.getInt(BundleConstant.EXTRA_THREE);
+                makeRestCall(RestProvider.getReviewService().deleteComment(login(), repoId(), commId),
+                        booleanResponse -> sendToView(view -> {
+                            if (booleanResponse.code() == 204) {
+                                view.onRemoveReviewComment(groupPosition, commentPosition);
+                            } else {
+                                view.showMessage(R.string.error, R.string.error_deleting_comment);
+                            }
+                        }));
             }
         }
     }
@@ -202,7 +215,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         String login = login();
         String repoId = repoId();
         Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType);
-        if (observable != null) manageSubscription(observable.subscribe());
+        if (observable != null) //noinspection unchecked
+            manageSubscription(RxHelper.safeObservable(observable).subscribe());
     }
 
     @Override public boolean isMerged() {
@@ -246,7 +260,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     @Override public void onClick(int groupPosition, int commentPosition, @NonNull View v, @NonNull ReviewCommentModel comment) {
-        if (getHeader() == null) return;
+        if (getHeader() == null || getView() == null) return;
         if (v.getId() == R.id.commentMenu) {
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             popupMenu.inflate(R.menu.comments_menu);
@@ -257,11 +271,15 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             popupMenu.setOnMenuItemClickListener(item1 -> {
                 if (getView() == null) return false;
                 if (item1.getItemId() == R.id.delete) {
-                    getView().onShowDeleteMsg(comment.getId(), true);
+                    getView().onShowReviewDeleteMsg(comment.getId(), groupPosition, commentPosition);
                 } else if (item1.getItemId() == R.id.reply) {
-                    getView().onReply(comment.getUser(), comment.getBodyHtml());
+                    EditReviewCommentModel model = new EditReviewCommentModel();
+                    model.setGroupPosition(groupPosition);
+                    model.setCommentPosition(commentPosition);
+                    model.setInReplyTo(comment.getId());
+                    getView().onReplyOrCreateReview(comment.getUser(), comment.getBodyHtml(), groupPosition, commentPosition, model);
                 } else if (item1.getItemId() == R.id.edit) {
-                    getView().onEditReviewComment(comment);
+                    getView().onEditReviewComment(comment, groupPosition, commentPosition);
                 } else if (item1.getItemId() == R.id.share) {
                     ActivityHelper.shareUrl(v.getContext(), comment.getHtmlUrl());
                 }
