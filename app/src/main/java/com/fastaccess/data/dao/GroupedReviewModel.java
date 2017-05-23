@@ -19,6 +19,7 @@ import lombok.Setter;
     private String diffText;
     private Date date;
     private String path;
+    private long id;
     private List<ReviewCommentModel> comments;
 
 
@@ -31,6 +32,7 @@ import lombok.Setter;
         dest.writeString(this.diffText);
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
         dest.writeString(this.path);
+        dest.writeLong(this.id);
         dest.writeTypedList(this.comments);
     }
 
@@ -40,6 +42,7 @@ import lombok.Setter;
         long tmpDate = in.readLong();
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
         this.path = in.readString();
+        this.id = in.readLong();
         this.comments = in.createTypedArrayList(ReviewCommentModel.CREATOR);
     }
 

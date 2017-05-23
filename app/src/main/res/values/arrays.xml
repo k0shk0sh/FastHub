@@ -88,6 +88,7 @@
         <item>Bahasa Indonesia</item>
         <item>Russian</item>
         <item>Italian</item>
+        <item>Japanese</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -98,6 +99,7 @@
         <item>in</item>
         <item>ru</item>
         <item>it</item>
+        <item>ja</item>
     </string-array>
 
     <string-array name="files_search_options">

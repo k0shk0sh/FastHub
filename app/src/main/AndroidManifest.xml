@@ -48,8 +48,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="fast-for-github.firebaseapp.com"
-                    android:scheme="https"/>
+                    android:host="login"
+                    android:scheme="fasthub"/>
             </intent-filter>
         </activity>
         <activity

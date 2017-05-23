@@ -24,7 +24,6 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReleasesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -119,7 +118,8 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
                                 })
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
-                ActivityHelper.showDismissHints(getContext(), () -> {});
+                ActivityHelper.showDismissHints(getContext(), () -> {
+                });
             }
         }
     }
@@ -137,7 +137,7 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -183,7 +183,7 @@ refresh.setRefreshing(true);
     @Override public void onShowDetails(@NonNull Release item) {
         if (!InputHelper.isEmpty(item.getBody())) {
             MessageDialogView.newInstance(!InputHelper.isEmpty(item.getName()) ? item.getName() : item.getTagName(),
-                    item.getBody(), true).show(getChildFragmentManager(), MessageDialogView.TAG);
+                    item.getBody(), true, false).show(getChildFragmentManager(), MessageDialogView.TAG);
         } else {
             showErrorMessage(getString(R.string.no_body));
         }

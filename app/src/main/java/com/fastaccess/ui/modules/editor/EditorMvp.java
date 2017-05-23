@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.EditText;
 
+import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -20,6 +21,8 @@ interface EditorMvp {
         void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew);
 
         void onSendMarkDownResult();
+
+        void onSendReviewResultAndFinish(EditReviewCommentModel comment, boolean isNew);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -39,6 +42,7 @@ interface EditorMvp {
         void onEditCommitComment(CharSequence savedText, @NonNull String itemId, @NonNull String login, long id);
 
         void onHandleSubmission(@Nullable CharSequence savedText, @Nullable @BundleConstant.ExtraTYpe String extraType,
-                                @Nullable String itemId, long commentId, @Nullable String login, int issueNumber, @Nullable String sha);
+                                @Nullable String itemId, long id, @Nullable String login, int issueNumber, @Nullable String sha,
+                                EditReviewCommentModel reviewComment);
     }
 }
