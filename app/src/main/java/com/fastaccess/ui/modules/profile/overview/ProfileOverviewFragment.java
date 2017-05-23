@@ -16,7 +16,6 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -98,6 +97,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
+        onInitContributions(getPresenter().getContributions());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -152,7 +152,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override public void onInitContributions(@Nullable List<ContributionsDay> items) {
         if (items != null && !items.isEmpty()) {
-            Logger.e(items);
             contributionView.onResponse(items);
             contributionCard.setVisibility(View.VISIBLE);
         } else {

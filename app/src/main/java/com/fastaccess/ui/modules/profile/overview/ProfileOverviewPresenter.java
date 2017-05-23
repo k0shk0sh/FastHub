@@ -9,10 +9,10 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
 
 import java.util.ArrayList;
@@ -28,6 +28,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @icepick.State boolean isFollowing;
     @icepick.State String login;
     @icepick.State ArrayList<User> userOrgs = new ArrayList<>();
+    private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
@@ -103,6 +104,10 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         return userOrgs;
     }
 
+    @NonNull @Override public ArrayList<ContributionsDay> getContributions() {
+        return contributions;
+    }
+
     @NonNull @Override public String getLogin() {
         return login;
     }
@@ -110,11 +115,12 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     private void loadContributions() {
         String url = String.format(URL, login);
         manageSubscription(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
-                .flatMap(s -> {
-                    Logger.e(s);
-                    return Observable.just(new ContributionsProvider().getContributions(s));
-                })
-                .subscribe(lists -> sendToView(view -> view.onInitContributions(lists)), Throwable::printStackTrace));
+                .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
+                .subscribe(lists -> {
+                    contributions.clear();
+                    contributions.addAll(lists);
+                    sendToView(view -> view.onInitContributions(contributions));
+                }, Throwable::printStackTrace));
     }
 
     private void loadOrgs() {
