@@ -1,4 +1,4 @@
-## FastHub is dropping F-Droid support. [Read the announcement here.](https://github.com/k0shk0sh/FastHub/pull/525)
+## FastHub is dropping support for F-Droid. [Read the announcement here.](https://github.com/k0shk0sh/FastHub/pull/525)
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
