@@ -52,6 +52,8 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import net.grandcentrix.thirtyinch.TiActivity;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -64,7 +66,7 @@ import icepick.State;
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
@@ -112,7 +114,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
         setupToolbarAndStatusBar(toolbar);
-        showHideAds();
+        //showHideAds();
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }

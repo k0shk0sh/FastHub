@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.firebase.firebase-crash'
 apply plugin: 'kotlin-android'
-
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
 
@@ -55,14 +55,6 @@ android {
     }
 
     flavorDimensions "platform"
-
-    productFlavors {
-        // includes gms
-        gms {
-            dimension "platform"
-        }
-
-    }
 
     sourceSets {
         main {
@@ -149,16 +141,17 @@ dependencies {
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
     implementation 'com.atlassian.commonmark:commonmark:0.9.0'
+    implementation "com.google.firebase:firebase-ads:${gms}"
+    implementation "com.google.firebase:firebase-messaging:${gms}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    releaseImplementation "com.google.firebase:firebase-crash:${gms}"
+    implementation "com.google.android.gms:play-services-auth:${gms}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "io.requery:requery-processor:${requery}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
-    implementation "com.google.firebase:firebase-ads:${gms}"
-    implementation "com.google.firebase:firebase-messaging:${gms}"
-    releaseImplementation "com.google.firebase:firebase-crash:${gms}"
-    implementation "com.google.android.gms:play-services-auth:${gms}"
     testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
@@ -169,8 +162,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test:rules:0.5'
     androidTestImplementation "com.android.support.test.espresso:espresso-intents:${espresseVersion}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 }
 
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'com.google.firebase.firebase-crash'
