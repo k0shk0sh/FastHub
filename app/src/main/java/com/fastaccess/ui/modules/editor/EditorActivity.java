@@ -6,11 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.transition.TransitionManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -66,17 +68,18 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
     @BindView(R.id.sentVia) CheckBox sentVia;
-    @BindView(R.id.autocomplete)
-    ListView mention;
     @BindView(R.id.list_divider) View listDivider;
-
+    @BindView(R.id.parentView) View parentView;
     @State @BundleConstant.ExtraTYpe String extraType;
+
     @State String itemId;
     @State String login;
     @State int issueNumber;
     @State long commentId = 0;
     @State String sha;
     @State EditReviewCommentModel reviewComment;
+    @BindView(R.id.autocomplete)
+    ListView mention;
 
     @Override protected int layout() {
         return R.layout.editor_layout;
@@ -141,6 +144,17 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         inMentionMode = -1;
         mention.setVisibility(GONE);
         listDivider.setVisibility(GONE);
+    }
+
+    @OnClick(R.id.replyQuoteText) void onToggleQuote() {
+        TransitionManager.beginDelayedTransition((ViewGroup) parentView);
+        if (quote.getMaxLines() == 3) {
+            quote.setMaxLines(Integer.MAX_VALUE);
+        } else {
+            quote.setMaxLines(3);
+        }
+        quote.setCompoundDrawablesWithIntrinsicBounds(0, 0, quote.getMaxLines() == 3
+                                                            ? R.drawable.ic_arrow_drop_down : R.drawable.ic_arrow_drop_up, 0);
     }
 
     @OnClick(R.id.view) void onViewMarkDown() {
