@@ -146,24 +146,27 @@
         android:id="@+id/language_selector"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/material_grey_200"
-        android:layout_gravity="bottom">
+        android:layout_gravity="bottom"
+        android:background="@color/material_grey_200">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/white"
-            android:alpha="0.5"/>
+            android:alpha="0.5"
+            android:background="@color/white"/>
+
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/language_selector_clicker"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/spacing_xs_large"
-            android:textAllCaps="true"
-            android:text="@string/choose_language_title"/>
+            android:text="@string/choose_language_title"
+            android:textAllCaps="true"/>
     </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>
