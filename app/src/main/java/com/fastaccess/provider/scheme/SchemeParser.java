@@ -83,12 +83,11 @@ public class SchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-        if (!data.getPathSegments().isEmpty()) {
+        if (data.getPathSegments() != null && !data.getPathSegments().isEmpty()) {
             if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
-        } else {
-            return null;
+            return getIntentForURI(context, data, showRepoBtn);
         }
-        return getIntentForURI(context, data, showRepoBtn);
+        return null;
     }
 
     @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {

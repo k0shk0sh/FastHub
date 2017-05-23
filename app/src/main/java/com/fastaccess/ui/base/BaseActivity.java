@@ -39,6 +39,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
+import com.fastaccess.ui.modules.login.LoginActivity;
 import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
@@ -141,7 +142,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         if (isOk && bundle != null) {
             boolean logout = bundle.getBoolean("logout");
-            if (logout){
+            if (logout) {
                 onRequireLogin();
 //                if(App.getInstance().getGoogleApiClient().isConnected())
 //                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
@@ -283,8 +284,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REFRESH_CODE)
-            if(resultCode==RESULT_OK)
+        if (requestCode == REFRESH_CODE)
+            if (resultCode == RESULT_OK)
                 recreate();
         super.onActivityResult(requestCode, resultCode, data);
     }
@@ -380,6 +381,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
+        if (this instanceof LoginActivity || this instanceof LoginChooserActivity) return;
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
         int themeColor = PrefGetter.getThemeColor(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {

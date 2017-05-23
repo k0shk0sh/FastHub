@@ -84,12 +84,11 @@ public class StackBuilderSchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-        if (!data.getPathSegments().isEmpty()) {
+        if (data.getPathSegments() != null && !data.getPathSegments().isEmpty()) {
             if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
-        } else {
-            return null;
+            return getIntentForURI(context, data);
         }
-        return getIntentForURI(context, data);
+        return null;
     }
 
     @Nullable private static TaskStackBuilder getIntentForURI(@NonNull Context context, @NonNull Uri data) {

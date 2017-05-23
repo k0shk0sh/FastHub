@@ -74,7 +74,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @Optional @OnClick(R.id.browserLogin) void onOpenBrowser() {
         Uri uri = getPresenter().getAuthorizationUrl();
-        ActivityHelper.login(this, uri);
+        ActivityHelper.startCustomTab(this, uri);
     }
 
     @Optional @OnClick(R.id.login) public void onClick() {
@@ -256,7 +256,11 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @Override public void onBackPressed() {
-        startActivity(new Intent(this, LoginChooserActivity.class));
+        if (!(this instanceof LoginChooserActivity)) {
+            startActivity(new Intent(this, LoginChooserActivity.class));
+        } else {
+            finish();
+        }
     }
 
     @Override public void hideProgress() {
