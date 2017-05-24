@@ -4,7 +4,7 @@
    - Make sure that you are always on the latest version.
    - Search issue before submitting new one.
    
-   Public Slack channel: https://fasthub.herokuapp.com
+   Public Slack channel: https://rebrand.ly/fasthub
 -->
 ---
 

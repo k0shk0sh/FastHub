@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -18,6 +19,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReleasesAdapter;
@@ -101,8 +103,23 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
                                 .setPrimaryText(R.string.download)
                                 .setSecondaryText(R.string.click_here_to_download_release_hint)
                                 .setCaptureTouchEventOutsidePrompt(true)
+                                .setBackgroundColourAlpha(244)
+                                .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
+                                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                    @Override
+                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                        ActivityHelper.hideDismissHints(RepoReleasesFragment.this.getContext());
+                                    }
+
+                                    @Override
+                                    public void onHidePromptComplete() {
+
+                                    }
+                                })
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
+                ActivityHelper.showDismissHints(getContext(), () -> {
+                });
             }
         }
     }
@@ -119,6 +136,8 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -164,7 +183,7 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
     @Override public void onShowDetails(@NonNull Release item) {
         if (!InputHelper.isEmpty(item.getBody())) {
             MessageDialogView.newInstance(!InputHelper.isEmpty(item.getName()) ? item.getName() : item.getTagName(),
-                    item.getBody(), true).show(getChildFragmentManager(), MessageDialogView.TAG);
+                    item.getBody(), true, false).show(getChildFragmentManager(), MessageDialogView.TAG);
         } else {
             showErrorMessage(getString(R.string.no_body));
         }

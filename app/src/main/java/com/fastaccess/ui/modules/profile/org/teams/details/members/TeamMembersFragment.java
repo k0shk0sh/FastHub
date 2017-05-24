@@ -80,6 +80,8 @@ public class TeamMembersFragment extends BaseFragment<TeamMembersMvp.View, TeamM
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

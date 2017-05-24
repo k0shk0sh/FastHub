@@ -87,7 +87,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getIssue() != null && !InputHelper.isEmpty(getPresenter().getIssue().getTitle()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
@@ -261,7 +261,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .append(" ")
                     .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
-                    .append(parsedDate));
+                    .append(parsedDate).append("\n").append(issueModel.getRepoId()));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
         }
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this, issueModel)));

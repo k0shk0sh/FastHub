@@ -316,6 +316,7 @@
     <string name="select">Seç</string>
     <string name="select_picture">Resim Seç</string>
     <string name="app_language">Uygulama Dili</string>
+    <string name="language">Uygulama Dili</string>
     <string name="choose_language_title">Dil seçiniz</string>
     <string name="choose_language_summary">Tercih ettiğiniz dili seçin</string>
 </resources>

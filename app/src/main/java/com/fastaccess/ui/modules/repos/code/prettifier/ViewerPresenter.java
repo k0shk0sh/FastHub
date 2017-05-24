@@ -24,10 +24,10 @@ import rx.Observable;
 
 class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp.Presenter {
     private String downloadedStream;
-    private boolean isMarkdown;
-    private boolean isRepo;
-    private boolean isImage;
-    private String url;
+    @icepick.State boolean isMarkdown;
+    @icepick.State boolean isRepo;
+    @icepick.State boolean isImage;
+    @icepick.State String url;
 
     @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();

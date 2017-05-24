@@ -12,14 +12,17 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -62,6 +65,7 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (getPresenter().getEvents().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
@@ -86,6 +90,8 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -144,26 +150,45 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
 
     @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {
         if (!PrefGetter.isUserIconGuideShowed()) {
+            final boolean[] dismissed = {false};
             new MaterialTapTargetPrompt.Builder(getActivity())
                     .setTarget(itemView.findViewById(R.id.avatarLayout))
                     .setPrimaryText(R.string.users)
                     .setSecondaryText(R.string.avatar_click_hint)
+                    .setBackgroundColourAlpha(244)
+                    .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
                         @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
 
                         }
 
                         @Override public void onHidePromptComplete() {
+                            if(!dismissed[0])
                             new MaterialTapTargetPrompt.Builder(getActivity())
                                     .setTarget(itemView)
                                     .setPrimaryText(R.string.fork)
                                     .setSecondaryText(R.string.feeds_fork_hint)
                                     .setCaptureTouchEventOutsidePrompt(true)
+                                    .setBackgroundColourAlpha(244)
+                                    .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
+                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                        @Override
+                                        public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                            ActivityHelper.hideDismissHints(OrgFeedsFragment.this.getContext());
+                                        }
+
+                                        @Override
+                                        public void onHidePromptComplete() {
+
+                                        }
+                                    })
                                     .show();
+                            ActivityHelper.bringDismissAllToFront(getContext());
                         }
                     })
                     .setCaptureTouchEventOutsidePrompt(true)
                     .show();
+            ActivityHelper.showDismissHints(getContext(), () -> { dismissed[0] = true; });
         }
     }
 }

@@ -52,6 +52,7 @@ import static com.annimon.stream.Collectors.toList;
     private PullRequestStatusModel status;
     private ReviewModel review;
     private GroupedReviewModel groupedReview;
+    private ReviewCommentModel reviewComment;
     private Date sortedDate;
 
     private TimelineModel(Issue issue) {
@@ -256,6 +257,7 @@ import static com.annimon.stream.Collectors.toList;
                     groupedReviewModel.setDiffText(reviewCommentModel.getDiffHunk());
                     groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
                     groupedReviewModel.setPosition(reviewCommentModel.getOriginalPosition());
+                    groupedReviewModel.setId(reviewCommentModel.getId());
                 }
                 groupedReviewModel.setComments(reviewCommentModels);
                 models.add(new TimelineModel(groupedReviewModel));

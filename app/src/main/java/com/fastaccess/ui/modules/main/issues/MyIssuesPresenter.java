@@ -26,7 +26,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private MyIssuesType issuesType;
+    @icepick.State MyIssuesType issuesType;
     @NonNull private String login = Login.getUser().getLogin();
 
     @Override public void onItemClick(int position, View v, Issue item) {

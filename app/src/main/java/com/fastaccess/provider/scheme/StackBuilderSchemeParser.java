@@ -46,6 +46,8 @@ public class StackBuilderSchemeParser {
     public static void launchUri(@NonNull Context context, @NonNull Intent data) {
         if (data.getData() != null) {
             launchUri(context, data.getData());
+        } else {
+            try {context.startActivity(data);} catch (Exception ignored) {}
         }
     }
 
@@ -82,12 +84,11 @@ public class StackBuilderSchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-        if (!data.getPathSegments().isEmpty()) {
+        if (data.getPathSegments() != null && !data.getPathSegments().isEmpty()) {
             if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
-        } else {
-            return null;
+            return getIntentForURI(context, data);
         }
-        return getIntentForURI(context, data);
+        return null;
     }
 
     @Nullable private static TaskStackBuilder getIntentForURI(@NonNull Context context, @NonNull Uri data) {
@@ -333,11 +334,12 @@ public class StackBuilderSchemeParser {
         if ("issues".equals(segments.get(2))) {
             String owner = segments.get(0);
             String repo = segments.get(1);
+            boolean isFeedback = "k0shk0sh/FastHub".equalsIgnoreCase(owner + "/" + repo);
             return TaskStackBuilder.create(context)
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
-                    .addNextIntent(CreateIssueActivity.getIntent(context, owner, repo));
+                    .addNextIntent(CreateIssueActivity.getIntent(context, owner, repo, isFeedback));
         }
         return null;
     }

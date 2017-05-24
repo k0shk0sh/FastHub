@@ -8,12 +8,14 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -30,6 +32,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     public static final String TAG = ViewerFragment.class.getSimpleName();
 
+    @BindView(R.id.readmeLoader) ProgressBar loader;
     @BindView(R.id.webView) PrettifyWebView webView;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State boolean isWrap = PrefGetter.isWrapCode();
@@ -56,32 +59,35 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         webView.loadImage(url);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onSetMdText(@NonNull String text, String baseUrl) {
-        stateLayout.hideProgress();
         webView.setVisibility(View.VISIBLE);
         webView.setGithubContent(text, baseUrl);
+        webView.setOnContentChangedListener(this);
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onSetCode(@NonNull String text) {
-        stateLayout.hideProgress();
         webView.setVisibility(View.VISIBLE);
         webView.setSource(text, isWrap, getPresenter().url());
+        webView.setOnContentChangedListener(this);
         getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onShowError(@NonNull String msg) {
-        stateLayout.hideProgress();
+        hideProgress();
         showErrorMessage(msg);
     }
 
     @Override public void onShowError(@StringRes int msg) {
-        stateLayout.hideProgress();
+        hideProgress();
         onShowError(getString(msg));
     }
 
     @Override public void onShowMdProgress() {
+        loader.setVisibility(View.VISIBLE);
         stateLayout.showProgress();
     }
 
@@ -94,16 +100,22 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void hideProgress() {
+        loader.setVisibility(View.GONE);
         stateLayout.hideProgress();
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {
-        stateLayout.hideProgress();
+        hideProgress();
         super.showErrorMessage(msgRes);
     }
 
     @Override public void showMessage(int titleRes, int msgRes) {
-        stateLayout.hideProgress();
+        hideProgress();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
+        hideProgress();
         super.showMessage(titleRes, msgRes);
     }
 
@@ -117,7 +129,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     @Override public void onContentChanged(int progress) {
         if (progress == 100) {
-            if (stateLayout != null) stateLayout.hideProgress();
+            if (stateLayout != null) hideProgress();
         }
     }
 
@@ -136,18 +148,24 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
                 onSetCode(getPresenter().downloadedStream());
             }
         }
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.wrap_menu_option, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.wrap_menu_option, menu);
+        menu.findItem(R.id.wrap).setVisible(false);
     }
 
     @Override public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.wrap)
-                .setVisible(!getPresenter().isMarkDown())
-                .setChecked(isWrap);
         super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.wrap);
+        Logger.e(getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage());
+        if (getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage()) {
+            menuItem.setVisible(false);
+        } else {
+            menuItem.setVisible(true).setCheckable(true).setChecked(isWrap);
+        }
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {

@@ -60,13 +60,28 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                 if (parser != null) builder.bold(parser.getLogin())
                         .append("/")
                         .bold(parser.getRepoId())
+                        .bold("#")
+                        .bold(String.valueOf(issueModel.getNumber())).append(" ")
                         .append(" ");
             }
             if (!showRepoName) {
-                builder.append("#")
-                        .append(String.valueOf(issueModel.getNumber())).append(" ")
-                        .append(issueModel.getUser().getLogin())
-                        .append(" ");
+                if (issueModel.getState() == IssueState.closed) {
+                    if (issueModel.getClosedBy() == null) {
+                        builder.bold("#")
+                                .bold(String.valueOf(issueModel.getNumber())).append(" ")
+                                .append(" ");
+                    } else {
+                        builder.append("#")
+                                .append(String.valueOf(issueModel.getNumber())).append(" ")
+                                .append(issueModel.getClosedBy().getLogin())
+                                .append(" ");
+                    }
+                } else {
+                    builder.bold("#")
+                            .bold(String.valueOf(issueModel.getNumber())).append(" ")
+                            .append(issueModel.getUser().getLogin())
+                            .append(" ");
+                }
             }
             details.setText(builder
                     .append(itemView.getResources().getString(issueModel.getState().getStatus()).toLowerCase())

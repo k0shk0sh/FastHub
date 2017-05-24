@@ -83,12 +83,11 @@ public class SchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-        if (!data.getPathSegments().isEmpty()) {
+        if (data.getPathSegments() != null && !data.getPathSegments().isEmpty()) {
             if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
-        } else {
-            return null;
+            return getIntentForURI(context, data, showRepoBtn);
         }
-        return getIntentForURI(context, data, showRepoBtn);
+        return null;
     }
 
     @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
@@ -311,7 +310,8 @@ public class SchemeParser {
         if ("issues".equals(segments.get(2))) {
             String owner = segments.get(0);
             String repo = segments.get(1);
-            return CreateIssueActivity.getIntent(context, owner, repo);
+            boolean isFeedback = "k0shk0sh/FastHub".equalsIgnoreCase(owner + "/" + repo);
+            return CreateIssueActivity.getIntent(context, owner, repo, isFeedback);
         }
         return null;
     }

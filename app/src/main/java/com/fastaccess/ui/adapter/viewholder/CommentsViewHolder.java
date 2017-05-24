@@ -63,7 +63,12 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
             comment.setText("");
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
-        date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
+        if (commentsModel.getCreatedAt().before(commentsModel.getUpdatedAt())) {
+            date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()),
+                    date.getResources().getString(R.string.edited)));
+        } else {
+            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
+        }
     }
 
 }

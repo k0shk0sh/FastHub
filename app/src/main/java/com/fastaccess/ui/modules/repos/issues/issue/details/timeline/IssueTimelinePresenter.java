@@ -36,8 +36,8 @@ import rx.Observable;
  */
 
 public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
+    @icepick.State Issue issue;
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private Issue issue;
     private ReactionsProvider reactionsProvider;
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
@@ -79,15 +79,17 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                         if (item1.getItemId() == R.id.delete) {
                             getView().onShowDeleteMsg(item.getComment().getId());
                         } else if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getComment().getUser());
+                            getView().onReply(item.getComment().getUser(), item.getComment().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             getView().onEditComment(item.getComment());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getComment().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getComment().getId(), false);
+                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
                 }
             } else if (item.getType() == TimelineModel.EVENT) {
                 IssueEvent issueEventModel = item.getEvent();
@@ -104,18 +106,20 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
                         if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getIssue().getUser());
+                            getView().onReply(item.getIssue().getUser(), item.getIssue().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             Activity activity = ActivityHelper.getActivity(v.getContext());
                             if (activity == null) return false;
                             CreateIssueActivity.startForResult(activity,
                                     item.getIssue().getLogin(), item.getIssue().getRepoId(), item.getIssue());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getIssue().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getIssue().getNumber(), true);
+                    onHandleReaction(v.getId(), item.getIssue().getNumber(), ReactionsProvider.HEADER);
                 }
             }
         }
@@ -193,11 +197,15 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         return issue;
     }
 
-    @Override public void onHandleReaction(int viewId, long id, boolean isHeader) {
+    @Override public void onHandleReaction(int viewId, long id, @ReactionsProvider.ReactionType int reactionType) {
         String login = login();
         String repoId = repoId();
-        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, isHeader);
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType);
         if (observable != null) manageSubscription(observable.subscribe());
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getReactionsProvider().isCallingApi(id, vId);
     }
 
     private ReactionsProvider getReactionsProvider() {

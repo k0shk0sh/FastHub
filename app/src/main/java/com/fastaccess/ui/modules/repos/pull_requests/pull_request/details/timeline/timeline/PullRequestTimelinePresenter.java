@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.EditReviewCommentModel;
+import com.fastaccess.data.dao.GroupedReviewModel;
+import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.IssueEvent;
@@ -18,6 +21,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -37,8 +41,8 @@ import rx.Observable;
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
-    private PullRequest pullRequest;
     private ReactionsProvider reactionsProvider;
+    @icepick.State PullRequest pullRequest;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (getView() != null) {
@@ -56,15 +60,17 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                         if (item1.getItemId() == R.id.delete) {
                             getView().onShowDeleteMsg(item.getComment().getId());
                         } else if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getComment().getUser());
+                            getView().onReply(item.getComment().getUser(), item.getComment().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             getView().onEditComment(item.getComment());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getComment().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getComment().getId(), false);
+                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
                 }
             } else if (item.getType() == TimelineModel.EVENT) {
                 IssueEvent issueEventModel = item.getEvent();
@@ -82,18 +88,29 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
                         if (item1.getItemId() == R.id.reply) {
-                            getView().onTagUser(item.getPullRequest().getUser());
+                            getView().onReply(item.getPullRequest().getUser(), item.getPullRequest().getBody());
                         } else if (item1.getItemId() == R.id.edit) {
                             Activity activity = ActivityHelper.getActivity(v.getContext());
                             if (activity == null) return false;
                             CreateIssueActivity.startForResult(activity,
                                     item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(), item.getPullRequest());
+                        } else if (item1.getItemId() == R.id.share) {
+                            ActivityHelper.shareUrl(v.getContext(), item.getPullRequest().getHtmlUrl());
                         }
                         return true;
                     });
                     popupMenu.show();
                 } else {
-                    onHandleReaction(v.getId(), item.getPullRequest().getNumber(), true);
+                    onHandleReaction(v.getId(), item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
+                }
+            } else if (item.getType() == TimelineModel.GROUPED_REVIEW) {
+                GroupedReviewModel reviewModel = item.getGroupedReview();
+                if (v.getId() == R.id.addCommentPreview) {
+                    EditReviewCommentModel model = new EditReviewCommentModel();
+                    model.setCommentPosition(-1);
+                    model.setGroupPosition(position);
+                    model.setInReplyTo(reviewModel.getId());
+                    getView().onReplyOrCreateReview(null, null, position, -1, model);
                 }
             }
         }
@@ -108,9 +125,9 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 ReactionTypes type = ReactionTypes.get(v.getId());
                 if (type != null) {
                     if (item.getType() == TimelineModel.HEADER) {
-                        getView().showReactionsPopup(type, login, repoId, item.getPullRequest().getNumber(), true);
+                        getView().showReactionsPopup(type, login, repoId, item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
                     } else {
-                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), false);
+                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), ReactionsProvider.COMMENT);
                     }
                 } else {
                     onItemClick(position, v, item);
@@ -155,13 +172,25 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
         if (bundle != null) {
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
-            if (commId != 0) {
+            boolean isReviewComment = bundle.getBoolean(BundleConstant.YES_NO_EXTRA);
+            if (commId != 0 && !isReviewComment) {
                 makeRestCall(RestProvider.getIssueService().deleteIssueComment(login(), repoId(), commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
                                 view.onRemove(TimelineModel.constructComment(comment));
+                            } else {
+                                view.showMessage(R.string.error, R.string.error_deleting_comment);
+                            }
+                        }));
+            } else {
+                int groupPosition = bundle.getInt(BundleConstant.EXTRA_TWO);
+                int commentPosition = bundle.getInt(BundleConstant.EXTRA_THREE);
+                makeRestCall(RestProvider.getReviewService().deleteComment(login(), repoId(), commId),
+                        booleanResponse -> sendToView(view -> {
+                            if (booleanResponse.code() == 204) {
+                                view.onRemoveReviewComment(groupPosition, commentPosition);
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -182,15 +211,20 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return getHeader() != null ? getHeader().getNumber() : -1;
     }
 
-    @Override public void onHandleReaction(int vId, long idOrNumber, boolean isHeader) {
+    @Override public void onHandleReaction(int vId, long idOrNumber, @ReactionsProvider.ReactionType int reactionType) {
         String login = login();
         String repoId = repoId();
-        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, isHeader);
-        if (observable != null) manageSubscription(observable.subscribe());
+        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType);
+        if (observable != null) //noinspection unchecked
+            manageSubscription(RxHelper.safeObservable(observable).subscribe());
     }
 
     @Override public boolean isMerged() {
         return getHeader() != null && (getHeader().isMerged() || !InputHelper.isEmpty(getHeader().getMergedAt()));
+    }
+
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getReactionsProvider().isCallingApi(id, vId);
     }
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
@@ -223,5 +257,51 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             }
             sendToView(view -> view.onNotifyAdapter(models));
         });
+    }
+
+    @Override public void onClick(int groupPosition, int commentPosition, @NonNull View v, @NonNull ReviewCommentModel comment) {
+        if (getHeader() == null || getView() == null) return;
+        if (v.getId() == R.id.commentMenu) {
+            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+            popupMenu.inflate(R.menu.comments_menu);
+            String username = Login.getUser().getLogin();
+            boolean isOwner = CommentsHelper.isOwner(username, getHeader().getLogin(), comment.getUser().getLogin());
+            popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
+            popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
+            popupMenu.setOnMenuItemClickListener(item1 -> {
+                if (getView() == null) return false;
+                if (item1.getItemId() == R.id.delete) {
+                    getView().onShowReviewDeleteMsg(comment.getId(), groupPosition, commentPosition);
+                } else if (item1.getItemId() == R.id.reply) {
+                    EditReviewCommentModel model = new EditReviewCommentModel();
+                    model.setGroupPosition(groupPosition);
+                    model.setCommentPosition(commentPosition);
+                    model.setInReplyTo(comment.getId());
+                    getView().onReplyOrCreateReview(comment.getUser(), comment.getBodyHtml(), groupPosition, commentPosition, model);
+                } else if (item1.getItemId() == R.id.edit) {
+                    getView().onEditReviewComment(comment, groupPosition, commentPosition);
+                } else if (item1.getItemId() == R.id.share) {
+                    ActivityHelper.shareUrl(v.getContext(), comment.getHtmlUrl());
+                }
+                return true;
+            });
+            popupMenu.show();
+        } else {
+            onHandleReaction(v.getId(), comment.getId(), ReactionsProvider.REVIEW_COMMENT);
+        }
+    }
+
+    @Override public void onLongClick(int groupPosition, int commentPosition, @NonNull View v, @NonNull ReviewCommentModel model) {
+        if (getView() == null) return;
+        String login = login();
+        String repoId = repoId();
+        if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
+            ReactionTypes type = ReactionTypes.get(v.getId());
+            if (type != null) {
+                getView().showReactionsPopup(type, login, repoId, model.getId(), ReactionsProvider.REVIEW_COMMENT);
+            } else {
+                onClick(groupPosition, commentPosition, v, model);
+            }
+        }
     }
 }

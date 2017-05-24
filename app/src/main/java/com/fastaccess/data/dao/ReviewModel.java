@@ -3,6 +3,7 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReviewStateType;
 import com.google.gson.annotations.SerializedName;
@@ -27,6 +28,7 @@ import lombok.Setter;
     private String commitId;
     private String diffText;
     private List<ReviewCommentModel> comments;
+    private ReactionsModel reactions;
 
     public ReviewModel() {}
 
@@ -41,6 +43,7 @@ import lombok.Setter;
         dest.writeString(this.commitId);
         dest.writeString(this.diffText);
         dest.writeTypedList(this.comments);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected ReviewModel(Parcel in) {
@@ -54,6 +57,7 @@ import lombok.Setter;
         this.commitId = in.readString();
         this.diffText = in.readString();
         this.comments = in.createTypedArrayList(ReviewCommentModel.CREATOR);
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
     public static final Creator<ReviewModel> CREATOR = new Creator<ReviewModel>() {

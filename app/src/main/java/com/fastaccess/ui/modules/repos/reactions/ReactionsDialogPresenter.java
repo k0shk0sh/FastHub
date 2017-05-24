@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -27,12 +28,11 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<User> users = new ArrayList<>();
-    private String login;
-    private String repoId;
-    private long id;
-    private ReactionTypes reactionType;
-    private boolean isHeader;
-    private boolean isCommit;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State long id;
+    @icepick.State ReactionTypes reactionType;
+    @icepick.State @ReactionsProvider.ReactionType int reactionTypeMode;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {
@@ -40,8 +40,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             login = bundle.getString(BundleConstant.EXTRA_TWO);
             id = bundle.getLong(BundleConstant.ID);
             reactionType = (ReactionTypes) bundle.getSerializable(BundleConstant.EXTRA_TYPE);
-            isHeader = bundle.getBoolean(BundleConstant.EXTRA_THREE);
-            isCommit = bundle.getBoolean(BundleConstant.EXTRA_FOUR);
+            reactionTypeMode = bundle.getInt(BundleConstant.EXTRA_THREE);
             onCallApi(1, null);
         }
     }
@@ -76,15 +75,27 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
             return;
         }
         setCurrentPage(page);
-        Observable<Pageable<ReactionsModel>> observable = RestProvider.getReactionsService()
-                .getIssueCommentReaction(login, repoId, id, reactionType.getContent());
-        if (isHeader) {
-            observable = RestProvider.getReactionsService()
-                    .getIssueReaction(login, repoId, id, reactionType.getContent());
+        Observable<Pageable<ReactionsModel>> observable = null;
+        switch (reactionTypeMode) {
+            case ReactionsProvider.COMMENT:
+                observable = RestProvider.getReactionsService()
+                        .getIssueCommentReaction(login, repoId, id, reactionType.getContent(), page);
+                break;
+            case ReactionsProvider.COMMIT:
+                observable = RestProvider.getReactionsService()
+                        .getCommitReaction(login, repoId, id, reactionType.getContent(), page);
+                break;
+            case ReactionsProvider.HEADER:
+                observable = RestProvider.getReactionsService()
+                        .getIssueReaction(login, repoId, id, reactionType.getContent(), page);
+                break;
+            case ReactionsProvider.REVIEW_COMMENT:
+                observable = RestProvider.getReactionsService()
+                        .getPullRequestReactions(login, repoId, id, reactionType.getContent(), page);
+                break;
         }
-        if (isCommit) {
-            observable = RestProvider.getReactionsService()
-                    .getCommitReaction(login, repoId, id, reactionType.getContent());
+        if (observable == null) {
+            throw new NullPointerException("Reaction is null?");
         }
         makeRestCall(observable, response -> {
             lastPage = response.getLast();

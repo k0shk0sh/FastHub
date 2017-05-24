@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginTop="@dimen/spacing_normal"
     android:background="?card_background"
     android:elevation="2dp"
     android:orientation="horizontal"
@@ -23,7 +24,8 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_toStartOf="@+id/commentMenu">
+        android:layout_toStartOf="@+id/commentMenu"
+        android:scrollbarStyle="insideOverlay">
 
         <LinearLayout
             android:layout_width="wrap_content"

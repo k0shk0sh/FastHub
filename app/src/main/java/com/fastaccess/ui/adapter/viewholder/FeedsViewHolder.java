@@ -3,6 +3,7 @@ package com.fastaccess.ui.adapter.viewholder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +12,9 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -55,7 +58,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             EventsType type = eventsModel.getType();
             date.setGravity(Gravity.CENTER);
             date.setEventsIcon(type.getDrawableRes());
-            String action = null;
+            String action;
             if (type == EventsType.WatchEvent) {
                 action = itemView.getResources().getString(type.getType()).toLowerCase();
             } else if (type == EventsType.PullRequestEvent) {
@@ -74,14 +77,13 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
             if (type != EventsType.WatchEvent) {
-                if (type == EventsType.CreateEvent && eventsModel.getPayload()
-                        .getRefType().equalsIgnoreCase("branch")) {
+                if (type == EventsType.CreateEvent && !InputHelper.isEmpty(eventsModel.getPayload().getRefType())) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")
                             .bold(eventsModel.getPayload().getRefType())
                             .append(" ")
-                            .append(to)
+                            .append(in)
                             .append(" ");
                 } else if ((type == EventsType.PushEvent || type == EventsType.DeleteEvent) && eventsModel.getPayload() != null) {
                     spannableBuilder
@@ -92,29 +94,44 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .append(in)
                             .append(" ");
                 } else {
-                    spannableBuilder.bold(itemView.getResources().getString(type
-                            .getType()).toLowerCase())
-                            .append(" ");
                     if (eventsModel.getPayload() != null) {
                         PayloadModel payloadModel = eventsModel.getPayload();
                         if (payloadModel.getTarget() != null) {
-                            spannableBuilder.append(payloadModel.getTarget().getLogin())
+                            spannableBuilder
+                                    .bold(payloadModel.getTarget().getLogin())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
                         } else if (payloadModel.getTeam() != null) {
-                            spannableBuilder.append(payloadModel.getTeam().getName())
+                            spannableBuilder
+                                    .bold(payloadModel.getTeam().getName())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
                         } else if (payloadModel.getMember() != null) {
-                            spannableBuilder.append(payloadModel.getMember().getName())
+                            spannableBuilder
+                                    .bold(payloadModel.getMember().getLogin())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
+                        } else {
+                            spannableBuilder.bold(itemView.getResources().getString(type.getType()).toLowerCase()).append(" ");
                         }
+                    } else {
+                        spannableBuilder.bold(itemView.getResources().getString(type.getType()).toLowerCase()).append(" ");
                     }
                 }
             }
         }
         if (eventsModel.getPayload() != null) {
             if (eventsModel.getPayload().getComment() != null) {
-                description.setText(eventsModel.getPayload().getComment().getBody());
+                MarkDownProvider.stripMdText(description, eventsModel.getPayload().getComment().getBody());
                 description.setVisibility(View.VISIBLE);
+                if (eventsModel.getPayload().getIssue() != null) {
+                    number = "#" + eventsModel.getPayload().getIssue().getNumber();
+                } else if (eventsModel.getPayload().getPullRequest() != null) {
+                    number = "#" + eventsModel.getPayload().getPullRequest().getNumber();
+                }
             } else if (eventsModel.getPayload().getIssue() != null) {
                 number = "#" + eventsModel.getPayload().getIssue().getNumber();
                 description.setText(eventsModel.getPayload().getIssue().getTitle());
@@ -131,7 +148,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             description.setText("");
             description.setVisibility(View.GONE);
         }
-        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "").append(number);
+        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "")
+                .append(number);
         title.setText(spannableBuilder);
         date.setText(ParseDateFormat.getTimeAgo(eventsModel.getCreatedAt()));
     }

@@ -17,6 +17,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.ui.adapter.CommentsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
@@ -68,6 +69,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
@@ -106,6 +108,8 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
 
     @Override public void showProgress(@StringRes int resId) {
 
+        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
@@ -138,6 +142,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA_TYPE, EDIT_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -149,6 +154,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .start()
                 .put(BundleConstant.ID, gistId)
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -160,6 +166,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                         .put(BundleConstant.EXTRA, id)
                         .put(BundleConstant.ID, gistId)
                         .put(BundleConstant.YES_NO_EXTRA, true)
+                        .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }
@@ -171,6 +178,21 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.ID, gistId)
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .end());
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+    }
+
+    @Override public void onReply(User user, String message) {
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, gistId)
+                .put(BundleConstant.EXTRA, "@" + user.getLogin())
+                .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);

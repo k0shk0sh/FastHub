@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
@@ -36,7 +35,6 @@ import java.io.File;
 import java.lang.reflect.Modifier;
 import java.net.URI;
 
-import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -52,9 +50,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 public class RestProvider {
 
-    private static Cache cache;
     public static final int PAGE_SIZE = 30;
 
+    private static OkHttpClient okHttpClient;
     public final static Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
@@ -62,35 +60,30 @@ public class RestProvider {
             .setPrettyPrinting()
             .create();
 
-    private static Cache provideCache() {
-        if (cache == null) {
-            int cacheSize = 20 * (1024 * 1024); //20MB
-            cache = new Cache(App.getInstance().getCacheDir(), cacheSize);
-        }
-        return cache;
-    }
-
     private static OkHttpClient provideOkHttpClient(boolean isRawString) {
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
-        if (BuildConfig.DEBUG) {
-            client.addInterceptor(new HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY));
-        }
-        client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
-        if (!isRawString) client.addInterceptor(new PaginationInterceptor());
-        client.addInterceptor(chain -> {
-            Request original = chain.request();
-            if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
-                Request.Builder requestBuilder = original.newBuilder();
-                requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
-                        .addHeader("Content-type", "application/vnd.github.v3+json");
-                requestBuilder.method(original.method(), original.body());
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
+        if (okHttpClient == null) {
+            OkHttpClient.Builder client = new OkHttpClient.Builder();
+            if (BuildConfig.DEBUG) {
+                client.addInterceptor(new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY));
             }
-            return chain.proceed(original);
-        });
-        return client.build();
+            client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
+            if (!isRawString) client.addInterceptor(new PaginationInterceptor());
+            client.addInterceptor(chain -> {
+                Request original = chain.request();
+                if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
+                    Request.Builder requestBuilder = original.newBuilder();
+                    requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
+                            .addHeader("Content-type", "application/vnd.github.v3+json");
+                    requestBuilder.method(original.method(), original.body());
+                    Request request = requestBuilder.build();
+                    return chain.proceed(request);
+                }
+                return chain.proceed(original);
+            });
+            okHttpClient = client.build();
+        }
+        return okHttpClient;
     }
 
     private static Retrofit provideRetrofit(boolean isRawString) {
@@ -142,6 +135,15 @@ public class RestProvider {
 
     @NonNull public static UserRestService getUserService() {
         return provideRetrofit().create(UserRestService.class);
+    }
+
+    @NonNull public static UserRestService getContribution() {
+        return new Retrofit.Builder()
+                .baseUrl(BuildConfig.REST_URL)
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .build()
+                .create(UserRestService.class);
     }
 
     @NonNull public static GistService getGistService() {
@@ -204,6 +206,10 @@ public class RestProvider {
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build()
                 .create(SlackService.class);
+    }
+
+    public static void clearHttpClient() {
+        okHttpClient = null;
     }
 
 }

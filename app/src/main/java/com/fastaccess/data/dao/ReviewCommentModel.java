@@ -3,6 +3,7 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 
 import java.util.Date;
@@ -27,10 +28,14 @@ import lombok.Setter;
     private String originalCommitId;
     private User user;
     private String bodyHtml;
+    private String body;
     private Date createdAt;
     private Date updatedAt;
-    private String htmlUr;
+    private String htmlUrl;
     private String pullRequestUrl;
+    private ReactionsModel reactions;
+
+    public ReviewCommentModel() {}
 
     @Override public int describeContents() { return 0; }
 
@@ -46,13 +51,13 @@ import lombok.Setter;
         dest.writeString(this.originalCommitId);
         dest.writeParcelable(this.user, flags);
         dest.writeString(this.bodyHtml);
+        dest.writeString(this.body);
         dest.writeLong(this.createdAt != null ? this.createdAt.getTime() : -1);
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
-        dest.writeString(this.htmlUr);
+        dest.writeString(this.htmlUrl);
         dest.writeString(this.pullRequestUrl);
+        dest.writeParcelable(this.reactions, flags);
     }
-
-    public ReviewCommentModel() {}
 
     protected ReviewCommentModel(Parcel in) {
         this.id = in.readLong();
@@ -66,15 +71,17 @@ import lombok.Setter;
         this.originalCommitId = in.readString();
         this.user = in.readParcelable(User.class.getClassLoader());
         this.bodyHtml = in.readString();
+        this.body = in.readString();
         long tmpCreatedAt = in.readLong();
         this.createdAt = tmpCreatedAt == -1 ? null : new Date(tmpCreatedAt);
         long tmpUpdatedAt = in.readLong();
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
-        this.htmlUr = in.readString();
+        this.htmlUrl = in.readString();
         this.pullRequestUrl = in.readString();
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<ReviewCommentModel> CREATOR = new Parcelable.Creator<ReviewCommentModel>() {
+    public static final Creator<ReviewCommentModel> CREATOR = new Creator<ReviewCommentModel>() {
         @Override public ReviewCommentModel createFromParcel(Parcel source) {return new ReviewCommentModel(source);}
 
         @Override public ReviewCommentModel[] newArray(int size) {return new ReviewCommentModel[size];}

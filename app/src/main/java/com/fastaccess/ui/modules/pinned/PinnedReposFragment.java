@@ -8,6 +8,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.PinnedRepos;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.PinnedReposAdapter;
@@ -59,10 +60,13 @@ public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, Pinne
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if(!AbstractPinnedRepos.isPinned("k0shk0sh/FastHub"))
+            Repo.getRepo("FastHub", "k0shk0sh").subscribe(AbstractPinnedRepos::pinUpin);
         adapter = new PinnedReposAdapter(getPresenter().getPinnedRepos(), getPresenter());
         stateLayout.setEmptyText(R.string.empty_pinned_repos);
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         refresh.setOnRefreshListener(() -> getPresenter().onReload());
         stateLayout.setOnReloadListener(v -> getPresenter().onReload());
         if (savedInstanceState == null) {

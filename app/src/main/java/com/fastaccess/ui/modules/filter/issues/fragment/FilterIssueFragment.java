@@ -98,6 +98,8 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -154,6 +156,7 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (savedInstanceState != null) {

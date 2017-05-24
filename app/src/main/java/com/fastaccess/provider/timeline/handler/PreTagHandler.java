@@ -70,9 +70,9 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             this.appendNewLine(builder);
         } else {
             StringBuffer text = node.getText();
-            builder.append("  ");
+            builder.append(" ");
             builder.append(replace(text.toString()));
-            builder.append("  ");
+            builder.append(" ");
             final int stringStart = start + 1;
             final int stringEnd = builder.length() - 1;
             builder.setSpan(new BackgroundColorSpan(color), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);

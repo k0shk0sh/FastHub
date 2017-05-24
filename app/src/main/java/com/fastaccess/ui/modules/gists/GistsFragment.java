@@ -51,6 +51,7 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (getPresenter().getGists().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
@@ -75,6 +76,8 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

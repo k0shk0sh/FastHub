@@ -5,25 +5,38 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.CardView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
+import com.fastaccess.ui.widgets.contributions.ContributionsDay;
+import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
+import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import icepick.State;
+
+import static android.view.View.GONE;
 
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
@@ -31,6 +44,10 @@ import icepick.State;
 
 public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.View, ProfileOverviewPresenter> implements ProfileOverviewMvp.View {
 
+    @BindView(R.id.contributionsCaption)
+    FontTextView contributionsCaption;
+    @BindView(R.id.organizationsCaption)
+    FontTextView organizationsCaption;
     @BindView(R.id.username) FontTextView username;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -44,7 +61,11 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.progress) View progress;
     @BindView(R.id.followBtn) Button followBtn;
     @State User userModel;
-
+    @BindView(R.id.orgsList) DynamicRecyclerView orgsList;
+    @BindView(R.id.orgsCard) CardView orgsCard;
+    @BindView(R.id.parentView) NestedScrollView parentView;
+    @BindView(R.id.contributionView) GitHubContributionsView contributionView;
+    @BindView(R.id.contributionCard) CardView contributionCard;
     private ProfilePagerMvp.View profileCallback;
 
     public static ProfileOverviewFragment newInstance(@NonNull String login) {
@@ -62,6 +83,10 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             getPresenter().onFollowButtonClicked(getPresenter().getLogin());
             followBtn.setEnabled(false);
         }
+    }
+
+    @OnClick(R.id.openAvatar) void onOpenAvatar() {
+        if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
     }
 
     @Override public void onAttach(Context context) {
@@ -83,6 +108,8 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        onInitOrgs(getPresenter().getOrgs());
+        onInitContributions(getPresenter().getContributions());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -94,7 +121,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             }
         }
         if (isMeOrOrganization()) {
-            followBtn.setVisibility(View.GONE);
+            followBtn.setVisibility(GONE);
         }
     }
 
@@ -103,18 +130,46 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onInitViews(@Nullable User userModel) {
-        progress.setVisibility(View.GONE);
+        progress.setVisibility(GONE);
         if (userModel == null) return;
         this.userModel = userModel;
-        followBtn.setVisibility(!isMeOrOrganization() ? View.VISIBLE : View.GONE);
+        followBtn.setVisibility(!isMeOrOrganization() ? View.VISIBLE : GONE);
         username.setText(userModel.getLogin());
         description.setText(userModel.getBio());
+        if (userModel.getBio() == null)
+            description.setVisibility(GONE);
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
         organization.setText(InputHelper.toNA(userModel.getCompany()));
         location.setText(InputHelper.toNA(userModel.getLocation()));
         email.setText(InputHelper.toNA(userModel.getEmail()));
         link.setText(InputHelper.toNA(userModel.getBlog()));
         joined.setText(userModel.getCreatedAt() != null ? ParseDateFormat.getTimeAgo(userModel.getCreatedAt()) : "N/A");
+        ViewGroup parent = (ViewGroup) organization.getParent();
+        if (organization.getText().equals("N/A")) {
+            int i = parent.indexOfChild(organization);
+            ((ViewGroup) organization.getParent()).removeViewAt(i + 1);
+            organization.setVisibility(GONE);
+        }
+        if (location.getText().equals("N/A")) {
+            int i = parent.indexOfChild(location);
+            ((ViewGroup) location.getParent()).removeViewAt(i + 1);
+            location.setVisibility(GONE);
+        }
+        if (email.getText().equals("N/A")) {
+            int i = parent.indexOfChild(email);
+            ((ViewGroup) email.getParent()).removeViewAt(i + 1);
+            email.setVisibility(GONE);
+        }
+        if (link.getText().equals("N/A")) {
+            int i = parent.indexOfChild(link);
+            ((ViewGroup) link.getParent()).removeViewAt(i + 1);
+            link.setVisibility(GONE);
+        }
+        if (joined.getText().equals("N/A")) {
+            int i = parent.indexOfChild(joined);
+            ((ViewGroup) joined.getParent()).removeViewAt(i + 1);
+            joined.setVisibility(GONE);
+        }
         followers.setText(SpannableBuilder.builder()
                 .append(getString(R.string.followers))
                 .append("\n")
@@ -135,12 +190,39 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
+    @Override public void onInitContributions(@Nullable List<ContributionsDay> items) {
+        if (items != null && !items.isEmpty()) {
+            contributionView.onResponse(items);
+            contributionCard.setVisibility(View.VISIBLE);
+            contributionsCaption.setVisibility(View.VISIBLE);
+        } else {
+            contributionCard.setVisibility(GONE);
+            contributionsCaption.setVisibility(GONE);
+        }
+    }
+
+    @Override public void onInitOrgs(@Nullable List<User> orgs) {
+        if (orgs != null && !orgs.isEmpty()) {
+            orgsList.setNestedScrollingEnabled(false);
+            ProfileOrgsAdapter adapter = new ProfileOrgsAdapter();
+            adapter.addItems(orgs);
+            orgsList.setAdapter(adapter);
+            orgsCard.setVisibility(View.VISIBLE);
+            organizationsCaption.setVisibility(View.VISIBLE);
+            ((GridManager) orgsList.getLayoutManager()).setIconSize(getResources().getDimensionPixelSize(R.dimen.header_icon_zie) +
+                    getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
+        } else {
+            organizationsCaption.setVisibility(GONE);
+            orgsCard.setVisibility(GONE);
+        }
+    }
+
     @Override public void showProgress(@StringRes int resId) {
         progress.setVisibility(View.VISIBLE);
     }
 
     @Override public void hideProgress() {
-        progress.setVisibility(View.GONE);
+        progress.setVisibility(GONE);
     }
 
     @Override public void showErrorMessage(@NonNull String message) {

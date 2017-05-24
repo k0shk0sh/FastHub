@@ -56,7 +56,7 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
         toolbar.getMenu().findItem(R.id.add).setIcon(R.drawable.ic_info_outline)
                 .setTitle(R.string.no_orgs);
         toolbar.setOnMenuItemClickListener(item -> {
-            MessageDialogView.newInstance(getString(R.string.no_orgs), getString(R.string.no_orgs_description))
+            MessageDialogView.newInstance(getString(R.string.no_orgs), getString(R.string.no_orgs_description), false, true)
                     .show(getChildFragmentManager(), MessageDialogView.TAG);
             return true;
         });
@@ -68,12 +68,15 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new UsersAdapter(getPresenter().getOrgs());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         if (savedInstanceState == null) {
             getPresenter().onLoadOrgs();
         }
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

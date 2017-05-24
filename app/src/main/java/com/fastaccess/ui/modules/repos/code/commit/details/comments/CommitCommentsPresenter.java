@@ -11,6 +11,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.types.ReactionTypes;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -32,9 +33,9 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private String repoId;
-    private String login;
-    private String sha;
+    @icepick.State String repoId;
+    @icepick.State String login;
+    @icepick.State String sha;
 
 
     @Override public int getCurrentPage() {
@@ -125,6 +126,10 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
     }
 
+    @Override public boolean isCallingApi(long id, int vId) {
+        return getReactionsProvider().isCallingApi(id, vId);
+    }
+
     @Override public void onItemClick(int position, View v, TimelineModel timelineModel) {
         if (getView() != null) {
             Comment item = timelineModel.getComment();
@@ -140,9 +145,11 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                     if (item1.getItemId() == R.id.delete) {
                         getView().onShowDeleteMsg(item.getId());
                     } else if (item1.getItemId() == R.id.reply) {
-                        getView().onTagUser(item.getUser());
+                        getView().onReply(item.getUser(), item.getBody());
                     } else if (item1.getItemId() == R.id.edit) {
                         getView().onEditComment(item);
+                    } else if (item1.getItemId() == R.id.share) {
+                        ActivityHelper.shareUrl(v.getContext(), item.getHtmlUrl());
                     }
                     return true;
                 });
@@ -156,7 +163,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
         ReactionTypes reactionTypes = ReactionTypes.get(v.getId());
         if (reactionTypes != null) {
-            getView().showReactionsPopup(reactionTypes, login, repoId, item.getComment().getId());
+            if (getView() != null) getView().showReactionsPopup(reactionTypes, login, repoId, item.getComment().getId());
         } else {
             onItemClick(position, v, item);
         }
@@ -170,7 +177,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     }
 
     private void onHandleReaction(int viewId, long id) {
-        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, false, true);
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, ReactionsProvider.COMMIT);
         if (observable != null) manageSubscription(observable.subscribe());
     }
 }

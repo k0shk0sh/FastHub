@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.Login;
@@ -18,6 +19,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 
@@ -26,13 +28,13 @@ import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
  */
 
 class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements RepoPagerMvp.Presenter {
-    private boolean isWatched;
-    private boolean isStarred;
-    private boolean isForked;
-    private String login;
-    private String repoId;
-    private Repo repo;
-    private int navTyp;
+    @icepick.State boolean isWatched;
+    @icepick.State boolean isStarred;
+    @icepick.State boolean isForked;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State Repo repo;
+    @icepick.State int navTyp;
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
@@ -190,6 +192,8 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         }
         if (currentVisible == null) return;
         switch (type) {
+            case RepoPagerMvp.PROFILE:
+                UserPagerActivity.startActivity(App.getInstance().getApplicationContext(), Login.getUser().getLogin());
             case RepoPagerMvp.CODE:
                 if (codePagerView == null) {
                     onAddAndHide(fragmentManager, RepoCodePagerFragment.newInstance(repoId(), login(),

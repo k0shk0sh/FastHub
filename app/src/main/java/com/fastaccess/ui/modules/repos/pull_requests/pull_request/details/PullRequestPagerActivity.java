@@ -88,7 +88,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getPullRequest() != null && !InputHelper.isEmpty(getPresenter().getPullRequest().getTitle()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getPullRequest().getTitle())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getPullRequest().getTitle(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
@@ -248,7 +248,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         PullRequest pullRequest = getPresenter().getPullRequest();
         setTitle(String.format("#%s", pullRequest.getNumber()));
         boolean isMerge = !InputHelper.isEmpty(pullRequest.getMergedAt());
-        date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()));
+        date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()) + "\n" + pullRequest.getRepoId());
         size.setVisibility(View.GONE);
         User userModel = pullRequest.getUser();
         if (userModel != null) {

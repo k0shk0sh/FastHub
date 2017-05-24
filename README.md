@@ -1,4 +1,4 @@
-## FastHub is back to the play store and up on F-Droid.
+## FastHub is dropping support for F-Droid. [Read the announcement here.](https://github.com/k0shk0sh/FastHub/pull/525)
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
@@ -27,7 +27,7 @@ _(To download the app from here, please look at the [latest release](https://git
 # Features
 
 - **App**
-  - Two login types (Basic Auth) or via (Browser)
+  - Two login types (Basic Auth), (Access Token) or via (Browser)
   - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
@@ -53,7 +53,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
-  - PRs reviews
+  - PRs reviews(reply, react with emoji, delete & edit comment)
   - PRs statuses
 - **Commits and Gists**
   - Search Code/Gists
@@ -88,7 +88,7 @@ _(To download the app from here, please look at the [latest release](https://git
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `Fragment` navigation
 - [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images
-- [**MarkDown**](https://github.com/zzhoujay/Markdown) for _Markdown_ editor highlighting
+- [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app

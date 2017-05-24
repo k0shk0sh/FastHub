@@ -32,24 +32,28 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
+import com.fastaccess.ui.modules.login.LoginActivity;
 import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
-import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
+import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import net.grandcentrix.thirtyinch.TiActivity;
 
 import java.util.ArrayList;
 
@@ -63,14 +67,16 @@ import icepick.State;
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
-    @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
+    @Nullable @BindView(R.id.toolbar) public Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
-    @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
+    @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+
+    private static int REFRESH_CODE = 64;
 
     private long backPressTimer;
     private Toast toast;
@@ -85,6 +91,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        getPresenter().onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
     }
 
@@ -105,9 +112,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(savedInstanceState);
         }
         setupToolbarAndStatusBar(toolbar);
-        showHideAds();
+        //showHideAds();
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
@@ -136,7 +144,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         if (isOk && bundle != null) {
             boolean logout = bundle.getBoolean("logout");
-            if (logout) onRequireLogin();
+            if (logout) {
+                onRequireLogin();
+//                if(App.getInstance().getGoogleApiClient().isConnected())
+//                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
+            }
         }
     }//pass
 
@@ -190,7 +202,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
-        PrefGetter.clear();
+        PrefHelper.clearKey("token");
         App.getInstance().getDataStore()
                 .delete(Login.class)
                 .get()
@@ -210,14 +222,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             if (isFinishing()) return;
             if (item.getItemId() == R.id.navToRepo) {
                 onNavToRepoClicked();
-            } else if (item.getItemId() == R.id.fhRepo) {
-                startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
             } else if (item.getItemId() == R.id.supportDev) {
                 startActivity(new Intent(this, DonationActivity.class));
             } else if (item.getItemId() == R.id.gists) {
                 GistsListActivity.startActivity(this, false);
-            } else if (item.getItemId() == R.id.myGists) {
-                GistsListActivity.startActivity(this, true);
             } else if (item.getItemId() == R.id.pinnedMenu) {
                 PinnedReposActivity.startActivity(this);
             } else if (item.getItemId() == R.id.mainView) {
@@ -231,6 +239,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 onLogoutPressed();
             } else if (item.getItemId() == R.id.settings) {
                 onOpenSettings();
+            } else if (item.getItemId() == R.id.about) {
+                startActivity(new Intent(this, FastHubAboutActivity.class));
             } else if (item.getItemId() == R.id.orgs) {
                 onOpenOrgsDialog();
             } else if (item.getItemId() == R.id.notifications) {
@@ -271,7 +281,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onOpenSettings() {
-        SettingsBottomSheetDialog.show(getSupportFragmentManager());
+        startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REFRESH_CODE)
+            if (resultCode == RESULT_OK)
+                recreate();
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     protected void selectHome(boolean hideRepo) {
@@ -292,15 +310,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (extraNav != null) {
             extraNav.getMenu().findItem(R.id.profile).setCheckable(true);
             extraNav.getMenu().findItem(R.id.profile).setChecked(true);
-        }
-    }
-
-    protected void selectGists(boolean publicGists) {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.gists).setCheckable(publicGists);
-            extraNav.getMenu().findItem(R.id.gists).setChecked(publicGists);
-            extraNav.getMenu().findItem(R.id.myGists).setCheckable(!publicGists);
-            extraNav.getMenu().findItem(R.id.myGists).setChecked(!publicGists);
         }
     }
 
@@ -374,11 +383,115 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
+        if (this instanceof LoginActivity || this instanceof LoginChooserActivity) return;
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
+        int themeColor = PrefGetter.getThemeColor(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {
-            setTheme(R.style.ThemeLight);
+            switch (themeColor) {
+                case PrefGetter.RED:
+                    setTheme(R.style.ThemeLight_Red);
+                    break;
+                case PrefGetter.PINK:
+                    setTheme(R.style.ThemeLight_Pink);
+                    break;
+                case PrefGetter.PURPLE:
+                    setTheme(R.style.ThemeLight_Purple);
+                    break;
+                case PrefGetter.DEEP_PURPLE:
+                    setTheme(R.style.ThemeLight_DeepPurple);
+                    break;
+                case PrefGetter.INDIGO:
+                    setTheme(R.style.ThemeLight_Indigo);
+                    break;
+                case PrefGetter.BLUE:
+                    setTheme(R.style.ThemeLight);
+                    break;
+                case PrefGetter.LIGHT_BLUE:
+                    setTheme(R.style.ThemeLight_LightBlue);
+                    break;
+                case PrefGetter.CYAN:
+                    setTheme(R.style.ThemeLight_Cyan);
+                    break;
+                case PrefGetter.TEAL:
+                    setTheme(R.style.ThemeLight_Teal);
+                    break;
+                case PrefGetter.GREEN:
+                    setTheme(R.style.ThemeLight_Green);
+                    break;
+                case PrefGetter.LIGHT_GREEN:
+                    setTheme(R.style.ThemeLight_LightGreen);
+                    break;
+                case PrefGetter.LIME:
+                    setTheme(R.style.ThemeLight_Lime);
+                    break;
+                case PrefGetter.YELLOW:
+                    setTheme(R.style.ThemeLight_Yellow);
+                    break;
+                case PrefGetter.AMBER:
+                    setTheme(R.style.ThemeLight_Amber);
+                    break;
+                case PrefGetter.ORANGE:
+                    setTheme(R.style.ThemeLight_Orange);
+                    break;
+                case PrefGetter.DEEP_ORANGE:
+                    setTheme(R.style.ThemeLight_DeepOrange);
+                    break;
+                default:
+                    setTheme(R.style.ThemeLight);
+            }
         } else if (themeMode == PrefGetter.DARK) {
-            setTheme(R.style.ThemeDark);
+            switch (themeColor) {
+                case PrefGetter.RED:
+                    setTheme(R.style.ThemeDark_Red);
+                    break;
+                case PrefGetter.PINK:
+                    setTheme(R.style.ThemeDark_Pink);
+                    break;
+                case PrefGetter.PURPLE:
+                    setTheme(R.style.ThemeDark_Purple);
+                    break;
+                case PrefGetter.DEEP_PURPLE:
+                    setTheme(R.style.ThemeDark_DeepPurple);
+                    break;
+                case PrefGetter.INDIGO:
+                    setTheme(R.style.ThemeDark_Indigo);
+                    break;
+                case PrefGetter.BLUE:
+                    setTheme(R.style.ThemeDark);
+                    break;
+                case PrefGetter.LIGHT_BLUE:
+                    setTheme(R.style.ThemeDark_LightBlue);
+                    break;
+                case PrefGetter.CYAN:
+                    setTheme(R.style.ThemeDark_Cyan);
+                    break;
+                case PrefGetter.TEAL:
+                    setTheme(R.style.ThemeDark_Teal);
+                    break;
+                case PrefGetter.GREEN:
+                    setTheme(R.style.ThemeDark_Green);
+                    break;
+                case PrefGetter.LIGHT_GREEN:
+                    setTheme(R.style.ThemeDark_LightGreen);
+                    break;
+                case PrefGetter.LIME:
+                    setTheme(R.style.ThemeDark_Lime);
+                    break;
+                case PrefGetter.YELLOW:
+                    setTheme(R.style.ThemeDark_Yellow);
+                    break;
+                case PrefGetter.AMBER:
+                    setTheme(R.style.ThemeDark_Amber);
+                    break;
+                case PrefGetter.ORANGE:
+                    setTheme(R.style.ThemeDark_Orange);
+                    break;
+                case PrefGetter.DEEP_ORANGE:
+                    setTheme(R.style.ThemeDark_DeepOrange);
+                    break;
+                default:
+                    setTheme(R.style.ThemeDark);
+            }
         }
         setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
                 BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(this)));

@@ -32,12 +32,10 @@ import icepick.State;
 
 public class RepoIssuesPagerFragment extends BaseFragment<RepoIssuesPagerMvp.View, RepoIssuesPagerPresenter> implements RepoIssuesPagerMvp.View {
 
-
     public static final String TAG = RepoIssuesPagerFragment.class.getSimpleName();
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
     @State HashSet<TabsCountStateModel> counts = new HashSet<>();
-
 
     public static RepoIssuesPagerFragment newInstance(@NonNull String repoId, @NonNull String login) {
         RepoIssuesPagerFragment view = new RepoIssuesPagerFragment();
@@ -98,6 +96,14 @@ public class RepoIssuesPagerFragment extends BaseFragment<RepoIssuesPagerMvp.Vie
         if (tabs != null) {
             updateCount(model);
         }
+    }
+
+    @Override public void onChangeIssueSort(boolean isLastUpdated) {
+        if (pager == null || pager.getAdapter() == null) return;
+        RepoClosedIssuesFragment closedIssues = (RepoClosedIssuesFragment) pager.getAdapter().instantiateItem(pager, 1);
+        if (closedIssues != null) closedIssues.onRefresh(isLastUpdated);
+        RepoOpenedIssuesFragment openedIssues = (RepoOpenedIssuesFragment) pager.getAdapter().instantiateItem(pager, 0);
+        if (openedIssues != null) openedIssues.onRefresh(isLastUpdated);
     }
 
     private void updateCount(@NonNull TabsCountStateModel model) {

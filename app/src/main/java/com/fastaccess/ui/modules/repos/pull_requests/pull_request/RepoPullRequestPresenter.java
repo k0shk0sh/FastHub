@@ -24,13 +24,13 @@ import java.util.ArrayList;
 
 class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> implements RepoPullRequestMvp.Presenter {
 
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State IssueState issueState;
     private ArrayList<PullRequest> pullRequests = new ArrayList<>();
-    private String login;
-    private String repoId;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private IssueState issueState;
 
     @Override public int getCurrentPage() {
         return page;

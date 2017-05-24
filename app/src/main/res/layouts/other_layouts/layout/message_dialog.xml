@@ -33,9 +33,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingEnd="@dimen/spacing_xs_large"
-                android:paddingStart="@dimen/spacing_xs_large">
+                android:orientation="vertical">
 
                 <com.prettifier.pretty.PrettifyWebView
                     android:id="@+id/prettifyWebView"
@@ -51,6 +49,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
                     android:textColor="?android:attr/textColorSecondary"
                     tools:text="Hello World"/>
             </LinearLayout>
