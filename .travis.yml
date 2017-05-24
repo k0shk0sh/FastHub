@@ -15,7 +15,16 @@ before_script:
   - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;26.0.0-rc2" "platforms;android-O" --channel=2
 
 script:
-  - ./gradlew clean assembleGmsDebug
+  - ./gradlew clean assembleDebug
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
