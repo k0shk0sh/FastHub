@@ -10,10 +10,10 @@
         android:title="@string/enable_notification_title"/>
 
     <ListPreference
-        android:defaultValue="@string/thirty_minutes"
+        android:defaultValue="30"
         android:dialogTitle="@string/every"
         android:entries="@array/notification_duration"
-        android:entryValues="@array/notification_duration"
+        android:entryValues="@array/notification_duration_values"
         android:key="notificationTime"
         android:icon="@drawable/ic_time"
         android:summary="@string/background_job_summary"
