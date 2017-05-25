@@ -92,8 +92,8 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    splits{
-        density{
+    splits {
+        density {
             enable true
         }
     }

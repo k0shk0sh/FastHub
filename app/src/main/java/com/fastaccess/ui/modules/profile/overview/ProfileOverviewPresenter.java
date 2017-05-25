@@ -5,10 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.model.Gist;
@@ -48,7 +46,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     booleanResponse -> {
                         isSuccessResponse = true;
                         isFollowing = booleanResponse.code() == 204;
-                        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+                        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
                     });
     }
 
@@ -66,7 +64,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                 .subscribe(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         isFollowing = !isFollowing;
-                        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+                        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
                     }
                 }, this::onError));
     }
@@ -75,7 +73,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (!InputHelper.isEmpty(login)) {
             onWorkOffline(login);
         }
-        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
         super.onError(throwable);
     }
 

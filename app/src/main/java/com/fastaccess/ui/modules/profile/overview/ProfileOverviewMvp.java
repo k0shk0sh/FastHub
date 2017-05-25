@@ -21,7 +21,7 @@ interface ProfileOverviewMvp {
     interface View extends BaseMvp.FAView {
         void onInitViews(@Nullable User userModel);
 
-        void onInvalidateMenuItem();
+        void invalidateFollowBtn();
 
         void onInitContributions(@Nullable List<ContributionsDay> items);
 

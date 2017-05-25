@@ -26,6 +26,31 @@
                 android:visibility="gone"
                 android:gravity="bottom|start"
                 android:background="@color/material_light_white"
+                tools:visibility="visible">
+
+                <ImageButton
+                    android:id="@+id/banner_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_edit"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_xs_large"
+                    android:contentDescription="TODO"
+                    android:visibility="gone"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    tools:visibility="visible"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/chooseBanner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_banner"
+                android:background="?card_background"
+                android:visibility="gone"
+                style="@style/Base.Widget.AppCompat.ButtonBar"
                 tools:visibility="visible"/>
 
             <android.support.v7.widget.CardView

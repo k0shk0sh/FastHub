@@ -182,9 +182,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             return;
         }
         if (v.getId() == R.id.link) {
-            EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
+            EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "BannerDialogFragment");
         } else if (v.getId() == R.id.image) {
-            EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
+            EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "BannerDialogFragment");
             if (BuildConfig.DEBUG)
                 // Doesn't need a string, will only show up in debug.
                 Toasty.warning(this, "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
