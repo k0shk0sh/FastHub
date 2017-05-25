@@ -32,11 +32,11 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     private final RxTiPresenterSubscriptionHandler subscriptionHandler = new RxTiPresenterSubscriptionHandler(this);
 
     @Override public void onSaveInstanceState(Bundle outState) {
-        Icepick.saveInstanceState(this, outState);
+      //  Icepick.saveInstanceState(this, outState);
     }
 
     @Override public void onRestoreInstanceState(Bundle outState) {
-        Icepick.restoreInstanceState(this, outState);
+      //  Icepick.restoreInstanceState(this, outState);
     }
 
     @Override public void manageSubscription(@Nullable Subscription... subscription) {

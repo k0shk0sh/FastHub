@@ -1,10 +1,15 @@
 package com.fastaccess.ui.modules.profile.overview;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.util.Log;
+import android.view.View;
 
+import com.fastaccess.data.dao.FilesListModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
@@ -14,6 +19,9 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.ArrayList;
 
@@ -27,6 +35,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @icepick.State boolean isSuccessResponse;
     @icepick.State boolean isFollowing;
     @icepick.State String login;
+    @icepick.State Bitmap header = null;
     @icepick.State ArrayList<User> userOrgs = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
@@ -37,7 +46,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     booleanResponse -> {
                         isSuccessResponse = true;
                         isFollowing = booleanResponse.code() == 204;
-                        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+                        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
                     });
     }
 
@@ -55,7 +64,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                 .subscribe(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         isFollowing = !isFollowing;
-                        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+                        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
                     }
                 }, this::onError));
     }
@@ -69,7 +78,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (!InputHelper.isEmpty(login)) {
             onWorkOffline(login);
         }
-        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
         super.onError(throwable);
     }
 
@@ -81,6 +90,39 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (login != null) {
             loadOrgs();
             loadContributions();
+            Gist.getMyGists(login).forEach(gists -> {
+                for (Gist gist : gists) {
+                    if (gist.getDescription().equalsIgnoreCase("header.fst")) {
+                        for(FilesListModel file : gist.getFilesAsList()) {
+                            makeRestCall(RestProvider.getRepoService(true).getFileAsStream(file.getRawUrl()), s -> {
+                                ImageLoader.getInstance().loadImage(s, new ImageLoadingListener() {
+                                    @Override
+                                    public void onLoadingStarted(String s, View view) {
+                                        Log.d(getClass().getSimpleName(), "LOADING STARTED :::");
+                                    }
+
+                                    @Override
+                                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+                                        Log.e(getClass().getSimpleName(), "LOADING FAILED :::");
+                                    }
+
+                                    @Override
+                                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                                        header = bitmap;
+                                        sendToView(v -> v.onHeaderLoaded(bitmap));
+                                        Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
+                                    }
+
+                                    @Override
+                                    public void onLoadingCancelled(String s, View view) {
+                                        Log.e(getClass().getSimpleName(), "LOADING CANCELLED :::");
+                                    }
+                                });
+                            });
+                        }
+                    }
+                }
+            });
             makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {
@@ -99,6 +141,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
             return;
         }
         onSendUserToView(userModel);
+        sendToView(view -> view.onHeaderLoaded(header));
     }
 
     @Override public void onSendUserToView(@Nullable User userModel) {
@@ -115,6 +158,10 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     @NonNull @Override public String getLogin() {
         return login;
+    }
+
+    @Nullable @Override public Bitmap getHeader() {
+        return header;
     }
 
     private void loadContributions() {

@@ -9,6 +9,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.text.emoji.widget.EmojiAppCompatTextView;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
@@ -25,7 +26,7 @@ import icepick.State;
 /**
  * Created by Kosh on 8/18/2015. copyrights are reserved
  */
-public class FontTextView extends AppCompatTextView {
+public class FontTextView extends EmojiAppCompatTextView {
 
     @State int tintColor = -1;
     @State boolean selected;

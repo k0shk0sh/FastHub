@@ -92,8 +92,8 @@ android {
         unitTests.returnDefaultValues = true
     }
 
-    splits{
-        density{
+    splits {
+        density {
             enable true
         }
     }
@@ -116,6 +116,7 @@ dependencies {
     implementation "com.android.support:preference-v14:${supportVersion}"
     implementation "com.android.support:customtabs:${supportVersion}"
     implementation "com.android.support:palette-v7:${supportVersion}"
+    implementation "com.android.support:support-emoji-appcompat:${supportVersion}"
     implementation "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     implementation "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
     implementation "com.squareup.retrofit2:retrofit:${retrofit}"
