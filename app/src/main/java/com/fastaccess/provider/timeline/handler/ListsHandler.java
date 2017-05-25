@@ -1,14 +1,23 @@
 package com.fastaccess.provider.timeline.handler;
 
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.text.SpannableStringBuilder;
 
 import com.fastaccess.helper.Logger;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
 
 import org.htmlcleaner.TagNode;
 
-public class ListsHandler extends TagNodeHandler {
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor @AllArgsConstructor public class ListsHandler extends TagNodeHandler {
+
+    @Nullable private Drawable checked;
+    @Nullable private Drawable unchecked;
 
     private int getMyIndex(TagNode node) {
         if (node.getParent() == null) {
@@ -35,31 +44,35 @@ public class ListsHandler extends TagNodeHandler {
     }
 
     @Override public void beforeChildren(TagNode node, SpannableStringBuilder builder) {
-        TodoItems todoItems = null;
+        TodoItems todoItem = null;
         if (node.getChildTags() != null && node.getChildTags().length > 0) {
-            TagNode tagNode = node.getChildTags()[0];
-            if (tagNode.getName() != null && "input".equalsIgnoreCase(tagNode.getName())) {
-                todoItems = new TodoItems();
-                todoItems.isChecked = tagNode.getAttributeByName("checked") != null;
+            for (TagNode tagNode : node.getChildTags()) {
+                Logger.e(tagNode.getName(), tagNode.getAttributes(), tagNode.getText());
+                if (tagNode.getName() != null && tagNode.getName().equals("input")) {
+                    todoItem = new TodoItems();
+                    todoItem.isChecked = tagNode.getAttributeByName("checked") != null;
+                    break;
+                }
             }
-            Logger.e(tagNode.getName(), tagNode.getAttributeByName("checked"));
         }
         if ("ol".equals(getParentName(node))) {
             builder.append("").append(String.valueOf(getMyIndex(node))).append(". ");
         } else if ("ul".equals(getParentName(node))) {
-            if (todoItems != null) {
-                builder.append(todoItems.isChecked ? "☑ " : "☐ ");
+            if (todoItem != null) {
+                if (checked == null || unchecked == null) {
+                    builder.append(todoItem.isChecked ? "☑" : "☐");
+                } else {
+                    builder.append(SpannableBuilder.builder()
+                            .append(todoItem.isChecked ? checked : unchecked))
+                            .append("   ");
+                }
             } else {
                 builder.append("\u2022  ");
             }
         }
     }
 
-    public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
-        if (builder.length() > 0 && builder.charAt(builder.length() - 1) != '\n') {
-            builder.append("\n");
-        }
-    }
+    public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {}
 
     static class TodoItems {
         boolean isChecked;

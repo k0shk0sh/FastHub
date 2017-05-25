@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.firebase.firebase-crash'
-apply plugin: 'kotlin-android'
+//apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
 
@@ -144,9 +144,9 @@ dependencies {
     implementation 'com.firebase:firebase-jobdispatcher:0.6.0'
     implementation "com.google.firebase:firebase-ads:${gms}"
     implementation "com.google.firebase:firebase-messaging:${gms}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     releaseImplementation "com.google.firebase:firebase-crash:${gms}"
     implementation "com.google.android.gms:play-services-auth:${gms}"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlin_version}"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "io.requery:requery-processor:${requery}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"

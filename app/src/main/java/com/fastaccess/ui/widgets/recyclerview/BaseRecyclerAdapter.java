@@ -95,7 +95,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void addItem(M item, int position) {
         data.add(position, item);
-        notifyItemInserted(data.size() - 1);
+        notifyItemInserted(position);
     }
 
     public void addItem(M item) {

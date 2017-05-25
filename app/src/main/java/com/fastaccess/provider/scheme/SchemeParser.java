@@ -17,6 +17,7 @@ import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
@@ -108,12 +109,13 @@ public class SchemeParser {
                 Intent createIssueIntent = getCreateIssueIntent(context, data);
                 Intent pullRequestIntent = getPullRequestIntent(context, data, showRepoBtn);
                 Intent issueIntent = getIssueIntent(context, data, showRepoBtn);
+                Intent releasesIntent = getReleases(context, data);
                 Intent repoIntent = getRepo(context, data);
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
                 Optional<Intent> intentOptional = returnNonNull(userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
-                        createIssueIntent, issueIntent, repoIntent, blob);
+                        createIssueIntent, issueIntent, releasesIntent, repoIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
@@ -296,6 +298,20 @@ public class SchemeParser {
             String owner = segments.get(0);
             String repo = segments.get(1);
             return RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.PULL_REQUEST);
+        }
+        return null;
+    }
+
+    @Nullable private static Intent getReleases(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        Logger.e(segments.size());
+        if (segments != null && segments.size() > 2) {
+            if (uri.getPathSegments().get(2).equals("releases")) {
+                String owner = segments.get(0);
+                String repo = segments.get(1);
+                return ReleasesListActivity.getIntent(context, owner, repo);
+            }
+            return null;
         }
         return null;
     }

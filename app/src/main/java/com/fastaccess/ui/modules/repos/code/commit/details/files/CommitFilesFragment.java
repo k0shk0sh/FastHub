@@ -84,4 +84,9 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         Boolean toggle = toggleMap.get(position);
         return toggle != null && toggle;
     }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
 }

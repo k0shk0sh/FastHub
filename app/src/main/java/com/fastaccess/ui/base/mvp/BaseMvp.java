@@ -20,7 +20,7 @@ import rx.functions.Action1;
 
 public interface BaseMvp {
 
-    interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback {
+    interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback, OnScrollTopListener {
 
         @CallOnMainThread void showProgress(@StringRes int resId);
 
@@ -70,5 +70,9 @@ public interface BaseMvp {
         void setPreviousTotal(int previousTotal);
 
         void onCallApi(int page, @Nullable P parameter);
+    }
+
+    interface OnScrollTopListener {
+        void onScrollTop(int index);
     }
 }

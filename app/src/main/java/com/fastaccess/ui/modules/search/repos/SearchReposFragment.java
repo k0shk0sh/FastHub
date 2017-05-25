@@ -131,10 +131,9 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
         }
     }
 
-    @Override
-    public void onQueueSearch(@NonNull String query) {
+    @Override public void onQueueSearch(@NonNull String query) {
         this.searchQuery = query;
-        if(getView()!=null)
+        if (getView() != null)
             onSetSearchQuery(query);
     }
 
@@ -147,7 +146,7 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
     }
 
     @Override public void onRefresh() {
-        if(searchQuery.length()==0){
+        if (searchQuery.length() == 0) {
             refresh.setRefreshing(false);
             return;
         }
@@ -156,6 +155,11 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

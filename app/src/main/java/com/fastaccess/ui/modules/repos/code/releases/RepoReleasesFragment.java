@@ -204,6 +204,11 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         }
     }
 
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());

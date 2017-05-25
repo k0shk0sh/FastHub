@@ -25,6 +25,8 @@ interface ProfileOverviewMvp {
         void onInitContributions(@Nullable List<ContributionsDay> items);
 
         void onInitOrgs(@Nullable List<User> orgs);
+
+        void onUserNotFound();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

@@ -61,6 +61,11 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
+        int statusCode = RestProvider.getErrorCode(throwable);
+        if (statusCode == 404) {
+            sendToView(ProfileOverviewMvp.View::onUserNotFound);
+            return;
+        }
         if (!InputHelper.isEmpty(login)) {
             onWorkOffline(login);
         }

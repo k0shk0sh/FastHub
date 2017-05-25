@@ -217,6 +217,10 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
+    @Override public void onUserNotFound() {
+        if (isSafe()) getActivity().finish();
+    }
+
     @Override public void showProgress(@StringRes int resId) {
         progress.setVisibility(View.VISIBLE);
     }
@@ -233,6 +237,10 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @Override public void showMessage(int titleRes, int msgRes) {
         onHideProgress();
         super.showMessage(titleRes, msgRes);
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
     }
 
     private void onHideProgress() {

@@ -134,6 +134,8 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
         callback.onOpenSettings();
     }
 
+    @Override public void onScrollTop(int index) {}
+
     protected boolean isSafe() {
         return getView() != null && getActivity() != null && !getActivity().isFinishing();
     }

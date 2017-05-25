@@ -273,6 +273,11 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         return getPresenter().isCallingApi(id, vId);
     }
 
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
