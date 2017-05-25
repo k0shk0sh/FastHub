@@ -1,23 +1,34 @@
 package com.fastaccess.ui.modules.profile.overview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.FilesListModel;
+import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
@@ -28,6 +39,9 @@ import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -47,6 +61,10 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     FontTextView contributionsCaption;
     @BindView(R.id.organizationsCaption)
     FontTextView organizationsCaption;
+    @BindView(R.id.headerImage)
+    RelativeLayout headerImage;
+    @BindView(R.id.userInformation)
+    LinearLayout userInformation;
     @BindView(R.id.username) FontTextView username;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
@@ -105,6 +123,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
         onInitContributions(getPresenter().getContributions());
+        onHeaderLoaded(getPresenter().getHeader());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -131,7 +150,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         followBtn.setVisibility(!isMeOrOrganization() ? View.VISIBLE : GONE);
         username.setText(userModel.getLogin());
         description.setText(userModel.getBio());
-        if(userModel.getBio()==null)
+        if (userModel.getBio() == null)
             description.setVisibility(GONE);
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
         organization.setText(InputHelper.toNA(userModel.getCompany()));
@@ -237,5 +256,29 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     private boolean isMeOrOrganization() {
         return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
                 (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
+    }
+
+    @Override
+    public void onHeaderLoaded(@Nullable Bitmap bitmap) {
+        if(bitmap != null) {
+
+            headerImage.setBackground(new BitmapDrawable(getResources(), bitmap));
+            headerImage.setVisibility(View.VISIBLE);
+            DisplayMetrics metrics = new DisplayMetrics();
+            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
+            headerImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Math.round(metrics.widthPixels/3.33333f)));
+            ((ViewGroup)userInformation.getParent()).removeView(userInformation);
+            headerImage.addView(userInformation);
+            userInformation.setPaddingRelative(getResources().getDimensionPixelSize(R.dimen.spacing_xs_large), 0, 0,
+                    getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                username.setTextColor(getResources().getColor(android.R.color.primary_text_dark, getActivity().getTheme()));
+                userInformation.setBackground(getResources().getDrawable(R.drawable.scrim, getActivity().getTheme()));
+            } else {
+                username.setTextColor(getResources().getColor(android.R.color.primary_text_dark));
+                userInformation.setBackground(getResources().getDrawable(R.drawable.scrim));
+            }
+
+        }
     }
 }

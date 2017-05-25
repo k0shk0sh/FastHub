@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.overview;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,8 @@ interface ProfileOverviewMvp {
         void onInitContributions(@Nullable List<ContributionsDay> items);
 
         void onInitOrgs(@Nullable List<User> orgs);
+
+        void onHeaderLoaded(@Nullable Bitmap bitmap);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -48,5 +51,7 @@ interface ProfileOverviewMvp {
         @NonNull ArrayList<ContributionsDay> getContributions();
 
         @NonNull String getLogin();
+
+        @Nullable Bitmap getHeader();
     }
 }
