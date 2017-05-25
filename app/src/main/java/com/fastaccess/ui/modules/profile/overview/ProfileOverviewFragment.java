@@ -103,7 +103,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
-    @OnClick(R.id.openAvatar) void onOpenAvatar() {
+    @OnClick(R.id.userInformation) void onOpenAvatar() {
         if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
     }
 
