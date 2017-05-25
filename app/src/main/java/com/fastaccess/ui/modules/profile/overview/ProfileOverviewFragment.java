@@ -185,8 +185,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             link.setVisibility(GONE);
         }
         if (joined.getText().equals("N/A")) {
-            int i = parent.indexOfChild(joined);
-            ((ViewGroup) joined.getParent()).removeViewAt(i + 1);
             joined.setVisibility(GONE);
         }
         followers.setText(SpannableBuilder.builder()

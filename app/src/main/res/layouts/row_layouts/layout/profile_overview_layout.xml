@@ -300,7 +300,7 @@
                 android:visibility="gone"
                 app:cardCornerRadius="0dp"
                 app:cardBackgroundColor="?card_background"
-                app:cardUseCompatPadding="false"
+                app:cardUseCompatPadding="true"
                 app:contentPaddingBottom="@dimen/spacing_normal"
                 app:contentPaddingLeft="@dimen/spacing_xs_large"
                 app:contentPaddingRight="@dimen/spacing_xs_large"
