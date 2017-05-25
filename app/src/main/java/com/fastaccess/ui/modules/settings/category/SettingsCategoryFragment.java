@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -18,10 +17,7 @@ import android.widget.Toast;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Release;
-import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ActivityHelper;
-import com.fastaccess.helper.FileHelper;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
@@ -35,7 +31,6 @@ import com.google.gson.JsonObject;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -86,7 +81,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 notificationSound = findPreference("notificationSound");
                 findPreference("notificationTime").setOnPreferenceChangeListener(this);
                 findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
-                if(!PrefHelper.getBoolean("notificationEnabled")) {
+                if (!PrefHelper.getBoolean("notificationEnabled")) {
                     getPreferenceScreen().removePreference(notificationTime);
                     getPreferenceScreen().removePreference(notificationRead);
                     getPreferenceScreen().removePreference(notificationSound);
@@ -96,7 +91,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 addPreferencesFromResource(R.xml.behaviour_settings);
                 findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
                 signatureVia = findPreference("sent_via");
-                if(PrefHelper.getBoolean("sent_via_enabled"))
+                if (PrefHelper.getBoolean("sent_via_enabled"))
                     getPreferenceScreen().removePreference(signatureVia);
                 break;
             case 2:
@@ -124,7 +119,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                         .append(")"));
                 findPreference("currentVersion").setOnPreferenceClickListener(preference -> {
                     Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
-                        if(releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
+                        if (releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
                             Toasty.success(getContext(), getString(R.string.up_to_date)).show();
                         else
                             Toasty.warning(getContext(), getString(R.string.new_version)).show();
@@ -145,7 +140,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                         settings_.remove("token");
                         String json = new Gson().toJson(settings_);
                         String path =
-                                Environment.getExternalStorageDirectory() + File.separator  + "FastHub";
+                                Environment.getExternalStorageDirectory() + File.separator + "FastHub";
                         File folder = new File(path);
                         folder.mkdirs();
                         File backup = new File(folder, "backup.json");
@@ -160,8 +155,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
                             outputStream.flush();
                             outputStream.close();
-                        }
-                        catch (IOException e) {
+                        } catch (IOException e) {
                             Log.e(getTag(), "Couldn't backup: " + e.toString());
                         }
 
@@ -172,7 +166,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
                     return true;
                 });
-                if(PrefHelper.getString("backed_up")!=null)
+                if (PrefHelper.getString("backed_up") != null)
                     findPreference("backup").setSummary(getString(R.string.backup_summary, PrefHelper.getString("backed_up")));
                 else
                     findPreference("backup").setSummary("");
@@ -195,12 +189,12 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     @Override public boolean onPreferenceChange(Preference preference, Object newValue) {
         if (preference.getKey().equalsIgnoreCase("notificationEnabled")) {
-            if ((boolean)newValue) {
+            if ((boolean) newValue) {
                 getPreferenceScreen().addPreference(notificationTime);
                 getPreferenceScreen().addPreference(notificationRead);
                 getPreferenceScreen().addPreference(notificationSound);
                 NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
-                        PrefGetter.notificationDurationMillis(getActivity().getApplicationContext(), PrefHelper.getString("notificationTime")), true);
+                        PrefGetter.getNotificationTaskDuration(), true);
             } else {
                 getPreferenceScreen().removePreference(notificationTime);
                 getPreferenceScreen().removePreference(notificationRead);
@@ -210,7 +204,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             return true;
         } else if (preference.getKey().equalsIgnoreCase("notificationTime")) {
             NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
-                    PrefGetter.notificationDurationMillis(getActivity().getApplicationContext(), (String) newValue), true);
+                    PrefGetter.notificationDurationMillis((String) newValue), true);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("recylerViewAnimation")) {
             callback.onThemeChanged();
@@ -236,7 +230,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             callback.onThemeChanged();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("sent_via_enabled")) {
-            if((boolean)newValue)
+            if ((boolean) newValue)
                 getPreferenceScreen().removePreference(signatureVia);
             else
                 getPreferenceScreen().addPreference(signatureVia);
@@ -249,14 +243,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode==PERMISSION_REQUEST_CODE) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Map<String, ?> settings = PrefHelper.getAll();
                     settings.remove("token");
                     String json = new Gson().toJson(settings);
                     String path =
-                            Environment.getExternalStorageDirectory() + File.separator  + "FastHub";
+                            Environment.getExternalStorageDirectory() + File.separator + "FastHub";
                     File folder = new File(path);
                     folder.mkdirs();
                     File backup = new File(folder, "backup.json");
@@ -271,8 +265,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
                         outputStream.flush();
                         outputStream.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         Log.e(getTag(), "Couldn't backup: " + e.toString());
                     }
 
@@ -295,7 +288,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==RESTORE_REQUEST_CODE) {
+        if (requestCode == RESTORE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 StringBuilder json = new StringBuilder();
                 try {
@@ -308,14 +301,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     }
                     reader.close();
                     inputStream.close();
-                }catch (IOException e) {
+                } catch (IOException e) {
                     Toasty.error(getContext(), getString(R.string.error)).show();
                 }
 
                 Gson gson = new Gson();
                 JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
                 Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-                for(Map.Entry<String,JsonElement> entry : entrySet){
+                for (Map.Entry<String, JsonElement> entry : entrySet) {
                     if (entry.getValue().getAsJsonPrimitive().isBoolean())
                         PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
                     else if (entry.getValue().getAsJsonPrimitive().isNumber())

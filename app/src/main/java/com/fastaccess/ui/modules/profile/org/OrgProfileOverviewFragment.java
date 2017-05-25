@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -18,6 +19,7 @@ import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import icepick.State;
 
 /**
@@ -42,6 +44,10 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         OrgProfileOverviewFragment view = new OrgProfileOverviewFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, login).end());
         return view;
+    }
+
+    @OnClick(R.id.openAvatar) void onOpenAvatar() {
+        if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
     }
 
     @Override public void onInitViews(@Nullable User userModel) {

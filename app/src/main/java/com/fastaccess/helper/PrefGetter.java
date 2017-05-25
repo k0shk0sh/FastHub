@@ -10,7 +10,6 @@ import com.fastaccess.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Kosh on 10 Nov 2016, 3:43 PM
@@ -169,28 +168,27 @@ public class PrefGetter {
         return PrefHelper.getBoolean("recylerViewAnimation");
     }
 
-    public static long getNotificationTaskDuration(@NonNull Context context) {
+    public static int getNotificationTaskDuration() {
         String prefValue = PrefHelper.getString("notificationTime");
         if (prefValue != null) {
-            return notificationDurationMillis(context, prefValue);
+            return notificationDurationMillis(prefValue);
         }
         return -1;
     }
 
-    public static long notificationDurationMillis(@NonNull Context context, @NonNull String prefValue) {
+    public static int notificationDurationMillis(@NonNull String prefValue) {
         if (!InputHelper.isEmpty(prefValue)) {
-            if (prefValue.equalsIgnoreCase(context.getString(R.string.thirty_minutes))) {
-                return TimeUnit.MINUTES.toMillis(30);
-            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.twenty_minutes))) {
-                return TimeUnit.MINUTES.toMillis(20);
-            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.ten_minutes))) {
-                return TimeUnit.MINUTES.toMillis(10);
-            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.five_minutes))) {
-                return TimeUnit.MINUTES.toMillis(5);
-            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.one_minute))) {
-                return TimeUnit.MINUTES.toMillis(1);
-            } else if (prefValue.equalsIgnoreCase(context.getString(R.string.turn_off))) {
-                return -1;
+            switch (prefValue) {
+                case "1":
+                    return 60;
+                case "5":
+                    return 5 * 60;
+                case "10":
+                    return 10 * 60;
+                case "20":
+                    return 20 * 60;
+                case "30":
+                    return 30 * 60;
             }
         }
         return 0;

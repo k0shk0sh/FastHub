@@ -24,6 +24,7 @@ import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -102,6 +103,10 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
+    @OnClick(R.id.openAvatar) void onOpenAvatar() {
+        if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
+    }
+
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         if (getParentFragment() instanceof ProfilePagerMvp.View) {
@@ -159,29 +164,29 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         link.setText(InputHelper.toNA(userModel.getBlog()));
         joined.setText(userModel.getCreatedAt() != null ? ParseDateFormat.getTimeAgo(userModel.getCreatedAt()) : "N/A");
         ViewGroup parent = (ViewGroup) organization.getParent();
-        if(organization.getText().equals("N/A")) {
+        if (organization.getText().equals("N/A")) {
             int i = parent.indexOfChild(organization);
-            ((ViewGroup)organization.getParent()).removeViewAt(i+1);
+            ((ViewGroup) organization.getParent()).removeViewAt(i + 1);
             organization.setVisibility(GONE);
         }
-        if(location.getText().equals("N/A")) {
+        if (location.getText().equals("N/A")) {
             int i = parent.indexOfChild(location);
-            ((ViewGroup)location.getParent()).removeViewAt(i+1);
+            ((ViewGroup) location.getParent()).removeViewAt(i + 1);
             location.setVisibility(GONE);
         }
-        if(email.getText().equals("N/A")) {
+        if (email.getText().equals("N/A")) {
             int i = parent.indexOfChild(email);
-            ((ViewGroup)email.getParent()).removeViewAt(i+1);
+            ((ViewGroup) email.getParent()).removeViewAt(i + 1);
             email.setVisibility(GONE);
         }
-        if(link.getText().equals("N/A")) {
+        if (link.getText().equals("N/A")) {
             int i = parent.indexOfChild(link);
-            ((ViewGroup)link.getParent()).removeViewAt(i+1);
+            ((ViewGroup) link.getParent()).removeViewAt(i + 1);
             link.setVisibility(GONE);
         }
-        if(joined.getText().equals("N/A")) {
+        if (joined.getText().equals("N/A")) {
             int i = parent.indexOfChild(joined);
-            ((ViewGroup)joined.getParent()).removeViewAt(i+1);
+            ((ViewGroup) joined.getParent()).removeViewAt(i + 1);
             joined.setVisibility(GONE);
         }
         followers.setText(SpannableBuilder.builder()
