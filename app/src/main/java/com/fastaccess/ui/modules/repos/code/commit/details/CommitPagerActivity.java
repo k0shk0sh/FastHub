@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragments;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -181,6 +183,20 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         }
         if (tabTwo != null && commit.getGitCommit() != null && commit.getGitCommit().getCommentCount() > 0) {
             tabTwo.setText(getString(R.string.comments) + " (" + commit.getGitCommit().getCommentCount() + ")");
+        }
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
         }
     }
 

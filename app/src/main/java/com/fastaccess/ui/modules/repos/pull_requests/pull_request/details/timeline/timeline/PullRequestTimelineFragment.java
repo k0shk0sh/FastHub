@@ -338,6 +338,11 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         return getPresenter().isCallingApi(id, vId);
     }
 
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
     private View getFromView() {
         return getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
     }

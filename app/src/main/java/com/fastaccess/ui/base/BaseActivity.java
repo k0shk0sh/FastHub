@@ -285,13 +285,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REFRESH_CODE)
-            if (resultCode == RESULT_OK)
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REFRESH_CODE) {
+            if (resultCode == RESULT_OK) {
                 recreate();
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override public void onScrollTop(int index) {}
 
     protected void selectHome(boolean hideRepo) {
         if (extraNav != null) {

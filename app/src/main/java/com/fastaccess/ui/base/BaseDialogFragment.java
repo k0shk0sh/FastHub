@@ -153,4 +153,6 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         super.onDestroyView();
         if (unbinder != null) unbinder.unbind();
     }
+
+    @Override public void onScrollTop(int index) {}
 }

@@ -130,8 +130,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         }
     }
 
-    @Override
-    public void onQueueSearch(@NonNull String query) {
+    @Override public void onQueueSearch(@NonNull String query) {
         this.searchQuery = query;
         if(getView()!=null)
             onSetSearchQuery(query);
@@ -155,6 +154,11 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

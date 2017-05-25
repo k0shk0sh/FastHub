@@ -95,4 +95,9 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
             }
         }
     }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
 }

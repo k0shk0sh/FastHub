@@ -6,17 +6,15 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
-import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -57,7 +55,21 @@ public class NotificationActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         AppHelper.cancelNotification(this);
         onSelectNotifications();
-        setupTabs(savedInstanceState);
+        setupTabs();
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
     }
 
     @Override public void onBackPressed() {
@@ -67,7 +79,7 @@ public class NotificationActivity extends BaseActivity {
         super.onBackPressed();
     }
 
-    private void setupTabs(Bundle savedInstanceState) {
+    private void setupTabs() {
         TabLayout.Tab tab1 = getTab(R.string.unread);
         TabLayout.Tab tab2 = getTab(R.string.all);
         tabs.addTab(tab1);
@@ -75,38 +87,6 @@ public class NotificationActivity extends BaseActivity {
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapterModel.buildForNotifications(this)));
         tabs.setupWithViewPager(pager);
-        /*if (savedInstanceState == null) {
-            replaceWithAll(0);
-        }
-        tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override public void onTabSelected(TabLayout.Tab tab) {
-                int position = tab.getPosition();
-                if (AppHelper.getFragmentByTag(getSupportFragmentManager(), String.valueOf(position)) == null) {
-                    replaceWithAll(position);
-                }
-            }
-
-            @Override public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
-    }
-
-    private void replaceWithAll(int position) {
-        Fragment fragment;
-        if (position == 0) {
-            fragment = new UnreadNotificationsFragment();
-        } else {
-            fragment = new AllNotificationsFragment();
-        }
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragmentContainer, fragment, String.valueOf(position))
-                .commit();
     }
 
     private TabLayout.Tab getTab(int titleId) {

@@ -208,7 +208,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         return getReactionsProvider().isCallingApi(id, vId);
     }
 
-    private ReactionsProvider getReactionsProvider() {
+    @NonNull private ReactionsProvider getReactionsProvider() {
         if (reactionsProvider == null) {
             reactionsProvider = new ReactionsProvider();
         }

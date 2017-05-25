@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
@@ -264,10 +266,16 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override public void onPageSelected(int position) {
                     super.onPageSelected(position);
-                    hideShowFab();
+
                 }
             });
         }
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
         if (tabs.getTabAt(2) != null) {
             tabs.getTabAt(2)
                     .setText(SpannableBuilder.builder()
@@ -296,6 +304,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                             .append(")"));
         }
         hideShowFab();
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

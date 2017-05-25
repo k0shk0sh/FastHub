@@ -92,7 +92,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -178,6 +178,11 @@ refresh.setRefreshing(true);
             adapter.clear();
             onRefresh();
         }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

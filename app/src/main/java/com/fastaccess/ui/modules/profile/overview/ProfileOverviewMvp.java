@@ -28,6 +28,8 @@ interface ProfileOverviewMvp {
         void onInitOrgs(@Nullable List<User> orgs);
 
         void onHeaderLoaded(@Nullable Bitmap bitmap);
+
+        void onUserNotFound();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {

@@ -2,6 +2,7 @@ package com.fastaccess.provider.timeline;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -54,6 +55,8 @@ public class HtmlHelper {
         boolean isDark = AppHelper.isNightMode(textView.getResources());
         @ColorInt int windowBackground = isDark ? ViewHelper.getWindowBackground(textView.getContext()) :
                                          ContextCompat.getColor(textView.getContext(), R.color.light_patch_ref_color);
+        Drawable checked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_small);
+        Drawable unchecked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_empty_small);
         HtmlSpanner mySpanner = new HtmlSpanner();
         mySpanner.setStripExtraWhiteSpace(true);
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, isDark));
@@ -67,7 +70,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("em", new ItalicHandler());
         mySpanner.registerHandler("ul", new MarginHandler());
         mySpanner.registerHandler("ol", new MarginHandler());
-        mySpanner.registerHandler("li", new ListsHandler());
+        mySpanner.registerHandler("li", new ListsHandler(checked, unchecked));
         mySpanner.registerHandler("u", new UnderlineHandler());
         mySpanner.registerHandler("strike", new StrikethroughHandler());
         mySpanner.registerHandler("ins", new UnderlineHandler());

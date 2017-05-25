@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -113,7 +112,8 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         if (commentsModel.getCreatedAt().before(commentsModel.getUpdatedAt())) {
-            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()) + " " + App.getInstance().getResources().getString(R.string.edited));
+            date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()), itemView
+                    .getResources().getString(R.string.edited)));
         } else {
             date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
         }
@@ -135,6 +135,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             if (comment != null) {
                 boolean isReacted = reactionsCallback == null || reactionsCallback.isPreviouslyReacted(comment.getId(), v.getId());
                 boolean isCallingApi = reactionsCallback != null && reactionsCallback.isCallingApi(comment.getId(), v.getId());
+//                if (isCallingApi) return;
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
                     case R.id.heart:

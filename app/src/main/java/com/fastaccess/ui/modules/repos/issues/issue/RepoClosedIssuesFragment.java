@@ -136,7 +136,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -182,6 +182,11 @@ refresh.setRefreshing(true);
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

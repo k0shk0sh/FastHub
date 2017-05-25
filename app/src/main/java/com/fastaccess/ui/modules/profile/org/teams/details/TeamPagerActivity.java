@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
@@ -13,6 +14,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
@@ -81,5 +83,19 @@ public class TeamPagerActivity extends BaseActivity {
         tabs.setTabMode(TabLayout.MODE_FIXED);
         tabs.setupWithViewPager(pager);
         tabs.setPaddingRelative(0, 0, 0, 0);
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
     }
 }

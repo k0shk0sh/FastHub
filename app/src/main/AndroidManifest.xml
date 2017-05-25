@@ -165,6 +165,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
+
+        <activity android:name=".ui.modules.settings.SettingsActivity"/>
+        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity"/>
+        <activity
+            android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
+            android:label="@string/releases">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -212,18 +223,13 @@
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
-        <service android:name=".provider.fcm.PushNotificationService">
+        <service
+            android:name=".provider.fcm.PushNotificationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-
-        <activity android:name=".ui.modules.settings.SettingsActivity">
-        </activity>
-        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity">
-        </activity>
-        <activity android:name=".ui.modules.profile.banner.BannerInfoActivity">
-        </activity>
     </application>
 
 </manifest>
