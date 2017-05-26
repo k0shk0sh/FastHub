@@ -24,15 +24,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:visibility="gone"
-                android:gravity="bottom"
+                android:gravity="bottom|start"
                 android:background="@color/material_light_white"
                 tools:visibility="visible">
-
-                <ImageView
-                    android:id="@+id/headerImageView"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"/>
 
                 <ImageButton
                     android:id="@+id/banner_edit"
