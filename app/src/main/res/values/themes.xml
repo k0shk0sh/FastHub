@@ -7,6 +7,7 @@
         <item name="colorAccent">@color/material_blue_accent_700</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="icon_color">@color/white</item>
+        <item name="card_background">@color/material_light_white</item>
     </style>
 
     <style name="InfoTheme" parent="Theme.AppCompat.Light.NoActionBar">

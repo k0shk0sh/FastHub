@@ -54,6 +54,6 @@ interface ProfileOverviewMvp {
 
         @NonNull String getLogin();
 
-        @Nullable Bitmap getHeader();
+        @Nullable String getHeaderUrl();
     }
 }
