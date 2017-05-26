@@ -1,5 +1,6 @@
 package com.fastaccess.ui.base.mvp.presenter;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -16,6 +17,7 @@ import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import icepick.Icepick;
 import retrofit2.adapter.rxjava.HttpException;
 import rx.Observable;
 import rx.Subscription;
@@ -29,9 +31,17 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     private boolean apiCalled;
     private final RxTiPresenterSubscriptionHandler subscriptionHandler = new RxTiPresenterSubscriptionHandler(this);
 
+    @Override public void onSaveInstanceState(Bundle outState) {
+      //  Icepick.saveInstanceState(this, outState);
+    }
+
+    @Override public void onRestoreInstanceState(Bundle outState) {
+      //  Icepick.restoreInstanceState(this, outState);
+    }
+
     @Override public void manageSubscription(@Nullable Subscription... subscription) {
         if (subscription != null) {
-            subscriptionHandler.manageSubscription(subscription);
+            subscriptionHandler.manageSubscriptions(subscription);
         }
     }
 

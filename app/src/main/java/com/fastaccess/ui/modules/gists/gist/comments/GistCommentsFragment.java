@@ -17,6 +17,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.ui.adapter.CommentsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
@@ -64,10 +65,11 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new CommentsAdapter(getPresenter().getComments(), this, false);
+        adapter = new CommentsAdapter(getPresenter().getComments());
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
@@ -106,6 +108,8 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
 
     @Override public void showProgress(@StringRes int resId) {
 
+        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
@@ -117,11 +121,6 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @NonNull @Override public GistCommentsPresenter providePresenter() {
@@ -143,6 +142,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA_TYPE, EDIT_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -154,6 +154,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .start()
                 .put(BundleConstant.ID, gistId)
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -165,6 +166,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                         .put(BundleConstant.EXTRA, id)
                         .put(BundleConstant.ID, gistId)
                         .put(BundleConstant.YES_NO_EXTRA, true)
+                        .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }
@@ -176,6 +178,21 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.ID, gistId)
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .end());
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+    }
+
+    @Override public void onReply(User user, String message) {
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, gistId)
+                .put(BundleConstant.EXTRA, "@" + user.getLogin())
+                .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -192,13 +209,16 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK && data != null) {
+        if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data == null) {
+                    onRefresh();
+                    return;
+                }
                 Bundle bundle = data.getExtras();
                 if (bundle != null) {
                     boolean isNew = bundle.getBoolean(BundleConstant.EXTRA);
                     Comment commentsModel = bundle.getParcelable(BundleConstant.ITEM);
-                    getSparseBooleanArray().clear();
                     if (commentsModel == null) return;
                     if (isNew) {
                         adapter.addItem(commentsModel);
@@ -225,18 +245,13 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         }
     }
 
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        getSparseBooleanArray().put(position, isCollapsed);
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
-    }
-
-    private SparseBooleanArrayParcelable getSparseBooleanArray() {
-        if (sparseBooleanArray == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-        }
-        return sparseBooleanArray;
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

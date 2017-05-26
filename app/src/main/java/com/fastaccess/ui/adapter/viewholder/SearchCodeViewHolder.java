@@ -31,9 +31,17 @@ public class SearchCodeViewHolder extends BaseViewHolder<SearchCodeModel> {
         return new SearchCodeViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter);
     }
 
-    @Override public void bind(@NonNull SearchCodeModel codeMode) {
-        title.setText(codeMode.getRepository() != null ? codeMode.getRepository().getFullName() : "N/A");
-        details.setText(codeMode.getName());
-        commentsNo.setVisibility(View.GONE);
+    public void bind(@NonNull SearchCodeModel codeModel, boolean showRepoName) {
+        if (showRepoName) {
+            title.setText(codeModel.getRepository() != null ? codeModel.getRepository().getFullName() : "N/A");
+            details.setText(codeModel.getName());
+            commentsNo.setVisibility(View.GONE);
+        } else {
+            title.setText(codeModel.getName());
+            details.setText(codeModel.getPath());
+            commentsNo.setVisibility(View.GONE);
+        }
     }
+
+    @Override public void bind(@NonNull SearchCodeModel searchCodeModel) {}
 }

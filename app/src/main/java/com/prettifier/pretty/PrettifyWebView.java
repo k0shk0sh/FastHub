@@ -108,7 +108,7 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source, boolean wrap) {
+    public void setSource(@NonNull String source, boolean wrap, @Nullable String url) {
         WebSettings settings = getSettings();
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
         setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
@@ -118,23 +118,44 @@ public class PrettifyWebView extends NestedWebView {
         if (!InputHelper.isEmpty(source)) {
             String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
+            int lineNo = getLineNo(url);
+            if (lineNo != 0) {
+                setOnContentChangedListener(progress -> {
+                    Logger.e(progress);
+                    if (progress == 100) {
+                        if (isAttachedToWindow()) loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
+                    }
+                });
+            }
         }
+    }
+
+    private int getLineNo(@Nullable String url) {
+        int lineNo = 0;
+        if (url != null) {
+            try {
+                Uri uri = Uri.parse(url);
+                String lineNumber = uri.getEncodedFragment();
+                Logger.e(lineNumber);
+                if (lineNumber != null) {
+                    String[] toSplit = lineNumber.split("-");
+                    if (toSplit.length > 1) {
+                        lineNumber = toSplit[toSplit.length - 1];
+                    }
+                    Logger.e(lineNumber);
+                    lineNumber = lineNumber.replace("L", "");
+                    lineNo = Integer.valueOf(lineNumber);
+                    Logger.e(lineNo);
+                }
+            } catch (Exception ignored) {}
+        }
+        return lineNo;
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
-        setGithubContent(source, baseUrl, false);
-    }
-
-    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
-        if (wrap) {
-            setScrollbarFadingEnabled(false);
-            setVerticalScrollBarEnabled(false);
-        }
-        if (!InputHelper.isEmpty(source)) {
-            if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
-            String page = GithubHelper.generateContent(source, baseUrl, wrap, AppHelper.isNightMode(getResources()));
-            post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
-        }
+        addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
+        String page = GithubHelper.generateContent(source, baseUrl, AppHelper.isNightMode(getResources()));
+        post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }
 
     public void loadImage(@NonNull String url) {
@@ -153,26 +174,26 @@ public class PrettifyWebView extends NestedWebView {
         this.interceptTouch = interceptTouch;
     }
 
-    private class ChromeClient extends WebChromeClient {
-        @Override public void onProgressChanged(WebView view, int progress) {
-            super.onProgressChanged(view, progress);
-            if (onContentChangedListener != null) {
-                onContentChangedListener.onContentChanged(progress);
-            }
-        }
-    }
-
     private void startActivity(@Nullable Uri url) {
         if (url == null) return;
         Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
-            CodeViewerActivity.startActivity(getContext(), url.toString());
+            CodeViewerActivity.startActivity(getContext(), url.toString(), url.toString());
         } else {
             String lastSegment = url.getEncodedFragment();
             if (lastSegment != null || url.toString().startsWith("#") || url.toString().indexOf('#') != -1) {
                 return;
             }
             SchemeParser.launchUri(getContext(), url, true);
+        }
+    }
+
+    private class ChromeClient extends WebChromeClient {
+        @Override public void onProgressChanged(WebView view, int progress) {
+            super.onProgressChanged(view, progress);
+            if (onContentChangedListener != null) {
+                onContentChangedListener.onContentChanged(progress);
+            }
         }
     }
 

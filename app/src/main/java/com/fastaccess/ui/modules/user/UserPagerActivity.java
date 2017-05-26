@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v4.app.Fragment;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
@@ -16,6 +17,8 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.profile.repos.ProfileReposFragment;
 import com.fastaccess.ui.widgets.ViewPagerView;
@@ -23,11 +26,13 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import icepick.State;
+import shortbread.Shortcut;
 
 /**
  * Created by Kosh on 03 Dec 2016, 8:00 AM
  */
 
+@Shortcut(id = "profile", icon = R.drawable.ic_profile_shortcut, shortLabelRes = R.string.profile, backStack = {MainActivity.class}, rank = 4)
 public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPagerPresenter> implements UserPagerMvp.View {
 
 
@@ -81,10 +86,14 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            login = getIntent().getExtras().getString(BundleConstant.EXTRA);
-            isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
-            if (!InputHelper.isEmpty(login) && isOrg) {
-                getPresenter().checkOrgMembership(login);
+            if (getIntent() != null && getIntent().getExtras() != null) {
+                login = getIntent().getExtras().getString(BundleConstant.EXTRA);
+                isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
+                if (!InputHelper.isEmpty(login) && isOrg) {
+                    getPresenter().checkOrgMembership(login);
+                }
+            } else {
+                login = Login.getUser().getLogin();
             }
         }
         if (InputHelper.isEmpty(login)) {
@@ -93,7 +102,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         }
         setTitle(login);
         if (login.equalsIgnoreCase(Login.getUser().getLogin())) {
-            hideProfileMenuItem();
+            selectProfile();
         }
         if (!isOrg) {
             FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
@@ -109,6 +118,13 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                 onInitOrg(getPresenter().isMember == 1);
             }
         }
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
+
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -129,6 +145,14 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
             }
         });
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
     }
 
     @Override public void hideProgress() {

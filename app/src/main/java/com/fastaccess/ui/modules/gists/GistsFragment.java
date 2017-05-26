@@ -51,6 +51,7 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (getPresenter().getGists().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
@@ -76,6 +77,8 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
 
     @Override public void showProgress(@StringRes int resId) {
 
+        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
@@ -92,11 +95,6 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @NonNull @Override public GistsPresenter providePresenter() {
@@ -117,5 +115,15 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

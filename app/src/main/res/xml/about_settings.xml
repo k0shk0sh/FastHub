@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:icon="@drawable/ic_slack"
+        android:key="joinSlack"
+        android:title="@string/join_slack"/>
+
+    <Preference
+        android:icon="@drawable/ic_track_changes"
+        android:key="showChangelog"
+        android:title="@string/changelog"/>
+
+    <Preference
+        android:icon="@drawable/ic_update"
+        android:key="currentVersion"
+        android:title="@string/app_name"
+        app:summary="@string/current_version"/>
+
+</PreferenceScreen>

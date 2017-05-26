@@ -50,7 +50,6 @@ public class DynamicRecyclerView extends RecyclerView {
 
     public DynamicRecyclerView(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        if (isInEditMode()) return;
     }
 
     @Override public void setAdapter(@Nullable Adapter adapter) {
@@ -92,11 +91,9 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     private void showParentOrSelf(boolean showRecyclerView) {
-        if (parentView == null) {
-            setVisibility(showRecyclerView ? VISIBLE : GONE);
-        } else {
-            parentView.setVisibility(showRecyclerView ? VISIBLE : GONE);
-        }
+        if(parentView!=null)
+            parentView.setVisibility(VISIBLE);
+        setVisibility(VISIBLE);
         emptyView.setVisibility(!showRecyclerView ? VISIBLE : GONE);
     }
 

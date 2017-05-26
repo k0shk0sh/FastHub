@@ -6,11 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
+import com.fastaccess.data.dao.types.MyIssuesType;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -23,6 +25,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
+import icepick.State;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:48 PM
@@ -33,13 +36,17 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @State IssueState issueState;
     private OnLoadMore<IssueState> onLoadMore;
     private PullRequestAdapter adapter;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
-    public static MyPullRequestFragment newInstance(@NonNull IssueState issueState) {
+    public static MyPullRequestFragment newInstance(@NonNull IssueState issueState, @NonNull MyIssuesType issuesType) {
         MyPullRequestFragment view = new MyPullRequestFragment();
-        view.setArguments(Bundler.start().put(BundleConstant.EXTRA, issueState).end());
+        view.setArguments(Bundler.start()
+                .put(BundleConstant.EXTRA, issueState)
+                .put(BundleConstant.EXTRA_TWO, issuesType)
+                .end());
         return view;
     }
 
@@ -58,7 +65,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, getIssueState());
+        getPresenter().onCallApi(1, issueState);
     }
 
     @Override public void onClick(View view) {
@@ -84,6 +91,8 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -99,14 +108,37 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
 
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<>(getPresenter());
+            onLoadMore = new OnLoadMore<IssueState>(getPresenter()) {
+                @Override protected void onShow(RecyclerView recyclerView) {
+                    super.onShow(recyclerView);
+                }
+
+                @Override protected void onHide(RecyclerView recyclerView) {
+                    super.onHide(recyclerView);
+                }
+            };
         }
-        onLoadMore.setParameter(getIssueState());
+        onLoadMore.setParameter(issueState);
         return onLoadMore;
     }
 
     @Override public void onSetCount(int totalCount) {
-        if (tabsBadgeListener != null) tabsBadgeListener.onSetBadge(getIssueState() == IssueState.open ? 0 : 1, totalCount);
+        if (tabsBadgeListener != null) {
+            switch (getIssuesType()) {
+                case CREATED:
+                    tabsBadgeListener.onSetBadge(0, totalCount);
+                    break;
+                case ASSIGNED:
+                    tabsBadgeListener.onSetBadge(1, totalCount);
+                    break;
+                case MENTIONED:
+                    tabsBadgeListener.onSetBadge(2, totalCount);
+                    break;
+                case REVIEW:
+                    tabsBadgeListener.onSetBadge(3, totalCount);
+                    break;
+            }
+        }
     }
 
     @Override protected int fragmentLayout() {
@@ -114,6 +146,10 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            issueState = (IssueState) getArguments().getSerializable(BundleConstant.EXTRA);
+        }
+        getPresenter().onSetPullType(getIssuesType());
         recycler.setEmptyView(stateLayout, refresh);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
@@ -122,23 +158,39 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
         recycler.addDivider();
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null || (getPresenter().getPullRequests().isEmpty() && !getPresenter().isApiCalled())) {
             onRefresh();
         }
-        stateLayout.setEmptyText(getIssueState() == IssueState.open ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
+        stateLayout.setEmptyText(getString(R.string.no) + " " + getString(R.string.pull_requests));
     }
 
     @NonNull @Override public MyPullRequestsPresenter providePresenter() {
         return new MyPullRequestsPresenter();
     }
 
-    public IssueState getIssueState() {
-        return (IssueState) getArguments().getSerializable(BundleConstant.EXTRA);
+    @Override public void onFilterIssue(@NonNull IssueState issueState) {
+        if (this.issueState != null && this.issueState != issueState) {
+            this.issueState = issueState;
+            getArguments().putSerializable(BundleConstant.ITEM, issueState);
+            getLoadMore().reset();
+            adapter.clear();
+            onRefresh();
+        }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    private MyIssuesType getIssuesType() {
+        return (MyIssuesType) getArguments().getSerializable(BundleConstant.EXTRA_TWO);
     }
 }

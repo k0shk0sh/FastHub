@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
@@ -53,7 +55,8 @@ import icepick.State;
  * Created by Kosh on 10 Dec 2016, 9:23 AM
  */
 
-public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.View, PullRequestPagerPresenter> implements PullRequestPagerMvp.View {
+public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.View, PullRequestPagerPresenter>
+        implements PullRequestPagerMvp.View {
 
     @BindView(R.id.startGist) ForegroundImageView startGist;
     @BindView(R.id.forkGist) ForegroundImageView forkGist;
@@ -87,11 +90,12 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getPullRequest() != null && !InputHelper.isEmpty(getPresenter().getPullRequest().getTitle()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getPullRequest().getTitle())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getPullRequest().getTitle(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick(R.id.fab) void onAddComment() {
+        if (pager == null || pager.getAdapter() == null) return;
         PullRequestTimelineFragment view = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
         if (view != null) {
             view.onStartNewComment();
@@ -150,14 +154,16 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onNavToRepoClicked();
-        } else if (item.getItemId() == R.id.share) {
-            if (getPresenter().getPullRequest() != null) ActivityHelper.shareUrl(this, getPresenter().getPullRequest().getHtmlUrl());
+            return true;
+        }
+        PullRequest pullRequest = getPresenter().getPullRequest();
+        if (pullRequest == null) return false;
+        if (item.getItemId() == R.id.share) {
+            ActivityHelper.shareUrl(this, pullRequest.getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            PullRequest issueModel = getPresenter().getPullRequest();
-            if (issueModel == null) return true;
             MessageDialogView.newInstance(
-                    issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
+                    pullRequest.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
                     getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true).end())
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
@@ -174,20 +180,28 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             getPresenter().onLoadLabels();
             return true;
         } else if (item.getItemId() == R.id.edit) {
-            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getPullRequest());
+            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), pullRequest);
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())
                     .show(getSupportFragmentManager(), "MilestoneDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
-            getPresenter().onLoadAssignees();
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId(), true)
+                    .show(getSupportFragmentManager(), "AssigneesDialogFragment");
+            return true;
+        } else if (item.getItemId() == R.id.reviewers) {
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId(), false)
+                    .show(getSupportFragmentManager(), "AssigneesDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.merge) {
             if (getPresenter().getPullRequest() != null) {
                 String msg = getPresenter().getPullRequest().getTitle();
                 MergePullRequestDialogFragment.newInstance(msg).show(getSupportFragmentManager(), "MergePullRequestDialogFragment");
             }
+        } else if (item.getItemId() == R.id.browser) {
+            ActivityHelper.startCustomTab(this, pullRequest.getHtmlUrl());
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -201,12 +215,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         MenuItem edit = menu.findItem(R.id.edit);
         MenuItem editMenu = menu.findItem(R.id.editMenu);
         MenuItem merge = menu.findItem(R.id.merge);
+        MenuItem reviewers = menu.findItem(R.id.reviewers);
         boolean isOwner = getPresenter().isOwner();
         boolean isLocked = getPresenter().isLocked();
         boolean isCollaborator = getPresenter().isCollaborator();
         boolean isRepoOwner = getPresenter().isRepoOwner();
         boolean isMergable = getPresenter().isMergeable();
         merge.setVisible(isMergable && (isRepoOwner || isCollaborator));
+        reviewers.setVisible((isRepoOwner || isCollaborator));
         editMenu.setVisible(isOwner || isCollaborator || isRepoOwner);
         milestone.setVisible(isCollaborator || isRepoOwner);
         labels.setVisible(isCollaborator || isRepoOwner);
@@ -234,7 +250,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         PullRequest pullRequest = getPresenter().getPullRequest();
         setTitle(String.format("#%s", pullRequest.getNumber()));
         boolean isMerge = !InputHelper.isEmpty(pullRequest.getMergedAt());
-        date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()));
+        date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()) + "\n" + pullRequest.getRepoId());
         size.setVisibility(View.GONE);
         User userModel = pullRequest.getUser();
         if (userModel != null) {
@@ -250,10 +266,16 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override public void onPageSelected(int position) {
                     super.onPageSelected(position);
-                    hideShowFab();
+
                 }
             });
         }
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
         if (tabs.getTabAt(2) != null) {
             tabs.getTabAt(2)
                     .setText(SpannableBuilder.builder()
@@ -284,6 +306,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         hideShowFab();
     }
 
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
+    }
+
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk) {
@@ -305,10 +335,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
         Logger.e(labels, labels.size());
         getPresenter().onPutLabels(labels);
-    }
-
-    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
-        getPresenter().onPutAssignees(users);
     }
 
     @Override public void showSuccessIssueActionMsg(boolean isClose) {
@@ -341,12 +367,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         }
     }
 
-    @Override public void onShowAssignees(@NonNull List<User> items) {
-        hideProgress();
-        AssigneesDialogFragment.newInstance(items)
-                .show(getSupportFragmentManager(), "AssigneesDialogFragment");
-    }
-
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
         getPresenter().onPutMilestones(milestoneModel);
     }
@@ -373,6 +393,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 .end());
         setResult(RESULT_OK, intent);
         super.finish();
+    }
+
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users, boolean isAssignees) {
+        hideProgress();
+        getPresenter().onPutAssignees(users, isAssignees);
     }
 
     private void hideShowFab() {

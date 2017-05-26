@@ -12,7 +12,9 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
@@ -83,6 +85,8 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -133,26 +137,43 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
 
     @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {
         if (!PrefGetter.isUserIconGuideShowed()) {
-            new MaterialTapTargetPrompt.Builder(getActivity())
+            final boolean[] dismissed = {false};
+            /*new MaterialTapTargetPrompt.Builder(getActivity())
                     .setTarget(itemView.findViewById(R.id.avatarLayout))
                     .setPrimaryText(R.string.users)
                     .setSecondaryText(R.string.avatar_click_hint)
+                    .setBackgroundColourAlpha(244)
+                    .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
                     .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-
-                        }
+                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
 
                         @Override public void onHidePromptComplete() {
-                            new MaterialTapTargetPrompt.Builder(getActivity())
-                                    .setTarget(itemView)
-                                    .setPrimaryText(R.string.fork)
-                                    .setSecondaryText(R.string.feeds_fork_hint)
-                                    .setCaptureTouchEventOutsidePrompt(true)
-                                    .show();
+                            if (!dismissed[0])
+                                new MaterialTapTargetPrompt.Builder(getActivity())
+                                        .setTarget(itemView)
+                                        .setPrimaryText(R.string.fork)
+                                        .setSecondaryText(R.string.feeds_fork_hint)
+                                        .setCaptureTouchEventOutsidePrompt(true)
+                                        .setBackgroundColourAlpha(244)
+                                        .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
+                                        .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                            @Override
+                                            public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                                ActivityHelper.hideDismissHints(FeedsFragment.this.getContext());
+                                            }
+
+                                            @Override
+                                            public void onHidePromptComplete() {
+
+                                            }
+                                        })
+                                        .show();
+                            ActivityHelper.bringDismissAllToFront(getContext());
                         }
                     })
                     .setCaptureTouchEventOutsidePrompt(true)
-                    .show();
+                    .show();*/
+            ActivityHelper.showDismissHints(getContext(), () -> dismissed[0] = true);
         }
     }
 

@@ -5,14 +5,15 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
 
 import com.fastaccess.data.dao.TimelineModel;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
+import com.fastaccess.ui.adapter.viewholder.GroupedReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
 import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -26,30 +27,40 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         BaseViewHolder.OnItemClickListener<TimelineModel>> {
 
     private final OnToggleView onToggleView;
-    private final String login;
     private final boolean showEmojies;
     private final ReactionsCallback reactionsCallback;
+    private final boolean isMerged;
+    private final PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback;
+
+    public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
+                                     ReactionsCallback reactionsCallback, boolean isMerged,
+                                     PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback) {
+        super(data);
+        this.onToggleView = onToggleView;
+        this.showEmojies = showEmojies;
+        this.reactionsCallback = reactionsCallback;
+        this.isMerged = isMerged;
+        this.reviewCommentCallback = reviewCommentCallback;
+    }
 
     public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
                                      ReactionsCallback reactionsCallback) {
-        super(data);
-        this.onToggleView = onToggleView;
-        this.login = Login.getUser().getLogin();
-        this.showEmojies = showEmojies;
-        this.reactionsCallback = reactionsCallback;
+        this(data, onToggleView, showEmojies, reactionsCallback, false, null);
     }
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
         if (viewType == TimelineModel.HEADER) {
-            return IssueDetailsViewHolder.newInstance(parent, this);
+            return IssueDetailsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback);
         } else if (viewType == TimelineModel.EVENT) {
-            return IssueTimelineViewHolder.newInstance(parent, this);
+            return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
         } else if (viewType == TimelineModel.STATUS) {
             return PullStatusViewHolder.newInstance(parent);
         } else if (viewType == TimelineModel.REVIEW) {
             return ReviewsViewHolder.newInstance(parent, this);
+        } else if (viewType == TimelineModel.GROUPED_REVIEW) {
+            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, reviewCommentCallback);
         }
-        return TimelineCommentsViewHolder.newInstance(parent, this, login, onToggleView, showEmojies, reactionsCallback);
+        return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies, reactionsCallback);
     }
 
     @Override protected void onBindView(BaseViewHolder holder, int position) {
@@ -66,6 +77,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             ((TimelineCommentsViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.REVIEW) {
             ((ReviewsViewHolder) holder).bind(model);
+        } else if (model.getType() == TimelineModel.GROUPED_REVIEW) {
+            ((GroupedReviewsViewHolder) holder).bind(model);
         } else {
             if (model.getStatus() != null) ((PullStatusViewHolder) holder).bind(model.getStatus());
         }
@@ -77,20 +90,6 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
 
     @Override public int getItemViewType(int position) {
         return getData().get(position).getType();
-    }
-
-    @Override public void onViewDetachedFromWindow(BaseViewHolder holder) {
-        if (holder instanceof TimelineCommentsViewHolder) {
-            ((TimelineCommentsViewHolder) holder).pauseWebView();
-        }
-        super.onViewDetachedFromWindow(holder);
-    }
-
-    @Override public void onViewAttachedToWindow(BaseViewHolder holder) {
-        super.onViewAttachedToWindow(holder);
-        if (holder instanceof TimelineCommentsViewHolder) {
-            ((TimelineCommentsViewHolder) holder).resumeWebView();
-        }
     }
 
     @Override public void insertItems(@NonNull List<TimelineModel> items) {

@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.search.issues;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -27,15 +29,28 @@ import icepick.State;
 
 public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, SearchIssuesPresenter> implements SearchIssuesMvp.View {
 
-    @State String searchQuery;
+    @State String searchQuery = "";
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private IssuesAdapter adapter;
+    private SearchMvp.View countCallback;
 
     public static SearchIssuesFragment newInstance() {
         return new SearchIssuesFragment();
+    }
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof SearchMvp.View) {
+            countCallback = (SearchMvp.View) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        countCallback = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<Issue> items, int page) {
@@ -49,6 +64,10 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         } else {
             adapter.addItems(items);
         }
+    }
+
+    @Override public void onSetTabCount(int count) {
+        if (countCallback != null) countCallback.onSetCount(count, 2);
     }
 
     @Override protected int fragmentLayout() {
@@ -84,6 +103,8 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
 
     @Override public void showProgress(@StringRes int resId) {
 
+        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
@@ -109,6 +130,12 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         }
     }
 
+    @Override public void onQueueSearch(@NonNull String query) {
+        this.searchQuery = query;
+        if(getView()!=null)
+            onSetSearchQuery(query);
+    }
+
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), searchQuery);
@@ -118,11 +145,20 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
     }
 
     @Override public void onRefresh() {
+        if(searchQuery.length()==0){
+            refresh.setRefreshing(false);
+            return;
+        }
         getPresenter().onCallApi(1, searchQuery);
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

@@ -11,25 +11,32 @@
             android:entries="@array/notification_duration"
             android:entryValues="@array/notification_duration"
             android:key="notificationTime"
+            android:icon="@drawable/ic_time"
             android:summary="@string/background_job_summary"
             android:title="@string/background_job_title"/>
 
         <SwitchPreference
             android:defaultValue="false"
             android:key="markNotificationAsRead"
+            android:icon="@drawable/ic_check"
             android:summary="@string/mark_notification_summary"
             android:title="@string/mark_notification_title"/>
 
         <SwitchPreference
             android:defaultValue="true"
             android:key="notificationSound"
+            android:icon="@drawable/ic_ring"
             android:summary="@string/enable_notification_sound_summary"
             android:title="@string/enable_notification_sound_title"/>
 
     </PreferenceCategory>
 
-
     <PreferenceCategory android:title="@string/behavior">
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="enable_ads"
+            android:title="@string/enable_ads"/>
 
         <ListPreference
             android:defaultValue="@string/light_theme_mode"
@@ -37,8 +44,26 @@
             android:entries="@array/theme_modes"
             android:entryValues="@array/theme_modes"
             android:key="appTheme"
+            android:icon="@drawable/ic_brush"
             android:summary="@string/theme_summary"
             android:title="@string/theme_title"/>
+
+        <ListPreference
+            android:defaultValue="@string/blue_theme_mode"
+            android:dialogTitle="@string/theme_color_title"
+            android:entries="@array/theme_colors"
+            android:entryValues="@array/theme_colors"
+            android:key="appColor"
+            android:icon="@drawable/ic_blank"
+            android:summary="@string/theme_color_summary"
+            android:title="@string/theme_color_title"/>
+
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="sent_via"
+            android:summary="@string/enable_signature_summary"
+            android:title="@string/enable_signature"/>
 
         <SwitchPreference
             android:defaultValue="false"
@@ -83,6 +108,14 @@
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/about">
+
+        <Preference
+            android:key="joinSlack"
+            android:title="@string/join_slack"/>
+
+        <Preference
+            android:key="showChangelog"
+            android:title="@string/changelog"/>
 
         <Preference
             android:key="about"

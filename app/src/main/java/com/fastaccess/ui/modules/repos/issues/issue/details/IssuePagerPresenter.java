@@ -41,12 +41,12 @@ import rx.Observable;
  */
 
 class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements IssuePagerMvp.Presenter {
-    private Issue issueModel;
-    private int issueNumber;
-    private String login;
-    private String repoId;
-    private boolean isCollaborator;
-    private boolean showToRepoBtn;
+    @icepick.State Issue issueModel;
+    @icepick.State int issueNumber;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State boolean isCollaborator;
+    @icepick.State boolean showToRepoBtn;
 
     @Nullable @Override public Issue getIssue() {
         return issueModel;
@@ -211,17 +211,6 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                         })
                         .subscribe()
         );
-    }
-
-    @Override public void onLoadAssignees() {
-        makeRestCall(RestProvider.getRepoService().getAssignees(login, repoId),
-                response -> {
-                    if (response != null && response.getItems() != null && !response.getItems().isEmpty()) {
-                        sendToView(view -> view.onShowAssignees(response.getItems()));
-                    } else {
-                        sendToView(view -> view.showMessage(R.string.error, R.string.no_assignees));
-                    }
-                });
     }
 
     @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {

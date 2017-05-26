@@ -68,6 +68,7 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         adapter = new ReposAdapter(getPresenter().getRepos(), false);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         getActivity().findViewById(R.id.fab);
@@ -81,6 +82,8 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -98,11 +101,6 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
@@ -123,5 +121,15 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

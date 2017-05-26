@@ -33,12 +33,10 @@
     <string name="downloading">下载中…</string>
     <string name="downloading_file">下载文件…</string>
     <string name="released">发行</string>
-    <string name="drafted">Drafted</string>
-    <string name="on">On</string>
     <string name="releases">发行列表</string>
     <string name="no_body">没有内容</string>
     <string name="contributors">贡献者</string>
-    <string name="by">By</string>
+    <string name="by">by</string>
     <string name="close_issue">撤回问题</string>
     <string name="re_open_issue">重新提交问题</string>
     <string name="re_open">重新提交</string>
@@ -90,7 +88,6 @@
     <string name="viewer">查看</string>
     <string name="submit">提交</string>
     <string name="type_here">在这里写</string>
-    <string name="write">撰写</string>
     <string name="description">描述</string>
     <string name="file_name">文件名</string>
     <string name="file_name_hint">文件名已存在</string>
@@ -223,21 +220,12 @@
     <string name="request_error">请求服务器发生错误，请稍后再试</string>
     <string name="marking_as_read">将通知标记为已读</string>
     <string name="forking_gist">分支 gist</string>
-    <string name="forking" formatted="true">分支 %s</string>
-    <string name="staring" formatted="true">星星 %s</string>
-    <string name="un_staring" formatted="true">不查看 %s</string>
-    <string name="un_watching" formatted="true">屏蔽 %s</string>
-    <string name="watching" formatted="true">关注 %s</string>
-    <string name="login_using_your_default_browser">使用默认的浏览器登陆</string>
+    <string name="login_using_your_default_browser">使用默认的浏览器登陆 (OAuth)</string>
     <string name="or_character">或</string>
     <string name="mark_notification_title">关闭通知阅读状态</string>
     <string name="mark_notification_summary">点击通知后，禁止标记为已读。</string>
-    <string name="auto_theme_mode">自动模式</string>
-    <string name="light_theme_mode">白天模式</string>
-    <string name="dark_theme_mode">夜间模式</string>
     <string name="theme_title">关闭主题</string>
     <string name="theme_summary">选择默认使用的主题</string>
-    <string name="logo_designer" formatted="true">Logo Designer (%s)</string>
     <string name="website">网站</string>
     <string name="support_development">支持开发</string>
     <string name="success_purchase_message">感谢非常棒的！</string>
@@ -273,7 +261,6 @@
     <string name="my_gists">我的Gists</string>
     <string name="changelog">更新日志</string>
     <string name="notifications_hint">点击打开通知列表或滑动以关闭</string>
-    <string name="posting_reaction" formatted="true">Posting reaction %s</string>
     <string name="home_long_click_hint">长按可从任何地方导航到主屏幕</string>
     <string name="created"/>
     <string name="assigned">Assigned</string>

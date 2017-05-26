@@ -73,6 +73,7 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
@@ -86,6 +87,8 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -118,6 +121,11 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

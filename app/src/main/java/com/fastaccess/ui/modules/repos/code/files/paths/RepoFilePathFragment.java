@@ -1,7 +1,6 @@
 package com.fastaccess.ui.modules.repos.code.files.paths;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -26,7 +25,8 @@ import com.fastaccess.ui.adapter.BranchesAdapter;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
-import com.fastaccess.ui.modules.search.files.SearchFileActivity;
+import com.fastaccess.ui.modules.search.repos.files.SearchFileActivity;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.util.List;
 
@@ -53,8 +53,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     private RepoFilesFragment repoFilesView;
     private boolean canSelectSpinner;
 
-    public static RepoFilePathFragment newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path, @NonNull String
-            defaultBranch) {
+    public static RepoFilePathFragment newInstance(@NonNull String login, @NonNull String repoId, @Nullable String path,
+                                                   @NonNull String defaultBranch) {
         return newInstance(login, repoId, path, defaultBranch, false);
     }
 
@@ -76,28 +76,23 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         if (InputHelper.isEmpty(ref)) {
             ref = getPresenter().getDefaultBranch();
         }
-        Uri uri = new Uri.Builder()
-                .scheme("https")
-                .authority("github.com")
-                .appendPath(getPresenter().getLogin())
-                .appendPath(getPresenter().getRepoId())
-                .appendPath("archive")
-                .appendPath(ref + ".zip")
-                .build();
         if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
-            RestProvider.downloadFile(getContext(), uri.toString());
+            MessageDialogView.newInstance(getString(R.string.download), getString(R.string.confirm_message),
+                    Bundler.start()
+                            .put(BundleConstant.YES_NO_EXTRA, true)
+                            .end())
+                    .show(getChildFragmentManager(), MessageDialogView.TAG);
         }
     }
 
     @OnClick(R.id.searchRepoFiles) void onSearchClicked() {
-        startActivity(SearchFileActivity.createIntent(getContext(), getPresenter().getLogin(), getPresenter().getRepoId() ));
+        startActivity(SearchFileActivity.createIntent(getContext(), getPresenter().getLogin(), getPresenter().getRepoId()));
     }
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {
         if (adapter.getItemCount() > 0) {
             adapter.clear();
-            adapter.notifyItemRangeRemoved(0, adapter.getItemCount());
-            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, false);
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, false, null);
         }
     }
 
@@ -109,7 +104,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     @OnItemSelected(R.id.branches) void onBranchSelected(int position) {
         if (canSelectSpinner) {
             ref = ((BranchesModel) branches.getItemAtPosition(position)).getName();
-            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, true);
+            getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), "", ref, true, null);
             onBackClicked();
         }
     }
@@ -138,7 +133,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
 
     @Override public void onItemClicked(@NonNull RepoFile model, int position) {
         if (getRepoFilesView().isRefreshing()) return;
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref, false);
+        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
+                Objects.toString(model.getPath(), ""), ref, false, null);
         if ((position + 1) < adapter.getItemCount()) {
             adapter.subList(position + 1, adapter.getItemCount());
         }
@@ -146,9 +142,15 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     }
 
     @Override public void onAppendPath(@NonNull RepoFile model) {
-        adapter.addItem(model);
-        recycler.scrollToPosition(adapter.getItemCount() - 1); //smoothScrollToPosition(index) hides the recyclerview? MIND-BLOWING??.
-        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(), Objects.toString(model.getPath(), ""), ref, false);
+        getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
+                Objects.toString(model.getPath(), ""), ref, false, model);
+    }
+
+    @Override public void onAppenedtab(@Nullable RepoFile repoFile) {
+        if (repoFile != null) {
+            adapter.addItem(repoFile);
+            recycler.scrollToPosition(adapter.getItemCount() - 1);
+        }
     }
 
     @Override public void onSendData() {
@@ -156,7 +158,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
             ref = getPresenter().getDefaultBranch();
         }
         getRepoFilesView().onSetData(getPresenter().getLogin(), getPresenter().getRepoId(),
-                Objects.toString(getPresenter().getPath(), ""), ref, false);
+                Objects.toString(getPresenter().getPath(), ""), ref, false, null);
     }
 
     @Override public boolean canPressBack() {
@@ -228,6 +230,24 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         setBranchesData(getPresenter().getBranches(), false);
     }
 
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk && bundle != null) {
+            boolean isDownload = bundle.getBoolean(BundleConstant.YES_NO_EXTRA);
+            if (isDownload) {
+                Uri uri = new Uri.Builder()
+                        .scheme("https")
+                        .authority("github.com")
+                        .appendPath(getPresenter().getLogin())
+                        .appendPath(getPresenter().getRepoId())
+                        .appendPath("archive")
+                        .appendPath(ref + ".zip")
+                        .build();
+                RestProvider.downloadFile(getContext(), uri.toString());
+            }
+        }
+    }
+
     @NonNull @Override public RepoFilePathPresenter providePresenter() {
         return new RepoFilePathPresenter();
     }
@@ -243,6 +263,11 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
             repoFilesView = (RepoFilesFragment) getChildFragmentManager().findFragmentById(R.id.filesFragment);
         }
         return repoFilesView;
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (repoFilesView != null) repoFilesView.onScrollTop(index);
     }
 
     private void showReload() {

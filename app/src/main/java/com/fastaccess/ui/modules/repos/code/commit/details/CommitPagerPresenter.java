@@ -4,24 +4,26 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.data.dao.MarkdownModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
+
+import rx.Observable;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
  */
 
 class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements CommitPagerMvp.Presenter {
-    private Commit commitModel;
-    private String sha;
-    private String login;
-    private String repoId;
-    private boolean showToRepoBtn;
+    @icepick.State Commit commitModel;
+    @icepick.State String sha;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State boolean showToRepoBtn;
 
     @Nullable @Override public Commit getCommit() {
         return commitModel;
@@ -46,7 +48,23 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
                 sendToView(CommitPagerMvp.View::onSetup);
                 return;
             } else if (!InputHelper.isEmpty(sha) && !InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                makeRestCall(RestProvider.getRepoService().getCommit(login, repoId, sha),
+                makeRestCall(RestProvider.getRepoService()
+                                .getCommit(login, repoId, sha)
+                                .flatMap(commit -> {
+                                    if (commit.getGitCommit() != null && commit.getGitCommit().getMessage() != null) {
+                                        MarkdownModel markdownModel = new MarkdownModel();
+                                        markdownModel.setContext(login + "/" + repoId);
+                                        markdownModel.setText(commit.getGitCommit().getMessage());
+                                        return RestProvider.getRepoService().convertReadmeToHtml(markdownModel)
+                                                .onErrorReturn(throwable -> null);
+                                    }
+                                    return Observable.just(commit);
+                                }, (commit, u) -> {
+                                    if (!InputHelper.isEmpty(u) && u instanceof String) {
+                                        commit.getGitCommit().setMessage(u.toString());
+                                    }
+                                    return commit;
+                                }),
                         commit -> {
                             commitModel = commit;
                             commitModel.setRepoId(repoId);

@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.issues.issue.details.timeline;
 
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -9,6 +10,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
+import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -38,7 +40,9 @@ public interface IssueTimelineMvp {
 
         void onTagUser(@Nullable User user);
 
-        void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long id);
+        void onReply(User user, String message);
+
+        void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, boolean isHeadre);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel> {
@@ -61,6 +65,8 @@ public interface IssueTimelineMvp {
 
         int number();
 
-        void onHandleReaction(int id, long commentId);
+        void onHandleReaction(@IdRes int viewId, long id, @ReactionsProvider.ReactionType int reactionType);
+
+        boolean isCallingApi(long id, int vId);
     }
 }

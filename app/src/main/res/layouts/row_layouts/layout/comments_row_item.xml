@@ -1,16 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fastaccess.ui.widgets.ForegroundRelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:background="?card_background"
-    android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_normal"
-    app:cardBackgroundColor="?card_background"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -60,17 +56,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_micro"
                 android:background="?selectableItemBackgroundBorderless"
-                android:scaleType="centerCrop"
+                android:padding="@dimen/spacing_normal"
                 android:src="@drawable/ic_arrow_drop_down"/>
         </LinearLayout>
+
+        <include layout="@layout/comments_dropdown_layout"/>
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_xs_large"
+            android:layout_marginBottom="@dimen/spacing_xs_large"
+            android:paddingEnd="@dimen/spacing_xs_large"
             android:textIsSelectable="true"/>
 
         <com.fastaccess.ui.widgets.FontTextView
@@ -78,14 +79,21 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:gravity="start"
+            android:paddingEnd="@dimen/spacing_xs_large"
             android:paddingStart="@dimen/spacing_xs_large"
             android:visibility="gone"
             tools:ignore="RtlSymmetry"
-            tools:text="Hello World"/>
+            tools:text="U+1F602"
+            tools:visibility="visible"/>
 
-        <include layout="@layout/comments_dropdown_layout"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:background="?dividerColor"/>
 
     </LinearLayout>
+
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

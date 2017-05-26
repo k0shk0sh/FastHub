@@ -31,6 +31,7 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
     @BindView(R.id.unsubsribe) ForegroundImageView unSubscribe;
     @BindView(R.id.markAsRead) ForegroundImageView markAsRead;
     @BindView(R.id.notificationType) ForegroundImageView notificationType;
+    @BindView(R.id.repoName) FontTextView repoName;
     private boolean showUnreadState;
 
     private NotificationsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean showUnreadState) {
@@ -48,9 +49,9 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
         Notification thread = model.getNotification();
         if (thread != null && thread.getSubject() != null) {
             title.setText(thread.getSubject().getTitle());
-            date.setText(ParseDateFormat.getTimeAgo(thread.getUpdatedAt()));
             int cardBackground = ViewHelper.getCardBackground(itemView.getContext());
             int color;
+            date.setText(ParseDateFormat.getTimeAgo(thread.getUpdatedAt()));
             markAsRead.setVisibility(thread.isUnread() ? View.VISIBLE : View.GONE);
 //            unSubscribe.setImageResource(thread.isIsSubscribed() ? R.drawable.ic_unsubscribe : R.drawable.ic_subscribe);
             if (thread.getSubject().getType() != null) {
@@ -60,12 +61,16 @@ public class NotificationsViewHolder extends BaseViewHolder<GroupedNotificationM
                 notificationType.setImageResource(R.drawable.ic_info_outline);
             }
             if (showUnreadState) {
+                repoName.setVisibility(View.GONE);
                 if (AppHelper.isNightMode(itemView.getResources())) {
                     color = ContextCompat.getColor(itemView.getContext(), R.color.material_blue_grey_800);
                 } else {
                     color = ContextCompat.getColor(itemView.getContext(), R.color.material_blue_grey_200);
                 }
                 ((CardView) itemView).setCardBackgroundColor(thread.isUnread() ? color : cardBackground);
+            } else {
+                repoName.setVisibility(View.VISIBLE);
+                repoName.setText(thread.getRepository().getFullName());
             }
         }
     }

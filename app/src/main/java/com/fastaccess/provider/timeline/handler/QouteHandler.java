@@ -19,16 +19,10 @@ import lombok.AllArgsConstructor;
 
     @ColorInt private int color;
 
-    public void beforeChildren(TagNode node, SpannableStringBuilder builder) {
-        if (builder.length() > 0 && builder.charAt(builder.length() - 1) != 10) {
-            this.appendNewLine(builder);
-        }
-    }
-
     public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
+        builder.append("\n");
         builder.setSpan(new MarkDownQuoteSpan(color), start, builder.length(), 33);
-        this.appendNewLine(builder);
-        this.appendNewLine(builder);
+        builder.append("\n");
     }
 
 }

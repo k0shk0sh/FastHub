@@ -24,13 +24,13 @@ import java.util.ArrayList;
 
 class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> implements RepoPullRequestMvp.Presenter {
 
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State IssueState issueState;
     private ArrayList<PullRequest> pullRequests = new ArrayList<>();
-    private String login;
-    private String repoId;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private IssueState issueState;
 
     @Override public int getCurrentPage() {
         return page;
@@ -69,7 +69,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestSerice().getPullRequests(login, repoId, parameter.name(), page), response -> {
+        makeRestCall(RestProvider.getPullRequestService().getPullRequests(login, repoId, parameter.name(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
                 manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
@@ -89,7 +89,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestSerice()
+        manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestService()
                 .getPullsWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, true), 0))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));

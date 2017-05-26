@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,7 +87,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getIssue() != null && !InputHelper.isEmpty(getPresenter().getIssue().getTitle()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
@@ -154,12 +155,14 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onNavToRepoClicked();
-        } else if (item.getItemId() == R.id.share) {
-            if (getPresenter().getIssue() != null) ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
+            return true;
+        }
+        Issue issueModel = getPresenter().getIssue();
+        if (issueModel == null) return false;
+        if (item.getItemId() == R.id.share) {
+            ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            Issue issueModel = getPresenter().getIssue();
-            if (issueModel == null) return true;
             MessageDialogView.newInstance(
                     issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
                     getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true)
@@ -186,13 +189,17 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), "MilestoneDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
-            getPresenter().onLoadAssignees();
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId(), true)
+                    .show(getSupportFragmentManager(), "AssigneesDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.subscribe) {
             getPresenter().onSubscribeOrMute(false);
             return true;
         } else if (item.getItemId() == R.id.mute) {
             getPresenter().onSubscribeOrMute(true);
+            return true;
+        } else if (item.getItemId() == R.id.browser) {
+            ActivityHelper.startCustomTab(this, issueModel.getHtmlUrl());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -248,9 +255,13 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                 parsedDate = ParseDateFormat.getTimeAgo(issueModel.getCreatedAt());
                 username = issueModel.getUser() != null ? issueModel.getUser().getLogin() : "N/A";
             }
-            date.setText(SpannableBuilder.builder().append(getString(issueModel.getState().getStatus()))
+            date.setText(SpannableBuilder.builder()
+                    .append(ContextCompat.getDrawable(this,
+                            issueModel.getState() == IssueState.open ? R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small))
+                    .append(" ")
+                    .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
-                    .append(parsedDate));
+                    .append(parsedDate).append("\n").append(issueModel.getRepoId()));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
         }
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this, issueModel)));
@@ -306,12 +317,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         supportInvalidateOptionsMenu();
     }
 
-    @Override public void onShowAssignees(@NonNull List<User> items) {
-        hideProgress();
-        AssigneesDialogFragment.newInstance(items)
-                .show(getSupportFragmentManager(), "AssigneesDialogFragment");
-    }
-
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
         getPresenter().onPutMilestones(milestoneModel);
     }
@@ -332,7 +337,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users, boolean isAssignee) {
         getPresenter().onPutAssignees(users);
     }
 

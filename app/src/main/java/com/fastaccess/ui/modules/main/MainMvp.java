@@ -20,19 +20,23 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 interface MainMvp {
 
     int FEEDS = 0;
-    int PULL_REQUESTS = 1;
-    int ISSUES = 2;
+    int ISSUES = 1;
+    int PULL_REQUESTS = 2;
+    int PROFILE = 3;
 
     @IntDef({
             FEEDS,
-            PULL_REQUESTS,
             ISSUES,
+            PULL_REQUESTS,
+            PROFILE
     })
     @Retention(RetentionPolicy.SOURCE) @interface NavigationType {}
 
     interface View extends BaseMvp.FAView {
 
         void onNavigationChanged(@NavigationType int navType);
+
+        void onUpdateDrawerMenuHeader();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

@@ -51,10 +51,10 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
             SearchUsersFragment users = (SearchUsersFragment) viewPager.getAdapter().instantiateItem(viewPager, 1);
             SearchIssuesFragment issues = (SearchIssuesFragment) viewPager.getAdapter().instantiateItem(viewPager, 2);
             SearchCodeFragment code = (SearchCodeFragment) viewPager.getAdapter().instantiateItem(viewPager, 3);
-            repos.onSetSearchQuery(query);
-            users.onSetSearchQuery(query);
-            issues.onSetSearchQuery(query);
-            code.onSetSearchQuery(query);
+            repos.onQueueSearch(query);
+            users.onQueueSearch(query);
+            issues.onQueueSearch(query);
+            code.onQueueSearch(query, true);
             boolean noneMatch = Stream.of(hints).noneMatch(value -> value.getText().equalsIgnoreCase(query));
             if (noneMatch) {
                 SearchHistory searchHistory = new SearchHistory(query);

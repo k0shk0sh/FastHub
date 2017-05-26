@@ -21,10 +21,9 @@ import java.util.ArrayList;
  */
 
 class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implements RepoReleasesMvp.Presenter {
-
     private ArrayList<Release> releases = new ArrayList<>();
-    private String login;
-    private String repoId;
+    @icepick.State String login;
+    @icepick.State String repoId;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;

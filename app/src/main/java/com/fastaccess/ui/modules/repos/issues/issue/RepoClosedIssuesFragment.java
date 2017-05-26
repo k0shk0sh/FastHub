@@ -100,6 +100,7 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments(), IssueState.closed);
@@ -134,6 +135,8 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -168,12 +171,22 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
                 parser.getNumber()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
     }
 
+    @Override public void onRefresh(boolean isLastUpdated) {
+        getPresenter().onSetSortBy(isLastUpdated);
+        getPresenter().onCallApi(1, IssueState.closed);
+    }
+
     @Override public void onRefresh() {
         getPresenter().onCallApi(1, IssueState.closed);
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

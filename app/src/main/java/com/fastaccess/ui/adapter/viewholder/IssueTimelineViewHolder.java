@@ -28,13 +28,15 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.stateImage) ForegroundImageView stateImage;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.stateText) FontTextView stateText;
+    private boolean isMerged;
 
-    private IssueTimelineViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
+    private IssueTimelineViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean isMerged) {
         super(itemView, adapter);
+        this.isMerged = isMerged;
     }
 
-    public static IssueTimelineViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new IssueTimelineViewHolder(getView(viewGroup, R.layout.issue_timeline_row_item), adapter);
+    public static IssueTimelineViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean isMerged) {
+        return new IssueTimelineViewHolder(getView(viewGroup, R.layout.issue_timeline_row_item), adapter, isMerged);
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {
@@ -48,12 +50,17 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
             }
         }
         if (event != null) {
-            stateImage.setContentDescription(event.name());
-            stateImage.setImageResource(event.getIconResId());
+            if (isMerged && event == IssueEventType.closed) {
+                stateImage.setContentDescription(IssueEventType.merged.name());
+                stateImage.setImageResource(IssueEventType.merged.getIconResId());
+            } else {
+                stateImage.setContentDescription(event.name());
+                stateImage.setImageResource(event.getIconResId());
+            }
         }
         if (issueEventModel.getLabels() == null) {
             if (event != null) {
-                stateText.setText(TimelineProvider.getStyledEvents(issueEventModel, itemView.getContext()));
+                stateText.setText(TimelineProvider.getStyledEvents(issueEventModel, itemView.getContext(), isMerged));
             } else {
                 stateText.setText("");
                 stateImage.setImageResource(R.drawable.ic_label);

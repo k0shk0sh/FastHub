@@ -27,6 +27,7 @@ import es.dmoral.toasty.Toasty;
 
 public class AppHelper {
 
+
     public static void hideKeyboard(@NonNull View view) {
         InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -103,4 +104,15 @@ public class AppHelper {
         configuration.locale = locale;
         resources.updateConfiguration(configuration, resources.getDisplayMetrics());
     }
+
+    public static String getDeviceName() {
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        if (model.startsWith(manufacturer)) {
+            return InputHelper.capitalizeFirstLetter(model);
+        } else {
+            return InputHelper.capitalizeFirstLetter(manufacturer) + " " + model;
+        }
+    }
+
 }

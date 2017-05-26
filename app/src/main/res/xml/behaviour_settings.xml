@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="sent_via_enabled"
+        android:icon="@drawable/ic_checkbox"
+        android:summary="@string/enable_signature_box_summary"
+        android:title="@string/enable_signature_box"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="sent_via"
+        android:icon="@drawable/ic_edit"
+        android:summary="@string/enable_signature_summary"
+        android:title="@string/enable_signature"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="wrap_code"
+        android:icon="@drawable/ic_wrap_text"
+        android:summary="@string/wrap_code_summary"
+        android:title="@string/wrap_code_title"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="back_button"
+        android:icon="@drawable/ic_back"
+        android:summary="@string/back_button_summary"
+        android:title="@string/back_button_title"/>
+
+</PreferenceScreen>

@@ -1,5 +1,6 @@
 package com.fastaccess.ui.base.mvp;
 
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -19,7 +20,7 @@ import rx.functions.Action1;
 
 public interface BaseMvp {
 
-    interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback {
+    interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback, OnScrollTopListener {
 
         @CallOnMainThread void showProgress(@StringRes int resId);
 
@@ -43,6 +44,11 @@ public interface BaseMvp {
     }
 
     interface FAPresenter {
+
+        void onSaveInstanceState(Bundle outState);
+
+        void onRestoreInstanceState(Bundle outState);
+
         void manageSubscription(@Nullable Subscription... subscription);
 
         boolean isApiCalled();
@@ -64,5 +70,9 @@ public interface BaseMvp {
         void setPreviousTotal(int previousTotal);
 
         void onCallApi(int page, @Nullable P parameter);
+    }
+
+    interface OnScrollTopListener {
+        void onScrollTop(int index);
     }
 }

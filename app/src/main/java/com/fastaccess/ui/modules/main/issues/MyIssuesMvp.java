@@ -6,6 +6,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
+import com.fastaccess.data.dao.types.MyIssuesType;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -25,6 +26,8 @@ public interface MyIssuesMvp {
         @NonNull OnLoadMore<IssueState> getLoadMore();
 
         void onSetCount(int totalCount);
+
+        void onFilterIssue(@NonNull IssueState issueState);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -32,5 +35,7 @@ public interface MyIssuesMvp {
             BaseMvp.PaginationListener<IssueState> {
 
         @NonNull ArrayList<Issue> getIssues();
+
+        void onSetIssueType(@NonNull MyIssuesType issuesType);
     }
 }

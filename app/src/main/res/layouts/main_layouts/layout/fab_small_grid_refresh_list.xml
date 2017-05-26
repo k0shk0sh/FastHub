@@ -18,6 +18,7 @@
             android:layout_height="match_parent"
             android:clipToPadding="false"
             android:paddingBottom="@dimen/fab_spacing"
+            android:scrollbars="vertical"
             app:layoutManager="@string/staggered_layout_manager"
             app:spanCount="@integer/small_spans"/>
 
@@ -30,6 +31,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/fab_margin"
         android:visibility="gone"
         tools:visibility="visible"/>
 

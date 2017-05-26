@@ -21,8 +21,8 @@ import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:29 PM
@@ -37,14 +37,12 @@ import rx.Observable;
     @Convert(PayloadConverter.class) PayloadModel payload;
     @SerializedName("public") boolean publicEvent;
 
-    @NonNull public static Completable save(@NonNull List<Event> events) {
+    @NonNull public static Single save(@NonNull List<Event> events) {
         SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
         return dataSource.delete(Event.class)
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(dataSource.insert(events))
-                .toCompletable();
+                .flatMap(i -> dataSource.insert(events));
     }
 
     @NonNull public static Observable<List<Event>> getEvents() {

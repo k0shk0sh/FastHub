@@ -16,6 +16,8 @@ public interface RepoIssuesPagerMvp {
 
         void setCurrentItem(int index, boolean refresh);
 
+        void onChangeIssueSort(boolean isLastUpdated);
+
         @IntRange(from = 0, to = 1) int getCurrentItem();
     }
 

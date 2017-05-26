@@ -5,7 +5,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelListModel;
@@ -16,6 +15,7 @@ import com.fastaccess.data.dao.converters.CommitConverter;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
 import com.fastaccess.data.dao.converters.MilestoneConverter;
 import com.fastaccess.data.dao.converters.PullRequestConverter;
+import com.fastaccess.data.dao.converters.ReactionsConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.converters.UsersConverter;
 import com.fastaccess.data.dao.types.IssueState;
@@ -34,8 +34,8 @@ import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.PullRequest.ID;
 import static com.fastaccess.data.dao.model.PullRequest.LOGIN;
@@ -87,36 +87,31 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     @Convert(CommitConverter.class) Commit base;
     @Convert(CommitConverter.class) Commit head;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
+    @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
-    public Completable save(PullRequest entity) {
+    public Single save(PullRequest entity) {
         return App.getInstance().getDataStore()
                 .delete(PullRequest.class)
                 .where(ID.eq(entity.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity)
-                        .toCompletable());
+                .flatMap(integer -> App.getInstance().getDataStore().insert(entity));
     }
 
     public static Observable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(PullRequest.class)
-                            .where(REPO_ID.equal(repoId)
-                                    .and(LOGIN.equal(login)))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(pulRequest -> {
-                                pulRequest.setRepoId(repoId);
-                                pulRequest.setLogin(login);
-                                pulRequest.save(pulRequest).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(PullRequest.class)
+                .where(REPO_ID.equal(repoId)
+                        .and(LOGIN.equal(login)))
+                .get()
+                .toSingle()
+                .toObservable()
+                .flatMap(integer -> Observable.from(models))
+                .flatMap(pulRequest -> {
+                    pulRequest.setRepoId(repoId);
+                    pulRequest.setLogin(login);
+                    return pulRequest.save(pulRequest).toObservable();
+                }));
     }
 
     public static Observable<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,
@@ -150,49 +145,78 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                 .toObservable();
     }
 
-    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context,
-                                                       boolean showRepoName) {
+    @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context, boolean showRepoName) {
         boolean isMerge = pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.mergedAt);
         if (isMerge) {
             User merger = pullRequest.getMergedBy();
             SpannableBuilder builder = SpannableBuilder.builder();
             if (showRepoName) {
                 PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(pullRequest.getHtmlUrl());
-                if (parser != null) builder.bold(parser.getLogin())
-                        .append("/")
-                        .bold(parser.getRepoId())
-                        .append(" ");
+                if (parser != null)
+                    builder.bold(parser.getLogin())
+                            .append("/")
+                            .bold(parser.getRepoId())
+                            .append(" ")
+                            .bold("#").bold(String.valueOf(pullRequest.getNumber()))
+                            .append(" ");
             } else {
                 builder.bold("#" + pullRequest.getNumber())
                         .append(" ")
                         .append(merger != null ? merger.getLogin() + " " : "");
             }
-            return builder
-                    .bold(context.getString(R.string.merged))
-                    .append(" ")
-                    .append(ParseDateFormat.getTimeAgo(pullRequest.getMergedAt()));
+            builder.append(context.getString(R.string.merged).toLowerCase())
+                    .append(" ");
+            if (pullRequest.getHead() != null) {
+                builder.bold(pullRequest.getHead().getRef())
+                        .append(" ")
+                        .append(context.getString(R.string.to))
+                        .append(" ")
+                        .bold(pullRequest.getBase().getRef())
+                        .append(" ");
+            }
+            builder.append(ParseDateFormat.getTimeAgo(pullRequest.getMergedAt()));
+            return builder;
         } else {
             User user = pullRequest.getUser();
             String status = context.getString(pullRequest.getState().getStatus());
             SpannableBuilder builder = SpannableBuilder.builder();
             if (showRepoName) {
                 PullsIssuesParser parser = PullsIssuesParser.getForPullRequest(pullRequest.getHtmlUrl());
-                if (parser != null) builder.bold(parser.getLogin())
-                        .append("/")
-                        .bold(parser.getRepoId())
-                        .append(" ");
+                if (parser != null) {
+                    builder.bold(parser.getLogin())
+                            .append("/")
+                            .bold(parser.getRepoId())
+                            .append(" ")
+                            .bold("#").bold(String.valueOf(pullRequest.getNumber()))
+                            .append(" ");
+                }
             } else {
                 builder.bold("#" + pullRequest.getNumber())
                         .append(" ")
                         .append(user.getLogin())
                         .append(" ");
             }
-            return builder
-                    .bold(status)
-                    .append(" ")
-                    .append(ParseDateFormat.getTimeAgo(
-                            pullRequest.getState() == IssueState.closed
-                            ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+            if (pullRequest.getState() == IssueState.open && pullRequest.getHead() != null && pullRequest.getBase() != null) {
+                return builder
+                        .append(context.getString(R.string.want_to_merge))
+                        .append(" ")
+                        .bold(pullRequest.getHead().getRef())
+                        .append(" ")
+                        .append(context.getString(R.string.to))
+                        .append(" ")
+                        .bold(pullRequest.getBase().getRef())
+                        .append(" ")
+                        .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
+                                                           ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+            } else {
+                return builder
+                        .bold(status.toLowerCase())
+                        .append(" ")
+                        .bold(pullRequest.getHead() != null ? pullRequest.getHead().getRef() : "")
+                        .append(" ")
+                        .append(ParseDateFormat.getTimeAgo(pullRequest.getState() == IssueState.closed
+                                                           ? pullRequest.getClosedAt() : pullRequest.getCreatedAt()));
+            }
         }
     }
 
@@ -237,6 +261,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
         dest.writeParcelable(this.base, flags);
         dest.writeParcelable(this.head, flags);
         dest.writeParcelable(this.pullRequest, flags);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected AbstractPullRequest(Parcel in) {
@@ -285,6 +310,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
         this.base = in.readParcelable(Commit.class.getClassLoader());
         this.head = in.readParcelable(Commit.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
     public static final Creator<PullRequest> CREATOR = new Creator<PullRequest>() {

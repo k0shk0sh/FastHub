@@ -8,7 +8,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
-import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -22,7 +21,7 @@ import java.util.List;
 interface GistCommentsMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
-            android.view.View.OnClickListener, OnToggleView {
+            android.view.View.OnClickListener {
 
         void onNotifyAdapter(@Nullable List<Comment> items, int page);
 
@@ -37,6 +36,8 @@ interface GistCommentsMvp {
         void onShowDeleteMsg(long id);
 
         void onTagUser(@NonNull User user);
+
+        void onReply(User user, String message);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

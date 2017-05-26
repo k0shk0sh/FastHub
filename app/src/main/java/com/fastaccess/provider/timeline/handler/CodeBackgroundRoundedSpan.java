@@ -12,7 +12,6 @@ import android.text.style.MetricAffectingSpan;
 
 public class CodeBackgroundRoundedSpan extends MetricAffectingSpan implements LeadingMarginSpan, LineBackgroundSpan {
     private final int color;
-    private final int padding = 30;
 
     private final RectF rect = new RectF();
 
@@ -45,7 +44,7 @@ public class CodeBackgroundRoundedSpan extends MetricAffectingSpan implements Le
     }
 
     @Override public int getLeadingMargin(boolean first) {
-        return padding;
+        return 30;
     }
 
     @Override public void drawLeadingMargin(Canvas c, Paint p, int x, int dir, int top, int baseline, int bottom,

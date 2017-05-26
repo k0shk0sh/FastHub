@@ -40,10 +40,14 @@ public interface RepoService {
     @NonNull @GET @Headers("Accept: application/vnd.github.VERSION.raw")
     Observable<String> getFileAsStream(@Url String url);
 
+    @NonNull @GET @Headers("Accept: application/vnd.github.html")
+    Observable<String> getFileAsHtmlStream(@Url String url);
+
     @NonNull @POST("markdown")
     Observable<String> convertReadmeToHtml(@Body MarkdownModel model);
 
-    @NonNull @GET("repos/{login}/{repoId}") @Headers({"Accept: application/vnd.github.drax-preview+json"})
+    @NonNull @GET("repos/{login}/{repoId}")
+    @Headers({"Accept: application/vnd.github.drax-preview+json, application/vnd.github.mercy-preview+json"})
     Observable<Repo> getRepo(@Path("login") String login, @Path("repoId") String repoId);
 
     @NonNull @DELETE("repos/{login}/{repoId}")
@@ -129,6 +133,10 @@ public interface RepoService {
     Observable<Response<Boolean>> isCollaborator(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                                  @NonNull @Path("username") String username);
 
+    @NonNull @GET("repos/{owner}/{repo}/collaborators?per_page=100")
+    Observable<Pageable<User>> getCollaborator(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+
+
     @NonNull @GET("repos/{owner}/{repo}/branches")
     Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
@@ -148,4 +156,12 @@ public interface RepoService {
     @NonNull @GET("repos/{owner}/{repo}/commits?per_page=1")
     Observable<Pageable<Commit>> getCommitCounts(@Path("owner") String owner, @Path("repo") String repo, @Query("sha") String ref);
 
+    @NonNull @GET("/repos/{owner}/{repo}/stargazers")
+    Observable<Pageable<User>> getStargazers(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("/repos/{owner}/{repo}/subscribers")
+    Observable<Pageable<User>> getWatchers(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("/repos/{owner}/{repo}/forks")
+    Observable<Pageable<Repo>> getForks(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 }

@@ -49,9 +49,11 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 }
             }
         } else {
-            Repo repo = model.getRepo();
-            if (repo == null) return;
-            getView().onMarkAllByRepo(repo);
+            if (v.getId() == R.id.markAsRead) {
+                Repo repo = model.getRepo();
+                if (repo == null) return;
+                getView().onMarkAllByRepo(repo);
+            }
         }
     }
 
@@ -100,8 +102,12 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 //                .toList();
         Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService().getAllNotifications()
                 .flatMap(response -> {
-                    if (response.getItems() != null) manageSubscription(Notification.save(response.getItems()).subscribe());
-                    return Observable.just(GroupedNotificationModel.construct(response.getItems()));
+                    if (response.getItems() != null) {
+                        return Observable.zip(Notification.save(response.getItems()), Observable.just(GroupedNotificationModel.construct
+                                (response.getItems())), (notification, groupedNotificationModels) -> groupedNotificationModels);
+                    } else {
+                        return Observable.just(GroupedNotificationModel.construct(response.getItems()));
+                    }
                 });
         makeRestCall(observable, response -> sendToView(view -> view.onNotifyAdapter(response)));
     }

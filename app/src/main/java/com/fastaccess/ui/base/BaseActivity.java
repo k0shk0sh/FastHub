@@ -1,6 +1,8 @@
 package com.fastaccess.ui.base;
 
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.DrawableRes;
@@ -18,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.webkit.CookieManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,23 +32,29 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.login.LoginActivity;
+import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
+import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
-import com.fastaccess.ui.modules.settings.SettingsBottomSheetDialog;
+import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
+import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import net.grandcentrix.thirtyinch.TiActivity;
 
 import java.util.ArrayList;
 
@@ -61,14 +68,16 @@ import icepick.State;
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
-    @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
+    @Nullable @BindView(R.id.toolbar) public Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
-    @Nullable @BindView(R.id.extrasNav) NavigationView extraNav;
+    @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+
+    private static int REFRESH_CODE = 64;
 
     private long backPressTimer;
     private Toast toast;
@@ -83,6 +92,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        getPresenter().onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
     }
 
@@ -96,17 +106,17 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         if (!isSecured()) {
             if (!isLoggedIn()) {
-                startActivity(new Intent(this, LoginActivity.class));
-                finish();
+                onRequireLogin();
                 return;
             }
         }
         Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(savedInstanceState);
         }
         setupToolbarAndStatusBar(toolbar);
-        showHideAds();
+        //showHideAds();
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
@@ -135,7 +145,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         if (isOk && bundle != null) {
             boolean logout = bundle.getBoolean("logout");
-            if (logout) onRequireLogin();
+            if (logout) {
+                onRequireLogin();
+//                if(App.getInstance().getGoogleApiClient().isConnected())
+//                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
+            }
         }
     }//pass
 
@@ -187,15 +201,14 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        CookieManager.getInstance().removeAllCookies(null);
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
-        PrefGetter.clear();
+        PrefHelper.clearKey("token");
         App.getInstance().getDataStore()
                 .delete(Login.class)
                 .get()
                 .value();
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginChooserActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         finishAffinity();
@@ -205,22 +218,20 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
+        if (item.isChecked()) return false;
         new Handler().postDelayed(() -> {
             if (isFinishing()) return;
             if (item.getItemId() == R.id.navToRepo) {
                 onNavToRepoClicked();
-            } else if (item.getItemId() == R.id.fhRepo) {
-                startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh"));
             } else if (item.getItemId() == R.id.supportDev) {
                 startActivity(new Intent(this, DonationActivity.class));
             } else if (item.getItemId() == R.id.gists) {
                 GistsListActivity.startActivity(this, false);
-            } else if (item.getItemId() == R.id.myGists) {
-                GistsListActivity.startActivity(this, true);
             } else if (item.getItemId() == R.id.pinnedMenu) {
                 PinnedReposActivity.startActivity(this);
             } else if (item.getItemId() == R.id.mainView) {
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 finish();
             } else if (item.getItemId() == R.id.profile) {
@@ -229,15 +240,14 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 onLogoutPressed();
             } else if (item.getItemId() == R.id.settings) {
                 onOpenSettings();
+            } else if (item.getItemId() == R.id.about) {
+                startActivity(new Intent(this, FastHubAboutActivity.class));
             } else if (item.getItemId() == R.id.orgs) {
                 onOpenOrgsDialog();
-            } else if (item.getItemId() == R.id.enableAds) {
-                boolean isEnabled = !PrefGetter.isAdsEnabled();
-                PrefGetter.setAdsEnabled(isEnabled);
-                showHideAds();
-                item.setChecked(isEnabled);
+            } else if (item.getItemId() == R.id.notifications) {
+                startActivity(new Intent(this, NotificationActivity.class));
             }
-        }, 300);
+        }, 250);
         return false;
     }
 
@@ -260,15 +270,65 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onThemeChanged() {
-        recreate();
+        if (this instanceof MainActivity) {
+            recreate();
+        } else {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtras(Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).end());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override public void onOpenSettings() {
-        SettingsBottomSheetDialog.show(getSupportFragmentManager());
+        startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
     }
 
-    protected void hideHome() {
-        if (extraNav != null) extraNav.getMenu().removeGroup(R.id.home_group);
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REFRESH_CODE) {
+            if (resultCode == RESULT_OK) {
+                recreate();
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override public void onScrollTop(int index) {}
+
+    protected void selectHome(boolean hideRepo) {
+        if (extraNav != null) {
+            if (hideRepo) {
+                extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
+                extraNav.getMenu().findItem(R.id.mainView).setVisible(true);
+                return;
+            }
+            extraNav.getMenu().findItem(R.id.navToRepo).setVisible(false);
+            extraNav.getMenu().findItem(R.id.mainView).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.mainView).setChecked(true);
+        }
+    }
+
+    protected void selectProfile() {
+        selectHome(true);
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.profile).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.profile).setChecked(true);
+        }
+    }
+
+    protected void selectPinned() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.pinnedMenu).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.pinnedMenu).setChecked(true);
+        }
+    }
+
+    protected void onSelectNotifications() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.notifications).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.notifications).setChecked(true);
+        }
     }
 
     protected void onOpenOrgsDialog() {
@@ -327,12 +387,118 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
+        if (this instanceof LoginActivity || this instanceof LoginChooserActivity) return; // we really should consider putting this outside as it starts growing :D
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
+        int themeColor = PrefGetter.getThemeColor(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {
-            setTheme(R.style.ThemeLight);
+            switch (themeColor) {
+                case PrefGetter.RED:
+                    setTheme(R.style.ThemeLight_Red);
+                    break;
+                case PrefGetter.PINK:
+                    setTheme(R.style.ThemeLight_Pink);
+                    break;
+                case PrefGetter.PURPLE:
+                    setTheme(R.style.ThemeLight_Purple);
+                    break;
+                case PrefGetter.DEEP_PURPLE:
+                    setTheme(R.style.ThemeLight_DeepPurple);
+                    break;
+                case PrefGetter.INDIGO:
+                    setTheme(R.style.ThemeLight_Indigo);
+                    break;
+                case PrefGetter.BLUE:
+                    setTheme(R.style.ThemeLight);
+                    break;
+                case PrefGetter.LIGHT_BLUE:
+                    setTheme(R.style.ThemeLight_LightBlue);
+                    break;
+                case PrefGetter.CYAN:
+                    setTheme(R.style.ThemeLight_Cyan);
+                    break;
+                case PrefGetter.TEAL:
+                    setTheme(R.style.ThemeLight_Teal);
+                    break;
+                case PrefGetter.GREEN:
+                    setTheme(R.style.ThemeLight_Green);
+                    break;
+                case PrefGetter.LIGHT_GREEN:
+                    setTheme(R.style.ThemeLight_LightGreen);
+                    break;
+                case PrefGetter.LIME:
+                    setTheme(R.style.ThemeLight_Lime);
+                    break;
+                case PrefGetter.YELLOW:
+                    setTheme(R.style.ThemeLight_Yellow);
+                    break;
+                case PrefGetter.AMBER:
+                    setTheme(R.style.ThemeLight_Amber);
+                    break;
+                case PrefGetter.ORANGE:
+                    setTheme(R.style.ThemeLight_Orange);
+                    break;
+                case PrefGetter.DEEP_ORANGE:
+                    setTheme(R.style.ThemeLight_DeepOrange);
+                    break;
+                default:
+                    setTheme(R.style.ThemeLight);
+            }
         } else if (themeMode == PrefGetter.DARK) {
-            setTheme(R.style.ThemeDark);
+            switch (themeColor) {
+                case PrefGetter.RED:
+                    setTheme(R.style.ThemeDark_Red);
+                    break;
+                case PrefGetter.PINK:
+                    setTheme(R.style.ThemeDark_Pink);
+                    break;
+                case PrefGetter.PURPLE:
+                    setTheme(R.style.ThemeDark_Purple);
+                    break;
+                case PrefGetter.DEEP_PURPLE:
+                    setTheme(R.style.ThemeDark_DeepPurple);
+                    break;
+                case PrefGetter.INDIGO:
+                    setTheme(R.style.ThemeDark_Indigo);
+                    break;
+                case PrefGetter.BLUE:
+                    setTheme(R.style.ThemeDark);
+                    break;
+                case PrefGetter.LIGHT_BLUE:
+                    setTheme(R.style.ThemeDark_LightBlue);
+                    break;
+                case PrefGetter.CYAN:
+                    setTheme(R.style.ThemeDark_Cyan);
+                    break;
+                case PrefGetter.TEAL:
+                    setTheme(R.style.ThemeDark_Teal);
+                    break;
+                case PrefGetter.GREEN:
+                    setTheme(R.style.ThemeDark_Green);
+                    break;
+                case PrefGetter.LIGHT_GREEN:
+                    setTheme(R.style.ThemeDark_LightGreen);
+                    break;
+                case PrefGetter.LIME:
+                    setTheme(R.style.ThemeDark_Lime);
+                    break;
+                case PrefGetter.YELLOW:
+                    setTheme(R.style.ThemeDark_Yellow);
+                    break;
+                case PrefGetter.AMBER:
+                    setTheme(R.style.ThemeDark_Amber);
+                    break;
+                case PrefGetter.ORANGE:
+                    setTheme(R.style.ThemeDark_Orange);
+                    break;
+                case PrefGetter.DEEP_ORANGE:
+                    setTheme(R.style.ThemeDark_DeepOrange);
+                    break;
+                default:
+                    setTheme(R.style.ThemeDark);
+            }
         }
+        setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
+                BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(this)));
     }
 
     protected void setupNavigationView(@Nullable NavigationView extraNav) {
@@ -353,24 +519,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
                 }
             }
-            if (BuildConfig.FDROID) {
-                Menu menu = extraNav.getMenu();
-                menu.findItem(R.id.enableAds).setVisible(false);
-                menu.findItem(R.id.supportDev).setVisible(false);
-            } else {
-                extraNav.getMenu().findItem(R.id.enableAds).setChecked(PrefGetter.isAdsEnabled());
-            }
-        }
-    }
-
-    protected void hideProfileMenuItem() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.profile).setVisible(false);
         }
     }
 
     private void setupDrawer() {
-        if (drawer != null) {
+        if (drawer != null && !(this instanceof MainActivity)) {
             if (!PrefGetter.isNavDrawerHintShowed()) {
                 drawer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                     @Override public boolean onPreDraw() {

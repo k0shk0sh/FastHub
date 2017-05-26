@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     android:id="@+id/commentOptions"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:layout_marginBottom="@dimen/spacing_normal"
+    android:layout_marginTop="@dimen/spacing_normal"
+    android:background="?card_background"
+    android:elevation="2dp"
+    android:orientation="horizontal"
+    android:outlineProvider="background"
+    android:paddingBottom="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_xs_large"
     tools:ignore="RtlSymmetry"
     tools:showIn="@layout/comments_row_item">
+
 
     <HorizontalScrollView
         android:id="@+id/emojiesList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:layout_toStartOf="@+id/commentMenu"
+        android:scrollbarStyle="insideOverlay">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/thumbsUp"
@@ -25,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -35,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -45,6 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -55,6 +70,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -65,6 +81,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
                 android:background="?android:selectableItemBackgroundBorderless"
                 android:gravity="center"
                 tools:text="100"/>
@@ -82,42 +99,14 @@
         </LinearLayout>
     </HorizontalScrollView>
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/commentMenu"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:gravity="end"
-        android:orientation="horizontal"
-        android:paddingEnd="@dimen/spacing_normal"
-        android:paddingStart="@dimen/spacing_normal">
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_trash"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/reply"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_undo"/>
-
-        <android.support.v7.widget.AppCompatImageView
-            android:id="@+id/edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackgroundBorderless"
-            android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_edit"
-            android:visibility="gone"
-            tools:visibility="visible"/>
-    </LinearLayout>
-</LinearLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center"
+        android:background="?selectableItemBackgroundBorderless"
+        android:padding="@dimen/spacing_normal"
+        android:src="@drawable/ic_overflow"/>
+</RelativeLayout>

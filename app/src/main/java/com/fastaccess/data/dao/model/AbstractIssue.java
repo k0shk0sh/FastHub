@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -12,6 +11,7 @@ import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
 import com.fastaccess.data.dao.converters.MilestoneConverter;
 import com.fastaccess.data.dao.converters.PullRequestConverter;
+import com.fastaccess.data.dao.converters.ReactionsConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.converters.UsersConverter;
@@ -28,8 +28,8 @@ import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.Issue.ID;
 import static com.fastaccess.data.dao.model.Issue.LOGIN;
@@ -66,36 +66,31 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     @Convert(RepoConverter.class) Repo repository;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
     @Convert(UserConverter.class) User closedBy;
+    @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
-    public Completable save(Issue entity) {
+    public Single save(Issue entity) {
         return App.getInstance().getDataStore()
                 .delete(Issue.class)
                 .where(ID.eq(entity.getId()))
                 .get()
                 .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity)
-                        .toCompletable());
+                .flatMap(i -> App.getInstance().getDataStore().insert(entity));
     }
 
     public static Observable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
+        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(Issue.class)
-                            .where(REPO_ID.equal(repoId)
-                                    .and(LOGIN.equal(login)))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(issueModel -> {
-                                issueModel.setRepoId(repoId);
-                                issueModel.setLogin(login);
-                                issueModel.save(issueModel).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+                singleEntityStore.delete(Issue.class)
+                        .where(REPO_ID.equal(repoId).and(LOGIN.equal(login)))
+                        .get()
+                        .toSingle()
+                        .toObservable()
+                        .flatMap(integer -> Observable.from(models))
+                        .flatMap(issueModel -> {
+                            issueModel.setRepoId(repoId);
+                            issueModel.setLogin(login);
+                            return issueModel.save(issueModel).toObservable();
+                        }));
     }
 
     public static Observable<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
@@ -154,6 +149,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
         dest.writeParcelable(this.repository, flags);
         dest.writeParcelable(this.pullRequest, flags);
         dest.writeParcelable(this.closedBy, flags);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected AbstractIssue(Parcel in) {
@@ -187,6 +183,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
         this.repository = in.readParcelable(Repo.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
         this.closedBy = in.readParcelable(User.class.getClassLoader());
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
     public static final Creator<Issue> CREATOR = new Creator<Issue>() {

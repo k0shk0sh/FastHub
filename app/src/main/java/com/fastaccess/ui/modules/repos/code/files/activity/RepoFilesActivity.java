@@ -10,6 +10,9 @@ import android.view.MenuItem;
 
 import com.annimon.stream.Objects;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.AbstractRepo;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -42,9 +45,9 @@ public class RepoFilesActivity extends BaseActivity {
     public static Intent getIntent(@NonNull Context context, @NonNull String url) {
         Uri uri = Uri.parse(url);
         if (uri.getPathSegments() != null && uri.getPathSegments().size() > 3) {
-            String login;
-            String repoId;
-            String branch;
+            String login = null;
+            String repoId = null;
+            String branch = null;
             StringBuilder path = new StringBuilder();
             boolean startWithRepo = false;
             if (uri.getPathSegments().get(0).equalsIgnoreCase("repos")) {
@@ -52,6 +55,24 @@ public class RepoFilesActivity extends BaseActivity {
                 repoId = uri.getPathSegments().get(2);
                 branch = uri.getQueryParameter("ref");
                 startWithRepo = true;
+            } else if (uri.getPathSegments().get(0).equalsIgnoreCase("repositories")) {
+                String id = uri.getPathSegments().get(1);
+                try {
+                    long longRepoId = Long.valueOf(id);
+                    if (longRepoId != 0) {
+                        Repo repo = AbstractRepo.getRepo(longRepoId);
+                        if (repo != null) {
+                            NameParser nameParser = new NameParser(repo.getHtmlUrl());
+                            if (nameParser.getUsername() != null && nameParser.getName() != null) {
+                                login = nameParser.getUsername();
+                                repoId = nameParser.getName();
+                                branch = uri.getQueryParameter("ref");
+                            }
+                        }
+                    }
+                } catch (NumberFormatException ignored) {
+                    return new Intent(context, MainActivity.class);
+                }
             } else {
                 login = uri.getPathSegments().get(0);
                 repoId = uri.getPathSegments().get(1);
@@ -61,14 +82,17 @@ public class RepoFilesActivity extends BaseActivity {
                 String appendedPath = uri.getPathSegments().get(i);
                 path.append("/").append(appendedPath);
             }
-            Intent intent = new Intent(context, RepoFilesActivity.class);
-            intent.putExtras(Bundler.start()
-                    .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.EXTRA, login)
-                    .put(BundleConstant.EXTRA_TWO, path.toString())
-                    .put(BundleConstant.EXTRA_THREE, branch)
-                    .end());
-            return intent;
+            if (!InputHelper.isEmpty(repoId) && !InputHelper.isEmpty(login)) {
+                Intent intent = new Intent(context, RepoFilesActivity.class);
+                intent.putExtras(Bundler.start()
+                        .put(BundleConstant.ID, repoId)
+                        .put(BundleConstant.EXTRA, login)
+                        .put(BundleConstant.EXTRA_TWO, path.toString())
+                        .put(BundleConstant.EXTRA_THREE, branch)
+                        .end());
+                return intent;
+            }
+            return new Intent(context, MainActivity.class);
         }
         return new Intent(context, MainActivity.class);
     }

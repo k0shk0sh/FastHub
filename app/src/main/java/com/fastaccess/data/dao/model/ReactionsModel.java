@@ -25,6 +25,7 @@ import lombok.Setter;
     private int heart;
     private String content;
     private User user;
+    private boolean isCallingApi;
 
     public ReactionsModel() {}
 
@@ -56,6 +57,7 @@ import lombok.Setter;
         dest.writeInt(this.heart);
         dest.writeString(this.content);
         dest.writeParcelable(this.user, flags);
+        dest.writeByte(this.isCallingApi ? (byte) 1 : (byte) 0);
     }
 
     protected ReactionsModel(Parcel in) {
@@ -70,6 +72,7 @@ import lombok.Setter;
         this.heart = in.readInt();
         this.content = in.readString();
         this.user = in.readParcelable(User.class.getClassLoader());
+        this.isCallingApi = in.readByte() != 0;
     }
 
     public static final Creator<ReactionsModel> CREATOR = new Creator<ReactionsModel>() {

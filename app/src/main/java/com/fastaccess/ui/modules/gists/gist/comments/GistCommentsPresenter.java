@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.PopupMenu;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
@@ -94,27 +95,33 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Comment.getGistComments(gistId)).subscribe(
-                    localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))
-            ));
+            manageSubscription(RxHelper.getObserver(Comment.getGistComments(gistId))
+                    .subscribe(localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }
     }
 
     @Override public void onItemClick(int position, View v, Comment item) {
-        Login userModel = Login.getUser();
         if (getView() == null) return;
-        if (v.getId() == R.id.delete) {
-            if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
-                getView().onShowDeleteMsg(item.getId());
-            }
-        } else if (v.getId() == R.id.reply) {
-            getView().onTagUser(item.getUser());
-        } else if (v.getId() == R.id.edit) {
-            if (userModel != null && item.getUser().getLogin().equals(userModel.getLogin())) {
-                getView().onEditComment(item);
-            }
+        if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
+            PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+            popupMenu.inflate(R.menu.comments_menu);
+            String username = Login.getUser().getLogin();
+            popupMenu.getMenu().findItem(R.id.delete).setVisible(username.equalsIgnoreCase(item.getUser().getLogin()));
+            popupMenu.getMenu().findItem(R.id.edit).setVisible(username.equalsIgnoreCase(item.getUser().getLogin()));
+            popupMenu.setOnMenuItemClickListener(item1 -> {
+                if (getView() == null) return false;
+                if (item1.getItemId() == R.id.delete) {
+                    getView().onShowDeleteMsg(item.getId());
+                } else if (item1.getItemId() == R.id.reply) {
+                    getView().onReply(item.getUser(), item.getBody());
+                } else if (item1.getItemId() == R.id.edit) {
+                    getView().onEditComment(item);
+                }
+                return true;
+            });
+            popupMenu.show();
         }
     }
 

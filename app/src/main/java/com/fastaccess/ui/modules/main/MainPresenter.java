@@ -7,11 +7,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
-import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerView;
+import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -22,6 +27,17 @@ import static com.fastaccess.helper.AppHelper.getFragmentByTag;
 
 class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
 
+
+    MainPresenter() {
+        manageSubscription(RxHelper.getObserver(RestProvider.getUserService().getUser())
+                .flatMap(login -> login.update(login))
+                .subscribe(login -> {
+                    if (login != null) {
+                        sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
+                    }
+                }, Throwable::printStackTrace/*fail silently*/));
+    }
+
     @Override public boolean canBackPress(@NonNull DrawerLayout drawerLayout) {
         return !drawerLayout.isDrawerOpen(GravityCompat.START);
     }
@@ -31,8 +47,11 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         Fragment currentVisible = getVisibleFragment(fragmentManager);
         FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
         MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag(fragmentManager, MyPullsPagerFragment.TAG);
-        MyIssuesPagerView issuesView = (MyIssuesPagerView) getFragmentByTag(fragmentManager, MyIssuesPagerView.TAG);
+        MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag(fragmentManager, MyIssuesPagerFragment.TAG);
         switch (type) {
+            case MainMvp.PROFILE:
+                UserPagerActivity.startActivity(App.getInstance().getApplicationContext(), Login.getUser().getLogin());
+                break;
             case MainMvp.FEEDS:
                 if (homeView == null) {
                     onAddAndHide(fragmentManager, FeedsFragment.newInstance(), currentVisible);
@@ -49,7 +68,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
                 break;
             case MainMvp.ISSUES:
                 if (issuesView == null) {
-                    onAddAndHide(fragmentManager, MyIssuesPagerView.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }

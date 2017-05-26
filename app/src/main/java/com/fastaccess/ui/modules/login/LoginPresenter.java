@@ -27,7 +27,15 @@ import retrofit2.adapter.rxjava.HttpException;
  * Created by Kosh on 09 Nov 2016, 9:43 PM
  */
 
-class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
+public class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
+
+    public LoginPresenter() {
+        RestProvider.clearHttpClient();
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override public void onError(@NonNull Throwable throwable) {
         if (RestProvider.getErrorCode(throwable) == 401 && throwable instanceof HttpException) {
@@ -73,7 +81,7 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
     }
 
     @Override public void onHandleAuthIntent(@Nullable Intent intent) {
-        Logger.e(intent);
+        Logger.e(intent, intent != null ? intent.getExtras() : "N/A");
         if (intent != null && intent.getData() != null) {
             Uri uri = intent.getData();
             Logger.e(uri.toString());
@@ -93,35 +101,48 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         if (userModel != null) {
             userModel.setToken(PrefGetter.getToken());
             userModel.save(userModel);
-            sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
+            if (getView() != null)
+                getView().onSuccessfullyLoggedIn(userModel);
+            else
+                sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @Override public void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode) {
+    @Override public void login(@NonNull String username, @NonNull String password,
+                                @Nullable String twoFactorCode, boolean isBasicAuth, boolean ignore) {
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
         if (getView() == null) return;
-        getView().onEmptyUserName(usernameIsEmpty);
-        getView().onEmptyPassword(passwordIsEmpty);
-        if (!usernameIsEmpty && !passwordIsEmpty) {
+        getView().onEmptyUserName(!ignore && usernameIsEmpty);
+        getView().onEmptyPassword(!ignore && passwordIsEmpty);
+        if ((!usernameIsEmpty && !passwordIsEmpty) || ignore) {
             String authToken = Credentials.basic(username, password);
-            AuthModel authModel = new AuthModel();
-            authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
-            authModel.setNote(BuildConfig.APPLICATION_ID);
-            authModel.setClientSecret(GithubConfigHelper.getSecret());
-            authModel.setClientId(GithubConfigHelper.getClientId());
-            authModel.setNoteUr(GithubConfigHelper.getRedirectUrl());
-            if (!InputHelper.isEmpty(twoFactorCode)) {
-                authModel.setOtpCode(twoFactorCode);
-            }
-            makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), accessTokenModel -> {
+            if (isBasicAuth) {
+                AuthModel authModel = new AuthModel();
+                authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
+                authModel.setNote(BuildConfig.APPLICATION_ID);
+                authModel.setClientSecret(GithubConfigHelper.getSecret());
+                authModel.setClientId(GithubConfigHelper.getClientId());
+                authModel.setNoteUr(GithubConfigHelper.getRedirectUrl());
                 if (!InputHelper.isEmpty(twoFactorCode)) {
-                    PrefGetter.setOtpCode(twoFactorCode);
+                    authModel.setOtpCode(twoFactorCode);
                 }
-                onTokenResponse(accessTokenModel);
-            });
+                makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), accessTokenModel -> {
+                    if (!InputHelper.isEmpty(twoFactorCode)) {
+                        PrefGetter.setOtpCode(twoFactorCode);
+                    }
+                    onTokenResponse(accessTokenModel);
+                });
+            } else {
+                makeRestCall(LoginProvider.getLoginRestService(authToken, null).loginAccessToken(), login -> {
+                    if (login != null) {
+                        PrefGetter.setToken(InputHelper.toString(password));
+                    }
+                    onUserResponse(login);
+                });
+            }
         }
     }
 }

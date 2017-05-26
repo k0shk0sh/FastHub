@@ -64,6 +64,14 @@ public class SpannableBuilder extends SpannableStringBuilder {
         return this;
     }
 
+    public SpannableBuilder bold(CharSequence text, final Object span) {
+        if (!InputHelper.isEmpty(text)) {
+            text = SpannableBuilder.builder().bold(text);
+            append(text, span);
+        }
+        return this;
+    }
+
     public SpannableBuilder bold(final CharSequence text) {
         if (!InputHelper.isEmpty(text)) return append(text, new StyleSpan(BOLD));
         return this;

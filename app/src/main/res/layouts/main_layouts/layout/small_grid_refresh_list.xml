@@ -16,6 +16,7 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="vertical"
             app:layoutManager="@string/staggered_layout_manager"
             app:spanCount="@integer/small_spans"/>
 

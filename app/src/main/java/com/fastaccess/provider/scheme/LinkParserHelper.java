@@ -23,7 +23,7 @@ class LinkParserHelper {
     static final String API_AUTHORITY = "api.github.com";
     static final String PROTOCOL_HTTPS = "https";
     static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "settings", "blog", "explore",
-            "dashboard", "repositories", "site", "security", "contact", "about", "logos", "")
+            "dashboard", "repositories", "logout", "sessions", "site", "security", "contact", "about", "logos", "login", "trending", "")
             .collect(Collectors.toCollection(ArrayList::new));
 
 
@@ -39,10 +39,12 @@ class LinkParserHelper {
             String repo = segments.get(1);
             String branch = segments.get(3);
             urlBuilder = new Uri.Builder();
-            urlBuilder.scheme("https").authority(RAW_AUTHORITY)
+            urlBuilder.scheme("https")
+                    .authority(API_AUTHORITY)
+                    .appendPath("repos")
                     .appendPath(owner)
                     .appendPath(repo)
-                    .appendPath(branch);
+                    .appendPath("contents");
             for (int i = 4; i < segments.size(); i++) {
                 urlBuilder.appendPath(segments.get(i));
             }
@@ -54,6 +56,7 @@ class LinkParserHelper {
             if (uri.getEncodedFragment() != null) {
                 urlBuilder.encodedFragment(uri.getEncodedFragment());
             }
+            urlBuilder.appendQueryParameter("ref", branch);
         }
         return urlBuilder != null ? urlBuilder.build() : uri;
     }

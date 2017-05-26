@@ -12,18 +12,24 @@ import android.view.MenuItem;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
+import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
+import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
+import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
+import shortbread.Shortcut;
 
+@Shortcut(id = "feeds", icon = R.drawable.ic_github_shortcut, shortLabelRes = R.string.feeds, rank = 1)
 public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
     @State @MainMvp.NavigationType int navType = MainMvp.FEEDS;
@@ -54,12 +60,25 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        hideHome();
+        if (savedInstanceState == null) {
+            if (getIntent() != null && getIntent().getBooleanExtra(SlackBottomSheetDialog.TAG, false)) {
+                new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
+            }
+        }
+        selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
         onInit(savedInstanceState);
         fab.setImageResource(R.drawable.ic_filter);
-        showHideFab();
+        onNewIntent(getIntent());
+    }
+
+    @Override protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent != null && intent.getExtras() != null) {
+            boolean recreate = intent.getExtras().getBoolean(BundleConstant.YES_NO_EXTRA);
+            if (recreate) recreate();
+        }
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -86,29 +105,58 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
+        if (navType == MainMvp.PROFILE) {
+            getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
+            bottomNavigation.setSelectedIndex(this.navType, true);
+            return;
+        }
         this.navType = navType;
-        showHideFab();
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
         hideShowShadow(navType == MainMvp.FEEDS);
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 
-    private void showHideFab() {
-//        if (navType == MainMvp.ISSUES || navType == MainMvp.PULL_REQUESTS) {
-//            fab.show();
-//        } else {
-//            fab.hide();
-//        }
+    @Override public void onUpdateDrawerMenuHeader() {
+        setupNavigationView(extraNav);
     }
+
+    @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
+    public void myIssues() {}//do nothing
+
+    @Shortcut(id = "myPulls", icon = R.drawable.ic_pull_requests_shortcut, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
+    public void myPulls() {}//do nothing
 
     private void onInit(@Nullable Bundle savedInstanceState) {
         if (isLoggedIn()) {
             if (savedInstanceState == null) {
-                getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.container, FeedsFragment.newInstance(), FeedsFragment.TAG)
-                        .commit();
+                boolean attachFeeds = true;
+                if (getIntent().getAction() != null) {
+                    if (getIntent().getAction().equalsIgnoreCase("myPulls")) {
+                        navType = MainMvp.PULL_REQUESTS;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, MyPullsPagerFragment.newInstance(), MyPullsPagerFragment.TAG)
+                                .commit();
+                        bottomNavigation.setSelectedIndex(2, true);
+                        attachFeeds = false;
+                    } else if (getIntent().getAction().equalsIgnoreCase("myIssues")) {
+                        navType = MainMvp.ISSUES;
+                        getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.container, MyIssuesPagerFragment.newInstance(), MyIssuesPagerFragment.TAG)
+                                .commit();
+                        bottomNavigation.setSelectedIndex(1, true);
+                        attachFeeds = false;
+                    }
+                }
+                hideShowShadow(navType == MainMvp.FEEDS);
+                if (attachFeeds) {
+                    getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.container, FeedsFragment.newInstance(), FeedsFragment.TAG)
+                            .commit();
+                }
             }
             Typeface myTypeface = TypeFaceHelper.getTypeface();
             bottomNavigation.setDefaultTypeface(myTypeface);

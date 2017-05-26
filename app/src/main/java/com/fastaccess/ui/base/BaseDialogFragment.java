@@ -56,6 +56,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+        getPresenter().onSaveInstanceState(outState);
     }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         setStyle(STYLE_NO_TITLE, AppHelper.isNightMode(getResources()) ? R.style.DialogThemeDark : R.style.DialogThemeLight);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(savedInstanceState);
         }
     }
 
@@ -151,4 +153,6 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         super.onDestroyView();
         if (unbinder != null) unbinder.unbind();
     }
+
+    @Override public void onScrollTop(int index) {}
 }

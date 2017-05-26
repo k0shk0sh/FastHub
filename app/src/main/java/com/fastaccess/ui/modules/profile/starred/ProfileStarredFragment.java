@@ -68,6 +68,7 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
         adapter = new ReposAdapter(getPresenter().getRepos(), true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
@@ -80,6 +81,8 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -99,11 +102,6 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), getArguments().getString(BundleConstant.EXTRA));
@@ -117,5 +115,15 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

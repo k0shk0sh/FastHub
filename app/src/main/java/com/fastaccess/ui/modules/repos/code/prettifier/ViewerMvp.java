@@ -46,5 +46,7 @@ interface ViewerMvp {
         boolean isRepo();
 
         boolean isImage();
+
+        @NonNull String url();
     }
 }

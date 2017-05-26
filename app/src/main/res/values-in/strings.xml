@@ -1,5 +1,5 @@
 <resources>
-    <!-- Tolong gunakan EYD untuk berkontribusi di terjemahan ini.
+    <!-- Tolong gunakan PUEBI untuk berkontribusi di terjemahan ini.
          Jika Anda butuh seseorang untuk meninjau perubahan Anda, silakan menyebutkan nama pengguna
          yang berkaitan dengan terjemahan Bahasa Indonesia ini di berkas language_contributors.md
          yang lokasinya di direktori utama. -->
@@ -41,7 +41,7 @@
     <string name="releases">Rilis</string>
     <string name="no_body">Tidak ada</string>
     <string name="contributors">Kontributor</string>
-    <string name="by">Oleh</string>
+    <string name="by">oleh</string>
     <string name="close_issue">Tutup Isu</string>
     <string name="re_open_issue">Buka Kembali Isu</string>
     <string name="re_open">Buka Kembali</string>
@@ -227,7 +227,7 @@
     <string name="request_error">Terjadi kesalahan saat meminta ke server, coba lagi nanti</string>
     <string name="marking_as_read">Menandai pemberitahuan telah dibaca</string>
     <string name="forking_gist">Forking gist</string>
-    <string name="login_using_your_default_browser">Masuk menggunakan browser default Anda</string>
+    <string name="login_using_your_default_browser">Masuk menggunakan browser default Anda (OAuth)</string>
     <string name="or_character">Atau</string>
     <string name="mark_notification_title">Nonaktifkan Pemberitahuan Status Baca</string>
     <string name="mark_notification_summary">Nonaktifkan tandai telah dibaca saat mengklik pemberitahuan.</string>
@@ -329,9 +329,32 @@
     <string name="support_with_10_00">Dukung dengan $10.00</string>
     <string name="support_with_20_00">Dukung dengan $20.00</string>
     <string name="app_language">Bahasa Aplikasi</string>
+    <string name="language">Bahasa</string>
     <string name="choose_language_title">Pilih Bahasa</string>
     <string name="choose_language_summary">Pilih bahasa pilihan Anda</string>
     <string name="un_subscribe">Berhenti berlangganan</string>
     <string name="from">dari</string>
     <string name="in_value">di</string>
+    <string name="subscribe">Berlangganan</string>
+    <string name="repo_issues_is_disabled">Repo yang tidak mempunyai isu</string>
+    <string name="access_token">Akses Token</string>
+    <string name="basic_authentication">Otentikasi Dasar</string>
+    <string name="choose_your_login_type">Pilih tipe login Anda</string>
+    <string name="files_only">Di Berkas</string>
+    <string name="paths_only">Di Path</string>
+    <string name="review_requests">Permintaan Tinjauan</string>
+    <string name="join_slack">Bergabung di Slack</string>
+    <string name="join_slack_message">Apakah Anda ingin bergabung dengan grup FastHub di Slack?</string>
+    <string name="successfully_invited">Berhasil diundang</string>
+    <string name="reply">Balas</string>
+    <string name="failed_selecting_image">Gagal memuat gambar.</string>
+    <string name="want_to_merge">ingin merge</string>
+    <string name="watchers">Penonton</string>
+    <string name="reviewers">Peninjau</string>
+    <string name="no_reviewers">Tidak ada peninjau</string>
+    <string name="sent_from_fasthub">Dikirim dari %1$s menggunakan %2$s%3$s</string>
+    <string name="enable_signature">Aktifkan tanda tangan</string>
+    <string name="enable_signature_summary">Aktifkan kirim via tanda tangan</string>
+    <string name="enable_signature_box">Aktifkan Signature Box</string>
+    <string name="enable_signature_box_summary">Aktifkan kotak centang untuk toggle tanda tangan di editor teks</string>
 </resources>

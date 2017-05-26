@@ -51,12 +51,14 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+        getPresenter().onSaveInstanceState(outState);
     }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(savedInstanceState);
         }
     }
 
@@ -131,6 +133,8 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onOpenSettings() {
         callback.onOpenSettings();
     }
+
+    @Override public void onScrollTop(int index) {}
 
     protected boolean isSafe() {
         return getView() != null && getActivity() != null && !getActivity().isFinishing();

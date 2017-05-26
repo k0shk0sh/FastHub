@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/spacing_micro"
-    android:foreground="?android:selectableItemBackground"
     app:cardBackgroundColor="?card_background">
 
     <LinearLayout
@@ -28,7 +27,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
                 android:maxLines="2"
@@ -39,7 +37,8 @@
                 android:id="@+id/toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:padding="@dimen/spacing_normal"
+                android:background="?selectableItemBackgroundBorderless"
                 android:src="@drawable/ic_arrow_drop_down"/>
 
             <com.fastaccess.ui.widgets.ForegroundImageView
@@ -55,8 +54,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginEnd="@dimen/spacing_xs_large">
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:orientation="vertical">
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/patch"

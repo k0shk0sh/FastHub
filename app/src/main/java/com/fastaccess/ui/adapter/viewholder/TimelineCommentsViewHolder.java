@@ -2,8 +2,8 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatImageView;
-import android.text.TextUtils;
+import android.support.transition.ChangeBounds;
+import android.support.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -43,29 +43,88 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.hurray) FontTextView hooray;
     @BindView(R.id.heart) FontTextView heart;
     @BindView(R.id.toggle) View toggle;
-    @BindView(R.id.delete) AppCompatImageView delete;
-    @BindView(R.id.reply) AppCompatImageView reply;
-    @BindView(R.id.edit) AppCompatImageView edit;
+    @BindView(R.id.commentMenu) View commentMenu;
     @BindView(R.id.commentOptions) View commentOptions;
     @BindView(R.id.toggleHolder) View toggleHolder;
     @BindView(R.id.emojiesList) View emojiesList;
     @BindView(R.id.reactionsText) TextView reactionsText;
-    private String login;
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
+    private ViewGroup viewGroup;
 
     @Override public void onClick(View v) {
-        if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder || v.getId() == R.id.reactionsText) {
+        if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
             if (onToggleView != null) {
                 int position = getAdapterPosition();
                 onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-                onToggle(onToggleView.isCollapsed(position));
+                onToggle(onToggleView.isCollapsed(position), true);
             }
         } else {
             addReactionCount(v);
             super.onClick(v);
         }
+    }
+
+    private TimelineCommentsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
+                                       @NonNull OnToggleView onToggleView, boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
+        super(itemView, adapter);
+        this.viewGroup = viewGroup;
+        this.onToggleView = onToggleView;
+        this.showEmojies = showEmojies;
+        this.reactionsCallback = reactionsCallback;
+        itemView.setOnClickListener(null);
+        itemView.setOnLongClickListener(null);
+        commentMenu.setOnClickListener(this);
+        toggleHolder.setOnClickListener(this);
+        laugh.setOnClickListener(this);
+        sad.setOnClickListener(this);
+        thumbsDown.setOnClickListener(this);
+        thumbsUp.setOnClickListener(this);
+        hooray.setOnClickListener(this);
+        laugh.setOnLongClickListener(this);
+        sad.setOnLongClickListener(this);
+        thumbsDown.setOnLongClickListener(this);
+        thumbsUp.setOnLongClickListener(this);
+        hooray.setOnLongClickListener(this);
+        heart.setOnLongClickListener(this);
+        heart.setOnClickListener(this);
+    }
+
+    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
+                                                         @NonNull OnToggleView onToggleView, boolean showEmojies,
+                                                         @NonNull ReactionsCallback reactionsCallback) {
+        return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), viewGroup, adapter,
+                onToggleView, showEmojies, reactionsCallback);
+    }
+
+    @Override public void bind(@NonNull TimelineModel timelineModel) {
+        Comment commentsModel = timelineModel.getComment();
+        if (commentsModel.getUser() != null) {
+            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
+        } else {
+            avatar.setUrl(null, null);
+        }
+        if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
+            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());
+        } else {
+            comment.setText("");
+        }
+        name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
+        if (commentsModel.getCreatedAt().before(commentsModel.getUpdatedAt())) {
+            date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()), itemView
+                    .getResources().getString(R.string.edited)));
+        } else {
+            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
+        }
+        if (showEmojies) {
+            if (commentsModel.getReactions() != null) {
+                ReactionsModel reaction = commentsModel.getReactions();
+                appendEmojies(reaction);
+            }
+        }
+        emojiesList.setVisibility(showEmojies ? View.VISIBLE : View.GONE);
+        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()), false);
     }
 
     private void addReactionCount(View v) {
@@ -75,6 +134,8 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             Comment comment = timelineModel.getComment();
             if (comment != null) {
                 boolean isReacted = reactionsCallback == null || reactionsCallback.isPreviouslyReacted(comment.getId(), v.getId());
+                boolean isCallingApi = reactionsCallback != null && reactionsCallback.isCallingApi(comment.getId(), v.getId());
+//                if (isCallingApi) return;
                 ReactionsModel reactionsModel = comment.getReactions() != null ? comment.getReactions() : new ReactionsModel();
                 switch (v.getId()) {
                     case R.id.heart:
@@ -101,68 +162,6 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
                 timelineModel.setComment(comment);
             }
         }
-    }
-
-    private TimelineCommentsViewHolder(@NonNull View itemView, @Nullable IssuePullsTimelineAdapter adapter,
-                                       @NonNull String login, @NonNull OnToggleView onToggleView,
-                                       boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
-        super(itemView, adapter);
-        this.login = login;
-        this.onToggleView = onToggleView;
-        this.showEmojies = showEmojies;
-        this.reactionsCallback = reactionsCallback;
-        itemView.setOnClickListener(null);
-        itemView.setOnLongClickListener(null);
-        reply.setOnClickListener(this);
-        edit.setOnClickListener(this);
-        delete.setOnClickListener(this);
-        toggleHolder.setOnClickListener(this);
-        laugh.setOnClickListener(this);
-        sad.setOnClickListener(this);
-        thumbsDown.setOnClickListener(this);
-        thumbsUp.setOnClickListener(this);
-        hooray.setOnClickListener(this);
-        laugh.setOnLongClickListener(this);
-        sad.setOnLongClickListener(this);
-        thumbsDown.setOnLongClickListener(this);
-        thumbsUp.setOnLongClickListener(this);
-        hooray.setOnLongClickListener(this);
-        heart.setOnLongClickListener(this);
-        heart.setOnClickListener(this);
-        reactionsText.setOnClickListener(this);
-    }
-
-    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
-                                                         @NonNull String login, @NonNull OnToggleView onToggleView,
-                                                         boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
-        return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), adapter, login,
-                onToggleView, showEmojies, reactionsCallback);
-    }
-
-    @Override public void bind(@NonNull TimelineModel timelineModel) {
-        Comment commentsModel = timelineModel.getComment();
-        if (commentsModel.getUser() != null) {
-            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
-            delete.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);
-            edit.setVisibility(TextUtils.equals(commentsModel.getUser().getLogin(), login) ? View.VISIBLE : View.GONE);
-        } else {
-            avatar.setUrl(null, null);
-        }
-        if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            HtmlHelper.getComment(comment, commentsModel.getBodyHtml());
-        } else {
-            comment.setText("");
-        }
-        name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
-        date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
-        if (showEmojies) {
-            if (commentsModel.getReactions() != null) {
-                ReactionsModel reaction = commentsModel.getReactions();
-                appendEmojies(reaction);
-            }
-        }
-        emojiesList.setVisibility(showEmojies ? View.VISIBLE : View.GONE);
-        if (onToggleView != null) onToggle(onToggleView.isCollapsed(getAdapterPosition()));
     }
 
     private void appendEmojies(ReactionsModel reaction) {
@@ -236,24 +235,14 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
-    private void onToggle(boolean expanded) {
+    private void onToggle(boolean expanded, boolean animate) {
+        if (animate) {
+            TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
+        }
         toggle.setRotation(!expanded ? 0.0F : 180F);
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(reactionsText)) {
             reactionsText.setVisibility(!expanded ? View.VISIBLE : View.GONE);
         }
     }
-
-    public void pauseWebView() {
-        if (comment != null) {
-//            comment.onPause();
-        }
-    }
-
-    public void resumeWebView() {
-        if (comment != null) {
-//            comment.onResume();
-        }
-    }
-
 }

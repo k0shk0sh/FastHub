@@ -15,8 +15,8 @@ import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import lombok.NoArgsConstructor;
-import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import static com.fastaccess.data.dao.model.PinnedRepos.ID;
 import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
@@ -30,8 +30,8 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     @Column(unique = true) String repoFullName;
     @Convert(RepoConverter.class) Repo pinnedRepo;
 
-    public static Completable save(@NonNull PinnedRepos entity) {
-        return App.getInstance().getDataStore().insert(entity).toCompletable();
+    public static Single<PinnedRepos> save(@NonNull PinnedRepos entity) {
+        return App.getInstance().getDataStore().insert(entity);
     }
 
     public static boolean pinUpin(@NonNull Repo repo) {

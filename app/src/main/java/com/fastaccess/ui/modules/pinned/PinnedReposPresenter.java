@@ -39,6 +39,9 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
     }
 
     @Override public void onItemLongClick(int position, View v, PinnedRepos item) {
+        if (item!=null)
+            if (item.getRepoFullName().equalsIgnoreCase("k0shk0sh/FastHub"))
+                return;
         if (getView() != null) {
             getView().onDeletePinnedRepo(item.getId(), position);
         }

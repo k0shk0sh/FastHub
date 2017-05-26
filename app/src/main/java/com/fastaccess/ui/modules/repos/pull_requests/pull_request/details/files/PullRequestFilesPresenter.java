@@ -29,10 +29,10 @@ import java.util.ArrayList;
 
 class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> implements PullRequestFilesMvp.Presenter {
 
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State long number;
     private ArrayList<CommitFileModel> files = new ArrayList<>();
-    private String login;
-    private String repoId;
-    private long number;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -69,7 +69,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestSerice().getPullRequestFiles(login, repoId, number, page),
+        makeRestCall(RestProvider.getPullRequestService().getPullRequestFiles(login, repoId, number, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));

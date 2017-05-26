@@ -36,8 +36,6 @@ public interface IssuePagerMvp {
 
         void onUpdateMenu();
 
-        void onShowAssignees(@NonNull List<User> items);
-
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
 
         void onFinishActivity();
@@ -68,8 +66,6 @@ public interface IssuePagerMvp {
         void onLockUnlockIssue();
 
         void onLoadLabels();
-
-        void onLoadAssignees();
 
         void onPutMilestones(@NonNull MilestoneModel milestone);
 

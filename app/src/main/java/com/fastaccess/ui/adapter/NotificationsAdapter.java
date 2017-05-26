@@ -2,8 +2,10 @@ package com.fastaccess.ui.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 import android.view.ViewGroup;
 
+import com.fastaccess.R;
 import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.ui.adapter.viewholder.NotificationsHeaderViewHolder;
 import com.fastaccess.ui.adapter.viewholder.NotificationsViewHolder;
@@ -19,10 +21,17 @@ import java.util.ArrayList;
 public class NotificationsAdapter extends BaseRecyclerAdapter<GroupedNotificationModel, BaseViewHolder,
         BaseViewHolder.OnItemClickListener<GroupedNotificationModel>> {
     private boolean showUnreadState;
+    private boolean hideClear;
 
     public NotificationsAdapter(@NonNull ArrayList<GroupedNotificationModel> eventsModels, boolean showUnreadState) {
         super(eventsModels);
         this.showUnreadState = showUnreadState;
+    }
+
+    public NotificationsAdapter(@NonNull ArrayList<GroupedNotificationModel> eventsModels, boolean showUnreadState, boolean hideClear) {
+        super(eventsModels);
+        this.showUnreadState = showUnreadState;
+        this.hideClear = hideClear;
     }
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
@@ -36,6 +45,10 @@ public class NotificationsAdapter extends BaseRecyclerAdapter<GroupedNotificatio
     @Override protected void onBindView(BaseViewHolder holder, int position) {
         if (getItemViewType(position) == GroupedNotificationModel.HEADER) {
             ((NotificationsHeaderViewHolder) holder).bind(getItem(position));
+            if (hideClear)
+                if (getItem(Math.min(position + 1, getItemCount() - 1)).getNotification().isUnread()) {
+                    (((NotificationsHeaderViewHolder) holder).itemView).findViewById(R.id.markAsRead).setVisibility(View.VISIBLE);
+                }
         } else {
             ((NotificationsViewHolder) holder).bind(getItem(position));
         }

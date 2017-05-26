@@ -37,7 +37,7 @@
     <string name="releases">Yayınlananlar</string>
     <string name="no_body">İçerik yok</string>
     <string name="contributors">Katkıda bulunanlar</string>
-    <string name="by">By</string>
+    <string name="by">by</string>
     <string name="close_issue">Issue\'yu kapat</string>
     <string name="re_open_issue">Issue\'yu yeniden aç</string>
     <string name="re_open">Yeniden aç</string>
@@ -218,7 +218,7 @@
     <string name="request_error">Sunucuya bağlanılamadı, lütfen daha sonra tekrar deneyiniz</string>
     <string name="marking_as_read">Bildirim okundu olarak işaretleniyor</string>
     <string name="forking_gist">Gist fork\'lanıyor</string>
-    <string name="login_using_your_default_browser">Varsayılan İnternet tarayıcısı kullanılarak giriş yap</string>
+    <string name="login_using_your_default_browser">Varsayılan İnternet tarayıcısı kullanılarak giriş yap (OAuth)</string>
     <string name="or_character">VEYA</string>
     <string name="mark_notification_title">Okundu Durumunu Devre Dışı Bırak</string>
     <string name="mark_notification_summary">Bildirimlere dokunmayla okundu olarak işaretlenmesini devre dışı bırak.</string>
@@ -316,6 +316,7 @@
     <string name="select">Seç</string>
     <string name="select_picture">Resim Seç</string>
     <string name="app_language">Uygulama Dili</string>
+    <string name="language">Uygulama Dili</string>
     <string name="choose_language_title">Dil seçiniz</string>
     <string name="choose_language_summary">Tercih ettiğiniz dili seçin</string>
 </resources>

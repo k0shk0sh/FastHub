@@ -7,8 +7,8 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CreateIssueModel;
-import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.IssueRequestModel;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -72,14 +72,20 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                     pullRequestModel.setBody(InputHelper.toString(description));
                     pullRequestModel.setTitle(title);
                     IssueRequestModel requestModel = IssueRequestModel.clone(pullRequestModel, false);
-                    makeRestCall(RestProvider.getPullRequestSerice().editPullRequest(login, repo, number, requestModel),
-                            pr -> {
-                                if (pr != null) {
-                                    sendToView(view -> view.onSuccessSubmission(pr));
-                                } else {
-                                    sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
-                                }
-                            });
+                    makeRestCall(RestProvider.getPullRequestService().editPullRequest(login, repo, number, requestModel)
+                            .flatMap(pullRequest1 -> RestProvider.getIssueService().getIssue(login, repo, number),
+                                    (pullRequest1, issueReaction) -> {//hack to get reactions from issue api
+                                        if (issueReaction != null) {
+                                            pullRequest1.setReactions(issueReaction.getReactions());
+                                        }
+                                        return pullRequest1;
+                                    }), pr -> {
+                        if (pr != null) {
+                            sendToView(view -> view.onSuccessSubmission(pr));
+                        } else {
+                            sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
+                        }
+                    });
                 }
             }
         }

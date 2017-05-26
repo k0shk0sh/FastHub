@@ -16,12 +16,15 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseDialogFragment;
+import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
+import com.fastaccess.ui.modules.profile.banner.BannerInfoMvp;
 import com.fastaccess.ui.widgets.FontButton;
 
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Kosh on 15 Apr 2017, 9:14 PM
@@ -84,6 +87,8 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
                 String path = FileHelper.getPath(getContext(), data.getData());
                 if (!InputHelper.isEmpty(path)) {
                     getPresenter().onSubmit(InputHelper.toString(title), new File(path));
+                } else {
+                    Toasty.error(getContext(), getString(R.string.failed_selecting_image)).show();
                 }
             }
         }

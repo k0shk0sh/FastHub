@@ -2,11 +2,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <color name="lightWindowBackground">#FAFAFA</color>
-    <color name="lightDivider">#88B6B6B6</color>
+    <color name="lightDivider">#80949494</color>
     <color name="light_patch_addition_color">#CCFFCC</color>
     <color name="light_patch_deletion_color">#FFDDDD</color>
     <color name="light_patch_ref_color">#EEEEEE</color>
-
+    <color name="light_primary">#F5F5F5</color>
+    <color name="light_primary_dark">#E0E0E0</color>
+    <color name="light_accent">#2962FF</color>
 
     <style name="ThemeLight" parent="ThemeLight.Base"/>
 
@@ -19,9 +21,9 @@
         <item name="patch_ref">@color/light_patch_ref_color</item>
         <item name="dividerColor">@color/lightDivider</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
-        <item name="colorPrimary">#F5F5F5</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#2962FF</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorAccent">@color/light_accent</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="actionModeBackground">?colorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
@@ -41,10 +43,85 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
     </style>
 
+    <style name="ThemeLight.Red" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Red</item>
+    </style>
+
+    <style name="ThemeLight.Pink" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Pink</item>
+    </style>
+
+    <style name="ThemeLight.Purple" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Purple</item>
+    </style>
+
+    <style name="ThemeLight.DeepPurple" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepPurple</item>
+    </style>
+
+    <style name="ThemeLight.Indigo" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Indigo</item>
+    </style>
+
+    <style name="ThemeLight.LightBlue" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.LightBlue</item>
+    </style>
+
+    <style name="ThemeLight.Cyan" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Cyan</item>
+    </style>
+
+    <style name="ThemeLight.Teal" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Teal</item>
+    </style>
+
+    <style name="ThemeLight.Green" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Green</item>
+    </style>
+
+    <style name="ThemeLight.LightGreen" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.LightGreen</item>
+    </style>
+
+    <style name="ThemeLight.Lime" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Lime</item>
+    </style>
+
+    <style name="ThemeLight.Yellow" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Yellow</item>
+    </style>
+
+    <style name="ThemeLight.Amber" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Amber</item>
+    </style>
+
+    <style name="ThemeLight.Orange" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.Orange</item>
+    </style>
+
+    <style name="ThemeLight.DeepOrange" parent="ThemeLight.Base">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeLight.DeepOrange</item>
+    </style>
+
     <style name="ToolbarStyleLight">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/black</item>
-        <item name="colorControlHighlight">?colorAccent</item>
+        <item name="colorControlHighlight">#42000000</item>
         <item name="popupTheme">@style/PopupThemeLight</item>
     </style>
 
@@ -58,16 +135,76 @@
 
 
     <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorPrimary">#F5F5F5</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#2962FF</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorAccent">@color/light_accent</item>
         <item name="android:windowBackground">@color/lightWindowBackground</item>
     </style>
 
+    <style name="DialogThemeLight.Red" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Pink" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Purple" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.DeepPurple" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Indigo" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.LightBlue" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Cyan" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Teal" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Green" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.LightGreen" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Lime" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Yellow" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Amber" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.Orange" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+    </style>
+
+    <style name="DialogThemeLight.DeepOrange" parent="DialogThemeLight">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+    </style>
+    
     <style name="AppTheme.AboutActivity.Light" parent="ThemeLight">
-        <item name="colorPrimary">#F5F5F5</item>
-        <item name="colorPrimaryDark">#E0E0E0</item>
-        <item name="colorAccent">#2962FF</item>
+        <item name="colorPrimary">@color/light_primary</item>
+        <item name="colorPrimaryDark">@color/light_primary_dark</item>
+        <item name="colorAccent">@color/light_accent</item>
         <item name="mal_lightActionBar">true</item>
         <item name="mal_popupOverlay">@style/Theme.Mal.Light.PopupOverlay</item>
         <item name="mal_color_primary">#212121</item>

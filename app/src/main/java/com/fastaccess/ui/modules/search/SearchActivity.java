@@ -5,27 +5,36 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.data.dao.model.SearchHistory;
 import com.fastaccess.helper.AnimHelper;
-import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.FontAutoCompleteEditText;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.ViewPagerView;
+
+import java.text.NumberFormat;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
+import icepick.State;
 
 /**
  * Created by Kosh on 08 Dec 2016, 8:22 PM
@@ -38,6 +47,8 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.pager) ViewPagerView pager;
+    private NumberFormat numberFormat = NumberFormat.getNumberInstance();
+    @State HashSet<TabsCountStateModel> tabsCountSet = new LinkedHashSet<>();
 
     private ArrayAdapter<SearchHistory> adapter;
 
@@ -62,7 +73,6 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
 
     @OnClick(value = {R.id.clear}) void onClear(View view) {
         if (view.getId() == R.id.clear) {
-            AppHelper.hideKeyboard(searchEditText);
             searchEditText.setText("");
         }
     }
@@ -94,6 +104,21 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
         tabs.setupWithViewPager(pager);
         searchEditText.setAdapter(getAdapter());
         searchEditText.setOnItemClickListener((parent, view, position, id) -> getPresenter().onSearchClicked(pager, searchEditText));
+        if (!tabsCountSet.isEmpty()) {
+            setupTab();
+        }
+
+        if (getIntent().hasExtra("search")) {
+            searchEditText.setText(getIntent().getStringExtra("search"));
+            onTextChange(searchEditText.getEditableText());
+            getPresenter().onSearchClicked(pager, searchEditText);
+        }
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
     }
 
     @Override public void onNotifyAdapter(@Nullable SearchHistory query) {
@@ -101,8 +126,50 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
         else getAdapter().add(query);
     }
 
+    @Override public void onSetCount(int count, int index) {
+        TabsCountStateModel model = new TabsCountStateModel();
+        model.setCount(count);
+        model.setTabIndex(index);
+        tabsCountSet.add(model);
+        TextView textView = ViewHelper.getTabTextView(tabs, index);
+        if (index == 0) {
+            textView.setText(String.format("%s(%s)", getString(R.string.repos), numberFormat.format(count)));
+        } else if (index == 1) {
+            textView.setText(String.format("%s(%s)", getString(R.string.users), numberFormat.format(count)));
+        } else if (index == 2) {
+            textView.setText(String.format("%s(%s)", getString(R.string.issues), numberFormat.format(count)));
+        } else if (index == 3) {
+            textView.setText(String.format("%s(%s)", getString(R.string.code), numberFormat.format(count)));
+        }
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
+    }
+
     private ArrayAdapter<SearchHistory> getAdapter() {
         if (adapter == null) adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getPresenter().getHints());
         return adapter;
+    }
+
+    private void setupTab() {
+        for (TabsCountStateModel model : tabsCountSet) {
+            int index = model.getTabIndex();
+            int count = model.getCount();
+            TextView textView = ViewHelper.getTabTextView(tabs, index);
+            if (index == 0) {
+                textView.setText(String.format("%s(%s)", getString(R.string.repos), numberFormat.format(count)));
+            } else if (index == 1) {
+                textView.setText(String.format("%s(%s)", getString(R.string.users), numberFormat.format(count)));
+            } else if (index == 2) {
+                textView.setText(String.format("%s(%s)", getString(R.string.issues), numberFormat.format(count)));
+            } else if (index == 3) {
+                textView.setText(String.format("%s(%s)", getString(R.string.code), numberFormat.format(count)));
+            }
+        }
     }
 }

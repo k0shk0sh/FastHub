@@ -1,8 +1,8 @@
-## FastHub is back to the play store.
+## FastHub is dropping support for F-Droid. [Read the announcement here.](https://github.com/k0shk0sh/FastHub/pull/525)
 
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
-[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Slack Status](https://fasthub.herokuapp.com/badge.svg)](https://fasthub.herokuapp.com)
+[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
@@ -13,18 +13,21 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
  
 ## Download
  
- **FastHub** can be downloaded on [Google Play](https://play.google.com/store/apps/details?id=com.fastaccess.github):
+ **FastHub** can be downloaded on [Google Play](https://play.google.com/store/apps/details?id=com.fastaccess.github) or [F-Droid](https://f-droid.org/repository/browse/?fdid=com.fastaccess.github):
  
- <a href="https://play.google.com/store/apps/details?id=com.fastaccess.github">
-     <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80px"/>
- </a>
+
+[<img alt="Get it on Google Play" 
+src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80px">](https://play.google.com/store/apps/details?id=com.fastaccess.github)
+[<img src="https://f-droid.org/badge/get-it-on.png"
+      alt="Get it on F-Droid"
+      height="80">](https://f-droid.org/app/com.fastaccess.github)
  
 _(To download the app from here, please look at the [latest release](https://github.com/k0shk0sh/FastHub/releases/latest).)_
  
 # Features
 
 - **App**
-  - Two login types (Basic Auth) or via (Browser)
+  - Two login types (Basic Auth), (Access Token) or via (Browser)
   - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
@@ -50,7 +53,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
-  - PRs reviews
+  - PRs reviews(reply, react with emoji, delete & edit comment)
   - PRs statuses
 - **Commits and Gists**
   - Search Code/Gists
@@ -85,7 +88,7 @@ _(To download the app from here, please look at the [latest release](https://git
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `Fragment` navigation
 - [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images
-- [**MarkDown**](https://github.com/zzhoujay/Markdown) for _Markdown_ editor highlighting
+- [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
@@ -96,9 +99,9 @@ _(To download the app from here, please look at the [latest release](https://git
 
 You love FastHub? You want new features or bug fixes?  
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
-Read the [**contribution guide**](CONTRIBUTE.md) for more detailed information.
+Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-- [Translation contributors list](https://github.com/k0shk0sh/FastHub/blob/master/language_contributors.md)
+- [Translation contributors list](.github/language_contributors.md)
 
 # License
 

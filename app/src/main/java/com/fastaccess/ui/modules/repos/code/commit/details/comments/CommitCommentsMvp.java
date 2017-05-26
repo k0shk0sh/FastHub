@@ -5,10 +5,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
+import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -22,11 +25,11 @@ import java.util.List;
 interface CommitCommentsMvp {
 
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
-            android.view.View.OnClickListener, OnToggleView {
+            android.view.View.OnClickListener, OnToggleView, ReactionsCallback {
 
-        void onNotifyAdapter(@Nullable List<Comment> items, int page);
+        void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
 
-        void onRemove(@NonNull Comment comment);
+        void onRemove(@NonNull TimelineModel comment);
 
         @NonNull OnLoadMore getLoadMore();
 
@@ -38,14 +41,17 @@ interface CommitCommentsMvp {
 
         void onTagUser(@Nullable User user);
 
+        void onReply(User user, String message);
+
+        void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
-            BaseMvp.PaginationListener<String>, BaseViewHolder.OnItemClickListener<Comment> {
+            BaseMvp.PaginationListener<String>, BaseViewHolder.OnItemClickListener<TimelineModel> {
 
         void onFragmentCreated(@Nullable Bundle bundle);
 
-        @NonNull ArrayList<Comment> getComments();
+        @NonNull ArrayList<TimelineModel> getComments();
 
         void onHandleDeletion(@Nullable Bundle bundle);
 
@@ -56,6 +62,10 @@ interface CommitCommentsMvp {
         @NonNull String login();
 
         String sha();
+
+        boolean isPreviouslyReacted(long commentId, int vId);
+
+        boolean isCallingApi(long id, int vId);
     }
 
 

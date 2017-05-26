@@ -13,6 +13,28 @@ ol.linenums {
   color: #727272;
 }
 
+ol {
+    margin-left: 0;
+    padding-left: 0.2em;
+    counter-reset: ol-item
+}
+
+ol li:nth-child(-n+9) {
+	padding-left: 8px;
+}
+
+ol li {
+    margin-left: 0;
+    padding-left: 0;
+    list-style-type: none;
+    counter-increment: ol-item
+}
+
+ol li:before {
+    content: counter(ol-item) " "
+}
+
+
 li.L0,
 li.L1,
 li.L2,
@@ -22,10 +44,7 @@ li.L5,
 li.L6,
 li.L7,
 li.L8,
-li.L9 {
-  padding-left: 0.5em;
-  list-style-type: decimal;
-}
+li.L9 {}
 
 @media screen {
 
