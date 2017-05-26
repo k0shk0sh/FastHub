@@ -35,7 +35,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @icepick.State boolean isSuccessResponse;
     @icepick.State boolean isFollowing;
     @icepick.State String login;
-    @icepick.State Bitmap header = null;
+    @icepick.State String headerUrl = null;
     @icepick.State ArrayList<User> userOrgs = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
@@ -90,8 +90,9 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (login != null) {
             loadOrgs();
             loadContributions();
-            Gist.getMyGists(login).forEach(gists -> {
-                for (Gist gist : gists) {
+            RxHelper.getObserver(RestProvider.getGistService().getUserGists(login, 100, 1)).subscribe(gists -> {
+                for (Gist gist : gists.getItems()) {
+                    Log.d(getClass().getSimpleName(), gist.getDescription() + ":::" + login);
                     if (gist.getDescription().equalsIgnoreCase("header.fst")) {
                         for(FilesListModel file : gist.getFilesAsList()) {
                             makeRestCall(RestProvider.getRepoService(true).getFileAsStream(file.getRawUrl()), s -> {
@@ -108,7 +109,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
                                     @Override
                                     public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                        header = bitmap;
+                                        headerUrl = s;
                                         sendToView(v -> v.onHeaderLoaded(bitmap));
                                         Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
                                     }
@@ -141,7 +142,29 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
             return;
         }
         onSendUserToView(userModel);
-        sendToView(view -> view.onHeaderLoaded(header));
+        ImageLoader.getInstance().loadImage(headerUrl, new ImageLoadingListener() {
+            @Override
+            public void onLoadingStarted(String s, View view) {
+                Log.d(getClass().getSimpleName(), "LOADING STARTED :::");
+            }
+
+            @Override
+            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                Log.e(getClass().getSimpleName(), "LOADING FAILED :::");
+            }
+
+            @Override
+            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                headerUrl = s;
+                sendToView(v -> v.onHeaderLoaded(bitmap));
+                Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
+            }
+
+            @Override
+            public void onLoadingCancelled(String s, View view) {
+                Log.e(getClass().getSimpleName(), "LOADING CANCELLED :::");
+            }
+        });
     }
 
     @Override public void onSendUserToView(@Nullable User userModel) {
@@ -160,8 +183,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         return login;
     }
 
-    @Nullable @Override public Bitmap getHeader() {
-        return header;
+    @Nullable @Override public String getHeaderUrl() {
+        return headerUrl;
     }
 
     private void loadContributions() {

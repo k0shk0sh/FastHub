@@ -16,6 +16,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -68,6 +69,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
+import static android.view.Gravity.TOP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -153,7 +155,30 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
         onInitContributions(getPresenter().getContributions());
-        onHeaderLoaded(getPresenter().getHeader());
+        if (getPresenter().getHeaderUrl()!=null) {
+            ImageLoader.getInstance().loadImage(getPresenter().getHeaderUrl(), new ImageLoadingListener() {
+                @Override
+                public void onLoadingStarted(String s, View view) {
+                    Log.d(getClass().getSimpleName(), "LOADING STARTED :::");
+                }
+
+                @Override
+                public void onLoadingFailed(String s, View view, FailReason failReason) {
+                    Log.e(getClass().getSimpleName(), "LOADING FAILED :::");
+                }
+
+                @Override
+                public void onLoadingComplete(String s, View view, Bitmap bitmap) {
+                    onHeaderLoaded(bitmap);
+                    Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
+                }
+
+                @Override
+                public void onLoadingCancelled(String s, View view) {
+                    Log.e(getClass().getSimpleName(), "LOADING CANCELLED :::");
+                }
+            });
+        }
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -329,14 +354,16 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 userInformation.setBackground(getResources().getDrawable(R.drawable.scrim));
             }
             chooseBanner.setVisibility(GONE);
-            chooseBanner_pencil.setVisibility(VISIBLE);
-            chooseBanner_pencil.bringToFront();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white, getActivity().getTheme()));
-            } else {
-                chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white));
+            if (userModel.getLogin().equals(Login.getUser().getLogin())) {
+                chooseBanner_pencil.setVisibility(VISIBLE);
+                chooseBanner_pencil.bringToFront();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white, getActivity().getTheme()));
+                    chooseBanner_pencil.setForegroundGravity(TOP);
+                } else {
+                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white));
+                }
             }
-            chooseBanner_pencil.animate().y(0).setDuration(0).start();
         }
     }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.fastaccess">
+<manifest package="com.fastaccess"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -14,7 +14,7 @@
         android:resource="@drawable/ic_notification"/>
 
     <application
-        android:name=".App"
+        android:name="com.fastaccess.App"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -48,8 +48,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="login"
-                    android:scheme="fasthub"/>
+                    android:host="fast-for-github.firebaseapp.com"
+                    android:scheme="https"/>
             </intent-filter>
         </activity>
         <activity
@@ -165,17 +165,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-
-        <activity android:name=".ui.modules.settings.SettingsActivity"/>
-        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity"/>
-        <activity
-            android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
-            android:label="@string/releases">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.repos.RepoPagerActivity"/>
-        </activity>
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -214,22 +203,24 @@
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
-            </intent-filter>
-        </service>
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
-        <service
-            android:name=".provider.fcm.PushNotificationService"
-            android:exported="false">
+        <service android:name=".provider.fcm.PushNotificationService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <activity android:name=".ui.modules.settings.SettingsActivity">
+        </activity>
+        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity">
+        </activity>
+        <activity android:name=".ui.modules.profile.banner.BannerInfoActivity">
+        </activity>
     </application>
 
 </manifest>
