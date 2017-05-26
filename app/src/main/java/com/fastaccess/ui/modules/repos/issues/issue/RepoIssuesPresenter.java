@@ -142,7 +142,5 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, Issue item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Issue item) {}
 }

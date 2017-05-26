@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
@@ -300,23 +301,28 @@ public class StackBuilderSchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
-        if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
-            String owner;
-            String repo;
+        String owner = segments.get(0);
+        String repo = segments.get(1);
+        if (MimeTypeMap.getFileExtensionFromUrl(uri.toString()) == null) {
             Uri urlBuilder = getBlobBuilder(uri);
-            owner = segments.get(0);
-            repo = segments.get(1);
-            if (owner != null && repo != null) return TaskStackBuilder.create(context)
+            return TaskStackBuilder.create(context)
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
-                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, urlBuilder.toString()))
-                    .addNextIntent(CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString()));
+                    .addNextIntent(RepoFilesActivity.getIntent(context, urlBuilder.toString()));
+        }
+        if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
+            Uri urlBuilder = getBlobBuilder(uri);
+            if (owner != null && repo != null)
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainActivity.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                        .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
+                        .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, urlBuilder.toString()))
+                        .addNextIntent(CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString()));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
-                String owner = uri.getPathSegments().get(0);
-                String repo = uri.getPathSegments().get(1);
                 return TaskStackBuilder.create(context)
                         .addParentStack(MainActivity.class)
                         .addNextIntentWithParentStack(new Intent(context, MainActivity.class))

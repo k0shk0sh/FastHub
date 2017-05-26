@@ -1,30 +1,32 @@
 package com.fastaccess.ui.modules.profile.overview;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 
+import com.fastaccess.data.dao.CreateGistModel;
 import com.fastaccess.data.dao.FilesListModel;
+import com.fastaccess.data.dao.ImgurReponseModel;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.ImgurProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import rx.Observable;
 
 /**
@@ -35,7 +37,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @icepick.State boolean isSuccessResponse;
     @icepick.State boolean isFollowing;
     @icepick.State String login;
-    @icepick.State String headerUrl = null;
     @icepick.State ArrayList<User> userOrgs = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
@@ -90,40 +91,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (login != null) {
             loadOrgs();
             loadContributions();
-            RxHelper.getObserver(RestProvider.getGistService().getUserGists(login, 100, 1)).subscribe(gists -> {
-                for (Gist gist : gists.getItems()) {
-                    Log.d(getClass().getSimpleName(), gist.getDescription() + ":::" + login);
-                    if (gist.getDescription().equalsIgnoreCase("header.fst")) {
-                        for(FilesListModel file : gist.getFilesAsList()) {
-                            makeRestCall(RestProvider.getRepoService(true).getFileAsStream(file.getRawUrl()), s -> {
-                                ImageLoader.getInstance().loadImage(s, new ImageLoadingListener() {
-                                    @Override
-                                    public void onLoadingStarted(String s, View view) {
-                                        Log.d(getClass().getSimpleName(), "LOADING STARTED :::");
-                                    }
-
-                                    @Override
-                                    public void onLoadingFailed(String s, View view, FailReason failReason) {
-                                        Log.e(getClass().getSimpleName(), "LOADING FAILED :::");
-                                    }
-
-                                    @Override
-                                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                        headerUrl = s;
-                                        sendToView(v -> v.onHeaderLoaded(bitmap));
-                                        Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
-                                    }
-
-                                    @Override
-                                    public void onLoadingCancelled(String s, View view) {
-                                        Log.e(getClass().getSimpleName(), "LOADING CANCELLED :::");
-                                    }
-                                });
-                            });
-                        }
-                    }
-                }
-            });
             makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {
@@ -142,29 +109,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
             return;
         }
         onSendUserToView(userModel);
-        ImageLoader.getInstance().loadImage(headerUrl, new ImageLoadingListener() {
-            @Override
-            public void onLoadingStarted(String s, View view) {
-                Log.d(getClass().getSimpleName(), "LOADING STARTED :::");
-            }
-
-            @Override
-            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                Log.e(getClass().getSimpleName(), "LOADING FAILED :::");
-            }
-
-            @Override
-            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                headerUrl = s;
-                sendToView(v -> v.onHeaderLoaded(bitmap));
-                Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
-            }
-
-            @Override
-            public void onLoadingCancelled(String s, View view) {
-                Log.e(getClass().getSimpleName(), "LOADING CANCELLED :::");
-            }
-        });
     }
 
     @Override public void onSendUserToView(@Nullable User userModel) {
@@ -183,8 +127,36 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         return login;
     }
 
-    @Nullable @Override public String getHeaderUrl() {
-        return headerUrl;
+    @Override public void onPostImage(@NonNull String path) {
+        RequestBody image = RequestBody.create(MediaType.parse("image/*"), new File(path));
+        ImgurProvider.getImgurService().postImage("", image);
+        makeRestCall(RxHelper.getObserver(ImgurProvider.getImgurService().postImage("", image))
+                        .filter(imgurReponseModel -> imgurReponseModel != null && imgurReponseModel.getData() != null)
+                        .flatMap(response -> RxHelper.getObserver(Gist.getMyGists(Login.getUser().getLogin()))
+                                .flatMap(Observable::from)
+                                .filter(gist -> "header.fst".equalsIgnoreCase(gist.getDescription()))
+                                .flatMap(gist -> RxHelper.getObserver(RestProvider.getGistService().deleteGist(gist.getGistId())))
+                                .flatMap(booleanResponse -> {
+                                    CreateGistModel createGistModel = getCreateGistModel(response);
+                                    return RxHelper.getObserver(RestProvider.getGistService().createGist(createGistModel));
+                                }), (imgurReponseModel, gist) -> imgurReponseModel.getData())
+                , response -> sendToView(view -> {
+                    PrefGetter.setProfileBackgroundUrl(response != null ? response.getLink() : null);
+                    view.onImagePosted(response != null ? response.getLink() : null);
+                }));
+    }
+
+    @NonNull private CreateGistModel getCreateGistModel(ImgurReponseModel response) {
+        CreateGistModel createGistModel = new CreateGistModel();
+        createGistModel.setDescription(InputHelper.toString("header.fst"));
+        createGistModel.setPublicGist(true);
+        HashMap<String, FilesListModel> modelHashMap = new HashMap<>();
+        FilesListModel file = new FilesListModel();
+        file.setFilename("header.fst");
+        file.setContent(response.getData().getLink());
+        modelHashMap.put("header.fst", file);
+        createGistModel.setFiles(modelHashMap);
+        return createGistModel;
     }
 
     private void loadContributions() {

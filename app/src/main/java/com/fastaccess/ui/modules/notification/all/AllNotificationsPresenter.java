@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GroupedNotificationModel;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.Logger;
@@ -14,6 +15,7 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.tasks.notification.ReadNotificationService;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +51,12 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 }
             }
         } else {
+            Repo repo = model.getRepo();
+            if (repo == null) return;
             if (v.getId() == R.id.markAsRead) {
-                Repo repo = model.getRepo();
-                if (repo == null) return;
                 getView().onMarkAllByRepo(repo);
+            } else {
+                RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(repo.getUrl()));
             }
         }
     }

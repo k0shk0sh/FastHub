@@ -15,6 +15,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -33,7 +34,8 @@ public interface ReviewService {
     @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
     @NonNull
     Observable<Pageable<ReviewModel>> getReviews(@Path("owner") String owner, @Path("repo") String repo,
-                                                 @Path("number") long number);
+                                                 @Path("number") long number,
+                                                 @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/pulls/{number}/reviews/{id}/comments")
     @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")

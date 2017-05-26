@@ -38,9 +38,7 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, PullRequest item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, PullRequest item) {}
 
     @NonNull @Override public ArrayList<PullRequest> getPullRequests() {
         return pullRequests;

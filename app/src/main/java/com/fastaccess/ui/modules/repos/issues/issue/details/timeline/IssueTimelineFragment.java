@@ -17,6 +17,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
@@ -49,6 +50,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
     private IssuePullsTimelineAdapter adapter;
+    private OnLoadMore onLoadMore;
 
     public static IssueTimelineFragment newInstance(@NonNull Issue issueModel) {
         IssueTimelineFragment view = new IssueTimelineFragment();
@@ -57,16 +59,28 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi();
+        getPresenter().onCallApi(1, null);
     }
 
-    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items) {
+    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items, int page) {
         hideProgress();
-        if (items == null || items.isEmpty()) {
-            adapter.clear();
+        if (items == null) {
+            adapter.subList(1, adapter.getItemCount());
             return;
         }
-        adapter.insertItems(items);
+        if (page == 1) {
+            items.add(0, TimelineModel.constructHeader(getPresenter().issue));
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
+    }
+
+    @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
+        if (onLoadMore == null) {
+            onLoadMore = new OnLoadMore(getPresenter());
+        }
+        return onLoadMore;
     }
 
     @Override protected int fragmentLayout() {
@@ -85,6 +99,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
+        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getEvents().size() == 1 && !getPresenter().isApiCalled()) {
@@ -187,6 +203,10 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                                              @NonNull String repoId, long idOrNumber, boolean isHeader) {
         ReactionsDialogFragment.newInstance(login, repoId, type, idOrNumber, isHeader ? ReactionsProvider.HEADER : ReactionsProvider.COMMENT)
                 .show(getChildFragmentManager(), "ReactionsDialogFragment");
+    }
+
+    @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
+        adapter.addItem(timelineModel, 0);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -19,9 +19,7 @@ public class CreateLabelPresenter extends BasePresenter<CreateLabelMvp.View> imp
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, String item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, String item) {}
 
     @Override public void onSubmitLabel(@NonNull String name, @NonNull String color, @NonNull String repo, @NonNull String login) {
         LabelModel labelModel = new LabelModel();

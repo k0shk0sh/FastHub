@@ -82,9 +82,7 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
         dismiss();
     }
 
-    @Override public void onItemLongClick(int position, View v, O item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, O item) {}
 
     public void initArguments(@NonNull String title, @NonNull ArrayList<O> objects) {
         setArguments(Bundler.start()

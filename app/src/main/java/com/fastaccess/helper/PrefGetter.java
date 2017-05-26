@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
@@ -81,6 +82,7 @@ public class PrefGetter {
     private static final String APP_LANGUAGE = "app_language";
     private static final String SENT_VIA = "sent_via";
     private static final String SENT_VIA_BOX = "sent_via_enabled";
+    private static final String PROFILE_BACKGROUND_URL = "profile_background_url";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -189,6 +191,12 @@ public class PrefGetter {
                     return 20 * 60;
                 case "30":
                     return 30 * 60;
+                case "60":
+                    return 60 * 60; // 1 hour
+                case "120":
+                    return (60 * 2) * 60; // 2 hours
+                case "180":
+                    return (60 * 3) * 60; // 3 hours
             }
         }
         return 0;
@@ -280,6 +288,18 @@ public class PrefGetter {
     @NonNull static String getAppLanguage() {
         String appLanguage = PrefHelper.getString(APP_LANGUAGE);
         return appLanguage == null ? "en" : appLanguage;
+    }
+
+    public static void setProfileBackgroundUrl(@Nullable String url) {
+        if (url == null) {
+            PrefHelper.clearKey(PROFILE_BACKGROUND_URL);
+        } else {
+            PrefHelper.set(PROFILE_BACKGROUND_URL, url);
+        }
+    }
+
+    @Nullable public static String getProfileBackgroundUrl() {
+        return PrefHelper.getString(PROFILE_BACKGROUND_URL);
     }
 
     public static void setWhatsNewVersion() {

@@ -199,6 +199,9 @@
     <string name="ten_minutes">10 minutes</string>
     <string name="five_minutes">5 minutes</string>
     <string name="one_minute">1 minute</string>
+    <string name="one_hour">1 hour</string>
+    <string name="two_hour">2 hours</string>
+    <string name="three_hour">3 hours</string>
     <string name="created_repo">Created</string>
     <string name="committed">Committed</string>
     <string name="downloaded">Downloaded</string>
@@ -452,4 +455,5 @@
         direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
     </string>
     <string name="edit_banner">CHOOSE BANNER</string>
+    <string name="image_error">Error loading image, please try again.</string>
 </resources>

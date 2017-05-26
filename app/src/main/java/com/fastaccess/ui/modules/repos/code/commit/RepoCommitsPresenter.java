@@ -161,9 +161,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         CommitPagerActivity.createIntentForOffline(v.getContext(), item);
     }
 
-    @Override public void onItemLongClick(int position, View v, Commit item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Commit item) {}
 
     private void getCommitCount(@NonNull String branch) {
         manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()

@@ -30,6 +30,8 @@ interface ProfileOverviewMvp {
         void onHeaderLoaded(@Nullable Bitmap bitmap);
 
         void onUserNotFound();
+
+        void onImagePosted(@Nullable String link);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -54,6 +56,6 @@ interface ProfileOverviewMvp {
 
         @NonNull String getLogin();
 
-        @Nullable String getHeaderUrl();
+        void onPostImage(@NonNull String path);
     }
 }

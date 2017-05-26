@@ -37,9 +37,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFile item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {}
 
     @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();

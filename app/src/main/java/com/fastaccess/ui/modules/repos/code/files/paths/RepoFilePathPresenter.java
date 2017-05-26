@@ -38,9 +38,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
         if (!item.getPath().equalsIgnoreCase(path)) if (getView() != null) getView().onItemClicked(item, position);
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFile item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {}
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {

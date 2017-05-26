@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
@@ -17,6 +18,7 @@ import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
@@ -270,6 +272,10 @@ public class SchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
+        if (MimeTypeMap.getFileExtensionFromUrl(uri.toString()) == null) {
+            Uri urlBuilder = getBlobBuilder(uri);
+            return RepoFilesActivity.getIntent(context, urlBuilder.toString());
+        }
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
             Uri urlBuilder = getBlobBuilder(uri);
             return CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString());

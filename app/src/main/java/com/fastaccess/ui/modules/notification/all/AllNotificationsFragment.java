@@ -65,7 +65,7 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
             return;
         }
         adapter.insertItems(items);
-        if (isSafe()) getActivity().supportInvalidateOptionsMenu();
+        if (isSafe()) getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onClick(@NonNull String url) {

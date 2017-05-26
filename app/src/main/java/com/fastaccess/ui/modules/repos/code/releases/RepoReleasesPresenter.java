@@ -109,7 +109,5 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, Release item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Release item) {}
 }

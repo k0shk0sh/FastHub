@@ -97,7 +97,5 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         CommitPagerActivity.createIntentForOffline(v.getContext(), item);
     }
 
-    @Override public void onItemLongClick(int position, View v, Commit item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Commit item) {}
 }

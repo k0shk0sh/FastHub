@@ -122,7 +122,5 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, PullRequest item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, PullRequest item) {}
 }
