@@ -14,12 +14,15 @@ import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
+import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -83,6 +86,8 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     FontTextView organizationsCaption;
     @BindView(R.id.headerImage)
     RelativeLayout headerImage;
+    @BindView(R.id.headerImageView)
+    ImageView headerImageView;
     @BindView(R.id.userInformation)
     LinearLayout userInformation;
     @BindView(R.id.chooseBanner)
@@ -226,7 +231,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (userModel.getLogin().equals(Login.getUser().getLogin()))
             if (headerImage.getVisibility()==GONE) {
                 if(PrefHelper.getBoolean("banner_learned")) return;
-                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
+                headerImageView.setImageDrawable(getResources().getDrawable(R.drawable.header));
                 headerImage.setVisibility(VISIBLE);
                 headerImage.setOnClickListener(view -> {
                     PrefHelper.set("banner_learned", true);
@@ -312,13 +317,23 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @Override
     public void onHeaderLoaded(@Nullable Bitmap bitmap) {
         if(bitmap != null) {
-            headerImage.setBackground(new BitmapDrawable(getResources(), bitmap));
+            headerImageView.setImageBitmap(bitmap);
             headerImage.setVisibility(VISIBLE);
             DisplayMetrics metrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
             headerImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Math.round(metrics.widthPixels/3.33333f)));
             ((ViewGroup)userInformation.getParent()).removeView(userInformation);
             headerImage.addView(userInformation);
+            /*if (userInformation.getLayoutParams() == null) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams
+                        (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.gravity = Gravity.BOTTOM;
+                userInformation.setLayoutParams(params);
+            } else {
+                LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) userInformation.getLayoutParams();
+                params.gravity = Gravity.BOTTOM;
+                userInformation.requestLayout();
+            }*/
             userInformation.setPaddingRelative(getResources().getDimensionPixelSize(R.dimen.spacing_xs_large), 0, 0,
                     getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -329,14 +344,15 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 userInformation.setBackground(getResources().getDrawable(R.drawable.scrim));
             }
             chooseBanner.setVisibility(GONE);
-            chooseBanner_pencil.setVisibility(VISIBLE);
-            chooseBanner_pencil.bringToFront();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white, getActivity().getTheme()));
-            } else {
-                chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white));
+            if (userModel.getLogin().equals(Login.getUser().getLogin())) {
+                chooseBanner_pencil.setVisibility(VISIBLE);
+                chooseBanner_pencil.bringToFront();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white, getActivity().getTheme()));
+                } else {
+                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white));
+                }
             }
-            chooseBanner_pencil.animate().y(0).setDuration(0).start();
         }
     }
 
