@@ -303,8 +303,8 @@ public class StackBuilderSchemeParser {
         String segmentTwo = segments.get(2);
         String owner = segments.get(0);
         String repo = segments.get(1);
-        if (MimeTypeMap.getFileExtensionFromUrl(uri.toString()) == null) {
-            Uri urlBuilder = getBlobBuilder(uri);
+        if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(uri.toString()))) {
+            Uri urlBuilder = LinkParserHelper.getBlobBuilder(uri);
             return TaskStackBuilder.create(context)
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))

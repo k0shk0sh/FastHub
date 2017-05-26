@@ -272,8 +272,8 @@ public class SchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
-        if (MimeTypeMap.getFileExtensionFromUrl(uri.toString()) == null) {
-            Uri urlBuilder = getBlobBuilder(uri);
+        if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(uri.toString()))) {
+            Uri urlBuilder = LinkParserHelper.getBlobBuilder(uri);
             return RepoFilesActivity.getIntent(context, urlBuilder.toString());
         }
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
