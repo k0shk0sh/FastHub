@@ -125,6 +125,10 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
             if (reactionsModel == null) reactionsModel = new ReactionsModel();
             boolean isReacted = reactionsCallback == null || reactionsCallback.isPreviouslyReacted(number, v.getId());
             boolean isCallingApi = reactionsCallback != null && reactionsCallback.isCallingApi(number, v.getId());
+            if (!isCallingApi) {
+                reactionsModel.setCallingApi(true);
+            }
+            if (reactionsModel.isCallingApi()) return;
             switch (v.getId()) {
                 case R.id.heart:
                     reactionsModel.setHeart(!isReacted ? reactionsModel.getHeart() + 1 : reactionsModel.getHeart() - 1);

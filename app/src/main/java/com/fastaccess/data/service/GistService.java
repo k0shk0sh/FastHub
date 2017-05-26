@@ -18,6 +18,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -26,9 +27,12 @@ import rx.Observable;
 
 public interface GistService {
 
+    @NonNull @GET @Headers("Accept: application/vnd.github.VERSION.raw")
+    Observable<String> getGistFile(@Url String url);
+
     @POST("gists") Observable<Gist> createGist(@Body CreateGistModel gistBody);
 
-    @POST("gists/{id}") Observable<Gist> editGist(@Body CreateGistModel gistBody);
+    @POST("gists/{id}") Observable<Gist> editGist(@Body CreateGistModel gistBody, @NonNull @Path("id") String id);
 
     @DELETE("gists/{id}") Observable<Response<Boolean>> deleteGist(@Path("id") String id);
 

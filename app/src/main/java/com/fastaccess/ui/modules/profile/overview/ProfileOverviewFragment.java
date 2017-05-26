@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.profile.overview;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,7 +12,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
@@ -33,9 +33,11 @@ import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
+import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -53,7 +55,6 @@ import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 import icepick.State;
 
-import static android.app.Activity.RESULT_OK;
 import static android.view.Gravity.TOP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
@@ -115,11 +116,9 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @OnClick({R.id.chooseBanner, R.id.banner_edit}) public void chooseBanner() {
-        if (ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
+        if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
             showFileChooser();
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_REQUEST_CODE);
+        }
     }
 
     @Override public void onAttach(Context context) {
@@ -144,9 +143,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         onInitOrgs(getPresenter().getOrgs());
         onInitContributions(getPresenter().getContributions());
         if (savedInstanceState == null) {
-            onImagePosted(PrefGetter.getProfileBackgroundUrl());
-        }
-        if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
             if (userModel != null) {
@@ -159,8 +155,11 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (isMeOrOrganization()) {
             followBtn.setVisibility(GONE);
         }
-//        if (getPresenter().getLogin().equals(Login.getUser().getLogin()) && PrefHelper.getBoolean("banner_learned"))
-//            chooseBanner.setVisibility(VISIBLE);
+        if (getPresenter().getLogin().equals(Login.getUser().getLogin()) && PrefHelper.getBoolean("banner_learned"))
+            chooseBanner.setVisibility(VISIBLE);
+        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin())) {
+            onImagePosted(PrefGetter.getProfileBackgroundUrl());
+        }
     }
 
     @NonNull @Override public ProfileOverviewPresenter providePresenter() {
@@ -215,17 +214,17 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 .append(getString(R.string.following))
                 .append("\n")
                 .bold(String.valueOf(userModel.getFollowing())));
-//        if (userModel.getLogin().equals(Login.getUser().getLogin()))
-//            if (headerImage.getVisibility() == GONE) {
-//                if (PrefHelper.getBoolean("banner_learned")) return;
-//                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
-//                headerImage.setVisibility(VISIBLE);
-//                headerImage.setOnClickListener(view -> {
-//                    PrefHelper.set("banner_learned", true);
-//                    Intent intent = new Intent(getContext(), BannerInfoActivity.class);
-//                    startActivity(intent);
-//                });
-//            }
+        if (userModel.getLogin().equals(Login.getUser().getLogin()))
+            if (headerImage.getVisibility() == GONE) {
+                if (PrefHelper.getBoolean("banner_learned")) return;
+                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
+                headerImage.setVisibility(VISIBLE);
+                headerImage.setOnClickListener(view -> {
+                    PrefHelper.set("banner_learned", true);
+                    Intent intent = new Intent(getContext(), BannerInfoActivity.class);
+                    startActivityForResult(intent, BundleConstant.REVIEW_REQUEST_CODE);
+                });
+            }
 
     }
 
@@ -321,7 +320,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 userInformation.setBackground(getResources().getDrawable(R.drawable.scrim));
             }
             chooseBanner.setVisibility(GONE);
-            if (userModel.getLogin().equals(Login.getUser().getLogin())) {
+            if (getPresenter().getLogin().equals(Login.getUser().getLogin())) {
                 chooseBanner_pencil.setVisibility(VISIBLE);
                 chooseBanner_pencil.bringToFront();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -335,14 +334,18 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BundleConstant.REQUEST_CODE) {
-            if (resultCode == RESULT_OK && data != null) {
-                String path = FileHelper.getPath(getContext(), data.getData());
-                if (path == null) {
-                    showMessage(R.string.error, R.string.image_error);
-                    return;
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data != null) {
+                    String path = FileHelper.getPath(getContext(), data.getData());
+                    if (path == null) {
+                        showMessage(R.string.error, R.string.image_error);
+                        return;
+                    }
+                    getPresenter().onPostImage(path);
                 }
-                getPresenter().onPostImage(path);
+            } else {
+                onImagePosted(PrefGetter.getProfileBackgroundUrl());
             }
         }
     }

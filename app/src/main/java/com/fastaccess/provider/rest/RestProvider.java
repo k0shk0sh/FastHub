@@ -147,7 +147,11 @@ public class RestProvider {
     }
 
     @NonNull public static GistService getGistService() {
-        return provideRetrofit().create(GistService.class);
+        return getGistService(false);
+    }
+
+    @NonNull public static GistService getGistService(boolean isRaw) {
+        return provideRetrofit(isRaw).create(GistService.class);
     }
 
     @NonNull public static RepoService getRepoService() {

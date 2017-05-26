@@ -65,6 +65,7 @@
                         style="@style/Base.Widget.AppCompat.ButtonBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_normal"
                         android:background="?card_background"
                         android:text="@string/edit_banner"
                         android:visibility="gone"
@@ -137,9 +138,9 @@
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="@dimen/spacing_xs_large"
                             android:layout_marginStart="@dimen/spacing_xs_large"
+                            android:layout_toStartOf="@+id/followBtn"
                             android:background="?selectableItemBackgroundBorderless"
                             android:gravity="center"
-                            android:layout_toStartOf="@+id/followBtn"
                             tools:text="Following\n40"/>
 
                         <com.fastaccess.ui.widgets.FontButton
@@ -161,11 +162,11 @@
                             style="@style/Base.TextAppearance.AppCompat.Medium"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_toEndOf="@+id/followBtn"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
                             android:layout_marginEnd="@dimen/spacing_xs_large"
                             android:layout_marginStart="@dimen/spacing_xs_large"
+                            android:layout_toEndOf="@+id/followBtn"
                             android:background="?selectableItemBackgroundBorderless"
                             android:gravity="center"
                             tools:text="Followers\n140"/>

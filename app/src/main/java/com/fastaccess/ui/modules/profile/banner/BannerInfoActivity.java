@@ -86,6 +86,7 @@ public class BannerInfoActivity extends BaseActivity<BannerInfoMvp.View, BannerI
 
     @Override public void onFinishedUploading() {
         showMessage(R.string.success, R.string.successfully_submitted);
+        setResult(RESULT_OK);
         finish();
     }
 
