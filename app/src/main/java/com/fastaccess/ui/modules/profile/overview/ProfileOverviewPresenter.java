@@ -89,7 +89,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (login != null) {
             loadOrgs();
             loadContributions();
-            loadUrlBackgroundImage();
+//            loadUrlBackgroundImage();
             makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {

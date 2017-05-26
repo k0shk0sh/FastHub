@@ -33,11 +33,9 @@ import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
-import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -155,11 +153,11 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (isMeOrOrganization()) {
             followBtn.setVisibility(GONE);
         }
-        if (getPresenter().getLogin().equals(Login.getUser().getLogin()) && PrefHelper.getBoolean("banner_learned"))
-            chooseBanner.setVisibility(VISIBLE);
-        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin())) {
-            onImagePosted(PrefGetter.getProfileBackgroundUrl());
-        }
+//        if (getPresenter().getLogin().equals(Login.getUser().getLogin()) && PrefHelper.getBoolean("banner_learned"))
+//            chooseBanner.setVisibility(VISIBLE);
+//        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin())) {
+//            onImagePosted(PrefGetter.getProfileBackgroundUrl());
+//        }
     }
 
     @NonNull @Override public ProfileOverviewPresenter providePresenter() {
@@ -214,17 +212,17 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 .append(getString(R.string.following))
                 .append("\n")
                 .bold(String.valueOf(userModel.getFollowing())));
-        if (userModel.getLogin().equals(Login.getUser().getLogin()))
-            if (headerImage.getVisibility() == GONE) {
-                if (PrefHelper.getBoolean("banner_learned")) return;
-                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
-                headerImage.setVisibility(VISIBLE);
-                headerImage.setOnClickListener(view -> {
-                    PrefHelper.set("banner_learned", true);
-                    Intent intent = new Intent(getContext(), BannerInfoActivity.class);
-                    startActivityForResult(intent, BundleConstant.REVIEW_REQUEST_CODE);
-                });
-            }
+//        if (userModel.getLogin().equals(Login.getUser().getLogin()))
+//            if (headerImage.getVisibility() == GONE) {
+//                if (PrefHelper.getBoolean("banner_learned")) return;
+//                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
+//                headerImage.setVisibility(VISIBLE);
+//                headerImage.setOnClickListener(view -> {
+//                    PrefHelper.set("banner_learned", true);
+//                    Intent intent = new Intent(getContext(), BannerInfoActivity.class);
+//                    startActivityForResult(intent, BundleConstant.REVIEW_REQUEST_CODE);
+//                });
+//            }
 
     }
 

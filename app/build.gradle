@@ -27,9 +27,9 @@ android {
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
-        targetSdkVersion 26
-        versionCode 210
-        versionName "2.1.0"
+        targetSdkVersion 25
+        versionCode 250
+        versionName "2.5.0"
         signingConfig signingConfigs.signing
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
@@ -53,8 +53,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-//    flavorDimensions "platform"
 
     sourceSets {
         main {
@@ -91,12 +89,6 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
-
-//    splits {
-//        density {
-//            enable true
-//        }
-//    }
 }
 
 repositories {
