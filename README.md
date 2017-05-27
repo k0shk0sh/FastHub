@@ -101,7 +101,14 @@ You love FastHub? You want new features or bug fixes?
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
 Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-- [Translation contributors list](.github/language_contributors.md)
+### [Language Contributors](.github/language_contributors.md)
+
+- Turkish [@kutsan](https://github.com/kutsan)
+- German [@failex234](https://github.com/failex234)
+- Chinese [@Devifish](https://github.com/Devifish)
+- Indonesian [@dikiaap](https://github.com/dikiaap)
+- Russian [@dedepete](https://github.com/dedepete)
+- Japanese [@Rintan](https://github.com/Rintan)
 
 # License
 
