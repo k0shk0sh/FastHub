@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.PopupMenu;
 
-import com.annimon.stream.IntStream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -235,15 +234,22 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         String login = getHeader().getLogin();
         String repoID = getHeader().getRepoId();
         int number = getHeader().getNumber();
-        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number, page),
-                RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
-                (issueEventPageable, commentPageable) -> {
-                    int lastEvents = issueEventPageable != null ? issueEventPageable.getLast() : 0;
-                    int lastComments = commentPageable != null ? commentPageable.getLast() : 0;
-                    lastPage = IntStream.of(lastComments, lastEvents).max().orElse(0);
-                    return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,
-                            issueEventPageable != null ? issueEventPageable.getItems() : null);
-                });
+        Observable<List<TimelineModel>> observable;
+        if (page > 1) {
+            observable = RestProvider.getIssueService().getIssueComments(login, repoID, number, page)
+                    .map(comments -> {
+                        lastPage = comments != null ? comments.getLast() : 0;
+                        return TimelineModel.construct(comments != null ? comments.getItems() : null);
+                    });
+        } else {
+            observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number),
+                    RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
+                    (issueEventPageable, commentPageable) -> {
+                        lastPage = commentPageable != null ? commentPageable.getLast() : 0;
+                        return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,
+                                issueEventPageable != null ? issueEventPageable.getItems() : null);
+                    });
+        }
         makeRestCall(observable, models -> sendToView(view -> view.onNotifyAdapter(models, page)));
     }
 }

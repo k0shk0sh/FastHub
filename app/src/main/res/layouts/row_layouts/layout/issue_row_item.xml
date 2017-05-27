@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="bottom|end"
                 android:layout_marginEnd="@dimen/spacing_normal"
+                android:visibility="gone"
                 tools:src="@drawable/ic_issue_closed_small"/>
         </FrameLayout>
 

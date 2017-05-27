@@ -83,5 +83,7 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, Issue item) {}
+    @Override public void onItemLongClick(int position, View v, Issue item) {
+        if (getView() != null) getView().onShowPopupDetails(item);
+    }
 }

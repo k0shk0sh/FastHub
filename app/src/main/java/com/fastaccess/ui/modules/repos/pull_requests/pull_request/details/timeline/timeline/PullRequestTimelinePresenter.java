@@ -8,13 +8,10 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.PopupMenu;
 
-import com.annimon.stream.IntStream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.GroupedReviewModel;
-import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.ReviewCommentModel;
-import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.IssueEvent;
@@ -317,27 +314,28 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable, int page) {
-        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number, page),
-                RestProvider.getIssueService().getIssueComments(login, repoId, number, page),
-                RestProvider.getPullRequestService().getPullStatus(login, repoId, sha),
-                RestProvider.getReviewService().getReviews(login, repoId, number, page),
-                RestProvider.getReviewService().getPrReviewComments(login, repoId, number),
-                (issueEventPageable, commentPageable, statuses, reviews, reviewComments) -> {
-                    if (statuses != null) {
-                        statuses.setMergable(isMergeable);
-                    }
-                    lastPage = getLastPage(issueEventPageable, commentPageable, reviews);
-                    return TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems(), statuses,
-                            reviews.getItems(), reviewComments.getItems());
-                });
+        Observable<List<TimelineModel>> observable;
+        if (page > 1) {
+            observable = RestProvider.getIssueService().getIssueComments(login, repoId, number, page)
+                    .map(comments -> {
+                        lastPage = comments != null ? comments.getLast() : 0;
+                        return TimelineModel.construct(comments != null ? comments.getItems() : null);
+                    });
+        } else {
+            observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
+                    RestProvider.getIssueService().getIssueComments(login, repoId, number, page),
+                    RestProvider.getPullRequestService().getPullStatus(login, repoId, sha),
+                    RestProvider.getReviewService().getReviews(login, repoId, number),
+                    RestProvider.getReviewService().getPrReviewComments(login, repoId, number),
+                    (issueEventPageable, commentPageable, statuses, reviews, reviewComments) -> {
+                        if (statuses != null) {
+                            statuses.setMergable(isMergeable);
+                        }
+                        lastPage = commentPageable != null ? commentPageable.getLast() : 0;
+                        return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,
+                                issueEventPageable.getItems(), statuses, reviews.getItems(), reviewComments.getItems());
+                    });
+        }
         makeRestCall(observable, models -> sendToView(view -> view.onNotifyAdapter(models, page)));
-    }
-
-    private int getLastPage(@Nullable Pageable<IssueEvent> issueEventPageable, @Nullable Pageable<Comment> commentPageable,
-                            @Nullable Pageable<ReviewModel> reviews) {
-        int lastEvents = issueEventPageable != null ? issueEventPageable.getLast() : 0;
-        int lastComments = commentPageable != null ? commentPageable.getLast() : 0;
-        int lastReviews = reviews != null ? reviews.getLast() : 0;
-        return IntStream.of(lastEvents, lastComments, lastReviews).max().orElse(0);
     }
 }

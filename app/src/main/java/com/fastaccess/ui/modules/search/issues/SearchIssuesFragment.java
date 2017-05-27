@@ -14,6 +14,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -142,6 +143,10 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         }
         onLoadMore.setParameter(searchQuery);
         return onLoadMore;
+    }
+
+    @Override public void onShowPopupDetails(@NonNull Issue item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
     }
 
     @Override public void onRefresh() {

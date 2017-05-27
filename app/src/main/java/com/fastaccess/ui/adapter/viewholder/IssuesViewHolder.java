@@ -28,7 +28,7 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
 
     @BindView(R.id.title) FontTextView title;
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
-    @Nullable @BindView(R.id.issue_state) AppCompatImageView issueState;
+    @BindView(R.id.issue_state) AppCompatImageView issueState;
     @BindView(R.id.details) FontTextView details;
     @BindView(R.id.commentsNo) FontTextView commentsNo;
     @BindString(R.string.by) String by;
@@ -108,12 +108,14 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
                 commentsNo.setVisibility(View.GONE);
             }
         }
+        if (showState) {
+            issueState.setVisibility(View.VISIBLE);
+            issueState.setImageResource(issueModel.getState() == IssueState.open ?
+                                        R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small);
+        } else {
+            issueState.setVisibility(View.GONE);
+        }
         if (withAvatar && avatarLayout != null) {
-            if (issueState != null && showState) {
-                issueState.setVisibility(View.VISIBLE);
-                issueState.setImageResource(issueModel.getState() == IssueState.open ?
-                                            R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small);
-            }
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
             avatarLayout.setVisibility(View.VISIBLE);
         }

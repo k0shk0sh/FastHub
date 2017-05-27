@@ -187,7 +187,6 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REVIEW_REQUEST_CODE);
     }
 
-
     @Override public void onRemove(@NonNull TimelineModel timelineModel) {
         hideProgress();
         adapter.removeItem(timelineModel);
