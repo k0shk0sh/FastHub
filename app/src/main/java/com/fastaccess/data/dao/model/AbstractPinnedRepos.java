@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.converters.RepoConverter;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     @Convert(RepoConverter.class) Repo pinnedRepo;
 
     public static Single<PinnedRepos> save(@NonNull PinnedRepos entity) {
-        return App.getInstance().getDataStore().insert(entity);
+        return RxHelper.getSingle(App.getInstance().getDataStore().insert(entity));
     }
 
     public static boolean pinUpin(@NonNull Repo repo) {

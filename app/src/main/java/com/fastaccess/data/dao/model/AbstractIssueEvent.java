@@ -62,12 +62,13 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     @Transient CharSequence labels;
 
     public Single save(IssueEvent entity) {
-        return App.getInstance().getDataStore()
-                .delete(IssueEvent.class)
-                .where(ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(i -> App.getInstance().getDataStore().update(entity));
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(IssueEvent.class)
+                        .where(ID.eq(entity.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(i -> App.getInstance().getDataStore().update(entity)));
     }
 
     public static Observable save(@NonNull List<IssueEvent> models, @NonNull String repoId,

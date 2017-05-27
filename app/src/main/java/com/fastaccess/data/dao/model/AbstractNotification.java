@@ -40,12 +40,13 @@ import rx.Single;
     @Nullable boolean isSubscribed;
 
     public Single<Notification> save(Notification notification) {
-        return App.getInstance().getDataStore()
-                .delete(Notification.class)
-                .where(Notification.ID.eq(notification.getId()))
-                .get()
-                .toSingle()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(notification));
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(Notification.class)
+                        .where(Notification.ID.eq(notification.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(integer -> App.getInstance().getDataStore().insert(notification)));
     }
 
     public static Completable markAsRead(long id) {

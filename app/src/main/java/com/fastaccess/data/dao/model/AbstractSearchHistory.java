@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fastaccess.App;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
@@ -21,13 +22,14 @@ import rx.Single;
 public abstract class AbstractSearchHistory implements Parcelable {
     @Column(unique = true) String text;
 
-    public Single save(SearchHistory entity) {
-        return App.getInstance().getDataStore()
-                .delete(SearchHistory.class)
-                .where(SearchHistory.TEXT.eq(entity.getText()))
-                .get()
-                .toSingle()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(entity));
+    public Single<SearchHistory> save(SearchHistory entity) {
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(SearchHistory.class)
+                        .where(SearchHistory.TEXT.eq(entity.getText()))
+                        .get()
+                        .toSingle()
+                        .flatMap(integer -> App.getInstance().getDataStore().insert(entity)));
     }
 
     public static Observable<List<SearchHistory>> getHistory() {

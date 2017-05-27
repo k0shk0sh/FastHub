@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.converters.PayloadConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.types.EventsType;
+import com.fastaccess.helper.RxHelper;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -39,19 +40,22 @@ import rx.Single;
 
     @NonNull public static Single save(@NonNull List<Event> events) {
         SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-        return dataSource.delete(Event.class)
-                .get()
-                .toSingle()
-                .flatMap(i -> dataSource.insert(events));
+        return RxHelper.getSingle(
+                dataSource.delete(Event.class)
+                        .get()
+                        .toSingle()
+                        .flatMap(i -> dataSource.insert(events))
+        );
     }
 
     @NonNull public static Observable<List<Event>> getEvents() {
-        return App.getInstance().getDataStore()
-                .select(Event.class)
-                .orderBy(Event.CREATED_AT.desc())
-                .get()
-                .toObservable()
-                .toList();
+        return RxHelper.getObserver(
+                App.getInstance().getDataStore()
+                        .select(Event.class)
+                        .orderBy(Event.CREATED_AT.desc())
+                        .get()
+                        .toObservable()
+                        .toList());
     }
 
     @Override public int describeContents() { return 0; }

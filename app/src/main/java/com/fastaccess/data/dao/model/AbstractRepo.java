@@ -119,12 +119,13 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     String starredUser;
     String reposOwner;
 
-    public Single save(@NonNull Repo entity) {
-        return App.getInstance().getDataStore().delete(Repo.class)
-                .where(ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(i -> App.getInstance().getDataStore().insert(entity));
+    public Single<Repo> save(@NonNull Repo entity) {
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore().delete(Repo.class)
+                        .where(ID.eq(entity.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(i -> App.getInstance().getDataStore().insert(entity)));
     }
 
     public static Observable<Repo> getRepo(@NonNull String name, @NonNull String login) {
@@ -143,7 +144,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
                 .firstOrNull();
     }
 
-    public static Observable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
+    public static Observable<Repo> saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
                 .where(STARRED_USER.eq(starredUser))
@@ -157,7 +158,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
                 }));
     }
 
-    public static Observable saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
+    public static Observable<Repo> saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
                 .where(REPOS_OWNER.eq(reposOwner))

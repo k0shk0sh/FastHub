@@ -1,19 +1,17 @@
-package com.fastaccess.data.dao.model;
-
-import android.graphics.drawable.Drawable;
+package com.fastaccess.data.dao;
 
 /**
  * Created by JediB on 5/12/2017.
  */
 
-public class Setting {
+public class SettingsModel {
 
 	private int image;
 	private String title;
 	private String summary;
 
-	public static Setting newInstance(int icon, String title, String summary) {
-		Setting setting = new Setting();
+	public static SettingsModel newInstance(int icon, String title, String summary) {
+		SettingsModel setting = new SettingsModel();
 		setting.image = icon;
 		setting.title = title;
 		setting.summary = summary;

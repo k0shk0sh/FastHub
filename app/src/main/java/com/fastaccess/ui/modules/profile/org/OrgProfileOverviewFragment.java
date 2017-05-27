@@ -15,6 +15,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -58,8 +59,12 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         if (userModel == null) return;
         this.userModel = userModel;
         username.setText(InputHelper.isEmpty(userModel.getName()) ? userModel.getLogin() : userModel.getName());
-        description.setVisibility(InputHelper.isEmpty(userModel.getDescription()) ? View.GONE : View.VISIBLE);
-        description.setText(userModel.getDescription());
+        if (userModel.getDescription() != null) {
+            description.setText(EmojiParser.parseToUnicode(userModel.getDescription()));
+            description.setVisibility(View.VISIBLE);
+        } else {
+            description.setVisibility(GONE);
+        }
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
         location.setText(InputHelper.toNA(userModel.getLocation()));
         email.setText(InputHelper.toNA(userModel.getEmail()));

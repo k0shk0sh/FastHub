@@ -60,9 +60,10 @@ public abstract class AbstractCommit implements Parcelable {
     @Nullable int commentCount;
 
     public Single save(Commit modelEntity) {
-        return App.getInstance()
-                .getDataStore()
-                .insert(modelEntity);
+        return RxHelper.getSingle(
+                App.getInstance()
+                        .getDataStore()
+                        .insert(modelEntity));
     }
 
     public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {

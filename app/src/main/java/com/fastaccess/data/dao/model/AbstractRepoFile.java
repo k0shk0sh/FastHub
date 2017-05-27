@@ -43,12 +43,11 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
     String login;
 
 
-    public Single save(RepoFile entity) {
-        return App.getInstance().getDataStore()
-                .insert(entity);
+    public Single<RepoFile> save(RepoFile entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().insert(entity));
     }
 
-    public static Observable save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
+    public static Observable<RepoFile> save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(RepoFile.class)
                 .where(REPO_ID.eq(repoId)

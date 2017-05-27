@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.PostReactionModel;
-import com.fastaccess.data.dao.model.ReactionsModel;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;

@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
+import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.provider.uil.UILProvider;
 import com.google.android.gms.auth.api.Auth;
@@ -60,6 +61,7 @@ public class App extends Application {
         EmojiCompat.init(config);
         instance = this;
         init();
+        EmojiManager.load();
     }
 
     @NonNull public static App getInstance() {

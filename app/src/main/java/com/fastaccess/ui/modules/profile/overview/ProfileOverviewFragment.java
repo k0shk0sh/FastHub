@@ -33,6 +33,7 @@ import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
@@ -171,9 +172,11 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         followBtn.setVisibility(!isMeOrOrganization() ? VISIBLE : GONE);
         username.setText(userModel.getLogin());
         fullname.setText(userModel.getName());
-        description.setText(userModel.getBio());
-        if (userModel.getBio() == null)
+        if (userModel.getBio() != null) {
+            description.setText(EmojiParser.parseToUnicode(userModel.getBio()));
+        } else {
             description.setVisibility(GONE);
+        }
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
         organization.setText(InputHelper.toNA(userModel.getCompany()));
         location.setText(InputHelper.toNA(userModel.getLocation()));

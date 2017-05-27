@@ -6,12 +6,14 @@ import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.HorizontalScrollView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
-import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -21,6 +23,7 @@ import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -32,22 +35,23 @@ import butterknife.BindView;
 
 public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
 
+
     @BindView(R.id.avatarView) AvatarLayout avatar;
-    @BindView(R.id.date) FontTextView date;
     @BindView(R.id.name) FontTextView name;
-    @BindView(R.id.comment) FontTextView comment;
+    @BindView(R.id.date) FontTextView date;
+    @BindView(R.id.toggle) ForegroundImageView toggle;
+    @BindView(R.id.commentMenu) ForegroundImageView commentMenu;
+    @BindView(R.id.toggleHolder) LinearLayout toggleHolder;
     @BindView(R.id.thumbsUp) FontTextView thumbsUp;
     @BindView(R.id.thumbsDown) FontTextView thumbsDown;
     @BindView(R.id.laugh) FontTextView laugh;
+    @BindView(R.id.hurray) FontTextView hurray;
     @BindView(R.id.sad) FontTextView sad;
-    @BindView(R.id.hurray) FontTextView hooray;
     @BindView(R.id.heart) FontTextView heart;
-    @BindView(R.id.toggle) View toggle;
-    @BindView(R.id.commentMenu) View commentMenu;
-    @BindView(R.id.commentOptions) View commentOptions;
-    @BindView(R.id.toggleHolder) View toggleHolder;
-    @BindView(R.id.emojiesList) View emojiesList;
-    @BindView(R.id.reactionsText) TextView reactionsText;
+    @BindView(R.id.emojiesList) HorizontalScrollView emojiesList;
+    @BindView(R.id.commentOptions) RelativeLayout commentOptions;
+    @BindView(R.id.comment) FontTextView comment;
+    @BindView(R.id.reactionsText) FontTextView reactionsText;
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
@@ -77,16 +81,17 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
         toggleHolder.setOnClickListener(this);
+        toggle.setOnClickListener(this);
         laugh.setOnClickListener(this);
         sad.setOnClickListener(this);
         thumbsDown.setOnClickListener(this);
         thumbsUp.setOnClickListener(this);
-        hooray.setOnClickListener(this);
+        hurray.setOnClickListener(this);
         laugh.setOnLongClickListener(this);
         sad.setOnLongClickListener(this);
         thumbsDown.setOnLongClickListener(this);
         thumbsUp.setOnLongClickListener(this);
-        hooray.setOnLongClickListener(this);
+        hurray.setOnLongClickListener(this);
         heart.setOnLongClickListener(this);
         heart.setOnClickListener(this);
     }
@@ -175,7 +180,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
                 .append(CommentsHelper.getThumbsDown()).append(" ")
                 .append(String.valueOf(reaction.getMinusOne()))
                 .append("   "));
-        hooray.setText(SpannableBuilder.builder()
+        hurray.setText(SpannableBuilder.builder()
                 .append(CommentsHelper.getHooray()).append(" ")
                 .append(String.valueOf(reaction.getHooray()))
                 .append("   "));

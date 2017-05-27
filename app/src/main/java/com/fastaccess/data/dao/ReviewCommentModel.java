@@ -3,7 +3,6 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 
 import java.util.Date;
