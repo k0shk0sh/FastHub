@@ -28,7 +28,9 @@ public class FilterIssuePresenter extends BasePresenter<FilterIssuesMvp.View> im
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, Issue item) {}
+    @Override public void onItemLongClick(int position, View v, Issue item) {
+        if (getView() != null) getView().onShowPopupDetails(item);
+    }
 
     @NonNull @Override public ArrayList<Issue> getIssues() {
         return issues;

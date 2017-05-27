@@ -20,6 +20,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -157,6 +158,10 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
     @Override public void onOpenPullRequest(@NonNull PullsIssuesParser parser) {
         Intent intent = PullRequestPagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber());
         startActivityForResult(intent, RepoPullRequestMvp.PULL_REQUEST_REQUEST_CODE);
+    }
+
+    @Override public void onShowPullRequestPopup(@NonNull PullRequest item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
     }
 
     @Override public void onRefresh() {

@@ -22,6 +22,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
@@ -143,7 +144,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -186,6 +187,10 @@ refresh.setRefreshing(true);
     @Override public void onRefresh(boolean isLastUpdated) {
         getPresenter().onSetSortBy(isLastUpdated);
         getPresenter().onCallApi(1, IssueState.open);
+    }
+
+    @Override public void onShowIssuePopup(@NonNull Issue item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
     }
 
     @Override public void onRefresh() {
