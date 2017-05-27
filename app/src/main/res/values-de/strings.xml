@@ -162,7 +162,7 @@
     <string name="committed">Committed</string>
     <string name="downloaded">Heruntergeladen</string>
     <string name="followed">Gefolgt</string>
-    <string name="commented_on_issue">Issue kommentieren</string>
+    <string name="commented_on_issue">Issuekommentar</string>
     <string name="member">Mitglied</string>
     <string name="pr_comment_review">Pull Request Kommentar</string>
     <string name="pushed">Gepushed an</string>
