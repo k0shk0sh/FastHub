@@ -6,6 +6,7 @@ import android.support.v7.preference.PreferenceManager;
 
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
+import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.provider.uil.UILProvider;
@@ -56,7 +57,6 @@ public class App extends Application {
 //        EmojiCompat.init(config);
         instance = this;
         init();
-        EmojiManager.load();
     }
 
     @NonNull public static App getInstance() {
@@ -71,6 +71,8 @@ public class App extends Application {
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);
+        EmojiManager.load();
+        ColorsProvider.load();
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Auth.CREDENTIALS_API)
                 .build();

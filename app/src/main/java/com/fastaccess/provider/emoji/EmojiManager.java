@@ -48,7 +48,7 @@ public class EmojiManager {
                 EMOJI_TRIE = new EmojiTrie(emojis);
                 stream.close();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
             return "";
         })).subscribeOn(Schedulers.io()).subscribe();
