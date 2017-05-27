@@ -6,6 +6,7 @@ import android.view.View;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.PinnedRepos;
+import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
@@ -22,6 +23,10 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
         super.onAttachView(view);
         if (pinnedRepos.isEmpty()) {
             onReload();
+            if (!AbstractPinnedRepos.isPinned("k0shk0sh/FastHub"))
+                manageSubscription(Repo.getRepo("FastHub", "k0shk0sh")
+                        .map(repo -> repo != null && AbstractPinnedRepos.pinUpin(repo))
+                        .subscribe());
         }
     }
 
@@ -39,10 +44,10 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
     }
 
     @Override public void onItemLongClick(int position, View v, PinnedRepos item) {
-        if (item!=null)
-            if (item.getRepoFullName().equalsIgnoreCase("k0shk0sh/FastHub"))
-                return;
         if (getView() != null) {
+            if (item.getRepoFullName().equalsIgnoreCase("k0shk0sh/FastHub")) {
+                return;
+            }
             getView().onDeletePinnedRepo(item.getId(), position);
         }
     }

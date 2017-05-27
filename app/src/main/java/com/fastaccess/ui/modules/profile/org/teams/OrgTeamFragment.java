@@ -81,7 +81,7 @@ public class OrgTeamFragment extends BaseFragment<OrgTeamMvp.View, OrgTeamPresen
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -100,11 +100,6 @@ refresh.setRefreshing(true);
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), getArguments().getString(BundleConstant.EXTRA));
@@ -118,5 +113,15 @@ refresh.setRefreshing(true);
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

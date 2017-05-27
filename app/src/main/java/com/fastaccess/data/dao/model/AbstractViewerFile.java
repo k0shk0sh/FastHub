@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
+import com.fastaccess.helper.RxHelper;
 
 import io.requery.Column;
 import io.requery.Entity;
@@ -25,13 +26,13 @@ import rx.Single;
     @Column(unique = true) String fullUrl;
     boolean repo;
 
-    public Single save(ViewerFile modelEntity) {
-        return App.getInstance().getDataStore()
+    public Single<ViewerFile> save(ViewerFile modelEntity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore()
                 .delete(ViewerFile.class)
                 .where(ViewerFile.FULL_URL.eq(modelEntity.getFullUrl()))
                 .get()
                 .toSingle()
-                .flatMap(i -> App.getInstance().getDataStore().insert(modelEntity));
+                .flatMap(i -> App.getInstance().getDataStore().insert(modelEntity)));
     }
 
     public static Observable<ViewerFile> get(@NonNull String url) {

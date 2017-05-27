@@ -23,10 +23,10 @@ import rx.Observable;
 class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements RepoFilesMvp.Presenter {
     private ArrayList<RepoFile> files = new ArrayList<>();
     private RepoPathsManager pathsModel = new RepoPathsManager();
-    private String repoId;
-    private String login;
-    private String path;
-    private String ref;
+    @icepick.State String repoId;
+    @icepick.State String login;
+    @icepick.State String path;
+    @icepick.State String ref;
 
     @Override public void onItemClick(int position, View v, RepoFile item) {
         if (getView() == null) return;
@@ -37,9 +37,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFile item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {}
 
     @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();

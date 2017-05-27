@@ -101,20 +101,23 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         if (userModel != null) {
             userModel.setToken(PrefGetter.getToken());
             userModel.save(userModel);
-            sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
+            if (getView() != null)
+                getView().onSuccessfullyLoggedIn(userModel);
+            else
+                sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
     @Override public void login(@NonNull String username, @NonNull String password,
-                                @Nullable String twoFactorCode, boolean isBasicAuth) {
+                                @Nullable String twoFactorCode, boolean isBasicAuth, boolean ignore) {
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
         if (getView() == null) return;
-        getView().onEmptyUserName(usernameIsEmpty);
-        getView().onEmptyPassword(passwordIsEmpty);
-        if (!usernameIsEmpty && !passwordIsEmpty) {
+        getView().onEmptyUserName(!ignore && usernameIsEmpty);
+        getView().onEmptyPassword(!ignore && passwordIsEmpty);
+        if ((!usernameIsEmpty && !passwordIsEmpty) || ignore) {
             String authToken = Credentials.basic(username, password);
             if (isBasicAuth) {
                 AuthModel authModel = new AuthModel();

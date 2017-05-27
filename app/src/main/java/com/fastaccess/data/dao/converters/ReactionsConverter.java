@@ -1,6 +1,6 @@
 package com.fastaccess.data.dao.converters;
 
-import com.fastaccess.data.dao.model.ReactionsModel;
+import com.fastaccess.data.dao.ReactionsModel;
 
 /**
  * Created by Kosh on 06 May 2017, 4:53 PM

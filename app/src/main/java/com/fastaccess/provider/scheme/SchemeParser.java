@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
@@ -17,6 +18,8 @@ import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
+import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
@@ -83,12 +86,11 @@ public class SchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-        if (!data.getPathSegments().isEmpty()) {
+        if (data.getPathSegments() != null && !data.getPathSegments().isEmpty()) {
             if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
-        } else {
-            return null;
+            return getIntentForURI(context, data, showRepoBtn);
         }
-        return getIntentForURI(context, data, showRepoBtn);
+        return null;
     }
 
     @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
@@ -109,12 +111,13 @@ public class SchemeParser {
                 Intent createIssueIntent = getCreateIssueIntent(context, data);
                 Intent pullRequestIntent = getPullRequestIntent(context, data, showRepoBtn);
                 Intent issueIntent = getIssueIntent(context, data, showRepoBtn);
+                Intent releasesIntent = getReleases(context, data);
                 Intent repoIntent = getRepo(context, data);
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
                 Optional<Intent> intentOptional = returnNonNull(userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
-                        createIssueIntent, issueIntent, repoIntent, blob);
+                        createIssueIntent, issueIntent, releasesIntent, repoIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
@@ -269,6 +272,10 @@ public class SchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
+        if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(uri.toString()))) {
+            Uri urlBuilder = LinkParserHelper.getBlobBuilder(uri);
+            return RepoFilesActivity.getIntent(context, urlBuilder.toString());
+        }
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
             Uri urlBuilder = getBlobBuilder(uri);
             return CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString());
@@ -301,6 +308,19 @@ public class SchemeParser {
         return null;
     }
 
+    @Nullable private static Intent getReleases(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments != null && segments.size() > 2) {
+            if (uri.getPathSegments().get(2).equals("releases")) {
+                String owner = segments.get(0);
+                String repo = segments.get(1);
+                return ReleasesListActivity.getIntent(context, owner, repo);
+            }
+            return null;
+        }
+        return null;
+    }
+
     /**
      * https://github.com/owner/repo/issues/new
      */
@@ -311,7 +331,8 @@ public class SchemeParser {
         if ("issues".equals(segments.get(2))) {
             String owner = segments.get(0);
             String repo = segments.get(1);
-            return CreateIssueActivity.getIntent(context, owner, repo);
+            boolean isFeedback = "k0shk0sh/FastHub".equalsIgnoreCase(owner + "/" + repo);
+            return CreateIssueActivity.getIntent(context, owner, repo, isFeedback);
         }
         return null;
     }

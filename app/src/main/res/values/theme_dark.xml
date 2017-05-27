@@ -11,6 +11,7 @@
 
     <style name="ThemeDark.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="card_background">#2D3035</item>
+        <item name="comment_box_style">@style/CommentBoxDark</item>
         <item name="icon_color">#eee</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundDark</item>
         <item name="patch_addition">@color/dark_patch_addition_color</item>
@@ -129,6 +130,11 @@
 
     <style name="TimeLineBackgroundDark">
         <item name="android:background">@drawable/ic_timeline_arrow_left</item>
+        <item name="android:backgroundTint">#2D3035</item>
+    </style>
+
+    <style name="CommentBoxDark">
+        <item name="android:background">@drawable/ic_edittext</item>
         <item name="android:backgroundTint">#2D3035</item>
     </style>
 

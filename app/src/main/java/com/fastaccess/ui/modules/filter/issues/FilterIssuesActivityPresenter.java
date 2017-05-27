@@ -21,9 +21,9 @@ import rx.Observable;
 
 @Getter public class FilterIssuesActivityPresenter extends BasePresenter<FilterIssuesActivityMvp.View> implements FilterIssuesActivityMvp.Presenter {
 
-    @NonNull private ArrayList<LabelModel> labels = new ArrayList<>();
-    @NonNull private ArrayList<MilestoneModel> milestones = new ArrayList<>();
-    @NonNull private ArrayList<User> assignees = new ArrayList<>();
+    @icepick.State @NonNull ArrayList<LabelModel> labels = new ArrayList<>();
+    @icepick.State @NonNull ArrayList<MilestoneModel> milestones = new ArrayList<>();
+    @icepick.State @NonNull ArrayList<User> assignees = new ArrayList<>();
 
     @Override public void onStart(@NonNull String login, @NonNull String repoId) {
         Observable<Pageable<MilestoneModel>> observable = RestProvider.getRepoService().getLabels(login, repoId)

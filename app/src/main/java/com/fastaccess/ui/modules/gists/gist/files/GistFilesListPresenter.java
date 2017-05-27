@@ -17,7 +17,5 @@ class GistFilesListPresenter extends BasePresenter<GistFilesListMvp.View> implem
         if (getView() != null) getView().onOpenFile(item);
     }
 
-    @Override public void onItemLongClick(int position, View v, FilesListModel item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, FilesListModel item) {}
 }

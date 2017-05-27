@@ -176,4 +176,9 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (webView != null) webView.scrollTo(0, 0);
+    }
 }

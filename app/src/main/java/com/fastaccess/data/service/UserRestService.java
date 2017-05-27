@@ -14,6 +14,7 @@ import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import rx.Observable;
 
 /**
@@ -52,4 +53,6 @@ public interface UserRestService {
 
     @DELETE("/user/following/{username}")
     Observable<Response<Boolean>> unfollowUser(@Path("username") @NonNull String username);
+
+    @GET Observable<String> getContributions(@Url String url);
 }

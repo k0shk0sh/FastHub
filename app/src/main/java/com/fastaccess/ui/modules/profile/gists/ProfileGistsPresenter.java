@@ -86,7 +86,5 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
         if (getView() != null) getView().onStartGistView(item.getGistId());
     }
 
-    @Override public void onItemLongClick(int position, View v, Gist item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Gist item) {}
 }

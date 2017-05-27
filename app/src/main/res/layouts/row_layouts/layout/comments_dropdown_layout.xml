@@ -12,7 +12,6 @@
     android:orientation="horizontal"
     android:outlineProvider="background"
     android:paddingBottom="@dimen/spacing_xs_large"
-    android:paddingStart="@dimen/spacing_xs_large"
     android:paddingTop="@dimen/spacing_xs_large"
     tools:ignore="RtlSymmetry"
     tools:showIn="@layout/comments_row_item">
@@ -24,11 +23,13 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_toStartOf="@+id/commentMenu">
+        android:scrollbarStyle="insideOverlay">
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/thumbsUp"
@@ -97,15 +98,4 @@
 
         </LinearLayout>
     </HorizontalScrollView>
-
-    <ImageView
-        android:id="@+id/commentMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_gravity="center"
-        android:background="?selectableItemBackgroundBorderless"
-        android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_overflow"/>
 </RelativeLayout>

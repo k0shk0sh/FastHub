@@ -26,7 +26,6 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -63,7 +62,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
             String url = InputHelper.isEmpty(model.getDownloadUrl()) ? model.getUrl() : model.getDownloadUrl();
             if (InputHelper.isEmpty(url)) return;
             if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(url)) {
-                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
+                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description), false, true,
                         Bundler.start().put(BundleConstant.EXTRA, model.getDownloadUrl())
                                 .put(BundleConstant.YES_NO_EXTRA, true)
                                 .end())
@@ -132,7 +131,8 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         Logger.e(hidden);
         if (!hidden && adapter != null && isSafe()) {
             if (!PrefGetter.isFileOptionHintShow()) {
-                ActivityHelper.showDismissHints(getContext(), () -> {});
+                ActivityHelper.showDismissHints(getContext(), () -> {
+                });
                 adapter.setGuideListener((itemView, model) ->
                         new MaterialTapTargetPrompt.Builder(getActivity())
                                 .setTarget(itemView.findViewById(R.id.menu))
@@ -160,7 +160,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

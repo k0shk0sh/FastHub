@@ -5,3 +5,4 @@
 - Chinese [@Devifish](https://github.com/Devifish)
 - Indonesian [@dikiaap](https://github.com/dikiaap)
 - Russian [@dedepete](https://github.com/dedepete)
+- Japanese [@Rintan](https://github.com/Rintan)

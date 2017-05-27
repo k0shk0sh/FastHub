@@ -2,6 +2,7 @@ package com.fastaccess.provider.timeline;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.handler.BetterLinkMovementExtended;
 import com.fastaccess.provider.timeline.handler.DrawableHandler;
+import com.fastaccess.provider.timeline.handler.EmojiHandler;
 import com.fastaccess.provider.timeline.handler.ItalicHandler;
 import com.fastaccess.provider.timeline.handler.LinkHandler;
 import com.fastaccess.provider.timeline.handler.ListsHandler;
@@ -54,12 +56,14 @@ public class HtmlHelper {
         boolean isDark = AppHelper.isNightMode(textView.getResources());
         @ColorInt int windowBackground = isDark ? ViewHelper.getWindowBackground(textView.getContext()) :
                                          ContextCompat.getColor(textView.getContext(), R.color.light_patch_ref_color);
+        Drawable checked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_small);
+        Drawable unchecked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_empty_small);
         HtmlSpanner mySpanner = new HtmlSpanner();
         mySpanner.setStripExtraWhiteSpace(true);
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, isDark));
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, isDark));
         mySpanner.registerHandler("img", new DrawableHandler(textView));
-        mySpanner.registerHandler("g-emoji", new DrawableHandler(textView));
+        mySpanner.registerHandler("g-emoji", new EmojiHandler());
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
         mySpanner.registerHandler("strong", new BoldHandler());
@@ -67,7 +71,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("em", new ItalicHandler());
         mySpanner.registerHandler("ul", new MarginHandler());
         mySpanner.registerHandler("ol", new MarginHandler());
-        mySpanner.registerHandler("li", new ListsHandler());
+        mySpanner.registerHandler("li", new ListsHandler(checked, unchecked));
         mySpanner.registerHandler("u", new UnderlineHandler());
         mySpanner.registerHandler("strike", new StrikethroughHandler());
         mySpanner.registerHandler("ins", new UnderlineHandler());

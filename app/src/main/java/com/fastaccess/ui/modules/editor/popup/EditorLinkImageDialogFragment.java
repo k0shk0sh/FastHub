@@ -16,6 +16,8 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseDialogFragment;
+import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
+import com.fastaccess.ui.modules.profile.banner.BannerInfoMvp;
 import com.fastaccess.ui.widgets.FontButton;
 
 import java.io.File;

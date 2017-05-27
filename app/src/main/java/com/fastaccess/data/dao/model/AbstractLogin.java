@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.fastaccess.App;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 
@@ -57,8 +58,7 @@ import rx.Observable;
     public Observable<Login> update(Login login) {
         login.setToken(PrefGetter.getToken());
         login.setIsLoggedIn(true);
-        return App.getInstance().getDataStore().update(login)
-                .toObservable();
+        return RxHelper.safeObservable(App.getInstance().getDataStore().update(login).toObservable());
     }
 
     public void save(Login entity) {

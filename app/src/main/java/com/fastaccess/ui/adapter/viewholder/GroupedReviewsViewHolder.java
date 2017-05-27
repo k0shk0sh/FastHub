@@ -6,6 +6,7 @@ import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GroupedReviewModel;
@@ -37,6 +38,9 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     @BindView(R.id.toggle) ForegroundImageView toggle;
     @BindView(R.id.patch) FontTextView patch;
     @BindView(R.id.minimized) View minimized;
+    @BindView(R.id.addCommentPreview) View addCommentPreview;
+    @BindView(R.id.toggleHolder) LinearLayout toggleHolder;
+
     private final int patchAdditionColor;
     private final int patchDeletionColor;
     private final int patchRefColor;
@@ -47,9 +51,13 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     private ViewGroup viewGroup;
 
     @Override public void onClick(View v) {
-        int position = getAdapterPosition();
-        onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
-        onToggle(onToggleView.isCollapsed(position), true);
+        if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
+            long position = getId();
+            onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
+            onToggle(onToggleView.isCollapsed(position), true);
+        } else {
+            super.onClick(v);
+        }
     }
 
     private GroupedReviewsViewHolder(@NonNull View itemView, ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
@@ -66,6 +74,11 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
         patchRefColor = ViewHelper.getPatchRefColor(itemView.getContext());
         this.onToggleView = onToggleView;
         nestedRecyclerView.setNestedScrollingEnabled(false);
+        addCommentPreview.setOnClickListener(this);
+        toggle.setOnClickListener(this);
+        toggleHolder.setOnClickListener(this);
+        itemView.setOnClickListener(null);
+        itemView.setOnLongClickListener(null);
     }
 
     public static GroupedReviewsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,
@@ -89,8 +102,9 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
             nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this, onToggleView, reactionsCallback));
             nestedRecyclerView.addDivider();
         }
-        onToggle(onToggleView.isCollapsed(getAdapterPosition()), false);
+        onToggle(onToggleView.isCollapsed(getId()), false);
     }
+
 
     @Override public void onItemClick(int position, View v, ReviewCommentModel item) {
         if (reviewCommentCallback != null) {
@@ -119,6 +133,10 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
             setPatchText(pathText);
             toggle.setRotation(180f);
         }
+    }
+
+    private long getId() {
+        return getAdapterPosition();
     }
 
     private void setPatchText(@NonNull String text) {

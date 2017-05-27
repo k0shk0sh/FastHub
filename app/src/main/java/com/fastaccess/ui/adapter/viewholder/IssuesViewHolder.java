@@ -2,6 +2,7 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -27,25 +28,38 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
 
     @BindView(R.id.title) FontTextView title;
     @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @BindView(R.id.issue_state) AppCompatImageView issueState;
     @BindView(R.id.details) FontTextView details;
     @BindView(R.id.commentsNo) FontTextView commentsNo;
     @BindString(R.string.by) String by;
 
     private boolean withAvatar;
     private boolean showRepoName;
+    private boolean showState;
 
     private IssuesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
                              boolean withAvatar, boolean showRepoName) {
+        this(itemView, adapter, withAvatar, showRepoName, false);
+    }
+
+    private IssuesViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter,
+                             boolean withAvatar, boolean showRepoName, boolean showState) {
         super(itemView, adapter);
         this.withAvatar = withAvatar;
         this.showRepoName = showRepoName;
+        this.showState = showState;
     }
 
     public static IssuesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar, boolean showRepoName) {
+        return newInstance(viewGroup, adapter, withAvatar, showRepoName, false);
+    }
+
+    public static IssuesViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean withAvatar,
+                                               boolean showRepoName, boolean showState) {
         if (withAvatar) {
-            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true, showRepoName);
+            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_row_item), adapter, true, showRepoName, showState);
         } else {
-            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false, showRepoName);
+            return new IssuesViewHolder(getView(viewGroup, R.layout.issue_no_image_row_item), adapter, false, showRepoName, showState);
         }
     }
 
@@ -93,6 +107,13 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
             } else {
                 commentsNo.setVisibility(View.GONE);
             }
+        }
+        if (showState) {
+            issueState.setVisibility(View.VISIBLE);
+            issueState.setImageResource(issueModel.getState() == IssueState.open ?
+                                        R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small);
+        } else {
+            issueState.setVisibility(View.GONE);
         }
         if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());

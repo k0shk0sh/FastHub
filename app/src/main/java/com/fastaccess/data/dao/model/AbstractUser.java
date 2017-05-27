@@ -78,13 +78,14 @@ public abstract class AbstractUser implements Parcelable {
         }
     }
 
-    protected Single saveAsSingle(User user) {
-        return App.getInstance().getDataStore()
-                .delete(User.class)
-                .where(LOGIN.eq(user.getLogin()))
-                .get()
-                .toSingle()
-                .flatMap(aVoid -> App.getInstance().getDataStore().insert(user));
+    protected Single<User> saveAsSingle(User user) {
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(User.class)
+                        .where(LOGIN.eq(user.getLogin()))
+                        .get()
+                        .toSingle()
+                        .flatMap(aVoid -> App.getInstance().getDataStore().insert(user)));
     }
 
     @Nullable public static User getUser(String login) {

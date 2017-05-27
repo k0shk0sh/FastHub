@@ -20,6 +20,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -127,7 +128,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -159,12 +160,21 @@ refresh.setRefreshing(true);
         startActivityForResult(intent, RepoPullRequestMvp.PULL_REQUEST_REQUEST_CODE);
     }
 
+    @Override public void onShowPullRequestPopup(@NonNull PullRequest item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
+    }
+
     @Override public void onRefresh() {
         getPresenter().onCallApi(1, getIssueState());
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private IssueState getIssueState() {

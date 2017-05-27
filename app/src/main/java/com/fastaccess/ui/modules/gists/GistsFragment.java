@@ -77,7 +77,7 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -95,11 +95,6 @@ refresh.setRefreshing(true);
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @NonNull @Override public GistsPresenter providePresenter() {
@@ -120,5 +115,15 @@ refresh.setRefreshing(true);
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

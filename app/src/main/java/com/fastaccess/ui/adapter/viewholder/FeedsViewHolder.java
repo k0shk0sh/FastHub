@@ -3,7 +3,6 @@ package com.fastaccess.ui.adapter.viewholder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,7 +76,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
             if (type != EventsType.WatchEvent) {
-                if (type == EventsType.CreateEvent && !InputHelper.isEmpty(eventsModel.getPayload().getRefType())) {
+                if (type == EventsType.CreateEvent && !InputHelper.isEmpty(eventsModel.getPayload().getRef())) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")
@@ -125,7 +124,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         }
         if (eventsModel.getPayload() != null) {
             if (eventsModel.getPayload().getComment() != null) {
-                MarkDownProvider.setMdText(description, eventsModel.getPayload().getComment().getBody());
+                MarkDownProvider.stripMdText(description, eventsModel.getPayload().getComment().getBody());
                 description.setVisibility(View.VISIBLE);
                 if (eventsModel.getPayload().getIssue() != null) {
                     number = "#" + eventsModel.getPayload().getIssue().getNumber();

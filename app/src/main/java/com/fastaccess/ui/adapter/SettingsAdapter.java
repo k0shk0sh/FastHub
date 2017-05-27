@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Setting;
+import com.fastaccess.data.dao.SettingsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -22,10 +22,10 @@ import butterknife.ButterKnife;
 
 public class SettingsAdapter extends BaseAdapter {
 
-    private Setting[] settings;
+    private SettingsModel[] settings;
     private final LayoutInflater inflater;
 
-    public SettingsAdapter(@NonNull Context context, @NonNull Setting[] settings) {
+    public SettingsAdapter(@NonNull Context context, @NonNull SettingsModel[] settings) {
         this.settings = settings;
         this.inflater = LayoutInflater.from(context);
     }
@@ -34,7 +34,7 @@ public class SettingsAdapter extends BaseAdapter {
         return settings.length;
     }
 
-    @Override public Setting getItem(int position) {
+    @Override public SettingsModel getItem(int position) {
         return settings[position];
     }
 

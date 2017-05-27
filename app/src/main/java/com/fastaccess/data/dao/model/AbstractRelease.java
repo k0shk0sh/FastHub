@@ -56,16 +56,17 @@ public abstract class AbstractRelease implements Parcelable {
     @Convert(UserConverter.class) User author;
     @Convert(ReleasesAssetsConverter.class) ReleasesAssetsListModel assets;
 
-    public Single save(Release entity) {
-        return App.getInstance().getDataStore()
-                .delete(Release.class)
-                .where(ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(i -> App.getInstance().getDataStore().insert(entity));
+    public Single<Release> save(Release entity) {
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(Release.class)
+                        .where(ID.eq(entity.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(i -> App.getInstance().getDataStore().insert(entity)));
     }
 
-    public static Observable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable<Release> save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Release.class)
                 .where(REPO_ID.eq(login))

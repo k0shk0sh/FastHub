@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
+import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
@@ -20,6 +21,7 @@ import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
+import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
@@ -46,6 +48,8 @@ public class StackBuilderSchemeParser {
     public static void launchUri(@NonNull Context context, @NonNull Intent data) {
         if (data.getData() != null) {
             launchUri(context, data.getData());
+        } else {
+            try {context.startActivity(data);} catch (Exception ignored) {}
         }
     }
 
@@ -82,12 +86,11 @@ public class StackBuilderSchemeParser {
                 data = Uri.parse(prefix);
             }
         }
-        if (!data.getPathSegments().isEmpty()) {
+        if (data.getPathSegments() != null && !data.getPathSegments().isEmpty()) {
             if (IGNORED_LIST.contains(data.getPathSegments().get(0))) return null;
-        } else {
-            return null;
+            return getIntentForURI(context, data);
         }
-        return getIntentForURI(context, data);
+        return null;
     }
 
     @Nullable private static TaskStackBuilder getIntentForURI(@NonNull Context context, @NonNull Uri data) {
@@ -114,12 +117,13 @@ public class StackBuilderSchemeParser {
                 TaskStackBuilder pullRequestIntent = getPullRequestIntent(context, data);
                 TaskStackBuilder createIssueIntent = getCreateIssueIntent(context, data);
                 TaskStackBuilder issueIntent = getIssueIntent(context, data);
+                TaskStackBuilder releasesIntent = getReleases(context, data);
                 TaskStackBuilder repoIntent = getRepo(context, data);
                 TaskStackBuilder commit = getCommit(context, data);
                 TaskStackBuilder commits = getCommits(context, data);
                 TaskStackBuilder blob = getBlob(context, data);
                 Optional<TaskStackBuilder> intentOptional = returnNonNull(userIntent, repoIssuesIntent, repoPullsIntent, pullRequestIntent, commit,
-                        commits, createIssueIntent, issueIntent, repoIntent, blob);
+                        commits, createIssueIntent, issueIntent, releasesIntent, repoIntent, blob);
                 Optional<TaskStackBuilder> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
@@ -297,23 +301,28 @@ public class StackBuilderSchemeParser {
         List<String> segments = uri.getPathSegments();
         if (segments == null || segments.size() < 4) return null;
         String segmentTwo = segments.get(2);
-        if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
-            String owner;
-            String repo;
-            Uri urlBuilder = getBlobBuilder(uri);
-            owner = segments.get(0);
-            repo = segments.get(1);
-            if (owner != null && repo != null) return TaskStackBuilder.create(context)
+        String owner = segments.get(0);
+        String repo = segments.get(1);
+        if (InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(uri.toString()))) {
+            Uri urlBuilder = LinkParserHelper.getBlobBuilder(uri);
+            return TaskStackBuilder.create(context)
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
-                    .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, urlBuilder.toString()))
-                    .addNextIntent(CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString()));
+                    .addNextIntent(RepoFilesActivity.getIntent(context, urlBuilder.toString()));
+        }
+        if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
+            Uri urlBuilder = getBlobBuilder(uri);
+            if (owner != null && repo != null)
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainActivity.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                        .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner))
+                        .addNextIntentWithParentStack(RepoFilesActivity.getIntent(context, urlBuilder.toString()))
+                        .addNextIntent(CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString()));
         } else {
             String authority = uri.getAuthority();
             if (TextUtils.equals(authority, RAW_AUTHORITY)) {
-                String owner = uri.getPathSegments().get(0);
-                String repo = uri.getPathSegments().get(1);
                 return TaskStackBuilder.create(context)
                         .addParentStack(MainActivity.class)
                         .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
@@ -327,17 +336,17 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getCreateIssueIntent(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        Logger.e(segments);
         if (uri.getLastPathSegment() == null) return null;
         if (segments == null || segments.size() < 3 || !uri.getLastPathSegment().equalsIgnoreCase("new")) return null;
         if ("issues".equals(segments.get(2))) {
             String owner = segments.get(0);
             String repo = segments.get(1);
+            boolean isFeedback = "k0shk0sh/FastHub".equalsIgnoreCase(owner + "/" + repo);
             return TaskStackBuilder.create(context)
                     .addParentStack(MainActivity.class)
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.ISSUES))
-                    .addNextIntent(CreateIssueActivity.getIntent(context, owner, repo));
+                    .addNextIntent(CreateIssueActivity.getIntent(context, owner, repo, isFeedback));
         }
         return null;
     }
@@ -349,6 +358,23 @@ public class StackBuilderSchemeParser {
                     .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
                     .addNextIntentWithParentStack(GistActivity.createIntent(context, uri.getPathSegments().get(1)))
                     .addNextIntent(CodeViewerActivity.createIntent(context, uri.toString(), uri.toString()));
+        }
+        return null;
+    }
+
+    @Nullable private static TaskStackBuilder getReleases(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments != null && segments.size() > 2) {
+            if (uri.getPathSegments().get(2).equals("releases")) {
+                String owner = segments.get(0);
+                String repo = segments.get(1);
+                return TaskStackBuilder.create(context)
+                        .addParentStack(MainActivity.class)
+                        .addNextIntentWithParentStack(new Intent(context, MainActivity.class))
+                        .addNextIntentWithParentStack(RepoPagerActivity.createIntent(context, repo, owner, RepoPagerMvp.CODE))
+                        .addNextIntent(ReleasesListActivity.getIntent(context, owner, repo));
+            }
+            return null;
         }
         return null;
     }

@@ -20,7 +20,6 @@ import io.requery.Nullable;
 import io.requery.Persistable;
 import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -41,12 +40,13 @@ import rx.Single;
     @Nullable boolean isSubscribed;
 
     public Single<Notification> save(Notification notification) {
-        return App.getInstance().getDataStore()
-                .delete(Notification.class)
-                .where(Notification.ID.eq(notification.getId()))
-                .get()
-                .toSingle()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(notification));
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(Notification.class)
+                        .where(Notification.ID.eq(notification.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(integer -> App.getInstance().getDataStore().insert(notification)));
     }
 
     public static Completable markAsRead(long id) {
@@ -64,7 +64,10 @@ import rx.Single;
         });
     }
 
-    public static Observable<Notification> save(@NonNull List<Notification> models) {
+    public static Observable<Notification> save(@android.support.annotation.Nullable List<Notification> models) {
+        if (models == null) {
+            return Observable.empty();
+        }
         SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
         return RxHelper.safeObservable(dataSource.delete(Notification.class)
                 .get()

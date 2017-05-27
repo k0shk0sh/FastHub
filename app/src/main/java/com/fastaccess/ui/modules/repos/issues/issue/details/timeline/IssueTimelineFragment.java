@@ -9,7 +9,6 @@ import android.support.annotation.StringRes;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
@@ -18,6 +17,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
@@ -31,6 +31,8 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -46,8 +48,9 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.fastScroller) RecyclerFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-    @State SparseBooleanArrayParcelable sparseBooleanArray;
+    @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
     private IssuePullsTimelineAdapter adapter;
+    private OnLoadMore onLoadMore;
 
     public static IssueTimelineFragment newInstance(@NonNull Issue issueModel) {
         IssueTimelineFragment view = new IssueTimelineFragment();
@@ -56,16 +59,28 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi();
+        getPresenter().onCallApi(1, null);
     }
 
-    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items) {
+    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items, int page) {
         hideProgress();
-        if (items == null || items.isEmpty()) {
-            adapter.clear();
+        if (items == null) {
+            adapter.subList(1, adapter.getItemCount());
             return;
         }
-        adapter.insertItems(items);
+        if (page == 1) {
+            items.add(0, TimelineModel.constructHeader(getPresenter().issue));
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
+    }
+
+    @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
+        if (onLoadMore == null) {
+            onLoadMore = new OnLoadMore(getPresenter());
+        }
+        return onLoadMore;
     }
 
     @Override protected int fragmentLayout() {
@@ -84,6 +99,8 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
+        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getEvents().size() == 1 && !getPresenter().isApiCalled()) {
@@ -147,7 +164,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 Bundler.start()
                         .put(BundleConstant.EXTRA, id)
                         .put(BundleConstant.YES_NO_EXTRA, true)
-                        .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                         .end())
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }
@@ -189,6 +205,10 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                 .show(getChildFragmentManager(), "ReactionsDialogFragment");
     }
 
+    @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
+        adapter.addItem(timelineModel, 0);
+    }
+
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
@@ -205,7 +225,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
                         onRefresh(); // shit happens, refresh()?
                         return;
                     }
-                    getSparseBooleanArray().clear();
                     adapter.notifyDataSetChanged();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
@@ -238,12 +257,13 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         onRefresh();
     }
 
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        getSparseBooleanArray().put(position, isCollapsed);
+    @Override public void onToggle(long position, boolean isCollapsed) {
+        toggleMap.put(position, isCollapsed);
     }
 
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
+    @Override public boolean isCollapsed(long position) {
+        Boolean toggle = toggleMap.get(position);
+        return toggle != null && toggle;
     }
 
     @Override public boolean isPreviouslyReacted(long id, int vId) {
@@ -257,12 +277,5 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
-    }
-
-    private SparseBooleanArrayParcelable getSparseBooleanArray() {
-        if (sparseBooleanArray == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-        }
-        return sparseBooleanArray;
     }
 }

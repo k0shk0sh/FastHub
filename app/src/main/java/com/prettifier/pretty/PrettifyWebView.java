@@ -153,19 +153,9 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
-        setGithubContent(source, baseUrl, false);
-    }
-
-    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean wrap) {
-        if (wrap) {
-            setScrollbarFadingEnabled(false);
-            setVerticalScrollBarEnabled(false);
-        }
-        if (!InputHelper.isEmpty(source)) {
-            if (!wrap) addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
-            String page = GithubHelper.generateContent(source, baseUrl, wrap, AppHelper.isNightMode(getResources()));
-            post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
-        }
+        addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
+        String page = GithubHelper.generateContent(source, baseUrl, AppHelper.isNightMode(getResources()));
+        post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }
 
     public void loadImage(@NonNull String url) {

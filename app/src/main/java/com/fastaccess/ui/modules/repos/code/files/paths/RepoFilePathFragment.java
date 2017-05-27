@@ -265,6 +265,11 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         return repoFilesView;
     }
 
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (repoFilesView != null) repoFilesView.onScrollTop(index);
+    }
+
     private void showReload() {
         branchesProgress.setVisibility(View.GONE);
         hideProgress();

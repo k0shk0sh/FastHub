@@ -56,15 +56,16 @@ import rx.Single;
     @Convert(UserConverter.class) User owner;
 
     public Single save(Gist modelEntity) {
-        return App.getInstance().getDataStore()
-                .delete(Gist.class)
-                .where(Gist.ID.eq(modelEntity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(modelEntity));
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(Gist.class)
+                        .where(Gist.ID.eq(modelEntity.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(integer -> App.getInstance().getDataStore().insert(modelEntity)));
     }
 
-    public static Observable save(@NonNull List<Gist> gists) {
+    public static Observable<Gist> save(@NonNull List<Gist> gists) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
                 .where(Gist.OWNER_NAME.isNull())
@@ -75,7 +76,7 @@ import rx.Single;
                 .flatMap(gist -> singleEntityStore.insert(gist).toObservable()));
     }
 
-    public static Observable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
+    public static Observable<Gist> save(@NonNull List<Gist> gists, @NonNull String ownerName) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
                 .where(Gist.OWNER_NAME.equal(ownerName))

@@ -31,9 +31,9 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     private ArrayList<Commit> commits = new ArrayList<>();
     private ArrayList<BranchesModel> branches = new ArrayList<>();
-    private String login;
-    private String repoId;
-    private String branch;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State String branch;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -128,16 +128,6 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         }
     }
 
-    private void getCommitCount(@NonNull String branch) {
-        manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
-                .getCommitCounts(login, repoId, branch)))
-                .subscribe(response -> {
-                    if (response != null) {
-                        sendToView(view -> view.onShowCommitCount(response.getLast()));
-                    }
-                }));
-    }
-
     @NonNull @Override public ArrayList<Commit> getCommits() {
         return commits;
     }
@@ -171,7 +161,15 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         CommitPagerActivity.createIntentForOffline(v.getContext(), item);
     }
 
-    @Override public void onItemLongClick(int position, View v, Commit item) {
-        onItemClick(position, v, item);
+    @Override public void onItemLongClick(int position, View v, Commit item) {}
+
+    private void getCommitCount(@NonNull String branch) {
+        manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+                .getCommitCounts(login, repoId, branch)))
+                .subscribe(response -> {
+                    if (response != null) {
+                        sendToView(view -> view.onShowCommitCount(response.getLast()));
+                    }
+                }));
     }
 }

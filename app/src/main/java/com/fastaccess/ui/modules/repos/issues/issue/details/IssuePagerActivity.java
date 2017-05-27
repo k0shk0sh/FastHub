@@ -87,7 +87,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getIssue() != null && !InputHelper.isEmpty(getPresenter().getIssue().getTitle()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 

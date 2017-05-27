@@ -15,6 +15,7 @@
     <style name="ThemeLight.Base" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="card_background">@color/cardview_light_background</item>
         <item name="icon_color">#212121</item>
+        <item name="comment_box_style">@style/CommentBoxLight</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundLight</item>
         <item name="patch_addition">@color/light_patch_addition_color</item>
         <item name="patch_deletion">@color/light_patch_deletion_color</item>
@@ -133,6 +134,10 @@
         <item name="android:background">@drawable/ic_timeline_arrow_left</item>
     </style>
 
+    <style name="CommentBoxLight">
+        <item name="android:background">@drawable/ic_edittext</item>
+    </style>
+
 
     <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
         <item name="colorPrimary">@color/light_primary</item>
@@ -200,7 +205,7 @@
     <style name="DialogThemeLight.DeepOrange" parent="DialogThemeLight">
         <item name="colorAccent">@color/material_deep_orange_accent_700</item>
     </style>
-    
+
     <style name="AppTheme.AboutActivity.Light" parent="ThemeLight">
         <item name="colorPrimary">@color/light_primary</item>
         <item name="colorPrimaryDark">@color/light_primary_dark</item>

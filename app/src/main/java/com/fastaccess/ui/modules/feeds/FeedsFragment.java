@@ -61,7 +61,6 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
-        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (getPresenter().getEvents().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
@@ -139,7 +138,7 @@ refresh.setRefreshing(true);
     @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {
         if (!PrefGetter.isUserIconGuideShowed()) {
             final boolean[] dismissed = {false};
-            new MaterialTapTargetPrompt.Builder(getActivity())
+            /*new MaterialTapTargetPrompt.Builder(getActivity())
                     .setTarget(itemView.findViewById(R.id.avatarLayout))
                     .setPrimaryText(R.string.users)
                     .setSecondaryText(R.string.avatar_click_hint)
@@ -173,7 +172,7 @@ refresh.setRefreshing(true);
                         }
                     })
                     .setCaptureTouchEventOutsidePrompt(true)
-                    .show();
+                    .show();*/
             ActivityHelper.showDismissHints(getContext(), () -> dismissed[0] = true);
         }
     }

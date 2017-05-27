@@ -1,11 +1,6 @@
-def taskRequests = getGradle().getStartParameter().getTaskRequests().toString()
-def isGms = taskRequests.contains("Gms") || taskRequests.contains("gms")
-
 apply plugin: 'com.android.application'
-if (isGms) {
-    apply plugin: 'com.google.firebase.firebase-crash'
-}
-
+apply plugin: 'com.google.firebase.firebase-crash'
+//apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
 
@@ -23,18 +18,18 @@ android {
         signing {
             keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
             keyPassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
-            storeFile file('fastaccess-key')
+            storeFile file('fastaccess-public')
             storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
     compileSdkVersion 25
-    buildToolsVersion "26-rc1"
+    buildToolsVersion "26.0.0-rc2"
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 210
-        versionName "2.1.0"
+        versionCode 251
+        versionName "2.5.1"
         signingConfig signingConfigs.signing
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
@@ -56,18 +51,6 @@ android {
             minifyEnabled true
             shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-
-    productFlavors {
-        // includes gms
-        gms {
-            buildConfigField "boolean", "FDROID", "false"
-        }
-
-        // only foss
-        fdroid {
-            buildConfigField "boolean", "FDROID", "true"
         }
     }
 
@@ -112,6 +95,8 @@ repositories {
     maven { url "https://clojars.org/repo/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://jitpack.io" }
+    maven { url "https://maven.google.com" }
+    mavenCentral()
 }
 
 dependencies {
@@ -123,9 +108,9 @@ dependencies {
     compile "com.android.support:preference-v14:${supportVersion}"
     compile "com.android.support:customtabs:${supportVersion}"
     compile "com.android.support:palette-v7:${supportVersion}"
+//    compile "com.android.support:support-emoji-appcompat:${supportVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     compile "net.grandcentrix.thirtyinch:thirtyinch-rx:${thirtyinchVersion}"
-    testCompile "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     compile "com.squareup.retrofit2:retrofit:${retrofit}"
     compile "com.squareup.retrofit2:converter-gson:${retrofit}"
     compile "com.squareup.retrofit2:adapter-rxjava:${retrofit}"
@@ -135,30 +120,33 @@ dependencies {
     compile "com.jakewharton:butterknife:${butterKnifeVersion}"
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
     compile 'io.reactivex:rxandroid:1.2.1'
-    compile 'io.reactivex:rxjava:1.2.2'
-    compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+    compile 'io.reactivex:rxjava:1.3.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     compile 'com.annimon:stream:1.1.7'
     compile 'com.github.GrenderG:Toasty:1.1.3'
-    compile 'uk.co.samuelwall:material-tap-target-prompt:1.9.2'
+    compile 'com.github.JediBurrell:MaterialTapTargetPrompt:-SNAPSHOT'
     compile 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
     compile 'com.github.daniel-stoneuk:material-about-library:1.8.1'
-    compile 'io.requery:requery:1.3.0'
-    compile 'io.requery:requery-android:1.3.0'
+    compile "io.requery:requery:${requery}"
+    compile "io.requery:requery-android:${requery}"
     compile('com.mikepenz:aboutlibraries:5.9.5@aar') { transitive = true }
     compile 'com.github.nightwhistler:HtmlSpanner:0.4'
     compile 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     compile 'com.github.matthiasrobbers:shortbread:1.0.1'
+    compile 'com.atlassian.commonmark:commonmark:0.9.0'
+    compile 'com.firebase:firebase-jobdispatcher:0.6.0'
+    compile "com.google.firebase:firebase-ads:${gms}"
+    compile "com.google.firebase:firebase-messaging:${gms}"
+    releaseCompile "com.google.firebase:firebase-crash:${gms}"
+    compile "com.google.android.gms:play-services-auth:${gms}"
+//    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlin_version}"
     provided "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor 'io.requery:requery-processor:1.2.0'
+    annotationProcessor "io.requery:requery-processor:${requery}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
-    if (isGms) {
-        compile "com.google.firebase:firebase-ads:${firebase}"
-        compile "com.google.firebase:firebase-messaging:${firebase}"
-        releaseCompile "com.google.firebase:firebase-crash:${firebase}"
-    }
+    testCompile "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"
     testCompile "org.assertj:assertj-core:${assertjVersion}"
@@ -170,6 +158,4 @@ dependencies {
     androidTestCompile "com.android.support.test.espresso:espresso-core:${espresseVersion}"
 }
 
-if (isGms) {
-    apply plugin: 'com.google.gms.google-services'
-}
+apply plugin: 'com.google.gms.google-services'

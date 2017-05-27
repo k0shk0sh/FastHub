@@ -50,7 +50,6 @@ public class DynamicRecyclerView extends RecyclerView {
 
     public DynamicRecyclerView(@NonNull Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        if (isInEditMode()) return;
     }
 
     @Override public void setAdapter(@Nullable Adapter adapter) {

@@ -1,51 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView
+    android:id="@+id/parentView"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:paddingBottom="@dimen/spacing_xs_large"
-    android:paddingEnd="@dimen/layout_margin"
-    android:paddingStart="@dimen/layout_margin"
-    android:paddingTop="@dimen/spacing_normal">
+    android:orientation="vertical">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="vertical">
 
-            <FrameLayout
+            <RelativeLayout
+                android:id="@+id/headerImage"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/material_light_white"
+                android:gravity="bottom|start"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/banner_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentTop="true"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:contentDescription="@string/edit_banner"
+                    android:padding="@dimen/spacing_xs_large"
+                    android:src="@drawable/ic_edit"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xs_large">
-
+                android:layout_marginTop="@dimen/spacing_xs_large"
+                app:cardBackgroundColor="?card_background"
+                app:cardCornerRadius="0dp"
+                app:cardUseCompatPadding="false"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <android.support.v7.widget.CardView
+                    <com.fastaccess.ui.widgets.FontButton
+                        android:id="@+id/chooseBanner"
+                        style="@style/Base.Widget.AppCompat.ButtonBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="36dp"
-                        app:cardBackgroundColor="?card_background"
-                        app:cardUseCompatPadding="true"
-                        app:contentPaddingBottom="@dimen/spacing_normal"
-                        app:contentPaddingLeft="@dimen/spacing_xs_large"
-                        app:contentPaddingRight="@dimen/spacing_xs_large"
-                        app:contentPaddingTop="@dimen/spacing_normal">
+                        android:layout_marginBottom="@dimen/spacing_normal"
+                        android:background="?card_background"
+                        android:text="@string/edit_banner"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
+                    <LinearLayout
+                        android:id="@+id/userInformation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="?selectableItemBackground"
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.AvatarLayout
+                            android:id="@+id/avatarLayout"
+                            android:layout_width="@dimen/keyline_1"
+                            android:layout_height="@dimen/keyline_1"
+                            android:layout_gravity="top"
+                            android:layout_marginEnd="@dimen/avatar_margin_end"
+                            android:transitionName="@string/icon_transition"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/spacing_xs_large"
+                            android:layout_gravity="center"
                             android:orientation="vertical">
 
                             <com.fastaccess.ui.widgets.FontTextView
@@ -53,97 +97,84 @@
                                 style="@style/Base.TextAppearance.AppCompat.Title"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginBottom="@dimen/spacing_normal"
-                                android:layout_marginTop="@dimen/spacing_normal"
-                                android:gravity="center"
                                 android:textStyle="bold"
                                 android:transitionName="@string/title_transition"
                                 tools:text="Cum classis nocere"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
-                                android:id="@+id/description"
-                                style="@style/Base.TextAppearance.AppCompat.Small"
+                                android:id="@+id/fullname"
+                                style="@style/Base.TextAppearance.AppCompat.Medium"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:autoLink="all"
-                                tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
+                                android:textStyle="bold"
+                                android:transitionName="@string/title_transition"
+                                tools:text="Cum classis nocere"/>
                         </LinearLayout>
 
-                    </android.support.v7.widget.CardView>
-                </LinearLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:layout_gravity="top|center">
+                    </LinearLayout>
 
                     <com.fastaccess.ui.widgets.FontTextView
-                        android:id="@+id/following"
-                        style="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/description"
+                        style="@style/Base.TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="start|bottom|center"
-                        android:layout_marginEnd="@dimen/spacing_xs_large"
-                        android:layout_marginStart="@dimen/spacing_xs_large"
-                        android:layout_marginTop="@dimen/spacing_micro"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        tools:text="Following\n40"/>
+                        android:autoLink="all"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal"
+                        tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
 
-                    <com.fastaccess.ui.widgets.AvatarLayout
-                        android:id="@+id/avatarLayout"
-                        android:layout_width="@dimen/keyline_1"
-                        android:layout_height="@dimen/keyline_1"
-                        android:layout_gravity="top|center"
-                        android:transitionName="@string/icon_transition"/>
-
-                    <com.fastaccess.ui.widgets.FontTextView
-                        android:id="@+id/followers"
-                        style="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:layout_width="wrap_content"
+                    <RelativeLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end|bottom|center"
-                        android:layout_marginEnd="@dimen/spacing_xs_large"
-                        android:layout_marginStart="@dimen/spacing_xs_large"
-                        android:layout_marginTop="@dimen/spacing_micro"
-                        android:background="?selectableItemBackgroundBorderless"
-                        android:gravity="center"
-                        tools:text="Followers\n140"/>
-                </FrameLayout>
-            </FrameLayout>
+                        android:paddingBottom="@dimen/spacing_xs_large"
+                        android:paddingTop="@dimen/spacing_xs_large">
 
-            <com.fastaccess.ui.widgets.FontButton
-                android:id="@+id/followBtn"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacing_xs_large"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:drawableStart="@drawable/asl_follow"
-                android:paddingBottom="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"
-                android:paddingStart="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_normal"
-                android:text="@string/follow"
-                android:textColor="@color/white"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/following"
+                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/spacing_xs_large"
+                            android:layout_marginStart="@dimen/spacing_xs_large"
+                            android:layout_toStartOf="@+id/followBtn"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:gravity="center"
+                            tools:text="Following\n40"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                        <com.fastaccess.ui.widgets.FontButton
+                            android:id="@+id/followBtn"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:drawablePadding="@dimen/spacing_normal"
+                            android:drawableStart="@drawable/asl_follow"
+                            android:text="@string/follow"
+                            android:textColor="@color/white"
+                            android:visibility="gone"
+                            tools:visibility="visible"/>
 
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:cardBackgroundColor="?card_background"
-                    app:cardUseCompatPadding="true"
-                    app:contentPaddingBottom="@dimen/spacing_normal"
-                    app:contentPaddingLeft="@dimen/spacing_xs_large"
-                    app:contentPaddingRight="@dimen/spacing_xs_large"
-                    app:contentPaddingTop="@dimen/spacing_normal">
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/followers"
+                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="@dimen/spacing_xs_large"
+                            android:layout_marginStart="@dimen/spacing_xs_large"
+                            android:layout_toEndOf="@+id/followBtn"
+                            android:background="?selectableItemBackgroundBorderless"
+                            android:gravity="center"
+                            tools:text="Followers\n140"/>
+
+                    </RelativeLayout>
 
                     <LinearLayout
+                        android:id="@+id/section_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
@@ -153,57 +184,161 @@
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_xs_large"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_group"
                             tools:text="Cum classis nocere"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?dividerColor"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/location"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_xs_large"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:autoLink="map"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_location"
 
                             tools:text="Cum classis nocere"/>
 
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?dividerColor"/>
+
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/email"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_xs_large"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:autoLink="email"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_email"
                             tools:text="Cum classis nocere"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?dividerColor"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/link"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:layout_marginBottom="@dimen/spacing_xs_large"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:autoLink="web"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_insert_link"
                             tools:text="Cum classis nocere"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="?dividerColor"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/joined"
                             style="@style/Base.TextAppearance.AppCompat.Subhead"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
                             android:drawablePadding="@dimen/spacing_xs_large"
                             android:drawableStart="@drawable/ic_time"
                             tools:text="Cum classis nocere"/>
                     </LinearLayout>
+                </LinearLayout>
 
-                </android.support.v7.widget.CardView>
-            </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/organizationsCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:paddingLeft="@dimen/spacing_xs_large"
+                android:paddingRight="@dimen/spacing_xs_large"
+                android:text="@string/organizations"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/orgsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:cardBackgroundColor="?card_background"
+                app:cardCornerRadius="0dp"
+                app:cardUseCompatPadding="false"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal"
+                tools:visibility="visible">
+
+                <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                    android:id="@+id/orgsList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layoutManager="@string/grid_layout_manager"
+                    app:spanCount="3"
+                    tools:listitem="@layout/profile_org_row_item"/>
+
+            </android.support.v7.widget.CardView>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/contributionsCaption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:paddingLeft="@dimen/spacing_xs_large"
+                android:paddingRight="@dimen/spacing_xs_large"
+                android:text="@string/contributions"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/contributionCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing_large"
+                android:visibility="gone"
+                app:cardBackgroundColor="?card_background"
+                app:cardCornerRadius="0dp"
+                app:cardUseCompatPadding="false"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal"
+                tools:visibility="visible">
+
+                <com.fastaccess.ui.widgets.contributions.GitHubContributionsView
+                    android:id="@+id/contributionView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="200dp"
+                    app:baseColor="?colorAccent"
+                    app:baseEmptyColor="@color/material_grey_400"
+                    app:displayMonth="true"
+                    app:lastWeeks="53"
+                    app:textColor="?android:textColorPrimary"/>
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
@@ -221,4 +356,6 @@
         </LinearLayout>
 
     </FrameLayout>
+
+
 </android.support.v4.widget.NestedScrollView>

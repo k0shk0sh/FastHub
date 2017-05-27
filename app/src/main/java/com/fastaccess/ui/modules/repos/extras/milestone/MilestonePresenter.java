@@ -21,9 +21,7 @@ public class MilestonePresenter extends BasePresenter<MilestoneMvp.View> impleme
         if (getView() != null) getView().onMilestoneSelected(item);
     }
 
-    @Override public void onItemLongClick(int position, View v, MilestoneModel item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, MilestoneModel item) {}
 
     @Override public void onLoadMilestones(@NonNull String login, @NonNull String repo) {
         makeRestCall(RestProvider.getRepoService().getMilestones(login, repo),

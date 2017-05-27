@@ -20,11 +20,10 @@ public class RxHelper {
 
     public static <T> Observable<T> safeObservable(@NonNull Observable<T> observable) {
         return getObserver(observable)
-                .subscribeOn(Schedulers.io())
                 .onErrorReturn(throwable -> null);
     }
 
-    public static <T> Single<T> safeObservable(@NonNull Single<T> observable) {
+    public static <T> Single<T> getSingle(@NonNull Single<T> observable) {
         return observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

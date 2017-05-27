@@ -6,11 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.widget.Snackbar;
+import android.support.transition.TransitionManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
@@ -18,6 +20,7 @@ import android.widget.ListView;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
@@ -65,16 +68,18 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @BindView(R.id.editText) FontEditText editText;
     @BindView(R.id.editorIconsHolder) View editorIconsHolder;
     @BindView(R.id.sentVia) CheckBox sentVia;
-    @BindView(R.id.autocomplete)
-    ListView mention;
     @BindView(R.id.list_divider) View listDivider;
-
+    @BindView(R.id.parentView) View parentView;
     @State @BundleConstant.ExtraTYpe String extraType;
+
     @State String itemId;
     @State String login;
     @State int issueNumber;
     @State long commentId = 0;
     @State String sha;
+    @State EditReviewCommentModel reviewComment;
+    @BindView(R.id.autocomplete)
+    ListView mention;
 
     @Override protected int layout() {
         return R.layout.editor_layout;
@@ -98,13 +103,10 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.TEXT_CHANGED) void onEdited(CharSequence charSequence) {
         if (editText.isEnabled()) {
-
             savedText = charSequence;
-
             char lastChar = 0;
-            if(charSequence.length()>0) lastChar = charSequence.charAt(charSequence.length()-1);
-
-            if (lastChar!=0) {
+            if (charSequence.length() > 0) lastChar = charSequence.charAt(charSequence.length() - 1);
+            if (lastChar != 0) {
                 if (lastChar == '@') {
                     inMentionMode = editText.getSelectionEnd();
                     mention.setVisibility(GONE);
@@ -117,19 +119,17 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 else {
                     String copy = editText.getText().toString().substring(0, editText.getSelectionEnd());
                     String[] list = copy.split("\\s+");
-                    String last = list[list.length-1];
-                    if(last.startsWith("@")) {
+                    String last = list[list.length - 1];
+                    if (last.startsWith("@")) {
                         inMentionMode = copy.lastIndexOf("@") + 1;
                         updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
                     }
                 }
-
             } else {
                 inMentionMode = -1;
             }
-
-            if(inMentionMode>-1)
-                if(mention!=null) {
+            if (inMentionMode > -1)
+                if (mention != null) {
                     mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
                     listDivider.setVisibility(mention.getVisibility());
                 }
@@ -137,14 +137,24 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         }
     }
 
-    @OnItemClick(R.id.autocomplete) void onMentionSelection(int position){
-        String complete = mention.getAdapter().getItem(position).toString()+" ";
+    @OnItemClick(R.id.autocomplete) void onMentionSelection(int position) {
+        String complete = mention.getAdapter().getItem(position).toString() + " ";
         int end = editText.getSelectionEnd();
-
         editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
         inMentionMode = -1;
         mention.setVisibility(GONE);
         listDivider.setVisibility(GONE);
+    }
+
+    @OnClick(R.id.replyQuoteText) void onToggleQuote() {
+        TransitionManager.beginDelayedTransition((ViewGroup) parentView);
+        if (quote.getMaxLines() == 3) {
+            quote.setMaxLines(Integer.MAX_VALUE);
+        } else {
+            quote.setMaxLines(3);
+        }
+        quote.setCompoundDrawablesWithIntrinsicBounds(0, 0, quote.getMaxLines() == 3
+                                                            ? R.drawable.ic_arrow_drop_down : R.drawable.ic_arrow_drop_up, 0);
     }
 
     @OnClick(R.id.view) void onViewMarkDown() {
@@ -172,10 +182,10 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             return;
         }
         if (v.getId() == R.id.link) {
-            EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
+            EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "BannerDialogFragment");
         } else if (v.getId() == R.id.image) {
-            EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "EditorLinkImageDialogFragment");
-            if(BuildConfig.DEBUG)
+            EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "BannerDialogFragment");
+            if (BuildConfig.DEBUG)
                 // Doesn't need a string, will only show up in debug.
                 Toasty.warning(this, "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
         } else {
@@ -192,35 +202,10 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
         sentVia.setOnCheckedChangeListener((buttonView, isChecked) -> {
             PrefHelper.set("sent_via", isChecked);
-		});
+        });
         MarkDownProvider.setMdText(sentVia, sentFromFastHub);
         if (savedInstanceState == null) {
-            Intent intent = getIntent();
-            if (intent != null && intent.getExtras() != null) {
-                Bundle bundle = intent.getExtras();
-                //noinspection WrongConstant
-                extraType = bundle.getString(BundleConstant.EXTRA_TYPE);
-                itemId = bundle.getString(BundleConstant.ID);
-                login = bundle.getString(BundleConstant.EXTRA_TWO);
-                if (extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA) ||
-                        extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)) {
-                    sha = bundle.getString(BundleConstant.EXTRA_THREE);
-                } else {
-                    issueNumber = bundle.getInt(BundleConstant.EXTRA_THREE);
-                }
-                commentId = bundle.getLong(BundleConstant.EXTRA_FOUR);
-                String textToUpdate = bundle.getString(BundleConstant.EXTRA);
-                if (!InputHelper.isEmpty(textToUpdate)) {
-                    editText.setText(String.format("%s ", textToUpdate));
-                    editText.setSelection(InputHelper.toString(editText).length());
-                }
-                if(bundle.getString("message", "").isEmpty())
-                    replyQuote.setVisibility(GONE);
-                else {
-                    MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
-                }
-                participants = bundle.getStringArrayList("participants");
-            }
+            onCreate();
         }
         if (!PrefGetter.isEditorHintShowed()) {
             new MaterialTapTargetPrompt.Builder(this)
@@ -242,7 +227,45 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                         }
                     })
                     .show();
-            ActivityHelper.showDismissHints(this, () -> {});
+            ActivityHelper.showDismissHints(this, () -> {
+            });
+        }
+
+        if (editText.getText().toString().contains(sentFromFastHub)) {
+            editText.setText(editText.getText().toString().replace(sentFromFastHub, ""));
+            sentVia.setChecked(true);
+        }
+
+        editText.requestFocus();
+    }
+
+    private void onCreate() {
+        Intent intent = getIntent();
+        if (intent != null && intent.getExtras() != null) {
+            Bundle bundle = intent.getExtras();
+            //noinspection WrongConstant
+            extraType = bundle.getString(BundleConstant.EXTRA_TYPE);
+            reviewComment = bundle.getParcelable(BundleConstant.REVIEW_EXTRA);
+            itemId = bundle.getString(BundleConstant.ID);
+            login = bundle.getString(BundleConstant.EXTRA_TWO);
+            if (extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA) ||
+                    extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)) {
+                sha = bundle.getString(BundleConstant.EXTRA_THREE);
+            } else {
+                issueNumber = bundle.getInt(BundleConstant.EXTRA_THREE);
+            }
+            commentId = bundle.getLong(BundleConstant.EXTRA_FOUR);
+            String textToUpdate = bundle.getString(BundleConstant.EXTRA);
+            if (!InputHelper.isEmpty(textToUpdate)) {
+                editText.setText(String.format("%s ", textToUpdate));
+                editText.setSelection(InputHelper.toString(editText).length());
+            }
+            if (bundle.getString("message", "").isEmpty())
+                replyQuote.setVisibility(GONE);
+            else {
+                MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
+            }
+            participants = bundle.getStringArrayList("participants");
         }
     }
 
@@ -264,6 +287,17 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         finish();
     }
 
+    @Override public void onSendReviewResultAndFinish(EditReviewCommentModel comment, boolean isNew) {
+        hideProgress();
+        Intent intent = new Intent();
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.ITEM, comment)
+                .put(BundleConstant.EXTRA, isNew)
+                .end());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.done_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -277,7 +311,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     savedText = savedText + sentFromFastHub;
                 }
             }
-            getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha);
+            getPresenter().onHandleSubmission(savedText, extraType, itemId, commentId, login, issueNumber, sha, reviewComment);
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -307,7 +341,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             ViewHelper.hideKeyboard(editText);
             MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
                     Bundler.start().put("primary_extra", getString(R.string.discard)).put("secondary_extra", getString(R.string.cancel))
-                    .put(BundleConstant.EXTRA, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
+                            .put(BundleConstant.EXTRA, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
     }
 
@@ -322,16 +356,16 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (isLink) {
             MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link));
         } else {
-            editText.append("\n");
+            editText.setText(String.format("%s\n", editText.getText()));
             MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
         }
     }
 
     private void updateMentionList(@NonNull String mentioning) {
-        if(participants!=null){
+        if (participants != null) {
             ArrayList<String> mentions = new ArrayList<>();
-            for(String participant : participants)
-                if(participant.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()))
+            for (String participant : participants)
+                if (participant.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()))
                     mentions.add(participant);
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                     android.R.layout.simple_list_item_1, android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));

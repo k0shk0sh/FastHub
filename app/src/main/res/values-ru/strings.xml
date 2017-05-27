@@ -193,7 +193,7 @@
     <string name="switch_branch">Переключить ветвь</string>
     <string name="assignees">Назначения</string>
     <string name="edit">Редактировать</string>
-    <string name="edited">( отредактировано )</string>
+    <string name="edited">\u2022 отредактировано</string>
     <string name="update_issue">Обновить Вопрос</string>
     <string name="update_pull_request">Обновить Запрос на слияние</string>
     <string name="no_milestones">Нет тегов</string>
@@ -216,6 +216,13 @@
     <string name="recycler_view_animation_title">Анимации списка</string>
     <string name="back_button_summary">Отключить диалог, который предотвращал случайный выход из FastHub</string>
     <string name="back_button_title">Нажмите ещё раз для выхода</string>
+    <string name="restore">Восстановить</string>
+    <string name="backup">Создать резервную копию</string>
+    <string name="backed_up">Копия успешно создана!</string>
+    <string name="select_backup">Выберите резервную копию для восстановления</string>
+    <string name="permission_failed">Доступ не предоставлен.</string>
+    <string name="backup_summary">Последнее обновление: %s</string>
+    <string name="now">Сейчас</string>
     <string name="unsaved_data_warning">Все несохранённые изменения будут отменены</string>
     <string name="private_repo">Частный</string>
     <string name="rect_avatar_summary">Использовать скруглённые квадратные аватары вместо круглых</string>
@@ -317,6 +324,8 @@
     <string name="least_commented">Наименее комментируемые</string>
     <string name="recently_updated">Недавно обновлённые</string>
     <string name="least_recent_updated">Самые необновляемые</string>
+    <string name="up_to_date">Вы используете последнюю версию!</string>
+    <string name="new_version">Доступно обновление.</string>
     <string name="empty_search_error">Поле поиска не может быть пустым</string>
     <string name="long_press_repo_fab_hint">Долгое нажатие мгновенно создаёт новый Вопрос</string>
     <string name="commit_can_be_merged">Этот Запрос на слияние может быть объединён</string>
@@ -331,6 +340,7 @@
     <string name="open_source_libs">Библиотеки с открытым исходным кодом</string>
     <string name="enable_notification_sound_summary">Включить звуковые опевещения при получении новых уведомлений.</string>
     <string name="enable_notification_sound_title">Включить звуковые опевещения</string>
+    <string name="enable_notification_title">Включить уведомления</string>
     <string name="login_with_personal_token">Войти при помощи личного токена</string>
     <string name="personal_token">Личный токен</string>
     <string name="basic_login">Войти через основную форму авторизации</string>
@@ -358,4 +368,6 @@
     <string name="enable_signature_summary">Включить подпись &quot;отправлено с помощью &quot;</string>
     <string name="enable_signature_box">Включить галочку подписи</string>
     <string name="enable_signature_box_summary">Отображать в редакторе галочку, которая включает подпись</string>
+    <string name="tags">Теги</string>
+    <string name="add_comment">Добавить комментарий</string>
 </resources>

@@ -28,13 +28,13 @@ import java.util.List;
 class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements RepoIssuesMvp.Presenter {
 
     private ArrayList<Issue> issues = new ArrayList<>();
-    private String login;
-    private String repoId;
+    @icepick.State String login;
+    @icepick.State String repoId;
+    @icepick.State IssueState issueState;
+    @icepick.State boolean isLastUpdated;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private IssueState issueState;
-    private boolean isLastUpdated;
 
     @Override public int getCurrentPage() {
         return page;
@@ -143,6 +143,6 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     }
 
     @Override public void onItemLongClick(int position, View v, Issue item) {
-        onItemClick(position, v, item);
+        if (getView() != null) getView().onShowIssuePopup(item);
     }
 }

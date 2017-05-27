@@ -18,6 +18,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -92,7 +93,7 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -168,6 +169,16 @@ refresh.setRefreshing(true);
             onRefresh();
         }
     }
+
+    @Override public void onShowPopupDetails(@NonNull Issue item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
 
     private MyIssuesType getIssuesType() {
         if (issuesType == null) {

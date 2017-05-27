@@ -1,7 +1,7 @@
 package com.fastaccess.ui.adapter.callback;
 
 public interface OnToggleView {
-    void onToggle(int position, boolean isCollapsed);
+    void onToggle(long id, boolean isCollapsed);
 
-    boolean isCollapsed(int position);
+    boolean isCollapsed(long id);
 }

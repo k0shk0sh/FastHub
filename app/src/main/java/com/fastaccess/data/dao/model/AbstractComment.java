@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.converters.ReactionsConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.helper.RxHelper;
@@ -55,12 +56,13 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single save(Comment modelEntity) {
-        return App.getInstance().getDataStore()
-                .delete(Comment.class)
-                .where(ID.eq(modelEntity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(modelEntity));
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(Comment.class)
+                        .where(ID.eq(modelEntity.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(integer -> App.getInstance().getDataStore().insert(modelEntity)));
     }
 
     public static Observable saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {

@@ -28,9 +28,9 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private String owner;
-    private String repo;
-    @RepoMiscMVp.MiscType private int type;
+    @icepick.State String owner;
+    @icepick.State String repo;
+    @icepick.State @RepoMiscMVp.MiscType int type;
 
     RepoMiscPresenter(@Nullable Bundle arguments) {
         if (arguments == null) return;

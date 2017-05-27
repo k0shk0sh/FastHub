@@ -69,9 +69,10 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_normal"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
             android:layout_marginStart="@dimen/avatar_margin"
             android:layout_marginTop="@dimen/spacing_normal"
-            android:paddingEnd="@dimen/spacing_xs_large"
             android:textIsSelectable="true"/>
 
     </LinearLayout>

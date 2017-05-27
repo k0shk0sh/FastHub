@@ -27,10 +27,10 @@ import rx.Observable;
  */
 
 class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implements RepoFilePathMvp.Presenter {
-    private String repoId;
-    private String login;
-    private String path;
-    private String defaultBranch;
+    @icepick.State String repoId;
+    @icepick.State String login;
+    @icepick.State String path;
+    @icepick.State String defaultBranch;
     private ArrayList<RepoFile> paths = new ArrayList<>();
     private ArrayList<BranchesModel> branches = new ArrayList<>();
 
@@ -38,9 +38,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
         if (!item.getPath().equalsIgnoreCase(path)) if (getView() != null) getView().onItemClicked(item, position);
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFile item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {}
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {

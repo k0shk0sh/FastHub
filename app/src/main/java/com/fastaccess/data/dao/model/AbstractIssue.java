@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
 import com.fastaccess.data.dao.converters.MilestoneConverter;
@@ -69,15 +70,16 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single save(Issue entity) {
-        return App.getInstance().getDataStore()
-                .delete(Issue.class)
-                .where(ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(i -> App.getInstance().getDataStore().insert(entity));
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(Issue.class)
+                        .where(ID.eq(entity.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(i -> App.getInstance().getDataStore().insert(entity)));
     }
 
-    public static Observable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable<Issue> save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(
                 singleEntityStore.delete(Issue.class)

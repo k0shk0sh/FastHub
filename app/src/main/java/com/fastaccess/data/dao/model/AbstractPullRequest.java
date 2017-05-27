@@ -10,6 +10,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.PullsIssuesParser;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.converters.CommitConverter;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
@@ -90,15 +91,16 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single save(PullRequest entity) {
-        return App.getInstance().getDataStore()
-                .delete(PullRequest.class)
-                .where(ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(entity));
+        return RxHelper.getSingle(
+                App.getInstance().getDataStore()
+                        .delete(PullRequest.class)
+                        .where(ID.eq(entity.getId()))
+                        .get()
+                        .toSingle()
+                        .flatMap(integer -> App.getInstance().getDataStore().insert(entity)));
     }
 
-    public static Observable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable<PullRequest> save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
         SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(PullRequest.class)
                 .where(REPO_ID.equal(repoId)

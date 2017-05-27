@@ -19,6 +19,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -92,7 +93,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -178,6 +179,15 @@ refresh.setRefreshing(true);
             adapter.clear();
             onRefresh();
         }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    @Override public void onShowPopupDetails(@NonNull PullRequest item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
     }
 
     private void showReload() {

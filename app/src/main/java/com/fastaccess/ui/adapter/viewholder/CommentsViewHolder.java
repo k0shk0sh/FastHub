@@ -6,7 +6,6 @@ import android.support.v7.widget.AppCompatImageView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
@@ -65,7 +64,8 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         }
         name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         if (commentsModel.getCreatedAt().before(commentsModel.getUpdatedAt())) {
-            date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()) + " " + App.getInstance().getResources().getString(R.string.edited));
+            date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()),
+                    date.getResources().getString(R.string.edited)));
         } else {
             date.setText(ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()));
         }

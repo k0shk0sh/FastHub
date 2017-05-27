@@ -9,10 +9,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
-import com.fastaccess.data.dao.model.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
@@ -63,6 +63,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
+        toggle.setOnClickListener(this);
         toggleHolder.setOnClickListener(this);
         laugh.setOnClickListener(this);
         sad.setOnClickListener(this);

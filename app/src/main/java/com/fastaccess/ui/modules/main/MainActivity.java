@@ -105,6 +105,11 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
+        if (navType == MainMvp.PROFILE) {
+            getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
+            bottomNavigation.setSelectedIndex(this.navType, true);
+            return;
+        }
         this.navType = navType;
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);

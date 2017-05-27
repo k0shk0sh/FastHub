@@ -32,25 +32,29 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
+import com.fastaccess.ui.modules.login.LoginActivity;
 import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
+
+import net.grandcentrix.thirtyinch.TiActivity;
 
 import java.util.ArrayList;
 
@@ -64,11 +68,11 @@ import icepick.State;
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
-    @Nullable @BindView(R.id.toolbar) Toolbar toolbar;
+    @Nullable @BindView(R.id.toolbar) public Toolbar toolbar;
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
@@ -88,6 +92,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        getPresenter().onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
     }
 
@@ -108,9 +113,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(savedInstanceState);
         }
         setupToolbarAndStatusBar(toolbar);
-        showHideAds();
+        //showHideAds();
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
@@ -139,7 +145,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         if (isOk && bundle != null) {
             boolean logout = bundle.getBoolean("logout");
-            if (logout) onRequireLogin();
+            if (logout) {
+                onRequireLogin();
+//                if(App.getInstance().getGoogleApiClient().isConnected())
+//                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
+            }
         }
     }//pass
 
@@ -193,7 +203,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
-        PrefGetter.clear();
+        PrefHelper.clearKey("token");
         App.getInstance().getDataStore()
                 .delete(Login.class)
                 .get()
@@ -275,13 +285,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REFRESH_CODE)
-            if(resultCode==RESULT_OK)
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REFRESH_CODE) {
+            if (resultCode == RESULT_OK) {
                 recreate();
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override public void onScrollTop(int index) {}
 
     protected void selectHome(boolean hideRepo) {
         if (extraNav != null) {
@@ -374,6 +387,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
+        if (this instanceof LoginActivity || this instanceof LoginChooserActivity) return; // we really should consider putting this outside as it starts growing :D
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
         int themeColor = PrefGetter.getThemeColor(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {
