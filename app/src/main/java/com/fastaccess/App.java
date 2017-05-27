@@ -2,12 +2,7 @@ package com.fastaccess;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.text.emoji.EmojiCompat;
-import android.support.text.emoji.FontRequestEmojiCompatConfig;
-import android.support.v4.provider.FontRequest;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
@@ -39,26 +34,26 @@ public class App extends Application {
 
     @Override public void onCreate() {
         super.onCreate();
-        final EmojiCompat.Config config;
-        // Use a downloadable font for EmojiCompat
-        final FontRequest fontRequest = new FontRequest(
-                "com.google.android.gms.fonts",
-                "com.google.android.gms",
-                "Noto Color Emoji Compat",
-                R.array.fonts_certificate);
-        config = new FontRequestEmojiCompatConfig(getApplicationContext(), fontRequest)
-                .setReplaceAll(true)
-                .registerInitCallback(new EmojiCompat.InitCallback() {
-                    @Override
-                    public void onInitialized() {
-                        Log.i(getClass().getSimpleName(), "EmojiCompat initialized");
-                    }
-                    @Override
-                    public void onFailed(@Nullable Throwable throwable) {
-                        Log.e(getClass().getSimpleName(), "EmojiCompat initialization failed", throwable);
-                    }
-                });
-        EmojiCompat.init(config);
+//        final EmojiCompat.Config config;
+//        // Use a downloadable font for EmojiCompat
+//        final FontRequest fontRequest = new FontRequest(
+//                "com.google.android.gms.fonts",
+//                "com.google.android.gms",
+//                "Noto Color Emoji Compat",
+//                R.array.fonts_certificate);
+//        config = new FontRequestEmojiCompatConfig(getApplicationContext(), fontRequest)
+//                .setReplaceAll(true)
+//                .registerInitCallback(new EmojiCompat.InitCallback() {
+//                    @Override
+//                    public void onInitialized() {
+//                        Log.i(getClass().getSimpleName(), "EmojiCompat initialized");
+//                    }
+//                    @Override
+//                    public void onFailed(@Nullable Throwable throwable) {
+//                        Log.e(getClass().getSimpleName(), "EmojiCompat initialization failed", throwable);
+//                    }
+//                });
+//        EmojiCompat.init(config);
         instance = this;
         init();
         EmojiManager.load();

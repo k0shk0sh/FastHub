@@ -60,7 +60,7 @@ public class PinnedReposFragment extends BaseFragment<PinnedReposMvp.View, Pinne
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if(!AbstractPinnedRepos.isPinned("k0shk0sh/FastHub"))
+        if (!AbstractPinnedRepos.isPinned("k0shk0sh/FastHub"))
             Repo.getRepo("FastHub", "k0shk0sh").subscribe(AbstractPinnedRepos::pinUpin);
         adapter = new PinnedReposAdapter(getPresenter().getPinnedRepos(), getPresenter());
         stateLayout.setEmptyText(R.string.empty_pinned_repos);
