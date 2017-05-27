@@ -42,13 +42,13 @@
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:textColor="?android:textColorPrimary"
                 tools:text="When one acquires"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Small"
+                style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

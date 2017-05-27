@@ -18,7 +18,7 @@ android {
         signing {
             keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
             keyPassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
-            storeFile file('fastaccess-key')
+            storeFile file('fastaccess-public')
             storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
