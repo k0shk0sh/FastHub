@@ -1,6 +1,7 @@
 package com.fastaccess.provider.emoji;
 
 import com.fastaccess.App;
+import com.fastaccess.helper.RxHelper;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,8 +27,8 @@ public class EmojiManager {
     private static List<Emoji> ALL_EMOJIS;
     private static EmojiTrie EMOJI_TRIE;
 
-    public static void load(){
-        Observable.fromCallable(() -> {
+    public static void load() {
+        RxHelper.safeObservable(Observable.fromCallable(() -> {
             try {
                 InputStream stream = App.getInstance().getAssets().open(PATH);
                 List<Emoji> emojis = EmojiLoader.loadEmojis(stream);
@@ -50,7 +51,7 @@ public class EmojiManager {
                 throw new RuntimeException(e);
             }
             return "";
-        }).subscribeOn(Schedulers.io()).subscribe();
+        })).subscribeOn(Schedulers.io()).subscribe();
     }
 
     private EmojiManager() {}

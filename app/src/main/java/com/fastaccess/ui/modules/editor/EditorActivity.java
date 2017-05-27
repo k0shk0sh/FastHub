@@ -356,7 +356,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (isLink) {
             MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link));
         } else {
-            editText.append("\n");
+            editText.setText(String.format("%s\n", editText.getText()));
             MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
         }
     }
