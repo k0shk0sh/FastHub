@@ -18,6 +18,7 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
@@ -37,6 +38,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -47,8 +49,7 @@ import static android.app.Activity.RESULT_OK;
 
 public class SettingsCategoryFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
-    @BindView(R.id.settingsContainer)
-    FrameLayout settingsContainer;
+    @BindView(R.id.settingsContainer) FrameLayout settingsContainer;
 
     private static int PERMISSION_REQUEST_CODE = 128;
     private static int RESTORE_REQUEST_CODE = 256;
@@ -239,8 +240,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         return false;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
@@ -268,8 +268,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     } catch (IOException e) {
                         Log.e(getTag(), "Couldn't backup: " + e.toString());
                     }
-
-                    PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd").format(new Date()));
+                    PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
                     findPreference("backup").setSummary(getString(R.string.backup_summary, getString(R.string.now)));
                     Toasty.success(getContext(), getString(R.string.backed_up)).show();
                 } else {
@@ -286,39 +285,40 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESTORE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 StringBuilder json = new StringBuilder();
                 try {
-                    InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(
-                            inputStream));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        json.append(line);
+                    try (InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData())) {
+                        if (inputStream != null) {
+                            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                                String line;
+                                while ((line = reader.readLine()) != null) {
+                                    json.append(line);
+                                }
+                            }
+                        }
                     }
-                    reader.close();
-                    inputStream.close();
                 } catch (IOException e) {
                     Toasty.error(getContext(), getString(R.string.error)).show();
                 }
-
-                Gson gson = new Gson();
-                JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
-                Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-                for (Map.Entry<String, JsonElement> entry : entrySet) {
-                    if (entry.getValue().getAsJsonPrimitive().isBoolean())
-                        PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
-                    else if (entry.getValue().getAsJsonPrimitive().isNumber())
-                        PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
-                    else if (entry.getValue().getAsJsonPrimitive().isString())
-                        PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
-                    PrefHelper.set(entry.getKey(), entry.getValue());
-                    Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                if (!InputHelper.isEmpty(json)) {
+                    Gson gson = new Gson();
+                    JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
+                    Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+                    for (Map.Entry<String, JsonElement> entry : entrySet) {
+                        if (entry.getValue().getAsJsonPrimitive().isBoolean())
+                            PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
+                        else if (entry.getValue().getAsJsonPrimitive().isNumber())
+                            PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
+                        else if (entry.getValue().getAsJsonPrimitive().isString())
+                            PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
+                        PrefHelper.set(entry.getKey(), entry.getValue());
+                        Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                    }
+                    callback.onThemeChanged();
                 }
-                callback.onThemeChanged();
             }
         }
     }
@@ -326,7 +326,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("application/json");
-
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_backup)), RESTORE_REQUEST_CODE);
     }
 

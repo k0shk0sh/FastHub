@@ -364,7 +364,7 @@ public class StackBuilderSchemeParser {
 
     @Nullable private static TaskStackBuilder getReleases(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments != null && segments.size() >= 2) {
+        if (segments != null && segments.size() > 2) {
             if (uri.getPathSegments().get(2).equals("releases")) {
                 String owner = segments.get(0);
                 String repo = segments.get(1);

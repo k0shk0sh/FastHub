@@ -310,7 +310,6 @@ public class SchemeParser {
 
     @Nullable private static Intent getReleases(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        Logger.e(segments.size());
         if (segments != null && segments.size() > 2) {
             if (uri.getPathSegments().get(2).equals("releases")) {
                 String owner = segments.get(0);
