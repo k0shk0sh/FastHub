@@ -228,8 +228,8 @@
     <string name="or_character">O</string>
     <string name="mark_notification_title">Disabilita lo stato di notifica letta</string>
     <string name="mark_notification_summary">Premendo su una notifica non la segnerà come letta.</string>
-    <string name="light_theme_mode" translatable="false">Light Theme</string>
-    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="light_theme_mode" translatable="false">Tema chiaro</string>
+    <string name="dark_theme_mode" translatable="false">Tema scuro</string>
     <string name="red_theme_mode" translatable="false">Red</string>
     <string name="pink_theme_mode" translatable="false">Pink</string>
     <string name="purple_theme_mode" translatable="false">Purple</string>
