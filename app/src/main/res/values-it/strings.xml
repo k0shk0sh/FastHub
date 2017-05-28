@@ -193,6 +193,7 @@
     <string name="background_job_title">Intervallo sincronizzazione delle notifiche</string>
     <string name="every">Ogni</string>
     <string name="behavior">Comportamento</string>
+    <string name="customization">Personalizzazione</string>
     <string name="recycler_view_animation_summary">Abilita animazioni delle liste</string>
     <string name="recycler_view_animation_title">Animazione lista</string>
     <string name="back_button_summary">Disabilita il dialogo che previene una chiusura accidentale dell\'app</string>
