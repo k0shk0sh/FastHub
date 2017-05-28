@@ -24,9 +24,9 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
         if (pinnedRepos.isEmpty()) {
             onReload();
             if (!AbstractPinnedRepos.isPinned("k0shk0sh/FastHub"))
-                manageSubscription(Repo.getRepo("FastHub", "k0shk0sh")
+                manageObservable(Repo.getRepo("FastHub", "k0shk0sh")
                         .map(repo -> repo != null && AbstractPinnedRepos.pinUpin(repo))
-                        .subscribe());
+                        .toObservable());
         }
     }
 

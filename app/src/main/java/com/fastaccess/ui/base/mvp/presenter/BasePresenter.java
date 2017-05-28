@@ -12,16 +12,17 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-import net.grandcentrix.thirtyinch.rx.RxTiPresenterSubscriptionHandler;
+import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
 import icepick.Icepick;
-import retrofit2.adapter.rxjava.HttpException;
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import retrofit2.HttpException;
+
 
 /**
  * Created by Kosh on 25 May 2016, 9:12 PM
@@ -29,19 +30,25 @@ import rx.functions.Action1;
 
 public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> implements BaseMvp.FAPresenter {
     private boolean apiCalled;
-    private final RxTiPresenterSubscriptionHandler subscriptionHandler = new RxTiPresenterSubscriptionHandler(this);
+    private final RxTiPresenterDisposableHandler subscriptionHandler = new RxTiPresenterDisposableHandler(this);
 
     @Override public void onSaveInstanceState(Bundle outState) {
-      //  Icepick.saveInstanceState(this, outState);
+        Icepick.saveInstanceState(this, outState);
     }
 
     @Override public void onRestoreInstanceState(Bundle outState) {
-      //  Icepick.restoreInstanceState(this, outState);
+        Icepick.restoreInstanceState(this, outState);
     }
 
-    @Override public void manageSubscription(@Nullable Subscription... subscription) {
+    @Override public void manageSubscription(@Nullable Disposable... subscription) {
         if (subscription != null) {
-            subscriptionHandler.manageSubscriptions(subscription);
+            subscriptionHandler.manageDisposables(subscription);
+        }
+    }
+
+    @Override public <T> void manageObservable(@Nullable Observable<T> observable) {
+        if (observable != null) {
+            manageSubscription(observable.subscribe(t -> {/**/}, Throwable::printStackTrace));
         }
     }
 
@@ -68,10 +75,10 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         }
     }
 
-    @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Action1<T> onNext) {
+    @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext) {
         manageSubscription(
                 RxHelper.getObserver(observable)
-                        .doOnSubscribe(this::onSubscribed)
+                        .doOnSubscribe(disposable -> onSubscribed())
                         .subscribe(onNext, this::onError, () -> apiCalled = true)
         );
     }

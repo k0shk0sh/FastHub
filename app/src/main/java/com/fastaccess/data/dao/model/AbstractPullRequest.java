@@ -28,15 +28,15 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 import static com.fastaccess.data.dao.model.PullRequest.ID;
 import static com.fastaccess.data.dao.model.PullRequest.LOGIN;
@@ -90,25 +90,19 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
-    public Single save(PullRequest entity) {
-        return RxHelper.getSingle(
-                App.getInstance().getDataStore()
-                        .delete(PullRequest.class)
-                        .where(ID.eq(entity.getId()))
-                        .get()
-                        .toSingle()
-                        .flatMap(integer -> App.getInstance().getDataStore().insert(entity)));
+    public Single<PullRequest> save(PullRequest entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
     public static Observable<PullRequest> save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(PullRequest.class)
                 .where(REPO_ID.equal(repoId)
                         .and(LOGIN.equal(login)))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models))
+                .flatMap(integer -> Observable.fromIterable(models))
                 .flatMap(pulRequest -> {
                     pulRequest.setRepoId(repoId);
                     pulRequest.setLogin(login);
@@ -116,8 +110,8 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                 }));
     }
 
-    public static Observable<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,
-                                                                @NonNull IssueState issueState) {
+    public static Single<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,
+                                                            @NonNull IssueState issueState) {
         return App.getInstance().getDataStore()
                 .select(PullRequest.class)
                 .where(REPO_ID.equal(repoId)
@@ -125,7 +119,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                         .and(STATE.equal(issueState)))
                 .orderBy(UPDATED_AT.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -134,7 +128,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                 .select(PullRequest.class)
                 .where(ID.eq(id))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     public static Observable<PullRequest> getPullRequestByNumber(int number, @NonNull String repoId, @NonNull String login) {
@@ -144,7 +138,7 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
                         .and(LOGIN.equal(login))
                         .and(NUMBER.equal(number)))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @NonNull public static SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context, boolean showRepoName) {

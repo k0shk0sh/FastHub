@@ -16,12 +16,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import io.requery.Persistable;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.meta.EntityModel;
-import io.requery.rx.RxSupport;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
+import io.requery.reactivex.ReactiveSupport;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import io.requery.sql.TableCreationMode;
 import shortbread.Shortbread;
+
 
 
 /**
@@ -30,7 +31,7 @@ import shortbread.Shortbread;
 
 public class App extends Application {
     private static App instance;
-    private SingleEntityStore<Persistable> dataStore;
+    private ReactiveEntityStore<Persistable> dataStore;
     private static GoogleApiClient googleApiClient;
 
     @Override public void onCreate() {
@@ -88,7 +89,7 @@ public class App extends Application {
         PreferenceManager.setDefaultValues(this, R.xml.notification_settings, false);
     }
 
-    public SingleEntityStore<Persistable> getDataStore() {
+    public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
             DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 9);
@@ -96,7 +97,7 @@ public class App extends Application {
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);
             }
-            dataStore = RxSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
+            dataStore = ReactiveSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }
         return dataStore;
     }

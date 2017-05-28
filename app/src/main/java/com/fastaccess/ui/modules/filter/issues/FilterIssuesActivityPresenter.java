@@ -13,7 +13,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.ArrayList;
 
 import lombok.Getter;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 09 Apr 2017, 6:22 PM

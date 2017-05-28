@@ -84,7 +84,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                             .filter(issue -> issue.getPullRequest() == null)
                             .toList();
                     if (getCurrentPage() == 1) {
-                        manageSubscription(Issue.save(filtered, repoId, login).subscribe());
+                        manageObservable(Issue.save(filtered, repoId, login));
                     }
                     sendToView(view -> view.onNotifyAdapter(filtered, page));
                 });
@@ -109,7 +109,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
 
     @Override public void onWorkOffline() {
         if (issues.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Issue.getIssues(repoId, login, issueState))
+            manageSubscription(RxHelper.getSingle(Issue.getIssues(repoId, login, issueState))
                     .subscribe(issueModel -> sendToView(view -> {
                         view.onNotifyAdapter(issueModel, 1);
                         view.onUpdateCount(issueModel.size());

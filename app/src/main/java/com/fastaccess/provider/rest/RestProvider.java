@@ -40,9 +40,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.HttpException;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.HttpException;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * Created by Kosh on 08 Feb 2017, 8:37 PM
@@ -91,7 +91,7 @@ public class RestProvider {
                 .baseUrl(BuildConfig.REST_URL)
                 .client(provideOkHttpClient(isRawString))
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
@@ -141,7 +141,7 @@ public class RestProvider {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.REST_URL)
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(UserRestService.class);
     }
@@ -207,7 +207,7 @@ public class RestProvider {
         return new Retrofit.Builder()
                 .baseUrl("https://ok13pknpj4.execute-api.eu-central-1.amazonaws.com/prod/")
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(SlackService.class);
     }

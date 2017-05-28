@@ -14,7 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * Created by Kosh on 15 Apr 2017, 7:59 PM
@@ -51,7 +51,7 @@ public class ImgurProvider {
                 .baseUrl(BuildConfig.IMGUR_URL)
                 .client(provideOkHttpClient())
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 

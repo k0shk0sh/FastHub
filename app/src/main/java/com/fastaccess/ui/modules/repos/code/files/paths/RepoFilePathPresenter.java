@@ -20,7 +20,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:10 PM
@@ -100,17 +100,15 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                             return branchesModels;
                         }));
                 manageSubscription(observable
-                        .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
+                        .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                         .doOnNext(branchesModels -> {
                             branches.clear();
                             branches.addAll(branchesModels);
                             sendToView(view -> view.setBranchesData(branches, true));
                         })
-                        .onErrorReturn(throwable -> {
+                        .subscribe(branchesModels -> {/**/}, throwable -> {
                             sendToView(view -> view.setBranchesData(branches, true));
-                            return null;
-                        })
-                        .subscribe());
+                        }));
             }
         } else {
             throw new NullPointerException("Bundle is null");

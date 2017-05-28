@@ -16,7 +16,7 @@ import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 27 Nov 2016, 3:43 PM
@@ -132,7 +132,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                                 downloadedStream = string;
                                 fileModel.setMarkdown(true);
                                 fileModel.setContent(downloadedStream);
-                                manageSubscription(fileModel.save(fileModel).subscribe());
+                                manageObservable(fileModel.save(fileModel).toObservable());
                                 sendToView(view -> view.onSetMdText(downloadedStream, url));
                             });
                             return;
@@ -140,7 +140,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         fileModel.setMarkdown(false);
                         sendToView(view -> view.onSetCode(downloadedStream));
                     }
-                    manageSubscription(fileModel.save(fileModel).subscribe());
+                    manageObservable(fileModel.save(fileModel).toObservable());
                 });
     }
 

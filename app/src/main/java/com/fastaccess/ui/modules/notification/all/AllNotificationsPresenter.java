@@ -20,7 +20,7 @@ import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 20 Feb 2017, 8:46 PM
@@ -39,7 +39,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 }
             } else if (v.getId() == R.id.unsubsribe) {
                 item.setUnread(false);
-                manageSubscription(item.save(item).subscribe());
+                manageObservable(item.save(item).toObservable());
                 sendToView(view -> view.onUpdateReadState(new GroupedNotificationModel(item), position));
                 ReadNotificationService.unSubscribe(v.getContext(), item.getId());
             } else {
@@ -63,7 +63,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 
     private void markAsRead(int position, View v, Notification item) {
         item.setUnread(false);
-        manageSubscription(item.save(item).subscribe());
+        manageObservable(item.save(item).toObservable());
         sendToView(view -> view.onUpdateReadState(new GroupedNotificationModel(item), position));
         ReadNotificationService.start(v.getContext(), item.getId());
     }
@@ -77,8 +77,8 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Notification.getAlltNotifications())
-                    .flatMap(notifications -> Observable.from(GroupedNotificationModel.construct(notifications)).toList())
+            manageSubscription(RxHelper.getObserver(Notification.getAlltNotifications().toObservable())
+                    .flatMap(notifications -> Observable.just(GroupedNotificationModel.construct(notifications)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
@@ -91,7 +91,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 
     @Override public void onCallApi() {
 //        Observable<List<Notification>> notifications = RestProvider.getNotificationService().getAllNotifications()
-//                .flatMap(response -> response.getItems() != null ? Observable.from(response.getItems()) : Observable.empty())
+//                .flatMap(response -> response.getItems() != null ? Observable.fromIterable(response.getItems()) : Observable.empty())
 //                .filter(ObjectsCompat::nonNull)
 //                .flatMap(notification -> RestProvider.getNotificationService().isSubscribed(notification.getId())
 //                                .onErrorReturn(throwable -> null),
@@ -117,20 +117,20 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
     }
 
     @Override public void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data) {
-        manageSubscription(RxHelper.getObserver(Observable.from(data))
+        manageSubscription(RxHelper.getObserver(Observable.fromIterable(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .map(GroupedNotificationModel::getNotification)
                 .subscribe(notification -> {
                     Logger.e(notification.getUrl());
                     notification.setUnread(false);
-                    manageSubscription(notification.save(notification).subscribe());
+                    manageObservable(notification.save(notification).toObservable());
                     sendToView(view -> view.onReadNotification(notification));
-                }));
+                }, this::onError));
     }
 
     @Override public void onMarkReadByRepo(@NonNull List<GroupedNotificationModel> data, @NonNull Repo repo) {
-        manageSubscription(RxHelper.getObserver(Observable.from(data))
+        manageSubscription(RxHelper.getObserver(Observable.fromIterable(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .filter(group -> group.getNotification().getRepository().getFullName().equalsIgnoreCase(repo.getFullName()))
@@ -138,8 +138,8 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 .subscribe(notification -> {
                     Logger.e(notification.getUrl());
                     notification.setUnread(false);
-                    manageSubscription(notification.save(notification).subscribe());
+                    manageObservable(notification.save(notification).toObservable());
                     sendToView(view -> view.onReadNotification(notification));
-                }));
+                }, this::onError));
     }
 }

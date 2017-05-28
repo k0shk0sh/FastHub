@@ -14,7 +14,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:10 PM
@@ -50,10 +50,10 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if ((repoId == null || login == null) || !files.isEmpty()) return;
-        manageSubscription(RxHelper.getObserver(RepoFile.getFiles(login, repoId))
+        manageSubscription(RxHelper.getObserver(RepoFile.getFiles(login, repoId).toObservable())
                 .flatMap(response -> {
                     if (response != null) {
-                        return Observable.from(response).sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
+                        return Observable.fromIterable(response).sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
                     }
                     return Observable.empty();
                 })
@@ -70,15 +70,15 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         makeRestCall(RestProvider.getRepoService().getRepoFiles(login, repoId, path, ref)
                 .flatMap(response -> {
                     if (response != null && response.getItems() != null) {
-                        return Observable.from(response.getItems())
+                        return Observable.fromIterable(response.getItems())
                                 .sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
                     }
                     return Observable.empty();
                 })
-                .toList(), response -> {
+                .toList().toObservable(), response -> {
             files.clear();
             if (response != null) {
-                manageSubscription(RepoFile.save(response, login, repoId).subscribe());
+                manageObservable(RepoFile.save(response, login, repoId));
                 pathsModel.setFiles(ref, path, response);
                 files.addAll(response);
             }

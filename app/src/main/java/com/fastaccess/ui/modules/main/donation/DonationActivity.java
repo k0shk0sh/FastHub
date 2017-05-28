@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -15,10 +14,7 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.octo.bear.pago.Pago;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Kosh on 24 Mar 2017, 9:16 PM
@@ -28,19 +24,19 @@ public class DonationActivity extends BaseActivity {
     @BindView(R.id.cardsHolder) View cardsHolder;
     @BindView(R.id.appbar) AppBarLayout appBarLayout;
 
-    private Pago pago;
-    private Subscription subscription;
+//    private Pago pago;
+    private Disposable subscription;
 
-    @NonNull public Pago getPago() {
-        if (pago == null) {
-            pago = new Pago(getApplicationContext());
-        }
-        return pago;
-    }
+//    @NonNull public Pago getPago() {
+//        if (pago == null) {
+//            pago = new Pago(getApplicationContext());
+//        }
+//        return pago;
+//    }
 
     @Override protected void onDestroy() {
-        if (subscription != null && subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
         }
         super.onDestroy();
     }
@@ -91,16 +87,16 @@ public class DonationActivity extends BaseActivity {
     }
 
     private void onProceed(@NonNull String productKey) {
-        subscription = getPago().purchaseProduct(productKey, "inapp:com.fastaccess.github:" + productKey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(throwable -> {
-                    showErrorMessage(throwable.getMessage());
-                    return null;
-                })
-                .subscribe(order -> {
-                    Logger.e(order);
-                    if (order != null) showMessage(R.string.success, R.string.success_purchase_message);
-                }, Throwable::printStackTrace);
+//        subscription = getPago().purchaseProduct(productKey, "inapp:com.fastaccess.github:" + productKey)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .onErrorReturn(throwable -> {
+//                    showErrorMessage(throwable.getMessage());
+//                    return null;
+//                })
+//                .subscribe(order -> {
+//                    Logger.e(order);
+//                    if (order != null) showMessage(R.string.success, R.string.success_purchase_message);
+//                }, Throwable::printStackTrace);
     }
 }

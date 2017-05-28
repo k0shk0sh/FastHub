@@ -41,7 +41,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
                 repoModel -> {
                     this.repo = repoModel;
-                    manageSubscription(this.repo.save(repo).subscribe());
+                    manageObservable(this.repo.save(repo).toObservable());
                     sendToView(view -> {
                         view.onInitRepo();
                         view.onNavigationChanged(navTyp);
@@ -133,14 +133,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             String login = login();
             String name = repoId();
             manageSubscription(RxHelper.getObserver(RestProvider.getRepoService().isWatchingRepo(login, name))
-                    .doOnSubscribe(() -> sendToView(view -> view.onEnableDisableWatch(false)))
+                    .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableWatch(false)))
                     .doOnNext(subscriptionModel -> sendToView(view -> view.onRepoWatched(isWatched = subscriptionModel.isSubscribed())))
-                    .onErrorReturn(throwable -> {
+                    .subscribe(o -> {/**/}, throwable -> {
                         isWatched = false;
                         sendToView(view -> view.onRepoWatched(isWatched));
-                        return null;
-                    })
-                    .subscribe());
+                    }));
         }
     }
 
@@ -149,20 +147,18 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             String login = login();
             String name = repoId();
             manageSubscription(RxHelper.getObserver(RestProvider.getRepoService().checkStarring(login, name))
-                    .doOnSubscribe(() -> sendToView(view -> view.onEnableDisableStar(false)))
+                    .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableStar(false)))
                     .doOnNext(response -> sendToView(view -> view.onRepoStarred(isStarred = response.code() == 204)))
-                    .onErrorReturn(throwable -> {
+                    .subscribe(booleanResponse -> {/**/}, throwable -> {
                         isStarred = false;
                         sendToView(view -> view.onRepoStarred(isStarred));
-                        return null;
-                    })
-                    .subscribe());
+                    }));
         }
     }
 
     @Override public void onWorkOffline() {
         if (!InputHelper.isEmpty(login()) && !InputHelper.isEmpty(repoId())) {
-            manageSubscription(RxHelper.getObserver(Repo.getRepo(repoId, login))
+            manageSubscription(RxHelper.getObserver(Repo.getRepo(repoId, login).toObservable())
                     .subscribe(repoModel -> {
                         repo = repoModel;
                         if (repo != null) {

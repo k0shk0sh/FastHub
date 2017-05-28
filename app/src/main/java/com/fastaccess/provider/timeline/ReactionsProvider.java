@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 09 Apr 2017, 10:40 AM

@@ -17,7 +17,7 @@ import java.util.HashMap;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by JediB on 5/25/2017.

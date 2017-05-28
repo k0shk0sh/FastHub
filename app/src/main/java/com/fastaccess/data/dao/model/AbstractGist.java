@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.GithubFileModel;
 import com.fastaccess.data.dao.converters.GitHubFilesConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.ObjectsCompat;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -20,15 +21,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:32 PM
@@ -55,58 +56,53 @@ import rx.Single;
     @Column(name = "user_column") @Convert(UserConverter.class) User user;
     @Convert(UserConverter.class) User owner;
 
-    public Single save(Gist modelEntity) {
-        return RxHelper.getSingle(
-                App.getInstance().getDataStore()
-                        .delete(Gist.class)
-                        .where(Gist.ID.eq(modelEntity.getId()))
-                        .get()
-                        .toSingle()
-                        .flatMap(integer -> App.getInstance().getDataStore().insert(modelEntity)));
+    public Single<Gist> save(Gist entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
     public static Observable<Gist> save(@NonNull List<Gist> gists) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
                 .where(Gist.OWNER_NAME.isNull())
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(gists))
-                .flatMap(gist -> singleEntityStore.insert(gist).toObservable()));
+                .flatMap(integer -> Observable.fromIterable(gists))
+                .flatMap(gist -> gist.save(gist).toObservable()));
     }
 
     public static Observable<Gist> save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
                 .where(Gist.OWNER_NAME.equal(ownerName))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(gists))
+                .flatMap(integer -> Observable.fromIterable(gists))
+                .filter(ObjectsCompat::nonNull)
                 .flatMap(gist -> {
                     gist.setOwnerName(ownerName);
                     return gist.save(gist).toObservable();
                 }));
     }
 
-    @NonNull public static Observable<List<Gist>> getMyGists(@NonNull String ownerName) {
+    @NonNull public static Single<List<Gist>> getMyGists(@NonNull String ownerName) {
         return App.getInstance()
                 .getDataStore()
                 .select(Gist.class)
                 .where(Gist.OWNER_NAME.equal(ownerName))
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
-    @NonNull public static Observable<List<Gist>> getGists() {
+    @NonNull public static Single<List<Gist>> getGists() {
         return App.getInstance()
                 .getDataStore()
                 .select(Gist.class)
                 .where(Gist.OWNER_NAME.isNull())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -116,7 +112,7 @@ import rx.Single;
                 .select(Gist.class)
                 .where(Gist.GIST_ID.eq(gistId))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public boolean equals(Object o) {

@@ -77,7 +77,7 @@ available until further notice~~
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
 - **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) because its ThirtyInch.
-- [**RxJava**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
+- [**RxJava2**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
 - [**Requery**](https://github.com/requery/requery/) for offline-mode
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `Collections`
