@@ -44,6 +44,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
+import io.reactivex.disposables.Disposable;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -63,6 +64,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationTime;
     private Preference notificationRead;
     private Preference notificationSound;
+    private Disposable disposable;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -119,14 +121,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                         .bold(BuildConfig.VERSION_NAME)
                         .append(")"));
                 findPreference("currentVersion").setOnPreferenceClickListener(preference -> {
-                    Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
-                        if (releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
-                            Toasty.success(getContext(), getString(R.string.up_to_date)).show();
-                        else
-                            Toasty.warning(getContext(), getString(R.string.new_version)).show();
+                    disposable = Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
+                        if (releases != null) {
+                            if (releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
+                                Toasty.success(getContext(), getString(R.string.up_to_date)).show();
+                            else
+                                Toasty.warning(getContext(), getString(R.string.new_version)).show();
+                        }
                     });
-
-
                     return true;
                 });
                 break;
@@ -249,12 +251,10 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     Map<String, ?> settings = PrefHelper.getAll();
                     settings.remove("token");
                     String json = new Gson().toJson(settings);
-                    String path =
-                            Environment.getExternalStorageDirectory() + File.separator + "FastHub";
+                    String path = Environment.getExternalStorageDirectory() + File.separator + "FastHub";
                     File folder = new File(path);
                     folder.mkdirs();
                     File backup = new File(folder, "backup.json");
-
                     try {
                         backup.createNewFile();
                         FileOutputStream outputStream = new FileOutputStream(backup);
@@ -320,6 +320,13 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     callback.onThemeChanged();
                 }
             }
+        }
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
     }
 

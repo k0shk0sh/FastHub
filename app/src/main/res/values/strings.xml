@@ -456,4 +456,6 @@
     </string>
     <string name="edit_banner">CHOOSE BANNER</string>
     <string name="image_error">Error loading image, please try again.</string>
+    <string name="trending">Trending</string>
+    <string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
 </resources>

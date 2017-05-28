@@ -227,7 +227,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
     }
 
-    @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout}) boolean onLongClick(View view) {
+    @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout}) boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.FORKS);

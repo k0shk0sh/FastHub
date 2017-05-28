@@ -40,7 +40,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
             PinnedRepos pinned = new PinnedRepos();
             pinned.setRepoFullName(repo.getFullName());
             pinned.setPinnedRepo(repo);
-            save(pinned).toObservable().blockingFirst(null);
+            App.getInstance().getDataStore().insert(pinned).blockingGet();
             return true;
         } else {
             delete(pinnedRepos.getId());

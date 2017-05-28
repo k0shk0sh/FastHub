@@ -6,7 +6,6 @@ import android.view.View;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.PinnedRepos;
-import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
@@ -23,10 +22,6 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
         super.onAttachView(view);
         if (pinnedRepos.isEmpty()) {
             onReload();
-            if (!AbstractPinnedRepos.isPinned("k0shk0sh/FastHub"))
-                manageObservable(Repo.getRepo("FastHub", "k0shk0sh")
-                        .map(repo -> repo != null && AbstractPinnedRepos.pinUpin(repo))
-                        .toObservable());
         }
     }
 
@@ -36,7 +31,8 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
 
     @Override public void onReload() {
         manageSubscription(AbstractPinnedRepos.getMyPinnedRepos()
-                .subscribe(repos -> sendToView(view -> view.onNotifyAdapter(repos))));
+                .subscribe(repos -> sendToView(view -> view.onNotifyAdapter(repos)), throwable ->
+                        sendToView(view -> view.onNotifyAdapter(null))));
     }
 
     @Override public void onItemClick(int position, View v, PinnedRepos item) {
