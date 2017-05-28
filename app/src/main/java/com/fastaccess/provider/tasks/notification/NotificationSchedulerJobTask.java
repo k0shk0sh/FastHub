@@ -84,7 +84,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     public static void scheduleJob(@NonNull Context context) {
         int duration = PrefGetter.getNotificationTaskDuration();
-        scheduleJob(context, duration == 0 ? THIRTY_MINUTES : duration, false);
+        scheduleJob(context, duration, false);
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {

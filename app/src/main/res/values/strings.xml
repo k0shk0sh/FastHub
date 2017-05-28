@@ -217,7 +217,7 @@
     <string name="team_event">Team</string>
     <string name="deleted">Deleted</string>
     <string name="unknown">Unknown</string>
-    <string name="commented_on_commit">Comment on commit</string>
+    <string name="commented_on_commit">Commented on commit</string>
     <string name="organization_event" translatable="false">Organization</string>
     <string name="card_event" translatable="false">Card</string>
     <string name="project_event" translatable="false">Project</string>
@@ -458,4 +458,6 @@
     <string name="image_error">Error loading image, please try again.</string>
     <string name="trending">Trending</string>
     <string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
+    <string name="scroll_up">Scroll Up</string>
+    <string name="scroll_down">Scroll down</string>
 </resources>

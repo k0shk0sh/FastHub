@@ -199,7 +199,7 @@ public class PrefGetter {
                     return (60 * 3) * 60; // 3 hours
             }
         }
-        return 0;
+        return -1;
     }
 
     public static boolean isTwiceBackButtonDisabled() {

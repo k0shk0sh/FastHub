@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -109,15 +108,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
 
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<IssueState>(getPresenter()) {
-                @Override protected void onShow(RecyclerView recyclerView) {
-                    super.onShow(recyclerView);
-                }
-
-                @Override protected void onHide(RecyclerView recyclerView) {
-                    super.onHide(recyclerView);
-                }
-            };
+            onLoadMore = new OnLoadMore<>(getPresenter());
         }
         onLoadMore.setParameter(issueState);
         return onLoadMore;
