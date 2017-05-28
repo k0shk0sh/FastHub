@@ -37,7 +37,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     @Override public void onRestoreInstanceState(Bundle outState) {
-        Icepick.restoreInstanceState(this, outState);
+        if (outState != null) Icepick.restoreInstanceState(this, outState);
     }
 
     @Override public void manageSubscription(@Nullable Disposable... subscription) {

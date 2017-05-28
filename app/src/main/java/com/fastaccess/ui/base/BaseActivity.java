@@ -75,7 +75,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
-
     @State Bundle presenterStateBundle = new Bundle();
 
     private static int REFRESH_CODE = 64;
@@ -93,8 +92,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getPresenter().onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, presenterStateBundle);
+        Icepick.saveInstanceState(this, outState);
+        getPresenter().onSaveInstanceState(presenterStateBundle);
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
