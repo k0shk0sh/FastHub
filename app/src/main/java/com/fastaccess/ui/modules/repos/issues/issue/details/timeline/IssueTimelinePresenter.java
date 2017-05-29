@@ -29,7 +29,7 @@ import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:17 PM
@@ -39,28 +39,13 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
     @icepick.State Issue issue;
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private ReactionsProvider reactionsProvider;
+    private int page;
+    private int previousTotal;
+    private int lastPage = Integer.MAX_VALUE;
+
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
-    }
-
-    @Override public void onCallApi() {
-        if (getHeader() == null) {
-            sendToView(BaseMvp.FAView::hideProgress);
-            return;
-        }
-        String login = getHeader().getLogin();
-        String repoID = getHeader().getRepoId();
-        int number = getHeader().getNumber();
-        Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number),
-                RestProvider.getIssueService().getIssueComments(login, repoID, number),
-                (issueEventPageable, commentPageable) -> TimelineModel.construct(commentPageable.getItems(), issueEventPageable.getItems()));
-        makeRestCall(observable, models -> {
-            if (models != null) {
-                models.add(0, TimelineModel.constructHeader(issue));
-            }
-            sendToView(view -> view.onNotifyAdapter(models));
-        });
     }
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
@@ -155,7 +140,8 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         if (bundle == null) throw new NullPointerException("Bundle is null?");
         issue = bundle.getParcelable(BundleConstant.ITEM);
         if (timeline.isEmpty() && issue != null) {
-            onCallApi();
+            sendToView(view -> view.onSetHeader(TimelineModel.constructHeader(issue)));
+            onCallApi(1, null);
         }
     }
 
@@ -213,5 +199,57 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
             reactionsProvider = new ReactionsProvider();
         }
         return reactionsProvider;
+    }
+
+    @Override public int getCurrentPage() {
+        return page;
+    }
+
+    @Override public int getPreviousTotal() {
+        return previousTotal;
+    }
+
+    @Override public void setCurrentPage(int page) {
+        this.page = page;
+    }
+
+    @Override public void setPreviousTotal(int previousTotal) {
+        this.previousTotal = previousTotal;
+    }
+
+    @Override public void onCallApi(int page, @Nullable Object parameter) {
+        if (getHeader() == null) {
+            sendToView(BaseMvp.FAView::hideProgress);
+            return;
+        }
+        if (page == 1) {
+            lastPage = Integer.MAX_VALUE;
+            sendToView(view -> view.getLoadMore().reset());
+        }
+        if (page > lastPage || lastPage == 0) {
+            sendToView(IssueTimelineMvp.View::hideProgress);
+            return;
+        }
+        setCurrentPage(page);
+        String login = getHeader().getLogin();
+        String repoID = getHeader().getRepoId();
+        int number = getHeader().getNumber();
+        Observable<List<TimelineModel>> observable;
+        if (page > 1) {
+            observable = RestProvider.getIssueService().getIssueComments(login, repoID, number, page)
+                    .map(comments -> {
+                        lastPage = comments != null ? comments.getLast() : 0;
+                        return TimelineModel.construct(comments != null ? comments.getItems() : null);
+                    });
+        } else {
+            observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number),
+                    RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
+                    (issueEventPageable, commentPageable) -> {
+                        lastPage = commentPageable != null ? commentPageable.getLast() : 0;
+                        return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,
+                                issueEventPageable != null ? issueEventPageable.getItems() : null);
+                    });
+        }
+        makeRestCall(observable, models -> sendToView(view -> view.onNotifyAdapter(models, page)));
     }
 }

@@ -74,7 +74,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        manageSubscription(Repo.saveMyRepos(repoModelPageable.getItems(), parameter).subscribe());
+                        manageObservable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
@@ -86,7 +86,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Repo.getMyRepos(login)).subscribe(repoModels ->
+            manageSubscription(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileReposMvp.View::hideProgress);
@@ -97,7 +97,5 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
         RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
-    @Override public void onItemLongClick(int position, View v, Repo item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Repo item) {}
 }

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">FastHub</string>
-    <string name="app_name_full">FastHub for Android</string>
+    <string name="app_name_full" translatable="false">FastHub for Android</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
     <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
     <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
@@ -199,6 +199,9 @@
     <string name="ten_minutes">10 minutes</string>
     <string name="five_minutes">5 minutes</string>
     <string name="one_minute">1 minute</string>
+    <string name="one_hour">1 hour</string>
+    <string name="two_hour">2 hours</string>
+    <string name="three_hour">3 hours</string>
     <string name="created_repo">Created</string>
     <string name="committed">Committed</string>
     <string name="downloaded">Downloaded</string>
@@ -214,7 +217,7 @@
     <string name="team_event">Team</string>
     <string name="deleted">Deleted</string>
     <string name="unknown">Unknown</string>
-    <string name="commented_on_commit">Comment on commit</string>
+    <string name="commented_on_commit">Commented on commit</string>
     <string name="organization_event" translatable="false">Organization</string>
     <string name="card_event" translatable="false">Card</string>
     <string name="project_event" translatable="false">Project</string>
@@ -452,4 +455,9 @@
         direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
     </string>
     <string name="edit_banner">CHOOSE BANNER</string>
+    <string name="image_error">Error loading image, please try again.</string>
+    <string name="trending">Trending</string>
+    <string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
+    <string name="scroll_up">Scroll Up</string>
+    <string name="scroll_down">Scroll down</string>
 </resources>

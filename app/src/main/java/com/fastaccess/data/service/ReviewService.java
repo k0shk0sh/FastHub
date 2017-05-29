@@ -15,7 +15,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 07 May 2017, 1:01 PM
@@ -29,7 +29,7 @@ public interface ReviewService {
     Observable<ReviewModel> getReview(@Path("owner") String owner, @Path("repo") String repo,
                                       @Path("number") long number, @Path("id") long id);
 
-    @GET("repos/{owner}/{repo}/pulls/{number}/reviews?per_page=200")
+    @GET("repos/{owner}/{repo}/pulls/{number}/reviews?per_page=100")
     @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html")
     @NonNull
     Observable<Pageable<ReviewModel>> getReviews(@Path("owner") String owner, @Path("repo") String repo,

@@ -13,7 +13,7 @@ import android.widget.RelativeLayout;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.ReviewCommentModel;
-import com.fastaccess.data.dao.model.ReactionsModel;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -74,6 +74,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         this.reactionsCallback = reactionsCallback;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
+        toggle.setOnClickListener(this);
         commentMenu.setOnClickListener(this);
         toggleHolder.setOnClickListener(this);
         laugh.setOnClickListener(this);

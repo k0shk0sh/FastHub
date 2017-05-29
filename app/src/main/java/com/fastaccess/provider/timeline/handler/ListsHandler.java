@@ -72,7 +72,9 @@ import lombok.NoArgsConstructor;
         }
     }
 
-    public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {}
+    @Override public void handleTagNode(TagNode tagNode, SpannableStringBuilder spannableStringBuilder, int i, int i1) {
+        appendNewLine(spannableStringBuilder);
+    }
 
     static class TodoItems {
         boolean isChecked;

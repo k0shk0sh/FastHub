@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.PostReactionModel;
-import com.fastaccess.data.dao.model.ReactionsModel;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
@@ -17,7 +17,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 09 Apr 2017, 10:40 AM

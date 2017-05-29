@@ -72,7 +72,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         makeRestCall(RestProvider.getPullRequestService().getPullRequests(login, repoId, parameter.name(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
+                manageObservable(PullRequest.save(response.getItems(), login, repoId));
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
@@ -97,7 +97,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     @Override public void onWorkOffline() {
         if (pullRequests.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(PullRequest.getPullRequests(repoId, login, issueState))
+            manageSubscription(RxHelper.getSingle(PullRequest.getPullRequests(repoId, login, issueState))
                     .subscribe(pulls -> sendToView(view -> {
                         view.onNotifyAdapter(pulls, 1);
                         view.onUpdateCount(pulls.size());
@@ -123,6 +123,6 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     }
 
     @Override public void onItemLongClick(int position, View v, PullRequest item) {
-        onItemClick(position, v, item);
+        if(getView()!=null)getView().onShowPullRequestPopup(item);
     }
 }

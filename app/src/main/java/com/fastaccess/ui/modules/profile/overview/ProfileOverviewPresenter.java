@@ -1,31 +1,31 @@
 package com.fastaccess.ui.modules.profile.overview;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
 
+import com.fastaccess.data.dao.CreateGistModel;
 import com.fastaccess.data.dao.FilesListModel;
-import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.ImgurProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import rx.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
@@ -35,7 +35,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @icepick.State boolean isSuccessResponse;
     @icepick.State boolean isFollowing;
     @icepick.State String login;
-    @icepick.State Bitmap header = null;
     @icepick.State ArrayList<User> userOrgs = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
@@ -90,39 +89,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (login != null) {
             loadOrgs();
             loadContributions();
-            Gist.getMyGists(login).forEach(gists -> {
-                for (Gist gist : gists) {
-                    if (gist.getDescription().equalsIgnoreCase("header.fst")) {
-                        for(FilesListModel file : gist.getFilesAsList()) {
-                            makeRestCall(RestProvider.getRepoService(true).getFileAsStream(file.getRawUrl()), s -> {
-                                ImageLoader.getInstance().loadImage(s, new ImageLoadingListener() {
-                                    @Override
-                                    public void onLoadingStarted(String s, View view) {
-                                        Log.d(getClass().getSimpleName(), "LOADING STARTED :::");
-                                    }
-
-                                    @Override
-                                    public void onLoadingFailed(String s, View view, FailReason failReason) {
-                                        Log.e(getClass().getSimpleName(), "LOADING FAILED :::");
-                                    }
-
-                                    @Override
-                                    public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                        header = bitmap;
-                                        sendToView(v -> v.onHeaderLoaded(bitmap));
-                                        Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
-                                    }
-
-                                    @Override
-                                    public void onLoadingCancelled(String s, View view) {
-                                        Log.e(getClass().getSimpleName(), "LOADING CANCELLED :::");
-                                    }
-                                });
-                            });
-                        }
-                    }
-                }
-            });
+//            loadUrlBackgroundImage();
             makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {
@@ -141,7 +108,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
             return;
         }
         onSendUserToView(userModel);
-        sendToView(view -> view.onHeaderLoaded(header));
     }
 
     @Override public void onSendUserToView(@Nullable User userModel) {
@@ -160,8 +126,50 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         return login;
     }
 
-    @Nullable @Override public Bitmap getHeader() {
-        return header;
+    @Override public void onPostImage(@NonNull String path) {
+        Login login = Login.getUser();
+        RequestBody image = RequestBody.create(MediaType.parse("image/*"), new File(path));
+        ImgurProvider.getImgurService().postImage("", image);
+        makeRestCall(RxHelper.getObserver(ImgurProvider.getImgurService().postImage("", image))
+                        .filter(imgurReponseModel -> imgurReponseModel != null && imgurReponseModel.getData() != null)
+                        .map(imgurReponseModel -> imgurReponseModel.getData().getLink())
+                        .flatMap(link -> getHeaderGist(), (imageLink, gistContent) -> {
+                            boolean isReplace = false;
+                            if (gistContent.contains(login.getLogin() + "->")) {
+                                String[] splitByNewLine = gistContent.split("\n");
+                                for (String s : splitByNewLine) {
+                                    String[] splitByUser = s.split("->");
+                                    if (login.getLogin().equalsIgnoreCase(splitByUser[0])) {
+                                        gistContent = gistContent.replaceFirst(splitByUser[0] + "->" +
+                                                splitByUser[1], login.getLogin() + "->" + imageLink);
+                                        isReplace = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            PrefGetter.setProfileBackgroundUrl(imageLink);
+                            if (!isReplace) {
+                                gistContent += "\n" + login.getLogin() + "->" + imageLink;
+                            }
+                            return gistContent;
+                        })
+                        .map(s -> {
+                            CreateGistModel createGistModel = new CreateGistModel();
+                            createGistModel.setPublicGist(true);
+                            HashMap<String, FilesListModel> modelHashMap = new HashMap<>();
+                            FilesListModel file = new FilesListModel();
+                            file.setFilename("header.fst");
+                            file.setContent(s);
+                            modelHashMap.put("header.fst", file);
+                            createGistModel.setFiles(modelHashMap);
+                            return createGistModel;
+                        })
+                        .flatMap(body -> RxHelper.getObserver(RestProvider.getGistService().editGist(body, ProfileOverviewMvp.HEADER_GIST_ID))),
+                gist -> sendToView(view -> view.onImagePosted(PrefGetter.getProfileBackgroundUrl())));
+    }
+
+    @NonNull private Observable<String> getHeaderGist() {
+        return RxHelper.getObserver(RestProvider.getGistService(true).getGistFile(ProfileOverviewMvp.HEADER_FST_URL));
     }
 
     private void loadContributions() {
@@ -185,5 +193,27 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     }
                     sendToView(view -> view.onInitOrgs(userOrgs));
                 }, Throwable::printStackTrace));
+    }
+
+    private void loadUrlBackgroundImage() {
+        if (Login.getUser().getLogin().equalsIgnoreCase(login)) {
+            if (PrefGetter.getProfileBackgroundUrl() == null) {
+                manageSubscription(getHeaderGist()
+                        .flatMap(s -> RxHelper.getObserver(Observable.fromArray(s.split("\n"))))
+                        .flatMap(s -> RxHelper.getObserver(Observable.just(s.split("->"))))
+                        .filter(strings -> strings != null && strings[0].equalsIgnoreCase(login))
+                        .map(strings -> strings[1])
+                        .subscribe(s -> sendToView(view -> view.onImagePosted(s)), Throwable::printStackTrace));
+            } else {
+                sendToView(view -> view.onImagePosted(PrefGetter.getProfileBackgroundUrl()));
+            }
+        } else {
+            manageSubscription(getHeaderGist()
+                    .flatMap(s -> RxHelper.getObserver(Observable.fromArray(s.split("\n"))))
+                    .flatMap(s -> RxHelper.getObserver(Observable.just(s.split("->"))))
+                    .filter(strings -> strings != null && strings[0].equalsIgnoreCase(login))
+                    .map(strings -> strings[1])
+                    .subscribe(s -> sendToView(view -> view.onImagePosted(s)), Throwable::printStackTrace));
+        }
     }
 }

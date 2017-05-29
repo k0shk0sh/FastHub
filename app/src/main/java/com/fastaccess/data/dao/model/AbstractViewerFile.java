@@ -5,14 +5,14 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
+import com.fastaccess.helper.RxHelper;
 
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
+import io.reactivex.Observable;import io.reactivex.Single;
 
 /**
  * Created by Kosh on 06 Dec 2016, 10:42 PM
@@ -25,13 +25,13 @@ import rx.Single;
     @Column(unique = true) String fullUrl;
     boolean repo;
 
-    public Single save(ViewerFile modelEntity) {
-        return App.getInstance().getDataStore()
+    public Single<ViewerFile> save(ViewerFile modelEntity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore()
                 .delete(ViewerFile.class)
                 .where(ViewerFile.FULL_URL.eq(modelEntity.getFullUrl()))
                 .get()
-                .toSingle()
-                .flatMap(i -> App.getInstance().getDataStore().insert(modelEntity));
+                .single()
+                .flatMap(i -> App.getInstance().getDataStore().insert(modelEntity)));
     }
 
     public static Observable<ViewerFile> get(@NonNull String url) {
@@ -40,7 +40,7 @@ import rx.Single;
                 .select(ViewerFile.class)
                 .where(ViewerFile.FULL_URL.equal(url))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public int describeContents() { return 0; }

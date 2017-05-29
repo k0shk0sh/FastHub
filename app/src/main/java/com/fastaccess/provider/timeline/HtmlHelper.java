@@ -16,6 +16,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.handler.BetterLinkMovementExtended;
 import com.fastaccess.provider.timeline.handler.DrawableHandler;
+import com.fastaccess.provider.timeline.handler.EmojiHandler;
 import com.fastaccess.provider.timeline.handler.ItalicHandler;
 import com.fastaccess.provider.timeline.handler.LinkHandler;
 import com.fastaccess.provider.timeline.handler.ListsHandler;
@@ -62,7 +63,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, isDark));
         mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, isDark));
         mySpanner.registerHandler("img", new DrawableHandler(textView));
-        mySpanner.registerHandler("g-emoji", new DrawableHandler(textView));
+        mySpanner.registerHandler("g-emoji", new EmojiHandler());
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
         mySpanner.registerHandler("b", new BoldHandler());
         mySpanner.registerHandler("strong", new BoldHandler());

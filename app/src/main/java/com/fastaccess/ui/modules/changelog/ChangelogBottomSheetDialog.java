@@ -8,23 +8,20 @@ import android.widget.ProgressBar;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.RxHelper;
-import com.fastaccess.provider.changelog.ChangelogProvider;
-import com.fastaccess.ui.base.BaseBottomSheetDialog;
+import com.fastaccess.ui.base.BaseMvpBottomSheetDialogFragment;
 import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
-import rx.Subscription;
 
 /**
  * Created by Kosh on 26 Mar 2017, 10:15 PM
  */
 
-public class ChangelogBottomSheetDialog extends BaseBottomSheetDialog {
+public class ChangelogBottomSheetDialog extends BaseMvpBottomSheetDialogFragment<ChangelogMvp.View, ChangelogPresenter> implements
+        ChangelogMvp.View {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.message) FontTextView message;
@@ -32,16 +29,9 @@ public class ChangelogBottomSheetDialog extends BaseBottomSheetDialog {
     @BindView(R.id.messageLayout) View messageLayout;
     @BindView(R.id.prettifyWebView) PrettifyWebView prettifyWebView;
     @BindView(R.id.webProgress) ProgressBar webProgress;
-    @State String html;
-
-    private Subscription subscription;
 
     @OnClick(R.id.ok) void onOk() {
         dismiss();
-    }
-
-    @Override protected int layoutRes() {
-        return R.layout.message_dialog;
     }
 
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -52,18 +42,26 @@ public class ChangelogBottomSheetDialog extends BaseBottomSheetDialog {
         webProgress.setVisibility(View.VISIBLE);
         cancel.setVisibility(View.GONE);
         title.setText(R.string.changelog);
-        if (html == null) {
-            subscription = RxHelper.getObserver(ChangelogProvider.getChangelog(getContext()))
-                    .subscribe(s -> {
-                        this.html = s;
-                        showChangelog();
-                    });
+        if (getPresenter().getHtml() == null) {
+            getPresenter().onLoadChangelog();
         } else {
-            showChangelog();
+            showChangelog(getPresenter().getHtml());
         }
     }
 
-    private void showChangelog() {
+    @Override protected int fragmentLayout() {
+        return R.layout.message_dialog;
+    }
+
+    @Override public void onChangelogLoaded(@Nullable String html) {
+        showChangelog(html);
+    }
+
+    @NonNull @Override public ChangelogPresenter providePresenter() {
+        return new ChangelogPresenter();
+    }
+
+    private void showChangelog(String html) {
         webProgress.setVisibility(View.GONE);
         if (html != null) {
             message.setVisibility(View.GONE);
@@ -71,12 +69,5 @@ public class ChangelogBottomSheetDialog extends BaseBottomSheetDialog {
             prettifyWebView.setGithubContent(html, null);
             prettifyWebView.setNestedScrollingEnabled(false);
         }
-    }
-
-    @Override public void onDestroyView() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        super.onDestroyView();
     }
 }

@@ -18,6 +18,7 @@ import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
@@ -37,18 +38,19 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
 import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
+import io.reactivex.disposables.Disposable;
 
 import static android.app.Activity.RESULT_OK;
 
 public class SettingsCategoryFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
-    @BindView(R.id.settingsContainer)
-    FrameLayout settingsContainer;
+    @BindView(R.id.settingsContainer) FrameLayout settingsContainer;
 
     private static int PERMISSION_REQUEST_CODE = 128;
     private static int RESTORE_REQUEST_CODE = 256;
@@ -62,6 +64,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationTime;
     private Preference notificationRead;
     private Preference notificationSound;
+    private Disposable disposable;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
@@ -118,14 +121,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                         .bold(BuildConfig.VERSION_NAME)
                         .append(")"));
                 findPreference("currentVersion").setOnPreferenceClickListener(preference -> {
-                    Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
-                        if (releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
-                            Toasty.success(getContext(), getString(R.string.up_to_date)).show();
-                        else
-                            Toasty.warning(getContext(), getString(R.string.new_version)).show();
+                    disposable = Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
+                        if (releases != null) {
+                            if (releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
+                                Toasty.success(getContext(), getString(R.string.up_to_date)).show();
+                            else
+                                Toasty.warning(getContext(), getString(R.string.new_version)).show();
+                        }
                     });
-
-
                     return true;
                 });
                 break;
@@ -239,8 +242,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         return false;
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == PERMISSION_REQUEST_CODE) {
@@ -249,12 +251,10 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     Map<String, ?> settings = PrefHelper.getAll();
                     settings.remove("token");
                     String json = new Gson().toJson(settings);
-                    String path =
-                            Environment.getExternalStorageDirectory() + File.separator + "FastHub";
+                    String path = Environment.getExternalStorageDirectory() + File.separator + "FastHub";
                     File folder = new File(path);
                     folder.mkdirs();
                     File backup = new File(folder, "backup.json");
-
                     try {
                         backup.createNewFile();
                         FileOutputStream outputStream = new FileOutputStream(backup);
@@ -268,8 +268,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     } catch (IOException e) {
                         Log.e(getTag(), "Couldn't backup: " + e.toString());
                     }
-
-                    PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd").format(new Date()));
+                    PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
                     findPreference("backup").setSummary(getString(R.string.backup_summary, getString(R.string.now)));
                     Toasty.success(getContext(), getString(R.string.backed_up)).show();
                 } else {
@@ -286,47 +285,54 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESTORE_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 StringBuilder json = new StringBuilder();
                 try {
-                    InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData());
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(
-                            inputStream));
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        json.append(line);
+                    try (InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData())) {
+                        if (inputStream != null) {
+                            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                                String line;
+                                while ((line = reader.readLine()) != null) {
+                                    json.append(line);
+                                }
+                            }
+                        }
                     }
-                    reader.close();
-                    inputStream.close();
                 } catch (IOException e) {
                     Toasty.error(getContext(), getString(R.string.error)).show();
                 }
-
-                Gson gson = new Gson();
-                JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
-                Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-                for (Map.Entry<String, JsonElement> entry : entrySet) {
-                    if (entry.getValue().getAsJsonPrimitive().isBoolean())
-                        PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
-                    else if (entry.getValue().getAsJsonPrimitive().isNumber())
-                        PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
-                    else if (entry.getValue().getAsJsonPrimitive().isString())
-                        PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
-                    PrefHelper.set(entry.getKey(), entry.getValue());
-                    Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                if (!InputHelper.isEmpty(json)) {
+                    Gson gson = new Gson();
+                    JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
+                    Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+                    for (Map.Entry<String, JsonElement> entry : entrySet) {
+                        if (entry.getValue().getAsJsonPrimitive().isBoolean())
+                            PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
+                        else if (entry.getValue().getAsJsonPrimitive().isNumber())
+                            PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
+                        else if (entry.getValue().getAsJsonPrimitive().isString())
+                            PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
+                        PrefHelper.set(entry.getKey(), entry.getValue());
+                        Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                    }
+                    callback.onThemeChanged();
                 }
-                callback.onThemeChanged();
             }
+        }
+    }
+
+    @Override public void onDestroyView() {
+        super.onDestroyView();
+        if (disposable != null && !disposable.isDisposed()) {
+            disposable.dispose();
         }
     }
 
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("application/json");
-
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_backup)), RESTORE_REQUEST_CODE);
     }
 

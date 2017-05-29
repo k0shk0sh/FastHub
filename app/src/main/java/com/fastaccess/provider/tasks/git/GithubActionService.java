@@ -18,7 +18,8 @@ import com.fastaccess.provider.rest.RestProvider;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import rx.schedulers.Schedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 /**
  * Created by Kosh on 12 Mar 2017, 2:25 PM
@@ -113,7 +114,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.forking, getString(R.string.gist));
             RestProvider.getGistService()
                     .forkGist(id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));
@@ -125,7 +126,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.forking, id);
             RestProvider.getRepoService()
                     .forkRepo(login, id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));
@@ -137,7 +138,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.starring, getString(R.string.gist));
             RestProvider.getGistService()
                     .starGist(id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));
@@ -149,7 +150,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.starring, id);
             RestProvider.getRepoService()
                     .starRepo(login, id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));
@@ -161,7 +162,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.un_starring, getString(R.string.gist));
             RestProvider.getGistService()
                     .unStarGist(id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));
@@ -173,7 +174,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.un_starring, id);
             RestProvider.getRepoService()
                     .unstarRepo(login, id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));
@@ -185,7 +186,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.un_watching, id);
             RestProvider.getRepoService()
                     .unwatchRepo(login, id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));
@@ -197,7 +198,7 @@ public class GithubActionService extends IntentService {
             String msg = getString(R.string.watching, id);
             RestProvider.getRepoService()
                     .watchRepo(login, id)
-                    .doOnSubscribe(() -> showNotification(msg))
+                    .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
                     .subscribe(response -> {
                     }, throwable -> hideNotification(msg), () -> hideNotification(msg));

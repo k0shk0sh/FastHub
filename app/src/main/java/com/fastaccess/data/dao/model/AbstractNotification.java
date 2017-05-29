@@ -13,16 +13,16 @@ import com.fastaccess.helper.RxHelper;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
-import rx.Observable;
-import rx.Single;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:37 PM
@@ -39,13 +39,8 @@ import rx.Single;
     Date lastReadAt;
     @Nullable boolean isSubscribed;
 
-    public Single<Notification> save(Notification notification) {
-        return App.getInstance().getDataStore()
-                .delete(Notification.class)
-                .where(Notification.ID.eq(notification.getId()))
-                .get()
-                .toSingle()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(notification));
+    public Single<Notification> save(Notification entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
     public static Completable markAsRead(long id) {
@@ -59,7 +54,7 @@ import rx.Single;
                 notification.setUnread(false);
                 return notification.save(notification);
             }
-            return Observable.empty().toSingle();
+            return "";
         });
     }
 
@@ -67,33 +62,33 @@ import rx.Single;
         if (models == null) {
             return Observable.empty();
         }
-        SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
         return RxHelper.safeObservable(dataSource.delete(Notification.class)
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models)))
+                .flatMap(integer -> Observable.fromIterable(models)))
                 .flatMap(notification -> notification.save(notification).toObservable());
     }
 
-    public static Observable<List<Notification>> getUnreadNotifications() {
+    public static Single<List<Notification>> getUnreadNotifications() {
         return App.getInstance()
                 .getDataStore()
                 .select(Notification.class)
                 .where(Notification.UNREAD.eq(true))
                 .orderBy(Notification.UPDATED_AT.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
-    public static Observable<List<Notification>> getAlltNotifications() {
+    public static Single<List<Notification>> getAlltNotifications() {
         return App.getInstance()
                 .getDataStore()
                 .select(Notification.class)
                 .orderBy(Notification.UPDATED_AT.desc(), Notification.UNREAD.eq(false).getLeftOperand())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -103,8 +98,6 @@ import rx.Single;
                 .count(Notification.class)
                 .where(Notification.UNREAD.equal(true))
                 .get()
-                .toSingle()
-                .toBlocking()
                 .value() > 0;
     }
 

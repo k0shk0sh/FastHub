@@ -14,16 +14,14 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
-import io.requery.Persistable;
 import io.requery.Table;
-import io.requery.rx.SingleEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
-import rx.Observable;
-import rx.Single;
 
 import static com.fastaccess.data.dao.model.Release.CREATED_AT;
 import static com.fastaccess.data.dao.model.Release.ID;
@@ -56,23 +54,17 @@ public abstract class AbstractRelease implements Parcelable {
     @Convert(UserConverter.class) User author;
     @Convert(ReleasesAssetsConverter.class) ReleasesAssetsListModel assets;
 
-    public Single save(Release entity) {
-        return App.getInstance().getDataStore()
-                .delete(Release.class)
-                .where(ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .flatMap(i -> App.getInstance().getDataStore().insert(entity));
+    public Single<Release> save(Release entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
-    public static Observable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Release.class)
+    public static Observable<Release> save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
+        return RxHelper.safeObservable(App.getInstance().getDataStore().delete(Release.class)
                 .where(REPO_ID.eq(login))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models))
+                .flatMap(integer -> Observable.fromIterable(models))
                 .flatMap(releasesModel -> {
                     releasesModel.setRepoId(repoId);
                     releasesModel.setLogin(login);
@@ -87,7 +79,7 @@ public abstract class AbstractRelease implements Parcelable {
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
                 .get()
-                .toSingle()
+                .single()
                 .toCompletable();
     }
 
@@ -96,17 +88,17 @@ public abstract class AbstractRelease implements Parcelable {
                 .select(Release.class)
                 .where(ID.eq(id))
                 .get()
-                .toObservable();
+                .observable();
     }
 
-    public static Observable<List<Release>> get(@NonNull String repoId, @NonNull String login) {
+    public static Single<List<Release>> get(@NonNull String repoId, @NonNull String login) {
         return App.getInstance().getDataStore()
                 .select(Release.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
                 .orderBy(CREATED_AT.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 

@@ -105,3 +105,7 @@
 -keep class org.htmlcleaner.** {*;}
 -dontwarn org.jaxen.**
 -dontwarn org.jdom.**
+-dontwarn com.google.android.gms.**
+-dontwarn android.animation.**
+-dontwarn java.io.**
+-dontwarn  android.content.**

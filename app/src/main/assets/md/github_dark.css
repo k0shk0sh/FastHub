@@ -4,7 +4,6 @@ body {
     padding: 10px;
     line-height: 1.5;
     word-wrap: break-word;
-    background: #22252A;
     color: #ccc;
 }
 
@@ -85,7 +84,6 @@ body kbd {
     line-height: 10px;
     color: #656d78;
     vertical-align: middle;
-    background-color: #22252A;
     border: solid 1px #656d78;
     border-bottom-color: #bbb;
     border-radius: 3px;

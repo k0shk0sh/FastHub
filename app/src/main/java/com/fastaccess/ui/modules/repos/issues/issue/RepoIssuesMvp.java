@@ -35,6 +35,8 @@ interface RepoIssuesMvp {
         void onOpenIssue(@NonNull PullsIssuesParser parser);
 
         void onRefresh(boolean isLastUpdated);
+
+        void onShowIssuePopup(@NonNull Issue item);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

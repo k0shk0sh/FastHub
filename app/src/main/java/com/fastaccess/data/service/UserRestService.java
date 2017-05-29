@@ -8,6 +8,7 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.model.User;
 
+import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -15,7 +16,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import rx.Observable;
+
 
 /**
  * Created by Kosh on 08 Feb 2017, 8:54 PM

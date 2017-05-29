@@ -119,15 +119,14 @@ import static com.annimon.stream.Collectors.toList;
         return list;
     }
 
-    @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
+    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList, @Nullable List<IssueEvent> eventList) {
         ArrayList<TimelineModel> list = new ArrayList<>();
-        if (!commentList.isEmpty()) {
+        if (commentList != null && !commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-
-        if (!eventList.isEmpty()) {
+        if (eventList != null && !eventList.isEmpty()) {
             list.addAll(constructLabels(eventList));
         }
 
@@ -142,7 +141,7 @@ import static com.annimon.stream.Collectors.toList;
         }).collect(Collectors.toList());
     }
 
-    @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList,
+    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList, @Nullable List<IssueEvent> eventList,
                                                          @Nullable PullRequestStatusModel status, @Nullable List<ReviewModel> reviews,
                                                          @Nullable List<ReviewCommentModel> reviewComments) {
         ArrayList<TimelineModel> list = new ArrayList<>();
@@ -152,12 +151,12 @@ import static com.annimon.stream.Collectors.toList;
         if (reviews != null && !reviews.isEmpty()) {
             list.addAll(constructReviews(reviews, reviewComments));
         }
-        if (!commentList.isEmpty()) {
+        if (commentList != null && !commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-        if (!eventList.isEmpty()) {
+        if (eventList != null && !eventList.isEmpty()) {
             list.addAll(constructLabels(eventList));
         }
 

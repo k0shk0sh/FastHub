@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="com.fastaccess">
+<manifest package="com.fastaccess"
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -170,12 +170,13 @@
         <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity"/>
         <activity
             android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
-            android:label="@string/releases">
+            android:label="@string/releases"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
+
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -208,9 +209,11 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
+
         <activity
             android:name="io.octo.bear.pago.BillingActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
+        <activity android:name=".ui.modules.profile.banner.BannerInfoActivity"/>
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"

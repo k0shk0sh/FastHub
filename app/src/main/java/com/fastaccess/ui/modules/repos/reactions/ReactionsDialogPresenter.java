@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.Pageable;
-import com.fastaccess.data.dao.model.ReactionsModel;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.BundleConstant;
@@ -17,7 +17,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 11 Apr 2017, 11:20 AM

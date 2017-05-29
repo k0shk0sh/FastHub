@@ -12,7 +12,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import rx.Observable;
+import io.reactivex.Observable;
 
 public interface LoginRestService {
 

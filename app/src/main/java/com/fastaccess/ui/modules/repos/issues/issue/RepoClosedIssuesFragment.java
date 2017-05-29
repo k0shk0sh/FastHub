@@ -20,6 +20,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerMvp;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -174,6 +175,10 @@ public class RepoClosedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
     @Override public void onRefresh(boolean isLastUpdated) {
         getPresenter().onSetSortBy(isLastUpdated);
         getPresenter().onCallApi(1, IssueState.closed);
+    }
+
+    @Override public void onShowIssuePopup(@NonNull Issue item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
     }
 
     @Override public void onRefresh() {

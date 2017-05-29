@@ -12,7 +12,7 @@ import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -70,7 +70,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
                             commitModel.setRepoId(repoId);
                             commitModel.setLogin(login);
                             sendToView(CommitPagerMvp.View::onSetup);
-                            manageSubscription(commitModel.save(commitModel).subscribe());
+                            manageObservable(commitModel.save(commitModel).toObservable());
                         });
                 return;
             }

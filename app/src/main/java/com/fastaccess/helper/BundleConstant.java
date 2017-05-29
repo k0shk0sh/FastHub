@@ -17,9 +17,13 @@ public class BundleConstant {
     public static final String ITEM = "item";
     public static final String ID = "id";
     public static final String EXTRA = "extra";
-    public static final String EXTRA_TWO = "extra_id";
-    public static final String EXTRA_THREE = "extra2_id";
-    public static final String EXTRA_FOUR = "extra3_id";
+    public static final String EXTRA_TWO = "extra2_id";
+    public static final String EXTRA_THREE = "extra3_id";
+    public static final String EXTRA_FOUR = "extra4_id";
+    public static final String EXTRA_FIVE = "extra5_id";
+    public static final String EXTRA_SIX = "extra6_id";
+    public static final String EXTRA_SEVEN = "extra7_id";
+    public static final String EXTRA_EIGHT = "extra8_id";
     public static final String EXTRA_TYPE = "extra_type";
     public static final String YES_NO_EXTRA = "yes_no_extra";
     public static final String NOTIFICATION_ID = "notification_id";

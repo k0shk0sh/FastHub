@@ -38,7 +38,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
     }
 
     @Override public void onItemLongClick(int position, View v, Issue item) {
-        onItemClick(position, v, item);
+        if (getView() != null) getView().onShowPopupDetails(item);
     }
 
     @NonNull @Override public ArrayList<Issue> getIssues() {

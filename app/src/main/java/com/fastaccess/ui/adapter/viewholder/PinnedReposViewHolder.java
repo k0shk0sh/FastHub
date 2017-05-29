@@ -40,7 +40,7 @@ public class PinnedReposViewHolder extends BaseViewHolder<PinnedRepos> {
     @BindString(R.string.forked) String forked;
     @BindString(R.string.private_repo) String privateRepo;
     @BindColor(R.color.material_indigo_700) int forkColor;
-    @BindColor(R.color.material_deep_purple_700) int privateColor;
+    @BindColor(R.color.material_grey_700) int privateColor;
 
     private PinnedReposViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter) {
         super(itemView, adapter);

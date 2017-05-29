@@ -21,7 +21,7 @@ import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -75,7 +75,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     if (response != null && response.getItems() != null) {
                         lastPage = response.getLast();
                         if (getCurrentPage() == 1) {
-                            manageSubscription(Commit.save(response.getItems(), repoId, login).subscribe());
+                            manageObservable(Commit.save(response.getItems(), repoId, login));
                         }
                     }
                     sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
@@ -111,17 +111,13 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                         return branchesModels;
                     }));
             manageSubscription(observable
-                    .doOnSubscribe(() -> sendToView(RepoCommitsMvp.View::showBranchesProgress))
+                    .doOnSubscribe(disposable -> sendToView(RepoCommitsMvp.View::showBranchesProgress))
                     .doOnNext(branchesModels -> {
                         branches.clear();
                         branches.addAll(branchesModels);
                         sendToView(view -> view.setBranchesData(branches, true));
                     })
-                    .onErrorReturn(throwable -> {
-                        sendToView(view -> view.setBranchesData(branches, true));
-                        return null;
-                    })
-                    .subscribe());
+                    .subscribe(branchesModels -> {/**/}, throwable -> sendToView(view -> view.setBranchesData(branches, true))));
         }
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
@@ -138,7 +134,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Commit.getCommits(repoId, login))
+            manageSubscription(RxHelper.getObserver(Commit.getCommits(repoId, login).toObservable())
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
@@ -161,9 +157,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         CommitPagerActivity.createIntentForOffline(v.getContext(), item);
     }
 
-    @Override public void onItemLongClick(int position, View v, Commit item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Commit item) {}
 
     private void getCommitCount(@NonNull String branch) {
         manageSubscription(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()

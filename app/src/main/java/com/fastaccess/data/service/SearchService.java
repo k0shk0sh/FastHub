@@ -8,7 +8,7 @@ import com.fastaccess.data.dao.model.User;
 
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 08 Dec 2016, 9:07 PM

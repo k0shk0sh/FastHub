@@ -31,6 +31,8 @@ public interface FilterIssuesMvp {
         void onSetCount(int totalCount);
 
         void onItemClicked(@NonNull Issue item);
+
+        void onShowPopupDetails(@NonNull Issue item);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

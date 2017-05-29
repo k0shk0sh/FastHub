@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.profile.overview;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -11,24 +12,18 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CreateGistModel;
-import com.fastaccess.data.dao.FilesListModel;
-import com.fastaccess.data.dao.ImgurReponseModel;
-import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.ActivityHelper;
@@ -37,14 +32,11 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.helper.PrefHelper;
-import com.fastaccess.helper.RxHelper;
-import com.fastaccess.provider.rest.ImgurProvider;
-import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
-import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -53,21 +45,16 @@ import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
-import java.io.File;
-import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
 import icepick.State;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
-import static android.app.Activity.RESULT_OK;
+import static android.view.Gravity.TOP;
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
 
@@ -77,19 +64,14 @@ import static android.view.View.VISIBLE;
 
 public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.View, ProfileOverviewPresenter> implements ProfileOverviewMvp.View {
 
-    @BindView(R.id.contributionsCaption)
-    FontTextView contributionsCaption;
-    @BindView(R.id.organizationsCaption)
-    FontTextView organizationsCaption;
-    @BindView(R.id.headerImage)
-    RelativeLayout headerImage;
-    @BindView(R.id.userInformation)
-    LinearLayout userInformation;
-    @BindView(R.id.chooseBanner)
-    Button chooseBanner;
-    @BindView(R.id.banner_edit)
-    ImageButton chooseBanner_pencil;
+    @BindView(R.id.contributionsCaption) FontTextView contributionsCaption;
+    @BindView(R.id.organizationsCaption) FontTextView organizationsCaption;
+    @BindView(R.id.headerImage) RelativeLayout headerImage;
+    @BindView(R.id.userInformation) LinearLayout userInformation;
+    @BindView(R.id.chooseBanner) Button chooseBanner;
+    @BindView(R.id.banner_edit) ImageButton chooseBanner_pencil;
     @BindView(R.id.username) FontTextView username;
+    @BindView(R.id.fullname) FontTextView fullname;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
     @BindView(R.id.organization) FontTextView organization;
@@ -132,6 +114,12 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
     }
 
+    @OnClick({R.id.chooseBanner, R.id.banner_edit}) public void chooseBanner() {
+        if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
+            showFileChooser();
+        }
+    }
+
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         if (getParentFragment() instanceof ProfilePagerMvp.View) {
@@ -153,7 +141,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
         onInitContributions(getPresenter().getContributions());
-        onHeaderLoaded(getPresenter().getHeader());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -167,8 +154,11 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (isMeOrOrganization()) {
             followBtn.setVisibility(GONE);
         }
-        if(getPresenter().getLogin().equals(Login.getUser().getLogin())&&PrefHelper.getBoolean("banner_learned"))
-            chooseBanner.setVisibility(VISIBLE);
+//        if (getPresenter().getLogin().equals(Login.getUser().getLogin()) && PrefHelper.getBoolean("banner_learned"))
+//            chooseBanner.setVisibility(VISIBLE);
+//        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin())) {
+//            onImagePosted(PrefGetter.getProfileBackgroundUrl());
+//        }
     }
 
     @NonNull @Override public ProfileOverviewPresenter providePresenter() {
@@ -181,9 +171,12 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         this.userModel = userModel;
         followBtn.setVisibility(!isMeOrOrganization() ? VISIBLE : GONE);
         username.setText(userModel.getLogin());
-        description.setText(userModel.getBio());
-        if (userModel.getBio() == null)
+        fullname.setText(userModel.getName());
+        if (userModel.getBio() != null) {
+            description.setText(EmojiParser.parseToUnicode(userModel.getBio()));
+        } else {
             description.setVisibility(GONE);
+        }
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
         organization.setText(InputHelper.toNA(userModel.getCompany()));
         location.setText(InputHelper.toNA(userModel.getLocation()));
@@ -222,18 +215,17 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 .append(getString(R.string.following))
                 .append("\n")
                 .bold(String.valueOf(userModel.getFollowing())));
-
-        if (userModel.getLogin().equals(Login.getUser().getLogin()))
-            if (headerImage.getVisibility()==GONE) {
-                if(PrefHelper.getBoolean("banner_learned")) return;
-                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
-                headerImage.setVisibility(VISIBLE);
-                headerImage.setOnClickListener(view -> {
-                    PrefHelper.set("banner_learned", true);
-                    Intent intent = new Intent(getContext(), BannerInfoActivity.class);
-                    startActivity(intent);
-                });
-            }
+//        if (userModel.getLogin().equals(Login.getUser().getLogin()))
+//            if (headerImage.getVisibility() == GONE) {
+//                if (PrefHelper.getBoolean("banner_learned")) return;
+//                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
+//                headerImage.setVisibility(VISIBLE);
+//                headerImage.setOnClickListener(view -> {
+//                    PrefHelper.set("banner_learned", true);
+//                    Intent intent = new Intent(getContext(), BannerInfoActivity.class);
+//                    startActivityForResult(intent, BundleConstant.REVIEW_REQUEST_CODE);
+//                });
+//            }
 
     }
 
@@ -275,7 +267,17 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onUserNotFound() {
-        if (isSafe()) getActivity().finish();
+        try {if (isSafe()) getActivity().finish();} catch (Exception ignored) {}
+    }
+
+    @Override public void onImagePosted(@Nullable String link) {
+        hideProgress();
+        ImageLoader.getInstance().loadImage(link, new SimpleImageLoadingListener() {
+            @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                super.onLoadingComplete(imageUri, view, loadedImage);
+                onHeaderLoaded(loadedImage);
+            }
+        });
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -300,27 +302,17 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         super.onScrollTop(index);
     }
 
-    private void onHideProgress() {
-        hideProgress();
-    }
-
-    private boolean isMeOrOrganization() {
-        return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
-                (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
-    }
-
-    @Override
-    public void onHeaderLoaded(@Nullable Bitmap bitmap) {
-        if(bitmap != null) {
+    @Override public void onHeaderLoaded(@Nullable Bitmap bitmap) {
+        if (bitmap != null) {
             headerImage.setBackground(new BitmapDrawable(getResources(), bitmap));
             headerImage.setVisibility(VISIBLE);
             DisplayMetrics metrics = new DisplayMetrics();
             getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            headerImage.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Math.round(metrics.widthPixels/3.33333f)));
-            ((ViewGroup)userInformation.getParent()).removeView(userInformation);
+            headerImage.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Math.round(metrics.widthPixels / 3.33333f)));
+            ((ViewGroup) userInformation.getParent()).removeView(userInformation);
             headerImage.addView(userInformation);
-            userInformation.setPaddingRelative(getResources().getDimensionPixelSize(R.dimen.spacing_xs_large), 0, 0,
-                    getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
+            userInformation.setPaddingRelative(getResources().getDimensionPixelSize(R.dimen.spacing_xs_large), 0, 0, getResources()
+                    .getDimensionPixelSize(R.dimen.spacing_xs_large));
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 username.setTextColor(getResources().getColor(android.R.color.primary_text_dark, getActivity().getTheme()));
                 userInformation.setBackground(getResources().getDrawable(R.drawable.scrim, getActivity().getTheme()));
@@ -329,93 +321,37 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 userInformation.setBackground(getResources().getDrawable(R.drawable.scrim));
             }
             chooseBanner.setVisibility(GONE);
-            chooseBanner_pencil.setVisibility(VISIBLE);
-            chooseBanner_pencil.bringToFront();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white, getActivity().getTheme()));
-            } else {
-                chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white));
+            if (getPresenter().getLogin().equals(Login.getUser().getLogin())) {
+                chooseBanner_pencil.setVisibility(VISIBLE);
+                chooseBanner_pencil.bringToFront();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white, getActivity().getTheme()));
+                    chooseBanner_pencil.setForegroundGravity(TOP);
+                } else {
+                    chooseBanner_pencil.setColorFilter(getResources().getColor(R.color.material_light_white));
+                }
             }
-            chooseBanner_pencil.animate().y(0).setDuration(0).start();
         }
     }
 
-    @OnClick({R.id.chooseBanner, R.id.banner_edit}) public void chooseBanner() {
-        if (ContextCompat.checkSelfPermission(getContext(),
-                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
-            showFileChooser();
-        else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_REQUEST_CODE);
-    }
-
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), BundleConstant.REQUEST_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == BundleConstant.REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                RequestBody image = RequestBody.create(MediaType.parse("image/*"), new File(FileHelper.getPath(getContext(), data.getData())));
-                ImgurProvider.getImgurService().postImage("", image);
-                RxHelper.getObserver(ImgurProvider.getImgurService().postImage("", image)).subscribe(imgurReponseModel -> {
-                    if (imgurReponseModel.getData() != null) {
-                        ImgurReponseModel.ImgurImage imageResponse = imgurReponseModel.getData();
-
-                        ImageLoader.getInstance().loadImage(imageResponse.getLink(), new ImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String s, View view) {
-                                Log.d(getClass().getSimpleName(), "LOADING STARTED :::");
-                            }
-
-                            @Override
-                            public void onLoadingFailed(String s, View view, FailReason failReason) {
-                                Log.e(getClass().getSimpleName(), "LOADING FAILED :::");
-                            }
-
-                            @Override
-                            public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                                onHeaderLoaded(bitmap);
-                                Log.d(getClass().getSimpleName(), "LOADING SUCCESSFUL :::");
-                            }
-
-                            @Override
-                            public void onLoadingCancelled(String s, View view) {
-                                Log.e(getClass().getSimpleName(), "LOADING CANCELLED :::");
-                            }
-                        });
-
-                        Gist.getMyGists(Login.getUser().getLogin()).forEach(gists -> {
-                            for (Gist gist : gists) {
-                                if (gist.getDescription().equalsIgnoreCase("header.fst")) {
-                                    RxHelper.getObserver(RestProvider.getGistService().deleteGist(gist.getGistId()))
-                                            .subscribe();
-                                }
-                            }
-                        });
-
-                        CreateGistModel createGistModel = new CreateGistModel();
-                        createGistModel.setDescription(InputHelper.toString("header.fst"));
-                        createGistModel.setPublicGist(true);
-                        HashMap<String, FilesListModel> modelHashMap = new HashMap<>();
-                        FilesListModel file = new FilesListModel();
-                        file.setFilename("header.fst");
-                        file.setContent(imageResponse.getLink());
-                        modelHashMap.put("header.fst", file);
-                        createGistModel.setFiles(modelHashMap);
-                        RxHelper.getObserver(RestProvider.getGistService().createGist(createGistModel))
-                                .subscribe(gist -> Toasty.success(getContext(), getString(R.string.success)));
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data != null) {
+                    String path = FileHelper.getPath(getContext(), data.getData());
+                    if (path == null) {
+                        showMessage(R.string.error, R.string.image_error);
+                        return;
                     }
-                });
+                    getPresenter().onPostImage(path);
+                }
+            } else {
+                onImagePosted(PrefGetter.getProfileBackgroundUrl());
             }
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == READ_REQUEST_CODE) {
             if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -426,6 +362,22 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 }
             }
         }
+    }
+
+    private void onHideProgress() {
+        hideProgress();
+    }
+
+    private boolean isMeOrOrganization() {
+        return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
+                (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
+    }
+
+    private void showFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), BundleConstant.REQUEST_CODE);
     }
 
 }

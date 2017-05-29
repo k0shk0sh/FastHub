@@ -2,15 +2,12 @@ package com.fastaccess;
 
 import android.app.Application;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.text.emoji.EmojiCompat;
-import android.support.text.emoji.FontRequestEmojiCompatConfig;
-import android.support.v4.provider.FontRequest;
 import android.support.v7.preference.PreferenceManager;
-import android.util.Log;
 
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
+import com.fastaccess.provider.colors.ColorsProvider;
+import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.provider.uil.UILProvider;
 import com.google.android.gms.auth.api.Auth;
@@ -19,12 +16,13 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import io.requery.Persistable;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.meta.EntityModel;
-import io.requery.rx.RxSupport;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
+import io.requery.reactivex.ReactiveSupport;
 import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import io.requery.sql.TableCreationMode;
 import shortbread.Shortbread;
+
 
 
 /**
@@ -33,31 +31,31 @@ import shortbread.Shortbread;
 
 public class App extends Application {
     private static App instance;
-    private SingleEntityStore<Persistable> dataStore;
+    private ReactiveEntityStore<Persistable> dataStore;
     private static GoogleApiClient googleApiClient;
 
     @Override public void onCreate() {
         super.onCreate();
-        final EmojiCompat.Config config;
-        // Use a downloadable font for EmojiCompat
-        final FontRequest fontRequest = new FontRequest(
-                "com.google.android.gms.fonts",
-                "com.google.android.gms",
-                "Noto Color Emoji Compat",
-                R.array.fonts_certificate);
-        config = new FontRequestEmojiCompatConfig(getApplicationContext(), fontRequest)
-                .setReplaceAll(true)
-                .registerInitCallback(new EmojiCompat.InitCallback() {
-                    @Override
-                    public void onInitialized() {
-                        Log.i(getClass().getSimpleName(), "EmojiCompat initialized");
-                    }
-                    @Override
-                    public void onFailed(@Nullable Throwable throwable) {
-                        Log.e(getClass().getSimpleName(), "EmojiCompat initialization failed", throwable);
-                    }
-                });
-        EmojiCompat.init(config);
+//        final EmojiCompat.Config config;
+//        // Use a downloadable font for EmojiCompat
+//        final FontRequest fontRequest = new FontRequest(
+//                "com.google.android.gms.fonts",
+//                "com.google.android.gms",
+//                "Noto Color Emoji Compat",
+//                R.array.fonts_certificate);
+//        config = new FontRequestEmojiCompatConfig(getApplicationContext(), fontRequest)
+//                .setReplaceAll(true)
+//                .registerInitCallback(new EmojiCompat.InitCallback() {
+//                    @Override
+//                    public void onInitialized() {
+//                        Log.i(getClass().getSimpleName(), "EmojiCompat initialized");
+//                    }
+//                    @Override
+//                    public void onFailed(@Nullable Throwable throwable) {
+//                        Log.e(getClass().getSimpleName(), "EmojiCompat initialization failed", throwable);
+//                    }
+//                });
+//        EmojiCompat.init(config);
         instance = this;
         init();
     }
@@ -74,6 +72,8 @@ public class App extends Application {
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);
+        EmojiManager.load();
+        ColorsProvider.load();
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Auth.CREDENTIALS_API)
                 .build();
@@ -89,7 +89,7 @@ public class App extends Application {
         PreferenceManager.setDefaultValues(this, R.xml.notification_settings, false);
     }
 
-    public SingleEntityStore<Persistable> getDataStore() {
+    public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
             DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 9);
@@ -97,7 +97,7 @@ public class App extends Application {
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);
             }
-            dataStore = RxSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
+            dataStore = ReactiveSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }
         return dataStore;
     }
