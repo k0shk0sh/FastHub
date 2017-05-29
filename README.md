@@ -70,14 +70,14 @@ _(To download the app from here, please look at the [latest release](https://git
 - _**Much more...**_
   - _FastHub is actively developed. More features will come!_
 
-~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development. Ads are no longer 
-available until further notice~~
+~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.~~
+Ads are no longer available until further notice
 
 # Specs / Open-source libraries:
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
 - **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) because its ThirtyInch.
-- [**RxJava**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
+- [**RxJava2**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
 - [**Requery**](https://github.com/requery/requery/) for offline-mode
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `Collections`
@@ -99,7 +99,7 @@ You love FastHub? You want new features or bug fixes?
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
 Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-### [Language Contributors](.github/language_contributors.md)
+### Language Contributors
 
 - Turkish [@kutsan](https://github.com/kutsan)
 - German [@failex234](https://github.com/failex234)
@@ -107,6 +107,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 - Indonesian [@dikiaap](https://github.com/dikiaap)
 - Russian [@dedepete](https://github.com/dedepete)
 - Japanese [@Rintan](https://github.com/Rintan)
+- Italian [@Raffaele74](https://github.com/Raffaele74)
 
 # License
 

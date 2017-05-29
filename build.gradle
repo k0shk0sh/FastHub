@@ -8,12 +8,13 @@ buildscript {
         supportVersion = "25.3.1"
         gms = "10.2.6"
         thirtyinchVersion = '0.8.0'
-        retrofit = '2.1.0'
+        retrofit = '2.3.0'
         junitVersion = '4.12'
         mockitoVersion = '1.10.19'
         assertjVersion = '2.5.0'
         espresseVersion = '2.2.2'
         requery = '1.3.2'
+        retroJsoup = '1.0.3'
 //        kotlin_version = '1.1.2-4'
     }
 

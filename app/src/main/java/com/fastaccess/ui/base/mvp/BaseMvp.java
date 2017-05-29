@@ -10,9 +10,9 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import net.grandcentrix.thirtyinch.TiView;
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by Kosh on 25 May 2016, 9:09 PM
@@ -49,7 +49,9 @@ public interface BaseMvp {
 
         void onRestoreInstanceState(Bundle outState);
 
-        void manageSubscription(@Nullable Subscription... subscription);
+        void manageSubscription(@Nullable Disposable... disposables);
+
+        <T> void manageObservable(@Nullable Observable<T> observable);
 
         boolean isApiCalled();
 
@@ -57,7 +59,7 @@ public interface BaseMvp {
 
         void onError(@NonNull Throwable throwable);
 
-        <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Action1<T> onNext);
+        <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext);
     }
 
     interface PaginationListener<P> {

@@ -2,8 +2,10 @@ package com.fastaccess.ui.widgets.contributions;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -48,6 +50,8 @@ public class GitHubContributionsView extends View {
     private List<ContributionsDay> contributionsFilter;
     private Rect rect;
     private Paint monthTextPaint;
+    private Matrix matrix = new Matrix();
+    private Paint paint = new Paint();
     private Paint blockPaint;
 
     public GitHubContributionsView(Context context) {
@@ -77,7 +81,6 @@ public class GitHubContributionsView extends View {
         initAttributes(attributes);
 
         rect = new Rect();
-
         monthTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         blockPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         blockPaint.setStyle(Paint.Style.FILL);
@@ -258,6 +261,7 @@ public class GitHubContributionsView extends View {
 
     public void onResponse(List<ContributionsDay> contributionsDay) {
         this.contributions = contributionsDay;
+        contributionsFilter = getLastContributions(contributions, lastWeeks);
         invalidate();
     }
 
@@ -292,14 +296,13 @@ public class GitHubContributionsView extends View {
     @Override protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (contributions != null) {
-            contributionsFilter = getLastContributions(contributions, lastWeeks);
-            drawOnCanvas(canvas);
+            canvas.drawBitmap(drawOnCanvas(canvas), matrix, paint);
         } else {
             drawPlaceholder(canvas);
         }
     }
 
-    private void drawOnCanvas(Canvas canvas) {
+    private Bitmap drawOnCanvas(Canvas canvas) {
         canvas.getClipBounds(rect);
         int width = rect.width();
         int verticalBlockNumber = 7;
@@ -310,9 +313,11 @@ public class GitHubContributionsView extends View {
         float topMargin = (displayMonth) ? 7f : 0;
         float monthTextHeight = (displayMonth) ? blockWidth * 1.5F : 0;
         int height = (int) ((blockWidth + spaceWidth) * 7 + topMargin + monthTextHeight);
+        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+        Canvas canvas1 = new Canvas(bitmap);
         // Background
         blockPaint.setColor(backgroundBaseColor);
-        canvas.drawRect(0, (topMargin + monthTextHeight), width, height + monthTextHeight, blockPaint);
+        canvas1.drawRect(0, (topMargin + monthTextHeight), width, height + monthTextHeight, blockPaint);
         monthTextPaint.setColor(textColor);
         monthTextPaint.setTextSize(monthTextHeight);
         // draw the blocks
@@ -324,7 +329,7 @@ public class GitHubContributionsView extends View {
         float y = (currentWeekDay - 7) % 7 * (blockWidth + spaceWidth) + (topMargin + monthTextHeight);
         for (ContributionsDay day : contributionsFilter) {
             blockPaint.setColor(ColorsUtils.calculateLevelColor(baseColor, baseEmptyColor, day.level));
-            canvas.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
+            canvas1.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
 
             if (DatesUtils.isFirstDayOfWeek(day.year, day.month, day.day + 1)) {
                 // another column
@@ -332,7 +337,7 @@ public class GitHubContributionsView extends View {
                 y = topMargin + monthTextHeight;
 
                 if (DatesUtils.isFirstWeekOfMount(day.year, day.month, day.day + 1)) {
-                    canvas.drawText(
+                    canvas1.drawText(
                             DatesUtils.getShortMonthName(day.year, day.month, day.day + 1),
                             x, monthTextHeight, monthTextPaint);
                 }
@@ -342,10 +347,16 @@ public class GitHubContributionsView extends View {
             }
         }
 
-        // Resize component
+        adjustHeight(height);
+        return bitmap;
+    }
+
+    private void adjustHeight(int height) {
         ViewGroup.LayoutParams ll = getLayoutParams();
-        ll.height = height;
-        setLayoutParams(ll);
+        if (height != ll.height) {
+            ll.height = height;
+            setLayoutParams(ll);
+        }
     }
 
     private void drawPlaceholder(Canvas canvas) {

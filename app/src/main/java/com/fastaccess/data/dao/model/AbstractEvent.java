@@ -16,14 +16,13 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Single;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:29 PM
@@ -38,23 +37,23 @@ import rx.Single;
     @Convert(PayloadConverter.class) PayloadModel payload;
     @SerializedName("public") boolean publicEvent;
 
-    @NonNull public static Single save(@NonNull List<Event> events) {
-        SingleEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
+    @NonNull public static Single<Iterable<Event>> save(@NonNull List<Event> events) {
+        ReactiveEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
         return RxHelper.getSingle(
                 dataSource.delete(Event.class)
                         .get()
-                        .toSingle()
+                        .single()
                         .flatMap(i -> dataSource.insert(events))
         );
     }
 
-    @NonNull public static Observable<List<Event>> getEvents() {
-        return RxHelper.getObserver(
+    @NonNull public static Single<List<Event>> getEvents() {
+        return RxHelper.getSingle(
                 App.getInstance().getDataStore()
                         .select(Event.class)
                         .orderBy(Event.CREATED_AT.desc())
                         .get()
-                        .toObservable()
+                        .observable()
                         .toList());
     }
 

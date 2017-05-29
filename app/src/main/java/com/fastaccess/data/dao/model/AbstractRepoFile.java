@@ -10,14 +10,14 @@ import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 import static com.fastaccess.data.dao.model.RepoFile.LOGIN;
 import static com.fastaccess.data.dao.model.RepoFile.REPO_ID;
@@ -48,14 +48,14 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
     }
 
     public static Observable<RepoFile> save(@NonNull List<RepoFile> models, @NonNull String login, @NonNull String repoId) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(RepoFile.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models))
+                .flatMap(integer -> Observable.fromIterable(models))
                 .flatMap(filesModel -> {
                     filesModel.setRepoId(repoId);
                     filesModel.setLogin(login);
@@ -63,14 +63,14 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
                 }));
     }
 
-    public static Observable<List<RepoFile>> getFiles(@NonNull String login, @NonNull String repoId) {
+    public static Single<List<RepoFile>> getFiles(@NonNull String login, @NonNull String repoId) {
         return App.getInstance().getDataStore()
                 .select(RepoFile.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
                 .orderBy(TYPE.asc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -82,7 +82,7 @@ import static com.fastaccess.data.dao.model.RepoFile.TYPE;
                         .and(SHA.eq(sha)))
                 .orderBy(TYPE.asc())
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public int describeContents() { return 0; }

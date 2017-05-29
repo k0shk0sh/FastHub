@@ -25,7 +25,7 @@ import java.util.HashMap;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
@@ -199,7 +199,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (Login.getUser().getLogin().equalsIgnoreCase(login)) {
             if (PrefGetter.getProfileBackgroundUrl() == null) {
                 manageSubscription(getHeaderGist()
-                        .flatMap(s -> RxHelper.getObserver(Observable.from(s.split("\n"))))
+                        .flatMap(s -> RxHelper.getObserver(Observable.fromArray(s.split("\n"))))
                         .flatMap(s -> RxHelper.getObserver(Observable.just(s.split("->"))))
                         .filter(strings -> strings != null && strings[0].equalsIgnoreCase(login))
                         .map(strings -> strings[1])
@@ -209,7 +209,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
             }
         } else {
             manageSubscription(getHeaderGist()
-                    .flatMap(s -> RxHelper.getObserver(Observable.from(s.split("\n"))))
+                    .flatMap(s -> RxHelper.getObserver(Observable.fromArray(s.split("\n"))))
                     .flatMap(s -> RxHelper.getObserver(Observable.just(s.split("->"))))
                     .filter(strings -> strings != null && strings[0].equalsIgnoreCase(login))
                     .map(strings -> strings[1])

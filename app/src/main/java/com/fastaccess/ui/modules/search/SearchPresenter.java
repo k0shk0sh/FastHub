@@ -58,7 +58,7 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
             boolean noneMatch = Stream.of(hints).noneMatch(value -> value.getText().equalsIgnoreCase(query));
             if (noneMatch) {
                 SearchHistory searchHistory = new SearchHistory(query);
-                manageSubscription(searchHistory.save(searchHistory).subscribe());
+                manageObservable(searchHistory.save(searchHistory).toObservable());
                 sendToView(view -> view.onNotifyAdapter(new SearchHistory(query)));
             }
         }

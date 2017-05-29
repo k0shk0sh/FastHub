@@ -15,7 +15,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 07 May 2017, 1:01 PM

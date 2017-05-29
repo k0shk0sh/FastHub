@@ -48,7 +48,7 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
         makeRestCall(RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageSubscription(Event.save(response.getItems()).subscribe());
+                manageObservable(Event.save(response.getItems()).toObservable());
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
@@ -89,7 +89,8 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
 
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Event.getEvents()).subscribe(modelList -> {
+            manageSubscription(RxHelper.getObserver(Event.getEvents().toObservable())
+                    .subscribe(modelList -> {
                 if (modelList != null) {
                     sendToView(view -> view.onNotifyAdapter(modelList, 1));
                 }

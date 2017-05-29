@@ -33,8 +33,8 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
 import retrofit2.Response;
-import rx.Observable;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -156,7 +156,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue, true);
             manageSubscription(RxHelper.getObserver(RestProvider.getIssueService().editIssue(login, repoId,
                     issueNumber, requestModel))
-                    .doOnSubscribe(() -> sendToView(view -> view.showProgress(0)))
+                    .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .doOnNext(issue -> {
                         if (issue != null) {
                             sendToView(view -> view.showSuccessIssueActionMsg(currentIssue.getState() == IssueState.open));
@@ -166,11 +166,8 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                             sendToView(IssuePagerMvp.View::onSetupIssue);
                         }
                     })
-                    .onErrorReturn(throwable -> {
-                        sendToView(view -> view.showErrorIssueActionMsg(currentIssue.getState() == IssueState.open));
-                        return null;
-                    })
-                    .subscribe());
+                    .subscribe(issue -> {/**/},
+                            throwable -> sendToView(view -> view.showErrorIssueActionMsg(currentIssue.getState() == IssueState.open))));
         }
     }
 
@@ -197,7 +194,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     @Override public void onLoadLabels() {
         manageSubscription(
                 RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
-                        .doOnSubscribe(this::onSubscribed)
+                        .doOnSubscribe(disposable -> onSubscribed())
                         .doOnNext(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
                                 sendToView(view -> view.onLabelsRetrieved(response.getItems()));
@@ -205,11 +202,9 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                                 sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
                             }
                         })
-                        .onErrorReturn(throwable -> {
+                        .subscribe(labelModelPageable -> {/**/}, throwable -> {
                             sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
-                            return null;
                         })
-                        .subscribe()
         );
     }
 
@@ -221,7 +216,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                     this.issueModel = issue;
                     issueModel.setLogin(login);
                     issueModel.setRepoId(repoId);
-                    manageSubscription(issue.save(issueModel).subscribe());
+                    manageObservable(issue.save(issueModel).toObservable());
                     sendToView(IssuePagerMvp.View::onUpdateTimeline);
                 });
 
@@ -236,7 +231,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                     LabelListModel listModel = new LabelListModel();
                     listModel.addAll(labels);
                     issueModel.setLabels(listModel);
-                    manageSubscription(issueModel.save(issueModel).subscribe());
+                    manageObservable(issueModel.save(issueModel).toObservable());
                 });
     }
 
@@ -253,7 +248,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                     UsersListModel assignee = new UsersListModel();
                     assignee.addAll(users);
                     issueModel.setAssignees(assignee);
-                    manageSubscription(issueModel.save(issueModel).subscribe());
+                    manageObservable(issueModel.save(issueModel).toObservable());
                     sendToView(IssuePagerMvp.View::onUpdateTimeline);
                 }
         );
@@ -271,7 +266,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         this.issueModel = issue;
         this.issueModel.setLogin(login);
         this.issueModel.setRepoId(repoId);
-        manageSubscription(issueModel.save(issueModel).subscribe());
+        manageObservable(issueModel.save(issueModel).toObservable());
         sendToView(IssuePagerMvp.View::onSetupIssue);
     }
 
@@ -283,7 +278,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         String token = PrefGetter.getToken();
         String id = mute ? NotificationService.MUTE : NotificationService.SUBSCRIBE;
         makeRestCall(AbstractRepo.getRepo(repoId, login)
-                        .flatMap(repo -> RestProvider.getNotificationService()
+                        .flatMapObservable(repo -> RestProvider.getNotificationService()
                                 .subscribe(url, repo.getId(), getIssue().getId(), issue, id, token, utf)),
                 booleanResponse -> {
                     if (booleanResponse.code() == 204 || booleanResponse.code() == 200) {

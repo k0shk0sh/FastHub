@@ -46,7 +46,6 @@ import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
-import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -76,6 +75,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+    @State Bundle presenterStateBundle = new Bundle();
 
     private static int REFRESH_CODE = 64;
 
@@ -92,8 +92,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getPresenter().onSaveInstanceState(outState);
         Icepick.saveInstanceState(this, outState);
+        getPresenter().onSaveInstanceState(presenterStateBundle);
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,7 +113,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
             Icepick.restoreInstanceState(this, savedInstanceState);
-            getPresenter().onRestoreInstanceState(savedInstanceState);
+            getPresenter().onRestoreInstanceState(presenterStateBundle);
         }
         setupToolbarAndStatusBar(toolbar);
         //showHideAds();
@@ -387,7 +387,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
-        if (this instanceof LoginActivity || this instanceof LoginChooserActivity) return; // we really should consider putting this outside as it starts growing :D
+        if (this instanceof LoginActivity || this instanceof LoginChooserActivity)
+            return; // we really should consider putting this outside as it starts growing :D
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
         int themeColor = PrefGetter.getThemeColor(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {

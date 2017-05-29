@@ -29,7 +29,7 @@ import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:17 PM

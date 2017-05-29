@@ -26,6 +26,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.ui.adapter.LabelsAdapter;
 import com.fastaccess.ui.adapter.MilestonesAdapter;
 import com.fastaccess.ui.adapter.SimpleListAdapter;
@@ -39,7 +40,8 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -214,15 +216,22 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_micro));
         popupWindow.setBackgroundDrawable(new ColorDrawable(ViewHelper.getWindowBackground(this)));
         popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_normal));
-        viewHolder.recycler.setAdapter(new SimpleListAdapter<>(Arrays.asList(getResources().getStringArray(R.array.sort_prs_issues)),
-                new BaseViewHolder.OnItemClickListener<String>() {
-                    @Override public void onItemClick(int position, View v, String item) {
-                        appendSort(item);
-                    }
+        ArrayList<String> lists = new ArrayList<>();
+        Collections.addAll(lists, getResources().getStringArray(R.array.sort_prs_issues));
+        lists.add(CommentsHelper.getThumbsUp());
+        lists.add(CommentsHelper.getThumbsDown());
+        lists.add(CommentsHelper.getLaugh());
+        lists.add(CommentsHelper.getHooray());
+        lists.add(CommentsHelper.getSad());
+        lists.add(CommentsHelper.getHeart());
+        viewHolder.recycler.setAdapter(new SimpleListAdapter<>(lists, new BaseViewHolder.OnItemClickListener<String>() {
+            @Override public void onItemClick(int position, View v, String item) {
+                appendSort(item);
+            }
 
-                    @Override public void onItemLongClick(int position, View v, String item) {}
-                }));
-        AnimHelper.revealPopupWindow(popupWindow, assignee);
+            @Override public void onItemLongClick(int position, View v, String item) {}
+        }));
+        AnimHelper.revealPopupWindow(popupWindow, sort);
     }
 
     @Override public void onSetCount(int count, boolean isOpen) {
@@ -459,6 +468,12 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         String leastCommentedQuery = "comments-asc";
         String recentlyUpdatedQuery = "updated-desc";
         String leastRecentUpdatedQuery = "updated-asc";
+        String sortThumbUp = "reactions-+1-desc";
+        String sortThumbDown = "reactions--1-desc";
+        String sortThumbLaugh = "reactions-smile-desc";
+        String sortThumbHooray = "reactions-tada-desc";
+        String sortThumbConfused = "reactions-thinking_face-desc";
+        String sortThumbHeart = "reactions-heart-desc";
         String toQuery = "";
         String text = InputHelper.toString(searchEditText);
         if (item.equalsIgnoreCase(resources.getString(R.string.newest))) {
@@ -479,6 +494,24 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
             toQuery = recentlyUpdatedQuery;
         } else if (item.equalsIgnoreCase(resources.getString(R.string.least_recent_updated))) {
             toQuery = leastRecentUpdatedQuery;
+        } else if (item.equalsIgnoreCase(CommentsHelper.getThumbsUp())) {
+            toQuery = sortThumbUp;
+            showMessage(R.string.error, R.string.not_really_working);
+        } else if (item.equalsIgnoreCase(CommentsHelper.getThumbsDown())) {
+            toQuery = sortThumbDown;
+            showMessage(R.string.error, R.string.not_really_working);
+        } else if (item.equalsIgnoreCase(CommentsHelper.getLaugh())) {
+            toQuery = sortThumbLaugh;
+            showMessage(R.string.error, R.string.not_really_working);
+        } else if (item.equalsIgnoreCase(CommentsHelper.getHooray())) {
+            toQuery = sortThumbHooray;
+            showMessage(R.string.error, R.string.not_really_working);
+        } else if (item.equalsIgnoreCase(CommentsHelper.getSad())) {
+            toQuery = sortThumbConfused;
+            showMessage(R.string.error, R.string.not_really_working);
+        } else if (item.equalsIgnoreCase(CommentsHelper.getHeart())) {
+            toQuery = sortThumbHeart;
+            showMessage(R.string.error, R.string.not_really_working);
         }
         if (!text.replaceAll(regex, "sort:\"" + toQuery + "\"").equalsIgnoreCase(text)) {
             String space = text.endsWith(" ") ? "" : " ";

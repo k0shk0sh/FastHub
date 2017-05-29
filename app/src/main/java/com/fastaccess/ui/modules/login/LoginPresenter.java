@@ -21,7 +21,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.Arrays;
 
 import okhttp3.Credentials;
-import retrofit2.adapter.rxjava.HttpException;
+import retrofit2.HttpException;
 
 /**
  * Created by Kosh on 09 Nov 2016, 9:43 PM

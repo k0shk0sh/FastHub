@@ -9,12 +9,12 @@ import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 
+import io.reactivex.Observable;
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
 import lombok.NoArgsConstructor;
-import rx.Observable;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:36 PM
@@ -74,8 +74,7 @@ import rx.Observable;
 //        entity.setIsLoggedIn(true); TODO for multiple logins
         App.getInstance().getDataStore()
                 .insert(entity)
-                .toBlocking()
-                .value();
+                .blockingGet();
     }
 
     public static Login getUser() {

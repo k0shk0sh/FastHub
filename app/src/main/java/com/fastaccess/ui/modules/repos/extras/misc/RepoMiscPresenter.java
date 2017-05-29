@@ -16,7 +16,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 04 May 2017, 8:33 PM
@@ -87,9 +87,10 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
                 makeRestCall(RestProvider.getRepoService().getForks(owner, repo, page)
                         .flatMap(repoPageable -> {
                             lastPage = repoPageable.getLast();
-                            return Observable.from(repoPageable.getItems())
+                            return Observable.fromIterable(repoPageable.getItems())
                                     .map(Repo::getOwner)
-                                    .toList();
+                                    .toList()
+                                    .toObservable();
                         }), owners -> sendToView(view -> view.onNotifyAdapter(owners, page)));
                 break;
         }

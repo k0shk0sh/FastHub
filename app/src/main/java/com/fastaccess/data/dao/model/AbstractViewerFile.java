@@ -12,8 +12,7 @@ import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
+import io.reactivex.Observable;import io.reactivex.Single;
 
 /**
  * Created by Kosh on 06 Dec 2016, 10:42 PM
@@ -31,7 +30,7 @@ import rx.Single;
                 .delete(ViewerFile.class)
                 .where(ViewerFile.FULL_URL.eq(modelEntity.getFullUrl()))
                 .get()
-                .toSingle()
+                .single()
                 .flatMap(i -> App.getInstance().getDataStore().insert(modelEntity)));
     }
 
@@ -41,7 +40,7 @@ import rx.Single;
                 .select(ViewerFile.class)
                 .where(ViewerFile.FULL_URL.equal(url))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public int describeContents() { return 0; }

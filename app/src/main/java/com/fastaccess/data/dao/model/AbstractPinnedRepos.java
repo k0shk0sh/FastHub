@@ -10,14 +10,13 @@ import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 import static com.fastaccess.data.dao.model.PinnedRepos.ID;
 import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
@@ -41,7 +40,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
             PinnedRepos pinned = new PinnedRepos();
             pinned.setRepoFullName(repo.getFullName());
             pinned.setPinnedRepo(repo);
-            save(pinned).toObservable().toBlocking().firstOrDefault(null);
+            App.getInstance().getDataStore().insert(pinned).blockingGet();
             return true;
         } else {
             delete(pinnedRepos.getId());
@@ -67,11 +66,11 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
         return get(repoFullName) != null;
     }
 
-    @NonNull public static Observable<List<PinnedRepos>> getMyPinnedRepos() {
+    @NonNull public static Single<List<PinnedRepos>> getMyPinnedRepos() {
         return App.getInstance().getDataStore().select(PinnedRepos.class)
                 .orderBy(ID.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
 
     }

@@ -59,7 +59,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
                     if (response != null) {
                         lastPage = response.getLast();
                         if (getCurrentPage() == 1) {
-                            manageSubscription(User.saveUserContributorList(response.getItems(), repoId).subscribe());
+                            manageObservable(User.saveUserContributorList(response.getItems(), repoId));
                         }
                     }
                     sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
@@ -81,7 +81,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
 
     @Override public void onWorkOffline() {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(User.getUserContributorList(repoId))
+            manageSubscription(RxHelper.getObserver(User.getUserContributorList(repoId).toObservable())
                     .subscribe(userModels -> sendToView(view -> view.onNotifyAdapter(userModels, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

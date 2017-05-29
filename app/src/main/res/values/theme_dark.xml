@@ -78,7 +78,7 @@
     </style>
 
     <style name="ThemeDark.Teal" parent="ThemeDark.Base">
-        <item name="colorAccent">@color/material_teal_accent_700</item>
+        <item name="colorAccent">@color/material_teal_700</item>
         <item name="android:alertDialogTheme">@style/DialogThemeDark.Teal</item>
     </style>
 

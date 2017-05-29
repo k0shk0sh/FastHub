@@ -22,15 +22,15 @@ import com.fastaccess.helper.RxHelper;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 import static com.fastaccess.data.dao.model.Issue.ID;
 import static com.fastaccess.data.dao.model.Issue.LOGIN;
@@ -69,25 +69,19 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     @Convert(UserConverter.class) User closedBy;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
-    public Single save(Issue entity) {
-        return RxHelper.getSingle(
-                App.getInstance().getDataStore()
-                        .delete(Issue.class)
-                        .where(ID.eq(entity.getId()))
-                        .get()
-                        .toSingle()
-                        .flatMap(i -> App.getInstance().getDataStore().insert(entity)));
+    public Single<Issue> save(Issue entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
     public static Observable<Issue> save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(
                 singleEntityStore.delete(Issue.class)
                         .where(REPO_ID.equal(repoId).and(LOGIN.equal(login)))
                         .get()
-                        .toSingle()
+                        .single()
                         .toObservable()
-                        .flatMap(integer -> Observable.from(models))
+                        .flatMap(integer -> Observable.fromIterable(models))
                         .flatMap(issueModel -> {
                             issueModel.setRepoId(repoId);
                             issueModel.setLogin(login);
@@ -95,14 +89,14 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
                         }));
     }
 
-    public static Observable<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
+    public static Single<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
         return App.getInstance().getDataStore().select(Issue.class)
                 .where(REPO_ID.equal(repoId)
                         .and(LOGIN.equal(login))
                         .and(STATE.equal(issueState)))
                 .orderBy(UPDATED_AT.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -111,7 +105,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
                 .select(Issue.class)
                 .where(ID.equal(id))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     public static Observable<Issue> getIssueByNumber(int number, String repoId, String login) {
@@ -121,7 +115,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
                         .and(REPO_ID.eq(repoId))
                         .and(LOGIN.eq(login)))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public int describeContents() { return 0; }

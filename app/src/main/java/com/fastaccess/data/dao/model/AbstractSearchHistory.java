@@ -8,10 +8,9 @@ import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Entity;
-import rx.Observable;
-import rx.Single;
 
 /**
  * Created by Kosh on 01 Jan 2017, 11:20 PM
@@ -28,16 +27,16 @@ public abstract class AbstractSearchHistory implements Parcelable {
                         .delete(SearchHistory.class)
                         .where(SearchHistory.TEXT.eq(entity.getText()))
                         .get()
-                        .toSingle()
+                        .single()
                         .flatMap(integer -> App.getInstance().getDataStore().insert(entity)));
     }
 
-    public static Observable<List<SearchHistory>> getHistory() {
+    public static Single<List<SearchHistory>> getHistory() {
         return App.getInstance().getDataStore()
                 .select(SearchHistory.class)
                 .groupBy(SearchHistory.TEXT.asc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 

@@ -19,16 +19,17 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 import static com.fastaccess.data.dao.model.Repo.FULL_NAME;
 import static com.fastaccess.data.dao.model.Repo.ID;
@@ -120,20 +121,15 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     String reposOwner;
 
     public Single<Repo> save(@NonNull Repo entity) {
-        return RxHelper.getSingle(
-                App.getInstance().getDataStore().delete(Repo.class)
-                        .where(ID.eq(entity.getId()))
-                        .get()
-                        .toSingle()
-                        .flatMap(i -> App.getInstance().getDataStore().insert(entity)));
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
-    public static Observable<Repo> getRepo(@NonNull String name, @NonNull String login) {
+    public static Maybe<Repo> getRepo(@NonNull String name, @NonNull String login) {
         return App.getInstance().getDataStore()
                 .select(Repo.class)
                 .where(FULL_NAME.eq(login + "/" + name))
                 .get()
-                .toObservable();
+                .maybe();
     }
 
     public static Repo getRepo(long id) {
@@ -145,13 +141,13 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     }
 
     public static Observable<Repo> saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
                 .where(STARRED_USER.eq(starredUser))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models))
+                .flatMap(integer -> Observable.fromIterable(models))
                 .flatMap(repo -> {
                     repo.setStarredUser(starredUser);
                     return repo.save(repo).toObservable();
@@ -159,36 +155,36 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     }
 
     public static Observable<Repo> saveMyRepos(@NonNull List<Repo> models, @NonNull String reposOwner) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Repo.class)
                 .where(REPOS_OWNER.eq(reposOwner))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models))
+                .flatMap(integer -> Observable.fromIterable(models))
                 .flatMap(repo -> {
                     repo.setReposOwner(reposOwner);
                     return repo.save(repo).toObservable();
                 }));
     }
 
-    public static Observable<List<Repo>> getStarred(@NonNull String starredUser) {
+    public static Single<List<Repo>> getStarred(@NonNull String starredUser) {
         return App.getInstance().getDataStore()
                 .select(Repo.class)
                 .where(STARRED_USER.eq(starredUser))
                 .orderBy(UPDATED_AT.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
-    public static Observable<List<Repo>> getMyRepos(@NonNull String reposOwner) {
+    public static Single<List<Repo>> getMyRepos(@NonNull String reposOwner) {
         return App.getInstance().getDataStore()
                 .select(Repo.class)
                 .where(REPOS_OWNER.eq(reposOwner))
                 .orderBy(UPDATED_AT.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 

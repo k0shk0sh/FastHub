@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -38,8 +37,8 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
-import rx.Observable;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Kosh on 19 Feb 2017, 6:32 PM
@@ -85,7 +84,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     public static void scheduleJob(@NonNull Context context) {
         int duration = PrefGetter.getNotificationTaskDuration();
-        scheduleJob(context, duration == 0 ? THIRTY_MINUTES : duration, false);
+        scheduleJob(context, duration, false);
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
@@ -110,7 +109,7 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {
         if (notificationThreadModels != null) {
-            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe();
+            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe(notification -> {/**/}, Throwable::printStackTrace);
             onNotifyUser(notificationThreadModels, job);
         }
     }
@@ -126,14 +125,12 @@ public class NotificationSchedulerJobTask extends JobService {
         }
         Context context = getApplicationContext();
         int accentColor = ContextCompat.getColor(this, R.color.material_blue_700);
-        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
-                R.mipmap.ic_launcher);
         String[] url = new String[1];
         Notification first = notificationThreadModels.get(0);
-        Observable.from(notificationThreadModels)
+        Observable.fromIterable(notificationThreadModels)
                 .subscribeOn(Schedulers.io())
                 .filter(notification -> notification.isUnread() && first.getId() != notification.getId())
-                .limit(10)
+                .take(10)
                 .flatMap(notification -> RestProvider.getNotificationService()
                         .getComment(notification.getSubject().getLatestCommentUrl())
                         .subscribeOn(Schedulers.io()), (thread, comment) -> {
