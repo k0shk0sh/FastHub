@@ -108,6 +108,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 - Russian [@dedepete](https://github.com/dedepete)
 - Japanese [@Rintan](https://github.com/Rintan)
 - Italian [@Raffaele74](https://github.com/Raffaele74)
+- Lithuanian [@mistermantas](https://github.com/mistermantas)
 
 # License
 
