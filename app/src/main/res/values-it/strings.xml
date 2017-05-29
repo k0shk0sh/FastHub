@@ -193,6 +193,7 @@
     <string name="background_job_title">Intervallo sincronizzazione delle notifiche</string>
     <string name="every">Ogni</string>
     <string name="behavior">Comportamento</string>
+    <string name="customization">Personalizzazione</string>
     <string name="recycler_view_animation_summary">Abilita animazioni delle liste</string>
     <string name="recycler_view_animation_title">Animazione lista</string>
     <string name="back_button_summary">Disabilita il dialogo che previene una chiusura accidentale dell\'app</string>
@@ -229,6 +230,9 @@
     <string name="mark_notification_summary">Premendo su una notifica non la segnerà come letta.</string>
     <string name="theme_title">Scegli un tema</string>
     <string name="theme_summary">Scegli il tuo tema predefinito</string>
+    <string name="theme_color_summary">Scegli il colore di evidenza</string>
+    <string name="theme_color_title">Colore evidenziatore</string>
+    <string name="website">Website</string>
     <string name="website">Sito Web</string>
     <string name="support_development">Supporta lo sviluppo</string>
     <string name="success_purchase_message">Grazie di essere così estremamente fantastico!</string>
