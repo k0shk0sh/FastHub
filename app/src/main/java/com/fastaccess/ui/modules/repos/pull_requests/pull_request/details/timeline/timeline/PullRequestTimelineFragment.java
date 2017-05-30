@@ -284,6 +284,11 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         }
     }
 
+    @Override public void onRefresh(@NonNull PullRequest pullRequest) {
+        getPresenter().onUpdatePullRequest(pullRequest);
+        onRefresh();
+    }
+
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {

@@ -30,12 +30,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import lombok.Getter;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:17 PM
  */
 
-public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
+@Getter public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
     @icepick.State Issue issue;
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private ReactionsProvider reactionsProvider;
@@ -199,6 +200,10 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
 
     @Override public boolean isCallingApi(long id, int vId) {
         return getReactionsProvider().isCallingApi(id, vId);
+    }
+
+    @Override public void onUpdateIssue(@NonNull Issue issue) {
+        this.issue = issue;
     }
 
     @NonNull private ReactionsProvider getReactionsProvider() {

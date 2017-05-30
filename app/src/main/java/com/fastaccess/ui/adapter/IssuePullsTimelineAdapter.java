@@ -92,9 +92,5 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         return getData().get(position).getType();
     }
 
-    @Override public void insertItems(@NonNull List<TimelineModel> items) {
-        super.insertItems(items);
-    }
-
 }
 

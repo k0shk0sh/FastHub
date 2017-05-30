@@ -69,7 +69,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             return;
         }
         if (page == 1) {
-            items.add(0, TimelineModel.constructHeader(getPresenter().issue));
+            items.add(0, TimelineModel.constructHeader(getPresenter().getIssue()));
             adapter.insertItems(items);
         } else {
             adapter.addItems(items);
@@ -209,6 +209,11 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         if (adapter != null && adapter.isEmpty()) {
             adapter.addItem(timelineModel, 0);
         }
+    }
+
+    @Override public void onRefresh(@NonNull Issue issue) {
+        getPresenter().onUpdateIssue(issue);
+        onRefresh();
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

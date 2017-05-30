@@ -227,6 +227,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return getReactionsProvider().isCallingApi(id, vId);
     }
 
+    @Override public void onUpdatePullRequest(@NonNull PullRequest pullRequest) {
+        this.pullRequest = pullRequest;
+    }
+
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
     }

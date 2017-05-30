@@ -3,6 +3,7 @@ package com.fastaccess.ui.adapter.viewholder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -76,11 +77,10 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
                     .forEach(statusesModel -> builder
                             .append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()))
                             .append(" ")
-                            .url(statusesModel.getDescription(), v -> {
-                                SchemeParser.launchUri(v.getContext(), Uri.parse(statusesModel.getTargetUrl()));
-                            })
+                            .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(), Uri.parse(statusesModel.getTargetUrl())))
                             .append("\n"));
             if (!InputHelper.isEmpty(builder)) {
+                statuses.setMovementMethod(LinkMovementMethod.getInstance());
                 statuses.setText(builder);
                 statuses.setVisibility(View.VISIBLE);
             } else {

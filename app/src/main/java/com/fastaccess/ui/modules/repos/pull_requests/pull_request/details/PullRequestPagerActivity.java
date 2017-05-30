@@ -259,48 +259,53 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
         }
         detailsIcon.setVisibility(InputHelper.isEmpty(pullRequest.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
-        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForPullRequest(this, pullRequest)));
-        tabs.setupWithViewPager(pager);
-        if (!getPresenter().isLocked() || getPresenter().isOwner()) {
-            pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override public void onPageSelected(int position) {
-                    super.onPageSelected(position);
+        if (pager.getAdapter() == null) {
+            pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForPullRequest(this,
+                    pullRequest)));
+            tabs.setupWithViewPager(pager);
+            if (!getPresenter().isLocked() || getPresenter().isOwner()) {
+                pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                    @Override public void onPageSelected(int position) {
+                        super.onPageSelected(position);
 
+                    }
+                });
+            }
+            tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+                @Override public void onTabReselected(TabLayout.Tab tab) {
+                    super.onTabReselected(tab);
+                    onScrollTop(tab.getPosition());
                 }
             });
-        }
-        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
-            @Override public void onTabReselected(TabLayout.Tab tab) {
-                super.onTabReselected(tab);
-                onScrollTop(tab.getPosition());
+            if (tabs.getTabAt(2) != null) {
+                tabs.getTabAt(2)
+                        .setText(SpannableBuilder.builder()
+                                .append(getString(R.string.files))
+                                .append(" ")
+                                .append("(")
+                                .append(String.valueOf(pullRequest.getChangedFiles()))
+                                .append(")"));
             }
-        });
-        if (tabs.getTabAt(2) != null) {
-            tabs.getTabAt(2)
-                    .setText(SpannableBuilder.builder()
-                            .append(getString(R.string.files))
-                            .append(" ")
-                            .append("(")
-                            .append(String.valueOf(pullRequest.getChangedFiles()))
-                            .append(")"));
-        }
-        if (tabs.getTabAt(1) != null) {
-            tabs.getTabAt(1)
-                    .setText(SpannableBuilder.builder()
-                            .append(getString(R.string.commits))
-                            .append(" ")
-                            .append("(")
-                            .append(String.valueOf(pullRequest.getCommits()))
-                            .append(")"));
-        }
-        if (tabs.getTabAt(0) != null) {
-            tabs.getTabAt(0)
-                    .setText(SpannableBuilder.builder()
-                            .append(getString(R.string.details))
-                            .append(" ")
-                            .append("(")
-                            .append(String.valueOf(pullRequest.getComments()))
-                            .append(")"));
+            if (tabs.getTabAt(1) != null) {
+                tabs.getTabAt(1)
+                        .setText(SpannableBuilder.builder()
+                                .append(getString(R.string.commits))
+                                .append(" ")
+                                .append("(")
+                                .append(String.valueOf(pullRequest.getCommits()))
+                                .append(")"));
+            }
+            if (tabs.getTabAt(0) != null) {
+                tabs.getTabAt(0)
+                        .setText(SpannableBuilder.builder()
+                                .append(getString(R.string.details))
+                                .append(" ")
+                                .append("(")
+                                .append(String.valueOf(pullRequest.getComments()))
+                                .append(")"));
+            }
+        } else {
+            onUpdateTimeline();
         }
         hideShowFab();
     }
@@ -361,8 +366,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public void onUpdateTimeline() {
         showMessage(R.string.success, R.string.labels_added_successfully);
         PullRequestTimelineFragment pullRequestDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-        if (pullRequestDetailsView != null) {
-            pullRequestDetailsView.onRefresh();
+        if (pullRequestDetailsView != null && getPresenter().getPullRequest() != null) {
+            pullRequestDetailsView.onRefresh(getPresenter().getPullRequest());
         }
     }
 

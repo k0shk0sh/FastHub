@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -48,6 +49,8 @@ public interface IssueTimelineMvp {
         void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, boolean isHeadre);
 
         void onSetHeader(@NonNull TimelineModel timelineModel);
+
+        void onRefresh(@NonNull Issue issue);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
@@ -72,5 +75,7 @@ public interface IssueTimelineMvp {
         void onHandleReaction(@IdRes int viewId, long id, @ReactionsProvider.ReactionType int reactionType);
 
         boolean isCallingApi(long id, int vId);
+
+        void onUpdateIssue(@NonNull Issue issue);
     }
 }
