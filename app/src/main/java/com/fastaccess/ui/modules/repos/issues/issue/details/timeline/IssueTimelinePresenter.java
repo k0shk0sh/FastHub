@@ -43,7 +43,6 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 
-
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
     }
@@ -136,6 +135,14 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         return timeline;
     }
 
+    @Override protected void onCreate() {
+        super.onCreate();
+        if (issue != null && timeline.isEmpty()) {
+            sendToView(view -> view.onSetHeader(TimelineModel.constructHeader(issue)));
+            onCallApi(1, null);
+        }
+    }
+
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
         issue = bundle.getParcelable(BundleConstant.ITEM);
@@ -187,7 +194,7 @@ public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View>
         String login = login();
         String repoId = repoId();
         Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType);
-        if (observable != null) manageSubscription(observable.subscribe());
+        if (observable != null) manageObservable(observable);
     }
 
     @Override public boolean isCallingApi(long id, int vId) {

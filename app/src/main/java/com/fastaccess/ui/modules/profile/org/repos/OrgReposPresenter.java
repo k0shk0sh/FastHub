@@ -78,7 +78,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(OrgReposMvp.View::hideProgress);

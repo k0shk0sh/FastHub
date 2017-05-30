@@ -27,7 +27,7 @@ class SearchPresenter extends BasePresenter<SearchMvp.View> implements SearchMvp
     @Override protected void onAttachView(@NonNull SearchMvp.View view) {
         super.onAttachView(view);
         if (hints.isEmpty()) {
-            manageSubscription(SearchHistory.getHistory()
+            manageDisposable(SearchHistory.getHistory()
                     .subscribe(strings -> {
                         hints.clear();
                         if (strings != null) hints.addAll(strings);

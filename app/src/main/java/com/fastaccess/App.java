@@ -4,6 +4,7 @@ import android.app.Application;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
+import com.crashlytics.android.Crashlytics;
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
@@ -12,7 +13,9 @@ import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.provider.uil.UILProvider;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
+import io.fabric.sdk.android.Fabric;
 import io.requery.Persistable;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.meta.EntityModel;
@@ -22,7 +25,6 @@ import io.requery.sql.Configuration;
 import io.requery.sql.EntityDataStore;
 import io.requery.sql.TableCreationMode;
 import shortbread.Shortbread;
-
 
 
 /**
@@ -65,6 +67,8 @@ public class App extends Application {
     }
 
     private void init() {
+        Fabric.with(this, new Crashlytics());
+        RxBillingService.register(this);
         deleteDatabase("database.db");
         getDataStore();//init requery before anything.
         setupPreference();

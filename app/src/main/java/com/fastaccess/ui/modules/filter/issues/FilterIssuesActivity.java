@@ -458,7 +458,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         onSearch();
     }
 
-    private void appendSort(String item) {
+    private void appendSort(String item)  {
         dismissPopup();
         appendIfEmpty();
         Resources resources = getResources();
@@ -468,7 +468,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         String leastCommentedQuery = "comments-asc";
         String recentlyUpdatedQuery = "updated-desc";
         String leastRecentUpdatedQuery = "updated-asc";
-        String sortThumbUp = "reactions-+1-desc";
+        String sortThumbUp = "reactions-%2B1-desc";
         String sortThumbDown = "reactions--1-desc";
         String sortThumbLaugh = "reactions-smile-desc";
         String sortThumbHooray = "reactions-tada-desc";
@@ -496,22 +496,16 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
             toQuery = leastRecentUpdatedQuery;
         } else if (item.equalsIgnoreCase(CommentsHelper.getThumbsUp())) {
             toQuery = sortThumbUp;
-            showMessage(R.string.error, R.string.not_really_working);
         } else if (item.equalsIgnoreCase(CommentsHelper.getThumbsDown())) {
             toQuery = sortThumbDown;
-            showMessage(R.string.error, R.string.not_really_working);
         } else if (item.equalsIgnoreCase(CommentsHelper.getLaugh())) {
             toQuery = sortThumbLaugh;
-            showMessage(R.string.error, R.string.not_really_working);
         } else if (item.equalsIgnoreCase(CommentsHelper.getHooray())) {
             toQuery = sortThumbHooray;
-            showMessage(R.string.error, R.string.not_really_working);
         } else if (item.equalsIgnoreCase(CommentsHelper.getSad())) {
             toQuery = sortThumbConfused;
-            showMessage(R.string.error, R.string.not_really_working);
         } else if (item.equalsIgnoreCase(CommentsHelper.getHeart())) {
             toQuery = sortThumbHeart;
-            showMessage(R.string.error, R.string.not_really_working);
         }
         if (!text.replaceAll(regex, "sort:\"" + toQuery + "\"").equalsIgnoreCase(text)) {
             String space = text.endsWith(" ") ? "" : " ";

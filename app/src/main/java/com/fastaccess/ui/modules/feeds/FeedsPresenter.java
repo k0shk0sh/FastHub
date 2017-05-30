@@ -89,12 +89,12 @@ class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Pr
 
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Event.getEvents().toObservable())
+            manageDisposable(RxHelper.getObserver(Event.getEvents().toObservable())
                     .subscribe(modelList -> {
-                if (modelList != null) {
-                    sendToView(view -> view.onNotifyAdapter(modelList, 1));
-                }
-            }));
+                        if (modelList != null) {
+                            sendToView(view -> view.onNotifyAdapter(modelList, 1));
+                        }
+                    }, Throwable::printStackTrace));
         } else {
             sendToView(FeedsMvp.View::hideProgress);
         }

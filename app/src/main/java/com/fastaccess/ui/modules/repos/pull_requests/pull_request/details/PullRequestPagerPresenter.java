@@ -98,7 +98,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onWorkOffline() {
         if (pullRequest == null) {
-            manageSubscription(PullRequest.getPullRequestByNumber(issueNumber, repoId, login)
+            manageDisposable(PullRequest.getPullRequestByNumber(issueNumber, repoId, login)
                     .subscribe(pullRequestModel -> {
                         if (pullRequestModel != null) {
                             pullRequest = pullRequestModel;
@@ -166,7 +166,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onOpenCloseIssue() {
         if (getPullRequest() != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(getPullRequest(), true);
-            manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestService().editPullRequest(login, repoId,
+            manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService().editPullRequest(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .doOnNext(issue -> {
@@ -188,7 +188,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     @Override public void onLoadLabels() {
-        manageSubscription(
+        manageDisposable(
                 RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .doOnNext(response -> {
@@ -264,7 +264,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             MergeRequestModel mergeRequestModel = new MergeRequestModel();
             mergeRequestModel.setSha(getPullRequest().getHead().getSha());
             mergeRequestModel.setCommitMessage(msg);
-            manageSubscription(
+            manageDisposable(
                     RxHelper.getObserver(RestProvider.getPullRequestService().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
                             .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                             .doOnNext(mergeResponseModel -> {

@@ -460,4 +460,8 @@
     <string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
     <string name="scroll_up">Scroll Up</string>
     <string name="scroll_down">Scroll down</string>
+    <string name="participated">Participated</string>
+    <string name="todo_checked">Todo checked</string>
+    <string name="todo_unchecked">Todo unchecked</string>
+    <string name="divider">Divider</string>
 </resources>

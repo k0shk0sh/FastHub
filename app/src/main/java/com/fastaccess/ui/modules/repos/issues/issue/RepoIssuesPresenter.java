@@ -11,7 +11,6 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
@@ -63,8 +62,8 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             return;
         }
         this.issueState = parameter;
-        Logger.e(page, page, login, repoId);
         if (page == 1) {
+            onCallCountApi(issueState);
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
@@ -91,7 +90,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageSubscription(RxHelper.getObserver(RestProvider.getIssueService()
+        manageDisposable(RxHelper.getObserver(RestProvider.getIssueService()
                 .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, false), 1))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));
@@ -103,13 +102,12 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         this.issueState = issueState;
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, issueState);
-            onCallCountApi(issueState);
         }
     }
 
     @Override public void onWorkOffline() {
         if (issues.isEmpty()) {
-            manageSubscription(RxHelper.getSingle(Issue.getIssues(repoId, login, issueState))
+            manageDisposable(RxHelper.getSingle(Issue.getIssues(repoId, login, issueState))
                     .subscribe(issueModel -> sendToView(view -> {
                         view.onNotifyAdapter(issueModel, 1);
                         view.onUpdateCount(issueModel.size());

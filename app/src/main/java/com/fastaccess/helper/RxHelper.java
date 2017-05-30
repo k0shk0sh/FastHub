@@ -25,8 +25,8 @@ public class RxHelper {
                 .doOnError(Throwable::printStackTrace);
     }
 
-    public static <T> Single<T> getSingle(@NonNull Single<T> observable) {
-        return observable
+    public static <T> Single<T> getSingle(@NonNull Single<T> single) {
+        return single
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

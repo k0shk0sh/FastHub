@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.firebase.firebase-crash'
 //apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
+apply plugin: 'io.fabric'
 
 buildProperties {
     notThere {
@@ -96,6 +96,7 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://jitpack.io" }
     maven { url "https://maven.google.com" }
+    maven { url 'https://maven.fabric.io/public' }
     mavenCentral()
 }
 
@@ -137,11 +138,14 @@ dependencies {
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
     compile "com.google.firebase:firebase-ads:${gms}"
     compile "com.google.firebase:firebase-messaging:${gms}"
-    releaseCompile "com.google.firebase:firebase-crash:${gms}"
     compile "com.google.android.gms:play-services-auth:${gms}"
     compile "com.github.florent37:retrojsoup:${retroJsoup}"
     compile "com.github.florent37:rxjsoup:${retroJsoup}"
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
+    }
     compile "org.jsoup:jsoup:1.10.2"
+    compile "com.github.miguelbcr:RxBillingService:0.0.3"
 //    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlin_version}"
     provided "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "com.github.florent37:retrojsoup-compiler:${retroJsoup}"

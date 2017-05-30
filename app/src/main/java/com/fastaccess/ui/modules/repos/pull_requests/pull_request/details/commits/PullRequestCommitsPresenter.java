@@ -86,7 +86,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
 
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
-            manageSubscription(RxHelper.getSingle(Commit.getCommits(repoId, login, number))
+            manageDisposable(RxHelper.getSingle(Commit.getCommits(repoId, login, number))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

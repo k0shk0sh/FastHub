@@ -58,8 +58,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onFollowButtonClicked(@NonNull String login) {
-        manageSubscription(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService().followUser(login)
-                                                             : RestProvider.getUserService().unfollowUser(login))
+        manageDisposable(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService().followUser(login)
+                                                           : RestProvider.getUserService().unfollowUser(login))
                 .subscribe(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         isFollowing = !isFollowing;
@@ -174,7 +174,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     private void loadContributions() {
         String url = String.format(URL, login);
-        manageSubscription(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
+        manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
                 .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
                 .subscribe(lists -> {
                     contributions.clear();
@@ -185,8 +185,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     private void loadOrgs() {
         boolean isMe = login.equalsIgnoreCase(Login.getUser() != null ? Login.getUser().getLogin() : "");
-        manageSubscription(RxHelper.getObserver(isMe ? RestProvider.getOrgService().getMyOrganizations()
-                                                     : RestProvider.getOrgService().getMyOrganizations(login))
+        manageDisposable(RxHelper.getObserver(isMe ? RestProvider.getOrgService().getMyOrganizations()
+                                                   : RestProvider.getOrgService().getMyOrganizations(login))
                 .subscribe(response -> {
                     if (response != null && response.getItems() != null) {
                         userOrgs.addAll(response.getItems());
@@ -198,7 +198,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     private void loadUrlBackgroundImage() {
         if (Login.getUser().getLogin().equalsIgnoreCase(login)) {
             if (PrefGetter.getProfileBackgroundUrl() == null) {
-                manageSubscription(getHeaderGist()
+                manageDisposable(getHeaderGist()
                         .flatMap(s -> RxHelper.getObserver(Observable.fromArray(s.split("\n"))))
                         .flatMap(s -> RxHelper.getObserver(Observable.just(s.split("->"))))
                         .filter(strings -> strings != null && strings[0].equalsIgnoreCase(login))
@@ -208,7 +208,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                 sendToView(view -> view.onImagePosted(PrefGetter.getProfileBackgroundUrl()));
             }
         } else {
-            manageSubscription(getHeaderGist()
+            manageDisposable(getHeaderGist()
                     .flatMap(s -> RxHelper.getObserver(Observable.fromArray(s.split("\n"))))
                     .flatMap(s -> RxHelper.getObserver(Observable.just(s.split("->"))))
                     .filter(strings -> strings != null && strings[0].equalsIgnoreCase(login))

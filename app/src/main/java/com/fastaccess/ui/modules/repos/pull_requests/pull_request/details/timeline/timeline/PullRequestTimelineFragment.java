@@ -279,7 +279,9 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
-        adapter.addItem(timelineModel, 0);
+        if (adapter != null && adapter.isEmpty()) {
+            adapter.addItem(timelineModel, 0);
+        }
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

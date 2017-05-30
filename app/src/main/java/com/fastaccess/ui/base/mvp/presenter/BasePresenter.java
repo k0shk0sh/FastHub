@@ -40,15 +40,25 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         if (outState != null) Icepick.restoreInstanceState(this, outState);
     }
 
-    @Override public void manageSubscription(@Nullable Disposable... subscription) {
-        if (subscription != null) {
-            subscriptionHandler.manageDisposables(subscription);
+    @Override public void manageDisposable(@Nullable Disposable... disposables) {
+        if (disposables != null) {
+            subscriptionHandler.manageDisposables(disposables);
         }
     }
 
     @Override public <T> void manageObservable(@Nullable Observable<T> observable) {
         if (observable != null) {
-            manageSubscription(observable.subscribe(t -> {/**/}, Throwable::printStackTrace));
+            manageDisposable(RxHelper.getObserver(observable).subscribe(t -> {/**/}, Throwable::printStackTrace));
+        }
+    }
+
+    @Override public void manageViewDisposable(@Nullable Disposable... disposables) {
+        if (disposables != null) {
+            if (isViewAttached()) {
+                subscriptionHandler.manageViewDisposables(disposables);
+            } else {
+                sendToView(v -> manageViewDisposable(disposables));
+            }
         }
     }
 
@@ -76,7 +86,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext) {
-        manageSubscription(
+        manageDisposable(
                 RxHelper.getObserver(observable)
                         .doOnSubscribe(disposable -> onSubscribed())
                         .subscribe(onNext, this::onError, () -> apiCalled = true)

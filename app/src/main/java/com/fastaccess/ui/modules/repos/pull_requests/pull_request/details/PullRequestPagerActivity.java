@@ -127,7 +127,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            if (getPresenter().isApiCalled()) onSetupIssue();
+            if (getPresenter().getPullRequest() != null) onSetupIssue();
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
@@ -249,8 +249,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         supportInvalidateOptionsMenu();
         PullRequest pullRequest = getPresenter().getPullRequest();
         setTitle(String.format("#%s", pullRequest.getNumber()));
-        boolean isMerge = !InputHelper.isEmpty(pullRequest.getMergedAt());
-        date.setText(getPresenter().getMergeBy(pullRequest, getApplicationContext()) + "\n" + pullRequest.getRepoId());
+        date.setText(String.format("%s\n%s", getPresenter().getMergeBy(pullRequest, getApplicationContext()), pullRequest.getRepoId()));
         size.setVisibility(View.GONE);
         User userModel = pullRequest.getUser();
         if (userModel != null) {

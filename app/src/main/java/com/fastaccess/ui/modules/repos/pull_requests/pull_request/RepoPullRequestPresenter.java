@@ -60,6 +60,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         }
         this.issueState = parameter;
         if (page == 1) {
+            onCallCountApi(issueState);
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
@@ -84,12 +85,11 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         issueState = (IssueState) bundle.getSerializable(BundleConstant.EXTRA_TWO);
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, issueState);
-            onCallCountApi(issueState);
         }
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestService()
+        manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService()
                 .getPullsWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, true), 0))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));
@@ -97,7 +97,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     @Override public void onWorkOffline() {
         if (pullRequests.isEmpty()) {
-            manageSubscription(RxHelper.getSingle(PullRequest.getPullRequests(repoId, login, issueState))
+            manageDisposable(RxHelper.getSingle(PullRequest.getPullRequests(repoId, login, issueState))
                     .subscribe(pulls -> sendToView(view -> {
                         view.onNotifyAdapter(pulls, 1);
                         view.onUpdateCount(pulls.size());

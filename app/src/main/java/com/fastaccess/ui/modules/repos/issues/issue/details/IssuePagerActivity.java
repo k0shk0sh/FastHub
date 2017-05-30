@@ -126,7 +126,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            if (getPresenter().isApiCalled()) onSetupIssue();
+            if (getPresenter().getIssue() != null) onSetupIssue();
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);

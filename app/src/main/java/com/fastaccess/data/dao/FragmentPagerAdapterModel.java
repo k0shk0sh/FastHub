@@ -173,7 +173,9 @@ import lombok.Setter;
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
                         MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.ASSIGNED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.mentioned),
-                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.MENTIONED)))
+                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.MENTIONED)),
+                new FragmentPagerAdapterModel(context.getString(R.string.participated),
+                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.PARTICIPATED)))
                 .collect(Collectors.toList());
     }
 
