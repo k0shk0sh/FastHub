@@ -70,8 +70,8 @@ _(To download the app from here, please look at the [latest release](https://git
 - _**Much more...**_
   - _FastHub is actively developed. More features will come!_
 
-~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development. Ads are no longer 
-available until further notice~~
+~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.~~
+Ads are no longer available until further notice
 
 # Specs / Open-source libraries:
 
@@ -107,6 +107,8 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 - Indonesian [@dikiaap](https://github.com/dikiaap)
 - Russian [@dedepete](https://github.com/dedepete)
 - Japanese [@Rintan](https://github.com/Rintan)
+- Italian [@Raffaele74](https://github.com/Raffaele74)
+- Lithuanian [@mistermantas](https://github.com/mistermantas)
 
 # License
 
