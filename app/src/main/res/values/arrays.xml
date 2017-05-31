@@ -124,6 +124,12 @@
         <item>@string/all</item>
     </string-array>
 
+    <string-array name="trending_days_array">
+        <item>Daily</item>
+        <item>Weekly</item>
+        <item>Monthly</item>
+    </string-array>
+
     <!-- EmojiCompat Downloadable Fonts Arrays -->
     <array name="fonts_certificate" translatable="false">
         <item>@array/com_google_android_gms_fonts_certs_dev</item>

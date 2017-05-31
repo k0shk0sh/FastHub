@@ -174,6 +174,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.labels) public void onLabelsClicked() {
+        if (hideWindow()) return;
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);
@@ -185,6 +186,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.milestone) public void onMilestoneClicked() {
+        if (hideWindow()) return;
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);
@@ -197,6 +199,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.assignee) public void onAssigneeClicked() {
+        if (hideWindow()) return;
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);
@@ -209,6 +212,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.sort) public void onSortClicked() {
+        if (hideWindow()) return;
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
         popupWindow = new PopupWindow(this);
         popupWindow.setContentView(viewHolder.view);
@@ -295,6 +299,14 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         } else {
             super.onBackPressed();
         }
+    }
+
+    private boolean hideWindow() {
+        if (popupWindow != null && popupWindow.isShowing()) {
+            popupWindow.dismiss();
+            return true;
+        }
+        return false;
     }
 
     private void onSearch() {

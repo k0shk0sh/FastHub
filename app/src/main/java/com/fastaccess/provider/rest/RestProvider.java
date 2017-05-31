@@ -22,6 +22,7 @@ import com.fastaccess.data.service.ReviewService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
+import com.fastaccess.data.service.trending.TrendingService;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
@@ -210,6 +211,15 @@ public class RestProvider {
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(SlackService.class);
+    }
+
+    @NonNull public static TrendingService getTrendingService() {
+        return new Retrofit.Builder()
+                .baseUrl("http://fast-for-github.appspot.com/")
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(TrendingService.class);
     }
 
     public static void clearHttpClient() {

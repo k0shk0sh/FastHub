@@ -225,9 +225,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         menu.findItem(R.id.closeIssue).setVisible(isOwner || isCollaborator);
         menu.findItem(R.id.lockIssue).setVisible(isOwner || isCollaborator);
         menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner() || isCollaborator);
-        if (isOwner) {
+        if (isOwner || isCollaborator) {
             if (getPresenter().getIssue() == null) return super.onPrepareOptionsMenu(menu);
-            closeIssue.setTitle(getPresenter().getIssue().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string.close));
             lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
         }
         return super.onPrepareOptionsMenu(menu);
@@ -238,8 +237,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         if (getPresenter().getIssue() == null) {
             return;
         }
-        supportInvalidateOptionsMenu();
         Issue issueModel = getPresenter().getIssue();
+        invalidateOptionsMenu();
         setTitle(String.format("#%s", issueModel.getNumber()));
         User userModel = issueModel.getUser();
         title.setText(issueModel.getTitle());

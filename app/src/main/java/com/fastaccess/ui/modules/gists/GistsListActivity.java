@@ -88,6 +88,14 @@ public class GistsListActivity extends BaseActivity {
         }
     }
 
+    @OnClick(R.id.fab) public void onViewClicked() {
+        ActivityHelper.startReveal(this, new Intent(this, CreateGistActivity.class), fab);
+    }
+
+    private TabLayout.Tab getTab(int titleId) {
+        return tabs.newTab().setText(titleId);
+    }
+
     private void setupTabs() {
         TabLayout.Tab tab1 = getTab(R.string.my_gists);
         TabLayout.Tab tab2 = getTab(R.string.public_gists);
@@ -96,13 +104,5 @@ public class GistsListActivity extends BaseActivity {
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapterModel.buildForGists(this)));
         tabs.setupWithViewPager(pager);
-    }
-
-    private TabLayout.Tab getTab(int titleId) {
-        return tabs.newTab().setText(titleId);
-    }
-
-    @OnClick(R.id.fab) public void onViewClicked() {
-        ActivityHelper.startReveal(this, new Intent(this, CreateGistActivity.class), fab);
     }
 }

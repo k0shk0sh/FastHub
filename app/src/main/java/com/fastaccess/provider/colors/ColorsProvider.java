@@ -6,6 +6,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LanguageColorModel;
 import com.fastaccess.helper.InputHelper;
@@ -20,6 +22,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -51,6 +54,13 @@ public class ColorsProvider {
                     }))
                     .subscribe(s -> {/**/}, Throwable::printStackTrace);
         }
+    }
+
+
+    @NonNull public static List<String> languages() {
+        return Stream.of(colors)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
     }
 
     @Nullable public static LanguageColorModel getColor(@NonNull String lang) {

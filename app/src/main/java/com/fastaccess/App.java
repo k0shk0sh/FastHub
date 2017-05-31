@@ -67,7 +67,11 @@ public class App extends Application {
     }
 
     private void init() {
-        Fabric.with(this, new Crashlytics());
+        Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics())
+                .debuggable(BuildConfig.DEBUG)
+                .build();
+        Fabric.with(fabric);
         RxBillingService.register(this);
         deleteDatabase("database.db");
         getDataStore();//init requery before anything.

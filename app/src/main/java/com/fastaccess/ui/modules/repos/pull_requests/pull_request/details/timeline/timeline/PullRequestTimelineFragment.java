@@ -65,7 +65,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.fab_small_grid_refresh_list;
+        return R.layout.fab_micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

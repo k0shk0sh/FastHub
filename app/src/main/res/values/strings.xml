@@ -464,4 +464,10 @@
     <string name="todo_checked">Todo checked</string>
     <string name="todo_unchecked">Todo unchecked</string>
     <string name="divider">Divider</string>
+    <string name="no_user_found">No user found</string>
+    <string name="no_trending">No trending</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="filter">Filter</string>
 </resources>
