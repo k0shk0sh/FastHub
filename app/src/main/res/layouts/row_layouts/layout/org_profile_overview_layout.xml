@@ -9,7 +9,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center">
+        android:layout_gravity="top|center"
+        android:layout_marginTop="@dimen/spacing_xs_large">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -32,8 +33,8 @@
                     android:id="@+id/userInformation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/spacing_xs_large"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_xs_large">
 
                     <com.fastaccess.ui.widgets.AvatarLayout
                         android:id="@+id/avatarLayout"

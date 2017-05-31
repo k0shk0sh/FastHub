@@ -98,7 +98,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onWorkOffline() {
         if (pullRequest == null) {
-            manageSubscription(PullRequest.getPullRequestByNumber(issueNumber, repoId, login)
+            manageDisposable(PullRequest.getPullRequestByNumber(issueNumber, repoId, login)
                     .subscribe(pullRequestModel -> {
                         if (pullRequestModel != null) {
                             pullRequest = pullRequestModel;
@@ -166,10 +166,10 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onOpenCloseIssue() {
         if (getPullRequest() != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(getPullRequest(), true);
-            manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestService().editPullRequest(login, repoId,
+            manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService().editPullRequest(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
-                    .doOnNext(issue -> {
+                    .subscribe(issue -> {
                         if (issue != null) {
                             sendToView(view -> view.showSuccessIssueActionMsg(getPullRequest().getState() == IssueState.open));
                             issue.setRepoId(getPullRequest().getRepoId());
@@ -177,9 +177,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                             pullRequest = issue;
                             sendToView(PullRequestPagerMvp.View::onSetupIssue);
                         }
-                    })
-                    .subscribe(pullRequest1 -> {/**/},
-                            throwable -> sendToView(view -> view.showErrorIssueActionMsg(getPullRequest().getState() == IssueState.open))));
+                    }, throwable -> sendToView(view -> view.showErrorIssueActionMsg(getPullRequest().getState() == IssueState.open))));
         }
     }
 
@@ -188,17 +186,16 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     @Override public void onLoadLabels() {
-        manageSubscription(
+        manageDisposable(
                 RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
-                        .doOnNext(response -> {
+                        .subscribe(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
                                 sendToView(view -> view.onLabelsRetrieved(response.getItems()));
                             } else {
                                 sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
                             }
-                        })
-                        .subscribe(labelModelPageable -> {/**/}, throwable -> {
+                        }, throwable -> {
                             sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
                         })
         );
@@ -264,10 +261,10 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             MergeRequestModel mergeRequestModel = new MergeRequestModel();
             mergeRequestModel.setSha(getPullRequest().getHead().getSha());
             mergeRequestModel.setCommitMessage(msg);
-            manageSubscription(
+            manageDisposable(
                     RxHelper.getObserver(RestProvider.getPullRequestService().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
                             .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
-                            .doOnNext(mergeResponseModel -> {
+                            .subscribe(mergeResponseModel -> {
                                 if (mergeResponseModel.isMerged()) {
                                     sendToView(view -> {
                                         view.showMessage(R.string.success, R.string.success_merge);
@@ -276,8 +273,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                                 } else {
                                     sendToView(view -> view.showErrorMessage(mergeResponseModel.getMessage()));
                                 }
-                            })
-                            .subscribe(mergeResponseModel -> {/**/}, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage())))
+                            }, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage())))
             );
         }
     }

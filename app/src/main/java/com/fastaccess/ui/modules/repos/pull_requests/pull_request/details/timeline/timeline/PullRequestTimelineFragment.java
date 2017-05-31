@@ -65,7 +65,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.fab_small_grid_refresh_list;
+        return R.layout.fab_micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -279,7 +279,14 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
-        adapter.addItem(timelineModel, 0);
+        if (adapter != null && adapter.isEmpty()) {
+            adapter.addItem(timelineModel, 0);
+        }
+    }
+
+    @Override public void onRefresh(@NonNull PullRequest pullRequest) {
+        getPresenter().onUpdatePullRequest(pullRequest);
+        onRefresh();
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

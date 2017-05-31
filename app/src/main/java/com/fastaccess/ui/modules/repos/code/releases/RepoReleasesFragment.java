@@ -118,8 +118,7 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
                                 })
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
-                ActivityHelper.showDismissHints(getContext(), () -> {
-                });
+                ActivityHelper.showDismissHints(getContext(), () -> {});
             }
         }
     }

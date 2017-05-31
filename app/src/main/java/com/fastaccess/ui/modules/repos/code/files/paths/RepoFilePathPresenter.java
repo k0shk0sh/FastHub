@@ -99,7 +99,7 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                             }
                             return branchesModels;
                         }));
-                manageSubscription(observable
+                manageDisposable(observable
                         .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                         .doOnNext(branchesModels -> {
                             branches.clear();

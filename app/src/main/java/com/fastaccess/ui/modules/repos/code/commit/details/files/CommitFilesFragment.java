@@ -8,6 +8,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitFileModel;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
@@ -56,7 +57,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -77,6 +78,9 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override public void onToggle(long position, boolean isCollapsed) {
+        if (adapter.getItem((int) position).getPatch() == null) {
+            ActivityHelper.openChooser(getContext(), adapter.getItem((int) position).getBlobUrl());
+        }
         toggleMap.put(position, isCollapsed);
     }
 

@@ -76,7 +76,7 @@ class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> 
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getSingle(User.getUserFollowerList(login)).subscribe(userModels ->
+            manageDisposable(RxHelper.getSingle(User.getUserFollowerList(login)).subscribe(userModels ->
                     sendToView(view -> view.onNotifyAdapter(userModels, 1))));
         } else {
             sendToView(ProfileFollowersMvp.View::hideProgress);

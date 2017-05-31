@@ -69,7 +69,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             return;
         }
         if (page == 1) {
-            items.add(0, TimelineModel.constructHeader(getPresenter().issue));
+            items.add(0, TimelineModel.constructHeader(getPresenter().getIssue()));
             adapter.insertItems(items);
         } else {
             adapter.addItems(items);
@@ -84,7 +84,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.fab_small_grid_refresh_list;
+        return R.layout.fab_micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -206,7 +206,14 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
-        adapter.addItem(timelineModel, 0);
+        if (adapter != null && adapter.isEmpty()) {
+            adapter.addItem(timelineModel, 0);
+        }
+    }
+
+    @Override public void onRefresh(@NonNull Issue issue) {
+        getPresenter().onUpdateIssue(issue);
+        onRefresh();
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

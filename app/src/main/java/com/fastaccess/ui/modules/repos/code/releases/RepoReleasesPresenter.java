@@ -89,7 +89,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
 
     @Override public void onWorkOffline() {
         if (releases.isEmpty()) {
-            manageSubscription(RxHelper.getSingle(Release.get(repoId, login))
+            manageDisposable(RxHelper.getSingle(Release.get(repoId, login))
                     .subscribe(releasesModels -> sendToView(view -> view.onNotifyAdapter(releasesModels, 1))));
         } else {
             sendToView(RepoReleasesMvp.View::hideProgress);

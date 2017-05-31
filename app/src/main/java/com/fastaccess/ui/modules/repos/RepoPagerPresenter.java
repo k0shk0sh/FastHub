@@ -10,6 +10,7 @@ import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.PinnedRepos;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
@@ -38,17 +39,21 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
-        makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()),
-                repoModel -> {
-                    this.repo = repoModel;
-                    manageObservable(this.repo.save(repo).toObservable());
-                    sendToView(view -> {
-                        view.onInitRepo();
-                        view.onNavigationChanged(navTyp);
-                    });
-                    onCheckStarring();
-                    onCheckWatching();
-                });
+        makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()), repoModel -> {
+            this.repo = repoModel;
+            manageObservable(this.repo.save(repo).toObservable());
+            PinnedRepos pinnedRepos = PinnedRepos.get(repoModel.getFullName());
+            if (pinnedRepos != null) {
+                pinnedRepos.setPinnedRepo(repoModel);
+                manageObservable(PinnedRepos.save(pinnedRepos).toObservable());
+            }
+            sendToView(view -> {
+                view.onInitRepo();
+                view.onNavigationChanged(navTyp);
+            });
+            onCheckStarring();
+            onCheckWatching();
+        });
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
@@ -132,7 +137,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (getRepo() != null) {
             String login = login();
             String name = repoId();
-            manageSubscription(RxHelper.getObserver(RestProvider.getRepoService().isWatchingRepo(login, name))
+            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService().isWatchingRepo(login, name))
                     .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableWatch(false)))
                     .doOnNext(subscriptionModel -> sendToView(view -> view.onRepoWatched(isWatched = subscriptionModel.isSubscribed())))
                     .subscribe(o -> {/**/}, throwable -> {
@@ -146,7 +151,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (getRepo() != null) {
             String login = login();
             String name = repoId();
-            manageSubscription(RxHelper.getObserver(RestProvider.getRepoService().checkStarring(login, name))
+            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService().checkStarring(login, name))
                     .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableStar(false)))
                     .doOnNext(response -> sendToView(view -> view.onRepoStarred(isStarred = response.code() == 204)))
                     .subscribe(booleanResponse -> {/**/}, throwable -> {
@@ -158,7 +163,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if (!InputHelper.isEmpty(login()) && !InputHelper.isEmpty(repoId())) {
-            manageSubscription(RxHelper.getObserver(Repo.getRepo(repoId, login).toObservable())
+            manageDisposable(RxHelper.getObserver(Repo.getRepo(repoId, login).toObservable())
                     .subscribe(repoModel -> {
                         repo = repoModel;
                         if (repo != null) {

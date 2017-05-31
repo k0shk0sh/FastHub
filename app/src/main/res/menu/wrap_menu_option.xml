@@ -8,4 +8,11 @@
         android:checked="false"
         android:title="@string/wrap_content"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/copy"
+        android:visible="false"
+        android:title="@string/copy"
+        app:showAsAction="never"/>
+
 </menu>

@@ -62,6 +62,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
                 .firstOrNull();
     }
 
+
     public static boolean isPinned(@NonNull String repoFullName) {
         return get(repoFullName) != null;
     }

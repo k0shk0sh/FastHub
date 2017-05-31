@@ -52,7 +52,7 @@ public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificati
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Notification.getUnreadNotifications().toObservable())
+            manageDisposable(RxHelper.getObserver(Notification.getUnreadNotifications().toObservable())
                     .flatMap(notifications -> Observable.just(GroupedNotificationModel.onlyNotifications(notifications)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models))));
         } else {
@@ -65,7 +65,7 @@ public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificati
     }
 
     @Override public void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data) {
-        manageSubscription(RxHelper.getObserver(Observable.fromIterable(data))
+        manageDisposable(RxHelper.getObserver(Observable.fromIterable(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .map(GroupedNotificationModel::getNotification)

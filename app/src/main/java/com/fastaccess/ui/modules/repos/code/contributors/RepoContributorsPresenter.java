@@ -81,7 +81,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
 
     @Override public void onWorkOffline() {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(User.getUserContributorList(repoId).toObservable())
+            manageDisposable(RxHelper.getObserver(User.getUserContributorList(repoId).toObservable())
                     .subscribe(userModels -> sendToView(view -> view.onNotifyAdapter(userModels, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

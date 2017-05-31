@@ -72,7 +72,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

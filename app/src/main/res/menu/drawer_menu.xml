@@ -42,8 +42,7 @@
         <item
             android:id="@+id/trending"
             android:icon="@drawable/ic_trending"
-            android:title="@string/trending"
-            android:visible="false"/>
+            android:title="@string/trending"/>
         <item
             android:id="@+id/gists"
             android:icon="@drawable/ic_gists"

@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -14,7 +13,6 @@ import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
@@ -27,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -48,7 +45,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

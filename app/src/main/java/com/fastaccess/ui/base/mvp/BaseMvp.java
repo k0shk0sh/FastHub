@@ -49,9 +49,11 @@ public interface BaseMvp {
 
         void onRestoreInstanceState(Bundle outState);
 
-        void manageSubscription(@Nullable Disposable... disposables);
+        void manageDisposable(@Nullable Disposable... disposables);
 
         <T> void manageObservable(@Nullable Observable<T> observable);
+
+        void manageViewDisposable(@Nullable Disposable... disposables);
 
         boolean isApiCalled();
 

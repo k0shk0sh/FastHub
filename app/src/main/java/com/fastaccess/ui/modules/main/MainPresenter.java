@@ -29,7 +29,7 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
 
 
     MainPresenter() {
-        manageSubscription(RxHelper.getObserver(RestProvider.getUserService().getUser())
+        manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getUser())
                 .flatMap(login -> login.update(login))
                 .subscribe(login -> {
                     if (login != null) {
