@@ -95,6 +95,9 @@ public class SchemeParser {
 
     @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
         if (HOST_GISTS.equals(data.getHost())) {
+            if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(data.toString()))) {
+                return CodeViewerActivity.createIntent(context, data.toString(), data.toString());
+            }
             String gist = getGistId(data);
             if (gist != null) {
                 return GistActivity.createIntent(context, gist);
@@ -338,7 +341,7 @@ public class SchemeParser {
     }
 
     @Nullable private static Intent getGistFile(@NonNull Context context, @NonNull Uri uri) {
-        if (uri.getHost().equalsIgnoreCase(HOST_GISTS_RAW)) {
+        if (HOST_GISTS_RAW.equalsIgnoreCase(uri.getHost())) {
             return CodeViewerActivity.createIntent(context, uri.toString(), uri.toString());
         }
         return null;

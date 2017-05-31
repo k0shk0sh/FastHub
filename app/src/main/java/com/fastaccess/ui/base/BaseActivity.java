@@ -1,6 +1,7 @@
 package com.fastaccess.ui.base;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -47,6 +48,7 @@ import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
+import com.fastaccess.ui.modules.trending.TrendingActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -160,9 +162,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
         hideProgress();
         if (toast != null) toast.cancel();
-        toast = titleRes.equals(getString(R.string.error))
-                ? Toasty.error(getApplicationContext(), msgRes, Toast.LENGTH_LONG)
-                : Toasty.info(getApplicationContext(), msgRes, Toast.LENGTH_LONG);
+        Context context;
+        if (!isFinishing()) {
+            context = this;
+        } else {
+            context = App.getInstance();
+        }
+        toast = titleRes.equals(context.getString(R.string.error))
+                ? Toasty.error(context, msgRes, Toast.LENGTH_LONG)
+                : Toasty.info(context, msgRes, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -246,6 +254,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 onOpenOrgsDialog();
             } else if (item.getItemId() == R.id.notifications) {
                 startActivity(new Intent(this, NotificationActivity.class));
+            } else if (item.getItemId() == R.id.trending) {
+                startActivity(new Intent(this, TrendingActivity.class));
             }
         }, 250);
         return false;

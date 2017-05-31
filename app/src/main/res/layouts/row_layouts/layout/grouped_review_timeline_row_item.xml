@@ -91,7 +91,7 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layoutManager="@string/staggered_layout_manager"
-                app:spanCount="@integer/small_spans"
+                app:spanCount="@integer/micro_spans"
                 tools:listitem="@layout/review_comments_row_item"
                 tools:visibility="visible"/>
 

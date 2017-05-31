@@ -23,7 +23,7 @@ public class Pageable<M extends Parcelable> implements Parcelable {
     private int last;
     private int totalCount;
     private boolean incompleteResults;
-    private List<M> items;
+    public List<M> items;
 
     @Override public int describeContents() { return 0; }
 

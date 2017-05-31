@@ -116,7 +116,7 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -156,6 +156,9 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
                 case MENTIONED:
                     tabsBadgeListener.onSetBadge(2, totalCount);
                     break;
+                case PARTICIPATED:
+                    tabsBadgeListener.onSetBadge(3, totalCount);
+                    break;
             }
         }
     }
@@ -178,7 +181,6 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
         super.onScrollTop(index);
         if (recycler != null) recycler.scrollToPosition(0);
     }
-
 
     private MyIssuesType getIssuesType() {
         if (issuesType == null) {

@@ -30,7 +30,7 @@ public class PinnedReposPresenter extends BasePresenter<PinnedReposMvp.View> imp
     }
 
     @Override public void onReload() {
-        manageSubscription(AbstractPinnedRepos.getMyPinnedRepos()
+        manageDisposable(AbstractPinnedRepos.getMyPinnedRepos()
                 .subscribe(repos -> sendToView(view -> view.onNotifyAdapter(repos)), throwable ->
                         sendToView(view -> view.onNotifyAdapter(null))));
     }

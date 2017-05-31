@@ -147,6 +147,10 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         notifyDataSetChanged();
     }
 
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
+
     public void setEnableAnimation(boolean enableAnimation) {
         this.enableAnimation = enableAnimation;
         notifyDataSetChanged();

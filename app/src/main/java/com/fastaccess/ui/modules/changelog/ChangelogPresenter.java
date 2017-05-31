@@ -15,7 +15,7 @@ import lombok.Getter;
     private String html;
 
     @Override public void onLoadChangelog() {
-        manageSubscription(RxHelper.getObserver(ChangelogProvider.getChangelog(App.getInstance()))
+        manageDisposable(RxHelper.getObserver(ChangelogProvider.getChangelog(App.getInstance()))
                 .subscribe(s -> {
                     this.html = s;
                     sendToView(view -> view.onChangelogLoaded(html));

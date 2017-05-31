@@ -77,7 +77,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Notification.getAlltNotifications().toObservable())
+            manageDisposable(RxHelper.getObserver(Notification.getAlltNotifications().toObservable())
                     .flatMap(notifications -> Observable.just(GroupedNotificationModel.construct(notifications)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models))));
         } else {
@@ -117,7 +117,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
     }
 
     @Override public void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data) {
-        manageSubscription(RxHelper.getObserver(Observable.fromIterable(data))
+        manageDisposable(RxHelper.getObserver(Observable.fromIterable(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .map(GroupedNotificationModel::getNotification)
@@ -130,7 +130,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
     }
 
     @Override public void onMarkReadByRepo(@NonNull List<GroupedNotificationModel> data, @NonNull Repo repo) {
-        manageSubscription(RxHelper.getObserver(Observable.fromIterable(data))
+        manageDisposable(RxHelper.getObserver(Observable.fromIterable(data))
                 .filter(group -> group.getType() == GroupedNotificationModel.ROW)
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .filter(group -> group.getNotification().getRepository().getFullName().equalsIgnoreCase(repo.getFullName()))

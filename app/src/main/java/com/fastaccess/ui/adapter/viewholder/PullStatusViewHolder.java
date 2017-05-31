@@ -1,7 +1,9 @@
 package com.fastaccess.ui.adapter.viewholder;
 
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,6 +12,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.types.StatusStateType;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -68,14 +71,17 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
             }
         }
         if (pullRequestStatusModel.getStatuses() != null && !pullRequestStatusModel.getStatuses().isEmpty()) {
+            SpannableBuilder builder = SpannableBuilder.builder();
             Stream.of(pullRequestStatusModel.getStatuses())
                     .filter(statusesModel -> statusesModel.getState() != null)
-                    .forEach(statusesModel -> statuses.setText(SpannableBuilder.builder()
+                    .forEach(statusesModel -> builder
                             .append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()))
                             .append(" ")
-                            .append(statusesModel.getDescription())
-                            .append("\n")));
-            if (!InputHelper.isEmpty(statuses)) {
+                            .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(), Uri.parse(statusesModel.getTargetUrl())))
+                            .append("\n"));
+            if (!InputHelper.isEmpty(builder)) {
+                statuses.setMovementMethod(LinkMovementMethod.getInstance());
+                statuses.setText(builder);
                 statuses.setVisibility(View.VISIBLE);
             } else {
                 statuses.setVisibility(View.GONE);

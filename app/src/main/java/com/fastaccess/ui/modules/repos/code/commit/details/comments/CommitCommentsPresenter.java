@@ -102,7 +102,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
 
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha).toObservable())
+            manageDisposable(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha).toObservable())
                     .flatMap(comments -> Observable.just(TimelineModel.construct(comments)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {

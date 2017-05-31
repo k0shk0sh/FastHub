@@ -78,7 +78,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Repo.getStarred(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObserver(Repo.getStarred(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileStarredMvp.View::hideProgress);

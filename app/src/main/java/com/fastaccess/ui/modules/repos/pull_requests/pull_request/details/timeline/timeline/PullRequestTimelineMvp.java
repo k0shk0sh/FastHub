@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -64,6 +65,8 @@ public interface PullRequestTimelineMvp {
         void onRemoveReviewComment(int groupPosition, int commentPosition);
 
         void onSetHeader(@NonNull TimelineModel timelineModel);
+
+        void onRefresh(@NonNull PullRequest pullRequest);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
@@ -90,5 +93,7 @@ public interface PullRequestTimelineMvp {
         boolean isMerged();
 
         boolean isCallingApi(long id, int vId);
+
+        void onUpdatePullRequest(@NonNull PullRequest pullRequest);
     }
 }

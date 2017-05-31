@@ -21,7 +21,6 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -145,6 +144,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return timeline;
     }
 
+    @Override protected void onCreate() {
+        super.onCreate();
+        if (pullRequest != null && timeline.isEmpty()) {
+            sendToView(view -> view.onSetHeader(TimelineModel.constructHeader(pullRequest)));
+            onCallApi(1, null);
+        }
+    }
+
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle == null) throw new NullPointerException("Bundle is null?");
         pullRequest = bundle.getParcelable(BundleConstant.ITEM);
@@ -209,7 +216,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         String repoId = repoId();
         Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType);
         if (observable != null) //noinspection unchecked
-            manageSubscription(RxHelper.safeObservable(observable).subscribe());
+            manageObservable(observable);
     }
 
     @Override public boolean isMerged() {
@@ -218,6 +225,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 
     @Override public boolean isCallingApi(long id, int vId) {
         return getReactionsProvider().isCallingApi(id, vId);
+    }
+
+    @Override public void onUpdatePullRequest(@NonNull PullRequest pullRequest) {
+        this.pullRequest = pullRequest;
     }
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {

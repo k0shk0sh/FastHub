@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.firebase.firebase-crash'
-//apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
+apply plugin: 'io.fabric'
 
 buildProperties {
     notThere {
@@ -89,6 +89,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    compileOptions.incremental = false
 }
 
 repositories {
@@ -96,8 +97,11 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
     maven { url "https://jitpack.io" }
     maven { url "https://maven.google.com" }
+    maven { url 'https://maven.fabric.io/public' }
     mavenCentral()
 }
+
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -135,21 +139,20 @@ dependencies {
     compile 'com.github.matthiasrobbers:shortbread:1.0.1'
     compile 'com.atlassian.commonmark:commonmark:0.9.0'
     compile 'com.firebase:firebase-jobdispatcher:0.6.0'
-    compile "com.google.firebase:firebase-ads:${gms}"
     compile "com.google.firebase:firebase-messaging:${gms}"
-    releaseCompile "com.google.firebase:firebase-crash:${gms}"
     compile "com.google.android.gms:play-services-auth:${gms}"
-    compile "com.github.florent37:retrojsoup:${retroJsoup}"
-    compile "com.github.florent37:rxjsoup:${retroJsoup}"
-    compile "org.jsoup:jsoup:1.10.2"
-//    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:${kotlin_version}"
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
+    }
+    compile "com.github.miguelbcr:RxBillingService:0.0.3"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     provided "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "com.github.florent37:retrojsoup-compiler:${retroJsoup}"
     annotationProcessor "io.requery:requery-processor:${requery}"
     annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
     annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
     annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
+    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
 //    testCompile "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"

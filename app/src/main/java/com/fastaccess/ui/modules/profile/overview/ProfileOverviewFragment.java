@@ -267,7 +267,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onUserNotFound() {
-        try {if (isSafe()) getActivity().finish();} catch (Exception ignored) {}
+        showMessage(R.string.error, R.string.no_user_found);
     }
 
     @Override public void onImagePosted(@Nullable String link) {

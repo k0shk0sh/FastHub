@@ -95,6 +95,8 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
                 return RepoQueryProvider.getAssigned(login, parameter, false);
             case MENTIONED:
                 return RepoQueryProvider.getMentioned(login, parameter, false);
+            case PARTICIPATED:
+                return RepoQueryProvider.getParticipated(login, parameter, false);
         }
         return RepoQueryProvider.getMyIssuesPullRequestQuery(login, parameter, false);
     }

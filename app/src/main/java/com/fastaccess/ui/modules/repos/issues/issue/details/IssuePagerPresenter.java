@@ -99,7 +99,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onWorkOffline(long issueNumber, @NonNull String repoId, @NonNull String login) {
         if (issueModel == null) {
-            manageSubscription(RxHelper.getObserver(Issue.getIssueByNumber((int) issueNumber, repoId, login))
+            manageDisposable(RxHelper.getObserver(Issue.getIssueByNumber((int) issueNumber, repoId, login))
                     .subscribe(issueModel1 -> {
                         if (issueModel1 != null) {
                             issueModel = issueModel1;
@@ -154,7 +154,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         Issue currentIssue = getIssue();
         if (currentIssue != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue, true);
-            manageSubscription(RxHelper.getObserver(RestProvider.getIssueService().editIssue(login, repoId,
+            manageDisposable(RxHelper.getObserver(RestProvider.getIssueService().editIssue(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .doOnNext(issue -> {
@@ -192,7 +192,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     @Override public void onLoadLabels() {
-        manageSubscription(
+        manageDisposable(
                 RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .doOnNext(response -> {

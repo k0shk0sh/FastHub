@@ -187,7 +187,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/numbered_list"
+                    android:contentDescription="@string/todo_checked"
                     android:padding="@dimen/spacing_normal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_checkbox"/>
@@ -197,7 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/numbered_list"
+                    android:contentDescription="@string/todo_unchecked"
                     android:padding="@dimen/spacing_normal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_checkbox_empty"/>
@@ -207,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/header"
+                    android:contentDescription="@string/divider"
                     android:padding="@dimen/spacing_normal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_minus"/>

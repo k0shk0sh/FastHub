@@ -313,7 +313,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void onFinishActivity() {
-        finish();
+//        finish();
     }
 
     @Override public void onInitRepo() {
