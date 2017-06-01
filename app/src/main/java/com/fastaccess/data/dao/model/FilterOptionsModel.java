@@ -23,8 +23,10 @@ public class FilterOptionsModel implements Parcelable {
     private String sort = "Pushed";
     private String sortDirection = "descending";
     private Map<String, String> queryMap;
+    private boolean isPersonalProfile;
 
-    private List<String> typesList =  new ArrayList<>(Arrays.asList("All", "Owner", "Public", "Private", "Member"));
+    private List<String> typesListForPersonalProfile =  new ArrayList<>(Arrays.asList("All", "Owner", "Public", "Private", "Member"));
+    private List<String> typesListForExternalProfile =  new ArrayList<>(Arrays.asList("All", "Owner", "Member"));
     private List<String> sortOptionsList = new ArrayList<>(Arrays.asList("Pushed", "Created", "Updated", "Full Name"));
     private List<String> sortDirectionList = new ArrayList<>(Arrays.asList("Descending", "Ascending"));
 
@@ -35,7 +37,7 @@ public class FilterOptionsModel implements Parcelable {
         type = in.readString();
         sort = in.readString();
         sortDirection = in.readString();
-        typesList = in.createStringArrayList();
+        typesListForPersonalProfile = in.createStringArrayList();
         sortOptionsList = in.createStringArrayList();
         sortDirectionList = in.createStringArrayList();
     }
@@ -87,7 +89,11 @@ public class FilterOptionsModel implements Parcelable {
     }
 
     public int getSelectedTypeIndex() {
-        return typesList.indexOf(type);
+        if (isPersonalProfile) {
+            return typesListForPersonalProfile.indexOf(type);
+        } else {
+            return typesListForExternalProfile.indexOf(type);
+        }
     }
 
     public int getSelectedSortOptionIndex() {
@@ -99,7 +105,11 @@ public class FilterOptionsModel implements Parcelable {
     }
 
     public List<String> getTypesList() {
-        return typesList;
+        if (isPersonalProfile) {
+            return typesListForPersonalProfile;
+        } else {
+            return typesListForExternalProfile;
+        }
     }
 
     public List<String> getSortOptionList() {
@@ -120,8 +130,12 @@ public class FilterOptionsModel implements Parcelable {
         dest.writeString(type);
         dest.writeString(sort);
         dest.writeString(sortDirection);
-        dest.writeStringList(typesList);
+        dest.writeStringList(typesListForPersonalProfile);
         dest.writeStringList(sortOptionsList);
         dest.writeStringList(sortDirectionList);
+    }
+
+    public void setIsPersonalProfile(boolean isPersonalProfile) {
+        this.isPersonalProfile = isPersonalProfile;
     }
 }

@@ -34,11 +34,11 @@ public interface UserRestService {
     @GET("users/{username}/received_events")
     Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
 
-    @GET("users/{username}/repos?affiliation=owner,collaborator&sort=pushed&direction=desc")
-    Observable<Pageable<Repo>> getRepos(@Path("username") @NonNull String username, @Query("page") int page);
+    @GET("/users/{username}/repos")
+    Observable<Pageable<Repo>> getRepos(@Path("username") @NonNull String username, @QueryMap(encoded=true) Map<String, String> filterParams, @Query("page") int page);
 
     @GET("/user/repos")
-    Observable<Pageable<Repo>> getRepos(@QueryMap(encoded=true) Map<String, String> filterParams, @Query(value = "page", encoded = true) int page);
+    Observable<Pageable<Repo>> getRepos(@QueryMap(encoded=true) Map<String, String> filterParams, @Query(value = "page") int page);
 
     @GET("users/{username}/starred") Observable<Pageable<Repo>>
     getStarred(@Path("username") @NonNull String username, @Query("page") int page);
