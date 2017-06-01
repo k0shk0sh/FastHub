@@ -33,5 +33,9 @@ interface ProfileReposMvp {
         @NonNull ArrayList<Repo> getRepos();
 
         void onWorkOffline(@NonNull String login);
+        void onFilterApply();
+        void onTypeSelected(String selectedType);
+        void onSortOptionSelected(String selectedSortOption);
+        void onSortDirectionSelected(String selectedSortDirection);
     }
 }

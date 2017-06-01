@@ -8,6 +8,8 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.model.User;
 
+import java.util.Map;
+
 import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.DELETE;
@@ -15,6 +17,7 @@ import retrofit2.http.GET;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
 
@@ -34,8 +37,8 @@ public interface UserRestService {
     @GET("users/{username}/repos?affiliation=owner,collaborator&sort=pushed&direction=desc")
     Observable<Pageable<Repo>> getRepos(@Path("username") @NonNull String username, @Query("page") int page);
 
-    @GET("/user/repos?affiliation=owner,collaborator&sort=pushed&direction=desc")
-    Observable<Pageable<Repo>> getRepos(@Query("page") int page);
+    @GET("/user/repos")
+    Observable<Pageable<Repo>> getRepos(@QueryMap(encoded=true) Map<String, String> filterParams, @Query(value = "page", encoded = true) int page);
 
     @GET("users/{username}/starred") Observable<Pageable<Repo>>
     getStarred(@Path("username") @NonNull String username, @Query("page") int page);

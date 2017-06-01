@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.FilterOptionsModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
@@ -24,8 +25,10 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
     private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
+    private String username;
     private int lastPage = Integer.MAX_VALUE;
     private String currentLoggedIn;
+    private FilterOptionsModel filterOptions = new FilterOptionsModel();
 
     @Override public int getCurrentPage() {
         return page;
@@ -59,6 +62,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
+        username = parameter;
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -68,8 +72,8 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
             sendToView(ProfileReposMvp.View::hideProgress);
             return;
         }
-        makeRestCall(TextUtils.equals(currentLoggedIn, parameter)
-                     ? RestProvider.getUserService().getRepos(page)
+        makeRestCall(TextUtils.equals(currentLoggedIn, username)
+                     ? RestProvider.getUserService().getRepos(filterOptions.getQueryMap(), page)
                      : RestProvider.getUserService().getRepos(parameter, page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
@@ -98,4 +102,28 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
     }
 
     @Override public void onItemLongClick(int position, View v, Repo item) {}
+
+    public FilterOptionsModel getFilterOptions() {
+        return filterOptions;
+    }
+
+    @Override
+    public void onFilterApply() {
+        onCallApi(1, username);
+    }
+
+    @Override
+    public void onTypeSelected(String selectedType) {
+        filterOptions.setType(selectedType);
+    }
+
+    @Override
+    public void onSortOptionSelected(String selectedSortOption) {
+        filterOptions.setSort(selectedSortOption);
+    }
+
+    @Override
+    public void onSortDirectionSelected(String selectedSortDirection) {
+        filterOptions.setsortDirection(selectedSortDirection);
+    }
 }
