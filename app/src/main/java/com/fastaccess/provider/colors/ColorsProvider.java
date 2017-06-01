@@ -21,8 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -56,11 +56,11 @@ public class ColorsProvider {
         }
     }
 
-
-    @NonNull public static List<String> languages() {
+    @NonNull public static ArrayList<String> languages() {
         return Stream.of(colors)
+                .filter(value -> value != null && !InputHelper.isEmpty(value.getKey()))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     @Nullable public static LanguageColorModel getColor(@NonNull String lang) {

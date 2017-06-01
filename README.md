@@ -20,6 +20,10 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
       alt="Direct apk download" 
       height="80">](https://github.com/k0shk0sh/FastHub/releases/latest)
 
+#### FOSS
+
+grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintained by **_[thermatk](https://github.com/thermatk)_**
+
 # Features
 
 - **App**

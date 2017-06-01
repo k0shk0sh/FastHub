@@ -6,7 +6,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:openDrawer="end">
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -25,7 +26,6 @@
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
-        android:id="@+id/navMenu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
@@ -35,7 +35,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -67,6 +67,7 @@
                     android:layout_weight="1"
                     android:background="?selectableItemBackground"
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/weekly"
@@ -80,6 +81,7 @@
                     android:layout_weight="1"
                     android:background="?selectableItemBackground"
                     android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/monthly"
@@ -91,13 +93,15 @@
                 android:layout_height="@dimen/divider_height"
                 android:background="?dividerColor"/>
 
-            <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-                android:id="@+id/languageList"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:scrollbars="vertical"
-                app:layoutManager="@string/linear_layout_manager"/>
+            <android.support.design.widget.NavigationView
+                android:id="@+id/navMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:fitsSystemWindows="true"
+                app:itemIconTint="?android:textColorSecondary"
+                app:itemTextColor="?android:textColorPrimary"
+                app:menu="@menu/dynamic_trending_menu"/>
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>
