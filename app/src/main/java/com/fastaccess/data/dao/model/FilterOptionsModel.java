@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by adibk on 5/19/17.
+ * Serves a model for the filter in Repositories fragment
  */
-
 public class FilterOptionsModel implements Parcelable {
 
     private static final String TYPE = "type";
@@ -80,8 +79,10 @@ public class FilterOptionsModel implements Parcelable {
             queryMap.put(SORT, sort.toLowerCase());
         }
         if (sortDirection.equals(sortDirectionList.get(0))) {
+            //Descending should be desc
             queryMap.put(DIRECTION, sortDirection.toLowerCase().substring(0, 4));
         } else {
+            //Ascending should be asc
             queryMap.put(DIRECTION, sortDirection.toLowerCase().substring(0, 3));
         }
 

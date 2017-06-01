@@ -77,11 +77,6 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
         outState.putParcelable(FILTER, currentFilterOptions);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @OnClick(R.id.filter_sheet_apply_btn) public void onApply() {
         if (listener != null) {
             listener.onTypeSelected((String) typeSelectionSpinner.getSelectedItem());

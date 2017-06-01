@@ -128,7 +128,6 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -142,7 +141,6 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }

@@ -72,7 +72,6 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
-        getActivity().findViewById(R.id.fab);
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
