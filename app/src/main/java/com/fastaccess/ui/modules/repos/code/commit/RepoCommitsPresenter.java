@@ -31,9 +31,9 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     private ArrayList<Commit> commits = new ArrayList<>();
     private ArrayList<BranchesModel> branches = new ArrayList<>();
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State String branch;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String branch;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;

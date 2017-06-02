@@ -26,7 +26,7 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import java.util.HashSet;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 26 Mar 2017, 12:14 AM

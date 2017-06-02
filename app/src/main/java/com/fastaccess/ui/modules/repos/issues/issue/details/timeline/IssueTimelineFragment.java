@@ -36,7 +36,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:35 PM

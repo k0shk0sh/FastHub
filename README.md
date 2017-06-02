@@ -87,7 +87,7 @@ Ads are no longer available until further notice
 - [**Requery**](https://github.com/requery/requery/) for offline-mode
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `Collections`
 - [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding
-- [**Icepick**](https://github.com/frankiesardo/icepick) for saving instance states
+- [**Android State**](https://github.com/evernote/android-state) for saving instance states
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs 
 - [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images

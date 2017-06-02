@@ -41,12 +41,12 @@ import retrofit2.Response;
  */
 
 class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements IssuePagerMvp.Presenter {
-    @icepick.State Issue issueModel;
-    @icepick.State int issueNumber;
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State boolean isCollaborator;
-    @icepick.State boolean showToRepoBtn;
+    @com.evernote.android.state.State Issue issueModel;
+    @com.evernote.android.state.State int issueNumber;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State boolean isCollaborator;
+    @com.evernote.android.state.State boolean showToRepoBtn;
 
     @Nullable @Override public Issue getIssue() {
         return issueModel;

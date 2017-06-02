@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
 import com.fastaccess.helper.RxHelper;
@@ -17,7 +18,6 @@ import net.grandcentrix.thirtyinch.rx2.RxTiPresenterDisposableHandler;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
-import icepick.Icepick;
 import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
@@ -33,11 +33,11 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     private final RxTiPresenterDisposableHandler subscriptionHandler = new RxTiPresenterDisposableHandler(this);
 
     @Override public void onSaveInstanceState(Bundle outState) {
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
     }
 
     @Override public void onRestoreInstanceState(Bundle outState) {
-        if (outState != null) Icepick.restoreInstanceState(this, outState);
+        if (outState != null) StateSaver.restoreInstanceState(this, outState);
     }
 
     @Override public void manageDisposable(@Nullable Disposable... disposables) {

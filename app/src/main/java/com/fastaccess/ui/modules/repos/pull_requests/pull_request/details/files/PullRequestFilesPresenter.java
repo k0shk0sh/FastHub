@@ -29,9 +29,9 @@ import java.util.ArrayList;
 
 class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> implements PullRequestFilesMvp.Presenter {
 
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State long number;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State long number;
     private ArrayList<CommitFileModel> files = new ArrayList<>();
     private int page;
     private int previousTotal;

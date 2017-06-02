@@ -32,10 +32,10 @@ import io.reactivex.Observable;
  */
 
 class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> implements ProfileOverviewMvp.Presenter {
-    @icepick.State boolean isSuccessResponse;
-    @icepick.State boolean isFollowing;
-    @icepick.State String login;
-    @icepick.State ArrayList<User> userOrgs = new ArrayList<>();
+    @com.evernote.android.state.State boolean isSuccessResponse;
+    @com.evernote.android.state.State boolean isFollowing;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State ArrayList<User> userOrgs = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
 

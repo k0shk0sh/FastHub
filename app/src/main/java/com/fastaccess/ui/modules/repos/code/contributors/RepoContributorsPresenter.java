@@ -25,8 +25,8 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State String repoId;
-    @icepick.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
 
     @Override public int getCurrentPage() {
         return page;

@@ -27,10 +27,10 @@ import java.util.List;
 class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements RepoIssuesMvp.Presenter {
 
     private ArrayList<Issue> issues = new ArrayList<>();
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State IssueState issueState;
-    @icepick.State boolean isLastUpdated;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State IssueState issueState;
+    @com.evernote.android.state.State boolean isLastUpdated;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;

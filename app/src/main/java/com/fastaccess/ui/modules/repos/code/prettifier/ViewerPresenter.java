@@ -24,10 +24,10 @@ import io.reactivex.Observable;
 
 class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp.Presenter {
     private String downloadedStream;
-    @icepick.State boolean isMarkdown;
-    @icepick.State boolean isRepo;
-    @icepick.State boolean isImage;
-    @icepick.State String url;
+    @com.evernote.android.state.State boolean isMarkdown;
+    @com.evernote.android.state.State boolean isRepo;
+    @com.evernote.android.state.State boolean isImage;
+    @com.evernote.android.state.State String url;
 
     @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();

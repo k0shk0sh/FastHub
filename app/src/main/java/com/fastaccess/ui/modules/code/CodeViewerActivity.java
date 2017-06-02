@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.annimon.stream.Objects;
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
@@ -24,8 +25,6 @@ import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.prettifier.ViewerFragment;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-
-import icepick.State;
 
 /**
  * Created by Kosh on 27 Nov 2016, 3:43 PM

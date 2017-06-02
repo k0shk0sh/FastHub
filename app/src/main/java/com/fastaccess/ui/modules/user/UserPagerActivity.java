@@ -26,7 +26,7 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
+import com.evernote.android.state.State;
 import shortbread.Shortcut;
 
 /**

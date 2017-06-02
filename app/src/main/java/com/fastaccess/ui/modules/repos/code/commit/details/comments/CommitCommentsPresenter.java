@@ -33,9 +33,9 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State String repoId;
-    @icepick.State String login;
-    @icepick.State String sha;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String sha;
 
 
     @Override public int getCurrentPage() {

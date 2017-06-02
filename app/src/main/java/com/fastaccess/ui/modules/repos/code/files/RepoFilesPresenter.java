@@ -23,10 +23,10 @@ import io.reactivex.Observable;
 class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements RepoFilesMvp.Presenter {
     private ArrayList<RepoFile> files = new ArrayList<>();
     private RepoPathsManager pathsModel = new RepoPathsManager();
-    @icepick.State String repoId;
-    @icepick.State String login;
-    @icepick.State String path;
-    @icepick.State String ref;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String path;
+    @com.evernote.android.state.State String ref;
 
     @Override public void onItemClick(int position, View v, RepoFile item) {
         if (getView() == null) return;

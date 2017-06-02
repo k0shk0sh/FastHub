@@ -24,8 +24,9 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.evernote.android.state.State;
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
@@ -62,8 +63,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
-import icepick.Icepick;
-import icepick.State;
+
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
@@ -94,7 +94,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
         getPresenter().onSaveInstanceState(presenterStateBundle);
     }
 
@@ -112,9 +112,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 return;
             }
         }
-        Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(presenterStateBundle);
         }
         setupToolbarAndStatusBar(toolbar);

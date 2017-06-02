@@ -37,7 +37,7 @@ import lombok.Getter;
  */
 
 @Getter public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
-    @icepick.State Issue issue;
+    @com.evernote.android.state.State Issue issue;
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private ReactionsProvider reactionsProvider;
     private int page;

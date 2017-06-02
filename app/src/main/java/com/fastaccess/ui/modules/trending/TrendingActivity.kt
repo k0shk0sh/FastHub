@@ -6,13 +6,14 @@ import android.support.v4.widget.DrawerLayout
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
+import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.Logger
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
-import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 import es.dmoral.toasty.Toasty
-import icepick.State
+
 
 /**
  * Created by Kosh on 30 May 2017, 10:57 PM
@@ -21,11 +22,10 @@ import icepick.State
 class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), TrendingMvp.View {
 
     private var trendingFragment: TrendingFragment? = null
-    val languageList by lazy { findViewById(R.id.languageList) as DynamicRecyclerView }
     val navMenu by lazy { findViewById(R.id.navMenu) as NavigationView }
-    val daily by lazy { findViewById(R.id.daily) }
-    val weekly by lazy { findViewById(R.id.weekly) }
-    val monthly by lazy { findViewById(R.id.monthly) }
+    val daily by lazy { findViewById(R.id.daily) as TextView }
+    val weekly by lazy { findViewById(R.id.weekly) as TextView }
+    val monthly by lazy { findViewById(R.id.monthly) as TextView }
     val drawerLayout by lazy { findViewById(R.id.drawer) as DrawerLayout }
 
     @State var selectedTitle: String = ""
@@ -77,15 +77,17 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            daily.isSelected = true
-        }
+        Logger.e(selectedTitle)
         trendingFragment = supportFragmentManager.findFragmentById(R.id.trendingFragment) as TrendingFragment?
         daily.setOnClickListener { onDailyClicked() }
         weekly.setOnClickListener { onWeeklyClicked() }
         monthly.setOnClickListener { onMonthlyClicked() }
         presenter.onLoadLanguage()
         navMenu.setNavigationItemSelectedListener(this)
+        if (savedInstanceState == null) {
+            daily.isSelected = true
+            setValues()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -108,7 +110,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
-        this.selectedTitle = item?.title.toString()
+        selectedTitle = item?.title.toString()
         setValues()
         return true
     }
@@ -124,7 +126,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     private fun setValues() {
         closeDrawerLayout()
-        if (selectedTitle.isNotBlank()) trendingFragment?.onSetQuery(selectedTitle, getSince())
+        trendingFragment?.onSetQuery(selectedTitle, getSince())
     }
 
     private fun getSince(): String {

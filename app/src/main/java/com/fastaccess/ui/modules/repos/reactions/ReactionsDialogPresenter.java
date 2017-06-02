@@ -28,11 +28,11 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
     private ArrayList<User> users = new ArrayList<>();
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State long id;
-    @icepick.State ReactionTypes reactionType;
-    @icepick.State @ReactionsProvider.ReactionType int reactionTypeMode;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State long id;
+    @com.evernote.android.state.State ReactionTypes reactionType;
+    @com.evernote.android.state.State @ReactionsProvider.ReactionType int reactionTypeMode;
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {

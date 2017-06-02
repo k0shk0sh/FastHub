@@ -12,7 +12,6 @@ import android.widget.ProgressBar;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
-import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -23,7 +22,7 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 28 Nov 2016, 9:27 PM
@@ -167,7 +166,6 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         } else {
             menuItem.setVisible(true).setCheckable(true).setChecked(isWrap);
         }
-        menu.findItem(R.id.copy).setVisible(getPresenter().isRepo);
     }
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
@@ -175,9 +173,6 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             item.setChecked(!item.isChecked());
             isWrap = item.isChecked();
             onSetCode(getPresenter().downloadedStream());
-        } else if (item.getItemId() == R.id.copy) {
-            AppHelper.copyToClipboard(getContext(), getPresenter().url());
-            return true;
         }
         return super.onOptionsItemSelected(item);
     }

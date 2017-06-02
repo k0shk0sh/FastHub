@@ -47,7 +47,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM

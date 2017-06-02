@@ -27,7 +27,7 @@ import com.fastaccess.ui.widgets.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTouch;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 19 Feb 2017, 12:33 PM

@@ -58,7 +58,7 @@ import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import icepick.State;
+import com.evernote.android.state.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
@@ -521,6 +521,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             finish();
         } else if (item.getItemId() == R.id.share) {
             if (getPresenter().getRepo() != null) ActivityHelper.shareUrl(this, getPresenter().getRepo().getHtmlUrl());
+            return true;
+        } else if (item.getItemId() == R.id.copy) {
+            if (getPresenter().getRepo() != null) AppHelper.copyToClipboard(this, getPresenter().getRepo().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.originalRepo) {
             if (getPresenter().getRepo() != null && getPresenter().getRepo().getParent() != null) {
