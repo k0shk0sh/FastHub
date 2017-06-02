@@ -5,12 +5,13 @@ import android.os.Parcelable;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by Kosh on 27 May 2017, 9:47 PM
  */
 
-@Getter @Setter public class LanguageColorModel implements Parcelable {
+@Getter @Setter @ToString public class LanguageColorModel implements Parcelable {
     private String color;
     private String url;
 

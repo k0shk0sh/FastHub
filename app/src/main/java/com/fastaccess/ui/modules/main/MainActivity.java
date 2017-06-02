@@ -25,7 +25,7 @@ import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
+import com.evernote.android.state.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
 

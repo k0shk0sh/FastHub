@@ -49,7 +49,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
 import es.dmoral.toasty.Toasty;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 09 Apr 2017, 6:23 PM

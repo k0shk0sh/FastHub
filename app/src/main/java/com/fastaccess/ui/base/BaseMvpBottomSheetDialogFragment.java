@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -26,7 +27,6 @@ import net.grandcentrix.thirtyinch.TiDialogFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
 
 /**
  * Created by Kosh on 27 May 2017, 1:51 PM
@@ -55,7 +55,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
         getPresenter().onSaveInstanceState(outState);
     }
 
@@ -63,7 +63,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, AppHelper.isNightMode(getResources()) ? R.style.DialogThemeDark : R.style.DialogThemeLight);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
     }

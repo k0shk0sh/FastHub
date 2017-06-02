@@ -40,12 +40,12 @@ import retrofit2.Response;
  */
 
 class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> implements PullRequestPagerMvp.Presenter {
-    @icepick.State PullRequest pullRequest;
-    @icepick.State int issueNumber;
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State boolean isCollaborator;
-    @icepick.State boolean showToRepoBtn;
+    @com.evernote.android.state.State PullRequest pullRequest;
+    @com.evernote.android.state.State int issueNumber;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State boolean isCollaborator;
+    @com.evernote.android.state.State boolean showToRepoBtn;
 
     @Nullable @Override public PullRequest getPullRequest() {
         return pullRequest;

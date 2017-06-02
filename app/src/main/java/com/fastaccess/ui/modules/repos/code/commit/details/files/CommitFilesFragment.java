@@ -22,7 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:16 PM

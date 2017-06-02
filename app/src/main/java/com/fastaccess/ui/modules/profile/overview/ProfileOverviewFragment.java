@@ -52,7 +52,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
-import icepick.State;
+import com.evernote.android.state.State;
 
 import static android.view.Gravity.TOP;
 import static android.view.View.GONE;

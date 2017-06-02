@@ -21,9 +21,9 @@ import java.util.ArrayList;
  */
 
 class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.View> implements PullRequestCommitsMvp.Presenter {
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State long number;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State long number;
     private ArrayList<Commit> commits = new ArrayList<>();
     private int page;
     private int previousTotal;

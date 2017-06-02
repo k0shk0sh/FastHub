@@ -29,13 +29,13 @@ import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
  */
 
 class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements RepoPagerMvp.Presenter {
-    @icepick.State boolean isWatched;
-    @icepick.State boolean isStarred;
-    @icepick.State boolean isForked;
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State Repo repo;
-    @icepick.State int navTyp;
+    @com.evernote.android.state.State boolean isWatched;
+    @com.evernote.android.state.State boolean isStarred;
+    @com.evernote.android.state.State boolean isForked;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State Repo repo;
+    @com.evernote.android.state.State int navTyp;
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;

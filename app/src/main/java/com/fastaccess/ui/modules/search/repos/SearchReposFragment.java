@@ -21,7 +21,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM

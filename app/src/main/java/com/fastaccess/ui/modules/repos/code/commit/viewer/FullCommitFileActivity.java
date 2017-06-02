@@ -27,7 +27,7 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindString;
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 24 Apr 2017, 2:53 PM

@@ -19,11 +19,11 @@ import io.reactivex.Observable;
  */
 
 class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements CommitPagerMvp.Presenter {
-    @icepick.State Commit commitModel;
-    @icepick.State String sha;
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State boolean showToRepoBtn;
+    @com.evernote.android.state.State Commit commitModel;
+    @com.evernote.android.state.State String sha;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State boolean showToRepoBtn;
 
     @Nullable @Override public Commit getCommit() {
         return commitModel;

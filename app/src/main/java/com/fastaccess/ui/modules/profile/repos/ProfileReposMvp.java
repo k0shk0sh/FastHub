@@ -22,6 +22,8 @@ interface ProfileReposMvp {
         void onNotifyAdapter(@Nullable List<Repo> items, int page);
 
         @NonNull OnLoadMore<String> getLoadMore();
+
+        void onRepoFilterClicked();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -31,5 +33,9 @@ interface ProfileReposMvp {
         @NonNull ArrayList<Repo> getRepos();
 
         void onWorkOffline(@NonNull String login);
+        void onFilterApply();
+        void onTypeSelected(String selectedType);
+        void onSortOptionSelected(String selectedSortOption);
+        void onSortDirectionSelected(String selectedSortDirection);
     }
 }

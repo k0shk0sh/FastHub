@@ -41,7 +41,7 @@ import io.reactivex.Observable;
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private ReactionsProvider reactionsProvider;
-    @icepick.State PullRequest pullRequest;
+    @com.evernote.android.state.State PullRequest pullRequest;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;

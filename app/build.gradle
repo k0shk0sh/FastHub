@@ -120,7 +120,6 @@ dependencies {
     compile "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     compile 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
-    compile "frankiesardo:icepick:${icepickVersion}"
     compile "com.jakewharton:butterknife:${butterKnifeVersion}"
     compile 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
     compile 'io.reactivex.rxjava2:rxjava:2.0.7'
@@ -146,13 +145,18 @@ dependencies {
     }
     compile "com.github.miguelbcr:RxBillingService:0.0.3"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "com.github.florent37:retrojsoup:${retrojsoupVersion}"
+    compile "com.github.florent37:rxjsoup:${retrojsoupVersion}"
+    compile 'org.jsoup:jsoup:1.10.2'
+    compile "com.evernote:android-state:${state_version}"
     provided "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "io.requery:requery-processor:${requery}"
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
-    annotationProcessor "frankiesardo:icepick-processor:${icepickVersion}"
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
-    annotationProcessor 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
-    annotationProcessor "org.projectlombok:lombok:${lombokVersion}"
+    kapt "io.requery:requery-processor:${requery}"
+    kapt "org.projectlombok:lombok:${lombokVersion}"
+    kapt "com.evernote:android-state-processor:${state_version}"
+    kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
+    kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
+    kapt "org.projectlombok:lombok:${lombokVersion}"
+    kapt "com.github.florent37:retrojsoup-compiler:${retrojsoupVersion}"
 //    testCompile "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"

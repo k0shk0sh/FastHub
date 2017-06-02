@@ -28,7 +28,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_GIST_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_GIST_COMMENT_EXTRA;

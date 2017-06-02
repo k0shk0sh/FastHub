@@ -7,13 +7,13 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.NestedScrollView;
 import android.util.AttributeSet;
 
+import com.evernote.android.state.State;
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import icepick.Icepick;
-import icepick.State;
 
 /**
  * Created by Kosh on 20 Nov 2016, 12:21 AM
@@ -134,11 +134,11 @@ public class StateLayout extends NestedScrollView {
     }
 
     @Override public Parcelable onSaveInstanceState() {
-        return Icepick.saveInstanceState(this, super.onSaveInstanceState());
+        return StateSaver.saveInstanceState(this, super.onSaveInstanceState());
     }
 
     @Override public void onRestoreInstanceState(Parcelable state) {
-        super.onRestoreInstanceState(Icepick.restoreInstanceState(this, state));
+        super.onRestoreInstanceState(StateSaver.restoreInstanceState(this, state));
         onHandleLayoutState();
     }
 

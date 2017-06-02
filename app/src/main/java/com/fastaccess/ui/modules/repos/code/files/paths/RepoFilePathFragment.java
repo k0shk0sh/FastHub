@@ -34,7 +34,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTouch;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 18 Feb 2017, 2:10 AM

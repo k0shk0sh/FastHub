@@ -27,10 +27,10 @@ import io.reactivex.Observable;
  */
 
 class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implements RepoFilePathMvp.Presenter {
-    @icepick.State String repoId;
-    @icepick.State String login;
-    @icepick.State String path;
-    @icepick.State String defaultBranch;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String path;
+    @com.evernote.android.state.State String defaultBranch;
     private ArrayList<RepoFile> paths = new ArrayList<>();
     private ArrayList<BranchesModel> branches = new ArrayList<>();
 

@@ -11,8 +11,8 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.FontEditText;
 
 public class SearchFilePresenter extends BasePresenter<SearchFileMvp.View> implements SearchFileMvp.Presenter {
-    @icepick.State String repoId;
-    @icepick.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
 
     @Override protected void onAttachView(@NonNull SearchFileMvp.View view) {
         super.onAttachView(view);

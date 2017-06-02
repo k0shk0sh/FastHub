@@ -20,6 +20,10 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
       alt="Direct apk download" 
       height="80">](https://github.com/k0shk0sh/FastHub/releases/latest)
 
+#### FOSS
+
+grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintained by **_[thermatk](https://github.com/thermatk)_**
+
 # Features
 
 - **App**
@@ -83,7 +87,7 @@ Ads are no longer available until further notice
 - [**Requery**](https://github.com/requery/requery/) for offline-mode
 - [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `Collections`
 - [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding
-- [**Icepick**](https://github.com/frankiesardo/icepick) for saving instance states
+- [**Android State**](https://github.com/evernote/android-state) for saving instance states
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs 
 - [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images

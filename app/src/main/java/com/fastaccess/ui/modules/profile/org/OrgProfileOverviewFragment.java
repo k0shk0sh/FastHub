@@ -22,7 +22,7 @@ import com.fastaccess.ui.widgets.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
+import com.evernote.android.state.State;
 
 import static android.view.View.GONE;
 

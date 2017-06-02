@@ -46,7 +46,7 @@ import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
 import es.dmoral.toasty.Toasty;
-import icepick.State;
+import com.evernote.android.state.State;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import static android.view.View.GONE;

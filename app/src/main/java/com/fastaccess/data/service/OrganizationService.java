@@ -8,11 +8,14 @@ import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.model.User;
 
+import java.util.Map;
+
+import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import io.reactivex.Observable;
+import retrofit2.http.QueryMap;
 
 /**
  * Created by Kosh on 22 Mar 2017, 6:44 PM
@@ -40,6 +43,6 @@ public interface OrganizationService {
     Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
 
     @GET("orgs/{org}/repos")
-    Observable<Pageable<Repo>> getOrgRepos(@NonNull @Path("org") String org, @Query("page") int page);
+    Observable<Pageable<Repo>> getOrgRepos(@NonNull @Path("org") String org, @QueryMap(encoded = true) Map<String, String> filterParams, @Query("page") int page);
 
 }
