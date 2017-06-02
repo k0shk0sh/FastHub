@@ -30,7 +30,6 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     @State var selectedTitle: String = ""
 
-
     fun onDailyClicked() {
         Toasty.info(applicationContext, "Hello").show()
         Logger.e()
@@ -54,11 +53,6 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         weekly.isSelected = false
         daily.isSelected = false
         setValues()
-    }
-
-    private fun setValues() {
-        closeDrawerLayout()
-        if (selectedTitle.isNotBlank()) trendingFragment?.onSetQuery(selectedTitle, getSince())
     }
 
     override fun layout(): Int {
@@ -115,6 +109,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     private fun onItemClicked(item: MenuItem?): Boolean {
         this.selectedTitle = item?.title.toString()
+        setValues()
         return true
     }
 
@@ -127,7 +122,12 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         drawerLayout.closeDrawer(Gravity.END)
     }
 
-    fun getSince(): String {
+    private fun setValues() {
+        closeDrawerLayout()
+        if (selectedTitle.isNotBlank()) trendingFragment?.onSetQuery(selectedTitle, getSince())
+    }
+
+    private fun getSince(): String {
         when {
             daily.isSelected -> return "daily"
             weekly.isSelected -> return "weekly"

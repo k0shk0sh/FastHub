@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.Spinner;
 
 import com.fastaccess.R;
@@ -24,7 +23,7 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
 
     @BindView(R.id.type_selection) Spinner typeSelectionSpinner;
     @BindView(R.id.sort_selection) Spinner sortSelectionSpinner;
-    @BindView(R.id.filter_sheet_apply_btn) Button applyBtn;
+    @BindView(R.id.filter_sheet_apply_btn) View applyBtn;
     @BindView(R.id.sort_direction_selection) Spinner sortDirectionSpinner;
 
     private ProfileReposFilterChangeListener listener;
