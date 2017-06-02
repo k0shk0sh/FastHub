@@ -26,8 +26,10 @@ public class FilterOptionsModel implements Parcelable {
 
     private List<String> typesListForPersonalProfile =  new ArrayList<>(Arrays.asList("All", "Owner", "Public", "Private", "Member"));
     private List<String> typesListForExternalProfile =  new ArrayList<>(Arrays.asList("All", "Owner", "Member"));
+    private List<String> typesListForOrganizationProfile =  new ArrayList<>(Arrays.asList("All", "Public", "Private", "Forks", "Sources", "Member"));
     private List<String> sortOptionsList = new ArrayList<>(Arrays.asList("Pushed", "Created", "Updated", "Full Name"));
     private List<String> sortDirectionList = new ArrayList<>(Arrays.asList("Descending", "Ascending"));
+    private boolean isOrg;
 
     public FilterOptionsModel() {
     }
@@ -72,20 +74,22 @@ public class FilterOptionsModel implements Parcelable {
             queryMap.clear();
         }
         queryMap.put(TYPE, type.toLowerCase());
-        if (sort.contains(" ")) {
-            //full name should be full_name
-            queryMap.put(SORT, sort.replace(" ", "_").toLowerCase());
-        } else {
-            queryMap.put(SORT, sort.toLowerCase());
+        //Not supported for organization repo
+        if (!isOrg) {
+            if (sort.contains(" ")) {
+                //full name should be full_name
+                queryMap.put(SORT, sort.replace(" ", "_").toLowerCase());
+            } else {
+                queryMap.put(SORT, sort.toLowerCase());
+            }
+            if (sortDirection.equals(sortDirectionList.get(0))) {
+                //Descending should be desc
+                queryMap.put(DIRECTION, sortDirection.toLowerCase().substring(0, 4));
+            } else {
+                //Ascending should be asc
+                queryMap.put(DIRECTION, sortDirection.toLowerCase().substring(0, 3));
+            }
         }
-        if (sortDirection.equals(sortDirectionList.get(0))) {
-            //Descending should be desc
-            queryMap.put(DIRECTION, sortDirection.toLowerCase().substring(0, 4));
-        } else {
-            //Ascending should be asc
-            queryMap.put(DIRECTION, sortDirection.toLowerCase().substring(0, 3));
-        }
-
         return queryMap;
     }
 
@@ -108,6 +112,8 @@ public class FilterOptionsModel implements Parcelable {
     public List<String> getTypesList() {
         if (isPersonalProfile) {
             return typesListForPersonalProfile;
+        } else if (isOrg) {
+            return typesListForOrganizationProfile;
         } else {
             return typesListForExternalProfile;
         }
@@ -138,5 +144,13 @@ public class FilterOptionsModel implements Parcelable {
 
     public void setIsPersonalProfile(boolean isPersonalProfile) {
         this.isPersonalProfile = isPersonalProfile;
+    }
+
+    public void setOrg(boolean org) {
+        this.isOrg = org;
+    }
+
+    public boolean isOrg() {
+        return isOrg;
     }
 }

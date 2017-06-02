@@ -20,6 +20,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
+import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment;
 import com.fastaccess.ui.modules.profile.repos.ProfileReposFragment;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
@@ -177,7 +178,12 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     @OnClick (R.id.fab)
     public void onRepoFilterClicked() {
-        ProfileReposFragment fragment = ((ProfileReposFragment) pager.getAdapter().instantiateItem(pager, 1));
-        fragment.onRepoFilterClicked();
+        if (isOrg) {
+            OrgReposFragment fragment = ((OrgReposFragment) pager.getAdapter().instantiateItem(pager, 1));
+            fragment.onRepoFilterClicked();
+        } else {
+            ProfileReposFragment fragment = ((ProfileReposFragment) pager.getAdapter().instantiateItem(pager, 1));
+            fragment.onRepoFilterClicked();
+        }
     }
 }
