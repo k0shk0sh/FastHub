@@ -25,13 +25,14 @@ import butterknife.BindView;
  * Created by Kosh on 03 Dec 2016, 3:56 PM
  */
 
-public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, ProfileReposPresenter> implements ProfileReposMvp.View {
+public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, ProfileReposPresenter> implements ProfileReposMvp.View, ProfileReposFilterBottomSheetDialog.ProfileReposFilterChangeListener {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
+    private ProfileReposFilterBottomSheetDialog dialog;
 
     public static ProfileReposFragment newInstance(@NonNull String username) {
         ProfileReposFragment view = new ProfileReposFragment();
@@ -74,6 +75,7 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        dialog = new ProfileReposFilterBottomSheetDialog();
     }
 
     @NonNull @Override public ProfileReposPresenter providePresenter() {
@@ -109,6 +111,12 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         return onLoadMore;
     }
 
+    @Override
+    public void onRepoFilterClicked() {
+        dialog.setCurrentFilterOptions(getPresenter().getFilterOptions());
+        dialog.show(getChildFragmentManager(), "ProfileReposFilterBottomSheetDialog");
+    }
+
     @Override public void onRefresh() {
         getPresenter().onCallApi(1, getArguments().getString(BundleConstant.EXTRA));
     }
@@ -125,5 +133,25 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    @Override
+    public void onFilterApply() {
+        getPresenter().onFilterApply();
+    }
+
+    @Override
+    public void onTypeSelected(String selectedType) {
+        getPresenter().onTypeSelected(selectedType);
+    }
+
+    @Override
+    public void onSortOptionSelected(String selectedSortOption) {
+        getPresenter().onSortOptionSelected(selectedSortOption);
+    }
+
+    @Override
+    public void onSortDirectionSelected(String selectedSortDirection) {
+        getPresenter().onSortDirectionSelected(selectedSortDirection);
     }
 }
