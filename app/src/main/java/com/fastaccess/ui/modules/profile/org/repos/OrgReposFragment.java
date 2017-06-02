@@ -134,7 +134,6 @@ refresh.setRefreshing(true);
     @Override
     public void onRepoFilterClicked() {
         dialog.setCurrentFilterOptions(getPresenter().getFilterOptions());
-        dialog.setOrg(true);
         dialog.show(getChildFragmentManager(), "OrgReposFragment");
     }
 

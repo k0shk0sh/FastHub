@@ -32,7 +32,6 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
 
     private ProfileReposFilterChangeListener listener;
     private FilterOptionsModel currentFilterOptions;
-    private boolean isOrg;
 
     @Override
     protected int layoutRes() {
@@ -113,10 +112,6 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
 
     public void setCurrentFilterOptions(FilterOptionsModel currentFilterOptions) {
         this.currentFilterOptions = currentFilterOptions;
-    }
-
-    public void setOrg(boolean org) {
-        isOrg = org;
     }
 
     public interface ProfileReposFilterChangeListener {

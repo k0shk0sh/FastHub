@@ -74,6 +74,7 @@ public class FilterOptionsModel implements Parcelable {
             queryMap.clear();
         }
         queryMap.put(TYPE, type.toLowerCase());
+        //Not supported for organization repo
         if (!isOrg) {
             if (sort.contains(" ")) {
                 //full name should be full_name
