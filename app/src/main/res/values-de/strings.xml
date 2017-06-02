@@ -359,6 +359,25 @@
     </string>
     <string name="edit_banner">BANNER AUSWÄHLEN</string>
     <string name="image_error">Bild konnte nicht geladen werden.</string>
+    <string name="trending">Im Trend</string>
+    <string name="not_really_working">Leider kann derzeit nicht nach Emojis sortiert werden</string>
+    <string name="scroll_up">Hochscrollen</string>
+    <string name="scroll_down">Runterscrollen</string>
+    <string name="participated">Teilgenommen</string>
+    <string name="todo_checked">abgehakt</string>
+    <string name="todo_unchecked">ausstehend</string>
+    <string name="divider">Trenner</string>
+    <string name="no_user_found">Kein User gefunden</string>
+    <string name="no_trending">Nichts im Trend</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="reset">Zurücksetzten</string>
+    <string name="apply">Anwenden</string>
+    <string name="filter">Filter</string>
+    <string name="type">Typ</string>
+    <string name="Sort">Sortieren</string>
+    <string name="sort_direction">Sortierungsrichtung</string>
 </resources>
 
 
