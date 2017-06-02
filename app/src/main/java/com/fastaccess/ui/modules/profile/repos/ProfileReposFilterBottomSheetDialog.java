@@ -8,11 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.FilterOptionsModel;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
+import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -25,9 +27,12 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
     @BindView(R.id.sort_selection) Spinner sortSelectionSpinner;
     @BindView(R.id.filter_sheet_apply_btn) View applyBtn;
     @BindView(R.id.sort_direction_selection) Spinner sortDirectionSpinner;
+    @BindView(R.id.sort_layout) LinearLayout sortLayout;
+    @BindView(R.id.sort_direction_layout) LinearLayout sortDirectionlayout;
 
     private ProfileReposFilterChangeListener listener;
     private FilterOptionsModel currentFilterOptions;
+    private boolean isOrg;
 
     @Override
     protected int layoutRes() {
@@ -47,12 +52,20 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
         typeSelectionSpinner.setSelection(currentFilterOptions.getSelectedTypeIndex());
         sortSelectionSpinner.setSelection(currentFilterOptions.getSelectedSortOptionIndex());
         sortDirectionSpinner.setSelection(currentFilterOptions.getSelectedSortDirectionIndex());
+        if (currentFilterOptions.isOrg()) {
+            sortLayout.setVisibility(View.GONE);
+            sortDirectionlayout.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        listener = ((ProfileReposFragment) getParentFragment());
+        if (currentFilterOptions.isOrg()) {
+            listener = ((OrgReposFragment) getParentFragment());
+        } else {
+            listener = ((ProfileReposFragment) getParentFragment());
+        }
     }
 
     @Override
@@ -100,6 +113,10 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
 
     public void setCurrentFilterOptions(FilterOptionsModel currentFilterOptions) {
         this.currentFilterOptions = currentFilterOptions;
+    }
+
+    public void setOrg(boolean org) {
+        isOrg = org;
     }
 
     public interface ProfileReposFilterChangeListener {
