@@ -8,17 +8,27 @@ import com.fastaccess.helper.InputHelper;
 import java.io.IOException;
 import java.net.URI;
 
-import lombok.AllArgsConstructor;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
-@AllArgsConstructor
 public class AuthenticationInterceptor implements Interceptor {
 
     private String authToken;
     private String otp;
+    private boolean isScrapping;
+
+    public AuthenticationInterceptor(String authToken, String otp) {
+        this.authToken = authToken;
+        this.otp = otp;
+    }
+
+    public AuthenticationInterceptor(String authToken, String otp, boolean isScrapping) {
+        this.authToken = authToken;
+        this.otp = otp;
+        this.isScrapping = isScrapping;
+    }
 
     @Override public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
@@ -30,7 +40,7 @@ public class AuthenticationInterceptor implements Interceptor {
             if (!InputHelper.isEmpty(otp)) {
                 builder.addHeader("X-GitHub-OTP", otp.trim());
             }
-            builder.addHeader("User-Agent", "FastHub");
+            if (!isScrapping) builder.addHeader("User-Agent", "FastHub");
             Request request = builder.build();
             return chain.proceed(request);
         }

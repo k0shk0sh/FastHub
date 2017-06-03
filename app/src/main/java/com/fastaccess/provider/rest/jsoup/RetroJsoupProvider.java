@@ -28,7 +28,7 @@ public class RetroJsoupProvider {
                 client.addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
             }
-            client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
+            client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode(), true));
             okHttpClient = client.build();
         }
         return okHttpClient;
@@ -36,7 +36,8 @@ public class RetroJsoupProvider {
 
     public static TrendingService getTrendingService(@NonNull String since, @Nullable String lang) {
         return new RetroJsoup.Builder()
-                .url("https://github.com/trending/" + (!InputHelper.isEmpty(lang) ? lang : "") + "?since=" + since)
+                .url("https://github.com/trending/" + (!InputHelper.isEmpty(lang) ? lang.replaceAll(" ", "-") : "").toLowerCase()
+                        + "?since=" + since)
                 .client(provideOkHttpClient())
                 .build()
                 .create(TrendingService.class);

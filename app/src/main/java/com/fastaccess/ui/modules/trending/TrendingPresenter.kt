@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.trending
 
+import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.colors.ColorsProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import io.reactivex.Observable
@@ -10,7 +11,7 @@ import io.reactivex.Observable
 
 class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Presenter {
     override fun onLoadLanguage() {
-        manageObservable(Observable.fromIterable(ColorsProvider.languages())
+        manageObservable(RxHelper.getObserver(Observable.fromIterable(ColorsProvider.languages()))
                 .doOnNext({ t: String -> sendToView({ it.onAppend(t) }) }))
     }
 }

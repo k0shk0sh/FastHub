@@ -62,9 +62,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     override fun hideProgress() {
         refresh.isRefreshing = false
         stateLayout.hideProgress()
-        if (adapter.isEmpty) {
-            stateLayout.showEmptyState()
-        }
+        stateLayout.showReload(adapter.itemCount)
     }
 
     override fun showMessage(titleRes: Int, msgRes: Int) {

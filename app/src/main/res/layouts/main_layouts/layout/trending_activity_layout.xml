@@ -55,6 +55,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/daily"
                     android:textColor="@color/search_tab_highlighter"/>
@@ -69,6 +70,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/weekly"
                     android:textColor="@color/search_tab_highlighter"/>
@@ -83,6 +85,7 @@
                     android:clickable="true"
                     android:focusable="true"
                     android:gravity="center"
+                    android:maxLines="1"
                     android:padding="@dimen/spacing_normal"
                     android:text="@string/monthly"
                     android:textColor="@color/search_tab_highlighter"/>
@@ -105,4 +108,7 @@
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>
+
+    <include layout="@layout/nav_menu_layout"/>
+
 </android.support.v4.widget.DrawerLayout>

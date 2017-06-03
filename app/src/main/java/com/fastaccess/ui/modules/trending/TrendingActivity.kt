@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.trending
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.widget.DrawerLayout
@@ -9,6 +11,8 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.evernote.android.state.State
 import com.fastaccess.R
+import com.fastaccess.helper.BundleConstant
+import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.Logger
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
@@ -28,6 +32,17 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     val drawerLayout by lazy { findViewById(R.id.drawer) as DrawerLayout }
 
     @State var selectedTitle: String = ""
+
+    companion object TrendingIntent {
+        fun getTrendingIntent(context: Context, lang: String?, query: String?): Intent {
+            val intent = Intent(context, TrendingActivity::class.java)
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.EXTRA, lang)
+                    .put(BundleConstant.EXTRA_TWO, query)
+                    .end())
+            return intent
+        }
+    }
 
     fun onDailyClicked() {
         Logger.e()
@@ -73,17 +88,14 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Logger.e(selectedTitle)
         trendingFragment = supportFragmentManager.findFragmentById(R.id.trendingFragment) as TrendingFragment?
         daily.setOnClickListener { onDailyClicked() }
         weekly.setOnClickListener { onWeeklyClicked() }
         monthly.setOnClickListener { onMonthlyClicked() }
-        presenter.onLoadLanguage()
         navMenu.setNavigationItemSelectedListener(this)
-        if (savedInstanceState == null) {
-            daily.isSelected = true
-            setValues()
-        }
+        setupIntent(savedInstanceState)
+        presenter.onLoadLanguage()
+        onSelectTrending()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -102,7 +114,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     override fun onAppend(title: String) {
         navMenu.menu.add(R.id.languageGroup, title.hashCode(), Menu.NONE, title)
                 .setCheckable(true)
-                .isChecked = title == selectedTitle
+                .isChecked = title.toLowerCase() == selectedTitle.toLowerCase()
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
@@ -122,6 +134,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     private fun setValues() {
         closeDrawerLayout()
+        Logger.e(selectedTitle, getSince())
         trendingFragment?.onSetQuery(selectedTitle, getSince())
     }
 
@@ -131,6 +144,35 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
             weekly.isSelected -> return "weekly"
             monthly.isSelected -> return "monthly"
             else -> return "daily"
+        }
+    }
+
+    private fun setupIntent(savedInstanceState: Bundle?) {
+        if (savedInstanceState == null) {
+            if (intent != null && intent.extras != null) {
+                val bundle = intent.extras
+                if (bundle != null) {
+                    val lang: String = bundle.getString(BundleConstant.EXTRA)
+                    val query: String = bundle.getString(BundleConstant.EXTRA_TWO)
+                    if (!lang.isNullOrEmpty()) {
+                        selectedTitle = lang
+                    }
+                    if (!query.isNullOrEmpty()) {
+                        when (query.toLowerCase()) {
+                            "daily" -> daily.isSelected = true
+                            "weekly" -> weekly.isSelected = true
+                            "monthly" -> monthly.isSelected = true
+                        }
+                    } else {
+                        daily.isSelected = true
+                    }
+                } else {
+                    daily.isSelected = true
+                }
+            } else {
+                daily.isSelected = true
+            }
+            setValues()
         }
     }
 }

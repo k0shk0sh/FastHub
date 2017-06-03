@@ -340,6 +340,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
     }
 
+    protected void onSelectTrending() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.trending).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.trending).setChecked(true);
+        }
+    }
+
     protected void onOpenOrgsDialog() {
         OrgListDialogFragment.newInstance().show(getSupportFragmentManager(), "OrgListDialogFragment");
     }

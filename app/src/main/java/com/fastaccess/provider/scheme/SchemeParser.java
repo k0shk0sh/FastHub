@@ -23,6 +23,7 @@ import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
+import com.fastaccess.ui.modules.trending.TrendingActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import java.util.List;
@@ -108,6 +109,7 @@ public class SchemeParser {
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY)) {
+                Intent trending = getTrending(context, data);
                 Intent userIntent = getUser(context, data);
                 Intent repoIssues = getRepoIssueIntent(context, data);
                 Intent repoPulls = getRepoPullRequestIntent(context, data);
@@ -119,7 +121,7 @@ public class SchemeParser {
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
-                Optional<Intent> intentOptional = returnNonNull(userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
+                Optional<Intent> intentOptional = returnNonNull(trending, userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
                         createIssueIntent, issueIntent, releasesIntent, repoIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
@@ -318,6 +320,25 @@ public class SchemeParser {
                 String owner = segments.get(0);
                 String repo = segments.get(1);
                 return ReleasesListActivity.getIntent(context, owner, repo);
+            }
+            return null;
+        }
+        return null;
+    }
+
+    @Nullable private static Intent getTrending(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments != null && !segments.isEmpty()) {
+            if (uri.getPathSegments().get(0).equals("trending")) {
+                String query = "";
+                String lang = "";
+                if (uri.getPathSegments().size() > 1) {
+                    lang = uri.getPathSegments().get(1);
+                }
+                if (uri.getQueryParameterNames() != null && !uri.getQueryParameterNames().isEmpty()) {
+                    query = uri.getQueryParameter("since");
+                }
+                return TrendingActivity.TrendingIntent.getTrendingIntent(context, lang, query);
             }
             return null;
         }
