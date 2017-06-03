@@ -1,5 +1,6 @@
 package com.fastaccess.data.service;
 
+
 import com.fastaccess.data.dao.TrendingResponse;
 import com.github.florent37.retrojsoup.annotations.Select;
 

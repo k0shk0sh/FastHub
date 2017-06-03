@@ -60,7 +60,7 @@ public class RestProvider {
             .setPrettyPrinting()
             .create();
 
-    public static OkHttpClient provideOkHttpClient(boolean isRawString) {
+    private static OkHttpClient provideOkHttpClient(boolean isRawString) {
         if (okHttpClient == null) {
             OkHttpClient.Builder client = new OkHttpClient.Builder();
             if (BuildConfig.DEBUG) {

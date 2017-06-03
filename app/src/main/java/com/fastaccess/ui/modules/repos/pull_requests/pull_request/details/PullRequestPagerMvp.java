@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullReqeustMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
@@ -26,13 +27,12 @@ import java.util.List;
 public interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
-            AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback {
+            AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback,
+            IssuePagerMvp.IssuePrCallback<PullRequest> {
 
-        void onSetupIssue();
+        void onSetupIssue(boolean update);
 
         void onLabelsRetrieved(@NonNull List<LabelModel> items);
-
-        void onUpdateMenu();
 
         void showSuccessIssueActionMsg(boolean isClose);
 
@@ -88,6 +88,8 @@ public interface PullRequestPagerMvp {
         boolean isCollaborator();
 
         void onUpdatePullRequest(@NonNull PullRequest pullRequestModel);
+
+        void onRefresh();
     }
 
 }

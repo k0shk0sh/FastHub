@@ -12,7 +12,6 @@ import com.fastaccess.R
 import com.fastaccess.helper.Logger
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
-import es.dmoral.toasty.Toasty
 
 
 /**
@@ -31,7 +30,6 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     @State var selectedTitle: String = ""
 
     fun onDailyClicked() {
-        Toasty.info(applicationContext, "Hello").show()
         Logger.e()
         daily.isSelected = true
         weekly.isSelected = false
@@ -40,7 +38,6 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     fun onWeeklyClicked() {
-        Toasty.info(applicationContext, "Hello").show()
         weekly.isSelected = true
         daily.isSelected = false
         monthly.isSelected = false
@@ -48,7 +45,6 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     fun onMonthlyClicked() {
-        Toasty.info(applicationContext, "Hello").show()
         monthly.isSelected = true
         weekly.isSelected = false
         daily.isSelected = false

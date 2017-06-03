@@ -41,20 +41,19 @@ import io.reactivex.Observable;
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private ReactionsProvider reactionsProvider;
-    @com.evernote.android.state.State PullRequest pullRequest;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
-        if (getView() != null) {
+        if (getView() != null && getView().getPullRequest() != null) {
             if (item.getType() == TimelineModel.COMMENT) {
-                if (getHeader() == null) return;
+                PullRequest pullRequest = getView().getPullRequest();
                 if (v.getId() == R.id.commentMenu) {
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, getHeader().getLogin(), item.getComment().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, pullRequest.getLogin(), item.getComment().getUser().getLogin());
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -119,10 +118,11 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
-        if (getView() == null) return;
+        if (getView() == null || getView().getPullRequest() == null) return;
         if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
-            String login = login();
-            String repoId = repoId();
+            PullRequest pullRequest = getView().getPullRequest();
+            String login = pullRequest.getLogin();
+            String repoId = pullRequest.getRepoId();
             if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
                 ReactionTypes type = ReactionTypes.get(v.getId());
                 if (type != null) {
@@ -144,37 +144,20 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return timeline;
     }
 
-    @Override protected void onCreate() {
-        super.onCreate();
-        if (pullRequest != null && timeline.isEmpty()) {
-            sendToView(view -> view.onSetHeader(TimelineModel.constructHeader(pullRequest)));
-            onCallApi(1, null);
-        }
-    }
-
-    @Override public void onFragmentCreated(@Nullable Bundle bundle) {
-        if (bundle == null) throw new NullPointerException("Bundle is null?");
-        pullRequest = bundle.getParcelable(BundleConstant.ITEM);
-        if (timeline.isEmpty() && pullRequest != null) {
-            sendToView(view -> view.onSetHeader(TimelineModel.constructHeader(pullRequest)));
-            onCallApi(1, null);
-        }
-    }
-
     @Override public void onWorkOffline() {
         //TODO
     }
 
-    @Nullable private PullRequest getHeader() {
-        return pullRequest;
-    }
-
     @Override public void onHandleDeletion(@Nullable Bundle bundle) {
+        if (getView() == null || getView().getPullRequest() == null) return;
         if (bundle != null) {
+            PullRequest pullRequest = getView().getPullRequest();
+            String login = pullRequest.getLogin();
+            String repoId = pullRequest.getRepoId();
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
             boolean isReviewComment = bundle.getBoolean(BundleConstant.YES_NO_EXTRA);
             if (commId != 0 && !isReviewComment) {
-                makeRestCall(RestProvider.getIssueService().deleteIssueComment(login(), repoId(), commId),
+                makeRestCall(RestProvider.getIssueService().deleteIssueComment(login, repoId, commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
@@ -187,7 +170,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             } else {
                 int groupPosition = bundle.getInt(BundleConstant.EXTRA_TWO);
                 int commentPosition = bundle.getInt(BundleConstant.EXTRA_THREE);
-                makeRestCall(RestProvider.getReviewService().deleteComment(login(), repoId(), commId),
+                makeRestCall(RestProvider.getReviewService().deleteComment(login, repoId, commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 view.onRemoveReviewComment(groupPosition, commentPosition);
@@ -199,36 +182,22 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
     }
 
-    @Nullable @Override public String repoId() {
-        return getHeader() != null ? getHeader().getRepoId() : null;
-    }
-
-    @Nullable @Override public String login() {
-        return getHeader() != null ? getHeader().getLogin() : null;
-    }
-
-    @Override public int number() {
-        return getHeader() != null ? getHeader().getNumber() : -1;
-    }
-
     @Override public void onHandleReaction(int vId, long idOrNumber, @ReactionsProvider.ReactionType int reactionType) {
-        String login = login();
-        String repoId = repoId();
+        if (getView() == null || getView().getPullRequest() == null) return;
+        PullRequest pullRequest = getView().getPullRequest();
+        String login = pullRequest.getLogin();
+        String repoId = pullRequest.getRepoId();
         Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType);
         if (observable != null) //noinspection unchecked
             manageObservable(observable);
     }
 
-    @Override public boolean isMerged() {
-        return getHeader() != null && (getHeader().isMerged() || !InputHelper.isEmpty(getHeader().getMergedAt()));
+    @Override public boolean isMerged(PullRequest pullRequest) {
+        return pullRequest != null && (pullRequest.isMerged() || !InputHelper.isEmpty(pullRequest.getMergedAt()));
     }
 
     @Override public boolean isCallingApi(long id, int vId) {
         return getReactionsProvider().isCallingApi(id, vId);
-    }
-
-    @Override public void onUpdatePullRequest(@NonNull PullRequest pullRequest) {
-        this.pullRequest = pullRequest;
     }
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
@@ -243,12 +212,12 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     @Override public void onClick(int groupPosition, int commentPosition, @NonNull View v, @NonNull ReviewCommentModel comment) {
-        if (getHeader() == null || getView() == null) return;
+        if (getView() == null || getView().getPullRequest() == null) return;
         if (v.getId() == R.id.commentMenu) {
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             popupMenu.inflate(R.menu.comments_menu);
             String username = Login.getUser().getLogin();
-            boolean isOwner = CommentsHelper.isOwner(username, getHeader().getLogin(), comment.getUser().getLogin());
+            boolean isOwner = CommentsHelper.isOwner(username, getView().getPullRequest().getLogin(), comment.getUser().getLogin());
             popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
             popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
             popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -275,9 +244,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     @Override public void onLongClick(int groupPosition, int commentPosition, @NonNull View v, @NonNull ReviewCommentModel model) {
-        if (getView() == null) return;
-        String login = login();
-        String repoId = repoId();
+        if (getView() == null || getView().getPullRequest() == null) return;
+        PullRequest pullRequest = getView().getPullRequest();
+        String login = pullRequest.getLogin();
+        String repoId = pullRequest.getRepoId();
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             ReactionTypes type = ReactionTypes.get(v.getId());
             if (type != null) {
@@ -304,14 +274,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
-        if (getHeader() == null) {
+    @Override public void onCallApi(int page, @Nullable PullRequest parameter) {
+        if (parameter == null) {
             sendToView(BaseMvp.FAView::hideProgress);
             return;
         }
-        String login = getHeader().getLogin();
-        String repoId = getHeader().getRepoId();
-        int number = getHeader().getNumber();
+        String login = parameter.getLogin();
+        String repoId = parameter.getRepoId();
+        int number = parameter.getNumber();
         if (page <= 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -321,7 +291,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             return;
         }
         setCurrentPage(page);
-        loadEverything(login, repoId, number, getHeader().getHead().getSha(), getHeader().isMergeable(), page);
+        loadEverything(login, repoId, number, parameter.getHead().getSha(), parameter.isMergeable(), page);
     }
 
     private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable, int page) {

@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -26,6 +27,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
             if (intent != null && intent.getExtras() != null) {
                 CharSequence charSequence = intent.getExtras().getCharSequence(BundleConstant.EXTRA);
                 if (!InputHelper.isEmpty(charSequence)) {
+                    Logger.e(charSequence);
                     sendToView(view -> view.onSetCode(charSequence));
                 }
             }
@@ -61,6 +63,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                     makeRestCall(RestProvider.getIssueService().editIssue(login, repo, number, requestModel),
                             issueModel -> {
                                 if (issueModel != null) {
+                                    Logger.e(issueModel.getBodyHtml());
                                     sendToView(view -> view.onSuccessSubmission(issueModel));
                                 } else {
                                     sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));

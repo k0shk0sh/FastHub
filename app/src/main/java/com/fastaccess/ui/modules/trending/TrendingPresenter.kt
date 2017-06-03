@@ -10,9 +10,7 @@ import io.reactivex.Observable
 
 class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Presenter {
     override fun onLoadLanguage() {
-        manageObservable(Observable.create<String> {
-            ColorsProvider.languages().forEach({ t: String? -> it.onNext(t) })
-            it.onComplete()
-        }.doOnNext({ t: String -> sendToView({ it.onAppend(t) }) }))
+        manageObservable(Observable.fromIterable(ColorsProvider.languages())
+                .doOnNext({ t: String -> sendToView({ it.onAppend(t) }) }))
     }
 }

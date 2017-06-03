@@ -34,6 +34,7 @@ grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintain
   - Notifications overview and "Mark all as read"
   - Search users/orgs, repos, issues/prs & code.
   - Pinned Repos
+  - Trending
 - **Repositories**
   - Search Repos
   - Browse and search Repos
@@ -81,6 +82,7 @@ Ads are no longer available until further notice
 # Specs / Open-source libraries:
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
+- **Kotlin** all new modules starting from 2.5.3 will be written in **#Kotlin**.
 - **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) because its ThirtyInch.
 - [**RxJava2**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API

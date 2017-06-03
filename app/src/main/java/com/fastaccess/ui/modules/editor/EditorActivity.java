@@ -18,6 +18,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.evernote.android.state.State;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
@@ -46,7 +47,6 @@ import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
 import es.dmoral.toasty.Toasty;
-import com.evernote.android.state.State;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import static android.view.View.GONE;
@@ -70,16 +70,15 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @BindView(R.id.sentVia) CheckBox sentVia;
     @BindView(R.id.list_divider) View listDivider;
     @BindView(R.id.parentView) View parentView;
-    @State @BundleConstant.ExtraTYpe String extraType;
+    @BindView(R.id.autocomplete) ListView mention;
 
+    @State @BundleConstant.ExtraTYpe String extraType;
     @State String itemId;
     @State String login;
     @State int issueNumber;
     @State long commentId = 0;
     @State String sha;
     @State EditReviewCommentModel reviewComment;
-    @BindView(R.id.autocomplete)
-    ListView mention;
 
     @Override protected int layout() {
         return R.layout.editor_layout;
@@ -239,36 +238,6 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         editText.requestFocus();
     }
 
-    private void onCreate() {
-        Intent intent = getIntent();
-        if (intent != null && intent.getExtras() != null) {
-            Bundle bundle = intent.getExtras();
-            //noinspection WrongConstant
-            extraType = bundle.getString(BundleConstant.EXTRA_TYPE);
-            reviewComment = bundle.getParcelable(BundleConstant.REVIEW_EXTRA);
-            itemId = bundle.getString(BundleConstant.ID);
-            login = bundle.getString(BundleConstant.EXTRA_TWO);
-            if (extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA) ||
-                    extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)) {
-                sha = bundle.getString(BundleConstant.EXTRA_THREE);
-            } else {
-                issueNumber = bundle.getInt(BundleConstant.EXTRA_THREE);
-            }
-            commentId = bundle.getLong(BundleConstant.EXTRA_FOUR);
-            String textToUpdate = bundle.getString(BundleConstant.EXTRA);
-            if (!InputHelper.isEmpty(textToUpdate)) {
-                editText.setText(String.format("%s ", textToUpdate));
-                editText.setSelection(InputHelper.toString(editText).length());
-            }
-            if (bundle.getString("message", "").isEmpty())
-                replyQuote.setVisibility(GONE);
-            else {
-                MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
-            }
-            participants = bundle.getStringArrayList("participants");
-        }
-    }
-
     @Override public void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew) {
         hideProgress();
         Intent intent = new Intent();
@@ -307,7 +276,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (item.getItemId() == R.id.submit) {
             if (PrefGetter.isSentViaEnabled()) {
                 String temp = savedText.toString();
-                if (!temp.contains(sentFromFastHub) && !InputHelper.isEmpty(savedText)) {
+                if (!temp.contains(sentFromFastHub)) {
                     savedText = savedText + sentFromFastHub;
                 }
             }
@@ -358,6 +327,36 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         } else {
             editText.setText(String.format("%s\n", editText.getText()));
             MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
+        }
+    }
+
+    private void onCreate() {
+        Intent intent = getIntent();
+        if (intent != null && intent.getExtras() != null) {
+            Bundle bundle = intent.getExtras();
+            //noinspection WrongConstant
+            extraType = bundle.getString(BundleConstant.EXTRA_TYPE);
+            reviewComment = bundle.getParcelable(BundleConstant.REVIEW_EXTRA);
+            itemId = bundle.getString(BundleConstant.ID);
+            login = bundle.getString(BundleConstant.EXTRA_TWO);
+            if (extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA) ||
+                    extraType.equalsIgnoreCase(BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)) {
+                sha = bundle.getString(BundleConstant.EXTRA_THREE);
+            } else {
+                issueNumber = bundle.getInt(BundleConstant.EXTRA_THREE);
+            }
+            commentId = bundle.getLong(BundleConstant.EXTRA_FOUR);
+            String textToUpdate = bundle.getString(BundleConstant.EXTRA);
+            if (!InputHelper.isEmpty(textToUpdate)) {
+                editText.setText(String.format("%s ", textToUpdate));
+                editText.setSelection(InputHelper.toString(editText).length());
+            }
+            if (bundle.getString("message", "").isEmpty())
+                replyQuote.setVisibility(GONE);
+            else {
+                MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
+            }
+            participants = bundle.getStringArrayList("participants");
         }
     }
 

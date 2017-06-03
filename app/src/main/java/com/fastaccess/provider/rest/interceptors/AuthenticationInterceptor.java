@@ -1,5 +1,7 @@
 package com.fastaccess.provider.rest.interceptors;
 
+import android.support.annotation.NonNull;
+
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.helper.InputHelper;
 
@@ -18,7 +20,7 @@ public class AuthenticationInterceptor implements Interceptor {
     private String authToken;
     private String otp;
 
-    @Override public Response intercept(Chain chain) throws IOException {
+    @Override public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
         if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
             Request.Builder builder = original.newBuilder();
@@ -28,6 +30,7 @@ public class AuthenticationInterceptor implements Interceptor {
             if (!InputHelper.isEmpty(otp)) {
                 builder.addHeader("X-GitHub-OTP", otp.trim());
             }
+            builder.addHeader("User-Agent", "FastHub");
             Request request = builder.build();
             return chain.proceed(request);
         }

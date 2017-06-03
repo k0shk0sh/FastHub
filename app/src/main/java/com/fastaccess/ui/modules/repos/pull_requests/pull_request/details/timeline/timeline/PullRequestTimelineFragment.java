@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
@@ -25,6 +27,7 @@ import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 import com.fastaccess.ui.modules.repos.reactions.ReactionsDialogFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -37,7 +40,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:35 PM
@@ -52,16 +54,33 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
     private IssuePullsTimelineAdapter adapter;
-    private OnLoadMore onLoadMore;
+    private OnLoadMore<PullRequest> onLoadMore;
 
-    public static PullRequestTimelineFragment newInstance(@NonNull PullRequest pullRequest) {
-        PullRequestTimelineFragment view = new PullRequestTimelineFragment();
-        view.setArguments(Bundler.start().put(BundleConstant.ITEM, pullRequest).end());//TODO fix this
-        return view;
+    private IssuePagerMvp.IssuePrCallback<PullRequest> issueCallback;
+
+    @NonNull public static PullRequestTimelineFragment newInstance() {
+        return new PullRequestTimelineFragment();
+    }
+
+    @SuppressWarnings("unchecked") @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof IssuePagerMvp.IssuePrCallback) {
+            issueCallback = (IssuePagerMvp.IssuePrCallback) getParentFragment();
+        } else if (context instanceof IssuePagerMvp.IssuePrCallback) {
+            issueCallback = (IssuePagerMvp.IssuePrCallback) context;
+        } else {
+            throw new IllegalArgumentException(String.format("%s or parent fragment must implement IssuePagerMvp.IssuePrCallback", context.getClass()
+                    .getSimpleName()));
+        }
+    }
+
+    @Override public void onDetach() {
+        issueCallback = null;
+        super.onDetach();
     }
 
     @Override public void onRefresh() {
-        getPresenter().onCallApi(1, null);
+        getPresenter().onCallApi(1, getPullRequest());
     }
 
     @Override protected int fragmentLayout() {
@@ -69,24 +88,27 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        if (getPullRequest() == null) {
+            throw new NullPointerException("PullRequest went missing!!!");
+        }
+        boolean isMerged = getPresenter().isMerged(getPullRequest());
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this, isMerged, getPresenter());
         recycler.setVerticalScrollBarEnabled(false);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
-        recycler.addOnScrollListener(getLoadMore());
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        boolean isMerged = getPresenter().isMerged();
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this,
-                isMerged, getPresenter());
         adapter.setListener(getPresenter());
+        recycler.setAdapter(adapter);
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
-        recycler.setAdapter(adapter);
         recycler.addDivider(TimelineCommentsViewHolder.class);
+        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
-            getPresenter().onFragmentCreated(getArguments());
-        } else if (getPresenter().getEvents().size() == 1 && !getPresenter().isApiCalled()) {
+            onSetHeader(TimelineModel.constructHeader(getPullRequest()));
+            onRefresh();
+        } else if (getPresenter().getEvents().isEmpty() || getPresenter().getEvents().size() == 1) {
             onRefresh();
         }
     }
@@ -134,27 +156,27 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
             return;
         }
         if (page == 1) {
-            items.add(0, TimelineModel.constructHeader(getPresenter().pullRequest));
-            adapter.insertItems(items);
-        } else {
-            adapter.addItems(items);
+            adapter.subList(1, adapter.getItemCount());
         }
+        adapter.addItems(items);
     }
 
-    @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
+    @NonNull @Override public OnLoadMore<PullRequest> getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore(getPresenter());
+            onLoadMore = new OnLoadMore<>(getPresenter());
         }
+        onLoadMore.setParameter(getPullRequest());
         return onLoadMore;
     }
 
     @Override public void onEditComment(@NonNull Comment item) {
         Intent intent = new Intent(getContext(), EditorActivity.class);
+        if (getPullRequest() == null) return;
         intent.putExtras(Bundler
                 .start()
-                .put(BundleConstant.ID, getPresenter().repoId())
-                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
-                .put(BundleConstant.EXTRA_THREE, getPresenter().number())
+                .put(BundleConstant.ID, getPullRequest().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_ISSUE_COMMENT_EXTRA)
@@ -170,11 +192,12 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         model.setGroupPosition(groupPosition);
         model.setInReplyTo(item.getId());
         Intent intent = new Intent(getContext(), EditorActivity.class);
+        if (getPullRequest() == null) return;
         intent.putExtras(Bundler
                 .start()
-                .put(BundleConstant.ID, getPresenter().repoId())
-                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
-                .put(BundleConstant.EXTRA_THREE, getPresenter().number())
+                .put(BundleConstant.ID, getPullRequest().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.REVIEW_EXTRA, model)
@@ -192,11 +215,12 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
 
     @Override public void onStartNewComment() {
         Intent intent = new Intent(getContext(), EditorActivity.class);
+        if (getPullRequest() == null) return;
         intent.putExtras(Bundler
                 .start()
-                .put(BundleConstant.ID, getPresenter().repoId())
-                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
-                .put(BundleConstant.EXTRA_THREE, getPresenter().number())
+                .put(BundleConstant.ID, getPullRequest().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .end());
@@ -215,11 +239,12 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
 
     @Override public void onReply(User user, String message) {
         Intent intent = new Intent(getContext(), EditorActivity.class);
+        if (getPullRequest() == null) return;
         intent.putExtras(Bundler
                 .start()
-                .put(BundleConstant.ID, getPresenter().repoId())
-                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
-                .put(BundleConstant.EXTRA_THREE, getPresenter().number())
+                .put(BundleConstant.ID, getPullRequest().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
@@ -232,11 +257,12 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @Override public void onReplyOrCreateReview(@Nullable User user, String message, int groupPosition, int childPosition,
                                                 @NonNull EditReviewCommentModel model) {
         Intent intent = new Intent(getContext(), EditorActivity.class);
+        if (getPullRequest() == null) return;
         intent.putExtras(Bundler
                 .start()
-                .put(BundleConstant.ID, getPresenter().repoId())
-                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
-                .put(BundleConstant.EXTRA_THREE, getPresenter().number())
+                .put(BundleConstant.ID, getPullRequest().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
                 .put(BundleConstant.REVIEW_EXTRA, model)
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_REVIEW_COMMENT_EXTRA)
@@ -279,14 +305,22 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
-        if (adapter != null && adapter.isEmpty()) {
-            adapter.addItem(timelineModel, 0);
+        if (adapter != null) {
+            if (adapter.isEmpty()) {
+                adapter.addItem(timelineModel, 0);
+            } else {
+                adapter.swapItem(timelineModel, 0);
+            }
         }
     }
 
-    @Override public void onRefresh(@NonNull PullRequest pullRequest) {
-        getPresenter().onUpdatePullRequest(pullRequest);
-        onRefresh();
+    @Nullable @Override public PullRequest getPullRequest() {
+        return issueCallback.getData();
+    }
+
+    @Override public void onUpdateHeader() {
+        if (getPullRequest() == null) return;
+        onSetHeader(TimelineModel.constructHeader(getPullRequest()));
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
@@ -49,7 +50,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -127,7 +127,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            if (getPresenter().getPullRequest() != null) onSetupIssue();
+            if (getPresenter().getPullRequest() != null) onSetupIssue(false);
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
@@ -140,7 +140,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
                 PullRequest pullRequest = bundle.getParcelable(BundleConstant.ITEM);
-                if (pullRequest != null) getPresenter().onUpdatePullRequest(pullRequest);
+                if (pullRequest != null) {
+                    getPresenter().onUpdatePullRequest(pullRequest);
+                } else {
+                    getPresenter().onRefresh();
+                }
             }
         }
     }
@@ -241,72 +245,44 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         return super.onPrepareOptionsMenu(menu);
     }
 
-    @Override public void onSetupIssue() {
+    @Override public void onSetupIssue(boolean update) {
         hideProgress();
         if (getPresenter().getPullRequest() == null) {
             return;
         }
-        supportInvalidateOptionsMenu();
+        invalidateOptionsMenu();
         PullRequest pullRequest = getPresenter().getPullRequest();
-        setTitle(String.format("#%s", pullRequest.getNumber()));
-        date.setText(String.format("%s\n%s", getPresenter().getMergeBy(pullRequest, getApplicationContext()), pullRequest.getRepoId()));
-        size.setVisibility(View.GONE);
-        User userModel = pullRequest.getUser();
-        if (userModel != null) {
-            title.setText(SpannableBuilder.builder().append(userModel.getLogin()).append("/").append(pullRequest.getTitle()));
-            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+        updateViews(pullRequest);
+        Logger.e(pullRequest.getBodyHtml());
+        if (update) {
+            PullRequestTimelineFragment issueDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+            if (issueDetailsView != null && getPresenter().getPullRequest() != null) {
+                issueDetailsView.onUpdateHeader();
+            }
         } else {
-            title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
-        }
-        detailsIcon.setVisibility(InputHelper.isEmpty(pullRequest.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
-        if (pager.getAdapter() == null) {
-            pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForPullRequest(this,
-                    pullRequest)));
-            tabs.setupWithViewPager(pager);
-            if (!getPresenter().isLocked() || getPresenter().isOwner()) {
-                pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                    @Override public void onPageSelected(int position) {
-                        super.onPageSelected(position);
-
+            if (pager.getAdapter() == null) {
+                pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForPullRequest(this,
+                        pullRequest)));
+                tabs.setupWithViewPager(pager);
+                tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+                    @Override public void onTabReselected(TabLayout.Tab tab) {
+                        super.onTabReselected(tab);
+                        onScrollTop(tab.getPosition());
                     }
                 });
+            } else {
+                onUpdateTimeline();
             }
-            tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
-                @Override public void onTabReselected(TabLayout.Tab tab) {
-                    super.onTabReselected(tab);
-                    onScrollTop(tab.getPosition());
+        }
+        if (!getPresenter().isLocked() || getPresenter().isOwner()) {
+            pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                @Override public void onPageSelected(int position) {
+                    super.onPageSelected(position);
+
                 }
             });
-            if (tabs.getTabAt(2) != null) {
-                tabs.getTabAt(2)
-                        .setText(SpannableBuilder.builder()
-                                .append(getString(R.string.files))
-                                .append(" ")
-                                .append("(")
-                                .append(String.valueOf(pullRequest.getChangedFiles()))
-                                .append(")"));
-            }
-            if (tabs.getTabAt(1) != null) {
-                tabs.getTabAt(1)
-                        .setText(SpannableBuilder.builder()
-                                .append(getString(R.string.commits))
-                                .append(" ")
-                                .append("(")
-                                .append(String.valueOf(pullRequest.getCommits()))
-                                .append(")"));
-            }
-            if (tabs.getTabAt(0) != null) {
-                tabs.getTabAt(0)
-                        .setText(SpannableBuilder.builder()
-                                .append(getString(R.string.details))
-                                .append(" ")
-                                .append("(")
-                                .append(String.valueOf(pullRequest.getComments()))
-                                .append(")"));
-            }
-        } else {
-            onUpdateTimeline();
         }
+        initTabs(pullRequest);
         hideShowFab();
     }
 
@@ -330,10 +306,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         LabelsDialogFragment.newInstance(items, getPresenter().getPullRequest() != null ? getPresenter().getPullRequest().getLabels() : null,
                 getPresenter().getRepoId(), getPresenter().getLogin())
                 .show(getSupportFragmentManager(), "LabelsDialogFragment");
-    }
-
-    @Override public void onUpdateMenu() {
-        supportInvalidateOptionsMenu();
     }
 
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
@@ -364,10 +336,9 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override public void onUpdateTimeline() {
-        showMessage(R.string.success, R.string.labels_added_successfully);
         PullRequestTimelineFragment pullRequestDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
         if (pullRequestDetailsView != null && getPresenter().getPullRequest() != null) {
-            pullRequestDetailsView.onRefresh(getPresenter().getPullRequest());
+            pullRequestDetailsView.onRefresh();
         }
     }
 
@@ -402,6 +373,56 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public void onSelectedAssignees(@NonNull ArrayList<User> users, boolean isAssignees) {
         hideProgress();
         getPresenter().onPutAssignees(users, isAssignees);
+    }
+
+    @Nullable @Override public PullRequest getData() {
+        return getPresenter().getPullRequest();
+    }
+
+    private void initTabs(@NonNull PullRequest pullRequest) {
+        TabLayout.Tab tab1 = tabs.getTabAt(0);
+        TabLayout.Tab tab2 = tabs.getTabAt(1);
+        TabLayout.Tab tab3 = tabs.getTabAt(2);
+        if (tab3 != null) {
+            tab3.setText(SpannableBuilder.builder()
+                    .append(getString(R.string.files))
+                    .append(" ")
+                    .append("(")
+                    .append(String.valueOf(pullRequest.getChangedFiles()))
+                    .append(")"));
+        }
+        if (tab2 != null) {
+            tab2.setText(SpannableBuilder.builder()
+                    .append(getString(R.string.commits))
+                    .append(" ")
+                    .append("(")
+                    .append(String.valueOf(pullRequest.getCommits()))
+                    .append(")"));
+        }
+        if (tab1 != null) {
+            tab1.setText(SpannableBuilder.builder()
+                    .append(getString(R.string.details))
+                    .append(" ")
+                    .append("(")
+                    .append(String.valueOf(pullRequest.getComments()))
+                    .append(")"));
+        }
+    }
+
+    private void updateViews(@NonNull PullRequest pullRequest) {
+        setTitle(String.format("#%s", pullRequest.getNumber()));
+        date.setText(SpannableBuilder.builder().append(getPresenter().getMergeBy(pullRequest, getApplicationContext()))
+                .append(" ")
+                .bold(pullRequest.getRepoId()));
+        size.setVisibility(View.GONE);
+        User userModel = pullRequest.getUser();
+        if (userModel != null) {
+            title.setText(SpannableBuilder.builder().append(userModel.getLogin()).append("/").append(pullRequest.getTitle()));
+            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+        } else {
+            title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
+        }
+        detailsIcon.setVisibility(InputHelper.isEmpty(pullRequest.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
     }
 
     private void hideShowFab() {

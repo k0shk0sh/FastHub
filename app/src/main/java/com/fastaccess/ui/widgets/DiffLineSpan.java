@@ -20,7 +20,6 @@ import android.text.style.TypefaceSpan;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
@@ -68,8 +67,8 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
             String[] split = text.split("\\r?\\n|\\r");
             if (split.length > 0) {
                 int lines = split.length;
+                int index = -1;
                 for (int i = 0; i < lines; i++) {
-                    Logger.e(lines, i, lines + i, lines - i);
                     if (truncate && (lines - i) > 3) continue;
                     String token = split[i];
                     if (i < (lines - 1)) {
@@ -85,7 +84,7 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                         color = patchRefColor;
                     } else if (firstChar == '\\') {
                         token = token.replace("\\ No newline at end of file", "");
-                        noNewlineRemoved = true;
+                        index = i;
                     }
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
@@ -94,11 +93,11 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     }
                     builder.append(spannableDiff);
                 }
+                if (index != -1) {
+                    builder.insert(index, SpannableBuilder.builder()
+                            .append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
+                }
             }
-        }
-        if (noNewlineRemoved) {
-            builder.insert(builder.length() - 1, SpannableBuilder.builder()
-                    .append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
         }
         builder.setSpan(new TypefaceSpan("monospace"), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;

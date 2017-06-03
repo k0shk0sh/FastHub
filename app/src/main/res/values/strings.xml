@@ -475,4 +475,7 @@
     <string name="type">Type</string>
     <string name="Sort">Sort</string>
     <string name="sort_direction">Sort direction</string>
+    <string name="assignee_added">Assignee added successfully</string>
+    <string name="reviewer_added">Reviewer added successfully</string>
+    <string name="milestone_added">Milestone added successfully</string>
 </resources>

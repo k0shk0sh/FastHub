@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
@@ -25,6 +26,8 @@ import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
+
+import java.util.Date;
 
 import butterknife.BindView;
 
@@ -159,30 +162,34 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     private void bind(@NonNull Issue issueModel) {
-        avatar.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
-        name.setText(issueModel.getUser().getLogin());
-        date.setText(ParseDateFormat.getTimeAgo(issueModel.getCreatedAt()));
-        if (!InputHelper.isEmpty(issueModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, issueModel.getBodyHtml());
-        } else {
-            comment.setText(R.string.no_description_provided);
-        }
-        if (issueModel.getReactions() != null) {
-            appendEmojies(issueModel.getReactions());
-        }
+        setup(issueModel.getUser(), issueModel.getBodyHtml(), issueModel.getReactions());
+        setupDate(issueModel.getCreatedAt(), issueModel.getUpdatedAt());
     }
 
     private void bind(@NonNull PullRequest pullRequest) {
-        avatar.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin());
-        name.setText(pullRequest.getUser().getLogin());
-        date.setText(ParseDateFormat.getTimeAgo(pullRequest.getCreatedAt()));
-        if (!InputHelper.isEmpty(pullRequest.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, pullRequest.getBodyHtml());
+        setup(pullRequest.getUser(), pullRequest.getBodyHtml(), pullRequest.getReactions());
+        setupDate(pullRequest.getCreatedAt(), pullRequest.getUpdatedAt());
+    }
+
+    private void setup(User user, String description, ReactionsModel reactionsModel) {
+        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType());
+        name.setText(user.getLogin());
+        if (reactionsModel != null) {
+            appendEmojies(reactionsModel);
+        }
+        if (!InputHelper.isEmpty(description)) {
+            HtmlHelper.htmlIntoTextView(comment, description);
         } else {
             comment.setText(R.string.no_description_provided);
         }
-        if (pullRequest.getReactions() != null) {
-            appendEmojies(pullRequest.getReactions());
+    }
+
+    private void setupDate(@NonNull Date createdDate, @NonNull Date updated) {
+        if (createdDate.before(updated)) {
+            date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(updated),
+                    date.getResources().getString(R.string.edited)));
+        } else {
+            date.setText(ParseDateFormat.getTimeAgo(createdDate));
         }
     }
 
