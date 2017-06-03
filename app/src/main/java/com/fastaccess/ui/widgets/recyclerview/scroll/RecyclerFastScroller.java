@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 
 /**
  * Created by thermatk on 17/04/2017.
@@ -51,7 +52,7 @@ public class RecyclerFastScroller extends FrameLayout {
     private int mBarColor;
     private int mTouchTargetWidth;
     private int mBarInset;
-
+    private OnLoadMore onLoadMore;
     private boolean mHideOverride;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.AdapterDataObserver mAdapterObserver = new RecyclerView.AdapterDataObserver() {
@@ -148,7 +149,10 @@ public class RecyclerFastScroller extends FrameLayout {
                     if (mRecyclerView != null) {
                         try {
                             mRecyclerView.scrollBy(0, dY);
-                        } catch (Throwable t) {
+                            if (onLoadMore != null) {
+                                onLoadMore.onScrollStateChanged(mRecyclerView, RecyclerView.SCROLL_STATE_DRAGGING);
+                            }
+                        } catch (Exception t) {
                             t.printStackTrace();
                         }
                     }
@@ -168,6 +172,34 @@ public class RecyclerFastScroller extends FrameLayout {
         });
 
         setTranslationX(mHiddenTranslationX);
+    }
+
+    @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (mRecyclerView == null) return;
+
+        int scrollOffset = mRecyclerView.computeVerticalScrollOffset();
+        int verticalScrollRange = mRecyclerView.computeVerticalScrollRange() + mRecyclerView.getPaddingBottom();
+
+        int barHeight = mBar.getHeight();
+        float ratio = (float) scrollOffset / (verticalScrollRange - barHeight);
+
+        int calculatedHandleHeight = (int) ((float) barHeight / verticalScrollRange * barHeight);
+        if (calculatedHandleHeight < mMinScrollHandleHeight) {
+            calculatedHandleHeight = mMinScrollHandleHeight;
+        }
+
+        if (calculatedHandleHeight >= barHeight) {
+            setTranslationX(mHiddenTranslationX);
+            mHideOverride = true;
+            return;
+        }
+
+        mHideOverride = false;
+
+        float y = ratio * (barHeight - calculatedHandleHeight);
+
+        mHandle.layout(mHandle.getLeft(), (int) y, mHandle.getRight(), (int) y + calculatedHandleHeight);
     }
 
     private void updateHandleColorsAndInset() {
@@ -202,8 +234,7 @@ public class RecyclerFastScroller extends FrameLayout {
     public void attachRecyclerView(RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 RecyclerFastScroller.this.show();
             }
@@ -217,9 +248,6 @@ public class RecyclerFastScroller extends FrameLayout {
         }
     }
 
-    /**
-     * Show the fast scroller and hide after delay
-     */
     public void show() {
         requestLayout();
 
@@ -262,48 +290,22 @@ public class RecyclerFastScroller extends FrameLayout {
         }
     }
 
-    @Override
-    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
-        if (mRecyclerView == null) return;
-
-        int scrollOffset = mRecyclerView.computeVerticalScrollOffset();
-        int verticalScrollRange = mRecyclerView.computeVerticalScrollRange() + mRecyclerView.getPaddingBottom();
-
-        int barHeight = mBar.getHeight();
-        float ratio = (float) scrollOffset / (verticalScrollRange - barHeight);
-
-        int calculatedHandleHeight = (int) ((float) barHeight / verticalScrollRange * barHeight);
-        if (calculatedHandleHeight < mMinScrollHandleHeight) {
-            calculatedHandleHeight = mMinScrollHandleHeight;
-        }
-
-        if (calculatedHandleHeight >= barHeight) {
-            setTranslationX(mHiddenTranslationX);
-            mHideOverride = true;
-            return;
-        }
-
-        mHideOverride = false;
-
-        float y = ratio * (barHeight - calculatedHandleHeight);
-
-        mHandle.layout(mHandle.getLeft(), (int) y, mHandle.getRight(), (int) y + calculatedHandleHeight);
-    }
-
-    private static boolean isRTL(Context context) {
-        return context.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-    }
-
-    @ColorInt
-    public static int resolveColor(Context context, @AttrRes int color) {
+    @ColorInt public static int resolveColor(Context context, @AttrRes int color) {
         TypedArray a = context.obtainStyledAttributes(new int[]{color});
         int resId = a.getColor(0, 0);
         a.recycle();
         return resId;
     }
 
+    private static boolean isRTL(Context context) {
+        return context.getResources().getConfiguration().getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+    }
+
     public static int convertDpToPx(Context context, float dp) {
         return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
+    }
+
+    public void setOnLoadMore(OnLoadMore onLoadMore) {
+        this.onLoadMore = onLoadMore;
     }
 }

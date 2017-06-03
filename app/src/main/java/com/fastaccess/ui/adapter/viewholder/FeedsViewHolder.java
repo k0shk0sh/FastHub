@@ -29,7 +29,7 @@ import butterknife.BindView;
 
 public class FeedsViewHolder extends BaseViewHolder<Event> {
 
-    @BindView(R.id.avatarLayout) AvatarLayout avatar;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
@@ -40,15 +40,21 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         super(itemView, adapter);
     }
 
-    public static View getView(@NonNull ViewGroup viewGroup) {
-        return getView(viewGroup, R.layout.feeds_row_item);
+    public static View getView(@NonNull ViewGroup viewGroup, boolean noImage) {
+        if (noImage) {
+            return getView(viewGroup, R.layout.feeds_row_no_image_item);
+        } else {
+            return getView(viewGroup, R.layout.feeds_row_item);
+        }
     }
 
     @Override public void bind(@NonNull Event eventsModel) {
-        if (eventsModel.getActor() != null) {
-            avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
-        } else {
-            avatar.setUrl(null, null);
+        if (avatar != null) {
+            if (eventsModel.getActor() != null) {
+                avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
+            } else {
+                avatar.setUrl(null, null);
+            }
         }
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");

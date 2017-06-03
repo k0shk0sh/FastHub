@@ -59,10 +59,9 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
                 })
                 .toList()
                 .subscribe(models -> {
-                            files.addAll(models);
-                            sendToView(RepoFilesMvp.View::onNotifyAdapter);
-                        }
-                ));
+                    files.addAll(models);
+                    sendToView(RepoFilesMvp.View::onNotifyAdapter);
+                }));
     }
 
     @Override public void onCallApi(@Nullable RepoFile toAppend) {

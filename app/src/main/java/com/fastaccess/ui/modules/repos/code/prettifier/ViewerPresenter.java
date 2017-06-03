@@ -103,45 +103,44 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                                               ? RestProvider.getRepoService(true).getFileAsHtmlStream(url)
                                               : RestProvider.getRepoService(true).getFileAsStream(url);
         makeRestCall(isRepo ? RestProvider.getRepoService(true).getReadmeHtml(url)
-                            : streamObservable,
-                content -> {
-                    downloadedStream = content;
-                    ViewerFile fileModel = new ViewerFile();
-                    fileModel.setContent(downloadedStream);
-                    fileModel.setFullUrl(url);
-                    fileModel.setRepo(isRepo);
-                    if (isRepo) {
-                        fileModel.setMarkdown(true);
-                        isMarkdown = true;
-                        isRepo = true;
-                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                            : streamObservable, content -> {
+            downloadedStream = content;
+            ViewerFile fileModel = new ViewerFile();
+            fileModel.setContent(downloadedStream);
+            fileModel.setFullUrl(url);
+            fileModel.setRepo(isRepo);
+            if (isRepo) {
+                fileModel.setMarkdown(true);
+                isMarkdown = true;
+                isRepo = true;
+                sendToView(view -> view.onSetMdText(downloadedStream, url));
+            } else {
+                isMarkdown = MarkDownProvider.isMarkdown(url);
+                if (isMarkdown) {
+                    MarkdownModel model = new MarkdownModel();
+                    model.setText(downloadedStream);
+                    NameParser parser = new NameParser(url);
+                    if (parser.getUsername() != null && parser.getName() != null) {
+                        model.setContext(parser.getUsername() + "/" + parser.getName());
                     } else {
-                        isMarkdown = MarkDownProvider.isMarkdown(url);
-                        if (isMarkdown) {
-                            MarkdownModel model = new MarkdownModel();
-                            model.setText(downloadedStream);
-                            NameParser parser = new NameParser(url);
-                            if (parser.getUsername() != null && parser.getName() != null) {
-                                model.setContext(parser.getUsername() + "/" + parser.getName());
-                            } else {
-                                model.setContext("");
-                            }
-                            Logger.e(model.getContext());
-                            makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
-                                isMarkdown = true;
-                                downloadedStream = string;
-                                fileModel.setMarkdown(true);
-                                fileModel.setContent(downloadedStream);
-                                manageObservable(fileModel.save(fileModel).toObservable());
-                                sendToView(view -> view.onSetMdText(downloadedStream, url));
-                            });
-                            return;
-                        }
-                        fileModel.setMarkdown(false);
-                        sendToView(view -> view.onSetCode(downloadedStream));
+                        model.setContext("");
                     }
-                    manageObservable(fileModel.save(fileModel).toObservable());
-                });
+                    Logger.e(model.getContext());
+                    makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
+                        isMarkdown = true;
+                        downloadedStream = string;
+                        fileModel.setMarkdown(true);
+                        fileModel.setContent(downloadedStream);
+                        manageObservable(fileModel.save(fileModel).toObservable());
+                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                    });
+                    return;
+                }
+                fileModel.setMarkdown(false);
+                sendToView(view -> view.onSetCode(downloadedStream));
+            }
+            manageObservable(fileModel.save(fileModel).toObservable());
+        });
     }
 
     @Override public boolean isRepo() {

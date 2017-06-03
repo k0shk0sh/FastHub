@@ -28,7 +28,7 @@ open class ProfileEventsFragment : BaseFragment<ProfileEvents.View, ProfileEvent
     val recycler by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
     val refresh by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
     val stateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
-    val adapter by lazy { FeedsAdapter(presenter.getEvents()) }
+    val adapter by lazy { FeedsAdapter(presenter.getEvents(), true) }
     private var onLoadMore: OnLoadMore<String>? = null
 
     override fun fragmentLayout(): Int {
@@ -44,6 +44,7 @@ open class ProfileEventsFragment : BaseFragment<ProfileEvents.View, ProfileEvent
         getLoadMore().setCurrent_page(presenter.currentPage, presenter.previousTotal)
         recycler.adapter = adapter
         recycler.addOnScrollListener(getLoadMore())
+        recycler.addDivider()
         if (presenter.getEvents().isEmpty() && !presenter.isApiCalled) {
             onRefresh()
         }
@@ -115,6 +116,11 @@ open class ProfileEventsFragment : BaseFragment<ProfileEvents.View, ProfileEvent
 
     override fun onItemSelected(item: SimpleUrlsModel) {
         SchemeParser.launchUri(context, Uri.parse(item.item))
+    }
+
+    override fun onScrollTop(index: Int) {
+        super.onScrollTop(index)
+        recycler.scrollToPosition(0)
     }
 
     private fun showReload() {

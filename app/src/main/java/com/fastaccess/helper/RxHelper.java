@@ -21,7 +21,6 @@ public class RxHelper {
 
     public static <T> Observable<T> safeObservable(@NonNull Observable<T> observable) {
         return getObserver(observable)
-                .onErrorReturn(throwable -> (T) new Object())
                 .doOnError(Throwable::printStackTrace);
     }
 

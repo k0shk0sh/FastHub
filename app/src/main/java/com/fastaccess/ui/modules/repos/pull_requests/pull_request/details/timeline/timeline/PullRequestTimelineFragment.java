@@ -100,6 +100,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         stateLayout.setOnReloadListener(this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        fastScroller.setOnLoadMore(getLoadMore());
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);

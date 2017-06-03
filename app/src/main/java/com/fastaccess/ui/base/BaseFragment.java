@@ -114,13 +114,9 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
         callback.onRequireLogin();
     }
 
-    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {}
 
-    }
-
-    @Override public void onDialogDismissed() {
-
-    }
+    @Override public void onDialogDismissed() {}
 
     @Override public void onLogoutPressed() {
         callback.onLogoutPressed();

@@ -47,6 +47,9 @@ public interface UserRestService {
     @GET("users/{username}/starred") Observable<Pageable<Repo>>
     getStarred(@Path("username") @NonNull String username, @Query("page") int page);
 
+    @GET("users/{username}/starred?per_page=1") Observable<Pageable<Repo>>
+    getStarredCount(@Path("username") @NonNull String username);
+
     @GET("users/{username}/following")
     Observable<Pageable<User>> getFollowing(@Path("username") @NonNull String username, @Query("page") int page);
 

@@ -93,14 +93,14 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     RestProvider.getRepoService().getTags(login, repoId),
                     (branchPageable, tags) -> {
                         ArrayList<BranchesModel> branchesModels = new ArrayList<>();
-                        if (branchPageable.getItems() != null) {
+                        if (branchPageable != null && branchPageable.getItems() != null) {
                             branchesModels.addAll(Stream.of(branchPageable.getItems())
                                     .map(branchesModel -> {
                                         branchesModel.setTag(false);
                                         return branchesModel;
                                     }).collect(Collectors.toList()));
                         }
-                        if (tags != null) {
+                        if (tags != null && tags.getItems() != null) {
                             branchesModels.addAll(Stream.of(tags.getItems())
                                     .map(branchesModel -> {
                                         branchesModel.setTag(true);
@@ -112,12 +112,11 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     }));
             manageDisposable(observable
                     .doOnSubscribe(disposable -> sendToView(RepoCommitsMvp.View::showBranchesProgress))
-                    .doOnNext(branchesModels -> {
+                    .subscribe(branchesModels -> {
                         branches.clear();
                         branches.addAll(branchesModels);
                         sendToView(view -> view.setBranchesData(branches, true));
-                    })
-                    .subscribe(branchesModels -> {/**/}, throwable -> sendToView(view -> view.setBranchesData(branches, true))));
+                    }, throwable -> sendToView(view -> view.setBranchesData(branches, true))));
         }
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
@@ -166,6 +165,6 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     if (response != null) {
                         sendToView(view -> view.onShowCommitCount(response.getLast()));
                     }
-                }));
+                }, Throwable::printStackTrace));
     }
 }

@@ -73,16 +73,8 @@ class ProfileEventsPresenter : BasePresenter<ProfileEvents.View>(), ProfileEvent
     }
 
     override fun onWorkOffline() {
-        if (eventsModels.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Event.getEvents().toObservable())
-                    .subscribe({ modelList ->
-                        if (modelList != null) {
-                            sendToView { view -> view.onNotifyAdapter(modelList, 1) }
-                        }
-                    }, { it.printStackTrace() }))
-        } else {
-            sendToView({ it.hideProgress() })
-        }
+        //TODO
+        sendToView({ it.hideProgress() })
     }
 
     override fun onItemClick(position: Int, v: View, item: Event) {

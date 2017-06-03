@@ -71,14 +71,6 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
 
     }
 
-    private void onResponse(Pageable<Release> response) {
-        lastPage = response.getLast();
-        if (getCurrentPage() == 1) {
-            manageObservable(Release.save(response.getItems(), repoId, login));
-        }
-        sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
-    }
-
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
@@ -110,4 +102,12 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
     }
 
     @Override public void onItemLongClick(int position, View v, Release item) {}
+
+    private void onResponse(Pageable<Release> response) {
+        lastPage = response.getLast();
+        if (getCurrentPage() == 1) {
+            manageObservable(Release.save(response.getItems(), repoId, login));
+        }
+        sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
+    }
 }

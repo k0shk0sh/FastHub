@@ -15,6 +15,7 @@ import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.Logger
 import com.fastaccess.ui.base.BaseActivity
+import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
 
 
@@ -104,11 +105,18 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == R.id.menu) {
-            drawerLayout.openDrawer(Gravity.END)
-            return true
+        when (item?.itemId) {
+            R.id.menu -> {
+                drawerLayout.openDrawer(Gravity.END)
+                return true
+            }
+            android.R.id.home -> {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+                return true
+            }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onAppend(title: String) {

@@ -25,13 +25,12 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     @State var lang: String = ""
     @State var since: String = ""
 
-
     override fun providePresenter(): TrendingFragmentPresenter {
         return TrendingFragmentPresenter()
     }
 
     override fun fragmentLayout(): Int {
-        return R.layout.micro_grid_refresh_list
+        return R.layout.small_grid_refresh_list
     }
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {

@@ -116,6 +116,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         stateLayout.setOnReloadListener(this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
+        fastScroller.setOnLoadMore(getLoadMore());
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
