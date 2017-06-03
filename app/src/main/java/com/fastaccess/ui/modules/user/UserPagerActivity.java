@@ -6,9 +6,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.model.Login;
@@ -19,14 +20,12 @@ import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment;
 import com.fastaccess.ui.modules.profile.repos.ProfileReposFragment;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.evernote.android.state.State;
 import shortbread.Shortcut;
 
 /**
@@ -125,25 +124,13 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                 onScrollTop(tab.getPosition());
             }
         });
-
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                if (position == 1) {
-                    fab.show();
-                } else {
-                    fab.hide();
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                hideShowFab(position);
             }
         });
+        hideShowFab(pager.getCurrentItem());
     }
 
     @Override public void onScrollTop(int index) {
@@ -176,14 +163,29 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         tabs.setupWithViewPager(pager);
     }
 
-    @OnClick (R.id.fab)
-    public void onRepoFilterClicked() {
+    @OnClick(R.id.fab) public void onRepoFilterClicked() {
         if (isOrg) {
             OrgReposFragment fragment = ((OrgReposFragment) pager.getAdapter().instantiateItem(pager, 1));
             fragment.onRepoFilterClicked();
         } else {
-            ProfileReposFragment fragment = ((ProfileReposFragment) pager.getAdapter().instantiateItem(pager, 1));
+            ProfileReposFragment fragment = ((ProfileReposFragment) pager.getAdapter().instantiateItem(pager, 2));
             fragment.onRepoFilterClicked();
+        }
+    }
+
+    private void hideShowFab(int position) {
+        if (isOrg) {
+            if (position == 1) {
+                fab.show();
+            } else {
+                fab.hide();
+            }
+        } else {
+            if (position == 2) {
+                fab.show();
+            } else {
+                fab.hide();
+            }
         }
     }
 }

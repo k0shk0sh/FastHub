@@ -139,7 +139,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
                 Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
-                if (issueModel != null) getPresenter().onUpdateIssue(issueModel);
+                if (issueModel != null) {
+                    getPresenter().onUpdateIssue(issueModel);
+                }
             }
         }
     }

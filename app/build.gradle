@@ -92,6 +92,10 @@ android {
     compileOptions.incremental = false
 }
 
+kapt {
+    generateStubs = true
+}
+
 repositories {
     maven { url "https://clojars.org/repo/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }

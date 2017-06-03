@@ -33,7 +33,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
 
     @State var selectedTitle: String = ""
 
-    companion object TrendingIntent {
+    companion object {
         fun getTrendingIntent(context: Context, lang: String?, query: String?): Intent {
             val intent = Intent(context, TrendingActivity::class.java)
             intent.putExtras(Bundler.start()

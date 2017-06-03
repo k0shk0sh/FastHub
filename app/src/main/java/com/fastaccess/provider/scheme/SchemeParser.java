@@ -338,7 +338,7 @@ public class SchemeParser {
                 if (uri.getQueryParameterNames() != null && !uri.getQueryParameterNames().isEmpty()) {
                     query = uri.getQueryParameter("since");
                 }
-                return TrendingActivity.TrendingIntent.getTrendingIntent(context, lang, query);
+                return TrendingActivity.Companion.getTrendingIntent(context, lang, query);
             }
             return null;
         }

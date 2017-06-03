@@ -34,11 +34,15 @@ public interface UserRestService {
     @GET("users/{username}/received_events")
     Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
 
-    @GET("/users/{username}/repos")
-    Observable<Pageable<Repo>> getRepos(@Path("username") @NonNull String username, @QueryMap(encoded=true) Map<String, String> filterParams, @Query("page") int page);
+    @GET("users/{username}/events")
+    Observable<Pageable<Event>> getUserEvents(@NonNull @Path("username") String userName, @Query("page") int page);
 
-    @GET("/user/repos")
-    Observable<Pageable<Repo>> getRepos(@QueryMap(encoded=true) Map<String, String> filterParams, @Query(value = "page") int page);
+    @GET("users/{username}/repos")
+    Observable<Pageable<Repo>> getRepos(@Path("username") @NonNull String username, @QueryMap(encoded = true) Map<String, String> filterParams,
+                                        @Query("page") int page);
+
+    @GET("user/repos")
+    Observable<Pageable<Repo>> getRepos(@QueryMap(encoded = true) Map<String, String> filterParams, @Query(value = "page") int page);
 
     @GET("users/{username}/starred") Observable<Pageable<Repo>>
     getStarred(@Path("username") @NonNull String username, @Query("page") int page);
@@ -52,10 +56,10 @@ public interface UserRestService {
     @GET("user/following/{username}")
     Observable<Response<Boolean>> getFollowStatus(@Path("username") @NonNull String username);
 
-    @PUT("/user/following/{username}")
+    @PUT("user/following/{username}")
     Observable<Response<Boolean>> followUser(@Path("username") @NonNull String username);
 
-    @DELETE("/user/following/{username}")
+    @DELETE("user/following/{username}")
     Observable<Response<Boolean>> unfollowUser(@Path("username") @NonNull String username);
 
     @GET Observable<String> getContributions(@Url String url);
