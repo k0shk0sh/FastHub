@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
@@ -52,7 +53,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import es.dmoral.toasty.Toasty;
-import com.evernote.android.state.State;
 
 import static android.view.Gravity.TOP;
 import static android.view.View.GONE;
@@ -178,6 +178,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             description.setVisibility(GONE);
         }
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
+        avatarLayout.setOnAvatarClick(v -> userInformation.callOnClick());
         organization.setText(InputHelper.toNA(userModel.getCompany()));
         location.setText(InputHelper.toNA(userModel.getLocation()));
         email.setText(InputHelper.toNA(userModel.getEmail()));
