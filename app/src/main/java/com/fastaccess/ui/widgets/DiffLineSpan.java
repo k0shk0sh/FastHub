@@ -82,7 +82,8 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                         color = patchDeletionColor;
                     } else if (token.startsWith("@@")) {
                         color = patchRefColor;
-                    } else if (firstChar == '\\') {
+                    }
+                    if (token.startsWith("\\ No")) {
                         token = token.replace("\\ No newline at end of file", "");
                         index = i;
                     }
