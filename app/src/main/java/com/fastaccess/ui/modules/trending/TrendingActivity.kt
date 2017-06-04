@@ -32,7 +32,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     val monthly by lazy { findViewById(R.id.monthly) as TextView }
     val drawerLayout by lazy { findViewById(R.id.drawer) as DrawerLayout }
 
-    @State var selectedTitle: String = ""
+    @State var selectedTitle: String = "All Language"
 
     companion object {
         fun getTrendingIntent(context: Context, lang: String?, query: String?): Intent {
@@ -129,11 +129,14 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
-        selectedTitle = item?.title.toString()
+        when (item?.title.toString()) {
+            "All Language" -> selectedTitle = ""
+            else -> selectedTitle = item?.title.toString()
+        }
+        Logger.e(selectedTitle)
         setValues()
         return true
     }
-
 
     private fun closeDrawerLayout() {
         drawerLayout.closeDrawer(Gravity.END)

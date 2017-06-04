@@ -11,12 +11,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
@@ -39,14 +36,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
 
 import static android.app.Activity.RESULT_OK;
 
 public class SettingsCategoryFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
-    @BindView(R.id.settingsContainer) FrameLayout settingsContainer;
+    public interface SettingsCallback {
+        int getSettingsType();
+    }
 
     private static int PERMISSION_REQUEST_CODE = 128;
     private static int RESTORE_REQUEST_CODE = 256;
@@ -60,26 +58,30 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationTime;
     private Preference notificationRead;
     private Preference notificationSound;
+    private SettingsCallback settingsCallback;
 
-    @NonNull public static SettingsCategoryFragment newInstance(int settings) {
-        SettingsCategoryFragment fragment = new SettingsCategoryFragment();
-        fragment.setArguments(Bundler.start()
-                .put(BundleConstant.EXTRA, settings)
-                .end());
-        return fragment;
-    }
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         this.callback = (BaseMvp.FAView) context;
+        this.settingsCallback = (SettingsCallback) context;
         appTheme = PrefHelper.getString("appTheme");
         appColor = PrefHelper.getString("appColor");
         app_lauguage = PrefHelper.getString("app_language");
     }
 
+    @Override public void onDetach() {
+        callback = null;
+        settingsCallback = null;
+        super.onDetach();
+    }
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        int settings = getArguments().getInt("settings", 0);
-        switch (settings) {
+        switch (settingsCallback.getSettingsType()) {
             case 0:
                 addPreferencesFromResource(R.xml.notification_settings);
                 notificationTime = findPreference("notificationTime");
@@ -157,9 +159,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
                     return true;
                 });
-                break;
-            default:
-                addPreferencesFromResource(R.xml.fasthub_settings);
                 break;
         }
     }

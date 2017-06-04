@@ -9,6 +9,8 @@ import android.widget.ListView;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SettingsModel;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.SettingsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -17,7 +19,6 @@ import com.fastaccess.ui.modules.settings.category.SettingsCategoryActivity;
 import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindView;
-import butterknife.OnItemClick;
 
 public class SettingsActivity extends BaseActivity {
 
@@ -25,23 +26,6 @@ public class SettingsActivity extends BaseActivity {
 
     private static int THEME_CHANGE = 32;
     private SettingsModel[] settings;
-
-    @OnItemClick(R.id.settingsList) void onItemClick(int position) {
-        Intent intent = new Intent(this, SettingsCategoryActivity.class);
-        intent.putExtra("settings", position);
-        intent.putExtra("title", settings[position].getTitle());
-        switch (position) {
-            case 1:
-                ActivityHelper.startReveal(this, intent, settingsList, THEME_CHANGE);
-                break;
-            case 4:
-                showLanguageList();
-                break;
-            default:
-                ActivityHelper.startReveal(this, intent, settingsList);
-                break;
-        }
-    }
 
     @Override protected int layout() {
         return R.layout.activity_settings;
@@ -72,6 +56,24 @@ public class SettingsActivity extends BaseActivity {
                 SettingsModel.newInstance(R.drawable.ic_language, getString(R.string.app_language), "")
         };
         settingsList.setAdapter(new SettingsAdapter(this, settings));
+        settingsList.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(this, SettingsCategoryActivity.class);
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.ITEM, position)
+                    .put(BundleConstant.EXTRA, settings[position].getTitle())
+                    .end());
+            switch (position) {
+                case 1:
+                    ActivityHelper.startReveal(this, intent, settingsList, THEME_CHANGE);
+                    break;
+                case 4:
+                    showLanguageList();
+                    break;
+                default:
+                    ActivityHelper.startReveal(this, intent, settingsList);
+                    break;
+            }
+        });
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

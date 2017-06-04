@@ -61,11 +61,14 @@ public class ColorsProvider {
     }
 
     @NonNull public static ArrayList<String> languages() {
-        return Stream.of(colors)
+        ArrayList<String> lang = new ArrayList<>();
+        lang.add("All Language");
+        lang.addAll(Stream.of(colors)
                 .filter(value -> value != null && !InputHelper.isEmpty(value.getKey()))
                 .map(Map.Entry::getKey)
                 .sortBy(s -> !popularLanguages.contains(s))
-                .collect(Collectors.toCollection(ArrayList::new));
+                .collect(Collectors.toCollection(ArrayList::new)));
+        return lang;
     }
 
     @Nullable public static LanguageColorModel getColor(@NonNull String lang) {

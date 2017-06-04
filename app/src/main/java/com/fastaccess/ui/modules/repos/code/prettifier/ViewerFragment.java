@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -22,7 +23,6 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 28 Nov 2016, 9:27 PM
@@ -143,7 +143,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             getPresenter().onHandleIntent(getArguments());
         } else {
             if (getPresenter().isMarkDown()) {
-                onSetMdText(getPresenter().downloadedStream(), getArguments().getString(BundleConstant.EXTRA));
+                onSetMdText(getPresenter().downloadedStream(), getPresenter().url());
             } else {
                 onSetCode(getPresenter().downloadedStream());
             }

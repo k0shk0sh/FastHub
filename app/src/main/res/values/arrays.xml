@@ -124,7 +124,7 @@
         <item>@string/all</item>
     </string-array>
 
-    <string-array name="trending_days_array">
+    <string-array name="trending_days_array" translatable="false">
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
