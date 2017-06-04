@@ -3,12 +3,11 @@ package com.fastaccess.ui.modules.settings.category;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.ui.base.BaseActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-
-import com.evernote.android.state.State;
 
 public class SettingsCategoryActivity extends BaseActivity {
 
@@ -35,7 +34,9 @@ public class SettingsCategoryActivity extends BaseActivity {
         setResult(RESULT_CANCELED);
         if (savedInstanceState == null) {
             title = getIntent() != null ? getIntent().getStringExtra("title") : getString(R.string.settings);
-            SettingsCategoryFragment settingsCategoryFragment = new SettingsCategoryFragment();
+
+            SettingsCategoryFragment settingsCategoryFragment = SettingsCategoryFragment.
+                    newInstance(getIntent().getIntExtra("settings", 0));
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.settingsContainer, settingsCategoryFragment)

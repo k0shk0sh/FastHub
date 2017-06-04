@@ -11,6 +11,7 @@ import com.fastaccess.data.dao.SettingsModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.ui.adapter.SettingsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.settings.category.SettingsCategoryActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -33,7 +34,7 @@ public class SettingsActivity extends BaseActivity {
             case 1:
                 ActivityHelper.startReveal(this, intent, settingsList, THEME_CHANGE);
                 break;
-            case 5:
+            case 4:
                 showLanguageList();
                 break;
             default:
@@ -67,29 +68,24 @@ public class SettingsActivity extends BaseActivity {
                 SettingsModel.newInstance(R.drawable.ic_ring, getString(R.string.notifications), ""),
                 SettingsModel.newInstance(R.drawable.ic_settings, getString(R.string.behavior), ""),
                 SettingsModel.newInstance(R.drawable.ic_brush, getString(R.string.customization), ""),
-                SettingsModel.newInstance(R.drawable.ic_info, getString(R.string.about), ""),
                 SettingsModel.newInstance(R.drawable.ic_backup, getString(R.string.backup), ""),
                 SettingsModel.newInstance(R.drawable.ic_language, getString(R.string.app_language), "")
         };
-
         settingsList.setAdapter(new SettingsAdapter(this, settings));
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == THEME_CHANGE)
+            setResult(resultCode);
+    }
+
+    @NonNull @Override public TiPresenter providePresenter() {
+        return new BasePresenter();
     }
 
     private void showLanguageList() {
         LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
         languageBottomSheetDialog.onAttach((Context) this);
         languageBottomSheetDialog.show(getSupportFragmentManager(), "LanguageBottomSheetDialog");
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == THEME_CHANGE)
-            setResult(resultCode);
-    }
-
-    @NonNull
-    @Override
-    public TiPresenter providePresenter() {
-        return new SettingsPresenter();
     }
 }

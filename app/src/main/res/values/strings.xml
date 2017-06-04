@@ -478,4 +478,5 @@
     <string name="assignee_added">Assignee added successfully</string>
     <string name="reviewer_added">Reviewer added successfully</string>
     <string name="milestone_added">Milestone added successfully</string>
+    <string name="feed">Feed</string>
 </resources>

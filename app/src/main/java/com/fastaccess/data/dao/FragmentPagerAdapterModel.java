@@ -74,7 +74,7 @@ import lombok.Setter;
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForProfile(@NonNull Context context, @NonNull String login) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.overview), ProfileOverviewFragment.newInstance(login)),
-                new FragmentPagerAdapterModel(context.getString(R.string.feeds), ProfileEventsFragment.Companion.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.feed), ProfileEventsFragment.Companion.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), ProfileReposFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.starred), ProfileStarredFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.gists), ProfileGistsFragment.newInstance(login)),

@@ -72,7 +72,8 @@
 -keepclasseswithmembernames class * {
     @icepick.* <fields>;
 }
--keep class com.fastaccess.data.dao.** { *; }
+-keep class com.fastaccess.data.** { *; }
+-keep class com.fastaccess.provider.rest.** { *; }
 -keepclassmembers class com.prettifier.pretty.callback.MarkDownInterceptorInterface {
    public *;
 }
@@ -101,11 +102,13 @@
     <fields>;
 }
 
--keep class net.nightwhistler.** {*;}
--keep class org.htmlcleaner.** {*;}
+-keep class net.nightwhistler.** { *; }
+-keep class org.htmlcleaner.** { *; }
 -dontwarn org.jaxen.**
 -dontwarn org.jdom.**
 -dontwarn com.google.android.gms.**
 -dontwarn android.animation.**
 -dontwarn java.io.**
 -dontwarn  android.content.**
+-keeppackagenames org.jsoup.nodes
+-keep class com.github.florent37.** { *; }

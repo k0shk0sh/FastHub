@@ -49,7 +49,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -104,8 +104,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
     mavenCentral()
 }
-
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
