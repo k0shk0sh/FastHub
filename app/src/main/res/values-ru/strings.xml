@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name_full">FastHub для Android</string>
     <string name="in_progress">Загрузка, подождите…</string>
     <string name="action">Действия</string>
     <string name="settings">Настройки</string>
@@ -54,6 +53,7 @@
     <string name="releases">Релизы</string>
     <string name="no_body">Нет содержимого</string>
     <string name="contributors">Вкладчики</string>
+    <string name="contributions">Вклады</string>
     <string name="by"></string>
     <string name="close_issue">Закрыть Вопрос</string>
     <string name="re_open_issue">Открыть Вопрос</string>
@@ -178,6 +178,9 @@
     <string name="ten_minutes">10 минут</string>
     <string name="five_minutes">5 минут</string>
     <string name="one_minute">1 минута</string>
+    <string name="one_hour">1 час</string>
+    <string name="two_hour">2 часа</string>
+    <string name="three_hour">3 часа</string>
     <string name="created_repo">Создано</string>
     <string name="committed">Опубликовано</string>
     <string name="downloaded">Скачено</string>
@@ -189,11 +192,11 @@
     <string name="team_event">Команда</string>
     <string name="deleted">Удалено</string>
     <string name="unknown">Неизвестно</string>
-    <string name="commented_on_commit">Комментарий к Фиксации</string>
+    <string name="commented_on_commit">Оставил(а) комментарий к Фиксации</string>
     <string name="switch_branch">Переключить ветвь</string>
     <string name="assignees">Назначения</string>
     <string name="edit">Редактировать</string>
-    <string name="edited">\u2022 отредактировано</string>
+    <string name="edited">\u2022 изменено</string>
     <string name="update_issue">Обновить Вопрос</string>
     <string name="update_pull_request">Обновить Запрос на слияние</string>
     <string name="no_milestones">Нет тегов</string>
@@ -345,9 +348,8 @@
     <string name="personal_token">Личный токен</string>
     <string name="basic_login">Войти через основную форму авторизации</string>
     <string name="no_orgs_description">Если вы состоите в каких-либо организациях, но они здесь отсутствуют, то перейдите по ссылке ниже.
-        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Причиной тому, что FastHub не использовал "Access Token", являлась
-        включённая двухфакторная аутентификация: её одноразовый код действителен только в течение минуты, что вызывает у GitHub ошибку неавторизированного доступа
-        с последующим выходом из аккаунта в FastHub.</string>
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Вы можете выполнить вход при помощи Токена доступа (Access token), 
+        который может предоставить FastHub доступ к списку ваших организаций.</string>
     <string name="insert">Вставить</string>
     <string name="select">Выбрать</string>
     <string name="select_picture">Выберите картинку</string>
@@ -370,4 +372,33 @@
     <string name="enable_signature_box_summary">Отображать в редакторе галочку, которая включает подпись</string>
     <string name="tags">Теги</string>
     <string name="add_comment">Добавить комментарий</string>
+    <string name="banners">Представляем баннеры</string>
+    <string name="banners_info">Начиная с FastHub 2.5.0, вы теперь сможете лучше выражать себя при помощи баннера 
+        На странице вашего профиля.\n\nКаждый пользователь FastHub сможет увидеть ваш баннер так же, как и вы сможете 
+        увидеть баннеры других пользователей! Если вы хотите создать для себя баннер, то 
+        сделайте его размер 1280x384 или динамичным. В противном случае, он может быть обрезан.\n\nВы можете добавлять или изменять
+        баннер в любое время, создавая Gist с названием &quot;header.fst&quot; с файлом, который содержит прямую ссылку на
+        изображение.\n\nА можно сделать ещё проще – воспользоваться встроенным редактором!
+    </string>
+    <string name="edit_banner">ВЫБЕРИТЕ БАННЕР</string>
+    <string name="image_error">Ошибка загрузки изображения. Пожалуйста, попробуйте снова.</string>
+    <string name="trending">В тренде</string>
+    <string name="not_really_working">Сортировка по emoji не очень работает из-за ограничений GitHub</string>
+    <string name="scroll_up">Прокрутка вверх</string>
+    <string name="scroll_down">Прокрутка вниз</string>
+    <string name="participated">Участвовал(а)</string>
+    <string name="todo_checked">Todo checked</string>
+    <string name="todo_unchecked">Todo unchecked</string>
+    <string name="divider">Divider</string>
+    <string name="no_user_found">Пользователи не найдены</string>
+    <string name="no_trending">Нет трендов</string>
+    <string name="reset">Сброс</string>
+    <string name="apply">Применить</string>
+    <string name="filter">Фильтр</string>
+    <string name="type">Тип</string>
+    <string name="Sort">Сортировать</string>
+    <string name="sort_direction">Порядок сортировки</string>
+    <string name="assignee_added">Назначение успешно совершено</string>
+    <string name="reviewer_added">Рецензент успешно добавлен</string>
+    <string name="milestone_added">Тег успешно добавлен</string>
 </resources>
