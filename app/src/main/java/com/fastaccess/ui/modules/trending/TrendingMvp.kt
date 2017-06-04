@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.trending
 
-import android.support.design.widget.NavigationView
 import com.fastaccess.ui.base.mvp.BaseMvp
 
 /**
@@ -8,7 +7,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp
  */
 
 interface TrendingMvp {
-    interface View : BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
+    interface View : BaseMvp.FAView{
         fun onAppend(title: String)
     }
 

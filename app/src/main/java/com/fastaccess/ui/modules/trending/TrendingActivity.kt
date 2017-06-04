@@ -93,7 +93,10 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         daily.setOnClickListener { onDailyClicked() }
         weekly.setOnClickListener { onWeeklyClicked() }
         monthly.setOnClickListener { onMonthlyClicked() }
-        navMenu.setNavigationItemSelectedListener(this)
+        navMenu.setNavigationItemSelectedListener({ item ->
+            closeDrawerLayout()
+            onItemClicked(item)
+        })
         setupIntent(savedInstanceState)
         presenter.onLoadLanguage()
         onSelectTrending()
@@ -131,10 +134,6 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         return true
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        closeDrawerLayout()
-        return onItemClicked(item)
-    }
 
     private fun closeDrawerLayout() {
         drawerLayout.closeDrawer(Gravity.END)
