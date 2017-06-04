@@ -28,6 +28,8 @@ public interface MyPullRequestsMvp {
         void onSetCount(int totalCount);
 
         void onFilterIssue(@NonNull IssueState issueState);
+
+        void onShowPopupDetails(@NonNull PullRequest item);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

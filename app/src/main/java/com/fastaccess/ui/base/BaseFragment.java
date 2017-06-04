@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -20,7 +21,6 @@ import net.grandcentrix.thirtyinch.TiFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
 
 /**
  * Created by Kosh on 27 May 2016, 7:54 PM
@@ -50,14 +50,14 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
         getPresenter().onSaveInstanceState(outState);
     }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
     }
@@ -114,13 +114,9 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
         callback.onRequireLogin();
     }
 
-    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {}
 
-    }
-
-    @Override public void onDialogDismissed() {
-
-    }
+    @Override public void onDialogDismissed() {}
 
     @Override public void onLogoutPressed() {
         callback.onLogoutPressed();
@@ -133,6 +129,8 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onOpenSettings() {
         callback.onOpenSettings();
     }
+
+    @Override public void onScrollTop(int index) {}
 
     protected boolean isSafe() {
         return getView() != null && getActivity() != null && !getActivity().isFinishing();

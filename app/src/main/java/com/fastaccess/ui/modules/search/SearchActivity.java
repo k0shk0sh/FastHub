@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.view.KeyEvent;
 import android.view.View;
@@ -20,6 +21,7 @@ import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.FontAutoCompleteEditText;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.ViewPagerView;
@@ -32,7 +34,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 08 Dec 2016, 8:22 PM
@@ -106,28 +108,17 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
             setupTab();
         }
 
-        if(getIntent().hasExtra("search")){
+        if (getIntent().hasExtra("search")) {
             searchEditText.setText(getIntent().getStringExtra("search"));
             onTextChange(searchEditText.getEditableText());
             getPresenter().onSearchClicked(pager, searchEditText);
         }
-    }
-
-    private void setupTab() {
-        for (TabsCountStateModel model : tabsCountSet) {
-            int index = model.getTabIndex();
-            int count = model.getCount();
-            TextView textView = ViewHelper.getTabTextView(tabs, index);
-            if (index == 0) {
-                textView.setText(String.format("%s(%s)", getString(R.string.repos), numberFormat.format(count)));
-            } else if (index == 1) {
-                textView.setText(String.format("%s(%s)", getString(R.string.users), numberFormat.format(count)));
-            } else if (index == 2) {
-                textView.setText(String.format("%s(%s)", getString(R.string.issues), numberFormat.format(count)));
-            } else if (index == 3) {
-                textView.setText(String.format("%s(%s)", getString(R.string.code), numberFormat.format(count)));
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
             }
-        }
+        });
     }
 
     @Override public void onNotifyAdapter(@Nullable SearchHistory query) {
@@ -152,8 +143,33 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
         }
     }
 
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
+    }
+
     private ArrayAdapter<SearchHistory> getAdapter() {
         if (adapter == null) adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, getPresenter().getHints());
         return adapter;
+    }
+
+    private void setupTab() {
+        for (TabsCountStateModel model : tabsCountSet) {
+            int index = model.getTabIndex();
+            int count = model.getCount();
+            TextView textView = ViewHelper.getTabTextView(tabs, index);
+            if (index == 0) {
+                textView.setText(String.format("%s(%s)", getString(R.string.repos), numberFormat.format(count)));
+            } else if (index == 1) {
+                textView.setText(String.format("%s(%s)", getString(R.string.users), numberFormat.format(count)));
+            } else if (index == 2) {
+                textView.setText(String.format("%s(%s)", getString(R.string.issues), numberFormat.format(count)));
+            } else if (index == 3) {
+                textView.setText(String.format("%s(%s)", getString(R.string.code), numberFormat.format(count)));
+            }
+        }
     }
 }

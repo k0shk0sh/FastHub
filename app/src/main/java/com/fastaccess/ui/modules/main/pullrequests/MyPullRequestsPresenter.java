@@ -27,7 +27,7 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State MyIssuesType issuesType;
+    @com.evernote.android.state.State MyIssuesType issuesType;
     @NonNull private String login = Login.getUser().getLogin();
 
     @Override public void onItemClick(int position, View v, PullRequest item) {
@@ -39,7 +39,7 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
     }
 
     @Override public void onItemLongClick(int position, View v, PullRequest item) {
-        onItemClick(position, v, item);
+        if (getView() != null) getView().onShowPopupDetails(item);
     }
 
     @NonNull @Override public ArrayList<PullRequest> getPullRequests() {

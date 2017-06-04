@@ -2,16 +2,9 @@ package com.fastaccess.provider.tasks.notification;
 
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobParameters;
-import android.app.job.JobScheduler;
-import android.app.job.JobService;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -29,27 +22,36 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.JobParameters;
+import com.firebase.jobdispatcher.JobService;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import rx.Observable;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Kosh on 19 Feb 2017, 6:32 PM
  */
 
 public class NotificationSchedulerJobTask extends JobService {
-    private final static int JOB_ID_EVERY_30_MINS = 1;
-    private final static long THIRTY_MINUTES = TimeUnit.MINUTES.toMillis(30);
+    private final static String JOB_ID = "fasthub_notification";
+
+    private final static int THIRTY_MINUTES = 30 * 60;
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
 
     @Override public boolean onStartJob(JobParameters job) {
-        if (PrefGetter.getNotificationTaskDuration(this) == -1) {
+        if (PrefGetter.getNotificationTaskDuration() == -1) {
             scheduleJob(this, -1, false);
             finishJob(job);
             return true;
@@ -76,39 +78,38 @@ public class NotificationSchedulerJobTask extends JobService {
         return true;
     }
 
-    @Override public boolean onStopJob(JobParameters job) {
+    @Override public boolean onStopJob(JobParameters jobParameters) {
         return false;
     }
 
     public static void scheduleJob(@NonNull Context context) {
-        long duration = PrefGetter.getNotificationTaskDuration(context);
-        scheduleJob(context, duration == 0 ? THIRTY_MINUTES : duration, false);
+        int duration = PrefGetter.getNotificationTaskDuration();
+        scheduleJob(context, duration, false);
     }
 
-    public static void scheduleJob(@NonNull Context context, long duration, boolean cancel) {
-        JobScheduler jobScheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
-        if (cancel) jobScheduler.cancel(JOB_ID_EVERY_30_MINS);
+    public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        if (cancel) dispatcher.cancel(JOB_ID);
         if (duration == -1) {
-            jobScheduler.cancel(JOB_ID_EVERY_30_MINS);
+            dispatcher.cancel(JOB_ID);
             return;
         }
         duration = duration <= 0 ? THIRTY_MINUTES : duration;
-        JobInfo.Builder builder = new JobInfo.Builder(JOB_ID_EVERY_30_MINS, new ComponentName(context.getPackageName(),
-                NotificationSchedulerJobTask.class.getName()))
-                .setBackoffCriteria(JobInfo.DEFAULT_INITIAL_BACKOFF_MILLIS, JobInfo.BACKOFF_POLICY_LINEAR)
-                .setPersisted(true)
-                .setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && duration < JobInfo.getMinPeriodMillis()) {
-            builder.setMinimumLatency(duration);
-        } else {
-            builder.setPeriodic(duration);
-        }
-        jobScheduler.schedule(builder.build());
+        Job.Builder builder = dispatcher
+                .newJobBuilder()
+                .setTag(JOB_ID)
+                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                .setLifetime(Lifetime.FOREVER)
+                .setRecurring(true)
+                .setConstraints(Constraint.ON_ANY_NETWORK)
+                .setTrigger(Trigger.executionWindow(10, duration))
+                .setService(NotificationSchedulerJobTask.class);
+        dispatcher.mustSchedule(builder.build());
     }
 
     private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {
         if (notificationThreadModels != null) {
-            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe();
+            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe(notification -> {/**/}, Throwable::printStackTrace);
             onNotifyUser(notificationThreadModels, job);
         }
     }
@@ -124,14 +125,12 @@ public class NotificationSchedulerJobTask extends JobService {
         }
         Context context = getApplicationContext();
         int accentColor = ContextCompat.getColor(this, R.color.material_blue_700);
-        Bitmap largeIcon = BitmapFactory.decodeResource(context.getResources(),
-                R.mipmap.ic_launcher);
         String[] url = new String[1];
         Notification first = notificationThreadModels.get(0);
-        Observable.from(notificationThreadModels)
+        Observable.fromIterable(notificationThreadModels)
                 .subscribeOn(Schedulers.io())
                 .filter(notification -> notification.isUnread() && first.getId() != notification.getId())
-                .limit(10)
+                .take(10)
                 .flatMap(notification -> RestProvider.getNotificationService()
                         .getComment(notification.getSubject().getLatestCommentUrl())
                         .subscribeOn(Schedulers.io()), (thread, comment) -> {
@@ -152,11 +151,6 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void finishJob(JobParameters job) {
-        long duration = PrefGetter.getNotificationTaskDuration(getApplicationContext());
-        boolean reschedule = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N && duration < JobInfo.getMinPeriodMillis();
-        if (reschedule) {
-            scheduleJob(getApplicationContext());
-        }
         jobFinished(job, false);
     }
 
@@ -221,7 +215,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void getNotificationWithComment(Context context, int accentColor,
-                                                                Notification thread, Comment comment, String url) {
+                                            Notification thread, Comment comment, String url) {
         ImageLoader.getInstance().loadImage(url, new ImageLoadingListener() {
             @Override
             public void onLoadingStarted(String s, View view) {

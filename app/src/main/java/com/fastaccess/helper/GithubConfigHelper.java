@@ -7,28 +7,17 @@ import com.fastaccess.BuildConfig;
  */
 
 public class GithubConfigHelper {
-    private static final String REDIRECT_URL = "https://fast-for-github.firebaseapp.com/__/auth/handler";
-
-    private static final String GITHUB_FDROID_CLIENT_ID = "290c67ea4022804763e0";
-    private static final String GITHUB_FDROID_SECRET = "02c6a47c2cc25a95f0d58eba90ea1078f74e5740";
+    private static final String REDIRECT_URL = "fasthub://login";
 
     public static String getRedirectUrl() {
         return REDIRECT_URL;
     }
 
     public static String getClientId() {
-        if (BuildConfig.FDROID) {
-            return GITHUB_FDROID_CLIENT_ID;
-        } else {
-            return BuildConfig.GITHUB_CLIENT_ID;
-        }
+        return BuildConfig.GITHUB_CLIENT_ID;
     }
 
     public static String getSecret() {
-        if (BuildConfig.FDROID) {
-            return GITHUB_FDROID_SECRET;
-        } else {
-            return BuildConfig.GITHUB_SECRET;
-        }
+        return BuildConfig.GITHUB_SECRET;
     }
 }

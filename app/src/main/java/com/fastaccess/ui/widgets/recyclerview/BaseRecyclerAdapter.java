@@ -95,7 +95,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     public void addItem(M item, int position) {
         data.add(position, item);
-        notifyItemInserted(data.size() - 1);
+        notifyItemInserted(position);
     }
 
     public void addItem(M item) {
@@ -137,6 +137,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     public void subList(int fromPosition, int toPosition) {
+        if (data.isEmpty()) return;
         data.subList(fromPosition, toPosition).clear();
         notifyItemRangeRemoved(fromPosition, toPosition);
     }
@@ -144,6 +145,10 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     public void clear() {
         data.clear();
         notifyDataSetChanged();
+    }
+
+    public boolean isEmpty() {
+        return data.isEmpty();
     }
 
     public void setEnableAnimation(boolean enableAnimation) {

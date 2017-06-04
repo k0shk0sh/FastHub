@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,10 +27,12 @@ import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragments;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
@@ -80,7 +83,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true)
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true, false)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
@@ -160,7 +163,9 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
-        date.setText(ParseDateFormat.getTimeAgo(dateValue));
+        date.setText(SpannableBuilder.builder().append(ParseDateFormat.getTimeAgo(dateValue))
+                .append(" ")
+                .bold(getPresenter().repoId));
         avatarLayout.setUrl(avatar, login);
         addition.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getAdditions() : 0));
         deletion.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getDeletions() : 0));
@@ -181,6 +186,20 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         }
         if (tabTwo != null && commit.getGitCommit() != null && commit.getGitCommit().getCommentCount() > 0) {
             tabTwo.setText(getString(R.string.comments) + " (" + commit.getGitCommit().getCommentCount() + ")");
+        }
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
         }
     }
 

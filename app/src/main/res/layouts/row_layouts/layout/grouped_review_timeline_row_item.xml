@@ -17,8 +17,10 @@
         android:paddingTop="@dimen/spacing_normal">
 
         <LinearLayout
+            android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_micro"
             android:orientation="horizontal">
 
             <com.fastaccess.ui.widgets.ForegroundImageView
@@ -56,8 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
                 android:background="?selectableItemBackgroundBorderless"
-                android:paddingBottom="@dimen/spacing_normal"
-                android:paddingTop="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_arrow_drop_down"/>
 
         </LinearLayout>
@@ -90,7 +91,7 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layoutManager="@string/staggered_layout_manager"
-                app:spanCount="@integer/small_spans"
+                app:spanCount="@integer/micro_spans"
                 tools:listitem="@layout/review_comments_row_item"
                 tools:visibility="visible"/>
 
@@ -109,10 +110,10 @@
                 android:drawablePadding="@dimen/spacing_normal"
                 android:gravity="start|center"
                 android:hint="@string/add_comment"
-                android:paddingStart="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large"
                 android:paddingBottom="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"/>
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:paddingStart="@dimen/spacing_xs_large"
+                android:paddingTop="@dimen/spacing_xs_large"/>
 
 
         </LinearLayout>

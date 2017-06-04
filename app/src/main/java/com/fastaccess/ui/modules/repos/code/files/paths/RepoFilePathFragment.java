@@ -34,7 +34,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTouch;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 18 Feb 2017, 2:10 AM
@@ -263,6 +263,11 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
             repoFilesView = (RepoFilesFragment) getChildFragmentManager().findFragmentById(R.id.filesFragment);
         }
         return repoFilesView;
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (repoFilesView != null) repoFilesView.onScrollTop(index);
     }
 
     private void showReload() {

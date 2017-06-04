@@ -20,6 +20,8 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
@@ -28,10 +30,8 @@ import io.requery.Key;
 import io.requery.Nullable;
 import io.requery.Persistable;
 import io.requery.Table;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
-import rx.Single;
 
 import static com.fastaccess.data.dao.model.Commit.LOGIN;
 import static com.fastaccess.data.dao.model.Commit.PULL_REQUEST_NUMBER;
@@ -59,21 +59,19 @@ public abstract class AbstractCommit implements Parcelable {
     @Column(name = "user_column") @Convert(UserConverter.class) User user;
     @Nullable int commentCount;
 
-    public Single save(Commit modelEntity) {
-        return App.getInstance()
-                .getDataStore()
-                .insert(modelEntity);
+    public Single<Commit> save(Commit entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
-    public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+    public static Observable<Commit> save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Commit.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login)))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models))
+                .flatMap(integer -> Observable.fromIterable(models))
                 .flatMap(commitModel -> {
                     commitModel.setRepoId(repoId);
                     commitModel.setLogin(login);
@@ -81,16 +79,16 @@ public abstract class AbstractCommit implements Parcelable {
                 }));
     }
 
-    public static Observable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
-        SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+    public static Observable<Commit> save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(singleEntityStore.delete(Commit.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login))
                         .and(PULL_REQUEST_NUMBER.eq(number)))
                 .get()
-                .toSingle()
+                .single()
                 .toObservable()
-                .flatMap(integer -> Observable.from(models))
+                .flatMap(integer -> Observable.fromIterable(models))
                 .flatMap(commitModel -> {
                     commitModel.setRepoId(repoId);
                     commitModel.setLogin(login);
@@ -99,25 +97,25 @@ public abstract class AbstractCommit implements Parcelable {
                 }));
     }
 
-    public static Observable<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login) {
+    public static Single<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login) {
         return App.getInstance().getDataStore()
                 .select(Commit.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login))
                         .and(PULL_REQUEST_NUMBER.eq(0L)))
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
-    public static Observable<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login, long pullRequestNumber) {
+    public static Single<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login, long pullRequestNumber) {
         return App.getInstance().getDataStore()
                 .select(Commit.class)
                 .where(REPO_ID.eq(repoId)
                         .and(LOGIN.eq(login))
                         .and(PULL_REQUEST_NUMBER.eq(pullRequestNumber)))
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -129,7 +127,7 @@ public abstract class AbstractCommit implements Parcelable {
                         .and(SHA.eq(sha)))
                 .limit(1)
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public int describeContents() { return 0; }

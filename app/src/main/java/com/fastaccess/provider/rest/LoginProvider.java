@@ -16,7 +16,7 @@ import java.lang.reflect.Modifier;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * Created by Kosh on 08 Feb 2017, 8:37 PM
@@ -46,7 +46,7 @@ public class LoginProvider {
                 .baseUrl(BuildConfig.REST_URL)
                 .client(provideOkHttpClient(authToken, otp))
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
@@ -55,7 +55,7 @@ public class LoginProvider {
                 .baseUrl("https://github.com/login/oauth/")
                 .client(provideOkHttpClient(null, null))
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(LoginRestService.class);
     }

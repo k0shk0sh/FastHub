@@ -5,15 +5,16 @@ import android.os.Parcelable;
 
 import com.fastaccess.App;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 
+import io.reactivex.Observable;
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
 import lombok.NoArgsConstructor;
-import rx.Observable;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:36 PM
@@ -57,8 +58,7 @@ import rx.Observable;
     public Observable<Login> update(Login login) {
         login.setToken(PrefGetter.getToken());
         login.setIsLoggedIn(true);
-        return App.getInstance().getDataStore().update(login)
-                .toObservable();
+        return RxHelper.safeObservable(App.getInstance().getDataStore().update(login).toObservable());
     }
 
     public void save(Login entity) {
@@ -74,8 +74,7 @@ import rx.Observable;
 //        entity.setIsLoggedIn(true); TODO for multiple logins
         App.getInstance().getDataStore()
                 .insert(entity)
-                .toBlocking()
-                .value();
+                .blockingGet();
     }
 
     public static Login getUser() {

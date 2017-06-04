@@ -21,7 +21,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -129,10 +129,9 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
         }
     }
 
-    @Override
-    public void onQueueSearch(@NonNull String query) {
+    @Override public void onQueueSearch(@NonNull String query) {
         this.searchQuery = query;
-        if(getView()!=null)
+        if (getView() != null)
             onSetSearchQuery(query);
     }
 
@@ -145,7 +144,7 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
     }
 
     @Override public void onRefresh() {
-        if(searchQuery.length()==0){
+        if (searchQuery.length() == 0) {
             refresh.setRefreshing(false);
             return;
         }
@@ -154,6 +153,11 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

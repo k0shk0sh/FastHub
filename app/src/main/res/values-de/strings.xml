@@ -162,7 +162,7 @@
     <string name="committed">Committed</string>
     <string name="downloaded">Heruntergeladen</string>
     <string name="followed">Gefolgt</string>
-    <string name="commented_on_issue">Issue kommentieren</string>
+    <string name="commented_on_issue">Issuekommentar</string>
     <string name="member">Mitglied</string>
     <string name="pr_comment_review">Pull Request Kommentar</string>
     <string name="pushed">Gepushed an</string>
@@ -338,6 +338,27 @@
     <string name="successfully_invited">Erfolgreich eingeladen!</string>
     <string name="reply">Antworten</string>
     <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>
+	<string name="want_to_merge">möchte mergen</string>
+    <string name="watchers">Betrachter</string>
+    <string name="reviewers">Reviewer</string>
+    <string name="no_reviewers">Keine Reviewer</string>
+    <string name="sent_from_fasthub">Gesendet von meinem %1$s mit %2$s%3$s</string>
+    <string name="enable_signature">Signatur aktivieren</string>
+    <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
+    <string name="enable_signature_box">Signaturbox aktivieren</string>
+    <string name="enable_signature_box_summary">Häkchen setzen, damit die Signatur im Editor angezeigt wird</string>
+	<string name="tags">Tags</string>
+    <string name="add_comment">Kommentar hinzufügen</string>
+    <string name="banners">Einführung von Bannern</string>
+    <string name="banners_info">Mit FastHub 2.5.0 kannst du nun dein Profil mit einem Banner 
+        gestalten und jeder FastHub User wird dein Banner sehen und umgekehrt.\n\nWenn du 
+		selber ein Banner erstellen möchtest, ist es am besten wenn du als Auflösung etwas 
+		nimmst, was sich durch 1280x384 teilen lässt, sonst wird ein Teil des Bildes abgeschnitten.\n\n\n\n
+		Du kannst dein Banner jederzeit wechseln, indem du ein Gist namens "header.fst" erstellst 
+		und als Inhalt einen Direktlink zum Banner angibst. Oder du benutzt einfach den eingebauten Bildwähler!
+    </string>
+    <string name="edit_banner">BANNER AUSWÄHLEN</string>
+    <string name="image_error">Bild konnte nicht geladen werden.</string>
 </resources>
 
 

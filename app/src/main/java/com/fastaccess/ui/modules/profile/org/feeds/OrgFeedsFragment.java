@@ -22,7 +22,6 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -52,7 +51,7 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -91,7 +90,7 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -109,11 +108,6 @@ refresh.setRefreshing(true);
     @Override public void showMessage(int titleRes, int msgRes) {
         showReload();
         super.showMessage(titleRes, msgRes);
-    }
-
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
     }
 
     @Override public void onOpenRepoChooser(@NonNull ArrayList<SimpleUrlsModel> models) {
@@ -163,32 +157,44 @@ refresh.setRefreshing(true);
                         }
 
                         @Override public void onHidePromptComplete() {
-                            if(!dismissed[0])
-                            new MaterialTapTargetPrompt.Builder(getActivity())
-                                    .setTarget(itemView)
-                                    .setPrimaryText(R.string.fork)
-                                    .setSecondaryText(R.string.feeds_fork_hint)
-                                    .setCaptureTouchEventOutsidePrompt(true)
-                                    .setBackgroundColourAlpha(244)
-                                    .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
-                                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                        @Override
-                                        public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                                            ActivityHelper.hideDismissHints(OrgFeedsFragment.this.getContext());
-                                        }
+                            if (!dismissed[0])
+                                new MaterialTapTargetPrompt.Builder(getActivity())
+                                        .setTarget(itemView)
+                                        .setPrimaryText(R.string.fork)
+                                        .setSecondaryText(R.string.feeds_fork_hint)
+                                        .setCaptureTouchEventOutsidePrompt(true)
+                                        .setBackgroundColourAlpha(244)
+                                        .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
+                                        .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
+                                            @Override
+                                            public void onHidePrompt(MotionEvent motionEvent, boolean b) {
+                                                ActivityHelper.hideDismissHints(OrgFeedsFragment.this.getContext());
+                                            }
 
-                                        @Override
-                                        public void onHidePromptComplete() {
+                                            @Override
+                                            public void onHidePromptComplete() {
 
-                                        }
-                                    })
-                                    .show();
+                                            }
+                                        })
+                                        .show();
                             ActivityHelper.bringDismissAllToFront(getContext());
                         }
                     })
                     .setCaptureTouchEventOutsidePrompt(true)
                     .show();
-            ActivityHelper.showDismissHints(getContext(), () -> { dismissed[0] = true; });
+            ActivityHelper.showDismissHints(getContext(), () -> {
+                dismissed[0] = true;
+            });
         }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

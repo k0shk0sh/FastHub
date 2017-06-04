@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommentRequestModel;
+import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
@@ -16,10 +17,12 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_GIST_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_ISSUE_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_REVIEW_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_GIST_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_REVIEW_COMMENT_EXTRA;
 
 /**
  * Created by Kosh on 27 Nov 2016, 1:31 AM
@@ -100,7 +103,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
 
     @Override public void onHandleSubmission(@Nullable CharSequence savedText, @Nullable @BundleConstant.ExtraTYpe String extraType,
                                              @Nullable String itemId, long id, @Nullable String login, int issueNumber,
-                                             @Nullable String sha) {
+                                             @Nullable String sha, EditReviewCommentModel reviewComment) {
         if (extraType == null) {
             throw new NullPointerException("extraType  is null");
         }
@@ -144,6 +147,46 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
                 }
                 onEditCommitComment(savedText, itemId, login, id);
                 break;
+            case NEW_REVIEW_COMMENT_EXTRA:
+                if (reviewComment == null || itemId == null || login == null || savedText == null) {
+                    throw new NullPointerException("reviewComment null");
+                }
+                onSubmitReviewComment(reviewComment, savedText, itemId, login, issueNumber);
+                break;
+            case EDIT_REVIEW_COMMENT_EXTRA:
+                if (reviewComment == null || itemId == null || login == null || savedText == null) {
+                    throw new NullPointerException("reviewComment null");
+                }
+                onEditReviewComment(reviewComment, savedText, itemId, login, issueNumber, id);
+                break;
+        }
+    }
+
+    private void onEditReviewComment(@NonNull EditReviewCommentModel reviewComment, @NonNull CharSequence savedText, @NonNull String repoId,
+                                     @NonNull String login, int issueNumber, long id) {
+        if (!InputHelper.isEmpty(savedText)) {
+            CommentRequestModel requestModel = new CommentRequestModel();
+            requestModel.setBody(savedText.toString());
+//            requestModel.setInReplyTo(reviewComment.getInReplyTo());
+            makeRestCall(RestProvider.getReviewService().editComment(login, repoId, id, requestModel)
+                    .map(comment -> {
+                        reviewComment.setCommentModel(comment);
+                        return reviewComment;
+                    }), comment -> sendToView(view -> view.onSendReviewResultAndFinish(comment, false)));
+        }
+    }
+
+    private void onSubmitReviewComment(@NonNull EditReviewCommentModel reviewComment, @NonNull CharSequence savedText,
+                                       @NonNull String repoId, @NonNull String login, int issueNumber) {
+        if (!InputHelper.isEmpty(savedText)) {
+            CommentRequestModel requestModel = new CommentRequestModel();
+            requestModel.setBody(savedText.toString());
+            requestModel.setInReplyTo(reviewComment.getInReplyTo());
+            makeRestCall(RestProvider.getReviewService().submitComment(login, repoId, issueNumber, requestModel)
+                    .map(comment -> {
+                        reviewComment.setCommentModel(comment);
+                        return reviewComment;
+                    }), comment -> sendToView(view -> view.onSendReviewResultAndFinish(comment, true)));
         }
     }
 

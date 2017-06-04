@@ -7,4 +7,5 @@
     <attr name="patch_addition" format="color"/>
     <attr name="patch_ref" format="color"/>
     <attr name="dividerColor" format="color|reference"/>
+    <attr name="comment_box_style" format="reference"/>
 </resources>

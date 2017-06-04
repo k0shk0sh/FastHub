@@ -1,6 +1,7 @@
 package com.fastaccess.ui.base;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -23,8 +24,9 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.evernote.android.state.State;
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
@@ -39,6 +41,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
+import com.fastaccess.ui.modules.login.LoginActivity;
 import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
@@ -46,25 +49,27 @@ import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
+import com.fastaccess.ui.modules.trending.TrendingActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import net.grandcentrix.thirtyinch.TiActivity;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
-import icepick.Icepick;
-import icepick.State;
+
 
 /**
  * Created by Kosh on 24 May 2016, 8:48 PM
  */
 
-public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends AdActivity<V, P> implements
+public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePresenter<V>> extends TiActivity<P, V> implements
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
@@ -72,6 +77,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+    @State Bundle presenterStateBundle = new Bundle();
 
     private static int REFRESH_CODE = 64;
 
@@ -88,8 +94,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        getPresenter().onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
+        getPresenter().onSaveInstanceState(presenterStateBundle);
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,13 +112,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 return;
             }
         }
-        Icepick.setDebug(BuildConfig.DEBUG);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
-            getPresenter().onRestoreInstanceState(savedInstanceState);
+            StateSaver.restoreInstanceState(this, savedInstanceState);
+            getPresenter().onRestoreInstanceState(presenterStateBundle);
         }
         setupToolbarAndStatusBar(toolbar);
-        showHideAds();
+        //showHideAds();
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
@@ -141,7 +146,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         if (isOk && bundle != null) {
             boolean logout = bundle.getBoolean("logout");
-            if (logout){
+            if (logout) {
                 onRequireLogin();
 //                if(App.getInstance().getGoogleApiClient().isConnected())
 //                    Auth.CredentialsApi.disableAutoSignIn(App.getInstance().getGoogleApiClient());
@@ -156,9 +161,15 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
         hideProgress();
         if (toast != null) toast.cancel();
-        toast = titleRes.equals(getString(R.string.error))
-                ? Toasty.error(getApplicationContext(), msgRes, Toast.LENGTH_LONG)
-                : Toasty.info(getApplicationContext(), msgRes, Toast.LENGTH_LONG);
+        Context context;
+        if (!isFinishing()) {
+            context = this;
+        } else {
+            context = App.getInstance();
+        }
+        toast = titleRes.equals(context.getString(R.string.error))
+                ? Toasty.error(context, msgRes, Toast.LENGTH_LONG)
+                : Toasty.info(context, msgRes, Toast.LENGTH_LONG);
         toast.show();
     }
 
@@ -242,6 +253,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 onOpenOrgsDialog();
             } else if (item.getItemId() == R.id.notifications) {
                 startActivity(new Intent(this, NotificationActivity.class));
+            } else if (item.getItemId() == R.id.trending) {
+                startActivity(new Intent(this, TrendingActivity.class));
             }
         }, 250);
         return false;
@@ -281,13 +294,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode==REFRESH_CODE)
-            if(resultCode==RESULT_OK)
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REFRESH_CODE) {
+            if (resultCode == RESULT_OK) {
                 recreate();
+            }
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override public void onScrollTop(int index) {}
 
     protected void selectHome(boolean hideRepo) {
         if (extraNav != null) {
@@ -321,6 +337,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (extraNav != null) {
             extraNav.getMenu().findItem(R.id.notifications).setCheckable(true);
             extraNav.getMenu().findItem(R.id.notifications).setChecked(true);
+        }
+    }
+
+    protected void onSelectTrending() {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(R.id.trending).setCheckable(true);
+            extraNav.getMenu().findItem(R.id.trending).setChecked(true);
         }
     }
 
@@ -380,6 +403,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
+        if (this instanceof LoginActivity || this instanceof LoginChooserActivity)
+            return; // we really should consider putting this outside as it starts growing :D
         int themeMode = PrefGetter.getThemeType(getApplicationContext());
         int themeColor = PrefGetter.getThemeColor(getApplicationContext());
         if (themeMode == PrefGetter.LIGHT) {

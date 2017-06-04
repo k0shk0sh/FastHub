@@ -1,5 +1,3 @@
-## FastHub is back to the play store and up on F-Droid.
-
 
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
 [![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
@@ -9,31 +7,34 @@
 # FastHub  
 
 Yet another **open-source** GitHub client app but unlike any other app, FastHub was built from scratch.
- 
- 
-## Download
- 
- **FastHub** can be downloaded on [Google Play](https://play.google.com/store/apps/details?id=com.fastaccess.github) or [F-Droid](https://f-droid.org/repository/browse/?fdid=com.fastaccess.github):
- 
 
-[<img alt="Get it on Google Play" 
-src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" height="80px">](https://play.google.com/store/apps/details?id=com.fastaccess.github)
+<!--
 [<img src="https://f-droid.org/badge/get-it-on.png"
       alt="Get it on F-Droid"
-      height="80">](https://f-droid.org/app/com.fastaccess.github)
- 
-_(To download the app from here, please look at the [latest release](https://github.com/k0shk0sh/FastHub/releases/latest).)_
- 
+      height="80">](https://f-droid.org/repository/browse/?fdid=com.fastaccess.github)
+-->
+[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png" 
+      alt="Download from Google Play" 
+      height="80">](https://play.google.com/store/apps/details?id=com.fastaccess.github)
+[<img src=".github/assets/direct-apk-download.png" 
+      alt="Direct apk download" 
+      height="80">](https://github.com/k0shk0sh/FastHub/releases/latest)
+
+#### FOSS
+
+grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintained by **_[thermatk](https://github.com/thermatk)_**
+
 # Features
 
 - **App**
-  - Two login types (Basic Auth) or via (Browser)
+  - Two login types (Basic Auth), (Access Token) or via (Browser)
   - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
   - Search users/orgs, repos, issues/prs & code.
   - Pinned Repos
+  - Trending
 - **Repositories**
   - Search Repos
   - Browse and search Repos
@@ -44,6 +45,7 @@ _(To download the app from here, please look at the [latest release](https://git
 - **Issues and Pull Requests** 
   - Search Issues/PRs
   - Filter Issues/PRs
+  - Long click to peak Issues/PRs & add comments otg.
   - Open/close Issues/PRs
   - Comment on Issues/PRs
   - Manage Issue/PR comments
@@ -53,7 +55,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
-  - PRs reviews
+  - PRs reviews(reply, react with emojies, delete & edit comment)
   - PRs statuses
 - **Commits and Gists**
   - Search Code/Gists
@@ -61,6 +63,7 @@ _(To download the app from here, please look at the [latest release](https://git
   - Comment on Commits/Gists
   - Manage Commit/Gist comments
   - Create/Delete Gists
+  - React to Commit comments with reactions
 - **Orgs**
     - Overview
     - Feeds
@@ -68,31 +71,33 @@ _(To download the app from here, please look at the [latest release](https://git
     - Repos
 - **Users**
   - Follow/unfollow users
+  - Contribution graph.
   - Search Users, Repos, Issues,Pull Requests and Code
 - _**Much more...**_
   - _FastHub is actively developed. More features will come!_
 
-> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.
+~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.~~
+Ads are no longer available until further notice
 
 # Specs / Open-source libraries:
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
-- **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) is used to simplify maintaining and adding features.
-- **Lambda** expressions because _you know why :-)_
-- [**RxJava**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
+- **Kotlin** all new modules starting from 2.5.3 will be written in **#Kotlin**.
+- **MVP**-architecture: [**ThirtyInch**](https://github.com/grandcentrix/ThirtyInch) because its ThirtyInch.
+- [**RxJava2**](https://github.com/ReactiveX/RxJava) & [**RxAndroid**](https://github.com/ReactiveX/RxAndroid) for Retrofit & background threads
 - [**Retrofit**](https://github.com/square/retrofit) for constructing the REST API
 - [**Requery**](https://github.com/requery/requery/) for offline-mode
-- [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `ArrayLists`
+- [**Stream API**](https://github.com/aNNiMON/Lightweight-Stream-API) for dealing with `Collections`
 - [**ButterKnife**](https://github.com/JakeWharton/butterknife) for view binding
-- [**Icepick**](https://github.com/frankiesardo/icepick) for saving instance states
+- [**Android State**](https://github.com/evernote/android-state) for saving instance states
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
-- [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `Fragment` navigation
+- [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs 
 - [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images
-- [**MarkDown**](https://github.com/zzhoujay/Markdown) for _Markdown_ editor highlighting
+- [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
-- **Firebase** analytics, crash reporting, ads
+- **Firebase** crash reporting
 - **Android Support Libraries**, the almighty ;-)
 
 # Contribution
@@ -101,7 +106,16 @@ You love FastHub? You want new features or bug fixes?
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
 Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-- [Translation contributors list](.github/language_contributors.md)
+### Language Contributors
+
+- Turkish [@kutsan](https://github.com/kutsan)
+- German [@failex234](https://github.com/failex234)
+- Chinese [@Devifish](https://github.com/Devifish)
+- Indonesian [@dikiaap](https://github.com/dikiaap)
+- Russian [@dedepete](https://github.com/dedepete)
+- Japanese [@Rintan](https://github.com/Rintan)
+- Italian [@Raffaele74](https://github.com/Raffaele74)
+- Lithuanian [@mistermantas](https://github.com/mistermantas)
 
 # License
 

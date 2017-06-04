@@ -10,7 +10,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.User;
@@ -29,10 +28,12 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -43,7 +44,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-    @State SparseBooleanArrayParcelable sparseBooleanArray;
+    @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
 
     private IssuePullsTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
@@ -59,7 +60,7 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.fab_small_grid_refresh_list;
+        return R.layout.fab_micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -77,7 +78,6 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
             onRefresh();
         }
     }
@@ -228,7 +228,6 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
                         onRefresh(); // shit happens, refresh()?
                         return;
                     }
-                    getSparseBooleanArray().clear();
                     adapter.notifyDataSetChanged();
                     if (isNew) {
                         adapter.addItem(TimelineModel.constructComment(commentsModel));
@@ -257,12 +256,13 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         }
     }
 
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        getSparseBooleanArray().put(position, isCollapsed);
+    @Override public void onToggle(long position, boolean isCollapsed) {
+        toggleMap.put(position, isCollapsed);
     }
 
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
+    @Override public boolean isCollapsed(long position) {
+        Boolean toggle = toggleMap.get(position);
+        return toggle != null && toggle;
     }
 
     @Override public boolean isPreviouslyReacted(long id, int vId) {
@@ -273,11 +273,9 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         return getPresenter().isCallingApi(id, vId);
     }
 
-    private SparseBooleanArrayParcelable getSparseBooleanArray() {
-        if (sparseBooleanArray == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-        }
-        return sparseBooleanArray;
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

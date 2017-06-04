@@ -17,6 +17,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivityMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -25,7 +26,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 09 Apr 2017, 7:13 PM
@@ -99,7 +100,7 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -144,7 +145,7 @@ refresh.setRefreshing(true);
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -152,7 +153,7 @@ refresh.setRefreshing(true);
         recycler.setEmptyView(stateLayout, refresh);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
-        adapter = new IssuesAdapter(getPresenter().getIssues(), true, false);
+        adapter = new IssuesAdapter(getPresenter().getIssues(), true, false, true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -168,6 +169,10 @@ refresh.setRefreshing(true);
 
     @NonNull @Override public FilterIssuePresenter providePresenter() {
         return new FilterIssuePresenter();
+    }
+
+    @Override public void onShowPopupDetails(@NonNull Issue item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
     }
 
     private void showReload() {

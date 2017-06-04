@@ -21,7 +21,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.Arrays;
 
 import okhttp3.Credentials;
-import retrofit2.adapter.rxjava.HttpException;
+import retrofit2.HttpException;
 
 /**
  * Created by Kosh on 09 Nov 2016, 9:43 PM
@@ -101,7 +101,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         if (userModel != null) {
             userModel.setToken(PrefGetter.getToken());
             userModel.save(userModel);
-            if(getView()!=null)
+            if (getView() != null)
                 getView().onSuccessfullyLoggedIn(userModel);
             else
                 sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
@@ -115,8 +115,8 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
         if (getView() == null) return;
-        getView().onEmptyUserName(!ignore&&usernameIsEmpty);
-        getView().onEmptyPassword(!ignore&&passwordIsEmpty);
+        getView().onEmptyUserName(!ignore && usernameIsEmpty);
+        getView().onEmptyPassword(!ignore && passwordIsEmpty);
         if ((!usernameIsEmpty && !passwordIsEmpty) || ignore) {
             String authToken = Credentials.basic(username, password);
             if (isBasicAuth) {

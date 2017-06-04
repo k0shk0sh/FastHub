@@ -25,8 +25,8 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State String repoId;
-    @icepick.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
 
     @Override public int getCurrentPage() {
         return page;
@@ -59,7 +59,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
                     if (response != null) {
                         lastPage = response.getLast();
                         if (getCurrentPage() == 1) {
-                            manageSubscription(User.saveUserContributorList(response.getItems(), repoId).subscribe());
+                            manageObservable(User.saveUserContributorList(response.getItems(), repoId));
                         }
                     }
                     sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
@@ -81,7 +81,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
 
     @Override public void onWorkOffline() {
         if (users.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(User.getUserContributorList(repoId))
+            manageDisposable(RxHelper.getObserver(User.getUserContributorList(repoId).toObservable())
                     .subscribe(userModels -> sendToView(view -> view.onNotifyAdapter(userModels, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

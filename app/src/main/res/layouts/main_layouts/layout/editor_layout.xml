@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/parentView">
 
     <include layout="@layout/appbar_elevation_dark"/>
 
@@ -17,7 +18,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <LinearLayout
@@ -25,14 +26,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/replyQuoteText"
-                    android:textIsSelectable="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:alpha="0.6"
+                    android:drawableEnd="@drawable/ic_arrow_drop_down"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:maxLines="3"
                     android:padding="@dimen/spacing_xs_large"
+                    android:textIsSelectable="true"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas quis sagittis purus. Cras pulvinar urna ut velit accumsan consectetur. Aenean mauris purus, rutrum eget luctus sit amet, efficitur vel mauris. Sed pulvinar nisl non ligula lacinia ultricies. Etiam quis purus sem. Morbi rutrum tristique ex sed commodo. Pellentesque volutpat laoreet urna et vestibulum. Vivamus id justo sed felis cursus venenatis id vitae felis. Praesent at condimentum erat. Vivamus vel est a dolor tincidunt porta. Mauris ut nisl tortor."/>
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -181,7 +187,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/numbered_list"
+                    android:contentDescription="@string/todo_checked"
                     android:padding="@dimen/spacing_normal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_checkbox"/>
@@ -191,7 +197,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/numbered_list"
+                    android:contentDescription="@string/todo_unchecked"
                     android:padding="@dimen/spacing_normal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_checkbox_empty"/>
@@ -201,7 +207,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="?selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/header"
+                    android:contentDescription="@string/divider"
                     android:padding="@dimen/spacing_normal"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_minus"/>
@@ -270,15 +276,15 @@
         android:id="@+id/sentVia"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="true"
+        android:layout_gravity="end"
         android:background="?attr/selectableItemBackground"
         android:button="@null"
-        android:maxLines="1"
-        android:layout_gravity="end"
+        android:checked="true"
         android:drawableEnd="?android:attr/listChoiceIndicatorMultiple"
-        android:paddingStart="@dimen/spacing_xs_large"
-        android:paddingEnd="@dimen/spacing_xs_large"
+        android:maxLines="1"
         android:paddingBottom="@dimen/spacing_normal"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingStart="@dimen/spacing_xs_large"
         android:paddingTop="@dimen/spacing_normal"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         tools:text="@string/sent_from_fasthub"/>

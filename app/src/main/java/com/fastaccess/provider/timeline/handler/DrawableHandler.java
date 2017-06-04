@@ -28,14 +28,13 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
     @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
         String src = node.getAttributeByName("src");
-        if (InputHelper.isEmpty(src)) {
-            src = node.getAttributeByName("fallback-src");
+        if (!InputHelper.isEmpty(src)) {
+            builder.append("￼");
+            if (isNull()) return;
+            DrawableGetter imageGetter = new DrawableGetter(textView);
+            builder.setSpan(new ImageSpan(imageGetter.getDrawable(src)), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+            appendNewLine(builder);
         }
-        if (InputHelper.isEmpty(src)) return;
-        builder.append("￼");
-        if (isNull()) return;
-        DrawableGetter imageGetter = new DrawableGetter(textView);
-        builder.setSpan(new ImageSpan(imageGetter.getDrawable(src)), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
     }
 
 }

@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -16,8 +17,9 @@ import android.text.style.LineBackgroundSpan;
 import android.text.style.MetricAffectingSpan;
 import android.text.style.TypefaceSpan;
 
+import com.fastaccess.App;
+import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
@@ -59,15 +61,15 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
     @NonNull public static SpannableStringBuilder getSpannable(@Nullable String text, @ColorInt int patchAdditionColor,
                                                                @ColorInt int patchDeletionColor, @ColorInt int patchRefColor,
                                                                boolean truncate) {
+        boolean noNewlineRemoved = false;
         SpannableStringBuilder builder = new SpannableStringBuilder();
         if (!InputHelper.isEmpty(text)) {
             String[] split = text.split("\\r?\\n|\\r");
             if (split.length > 0) {
                 int lines = split.length;
+                int index = -1;
                 for (int i = 0; i < lines; i++) {
-                    Logger.e(lines, i, lines + i, lines - i);
                     if (truncate && (lines - i) > 3) continue;
-//                    if(truncate && (lines - i))
                     String token = split[i];
                     if (i < (lines - 1)) {
                         token = token.concat("\n");
@@ -80,15 +82,20 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                         color = patchDeletionColor;
                     } else if (token.startsWith("@@")) {
                         color = patchRefColor;
+                    } else if (firstChar == '\\') {
+                        token = token.replace("\\ No newline at end of file", "");
+                        index = i;
                     }
-                    String noNewLine = "\\No newline at end of file";
-                    token = token.replace(noNewLine, "");
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
                         DiffLineSpan span = new DiffLineSpan(color);
                         spannableDiff.setSpan(span, 0, token.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                     builder.append(spannableDiff);
+                }
+                if (index != -1) {
+                    builder.insert(index, SpannableBuilder.builder()
+                            .append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
                 }
             }
         }

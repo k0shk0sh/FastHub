@@ -1,6 +1,7 @@
 <resources>
     <dimen name="layout_margin">84dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
-    <integer name="small_spans">3</integer>
+    <integer name="micro_spans">3</integer>
     <dimen name="grid_spacing">@dimen/spacing_micro</dimen>
+    <integer name="small_spans">2</integer>
 </resources>

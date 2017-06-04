@@ -22,7 +22,7 @@ import com.fastaccess.ui.widgets.StateLayout;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 28 Nov 2016, 9:27 PM
@@ -175,5 +175,10 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             onSetCode(getPresenter().downloadedStream());
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (webView != null) webView.scrollTo(0, 0);
     }
 }

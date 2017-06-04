@@ -17,13 +17,19 @@ public class BundleConstant {
     public static final String ITEM = "item";
     public static final String ID = "id";
     public static final String EXTRA = "extra";
-    public static final String EXTRA_TWO = "extra_id";
-    public static final String EXTRA_THREE = "extra2_id";
-    public static final String EXTRA_FOUR = "extra3_id";
+    public static final String EXTRA_TWO = "extra2_id";
+    public static final String EXTRA_THREE = "extra3_id";
+    public static final String EXTRA_FOUR = "extra4_id";
+    public static final String EXTRA_FIVE = "extra5_id";
+    public static final String EXTRA_SIX = "extra6_id";
+    public static final String EXTRA_SEVEN = "extra7_id";
+    public static final String EXTRA_EIGHT = "extra8_id";
     public static final String EXTRA_TYPE = "extra_type";
     public static final String YES_NO_EXTRA = "yes_no_extra";
     public static final String NOTIFICATION_ID = "notification_id";
+    public static final String REVIEW_EXTRA = "review_extra";
     public static final int REQUEST_CODE = 2016;
+    public static final int REVIEW_REQUEST_CODE = 2017;
 
 
     @StringDef({
@@ -40,5 +46,7 @@ public class BundleConstant {
         String NEW_ISSUE_COMMENT_EXTRA = "new_issue_comment_extra";
         String EDIT_COMMIT_COMMENT_EXTRA = "edit_commit_comment_extra";
         String NEW_COMMIT_COMMENT_EXTRA = "new_commit_comment_extra";
+        String NEW_REVIEW_COMMENT_EXTRA = "new_review_comment_extra";
+        String EDIT_REVIEW_COMMENT_EXTRA = "edit_review_comment_extra";
     }
 }

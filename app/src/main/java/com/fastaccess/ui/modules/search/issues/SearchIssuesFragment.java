@@ -14,6 +14,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -21,7 +22,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -71,7 +72,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        adapter = new IssuesAdapter(getPresenter().getIssues(), false, true);
+        adapter = new IssuesAdapter(getPresenter().getIssues(), false, true, true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         recycler.addDivider();
@@ -130,10 +131,9 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         }
     }
 
-    @Override
-    public void onQueueSearch(@NonNull String query) {
+    @Override public void onQueueSearch(@NonNull String query) {
         this.searchQuery = query;
-        if(getView()!=null)
+        if (getView() != null)
             onSetSearchQuery(query);
     }
 
@@ -145,8 +145,12 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
         return onLoadMore;
     }
 
+    @Override public void onShowPopupDetails(@NonNull Issue item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
+    }
+
     @Override public void onRefresh() {
-        if(searchQuery.length()==0){
+        if (searchQuery.length() == 0) {
             refresh.setRefreshing(false);
             return;
         }
@@ -155,6 +159,11 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

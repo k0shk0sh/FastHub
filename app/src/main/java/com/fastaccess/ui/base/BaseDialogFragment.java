@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
@@ -25,7 +26,6 @@ import net.grandcentrix.thirtyinch.TiDialogFragment;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import icepick.Icepick;
 
 /**
  * Created by Kosh on 22 Feb 2017, 7:28 PM
@@ -55,7 +55,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @Override public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        Icepick.saveInstanceState(this, outState);
+        StateSaver.saveInstanceState(this, outState);
         getPresenter().onSaveInstanceState(outState);
     }
 
@@ -63,7 +63,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         super.onCreate(savedInstanceState);
         setStyle(STYLE_NO_TITLE, AppHelper.isNightMode(getResources()) ? R.style.DialogThemeDark : R.style.DialogThemeLight);
         if (savedInstanceState != null && !savedInstanceState.isEmpty()) {
-            Icepick.restoreInstanceState(this, savedInstanceState);
+            StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
     }
@@ -153,4 +153,6 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         super.onDestroyView();
         if (unbinder != null) unbinder.unbind();
     }
+
+    @Override public void onScrollTop(int index) {}
 }

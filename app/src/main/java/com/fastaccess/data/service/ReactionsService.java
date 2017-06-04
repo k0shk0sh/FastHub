@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.PostReactionModel;
-import com.fastaccess.data.dao.model.ReactionsModel;
+import com.fastaccess.data.dao.ReactionsModel;
 
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -14,7 +14,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 29 Mar 2017, 9:48 PM

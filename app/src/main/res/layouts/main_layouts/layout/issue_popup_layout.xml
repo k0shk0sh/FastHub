@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar_elevation_dark"/>
+
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:paddingBottom="@dimen/spacing_xs_large"
+        android:paddingTop="@dimen/spacing_normal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing_normal"
+                app:cardBackgroundColor="?card_background"
+                app:cardCornerRadius="0dp"
+                app:contentPaddingBottom="@dimen/spacing_normal"
+                app:contentPaddingLeft="@dimen/spacing_xs_large"
+                app:contentPaddingRight="@dimen/spacing_xs_large"
+                app:contentPaddingTop="@dimen/spacing_normal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bottom_border"
+                        android:orientation="horizontal"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal">
+
+                        <com.fastaccess.ui.widgets.AvatarLayout
+                            android:id="@+id/avatarLayout"
+                            android:layout_width="34dp"
+                            android:layout_height="34dp"
+                            android:layout_marginEnd="@dimen/avatar_margin"
+                            android:transitionName="@string/icon_transition"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/name"
+                            style="@style/TextAppearance.AppCompat.Title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            tools:text="Hello world"/>
+                    </LinearLayout>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/title"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Hello world"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/body"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="Hello world"/>
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/assigneeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    android:text="@string/assignee"/>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?card_background"
+                    app:cardCornerRadius="0dp"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/assignee"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal"
+                        tools:text="Username"/>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/labelsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    android:text="@string/labels"/>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?card_background"
+                    app:cardCornerRadius="0dp"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/labels"
+                        style="@style/TextAppearance.AppCompat.Medium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingTop="@dimen/spacing_normal"
+                        tools:text="Label 1"/>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/milestoneLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/spacing_normal"
+                    android:layout_marginTop="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    android:text="@string/milestone"/>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="?card_background"
+                    app:cardCornerRadius="0dp"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/milestoneTitle"
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal"
+                            tools:text="Label 1"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/milestoneDescription"
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingTop="@dimen/spacing_normal"
+                            tools:text="Label 1"/>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/commentSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            style="?comment_box_style"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/spacing_normal"
+            android:layout_weight="1">
+
+            <com.fastaccess.ui.widgets.FontEditText
+                android:id="@+id/comment"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:autoLink="all"
+                android:background="@color/transparent"
+                android:gravity="start"
+                android:hint="@string/comment"
+                android:inputType="textMultiLine|textCapSentences"
+                android:isScrollContainer="true"
+                android:lines="5"
+                android:maxHeight="200dp"
+                android:maxLength="1000"
+                android:maxLines="5"
+                android:minLines="1"
+                android:padding="@dimen/spacing_xs_large"
+                android:scrollbars="vertical"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:src="@drawable/ic_send"
+                android:tint="@color/white"
+                app:fabSize="mini"/>
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:layout_marginEnd="@dimen/fab_margin"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:layout_marginTop="@dimen/spacing_normal"
+                android:visibility="gone"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

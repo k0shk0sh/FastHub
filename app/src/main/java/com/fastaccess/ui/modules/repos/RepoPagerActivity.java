@@ -20,6 +20,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LicenseModel;
 import com.fastaccess.data.dao.NameParser;
@@ -35,6 +36,7 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -49,7 +51,6 @@ import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
-import com.fastaccess.ui.widgets.color.ColorGenerator;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.text.NumberFormat;
@@ -58,7 +59,6 @@ import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
-import icepick.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
@@ -187,7 +187,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
-            MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription())
+            MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
     }
@@ -227,7 +227,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
     }
 
-    @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout}) boolean onLongClick(View view) {
+    @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout}) boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.FORKS);
@@ -300,16 +300,20 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void onNavigationChanged(@RepoPagerMvp.RepoNavigationType int navType) {
+        if (navType == RepoPagerMvp.PROFILE) {
+            getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
+            bottomNavigation.setSelectedIndex(this.navType, true);
+            return;
+        }
         this.navType = navType;
-        showHideFab();
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);
-
+        showHideFab();
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 
     @Override public void onFinishActivity() {
-        finish();
+        //do nothing here, github might return 404 if even the repo don't have anything but issues.
     }
 
     @Override public void onInitRepo() {
@@ -329,8 +333,10 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         pinText.setText(R.string.pin);
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
         language.setVisibility(InputHelper.isEmpty(repoModel.getLanguage()) ? View.GONE : View.VISIBLE);
-        if (!InputHelper.isEmpty(repoModel.getLanguage())) language.setText(repoModel.getLanguage());
-        language.setTextColor(ColorGenerator.getColor(this, repoModel.getLanguage()));
+        if (!InputHelper.isEmpty(repoModel.getLanguage())) {
+            language.setText(repoModel.getLanguage());
+            language.setTextColor(ColorsProvider.getColorAsColor(repoModel.getLanguage(), language.getContext()));
+        }
         forkRepo.setText(numberFormat.format(repoModel.getForksCount()));
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
         watchRepo.setText(numberFormat.format(repoModel.getSubsCount()));
@@ -515,6 +521,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             finish();
         } else if (item.getItemId() == R.id.share) {
             if (getPresenter().getRepo() != null) ActivityHelper.shareUrl(this, getPresenter().getRepo().getHtmlUrl());
+            return true;
+        } else if (item.getItemId() == R.id.copy) {
+            if (getPresenter().getRepo() != null) AppHelper.copyToClipboard(this, getPresenter().getRepo().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.originalRepo) {
             if (getPresenter().getRepo() != null && getPresenter().getRepo().getParent() != null) {

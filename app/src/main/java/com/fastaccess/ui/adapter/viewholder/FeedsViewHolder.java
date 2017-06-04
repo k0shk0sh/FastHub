@@ -3,7 +3,6 @@ package com.fastaccess.ui.adapter.viewholder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.Html;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,7 @@ import butterknife.BindView;
 
 public class FeedsViewHolder extends BaseViewHolder<Event> {
 
-    @BindView(R.id.avatarLayout) AvatarLayout avatar;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
@@ -41,15 +40,21 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         super(itemView, adapter);
     }
 
-    public static View getView(@NonNull ViewGroup viewGroup) {
-        return getView(viewGroup, R.layout.feeds_row_item);
+    public static View getView(@NonNull ViewGroup viewGroup, boolean noImage) {
+        if (noImage) {
+            return getView(viewGroup, R.layout.feeds_row_no_image_item);
+        } else {
+            return getView(viewGroup, R.layout.feeds_row_item);
+        }
     }
 
     @Override public void bind(@NonNull Event eventsModel) {
-        if (eventsModel.getActor() != null) {
-            avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
-        } else {
-            avatar.setUrl(null, null);
+        if (avatar != null) {
+            if (eventsModel.getActor() != null) {
+                avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
+            } else {
+                avatar.setUrl(null, null);
+            }
         }
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");
@@ -77,7 +82,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
             if (type != EventsType.WatchEvent) {
-                if (type == EventsType.CreateEvent && !InputHelper.isEmpty(eventsModel.getPayload().getRefType())) {
+                if (type == EventsType.CreateEvent && !InputHelper.isEmpty(eventsModel.getPayload().getRef())) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")

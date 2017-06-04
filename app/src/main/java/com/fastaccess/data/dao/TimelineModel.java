@@ -119,15 +119,14 @@ import static com.annimon.stream.Collectors.toList;
         return list;
     }
 
-    @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList) {
+    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList, @Nullable List<IssueEvent> eventList) {
         ArrayList<TimelineModel> list = new ArrayList<>();
-        if (!commentList.isEmpty()) {
+        if (commentList != null && !commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-
-        if (!eventList.isEmpty()) {
+        if (eventList != null && !eventList.isEmpty()) {
             list.addAll(constructLabels(eventList));
         }
 
@@ -142,7 +141,7 @@ import static com.annimon.stream.Collectors.toList;
         }).collect(Collectors.toList());
     }
 
-    @NonNull public static List<TimelineModel> construct(@NonNull List<Comment> commentList, @NonNull List<IssueEvent> eventList,
+    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList, @Nullable List<IssueEvent> eventList,
                                                          @Nullable PullRequestStatusModel status, @Nullable List<ReviewModel> reviews,
                                                          @Nullable List<ReviewCommentModel> reviewComments) {
         ArrayList<TimelineModel> list = new ArrayList<>();
@@ -152,12 +151,12 @@ import static com.annimon.stream.Collectors.toList;
         if (reviews != null && !reviews.isEmpty()) {
             list.addAll(constructReviews(reviews, reviewComments));
         }
-        if (!commentList.isEmpty()) {
+        if (commentList != null && !commentList.isEmpty()) {
             list.addAll(Stream.of(commentList)
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-        if (!eventList.isEmpty()) {
+        if (eventList != null && !eventList.isEmpty()) {
             list.addAll(constructLabels(eventList));
         }
 
@@ -257,6 +256,7 @@ import static com.annimon.stream.Collectors.toList;
                     groupedReviewModel.setDiffText(reviewCommentModel.getDiffHunk());
                     groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
                     groupedReviewModel.setPosition(reviewCommentModel.getOriginalPosition());
+                    groupedReviewModel.setId(reviewCommentModel.getId());
                 }
                 groupedReviewModel.setComments(reviewCommentModels);
                 models.add(new TimelineModel(groupedReviewModel));
@@ -280,6 +280,7 @@ import static com.annimon.stream.Collectors.toList;
         return comment != null ? (int) comment.getId() : 0;
     }
 
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
@@ -290,6 +291,8 @@ import static com.annimon.stream.Collectors.toList;
         dest.writeParcelable(this.pullRequest, flags);
         dest.writeParcelable(this.status, flags);
         dest.writeParcelable(this.review, flags);
+        dest.writeParcelable(this.groupedReview, flags);
+        dest.writeParcelable(this.reviewComment, flags);
         dest.writeLong(this.sortedDate != null ? this.sortedDate.getTime() : -1);
     }
 
@@ -301,6 +304,8 @@ import static com.annimon.stream.Collectors.toList;
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
         this.status = in.readParcelable(PullRequestStatusModel.class.getClassLoader());
         this.review = in.readParcelable(ReviewModel.class.getClassLoader());
+        this.groupedReview = in.readParcelable(GroupedReviewModel.class.getClassLoader());
+        this.reviewComment = in.readParcelable(ReviewCommentModel.class.getClassLoader());
         long tmpSortedDate = in.readLong();
         this.sortedDate = tmpSortedDate == -1 ? null : new Date(tmpSortedDate);
     }

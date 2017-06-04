@@ -22,17 +22,17 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class PayloadModel implements Parcelable {
 
-    private String action;
-    private Repo forkee;
-    private Issue issue;
-    private PullRequest pullRequest;
-    private String ref;
-    private String refType;
-    private Comment comment;
-    private User target;
-    private User member;
-    private String head;
-    private TeamsModel team;
+    public String action;
+    public Repo forkee;
+    public Issue issue;
+    public PullRequest pullRequest;
+    public String ref;
+    public String refType;
+    public Comment comment;
+    public User target;
+    public User member;
+    public String head;
+    public TeamsModel team;
 
     @Override public int describeContents() { return 0; }
 

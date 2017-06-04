@@ -65,7 +65,7 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
             return;
         }
         adapter.insertItems(items);
-        if (isSafe()) getActivity().supportInvalidateOptionsMenu();
+        if (isSafe()) getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onClick(@NonNull String url) {
@@ -82,7 +82,7 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -145,6 +145,11 @@ public class AllNotificationsFragment extends BaseFragment<AllNotificationsMvp.V
                 .anyMatch(group -> group.getNotification().isUnread());
         menu.findItem(R.id.readAll).setVisible(hasUnread);
         super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

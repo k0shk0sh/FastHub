@@ -8,7 +8,6 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitFileModel;
-import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -18,10 +17,12 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:16 PM
@@ -32,7 +33,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-    @State SparseBooleanArrayParcelable sparseBooleanArray;
+    @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
 
     private CommitFilesAdapter adapter;
 
@@ -56,7 +57,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -68,7 +69,6 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         if (savedInstanceState == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
             getPresenter().onFragmentCreated(getArguments());
         }
     }
@@ -77,21 +77,20 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         return new CommitFilesPresenter();
     }
 
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        if (adapter.getItem(position).getPatch() == null) {
-            ActivityHelper.openChooser(getContext(), adapter.getItem(position).getRawUrl());
+    @Override public void onToggle(long position, boolean isCollapsed) {
+        if (adapter.getItem((int) position).getPatch() == null) {
+            ActivityHelper.openChooser(getContext(), adapter.getItem((int) position).getBlobUrl());
         }
-        getSparseBooleanArray().put(position, isCollapsed);
+        toggleMap.put(position, isCollapsed);
     }
 
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
+    @Override public boolean isCollapsed(long position) {
+        Boolean toggle = toggleMap.get(position);
+        return toggle != null && toggle;
     }
 
-    public SparseBooleanArrayParcelable getSparseBooleanArray() {
-        if (sparseBooleanArray == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-        }
-        return sparseBooleanArray;
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 }

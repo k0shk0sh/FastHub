@@ -74,7 +74,5 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
         TeamPagerActivity.startActivity(v.getContext(), item.getId(), item.getName());
     }
 
-    @Override public void onItemLongClick(int position, View v, TeamsModel item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, TeamsModel item) {}
 }

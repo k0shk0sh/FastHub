@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -19,13 +18,14 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
+import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:48 PM
@@ -92,7 +92,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -108,15 +108,7 @@ refresh.setRefreshing(true);
 
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<IssueState>(getPresenter()) {
-                @Override protected void onShow(RecyclerView recyclerView) {
-                    super.onShow(recyclerView);
-                }
-
-                @Override protected void onHide(RecyclerView recyclerView) {
-                    super.onHide(recyclerView);
-                }
-            };
+            onLoadMore = new OnLoadMore<>(getPresenter());
         }
         onLoadMore.setParameter(issueState);
         return onLoadMore;
@@ -142,7 +134,7 @@ refresh.setRefreshing(true);
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -178,6 +170,15 @@ refresh.setRefreshing(true);
             adapter.clear();
             onRefresh();
         }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    @Override public void onShowPopupDetails(@NonNull PullRequest item) {
+        IssuePopupFragment.showPopup(getChildFragmentManager(), item);
     }
 
     private void showReload() {

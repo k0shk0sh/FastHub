@@ -30,7 +30,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 22 Feb 2017, 7:23 PM

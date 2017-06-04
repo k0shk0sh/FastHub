@@ -11,7 +11,6 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
@@ -28,10 +27,10 @@ import java.util.List;
 class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements RepoIssuesMvp.Presenter {
 
     private ArrayList<Issue> issues = new ArrayList<>();
-    @icepick.State String login;
-    @icepick.State String repoId;
-    @icepick.State IssueState issueState;
-    @icepick.State boolean isLastUpdated;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State IssueState issueState;
+    @com.evernote.android.state.State boolean isLastUpdated;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -63,8 +62,8 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
             return;
         }
         this.issueState = parameter;
-        Logger.e(page, page, login, repoId);
         if (page == 1) {
+            onCallCountApi(issueState);
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
@@ -84,14 +83,14 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                             .filter(issue -> issue.getPullRequest() == null)
                             .toList();
                     if (getCurrentPage() == 1) {
-                        manageSubscription(Issue.save(filtered, repoId, login).subscribe());
+                        manageObservable(Issue.save(filtered, repoId, login));
                     }
                     sendToView(view -> view.onNotifyAdapter(filtered, page));
                 });
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageSubscription(RxHelper.getObserver(RestProvider.getIssueService()
+        manageDisposable(RxHelper.getObserver(RestProvider.getIssueService()
                 .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, false), 1))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));
@@ -103,13 +102,12 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         this.issueState = issueState;
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, issueState);
-            onCallCountApi(issueState);
         }
     }
 
     @Override public void onWorkOffline() {
         if (issues.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Issue.getIssues(repoId, login, issueState))
+            manageDisposable(RxHelper.getSingle(Issue.getIssues(repoId, login, issueState))
                     .subscribe(issueModel -> sendToView(view -> {
                         view.onNotifyAdapter(issueModel, 1);
                         view.onUpdateCount(issueModel.size());
@@ -143,6 +141,6 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     }
 
     @Override public void onItemLongClick(int position, View v, Issue item) {
-        onItemClick(position, v, item);
+        if (getView() != null) getView().onShowIssuePopup(item);
     }
 }

@@ -38,6 +38,11 @@
             android:id="@+id/pinnedMenu"
             android:icon="@drawable/ic_pin_filled"
             android:title="@string/pinned"/>
+
+        <item
+            android:id="@+id/trending"
+            android:icon="@drawable/ic_trending"
+            android:title="@string/trending"/>
         <item
             android:id="@+id/gists"
             android:icon="@drawable/ic_gists"

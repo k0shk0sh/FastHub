@@ -25,7 +25,7 @@ import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
+import com.evernote.android.state.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
 
@@ -105,6 +105,11 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
+        if (navType == MainMvp.PROFILE) {
+            getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
+            bottomNavigation.setSelectedIndex(this.navType, true);
+            return;
+        }
         this.navType = navType;
         //noinspection WrongConstant
         if (bottomNavigation.getSelectedIndex() != navType) bottomNavigation.setSelectedIndex(navType, true);

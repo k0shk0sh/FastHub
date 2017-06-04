@@ -12,8 +12,8 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
 import lombok.Getter;
-import rx.Observable;
 
 /**
  * Created by Kosh on 09 Apr 2017, 6:22 PM
@@ -21,9 +21,9 @@ import rx.Observable;
 
 @Getter public class FilterIssuesActivityPresenter extends BasePresenter<FilterIssuesActivityMvp.View> implements FilterIssuesActivityMvp.Presenter {
 
-    @icepick.State @NonNull ArrayList<LabelModel> labels = new ArrayList<>();
-    @icepick.State @NonNull ArrayList<MilestoneModel> milestones = new ArrayList<>();
-    @icepick.State @NonNull ArrayList<User> assignees = new ArrayList<>();
+    @com.evernote.android.state.State @NonNull ArrayList<LabelModel> labels = new ArrayList<>();
+    @com.evernote.android.state.State @NonNull ArrayList<MilestoneModel> milestones = new ArrayList<>();
+    @com.evernote.android.state.State @NonNull ArrayList<User> assignees = new ArrayList<>();
 
     @Override public void onStart(@NonNull String login, @NonNull String repoId) {
         Observable<Pageable<MilestoneModel>> observable = RestProvider.getRepoService().getLabels(login, repoId)

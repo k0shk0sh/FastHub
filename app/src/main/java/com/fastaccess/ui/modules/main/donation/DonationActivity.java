@@ -1,24 +1,27 @@
 package com.fastaccess.ui.modules.main.donation;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.view.View;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.miguelbcr.io.rx_billing_service.RxBillingService;
+import com.miguelbcr.io.rx_billing_service.RxBillingServiceException;
+import com.miguelbcr.io.rx_billing_service.entities.ProductType;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.octo.bear.pago.Pago;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Kosh on 24 Mar 2017, 9:16 PM
@@ -27,20 +30,11 @@ import rx.schedulers.Schedulers;
 public class DonationActivity extends BaseActivity {
     @BindView(R.id.cardsHolder) View cardsHolder;
     @BindView(R.id.appbar) AppBarLayout appBarLayout;
-
-    private Pago pago;
-    private Subscription subscription;
-
-    @NonNull public Pago getPago() {
-        if (pago == null) {
-            pago = new Pago(getApplicationContext());
-        }
-        return pago;
-    }
+    private Disposable subscription;
 
     @Override protected void onDestroy() {
-        if (subscription != null && subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+        if (subscription != null && !subscription.isDisposed()) {
+            subscription.dispose();
         }
         super.onDestroy();
     }
@@ -91,16 +85,22 @@ public class DonationActivity extends BaseActivity {
     }
 
     private void onProceed(@NonNull String productKey) {
-        subscription = getPago().purchaseProduct(productKey, "inapp:com.fastaccess.github:" + productKey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(throwable -> {
-                    showErrorMessage(throwable.getMessage());
-                    return null;
-                })
-                .subscribe(order -> {
-                    Logger.e(order);
-                    if (order != null) showMessage(R.string.success, R.string.success_purchase_message);
-                }, Throwable::printStackTrace);
+//        RxBillingService.getInstance(this, BuildConfig.DEBUG)
+//                .getPurchases(ProductType.IN_APP)
+//                .subscribe((purchases, throwable) -> Logger.e(purchases));
+        subscription = RxHelper.getSingle(RxBillingService.getInstance(this, BuildConfig.DEBUG)
+                .purchase(ProductType.IN_APP, productKey, "inapp:com.fastaccess.github:" + productKey))
+                .doOnSubscribe(disposable -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT))
+                .doFinally(() -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER))
+                .subscribe((purchase, throwable) -> {
+                    if (throwable == null) {
+                        showMessage(R.string.success, R.string.success_purchase_message);
+                    } else {
+                        if (throwable instanceof RxBillingServiceException) {
+                            Logger.e(((RxBillingServiceException) throwable).getCode());
+                        }
+                        throwable.printStackTrace();
+                    }
+                });
     }
 }

@@ -1,6 +1,8 @@
 package com.fastaccess.data.dao;
 
 import android.net.Uri;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.helper.InputHelper;
@@ -16,7 +18,7 @@ import lombok.Setter;
  */
 
 @Getter @Setter
-public class PullsIssuesParser {
+public class PullsIssuesParser implements Parcelable {
 
     private String login;
     private String repoId;
@@ -74,4 +76,26 @@ public class PullsIssuesParser {
                 ", number=" + number +
                 '}';
     }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.login);
+        dest.writeString(this.repoId);
+        dest.writeInt(this.number);
+    }
+
+    public PullsIssuesParser() {}
+
+    protected PullsIssuesParser(Parcel in) {
+        this.login = in.readString();
+        this.repoId = in.readString();
+        this.number = in.readInt();
+    }
+
+    public static final Parcelable.Creator<PullsIssuesParser> CREATOR = new Parcelable.Creator<PullsIssuesParser>() {
+        @Override public PullsIssuesParser createFromParcel(Parcel source) {return new PullsIssuesParser(source);}
+
+        @Override public PullsIssuesParser[] newArray(int size) {return new PullsIssuesParser[size];}
+    };
 }

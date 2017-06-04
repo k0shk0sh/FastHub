@@ -21,7 +21,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -33,9 +33,9 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State String repoId;
-    @icepick.State String login;
-    @icepick.State String sha;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String sha;
 
 
     @Override public int getCurrentPage() {
@@ -102,7 +102,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
 
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha))
+            manageDisposable(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha).toObservable())
                     .flatMap(comments -> Observable.just(TimelineModel.construct(comments)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
@@ -178,6 +178,6 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
 
     private void onHandleReaction(int viewId, long id) {
         Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, ReactionsProvider.COMMIT);
-        if (observable != null) manageSubscription(observable.subscribe());
+        if (observable != null) manageObservable(observable);
     }
 }

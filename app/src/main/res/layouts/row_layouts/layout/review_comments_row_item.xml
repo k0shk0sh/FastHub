@@ -18,6 +18,7 @@
             android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_micro"
             android:orientation="horizontal">
 
             <com.fastaccess.ui.widgets.AvatarLayout
@@ -37,28 +38,40 @@
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
                 android:ellipsize="end"
-                android:maxLines="2"
+                android:maxLines="1"
                 android:textColor="?android:textColorPrimary"
                 tools:text="When one acquires"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Small"
+                style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
                 android:maxLines="1"
                 android:textColor="?android:attr/textColorSecondary"
                 tools:text="50 minutes"/>
 
-            <android.support.v7.widget.AppCompatImageView
+            <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="?selectableItemBackgroundBorderless"
                 android:layout_gravity="center"
-                android:layout_marginStart="@dimen/spacing_micro"
-                android:src="@drawable/ic_arrow_drop_down"/>
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/options"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_add_emoji"/>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/commentMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/options"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_overflow"/>
         </LinearLayout>
 
         <include layout="@layout/comments_dropdown_layout"/>
@@ -67,9 +80,10 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_micro"
             android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/avatar_margin"
-            android:layout_marginTop="@dimen/spacing_normal"
+            android:layout_marginStart="@dimen/spacing_xs_large"
+            android:layout_marginTop="@dimen/spacing_micro"
             android:textIsSelectable="true"
             tools:text="Hello World"/>
 

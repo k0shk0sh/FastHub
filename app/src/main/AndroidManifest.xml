@@ -48,8 +48,8 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
-                    android:host="fast-for-github.firebaseapp.com"
-                    android:scheme="https"/>
+                    android:host="login"
+                    android:scheme="fasthub"/>
             </intent-filter>
         </activity>
         <activity
@@ -165,6 +165,26 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
+        <activity android:name=".ui.modules.settings.SettingsActivity"/>
+        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity"/>
+        <activity
+            android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
+            android:label="@string/releases"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+
+        <activity
+            android:name=".ui.modules.trending.TrendingActivity"
+            android:label="@string/trending"
+            android:parentActivityName=".ui.modules.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainActivity"/>
+        </activity>
+
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -197,28 +217,29 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name="io.octo.bear.pago.BillingActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
-            android:exported="true"
-            android:permission="android.permission.BIND_JOB_SERVICE"/>
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+            </intent-filter>
+        </service>
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
-        <service android:name=".provider.fcm.PushNotificationService">
+        <service
+            android:name=".provider.fcm.PushNotificationService"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <activity android:name=".ui.modules.settings.SettingsActivity">
-        </activity>
-        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity">
-        </activity>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e"/>
     </application>
 
 </manifest>

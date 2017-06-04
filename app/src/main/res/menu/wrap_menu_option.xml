@@ -8,4 +8,5 @@
         android:checked="false"
         android:title="@string/wrap_content"
         app:showAsAction="never"/>
+
 </menu>

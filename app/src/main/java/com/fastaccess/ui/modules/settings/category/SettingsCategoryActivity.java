@@ -8,7 +8,7 @@ import com.fastaccess.ui.base.BaseActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
-import icepick.State;
+import com.evernote.android.state.State;
 
 public class SettingsCategoryActivity extends BaseActivity {
 

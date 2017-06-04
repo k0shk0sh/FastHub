@@ -16,7 +16,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 04 May 2017, 8:33 PM
@@ -28,9 +28,9 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    @icepick.State String owner;
-    @icepick.State String repo;
-    @icepick.State @RepoMiscMVp.MiscType int type;
+    @com.evernote.android.state.State String owner;
+    @com.evernote.android.state.State String repo;
+    @com.evernote.android.state.State @RepoMiscMVp.MiscType int type;
 
     RepoMiscPresenter(@Nullable Bundle arguments) {
         if (arguments == null) return;
@@ -87,9 +87,10 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
                 makeRestCall(RestProvider.getRepoService().getForks(owner, repo, page)
                         .flatMap(repoPageable -> {
                             lastPage = repoPageable.getLast();
-                            return Observable.from(repoPageable.getItems())
+                            return Observable.fromIterable(repoPageable.getItems())
                                     .map(Repo::getOwner)
-                                    .toList();
+                                    .toList()
+                                    .toObservable();
                         }), owners -> sendToView(view -> view.onNotifyAdapter(owners, page)));
                 break;
         }

@@ -26,7 +26,7 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import java.util.HashSet;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 26 Mar 2017, 12:14 AM
@@ -67,7 +67,6 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
         });
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override public void onTabSelected(TabLayout.Tab tab) {
-                Logger.e(tab.getTag());
                 if (tab.getTag() == null) {
                     int position = tab.getPosition();
                     selectTab(position, false);
@@ -139,6 +138,8 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
             case 2:
                 title = getString(R.string.mentioned);
                 break;
+            case 3:
+                title = getString(R.string.participated);
         }
         updateDrawable(model, tv);
         tv.setText(SpannableBuilder.builder()

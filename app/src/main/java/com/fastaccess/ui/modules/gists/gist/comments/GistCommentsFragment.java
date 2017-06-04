@@ -28,7 +28,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_GIST_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_GIST_COMMENT_EXTRA;
@@ -54,7 +54,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.fab_small_grid_refresh_list;
+        return R.layout.fab_micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -243,6 +243,11 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         if (isOk) {
             getPresenter().onHandleDeletion(bundle);
         }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

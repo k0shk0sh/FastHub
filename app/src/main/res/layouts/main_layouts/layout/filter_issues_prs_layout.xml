@@ -194,7 +194,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/scroll_behavior"
-            tools:layout="@layout/small_grid_refresh_list"/>
+            tools:layout="@layout/micro_grid_refresh_list"/>
     </android.support.design.widget.CoordinatorLayout>
 
     <include layout="@layout/nav_menu_layout"/>

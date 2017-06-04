@@ -17,10 +17,10 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
  */
 
 class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Presenter {
-    @icepick.State boolean isGistStarred;
-    @icepick.State boolean isGistForked;
-    @icepick.State Gist gist;
-    @icepick.State String gistId;
+    @com.evernote.android.state.State boolean isGistStarred;
+    @com.evernote.android.state.State boolean isGistForked;
+    @com.evernote.android.state.State Gist gist;
+    @com.evernote.android.state.State String gistId;
 
     @Nullable @Override public Gist getGist() {
         return gist;
@@ -53,8 +53,8 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onDeleteGist() {
         if (getGist() == null) return;
-        manageSubscription(RxHelper.getObserver(RestProvider.getGistService().deleteGist(getGist().getGistId()))
-                .doOnSubscribe(this::onSubscribed)
+        manageDisposable(RxHelper.getObserver(RestProvider.getGistService().deleteGist(getGist().getGistId()))
+                .doOnSubscribe(disposable -> onSubscribed())
                 .doOnNext(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         sendToView(GistMvp.View::onSuccessDeleted);
@@ -62,11 +62,9 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
                         sendToView(GistMvp.View::onErrorDeleting);
                     }
                 })
-                .onErrorReturn(throwable -> {
+                .subscribe(booleanResponse -> {/**/}, throwable -> {
                     sendToView(view -> view.showErrorMessage(throwable.getMessage()));
-                    return null;
-                })
-                .subscribe());
+                }));
     }
 
     @Override public boolean isOwner() {
@@ -102,7 +100,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (gist == null) {
-            manageSubscription(RxHelper.getObserver(Gist.getGist(gistId))
+            manageDisposable(RxHelper.getObserver(Gist.getGist(gistId))
                     .subscribe(gistsModel -> {
                         this.gist = gistsModel;
                         sendToView(GistMvp.View::onSetupDetails);

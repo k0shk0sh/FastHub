@@ -10,9 +10,9 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import net.grandcentrix.thirtyinch.TiView;
 import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
-import rx.Observable;
-import rx.Subscription;
-import rx.functions.Action1;
+import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by Kosh on 25 May 2016, 9:09 PM
@@ -20,7 +20,7 @@ import rx.functions.Action1;
 
 public interface BaseMvp {
 
-    interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback {
+    interface FAView extends TiView, MessageDialogView.MessageDialogViewActionCallback, OnScrollTopListener {
 
         @CallOnMainThread void showProgress(@StringRes int resId);
 
@@ -49,7 +49,11 @@ public interface BaseMvp {
 
         void onRestoreInstanceState(Bundle outState);
 
-        void manageSubscription(@Nullable Subscription... subscription);
+        void manageDisposable(@Nullable Disposable... disposables);
+
+        <T> void manageObservable(@Nullable Observable<T> observable);
+
+        void manageViewDisposable(@Nullable Disposable... disposables);
 
         boolean isApiCalled();
 
@@ -57,7 +61,7 @@ public interface BaseMvp {
 
         void onError(@NonNull Throwable throwable);
 
-        <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Action1<T> onNext);
+        <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext);
     }
 
     interface PaginationListener<P> {
@@ -70,5 +74,9 @@ public interface BaseMvp {
         void setPreviousTotal(int previousTotal);
 
         void onCallApi(int page, @Nullable P parameter);
+    }
+
+    interface OnScrollTopListener {
+        void onScrollTop(int index);
     }
 }

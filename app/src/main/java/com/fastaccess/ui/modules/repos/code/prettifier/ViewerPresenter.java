@@ -16,7 +16,7 @@ import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 27 Nov 2016, 3:43 PM
@@ -24,10 +24,10 @@ import rx.Observable;
 
 class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp.Presenter {
     private String downloadedStream;
-    @icepick.State boolean isMarkdown;
-    @icepick.State boolean isRepo;
-    @icepick.State boolean isImage;
-    @icepick.State String url;
+    @com.evernote.android.state.State boolean isMarkdown;
+    @com.evernote.android.state.State boolean isRepo;
+    @com.evernote.android.state.State boolean isImage;
+    @com.evernote.android.state.State String url;
 
     @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();
@@ -70,7 +70,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
 
     @Override public void onWorkOffline() {
         if (downloadedStream == null) {
-            manageSubscription(RxHelper.getObserver(ViewerFile.get(url))
+            manageDisposable(RxHelper.getObserver(ViewerFile.get(url))
                     .subscribe(fileModel -> {
                         if (fileModel != null) {
                             isImage = MarkDownProvider.isImage(fileModel.getFullUrl());
@@ -103,45 +103,44 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                                               ? RestProvider.getRepoService(true).getFileAsHtmlStream(url)
                                               : RestProvider.getRepoService(true).getFileAsStream(url);
         makeRestCall(isRepo ? RestProvider.getRepoService(true).getReadmeHtml(url)
-                            : streamObservable,
-                content -> {
-                    downloadedStream = content;
-                    ViewerFile fileModel = new ViewerFile();
-                    fileModel.setContent(downloadedStream);
-                    fileModel.setFullUrl(url);
-                    fileModel.setRepo(isRepo);
-                    if (isRepo) {
-                        fileModel.setMarkdown(true);
-                        isMarkdown = true;
-                        isRepo = true;
-                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                            : streamObservable, content -> {
+            downloadedStream = content;
+            ViewerFile fileModel = new ViewerFile();
+            fileModel.setContent(downloadedStream);
+            fileModel.setFullUrl(url);
+            fileModel.setRepo(isRepo);
+            if (isRepo) {
+                fileModel.setMarkdown(true);
+                isMarkdown = true;
+                isRepo = true;
+                sendToView(view -> view.onSetMdText(downloadedStream, url));
+            } else {
+                isMarkdown = MarkDownProvider.isMarkdown(url);
+                if (isMarkdown) {
+                    MarkdownModel model = new MarkdownModel();
+                    model.setText(downloadedStream);
+                    NameParser parser = new NameParser(url);
+                    if (parser.getUsername() != null && parser.getName() != null) {
+                        model.setContext(parser.getUsername() + "/" + parser.getName());
                     } else {
-                        isMarkdown = MarkDownProvider.isMarkdown(url);
-                        if (isMarkdown) {
-                            MarkdownModel model = new MarkdownModel();
-                            model.setText(downloadedStream);
-                            NameParser parser = new NameParser(url);
-                            if (parser.getUsername() != null && parser.getName() != null) {
-                                model.setContext(parser.getUsername() + "/" + parser.getName());
-                            } else {
-                                model.setContext("");
-                            }
-                            Logger.e(model.getContext());
-                            makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
-                                isMarkdown = true;
-                                downloadedStream = string;
-                                fileModel.setMarkdown(true);
-                                fileModel.setContent(downloadedStream);
-                                manageSubscription(fileModel.save(fileModel).subscribe());
-                                sendToView(view -> view.onSetMdText(downloadedStream, url));
-                            });
-                            return;
-                        }
-                        fileModel.setMarkdown(false);
-                        sendToView(view -> view.onSetCode(downloadedStream));
+                        model.setContext("");
                     }
-                    manageSubscription(fileModel.save(fileModel).subscribe());
-                });
+                    Logger.e(model.getContext());
+                    makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
+                        isMarkdown = true;
+                        downloadedStream = string;
+                        fileModel.setMarkdown(true);
+                        fileModel.setContent(downloadedStream);
+                        manageObservable(fileModel.save(fileModel).toObservable());
+                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                    });
+                    return;
+                }
+                fileModel.setMarkdown(false);
+                sendToView(view -> view.onSetCode(downloadedStream));
+            }
+            manageObservable(fileModel.save(fileModel).toObservable());
+        });
     }
 
     @Override public boolean isRepo() {

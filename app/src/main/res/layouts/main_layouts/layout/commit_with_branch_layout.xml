@@ -47,7 +47,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/small_grid_refresh_list"/>
+    <include layout="@layout/micro_grid_refresh_list"/>
 
 
 </LinearLayout>

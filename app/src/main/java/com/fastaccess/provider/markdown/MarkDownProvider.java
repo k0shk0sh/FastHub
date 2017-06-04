@@ -194,11 +194,11 @@ public class MarkDownProvider {
     }
 
     public static void addPhoto(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
-        int selectionStart = editText.getSelectionStart();
         String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
-        int length = selectionStart + result.length();
-        editText.getText().insert(selectionStart, result);
-        editText.setSelection(length);
+        String text = InputHelper.toString(editText);
+        text += result;
+        editText.setText(text);
+        editText.setSelection(text.length());
     }
 
     public static void addLink(@NonNull EditText editText) {
@@ -206,11 +206,11 @@ public class MarkDownProvider {
     }
 
     public static void addLink(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
-        int selectionStart = editText.getSelectionStart();
         String result = "[" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
-        int length = selectionStart + result.length();
-        editText.getText().insert(selectionStart, result);
-        editText.setSelection(length);
+        String text = InputHelper.toString(editText);
+        text += result;
+        editText.setText(text);
+        editText.setSelection(text.length());
     }
 
     private static boolean hasNewLine(@NonNull String source, int selectionStart) {
