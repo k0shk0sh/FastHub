@@ -78,22 +78,24 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
-    @OnClick({R.id.startGist, R.id.forkGist}) public void onGistActions(View view) {
-        view.setEnabled(false);
+    @OnClick({R.id.startGist, R.id.forkGist, R.id.browser}) public void onGistActions(View view) {
+        if (getPresenter().getGist() == null) return;
+        if (view.getId() != R.id.browser) {
+            view.setEnabled(false);
+        }
         switch (view.getId()) {
             case R.id.startGist:
-                if (getPresenter().getGist() != null) {
-                    GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                            getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST);
-                    getPresenter().onStarGist();
-                }
+                GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
+                        getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST);
+                getPresenter().onStarGist();
                 break;
             case R.id.forkGist:
-                if (getPresenter().getGist() != null) {
-                    GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                            GithubActionService.FORK_GIST);
-                    getPresenter().onForkGist();
-                }
+                GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
+                        GithubActionService.FORK_GIST);
+                getPresenter().onForkGist();
+                break;
+            case R.id.browser:
+                ActivityHelper.startCustomTab(this, getPresenter().getGist().getHtmlUrl());
                 break;
         }
     }

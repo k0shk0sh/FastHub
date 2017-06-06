@@ -18,12 +18,14 @@ public class MarkDownInterceptorInterface {
     @JavascriptInterface public void startIntercept() {
         if (prettifyWebView != null) {
             prettifyWebView.setInterceptTouch(true);
+            prettifyWebView.setEnableNestedScrolling(false);
         }
     }
 
     @JavascriptInterface public void stopIntercept() {
         if (prettifyWebView != null) {
             prettifyWebView.setInterceptTouch(false);
+            prettifyWebView.setEnableNestedScrolling(true);
         }
     }
 }

@@ -172,7 +172,7 @@ import lombok.NoArgsConstructor;
                 if (!files.isEmpty()) {
                     FilesListModel filesListModel = files.get(0);
                     if (!InputHelper.isEmpty(filesListModel.getFilename()) && filesListModel.getFilename().trim().length() > 2) {
-                        spannableBuilder.append(" ").append("/").append(" ")
+                        spannableBuilder.append(" ")
                                 .append(filesListModel.getFilename());
                     }
                 }
