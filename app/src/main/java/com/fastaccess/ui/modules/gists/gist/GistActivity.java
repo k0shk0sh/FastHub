@@ -198,7 +198,6 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         hideProgress();
         Gist gistsModel = getPresenter().getGist();
         if (gistsModel == null) {
-            finish();
             return;
         }
         String url = gistsModel.getOwner() != null ? gistsModel.getOwner().getAvatarUrl() :

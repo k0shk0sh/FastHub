@@ -125,7 +125,6 @@ public class NotificationSchedulerJobTask extends JobService {
         }
         Context context = getApplicationContext();
         int accentColor = ContextCompat.getColor(this, R.color.material_blue_700);
-        String[] url = new String[1];
         Notification first = notificationThreadModels.get(0);
         Observable.fromIterable(notificationThreadModels)
                 .subscribeOn(Schedulers.io())
@@ -134,12 +133,12 @@ public class NotificationSchedulerJobTask extends JobService {
                 .flatMap(notification -> RestProvider.getNotificationService()
                         .getComment(notification.getSubject().getLatestCommentUrl())
                         .subscribeOn(Schedulers.io()), (thread, comment) -> {
-                    url[0] = comment.getUser().getAvatarUrl();
+                    String url = comment.getUser().getAvatarUrl();
                     if (!InputHelper.isEmpty(thread.getSubject().getLatestCommentUrl())) {
-                        getNotificationWithComment(context, accentColor, thread, comment, url[0]);
+                        getNotificationWithComment(context, accentColor, thread, comment, url);
                         return null;
                     }
-                    showNotificationWithoutComment(context, accentColor, thread, url[0]);
+                    showNotificationWithoutComment(context, accentColor, thread, url);
                     return thread;
                 })
                 .subscribeOn(Schedulers.io())

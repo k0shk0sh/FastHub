@@ -5,7 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import com.evernote.android.state.State
 import com.fastaccess.R
-import com.fastaccess.data.dao.TrendingResponse
+import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.ui.adapter.TrendingAdapter
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.widgets.StateLayout
@@ -42,7 +42,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
         recycler.adapter = adapter
     }
 
-    override fun onNotifyAdapter(items: TrendingResponse) {
+    override fun onNotifyAdapter(items: TrendingModel) {
         adapter.addItem(items)
     }
 

@@ -97,7 +97,7 @@ Ads are no longer available until further notice
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
-- **Firebase** crash reporting
+- **Fabric** analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
 
 # Contribution

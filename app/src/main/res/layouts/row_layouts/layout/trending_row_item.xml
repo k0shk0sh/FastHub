@@ -46,9 +46,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_micro"
+            android:orientation="horizontal"
             app:auto_gravity="start"
             app:auto_orientation="horizontal">
-
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/stars"
@@ -91,6 +91,20 @@
                 app:drawableColor="?android:attr/textColorSecondary"
                 tools:text="50 minutes ago"/>
 
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/language"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_normal"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_language_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                android:visibility="gone"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="10000"/>
 
         </com.fastaccess.ui.widgets.AutoLinearLayout>
     </LinearLayout>

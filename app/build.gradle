@@ -147,8 +147,6 @@ dependencies {
     }
     compile "com.github.miguelbcr:RxBillingService:0.0.3"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "com.github.florent37:retrojsoup:${retrojsoupVersion}"
-    compile "com.github.florent37:rxjsoup:${retrojsoupVersion}"
     compile 'org.jsoup:jsoup:1.10.2'
     compile "com.evernote:android-state:${state_version}"
     provided "org.projectlombok:lombok:${lombokVersion}"
@@ -158,7 +156,6 @@ dependencies {
     kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     kapt "org.projectlombok:lombok:${lombokVersion}"
-    kapt "com.github.florent37:retrojsoup-compiler:${retrojsoupVersion}"
 //    testCompile "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"

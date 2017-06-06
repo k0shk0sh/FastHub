@@ -1,10 +1,6 @@
 package com.fastaccess.ui.modules.profile.overview;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
@@ -30,10 +26,8 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.emoji.EmojiParser;
 import com.fastaccess.ui.adapter.ProfileOrgsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -52,7 +46,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import es.dmoral.toasty.Toasty;
 
 import static android.view.Gravity.TOP;
 import static android.view.View.GONE;
@@ -91,8 +84,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.contributionCard) CardView contributionCard;
     private ProfilePagerMvp.View profileCallback;
 
-    private static int READ_REQUEST_CODE = 256;
-
     public static ProfileOverviewFragment newInstance(@NonNull String login) {
         ProfileOverviewFragment view = new ProfileOverviewFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, login).end());
@@ -112,12 +103,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @OnClick(R.id.userInformation) void onOpenAvatar() {
         if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
-    }
-
-    @OnClick({R.id.chooseBanner, R.id.banner_edit}) public void chooseBanner() {
-        if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
-            showFileChooser();
-        }
     }
 
     @Override public void onAttach(Context context) {
@@ -154,11 +139,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (isMeOrOrganization()) {
             followBtn.setVisibility(GONE);
         }
-//        if (getPresenter().getLogin().equals(Login.getUser().getLogin()) && PrefHelper.getBoolean("banner_learned"))
-//            chooseBanner.setVisibility(VISIBLE);
-//        if (Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin())) {
-//            onImagePosted(PrefGetter.getProfileBackgroundUrl());
-//        }
     }
 
     @NonNull @Override public ProfileOverviewPresenter providePresenter() {
@@ -178,12 +158,12 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             description.setVisibility(GONE);
         }
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
-        avatarLayout.setOnAvatarClick(v -> userInformation.callOnClick());
+        avatarLayout.setOnClickListener(v -> userInformation.performClick());
         organization.setText(InputHelper.toNA(userModel.getCompany()));
         location.setText(InputHelper.toNA(userModel.getLocation()));
         email.setText(InputHelper.toNA(userModel.getEmail()));
         link.setText(InputHelper.toNA(userModel.getBlog()));
-        joined.setText(userModel.getCreatedAt() != null ? ParseDateFormat.getTimeAgo(userModel.getCreatedAt()) : "N/A");
+        joined.setText(ParseDateFormat.getTimeAgo(userModel.getCreatedAt()));
         ViewGroup parent = (ViewGroup) organization.getParent();
         if (organization.getText().equals("N/A")) {
             int i = parent.indexOfChild(organization);
@@ -216,18 +196,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
                 .append(getString(R.string.following))
                 .append("\n")
                 .bold(String.valueOf(userModel.getFollowing())));
-//        if (userModel.getLogin().equals(Login.getUser().getLogin()))
-//            if (headerImage.getVisibility() == GONE) {
-//                if (PrefHelper.getBoolean("banner_learned")) return;
-//                headerImage.setBackground(getResources().getDrawable(R.drawable.header));
-//                headerImage.setVisibility(VISIBLE);
-//                headerImage.setOnClickListener(view -> {
-//                    PrefHelper.set("banner_learned", true);
-//                    Intent intent = new Intent(getContext(), BannerInfoActivity.class);
-//                    startActivityForResult(intent, BundleConstant.REVIEW_REQUEST_CODE);
-//                });
-//            }
-
     }
 
     @Override public void invalidateFollowBtn() {
@@ -259,8 +227,8 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             orgsList.setAdapter(adapter);
             orgsCard.setVisibility(VISIBLE);
             organizationsCaption.setVisibility(VISIBLE);
-            ((GridManager) orgsList.getLayoutManager()).setIconSize(getResources().getDimensionPixelSize(R.dimen.header_icon_zie) +
-                    getResources().getDimensionPixelSize(R.dimen.spacing_xs_large));
+            ((GridManager) orgsList.getLayoutManager()).setIconSize(getResources().getDimensionPixelSize(R.dimen.header_icon_zie) + getResources()
+                    .getDimensionPixelSize(R.dimen.spacing_xs_large));
         } else {
             organizationsCaption.setVisibility(GONE);
             orgsCard.setVisibility(GONE);
@@ -335,36 +303,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
-    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == BundleConstant.REQUEST_CODE) {
-                if (data != null) {
-                    String path = FileHelper.getPath(getContext(), data.getData());
-                    if (path == null) {
-                        showMessage(R.string.error, R.string.image_error);
-                        return;
-                    }
-                    getPresenter().onPostImage(path);
-                }
-            } else {
-                onImagePosted(PrefGetter.getProfileBackgroundUrl());
-            }
-        }
-    }
-
-    @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == READ_REQUEST_CODE) {
-            if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    showFileChooser();
-                } else {
-                    Toasty.error(getContext(), getString(R.string.permission_failed)).show();
-                }
-            }
-        }
-    }
-
     private void onHideProgress() {
         hideProgress();
     }
@@ -372,13 +310,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     private boolean isMeOrOrganization() {
         return Login.getUser() != null && Login.getUser().getLogin().equalsIgnoreCase(getPresenter().getLogin()) ||
                 (userModel != null && userModel.getType() != null && !userModel.getType().equalsIgnoreCase("user"));
-    }
-
-    private void showFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), BundleConstant.REQUEST_CODE);
     }
 
 }

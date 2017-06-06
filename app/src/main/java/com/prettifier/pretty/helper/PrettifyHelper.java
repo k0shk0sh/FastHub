@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
 
 public class PrettifyHelper {
 
-    @NonNull private static String getHtmlContent(@NonNull String css, @NonNull String text, @NonNull String wrapStyle) {
+    @NonNull private static String getHtmlContent(@NonNull String css, @NonNull String text, @NonNull String wrapStyle, boolean isDark) {
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
@@ -16,7 +16,7 @@ public class PrettifyHelper {
                 "    <link rel=\"stylesheet\" href=\"./styles/" + css + "\">\n" +
                 "    " + wrapStyle + "\n" +
                 "</head>\n" +
-                "<body onload=\"" + (textTooLarge(text) ? "" : "prettyPrint()") + "\">\n" +
+                "<body style=\"" + (isDark && textTooLarge(text) ? "color:white;" : "") + "\" onload=\"" + (textTooLarge(text) ? "" : "PR.prettyPrint()") + "\">\n" +
                 "<pre class=\"prettyprint linenums\">" + text + "</pre>\n" +
                 "<script src=\"./js/prettify.js\"></script>\n" +
                 "<script>\n" +
@@ -56,7 +56,7 @@ public class PrettifyHelper {
 
 
     @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap) {
-        return getHtmlContent(getStyle(isDark), getFormattedSource(source), wrap ? WRAPPED_STYLE : "");
+        return getHtmlContent(getStyle(isDark), getFormattedSource(source), wrap ? WRAPPED_STYLE : "", isDark);
     }
 
     @NonNull private static String getFormattedSource(@NonNull String source) {

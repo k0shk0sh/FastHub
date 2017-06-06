@@ -161,12 +161,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void showMessage(@NonNull String titleRes, @NonNull String msgRes) {
         hideProgress();
         if (toast != null) toast.cancel();
-        Context context;
-        if (!isFinishing()) {
-            context = this;
-        } else {
-            context = App.getInstance();
-        }
+        Context context = App.getInstance(); // WindowManager$BadTokenException
         toast = titleRes.equals(context.getString(R.string.error))
                 ? Toasty.error(context, msgRes, Toast.LENGTH_LONG)
                 : Toasty.info(context, msgRes, Toast.LENGTH_LONG);
@@ -186,7 +181,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (resId != 0) {
             msg = getString(resId);
         }
-        if (!isProgressShowing) {
+        if (!isProgressShowing && !isFinishing()) {
             ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
                     ProgressDialogFragment.TAG);
             if (fragment == null) {
@@ -207,7 +202,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onRequireLogin() {
-        Toasty.warning(this, getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
+        Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
         PrefHelper.clearKey("token");
@@ -582,7 +577,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (backPressTimer + 2000 > System.currentTimeMillis()) {
             return true;
         } else {
-            Toast.makeText(getBaseContext(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.getInstance(), R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
         }
         backPressTimer = System.currentTimeMillis();
         return false;

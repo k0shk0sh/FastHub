@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.user;
 
+import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -68,6 +70,9 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TYPE, isOrg)
                 .end());
+        if (context instanceof Service || context instanceof Application) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         return intent;
     }
 

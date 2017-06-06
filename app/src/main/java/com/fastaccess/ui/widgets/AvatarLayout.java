@@ -37,10 +37,8 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     @Nullable private String login;
     private boolean isOrg;
     private Toast toast;
-    private OnClickListener onClickListener;
 
     @OnClick(R.id.avatar) void onClick(@NonNull View view) {
-        if (onClickListener != null) onClickListener.onClick(view);
         if (InputHelper.isEmpty(login)) return;
         UserPagerActivity.startActivity(view.getContext(), login, isOrg);
     }
@@ -72,11 +70,6 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
     @Override protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-    }
-
-    @Override protected void onDetachedFromWindow() {
-        onClickListener = null;
-        super.onDetachedFromWindow();
     }
 
     @Override protected void onFinishInflate() {
@@ -129,9 +122,5 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
                 setBackgroundResource(R.drawable.circle_shape);
             }
         }
-    }
-
-    public void setOnAvatarClick(OnClickListener onClickListener) {
-        this.onClickListener = onClickListener;
     }
 }

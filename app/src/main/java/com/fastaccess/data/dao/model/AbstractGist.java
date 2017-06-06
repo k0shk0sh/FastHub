@@ -12,7 +12,6 @@ import com.fastaccess.data.dao.GithubFileModel;
 import com.fastaccess.data.dao.converters.GitHubFilesConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.ObjectsCompat;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.annotations.SerializedName;
@@ -35,7 +34,7 @@ import lombok.NoArgsConstructor;
  * Created by Kosh on 16 Mar 2017, 7:32 PM
  */
 
-@Entity @NoArgsConstructor public abstract class AbstractGist implements Parcelable {
+@Entity() @NoArgsConstructor public abstract class AbstractGist implements Parcelable {
     @SerializedName("nooope") @Key long id;
     String url;
     String forksUrl;
@@ -79,11 +78,11 @@ import lombok.NoArgsConstructor;
                 .single()
                 .toObservable()
                 .flatMap(integer -> Observable.fromIterable(gists))
-                .filter(ObjectsCompat::nonNull)
-                .flatMap(gist -> {
+                .map(gist -> {
                     gist.setOwnerName(ownerName);
-                    return gist.save(gist).toObservable();
-                }));
+                    return gist;
+                })
+                .flatMap(gist -> gist.save(gist).toObservable()));
     }
 
     @NonNull public static Single<List<Gist>> getMyGists(@NonNull String ownerName) {
@@ -168,7 +167,16 @@ import lombok.NoArgsConstructor;
             spannableBuilder.append(description);
         }
         if (InputHelper.isEmpty(spannableBuilder.toString())) {
-            if (isFromProfile) spannableBuilder.bold("N/A");
+            if (isFromProfile) {
+                List<FilesListModel> files = getFilesAsList();
+                if (!files.isEmpty()) {
+                    FilesListModel filesListModel = files.get(0);
+                    if (!InputHelper.isEmpty(filesListModel.getFilename()) && filesListModel.getFilename().trim().length() > 2) {
+                        spannableBuilder.append(" ").append("/").append(" ")
+                                .append(filesListModel.getFilename());
+                    }
+                }
+            }
         }
         return spannableBuilder;
     }
