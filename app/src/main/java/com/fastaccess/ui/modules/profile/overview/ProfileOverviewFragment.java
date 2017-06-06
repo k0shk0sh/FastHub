@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.overview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -11,6 +12,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -145,7 +147,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         return new ProfileOverviewPresenter();
     }
 
-    @Override public void onInitViews(@Nullable User userModel) {
+    @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
         progress.setVisibility(GONE);
         if (userModel == null) return;
         this.userModel = userModel;
@@ -158,7 +160,13 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             description.setVisibility(GONE);
         }
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
-        avatarLayout.setOnClickListener(v -> userInformation.performClick());
+        avatarLayout.findViewById(R.id.avatar).setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
+                return true;
+            }
+            return false;
+        });
         organization.setText(InputHelper.toNA(userModel.getCompany()));
         location.setText(InputHelper.toNA(userModel.getLocation()));
         email.setText(InputHelper.toNA(userModel.getEmail()));
