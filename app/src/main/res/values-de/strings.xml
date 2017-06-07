@@ -171,7 +171,7 @@
     <string name="unknown">Unbekannt</string>
     <string name="commented_on_commit">Commit kommentieren</string>
     <string name="switch_branch">Branch wechseln</string>
-    <string name="assignees">Bevollmächtigte</string> <!-- Unsure -->
+    <string name="assignees">Assignees</string> <!-- Unsure -->
     <string name="edit">Bearbeiten</string>
     <string name="update_issue">Issue aktualisieren</string>
     <string name="update_pull_request">Pull Request aktualisieren</string>
@@ -182,7 +182,7 @@
     <string name="create_milestone">Meilenstein erstellen</string>
     <string name="error_creating_milestone">Konnte Meilenstein nicht erstellen</string>
     <string name="due_on">Fällig am</string>
-    <string name="no_assignees">Keine Bevollmächtigten</string>
+    <string name="no_assignees">Keine Assignees</string>
     <string name="this_value">dies</string>
     <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
@@ -210,7 +210,7 @@
     <string name="notification_settings">Benachrichtigung</string>
     <string name="turn_off">Ausschalten</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
-    <string name="two_factors_otp_error">Das einmalige Two-Factor Passwort wird benötigt</string>
+    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>
     <string name="no_issue">Kein Issue</string>
     <string name="copy">Kopieren</string>
     <string name="success_copied">kopiert</string>
@@ -281,7 +281,7 @@
     <string name="dialog_animation_summary">Popup-Animationen aktivieren</string>
     <string name="dialog_animation_title">Popup-Animation</string>
     <string name="milestones">Meilensteine</string>
-    <string name="assignee">Bevollmächtigte</string><!-- Still looking for a better translation -->
+    <string name="assignee">Assignee</string><!-- Still looking for a better translation -->
     <string name="checks_failed">Alle Checks sind fehlgeschlagen</string>
     <string name="checks_pending">Die Checks laufen noch</string>
     <string name="checks_passed">Die Checks wurden erfolgreich beendet</string>
@@ -347,7 +347,7 @@
     <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
     <string name="enable_signature_box">Signaturbox aktivieren</string>
     <string name="enable_signature_box_summary">Häkchen setzen, damit die Signatur im Editor angezeigt wird</string>
-	<string name="tags">Tags</string>
+    <string name="tags">Tags</string>
     <string name="add_comment">Kommentar hinzufügen</string>
     <string name="banners">Einführung von Bannern</string>
     <string name="banners_info">Mit FastHub 2.5.0 kannst du nun dein Profil mit einem Banner 
@@ -359,6 +359,29 @@
     </string>
     <string name="edit_banner">BANNER AUSWÄHLEN</string>
     <string name="image_error">Bild konnte nicht geladen werden.</string>
+    <string name="trending">Im Trend</string>
+    <string name="not_really_working">Leider kann derzeit nicht nach Emojis sortiert werden</string>
+    <string name="scroll_up">Hochscrollen</string>
+    <string name="scroll_down">Runterscrollen</string>
+    <string name="participated">Teilgenommen</string>
+    <string name="todo_checked">abgehakt</string>
+    <string name="todo_unchecked">ausstehend</string>
+    <string name="divider">Trenner</string>
+    <string name="no_user_found">Kein User gefunden</string>
+    <string name="no_trending">Nichts im Trend</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="reset">Zurücksetzten</string>
+    <string name="apply">Anwenden</string>
+    <string name="filter">Filter</string>
+    <string name="type">Typ</string>
+    <string name="Sort">Sortieren</string>
+    <string name="sort_direction">Sortierungsrichtung</string>
+    <string name="assignee_added">Assignee erfolgreich hinzugefügt</string>
+    <string name="reviewer_added">Reviewer erfolgreich hinzugefügt</string>
+    <string name="milestone_added">Meilenstein erfolgreich hinzugefügt</string>
+<string name="feed">Feed</string>
 </resources>
 
 
