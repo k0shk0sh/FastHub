@@ -381,8 +381,8 @@
         изображение.\n\nА можно сделать ещё проще – воспользоваться встроенным редактором!</string>
     <string name="edit_banner">ВЫБЕРИТЕ БАННЕР</string>
     <string name="image_error">Ошибка загрузки изображения. Пожалуйста, попробуйте снова.</string>
-    <string name="trending">В тренде</string>
-    <string name="not_really_working">Сортировка по emoji не очень работает из-за ограничений GitHub</string>
+    <string name="trending">Тренды</string>
+    <string name="not_really_working">Сортировка по emoji может работать некорректно из-за ограничений GitHub</string>
     <string name="scroll_up">Прокрутка вверх</string>
     <string name="scroll_down">Прокрутка вниз</string>
     <string name="participated">Участвует</string>
@@ -395,7 +395,7 @@
     <string name="apply">Применить</string>
     <string name="filter">Фильтр</string>
     <string name="type">Тип</string>
-    <string name="Sort">Сортировать</string>
+    <string name="Sort">Сортировка</string>
     <string name="sort_direction">Порядок сортировки</string>
     <string name="assignee_added">Назначение успешно совершено</string>
     <string name="reviewer_added">Рецензент успешно добавлен</string>
