@@ -71,6 +71,7 @@ grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintain
     - Repos
 - **Users**
   - Follow/unfollow users
+  - View user feeds
   - Contribution graph.
   - Search Users, Repos, Issues,Pull Requests and Code
 - _**Much more...**_
