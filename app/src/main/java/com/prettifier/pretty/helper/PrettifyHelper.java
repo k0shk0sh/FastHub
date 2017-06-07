@@ -8,29 +8,30 @@ import android.support.annotation.NonNull;
 
 public class PrettifyHelper {
 
-    @NonNull private final static String HTML_CONTENT =
-            "<!DOCTYPE html>\n" +
-                    "<html>\n" +
-                    "<head>\n" +
-                    "    <meta charset=\"utf-8\">\n" +
-                    "    <link rel=\"stylesheet\" href=\"./styles/%s\">\n" +
-                    "    %s\n" +
-                    "</head>\n" +
-                    "<body onload=\"prettyPrint()\">\n" +
-                    "<pre class=\"prettyprint linenums\">%s</pre>\n" +
-                    "<script src=\"./js/prettify.js\"></script>\n" +
-                    "<script>\n" +
-                    "function scrollToLineNumber(lineNo) {\n" +
-                    "    var normalizedLineNo = (lineNo - 1) %% 10;\n" +
-                    "    var nthLineNo = Math.floor((lineNo - 1) / 10);\n" +
-                    "    var elLines = document.querySelectorAll('li.L' + normalizedLineNo);\n" +
-                    "    if (elLines[nthLineNo]) {\n" +
-                    "        elLines[nthLineNo].scrollIntoView();\n" +
-                    "    }\n" +
-                    "}" +
-                    "</script>" +
-                    "</body>\n" +
-                    "</html>";
+    @NonNull private static String getHtmlContent(@NonNull String css, @NonNull String text, @NonNull String wrapStyle, boolean isDark) {
+        return "<!DOCTYPE html>\n" +
+                "<html>\n" +
+                "<head>\n" +
+                "    <meta charset=\"utf-8\">\n" +
+                "    <link rel=\"stylesheet\" href=\"./styles/" + css + "\">\n" +
+                "    " + wrapStyle + "\n" +
+                "</head>\n" +
+                "<body style=\"" + (isDark && textTooLarge(text) ? "color:white;" : "") + "\" onload=\"" + (textTooLarge(text) ? "" : "PR.prettyPrint()") + "\">\n" +
+                "<pre class=\"prettyprint linenums\">" + text + "</pre>\n" +
+                "<script src=\"./js/prettify.js\"></script>\n" +
+                "<script>\n" +
+                "function scrollToLineNumber(lineNo) {\n" +
+                "    var normalizedLineNo = (lineNo - 1) %% 10;\n" +
+                "    var nthLineNo = Math.floor((lineNo - 1) / 10);\n" +
+                "    var elLines = document.querySelectorAll('li.L' + normalizedLineNo);\n" +
+                "    if (elLines[nthLineNo]) {\n" +
+                "        elLines[nthLineNo].scrollIntoView();\n" +
+                "    }\n" +
+                "}" +
+                "</script>" +
+                "</body>\n" +
+                "</html>";
+    }
 
     @NonNull private static final String WRAPPED_STYLE =
             "<style>\n " +
@@ -55,7 +56,7 @@ public class PrettifyHelper {
 
 
     @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap) {
-        return String.format(HTML_CONTENT, getStyle(isDark), wrap ? WRAPPED_STYLE : "", getFormattedSource(source));
+        return getHtmlContent(getStyle(isDark), getFormattedSource(source), wrap ? WRAPPED_STYLE : "", isDark);
     }
 
     @NonNull private static String getFormattedSource(@NonNull String source) {
@@ -65,6 +66,10 @@ public class PrettifyHelper {
 
     @NonNull private static String getStyle(boolean isDark) {
         return !isDark ? "prettify.css" : "prettify_dark.css";
+    }
+
+    private static boolean textTooLarge(@NonNull String text) {
+        return text.length() > 204800;//>200kb ? disable highlighting to avoid crash.
     }
 
 }

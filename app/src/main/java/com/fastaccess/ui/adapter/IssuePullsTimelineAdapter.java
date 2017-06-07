@@ -66,11 +66,7 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     @Override protected void onBindView(BaseViewHolder holder, int position) {
         TimelineModel model = getItem(position);
         if (model.getType() == TimelineModel.HEADER) {
-            if (model.getIssue() != null) {
-                ((IssueDetailsViewHolder) holder).bind(model);
-            } else if (model.getPullRequest() != null) {
-                ((IssueDetailsViewHolder) holder).bind(model);
-            }
+            ((IssueDetailsViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.EVENT) {
             ((IssueTimelineViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.COMMENT) {

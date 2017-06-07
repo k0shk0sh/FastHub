@@ -302,52 +302,54 @@ public class GitHubContributionsView extends View {
         }
     }
 
+    Bitmap bitmap = null;
+
     private Bitmap drawOnCanvas(Canvas canvas) {
-        canvas.getClipBounds(rect);
-        int width = rect.width();
-        int verticalBlockNumber = 7;
-        int horizontalBlockNumber = getHorizontalBlockNumber(contributionsFilter.size(), verticalBlockNumber);
-        float marginBlock = (1.0F - 0.1F);
-        float blockWidth = width / (float) horizontalBlockNumber * marginBlock;
-        float spaceWidth = width / (float) horizontalBlockNumber - blockWidth;
-        float topMargin = (displayMonth) ? 7f : 0;
-        float monthTextHeight = (displayMonth) ? blockWidth * 1.5F : 0;
-        int height = (int) ((blockWidth + spaceWidth) * 7 + topMargin + monthTextHeight);
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas1 = new Canvas(bitmap);
-        // Background
-        blockPaint.setColor(backgroundBaseColor);
-        canvas1.drawRect(0, (topMargin + monthTextHeight), width, height + monthTextHeight, blockPaint);
-        monthTextPaint.setColor(textColor);
-        monthTextPaint.setTextSize(monthTextHeight);
-        // draw the blocks
-        int currentWeekDay = DatesUtils.getWeekDayFromDate(
-                contributions.get(0).year,
-                contributions.get(0).month,
-                contributions.get(0).day);
-        float x = 0;
-        float y = (currentWeekDay - 7) % 7 * (blockWidth + spaceWidth) + (topMargin + monthTextHeight);
-        for (ContributionsDay day : contributionsFilter) {
-            blockPaint.setColor(ColorsUtils.calculateLevelColor(baseColor, baseEmptyColor, day.level));
-            canvas1.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
+        if (bitmap == null) {
+            canvas.getClipBounds(rect);
+            int width = rect.width();
+            int verticalBlockNumber = 7;
+            int horizontalBlockNumber = getHorizontalBlockNumber(contributionsFilter.size(), verticalBlockNumber);
+            float marginBlock = (1.0F - 0.1F);
+            float blockWidth = width / (float) horizontalBlockNumber * marginBlock;
+            float spaceWidth = width / (float) horizontalBlockNumber - blockWidth;
+            float topMargin = (displayMonth) ? 7f : 0;
+            float monthTextHeight = (displayMonth) ? blockWidth * 1.5F : 0;
+            int height = (int) ((blockWidth + spaceWidth) * 7 + topMargin + monthTextHeight);
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            Canvas canvas1 = new Canvas(bitmap);
+            // Background
+            blockPaint.setColor(backgroundBaseColor);
+            canvas1.drawRect(0, (topMargin + monthTextHeight), width, height + monthTextHeight, blockPaint);
+            monthTextPaint.setColor(textColor);
+            monthTextPaint.setTextSize(monthTextHeight);
+            // draw the blocks
+            int currentWeekDay = DatesUtils.getWeekDayFromDate(
+                    contributions.get(0).year,
+                    contributions.get(0).month,
+                    contributions.get(0).day);
+            float x = 0;
+            float y = (currentWeekDay - 7) % 7 * (blockWidth + spaceWidth) + (topMargin + monthTextHeight);
+            for (ContributionsDay day : contributionsFilter) {
+                blockPaint.setColor(ColorsUtils.calculateLevelColor(baseColor, baseEmptyColor, day.level));
+                canvas1.drawRect(x, y, x + blockWidth, y + blockWidth, blockPaint);
+                if (DatesUtils.isFirstDayOfWeek(day.year, day.month, day.day + 1)) {
+                    // another column
+                    x += blockWidth + spaceWidth;
+                    y = topMargin + monthTextHeight;
 
-            if (DatesUtils.isFirstDayOfWeek(day.year, day.month, day.day + 1)) {
-                // another column
-                x += blockWidth + spaceWidth;
-                y = topMargin + monthTextHeight;
+                    if (DatesUtils.isFirstWeekOfMount(day.year, day.month, day.day + 1)) {
+                        canvas1.drawText(
+                                DatesUtils.getShortMonthName(day.year, day.month, day.day + 1),
+                                x, monthTextHeight, monthTextPaint);
+                    }
 
-                if (DatesUtils.isFirstWeekOfMount(day.year, day.month, day.day + 1)) {
-                    canvas1.drawText(
-                            DatesUtils.getShortMonthName(day.year, day.month, day.day + 1),
-                            x, monthTextHeight, monthTextPaint);
+                } else {
+                    y += blockWidth + spaceWidth;
                 }
-
-            } else {
-                y += blockWidth + spaceWidth;
             }
+            adjustHeight(height);
         }
-
-        adjustHeight(height);
         return bitmap;
     }
 

@@ -11,20 +11,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Release;
-import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
-import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
-import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,15 +36,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
-import io.reactivex.disposables.Disposable;
 
 import static android.app.Activity.RESULT_OK;
 
 public class SettingsCategoryFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
-    @BindView(R.id.settingsContainer) FrameLayout settingsContainer;
+    public interface SettingsCallback {
+        int getSettingsType();
+    }
 
     private static int PERMISSION_REQUEST_CODE = 128;
     private static int RESTORE_REQUEST_CODE = 256;
@@ -64,19 +58,30 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationTime;
     private Preference notificationRead;
     private Preference notificationSound;
-    private Disposable disposable;
+    private SettingsCallback settingsCallback;
+
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         this.callback = (BaseMvp.FAView) context;
+        this.settingsCallback = (SettingsCallback) context;
         appTheme = PrefHelper.getString("appTheme");
         appColor = PrefHelper.getString("appColor");
         app_lauguage = PrefHelper.getString("app_language");
     }
 
+    @Override public void onDetach() {
+        callback = null;
+        settingsCallback = null;
+        super.onDetach();
+    }
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        int settings = getActivity().getIntent().getExtras().getInt("settings", 0);
-        switch (settings) {
+        switch (settingsCallback.getSettingsType()) {
             case 0:
                 addPreferencesFromResource(R.xml.notification_settings);
                 notificationTime = findPreference("notificationTime");
@@ -106,37 +111,8 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 findPreference("appColor").setOnPreferenceChangeListener(this);
                 break;
             case 3:
-                addPreferencesFromResource(R.xml.about_settings);
-                findPreference("showChangelog").setOnPreferenceClickListener(preference -> {
-                    new ChangelogBottomSheetDialog().show(getChildFragmentManager(), "ChangelogBottomSheetDialog");
-                    return true;
-                });
-                findPreference("joinSlack").setOnPreferenceClickListener(preference -> {
-                    ActivityHelper.startCustomTab(getActivity(), "http://rebrand.ly/fasthub");
-                    return true;
-                });
-                findPreference("currentVersion").setSummary(SpannableBuilder.builder()
-                        .append(getString(R.string.current_version))
-                        .append("(")
-                        .bold(BuildConfig.VERSION_NAME)
-                        .append(")"));
-                findPreference("currentVersion").setOnPreferenceClickListener(preference -> {
-                    disposable = Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
-                        if (releases != null) {
-                            if (releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
-                                Toasty.success(getContext(), getString(R.string.up_to_date)).show();
-                            else
-                                Toasty.warning(getContext(), getString(R.string.new_version)).show();
-                        }
-                    });
-                    return true;
-                });
-                break;
-            case 4:
                 addPreferencesFromResource(R.xml.backup_settings);
                 findPreference("backup").setOnPreferenceClickListener((Preference preference) -> {
-
-
                     if (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                         Map<String, ?> settings_ = PrefHelper.getAll();
@@ -162,7 +138,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                             Log.e(getTag(), "Couldn't backup: " + e.toString());
                         }
 
-                        PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd").format(new Date()));
+                        PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
                     } else {
                         requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
                     }
@@ -183,9 +159,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
                     return true;
                 });
-                break;
-            default:
-                addPreferencesFromResource(R.xml.fasthub_settings);
                 break;
         }
     }
@@ -244,7 +217,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -320,13 +292,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     callback.onThemeChanged();
                 }
             }
-        }
-    }
-
-    @Override public void onDestroyView() {
-        super.onDestroyView();
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
         }
     }
 

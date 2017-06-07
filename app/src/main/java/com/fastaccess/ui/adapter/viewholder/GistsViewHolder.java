@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Gist;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -26,6 +27,7 @@ public class GistsViewHolder extends BaseViewHolder<Gist> {
     @BindView(R.id.date) FontTextView date;
     private boolean isFromProfile;
 
+
     private GistsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean isFromProfile) {
         super(itemView, adapter);
         title.setMaxLines(2);
@@ -39,7 +41,6 @@ public class GistsViewHolder extends BaseViewHolder<Gist> {
             return new GistsViewHolder(getView(viewGroup, R.layout.feeds_row_no_image_item), adapter, true);
         }
     }
-
 
     @Override public void bind(@NonNull Gist item) {
         if (!isFromProfile) {

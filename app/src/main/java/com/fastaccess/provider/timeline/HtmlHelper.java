@@ -90,12 +90,6 @@ public class HtmlHelper {
         return mySpanner;
     }
 
-    private static final String TAG_ROOT = "githubroot";
-
-    private static final String ROOT_START = '<' + TAG_ROOT + '>';
-
-    private static final String ROOT_END = "</" + TAG_ROOT + '>';
-
     private static final String TOGGLE_START = "<span class=\"email-hidden-toggle\">";
 
     private static final String TOGGLE_END = "</span>";
@@ -122,23 +116,16 @@ public class HtmlHelper {
 
     private static final String PARAGRAPH_END = "</p>";
 
-    private static final String BLOCKQUOTE_START = "<blockquote>";
-
-    private static final String BLOCKQUOTE_END = "</blockquote>";
-
     //https://github.com/k0shk0sh/GitHubSdk/blob/master/library/src/main/java/com/meisolsson/githubsdk/core/HtmlUtils.java
     @NonNull public static CharSequence format(final String html) {
         if (html == null || html.length() == 0) return "";
         StringBuilder formatted = new StringBuilder(html);
         strip(formatted, TOGGLE_START, TOGGLE_END);
         strip(formatted, SIGNATURE_START, SIGNATURE_END);
-        replace(formatted, REPLY_START, REPLY_END, BLOCKQUOTE_START, BLOCKQUOTE_END);
+        strip(formatted, REPLY_START, REPLY_END);
         strip(formatted, HIDDEN_REPLY_START, HIDDEN_REPLY_END);
         if (replace(formatted, PARAGRAPH_START, BREAK)) replace(formatted, PARAGRAPH_END, BREAK);
-        formatEmailFragments(formatted);
         trim(formatted);
-        formatted.insert(0, ROOT_START);
-        formatted.append(ROOT_END);
         return formatted;
     }
 
@@ -165,65 +152,15 @@ public class HtmlHelper {
         return true;
     }
 
-    private static void replace(final StringBuilder input, final String fromStart, final String fromEnd,
-                                final String toStart, final String toEnd) {
-        int start = input.indexOf(fromStart);
-        if (start == -1)
-            return;
-        final int fromStartLength = fromStart.length();
-        final int fromEndLength = fromEnd.length();
-        final int toStartLength = toStart.length();
-        while (start != -1) {
-            input.replace(start, start + fromStartLength, toStart);
-            int end = input.indexOf(fromEnd, start + toStartLength);
-            if (end != -1)
-                input.replace(end, end + fromEndLength, toEnd);
-
-            start = input.indexOf(fromStart);
-        }
-    }
-
-    private static void formatEmailFragments(final StringBuilder input) {
-        int emailStart = input.indexOf(EMAIL_START);
-        int breakAdvance = BREAK.length() - 1;
-        while (emailStart != -1) {
-            int startLength = EMAIL_START.length();
-            int emailEnd = input.indexOf(EMAIL_END, emailStart + startLength);
-            if (emailEnd == -1)
-                break;
-
-            input.delete(emailEnd, emailEnd + EMAIL_END.length());
-            input.delete(emailStart, emailStart + startLength);
-
-            int fullEmail = emailEnd - startLength;
-            for (int i = emailStart; i < fullEmail; i++)
-                if (input.charAt(i) == '\n') {
-                    input.deleteCharAt(i);
-                    input.insert(i, BREAK);
-                    i += breakAdvance;
-                    fullEmail += breakAdvance;
-                }
-
-            emailStart = input.indexOf(EMAIL_START, fullEmail);
-        }
-    }
-
     private static void trim(final StringBuilder input) {
         int length = input.length();
         int breakLength = BREAK.length();
-
         while (length > 0) {
-            if (input.indexOf(BREAK) == 0)
-                input.delete(0, breakLength);
-            else if (length >= breakLength
-                    && input.lastIndexOf(BREAK) == length - breakLength)
-                input.delete(length - breakLength, length);
-            else if (Character.isWhitespace(input.charAt(0)))
-                input.deleteCharAt(0);
-            else if (Character.isWhitespace(input.charAt(length - 1)))
-                input.deleteCharAt(length - 1);
-            else
-                break;
+            if (input.indexOf(BREAK) == 0) input.delete(0, breakLength);
+            else if (length >= breakLength && input.lastIndexOf(BREAK) == length - breakLength) input.delete(length - breakLength, length);
+            else if (Character.isWhitespace(input.charAt(0))) input.deleteCharAt(0);
+            else if (Character.isWhitespace(input.charAt(length - 1))) input.deleteCharAt(length - 1);
+            else break;
             length = input.length();
         }
     }

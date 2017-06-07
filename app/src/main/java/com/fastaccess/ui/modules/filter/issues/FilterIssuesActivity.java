@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.view.KeyEvent;
@@ -15,6 +16,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -49,7 +51,6 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
 import es.dmoral.toasty.Toasty;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 09 Apr 2017, 6:23 PM
@@ -174,52 +175,37 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.labels) public void onLabelsClicked() {
-        if (hideWindow()) return;
+        if (labels.getTag() != null) return;
+        labels.setTag(true);
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
-        popupWindow = new PopupWindow(this);
-        popupWindow.setContentView(viewHolder.view);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setBackgroundDrawable(new ColorDrawable(ViewHelper.getWindowBackground(this)));
-        popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_normal));
+        setupPopupWindow(viewHolder);
         viewHolder.recycler.setAdapter(getLabelsAdapter());
         AnimHelper.revealPopupWindow(popupWindow, labels);
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.milestone) public void onMilestoneClicked() {
-        if (hideWindow()) return;
+        if (milestone.getTag() != null) return;
+        milestone.setTag(true);
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
-        popupWindow = new PopupWindow(this);
-        popupWindow.setContentView(viewHolder.view);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_micro));
-        popupWindow.setBackgroundDrawable(new ColorDrawable(ViewHelper.getWindowBackground(this)));
-        popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_normal));
+        setupPopupWindow(viewHolder);
         viewHolder.recycler.setAdapter(getMilestonesAdapter());
         AnimHelper.revealPopupWindow(popupWindow, milestone);
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.assignee) public void onAssigneeClicked() {
-        if (hideWindow()) return;
+        if (assignee.getTag() != null) return;
+        assignee.setTag(true);
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
-        popupWindow = new PopupWindow(this);
-        popupWindow.setContentView(viewHolder.view);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_micro));
-        popupWindow.setBackgroundDrawable(new ColorDrawable(ViewHelper.getWindowBackground(this)));
-        popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_normal));
+        setupPopupWindow(viewHolder);
         viewHolder.recycler.setAdapter(getAssigneesAdapter());
         AnimHelper.revealPopupWindow(popupWindow, assignee);
     }
 
     @SuppressLint("InflateParams") @OnClick(R.id.sort) public void onSortClicked() {
-        if (hideWindow()) return;
+        if (sort.getTag() != null) return;
+        sort.setTag(true);
         ViewHolder viewHolder = new ViewHolder(LayoutInflater.from(this).inflate(R.layout.simple_list_dialog, null));
-        popupWindow = new PopupWindow(this);
-        popupWindow.setContentView(viewHolder.view);
-        popupWindow.setOutsideTouchable(true);
-        popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_micro));
-        popupWindow.setBackgroundDrawable(new ColorDrawable(ViewHelper.getWindowBackground(this)));
-        popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_normal));
+        setupPopupWindow(viewHolder);
         ArrayList<String> lists = new ArrayList<>();
         Collections.addAll(lists, getResources().getStringArray(R.array.sort_prs_issues));
         lists.add(CommentsHelper.getThumbsUp());
@@ -301,12 +287,23 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         }
     }
 
-    private boolean hideWindow() {
-        if (popupWindow != null && popupWindow.isShowing()) {
-            popupWindow.dismiss();
-            return true;
+    private void setupPopupWindow(@NonNull ViewHolder viewHolder) {
+        if (popupWindow == null) {
+            popupWindow = new PopupWindow(this);
+            popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_micro));
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.setBackgroundDrawable(new ColorDrawable(ViewHelper.getWindowBackground(this)));
+            popupWindow.setElevation(getResources().getDimension(R.dimen.spacing_normal));
+            popupWindow.setOnDismissListener(() -> new Handler().postDelayed(() -> {
+                //hacky way to dismiss on re-selecting tab.
+                if (assignee == null || milestone == null || sort == null || labels == null) return;
+                assignee.setTag(null);
+                milestone.setTag(null);
+                sort.setTag(null);
+                labels.setTag(null);
+            }, 100));
         }
-        return false;
+        popupWindow.setContentView(viewHolder.view);
     }
 
     private void onSearch() {
@@ -470,7 +467,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         onSearch();
     }
 
-    private void appendSort(String item)  {
+    private void appendSort(String item) {
         dismissPopup();
         appendIfEmpty();
         Resources resources = getResources();

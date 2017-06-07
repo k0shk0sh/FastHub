@@ -9,7 +9,6 @@ import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.Gist;
-import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
@@ -21,6 +20,7 @@ import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
 import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
 import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
+import com.fastaccess.ui.modules.profile.events.ProfileEventsFragment;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersFragment;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingFragment;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
@@ -74,6 +74,7 @@ import lombok.Setter;
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForProfile(@NonNull Context context, @NonNull String login) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.overview), ProfileOverviewFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.feed), ProfileEventsFragment.Companion.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), ProfileReposFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.starred), ProfileStarredFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.gists), ProfileGistsFragment.newInstance(login)),
@@ -86,7 +87,8 @@ import lombok.Setter;
                                                                    @NonNull String login, @NonNull String url,
                                                                    @NonNull String defaultBranch) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.readme), ViewerFragment.newInstance(url, true)),
-                new FragmentPagerAdapterModel(context.getString(R.string.files), RepoFilePathFragment.newInstance(login, repoId, null, defaultBranch)),
+                new FragmentPagerAdapterModel(context.getString(R.string.files), RepoFilePathFragment.newInstance(login, repoId, null,
+                        defaultBranch)),
                 new FragmentPagerAdapterModel(context.getString(R.string.commits), RepoCommitsFragment.newInstance(repoId, login, defaultBranch)),
                 new FragmentPagerAdapterModel(context.getString(R.string.releases), RepoReleasesFragment.newInstance(repoId, login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.contributors), RepoContributorsFragment.newInstance(repoId, login)))
@@ -101,8 +103,8 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context, @NonNull Issue issueModel) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance(issueModel)))
+    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance()))
                 .collect(Collectors.toList());
     }
 
@@ -111,7 +113,7 @@ import lombok.Setter;
         String login = pullRequest.getLogin();
         String repoId = pullRequest.getRepoId();
         int number = pullRequest.getNumber();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), PullRequestTimelineFragment.newInstance(pullRequest)),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), PullRequestTimelineFragment.newInstance()),
                 new FragmentPagerAdapterModel(context.getString(R.string.commits), PullRequestCommitsFragment.newInstance(repoId, login, number)),
                 new FragmentPagerAdapterModel(context.getString(R.string.files), PullRequestFilesFragment.newInstance(repoId, login, number)))
                 .collect(Collectors.toList());

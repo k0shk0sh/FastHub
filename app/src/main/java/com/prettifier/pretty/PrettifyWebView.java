@@ -32,6 +32,7 @@ import com.prettifier.pretty.helper.PrettifyHelper;
 public class PrettifyWebView extends NestedWebView {
     private OnContentChangedListener onContentChangedListener;
     private boolean interceptTouch;
+    private boolean enableNestedScrolling;
 
     public interface OnContentChangedListener {
         void onContentChanged(int progress);
@@ -53,7 +54,7 @@ public class PrettifyWebView extends NestedWebView {
         initView(attrs);
     }
 
-    @Override public boolean onInterceptTouchEvent(MotionEvent p_event) {
+    @Override public boolean onInterceptTouchEvent(MotionEvent p) {
         return true;
     }
 
@@ -172,6 +173,14 @@ public class PrettifyWebView extends NestedWebView {
 
     public void setInterceptTouch(boolean interceptTouch) {
         this.interceptTouch = interceptTouch;
+    }
+
+    public void setEnableNestedScrolling(boolean enableNestedScrolling) {
+        if (this.enableNestedScrolling != enableNestedScrolling) {
+            Logger.e(enableNestedScrolling);
+            setNestedScrollingEnabled(enableNestedScrolling);
+            this.enableNestedScrolling = enableNestedScrolling;
+        }
     }
 
     private void startActivity(@Nullable Uri url) {

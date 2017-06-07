@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -13,12 +14,15 @@ import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
+import io.reactivex.Observable;
+
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
  */
 
 class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> implements ProfileStarredMvp.Presenter {
 
+    @com.evernote.android.state.State int starredCount = -1;
     private ArrayList<Repo> repos = new ArrayList<>();
     private int page;
     private int previousTotal;
@@ -62,14 +66,28 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
             sendToView(ProfileStarredMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getUserService().getStarred(parameter, page),
-                repoModelPageable -> {
-                    lastPage = repoModelPageable.getLast();
-                    if (getCurrentPage() == 1) {
-                        manageObservable(Repo.saveStarred(repoModelPageable.getItems(), parameter));
-                    }
-                    sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
-                });
+        Observable<Pageable<Repo>> observable;
+        if (starredCount == -1) {
+            observable = Observable.zip(RestProvider.getUserService().getStarred(parameter, page),
+                    RestProvider.getUserService().getStarredCount(parameter), (repoPageable, count) -> {
+                        if (count != null) {
+                            starredCount = count.getLast();
+                        }
+                        return repoPageable;
+                    });
+        } else {
+            observable = RestProvider.getUserService().getStarred(parameter, page);
+        }
+        makeRestCall(observable, repoModelPageable -> {
+            lastPage = repoModelPageable.getLast();
+            if (getCurrentPage() == 1) {
+                manageObservable(Repo.saveStarred(repoModelPageable.getItems(), parameter));
+            }
+            sendToView(view -> {
+                view.onUpdateCount(starredCount);
+                view.onNotifyAdapter(repoModelPageable.getItems(), page);
+            });
+        });
     }
 
     @NonNull @Override public ArrayList<Repo> getRepos() {
@@ -79,7 +97,11 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
             manageDisposable(RxHelper.getObserver(Repo.getStarred(login).toObservable()).subscribe(repoModels ->
-                    sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
+                    sendToView(view -> {
+                        starredCount = -1;
+                        view.onUpdateCount(repoModels != null ? repoModels.size() : 0);
+                        view.onNotifyAdapter(repoModels, 1);
+                    })));
         } else {
             sendToView(ProfileStarredMvp.View::hideProgress);
         }

@@ -37,7 +37,6 @@ import lombok.Getter;
  */
 
 @Getter public class IssueTimelinePresenter extends BasePresenter<IssueTimelineMvp.View> implements IssueTimelineMvp.Presenter {
-    @com.evernote.android.state.State Issue issue;
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private ReactionsProvider reactionsProvider;
     private int page;
@@ -51,12 +50,13 @@ import lombok.Getter;
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (getView() != null) {
             if (item.getType() == TimelineModel.COMMENT) {
-                if (getHeader() == null) return;
+                if (getView().getIssue() == null) return;
+                Issue issue = getView().getIssue();
                 if (v.getId() == R.id.commentMenu) {
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, getHeader().getLogin(), item.getComment().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, issue.getLogin(), item.getComment().getUser().getLogin());
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -113,8 +113,10 @@ import lombok.Getter;
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
         if (getView() == null) return;
         if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
-            String login = login();
-            String repoId = repoId();
+            if (getView().getIssue() == null) return;
+            Issue issue = getView().getIssue();
+            String login = issue.getLogin();
+            String repoId = issue.getRepoId();
             if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
                 ReactionTypes type = ReactionTypes.get(v.getId());
                 if (type != null) {
@@ -136,23 +138,6 @@ import lombok.Getter;
         return timeline;
     }
 
-    @Override protected void onCreate() {
-        super.onCreate();
-        if (issue != null && timeline.isEmpty()) {
-            sendToView(view -> view.onSetHeader(TimelineModel.constructHeader(issue)));
-            onCallApi(1, null);
-        }
-    }
-
-    @Override public void onFragmentCreated(@Nullable Bundle bundle) {
-        if (bundle == null) throw new NullPointerException("Bundle is null?");
-        issue = bundle.getParcelable(BundleConstant.ITEM);
-        if (timeline.isEmpty() && issue != null) {
-            sendToView(view -> view.onSetHeader(TimelineModel.constructHeader(issue)));
-            onCallApi(1, null);
-        }
-    }
-
     @Override public void onWorkOffline() {
         //TODO
     }
@@ -161,7 +146,9 @@ import lombok.Getter;
         if (bundle != null) {
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
             if (commId != 0) {
-                makeRestCall(RestProvider.getIssueService().deleteIssueComment(login(), repoId(), commId),
+                if (getView() == null || getView().getIssue() == null) return;
+                Issue issue = getView().getIssue();
+                makeRestCall(RestProvider.getIssueService().deleteIssueComment(issue.getLogin(), issue.getRepoId(), commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
@@ -175,35 +162,17 @@ import lombok.Getter;
         }
     }
 
-    @Nullable @Override public String repoId() {
-        return getHeader() != null ? getHeader().getRepoId() : null;
-    }
-
-    @Nullable @Override public String login() {
-        return getHeader() != null ? getHeader().getLogin() : null;
-    }
-
-    @Override public int number() {
-        return getHeader() != null ? getHeader().getNumber() : -1;
-    }
-
-    @Nullable private Issue getHeader() {
-        return issue;
-    }
-
     @Override public void onHandleReaction(int viewId, long id, @ReactionsProvider.ReactionType int reactionType) {
-        String login = login();
-        String repoId = repoId();
+        if (getView() == null || getView().getIssue() == null) return;
+        Issue issue = getView().getIssue();
+        String login = issue.getLogin();
+        String repoId = issue.getRepoId();
         Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType);
         if (observable != null) manageObservable(observable);
     }
 
     @Override public boolean isCallingApi(long id, int vId) {
         return getReactionsProvider().isCallingApi(id, vId);
-    }
-
-    @Override public void onUpdateIssue(@NonNull Issue issue) {
-        this.issue = issue;
     }
 
     @NonNull private ReactionsProvider getReactionsProvider() {
@@ -229,8 +198,8 @@ import lombok.Getter;
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
-        if (getHeader() == null) {
+    @Override public void onCallApi(int page, @Nullable Issue parameter) {
+        if (parameter == null) {
             sendToView(BaseMvp.FAView::hideProgress);
             return;
         }
@@ -243,19 +212,19 @@ import lombok.Getter;
             return;
         }
         setCurrentPage(page);
-        String login = getHeader().getLogin();
-        String repoID = getHeader().getRepoId();
-        int number = getHeader().getNumber();
+        String login = parameter.getLogin();
+        String repoId = parameter.getRepoId();
+        int number = parameter.getNumber();
         Observable<List<TimelineModel>> observable;
         if (page > 1) {
-            observable = RestProvider.getIssueService().getIssueComments(login, repoID, number, page)
+            observable = RestProvider.getIssueService().getIssueComments(login, repoId, number, page)
                     .map(comments -> {
                         lastPage = comments != null ? comments.getLast() : 0;
                         return TimelineModel.construct(comments != null ? comments.getItems() : null);
                     });
         } else {
-            observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoID, number),
-                    RestProvider.getIssueService().getIssueComments(login, repoID, number, page),
+            observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
+                    RestProvider.getIssueService().getIssueComments(login, repoId, number, page),
                     (issueEventPageable, commentPageable) -> {
                         lastPage = commentPageable != null ? commentPageable.getLast() : 0;
                         return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,

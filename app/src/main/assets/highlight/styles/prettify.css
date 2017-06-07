@@ -1,39 +1,38 @@
 .prettyprint {
-  font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace;
-  border: 0 !important;
+    font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace !important;
+    border: 0 !important;
 }
 
 .pln {
-  color: #333;
+    color: #333 !important;
 }
 
 ol.linenums {
-  margin-top: 0;
-  margin-bottom: 0;
-  color: #727272;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    color: #727272 !important;
 }
 
 ol {
-    margin-left: 0;
-    padding-left: 0.2em;
+    margin-left: 0 !important;
+    padding-left: 0.2em !important;
     counter-reset: ol-item
 }
 
 ol li:nth-child(-n+9) {
-	padding-left: 8px;
+    padding-left: 8px !important;
 }
 
 ol li {
-    margin-left: 0;
-    padding-left: 0;
-    list-style-type: none;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    list-style-type: none !important;
     counter-increment: ol-item
 }
 
 ol li:before {
     content: counter(ol-item) " "
 }
-
 
 li.L0,
 li.L1,
@@ -44,91 +43,79 @@ li.L5,
 li.L6,
 li.L7,
 li.L8,
-li.L9 {}
+li.L9 {
+    background: transparent !important;
+}
 
 @media screen {
 
-  /* string content */
+    /* string content */
+    .str {
+        color: #183691 !important;
+    }
 
-  .str {
-    color: #183691;
-  }
+    /* keyword */
+    .kwd {
+        color: #a71d5d !important;
+    }
 
-  /* keyword */
+    /* comment */
+    .com {
+        color: #969896 !important;
+    }
 
-  .kwd {
-    color: #a71d5d;
-  }
+    /* type name */
+    .typ {
+        color: #0086b3 !important;
+    }
 
-  /* comment */
+    /* literal value */
+    .lit {
+        color: #0086b3 !important;
+    }
 
-  .com {
-    color: #969896;
-  }
+    /* punctuation */
+    .pun {
+        color: #333 !important;
+    }
 
-  /* type name */
+    /* lisp open bracket */
+    .opn {
+        color: #333 !important;
+    }
 
-  .typ {
-    color: #0086b3;
-  }
+    /* lisp close bracket */
+    .clo {
+        color: #333 !important;
+    }
 
-  /* literal value */
+    /* markup tag name */
+    .tag {
+        color: #000080 !important;
+    }
 
-  .lit {
-    color: #0086b3;
-  }
+    /* markup attribute name */
+    .atn {
+        color: #795da3 !important;
+    }
 
-  /* punctuation */
+    /* markup attribute value */
+    .atv {
+        color: #183691 !important;
+    }
 
-  .pun {
-    color: #333;
-  }
+    /* declaration */
+    .dec {
+        color: #333 !important;
+    }
 
-  /* lisp open bracket */
+    /* variable name */
+    .var {
+        color: #008080 !important;
+    }
 
-  .opn {
-    color: #333;
-  }
-
-  /* lisp close bracket */
-
-  .clo {
-    color: #333;
-  }
-
-  /* markup tag name */
-
-  .tag {
-    color: #000080;
-  }
-
-  /* markup attribute name */
-
-  .atn {
-    color: #795da3;
-  }
-
-  /* markup attribute value */
-
-  .atv {
-    color: #183691;
-  }
-
-  /* declaration */
-
-  .dec {
-    color: #333;
-  }
-
-  /* variable name */
-
-  .var {
-    color: #008080;
-  }
-
-  /* function name */
-
-  .fun {
-    color: #900;
-  }
+    /* function name */
+    .fun {
+        color: #900 !important;
+    }
 }

@@ -80,12 +80,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-            android:id="@+id/recycler"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical"
-            app:layoutManager="@string/linear_layout_manager"/>
+            android:layout_height="wrap_content">
+
+            <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical"
+                app:layoutManager="@string/linear_layout_manager"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
         <include layout="@layout/state_layout"/>
     </FrameLayout>

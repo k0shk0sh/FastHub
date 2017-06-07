@@ -49,29 +49,27 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
                 return;
             } else if (!InputHelper.isEmpty(sha) && !InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
                 makeRestCall(RestProvider.getRepoService()
-                                .getCommit(login, repoId, sha)
-                                .flatMap(commit -> {
-                                    if (commit.getGitCommit() != null && commit.getGitCommit().getMessage() != null) {
-                                        MarkdownModel markdownModel = new MarkdownModel();
-                                        markdownModel.setContext(login + "/" + repoId);
-                                        markdownModel.setText(commit.getGitCommit().getMessage());
-                                        return RestProvider.getRepoService().convertReadmeToHtml(markdownModel)
-                                                .onErrorReturn(throwable -> null);
-                                    }
-                                    return Observable.just(commit);
-                                }, (commit, u) -> {
-                                    if (!InputHelper.isEmpty(u) && u instanceof String) {
-                                        commit.getGitCommit().setMessage(u.toString());
-                                    }
-                                    return commit;
-                                }),
-                        commit -> {
-                            commitModel = commit;
-                            commitModel.setRepoId(repoId);
-                            commitModel.setLogin(login);
-                            sendToView(CommitPagerMvp.View::onSetup);
-                            manageObservable(commitModel.save(commitModel).toObservable());
-                        });
+                        .getCommit(login, repoId, sha)
+                        .flatMap(commit -> {
+                            if (commit.getGitCommit() != null && commit.getGitCommit().getMessage() != null) {
+                                MarkdownModel markdownModel = new MarkdownModel();
+                                markdownModel.setContext(login + "/" + repoId);
+                                markdownModel.setText(commit.getGitCommit().getMessage());
+                                return RestProvider.getRepoService().convertReadmeToHtml(markdownModel);
+                            }
+                            return Observable.just(commit);
+                        }, (commit, u) -> {
+                            if (!InputHelper.isEmpty(u) && u instanceof String) {
+                                commit.getGitCommit().setMessage(u.toString());
+                            }
+                            return commit;
+                        }), commit -> {
+                    commitModel = commit;
+                    commitModel.setRepoId(repoId);
+                    commitModel.setLogin(login);
+                    sendToView(CommitPagerMvp.View::onSetup);
+                    manageObservable(commitModel.save(commitModel).toObservable());
+                });
                 return;
             }
         }

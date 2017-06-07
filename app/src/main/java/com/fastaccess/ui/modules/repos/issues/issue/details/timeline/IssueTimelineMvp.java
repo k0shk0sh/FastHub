@@ -32,7 +32,7 @@ public interface IssueTimelineMvp {
 
         void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
 
-        @NonNull OnLoadMore getLoadMore();
+        @NonNull OnLoadMore<Issue> getLoadMore();
 
         void onEditComment(@NonNull Comment item);
 
@@ -50,32 +50,24 @@ public interface IssueTimelineMvp {
 
         void onSetHeader(@NonNull TimelineModel timelineModel);
 
-        void onRefresh(@NonNull Issue issue);
+        @Nullable Issue getIssue();
+
+        void onUpdateHeader();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
-            BaseMvp.PaginationListener {
+            BaseMvp.PaginationListener<Issue> {
 
         boolean isPreviouslyReacted(long commentId, int vId);
 
         @NonNull ArrayList<TimelineModel> getEvents();
 
-        void onFragmentCreated(@Nullable Bundle bundle);
-
         void onWorkOffline();
 
         void onHandleDeletion(@Nullable Bundle bundle);
 
-        @Nullable String repoId();
-
-        @Nullable String login();
-
-        int number();
-
         void onHandleReaction(@IdRes int viewId, long id, @ReactionsProvider.ReactionType int reactionType);
 
         boolean isCallingApi(long id, int vId);
-
-        void onUpdateIssue(@NonNull Issue issue);
     }
 }

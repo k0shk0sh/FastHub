@@ -40,7 +40,7 @@ public interface PullRequestTimelineMvp {
 
         void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
 
-        @NonNull OnLoadMore getLoadMore();
+        @NonNull OnLoadMore<PullRequest> getLoadMore();
 
         void onEditComment(@NonNull Comment item);
 
@@ -66,34 +66,26 @@ public interface PullRequestTimelineMvp {
 
         void onSetHeader(@NonNull TimelineModel timelineModel);
 
-        void onRefresh(@NonNull PullRequest pullRequest);
+        @Nullable PullRequest getPullRequest();
+
+        void onUpdateHeader();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
-            ReviewCommentCallback, BaseMvp.PaginationListener {
+            ReviewCommentCallback, BaseMvp.PaginationListener<PullRequest> {
 
         @NonNull ArrayList<TimelineModel> getEvents();
-
-        void onFragmentCreated(@Nullable Bundle bundle);
 
         void onWorkOffline();
 
         void onHandleDeletion(@Nullable Bundle bundle);
 
-        @Nullable String repoId();
-
-        @Nullable String login();
-
-        int number();
-
         boolean isPreviouslyReacted(long commentId, int vId);
 
         void onHandleReaction(@IdRes int vId, long idOrNumber, @ReactionsProvider.ReactionType int reactionType);
 
-        boolean isMerged();
+        boolean isMerged(PullRequest pullRequest);
 
         boolean isCallingApi(long id, int vId);
-
-        void onUpdatePullRequest(@NonNull PullRequest pullRequest);
     }
 }

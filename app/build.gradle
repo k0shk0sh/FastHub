@@ -28,8 +28,8 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 253
-        versionName "2.5.3"
+        versionCode 301
+        versionName "3.0.1"
         signingConfig signingConfigs.signing
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
@@ -49,7 +49,7 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            shrinkResources true
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -92,6 +92,10 @@ android {
     compileOptions.incremental = false
 }
 
+kapt {
+    generateStubs = true
+}
+
 repositories {
     maven { url "https://clojars.org/repo/" }
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
@@ -100,8 +104,6 @@ repositories {
     maven { url 'https://maven.fabric.io/public' }
     mavenCentral()
 }
-
-
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -145,8 +147,6 @@ dependencies {
     }
     compile "com.github.miguelbcr:RxBillingService:0.0.3"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    compile "com.github.florent37:retrojsoup:${retrojsoupVersion}"
-    compile "com.github.florent37:rxjsoup:${retrojsoupVersion}"
     compile 'org.jsoup:jsoup:1.10.2'
     compile "com.evernote:android-state:${state_version}"
     provided "org.projectlombok:lombok:${lombokVersion}"
@@ -156,7 +156,6 @@ dependencies {
     kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     kapt "org.projectlombok:lombok:${lombokVersion}"
-    kapt "com.github.florent37:retrojsoup-compiler:${retrojsoupVersion}"
 //    testCompile "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testCompile "junit:junit:${junitVersion}"
     testCompile "org.mockito:mockito-core:${mockitoVersion}"

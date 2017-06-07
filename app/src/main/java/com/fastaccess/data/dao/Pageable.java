@@ -17,12 +17,12 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class Pageable<M extends Parcelable> implements Parcelable {
 
-    private int first;
-    private int next;
-    private int prev;
-    private int last;
-    private int totalCount;
-    private boolean incompleteResults;
+    public int first;
+    public int next;
+    public int prev;
+    public int last;
+    public int totalCount;
+    public boolean incompleteResults;
     public List<M> items;
 
     @Override public int describeContents() { return 0; }

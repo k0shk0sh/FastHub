@@ -5,7 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import com.evernote.android.state.State
 import com.fastaccess.R
-import com.fastaccess.data.dao.TrendingResponse
+import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.ui.adapter.TrendingAdapter
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.widgets.StateLayout
@@ -25,13 +25,12 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     @State var lang: String = ""
     @State var since: String = ""
 
-
     override fun providePresenter(): TrendingFragmentPresenter {
         return TrendingFragmentPresenter()
     }
 
     override fun fragmentLayout(): Int {
-        return R.layout.micro_grid_refresh_list
+        return R.layout.small_grid_refresh_list
     }
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +42,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
         recycler.adapter = adapter
     }
 
-    override fun onNotifyAdapter(items: TrendingResponse) {
+    override fun onNotifyAdapter(items: TrendingModel) {
         adapter.addItem(items)
     }
 
@@ -62,9 +61,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     override fun hideProgress() {
         refresh.isRefreshing = false
         stateLayout.hideProgress()
-        if (adapter.isEmpty) {
-            stateLayout.showEmptyState()
-        }
+        stateLayout.showReload(adapter.itemCount)
     }
 
     override fun showMessage(titleRes: Int, msgRes: Int) {

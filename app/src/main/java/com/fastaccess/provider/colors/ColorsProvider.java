@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -32,6 +33,9 @@ import io.reactivex.Observable;
  */
 
 public class ColorsProvider {
+
+    private static List<String> popularLanguages = Stream.of("Java", "Kotlin", "JavaScript", "Python", "CSS", "PHP",
+            "Ruby", "C++", "C", "GO", "Swift").toList();//predefined languages.
 
     private static Map<String, LanguageColorModel> colors = new LinkedHashMap<>();
 
@@ -57,10 +61,14 @@ public class ColorsProvider {
     }
 
     @NonNull public static ArrayList<String> languages() {
-        return Stream.of(colors)
+        ArrayList<String> lang = new ArrayList<>();
+        lang.add("All Language");
+        lang.addAll(Stream.of(colors)
                 .filter(value -> value != null && !InputHelper.isEmpty(value.getKey()))
                 .map(Map.Entry::getKey)
-                .collect(Collectors.toCollection(ArrayList::new));
+                .sortBy(s -> !popularLanguages.contains(s))
+                .collect(Collectors.toCollection(ArrayList::new)));
+        return lang;
     }
 
     @Nullable public static LanguageColorModel getColor(@NonNull String lang) {

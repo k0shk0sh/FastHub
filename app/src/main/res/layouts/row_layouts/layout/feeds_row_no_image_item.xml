@@ -29,12 +29,26 @@
             tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
 
         <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/description"
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="?android:attr/textColorSecondary"
+            android:visibility="gone"
+            tools:text="Hello World"
+            tools:visibility="visible"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/date"
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary"
+            android:drawablePadding="@dimen/spacing_normal"
+            android:textColor="?android:attr/textColorTertiary"
+            tools:drawableStart="@drawable/ic_notification"
             tools:text="50 minutes ago"/>
+
     </LinearLayout>
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

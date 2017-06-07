@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
@@ -27,7 +28,6 @@ import com.fastaccess.ui.widgets.FontTextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTouch;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 19 Feb 2017, 12:33 PM
@@ -127,7 +127,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
 
     @Override public void onSetCode(@NonNull CharSequence charSequence) {
         this.savedText = charSequence;
-        MarkDownProvider.setMdText(description, InputHelper.toString(charSequence));
+        MarkDownProvider.setMdText(description, InputHelper.toString(savedText));
     }
 
     @Override public void onTitleError(boolean isEmptyTitle) {
