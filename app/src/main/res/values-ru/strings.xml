@@ -5,7 +5,7 @@
     <string name="discard">Отменить</string>
     <string name="cancel">Отмена</string>
     <string name="ok">OK</string>
-    <string name="no_data">Доступные данные</string>
+    <string name="no_data">Доступные данные отсутствуют</string>
     <string name="search">Поиск</string>
     <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
     <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получить всё самое лучшее от FastHub</string>
@@ -13,7 +13,7 @@
     <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
     <string name="reload">Обновить</string>
-    <string name="feeds">Лента</string>
+    <string name="feeds">Обвноления</string>
     <string name="profile">Профиль</string>
     <string name="error">Ошибка</string>
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
@@ -399,5 +399,5 @@
     <string name="assignee_added">Назначение успешно совершено</string>
     <string name="reviewer_added">Рецензент успешно добавлен</string>
     <string name="milestone_added">Тег успешно добавлен</string>
-    <string name="feed">Фид</string>
+    <string name="feed">Обновления</string>
 </resources>
