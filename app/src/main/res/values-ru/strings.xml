@@ -1,12 +1,11 @@
 <resources>
-    <string name="app_name_full">FastHub для Android</string>
     <string name="in_progress">Загрузка, подождите…</string>
     <string name="action">Действия</string>
     <string name="settings">Настройки</string>
     <string name="discard">Отменить</string>
     <string name="cancel">Отмена</string>
     <string name="ok">OK</string>
-    <string name="no_data">Нет доступных данных</string>
+    <string name="no_data">Доступные данные отсутствуют</string>
     <string name="search">Поиск</string>
     <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
     <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получить всё самое лучшее от FastHub</string>
@@ -14,7 +13,7 @@
     <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
     <string name="reload">Обновить</string>
-    <string name="feeds">Лента</string>
+    <string name="feeds">Обвноления</string>
     <string name="profile">Профиль</string>
     <string name="error">Ошибка</string>
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
@@ -52,8 +51,9 @@
     <string name="released">выпустил</string>
     <string name="drafted">Черновые</string>
     <string name="releases">Релизы</string>
-    <string name="no_body">Нет содержимого</string>
+    <string name="no_body">Содержимое отсутствует</string>
     <string name="contributors">Вкладчики</string>
+    <string name="contributions">Вклады</string>
     <string name="by"></string>
     <string name="close_issue">Закрыть Вопрос</string>
     <string name="re_open_issue">Открыть Вопрос</string>
@@ -115,7 +115,7 @@
     <string name="submit_as">Опубликовать как</string>
     <string name="delete_gist">Удалить</string>
     <string name="error_deleting_gist">Ошибка удаления Gist\'a</string>
-    <string name="no_files">Нет файлов</string>
+    <string name="no_files">Файлы отсутствуют</string>
     <string name="required_field">Необходимое поле</string>
     <string name="successfully_submitted">Успешно опубликовано</string>
     <string name="create_gist">Создать Gist</string>
@@ -133,7 +133,7 @@
     <string name="open">Открыть</string>
     <string name="notification_type">Тип уведомления</string>
     <string name="labels">Метки</string>
-    <string name="no_labels">Нет меток</string>
+    <string name="no_labels">Метки отсутствуют</string>
     <string name="labels_added_successfully">Метки успешно добавлены</string>
     <string name="submit_feedback">Отправить отзыв</string>
     <string name="logout">Выход</string>
@@ -178,25 +178,28 @@
     <string name="ten_minutes">10 минут</string>
     <string name="five_minutes">5 минут</string>
     <string name="one_minute">1 минута</string>
-    <string name="created_repo">Создано</string>
-    <string name="committed">Опубликовано</string>
+    <string name="one_hour">1 час</string>
+    <string name="two_hour">2 часа</string>
+    <string name="three_hour">3 часа</string>
+    <string name="created_repo">создал(а)</string>
+    <string name="committed">зафиксировал(а) изменения</string>
     <string name="downloaded">Скачено</string>
-    <string name="followed">Отслеживается</string>
-    <string name="commented_on_issue">Комментарий к Вопросу</string>
+    <string name="followed">отслеживает</string>
+    <string name="commented_on_issue">комментарий к вопросу</string>
     <string name="member">Участник</string>
-    <string name="pr_comment_review">Комментарий к Запросу на слияние</string>
-    <string name="pushed">Опубликовано</string>
+    <string name="pr_comment_review">комментарий к запросу на слияние</string>
+    <string name="pushed">отправил(а)</string>
     <string name="team_event">Команда</string>
     <string name="deleted">Удалено</string>
     <string name="unknown">Неизвестно</string>
-    <string name="commented_on_commit">Комментарий к Фиксации</string>
+    <string name="commented_on_commit">оставил(а) комментарий к фиксации</string>
     <string name="switch_branch">Переключить ветвь</string>
     <string name="assignees">Назначения</string>
     <string name="edit">Редактировать</string>
-    <string name="edited">\u2022 отредактировано</string>
+    <string name="edited">\u2022 изменено</string>
     <string name="update_issue">Обновить Вопрос</string>
     <string name="update_pull_request">Обновить Запрос на слияние</string>
-    <string name="no_milestones">Нет тегов</string>
+    <string name="no_milestones">Теги отсутствуют</string>
     <string name="add">Добавить</string>
     <string name="done">Завершено</string>
     <string name="home">Начальный экран</string>
@@ -264,31 +267,31 @@
     <string name="pin">Закрепить</string>
     <string name="pinned">Закреплённые</string>
     <string name="unpin">Открепить</string>
-    <string name="empty_pinned_repos">Нет закреплённых репозиториев. Закреплённые репозитории будут показаны здесь</string>
+    <string name="empty_pinned_repos">Закреплённые репозитории отсутствуют. Закреплённые репозитории будут показаны здесь</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
-    <string name="no_feeds">Новостей нет</string>
+    <string name="no_feeds">Новости отсутствуют</string>
     <string name="no_gists">Gist\'ы отсутствуют</string>
-    <string name="no_comments">Нет комментариев</string>
-    <string name="no_notifications">Нет уведомлений</string>
-    <string name="no_followers">Нет подписчиков</string>
-    <string name="no_followings">Нет подписок</string>
-    <string name="no_repos">Нет репозиториев</string>
-    <string name="no_starred_repos">Нет избранных репозиториев</string>
-    <string name="no_commits">Нет фиксаций</string>
-    <string name="no_contributors">Нет Вкладчиков</string>
-    <string name="no_releases">Нет Релизов</string>
-    <string name="no_closed_issues">Нет закрытых Вопросов</string>
-    <string name="no_opened_issues">Нет открытых Вопросов</string>
-    <string name="no_events">Нет событий</string>
-    <string name="no_open_pull_requests">Нет Запросов на слияние</string>
-    <string name="no_closed_pull_request">Нет закрытых Запросов на слияние</string>
+    <string name="no_comments">Комментарии отсутствуют</string>
+    <string name="no_notifications">Уведомления отсутствуют</string>
+    <string name="no_followers">Подписчики отсутствуют</string>
+    <string name="no_followings">Подписки отсутствуют</string>
+    <string name="no_repos">Репозитории отсутствуют</string>
+    <string name="no_starred_repos">Избранные репозитории отсутствуют</string>
+    <string name="no_commits">Фиксации отсутствуют</string>
+    <string name="no_contributors">Вкладчики отсутствуют</string>
+    <string name="no_releases">Релизы отсутствуют</string>
+    <string name="no_closed_issues">Закрытые Вопросы отсутствуют</string>
+    <string name="no_opened_issues">Открытые Вопросы отсутствуют</string>
+    <string name="no_events">События отсутствуют</string>
+    <string name="no_open_pull_requests">Запросы на слияние отсутствуют</string>
+    <string name="no_closed_pull_request">Закрытые Запросы на слияние отсутствуют</string>
     <string name="no_search_results">Нет результатов</string>
     <string name="read_write_permission_explanation">Пожалуйста, предоставьте FastHub доступ к следующим разрешениям, чтобы появилась возможность
         хранить файлы на вашей SD карте, а также просматривать их</string>
     <string name="public_gists">Публичные Gist\'ы</string>
     <string name="enable_ads">Включить рекламу</string>
-    <string name="no_issues">Нет Вопросов</string>
+    <string name="no_issues">Вопросы отсутствуют</string>
     <string name="no_unread_notifications">Нет новых уведомлений.</string>
     <string name="my_gists">Мои Gist\'ы</string>
     <string name="changelog">Список изменений</string>
@@ -305,9 +308,9 @@
     <string name="people">Люди</string>
     <string name="teams">Команды</string>
     <string name="members">Участники</string>
-    <string name="no_members">Нет участников</string>
-    <string name="no_teams">Нет команд</string>
-    <string name="no_orgs">Нет организаций</string>
+    <string name="no_members">Участники отсутствуют</string>
+    <string name="no_teams">Команды отсутствуют</string>
+    <string name="no_orgs">Организации отсутствуют</string>
     <string name="mark_as_read">Прочитано</string>
     <string name="animations">Анимации</string>
     <string name="dialog_animation_summary">Включить всплывающие анимации</string>
@@ -345,9 +348,8 @@
     <string name="personal_token">Личный токен</string>
     <string name="basic_login">Войти через основную форму авторизации</string>
     <string name="no_orgs_description">Если вы состоите в каких-либо организациях, но они здесь отсутствуют, то перейдите по ссылке ниже.
-        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Причиной тому, что FastHub не использовал "Access Token", являлась
-        включённая двухфакторная аутентификация: её одноразовый код действителен только в течение минуты, что вызывает у GitHub ошибку неавторизированного доступа
-        с последующим выходом из аккаунта в FastHub.</string>
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Вы можете выполнить вход при помощи Токена доступа (Access token), 
+        который может предоставить FastHub доступ к списку ваших организаций.</string>
     <string name="insert">Вставить</string>
     <string name="select">Выбрать</string>
     <string name="select_picture">Выберите картинку</string>
@@ -362,7 +364,7 @@
     <string name="want_to_merge">хочет объединить</string>
     <string name="watchers">Наблюдатели</string>
     <string name="reviewers">Рецензенты</string>
-    <string name="no_reviewers">Нет рецензентов</string>
+    <string name="no_reviewers">Рецензенты отсутствуют</string>
     <string name="sent_from_fasthub">Отправлено с моего %1$s с помощью %2$s%3$s</string>
     <string name="enable_signature">Включить подпись</string>
     <string name="enable_signature_summary">Включить подпись &quot;отправлено с помощью &quot;</string>
@@ -370,4 +372,32 @@
     <string name="enable_signature_box_summary">Отображать в редакторе галочку, которая включает подпись</string>
     <string name="tags">Теги</string>
     <string name="add_comment">Добавить комментарий</string>
+    <string name="banners">Представляем баннеры</string>
+    <string name="banners_info">Начиная с FastHub 2.5.0, вы можете лучше выражать себя при помощи баннера 
+        на странице вашего профиля.\n\nКаждый пользователь FastHub сможет увидеть ваш баннер так же, как и вы можете 
+        видеть баннеры других пользователей! Если вы хотите создать баннер, то 
+        сделайте его размер 1280x384 или универсальным. В противном случае, он может быть обрезан.\n\nВы можете добавлять или изменять
+        баннер в любое время, создавая Gist с названием &quot;header.fst&quot; с файлом, который содержит прямую ссылку на
+        изображение.\n\nА можно сделать ещё проще – воспользоваться встроенным редактором!</string>
+    <string name="edit_banner">ВЫБЕРИТЕ БАННЕР</string>
+    <string name="image_error">Ошибка загрузки изображения. Пожалуйста, попробуйте снова.</string>
+    <string name="trending">Тренды</string>
+    <string name="not_really_working">Сортировка по emoji может работать некорректно из-за ограничений GitHub</string>
+    <string name="scroll_up">Прокрутка вверх</string>
+    <string name="scroll_down">Прокрутка вниз</string>
+    <string name="participated">Участвует</string>
+    <string name="todo_checked">Элемент списка TODO с галочкой</string>
+    <string name="todo_unchecked">Элемент списка TODO без галочки</string>
+    <string name="divider">Разделитель</string>
+    <string name="no_user_found">Пользователи не найдены</string>
+    <string name="no_trending">Тренды отсутствуют</string>
+    <string name="reset">Сброс</string>
+    <string name="apply">Применить</string>
+    <string name="filter">Фильтр</string>
+    <string name="type">Тип</string>
+    <string name="sort_direction">Порядок сортировки</string>
+    <string name="assignee_added">Назначение успешно совершено</string>
+    <string name="reviewer_added">Рецензент успешно добавлен</string>
+    <string name="milestone_added">Тег успешно добавлен</string>
+    <string name="feed">Обновления</string>
 </resources>
