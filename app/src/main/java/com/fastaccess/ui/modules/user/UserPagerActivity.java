@@ -193,7 +193,13 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     @OnClick(R.id.fab) public void onRepoFilterClicked() {
         if (isOrg) {
-            OrgReposFragment fragment = ((OrgReposFragment) pager.getAdapter().instantiateItem(pager, 1));
+            int position;
+            if (getPresenter().getIsMember() == 1) {
+                position = 2;
+            } else {
+                position = 1;
+            }
+            OrgReposFragment fragment = ((OrgReposFragment) pager.getAdapter().instantiateItem(pager, position));
             fragment.onRepoFilterClicked();
         } else {
             ProfileReposFragment fragment = ((ProfileReposFragment) pager.getAdapter().instantiateItem(pager, 2));
@@ -203,7 +209,11 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     private void hideShowFab(int position) {
         if (isOrg) {
-            if (position == 1) {
+            int orgPosition = position;
+            if (getPresenter().getIsMember() == 1) {
+                orgPosition = 2;
+            }
+            if (orgPosition == 1 || orgPosition == 2) {
                 fab.show();
             } else {
                 fab.hide();

@@ -60,7 +60,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationSound;
     private SettingsCallback settingsCallback;
 
-
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         this.callback = (BaseMvp.FAView) context;
@@ -98,6 +97,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             case 1:
                 addPreferencesFromResource(R.xml.behaviour_settings);
                 findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
+                findPreference("enable_ads").setOnPreferenceChangeListener(this);
                 signatureVia = findPreference("sent_via");
                 if (PrefHelper.getBoolean("sent_via_enabled"))
                     getPreferenceScreen().removePreference(signatureVia);
@@ -210,6 +210,9 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 getPreferenceScreen().removePreference(signatureVia);
             else
                 getPreferenceScreen().addPreference(signatureVia);
+            return true;
+        } else if (preference.getKey().equalsIgnoreCase("enable_ads")) {
+            callback.onThemeChanged();
             return true;
         }
         return false;

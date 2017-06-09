@@ -52,6 +52,7 @@ import com.fastaccess.ui.modules.search.code.SearchCodeFragment;
 import com.fastaccess.ui.modules.search.issues.SearchIssuesFragment;
 import com.fastaccess.ui.modules.search.repos.SearchReposFragment;
 import com.fastaccess.ui.modules.search.users.SearchUsersFragment;
+import com.fastaccess.ui.modules.theme.fragment.ThemeFragment;
 
 import java.util.List;
 
@@ -155,20 +156,21 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForNotifications(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForNotifications(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.unread), new UnreadNotificationsFragment()),
                 new FragmentPagerAdapterModel(context.getString(R.string.all), AllNotificationsFragment.newInstance()))
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForGists(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForGists(@NonNull Context context) {
 
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.my_gists), ProfileGistsFragment.newInstance(Login.getUser().getLogin())),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.my_gists), ProfileGistsFragment.newInstance(Login.getUser()
+                        .getLogin())),
                 new FragmentPagerAdapterModel(context.getString(R.string.public_gists), GistsFragment.newInstance()))
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
@@ -180,7 +182,7 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
@@ -192,7 +194,7 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
         return Stream.of(
                 new FragmentPagerAdapterModel(context.getString(R.string.feeds), isMember ? OrgFeedsFragment.newInstance(login) : null),
                 new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login)),
@@ -203,9 +205,16 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForTeam(@NonNull Context context, long id) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForTeam(@NonNull Context context, long id) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.members), TeamMembersFragment.newInstance(id)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), TeamReposFragment.newInstance(id)))
+                .collect(Collectors.toList());
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForTheme() {
+        return Stream.of(new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeLight)),
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeDark)),
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)))
                 .collect(Collectors.toList());
     }
 }

@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
+import butterknife.bindView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.BundleConstant
@@ -26,11 +27,13 @@ import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
 class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), TrendingMvp.View {
 
     private var trendingFragment: TrendingFragment? = null
-    val navMenu by lazy { findViewById(R.id.navMenu) as NavigationView }
-    val daily by lazy { findViewById(R.id.daily) as TextView }
-    val weekly by lazy { findViewById(R.id.weekly) as TextView }
-    val monthly by lazy { findViewById(R.id.monthly) as TextView }
-    val drawerLayout by lazy { findViewById(R.id.drawer) as DrawerLayout }
+
+    val navMenu: NavigationView by bindView(R.id.navMenu)
+    val daily: TextView by bindView(R.id.daily)
+    val weekly: TextView by bindView(R.id.weekly)
+    val monthly: TextView by bindView(R.id.monthly)
+    val drawerLayout: DrawerLayout by bindView(R.id.drawer)
+
 
     @State var selectedTitle: String = "All Language"
 

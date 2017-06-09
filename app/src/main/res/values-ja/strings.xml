@@ -226,8 +226,6 @@
     <string name="or_character">OR</string>
     <string name="mark_notification_title">通知の確認ステータスを無効にする</string>
     <string name="mark_notification_summary">通知をタップした時の既読のマークを無効にする。</string>
-    <string name="light_theme_mode">明るいテーマ</string>
-    <string name="dark_theme_mode">暗いテーマ</string>
     <string name="theme_title">テーマ選択</string>
     <string name="theme_summary">デフォルトテーマを選択する</string>
     <string name="website">ウェブサイト</string>

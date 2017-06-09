@@ -8,6 +8,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
@@ -26,7 +27,6 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 09 Apr 2017, 7:13 PM
@@ -157,7 +157,6 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
-        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();
         if (savedInstanceState != null) {

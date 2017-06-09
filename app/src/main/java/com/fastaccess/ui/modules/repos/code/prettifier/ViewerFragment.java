@@ -16,7 +16,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -160,11 +159,12 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.wrap);
-        Logger.e(getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage());
-        if (getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage()) {
-            menuItem.setVisible(false);
-        } else {
-            menuItem.setVisible(true).setCheckable(true).setChecked(isWrap);
+        if (menuItem != null) {
+            if (getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage()) {
+                menuItem.setVisible(false);
+            } else {
+                menuItem.setVisible(true).setCheckable(true).setChecked(isWrap);
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.transition.TransitionManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
@@ -167,34 +168,28 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
             }
             return false;
         });
-        organization.setText(InputHelper.toNA(userModel.getCompany()));
-        location.setText(InputHelper.toNA(userModel.getLocation()));
-        email.setText(InputHelper.toNA(userModel.getEmail()));
-        link.setText(InputHelper.toNA(userModel.getBlog()));
+        organization.setText(userModel.getCompany());
+        location.setText(userModel.getLocation());
+        email.setText(userModel.getEmail());
+        link.setText(userModel.getBlog());
         joined.setText(ParseDateFormat.getTimeAgo(userModel.getCreatedAt()));
-        ViewGroup parent = (ViewGroup) organization.getParent();
-        if (organization.getText().equals("N/A")) {
-            int i = parent.indexOfChild(organization);
-            ((ViewGroup) organization.getParent()).removeViewAt(i + 1);
+        if (InputHelper.isEmpty(userModel.getCompany())) {
             organization.setVisibility(GONE);
         }
-        if (location.getText().equals("N/A")) {
-            int i = parent.indexOfChild(location);
-            ((ViewGroup) location.getParent()).removeViewAt(i + 1);
+        if (InputHelper.isEmpty(userModel.getLocation())) {
             location.setVisibility(GONE);
         }
-        if (email.getText().equals("N/A")) {
-            int i = parent.indexOfChild(email);
-            ((ViewGroup) email.getParent()).removeViewAt(i + 1);
+        if (InputHelper.isEmpty(userModel.getEmail())) {
             email.setVisibility(GONE);
         }
-        if (link.getText().equals("N/A")) {
-            int i = parent.indexOfChild(link);
-            ((ViewGroup) link.getParent()).removeViewAt(i + 1);
+        if (InputHelper.isEmpty(userModel.getBlog())) {
             link.setVisibility(GONE);
         }
-        if (joined.getText().equals("N/A")) {
+        if (InputHelper.isEmpty(userModel.getCreatedAt())) {
             joined.setVisibility(GONE);
+        }
+        if (getView() != null) {
+            TransitionManager.beginDelayedTransition((ViewGroup) getView());
         }
         followers.setText(SpannableBuilder.builder()
                 .append(getString(R.string.followers))

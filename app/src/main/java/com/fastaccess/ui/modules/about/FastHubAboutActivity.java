@@ -16,11 +16,11 @@ import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Release;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.provider.tasks.version.CheckVersionService;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
@@ -29,7 +29,6 @@ import com.mikepenz.aboutlibraries.Libs;
 import com.mikepenz.aboutlibraries.LibsBuilder;
 
 import es.dmoral.toasty.Toasty;
-import io.reactivex.disposables.Disposable;
 
 /**
  * Created by danielstone on 12 Mar 2017, 1:57 AM
@@ -37,7 +36,6 @@ import io.reactivex.disposables.Disposable;
 public class FastHubAboutActivity extends MaterialAboutActivity {
 
     private View malRecyclerview;
-    private Disposable disposable;
 
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -79,13 +77,6 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
             finish();
         }
         return false;//override
-    }
-
-    @Override protected void onDestroy() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-        super.onDestroy();
     }
 
     private void buildLogo(Context context, MaterialAboutCard.Builder logoAuthor) {
@@ -153,15 +144,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .text(getString(R.string.version))
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_update))
                 .subText(BuildConfig.VERSION_NAME)
-                .setOnClickListener(b -> disposable = Release.get("FastHub", "k0shk0sh")
-                        .subscribe(releases -> {
-                            if (releases != null && !releases.isEmpty()) {
-                                if (releases.get(0).getTagName().contains(BuildConfig.VERSION_NAME))
-                                    Toasty.success(context, getString(R.string.up_to_date)).show();
-                                else
-                                    Toasty.warning(context, getString(R.string.new_version)).show();
-                            }
-                        }))
+                .setOnClickListener(b -> startService(new Intent(this, CheckVersionService.class)))
                 .build())
                 .addItem(ConvenienceBuilder.createRateActionItem(context, ContextCompat.getDrawable(context, R.drawable.ic_star_filled),
                         getString(R.string.rate_app), null))
