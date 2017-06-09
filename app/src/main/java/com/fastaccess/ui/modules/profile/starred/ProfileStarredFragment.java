@@ -86,7 +86,6 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
         adapter = new ReposAdapter(getPresenter().getRepos(), true);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         recycler.addDivider();
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {

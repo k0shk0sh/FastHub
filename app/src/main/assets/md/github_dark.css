@@ -204,7 +204,7 @@ body table th, body table td {
 }
 
 body table tr {
-    background-color: #22252A;
+    background-color: transparent;
     border-top: 1px solid #656d78
 }
 
@@ -371,7 +371,6 @@ body .highlight pre, body pre {
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: #2D3035;
     border-radius: 3px
 }
 

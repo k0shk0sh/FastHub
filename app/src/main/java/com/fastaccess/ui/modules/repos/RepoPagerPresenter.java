@@ -42,11 +42,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()), repoModel -> {
             this.repo = repoModel;
             manageObservable(this.repo.save(repo).toObservable());
-            PinnedRepos pinnedRepos = PinnedRepos.get(repoModel.getFullName());
-            if (pinnedRepos != null) {
-                pinnedRepos.setPinnedRepo(repoModel);
-                manageObservable(PinnedRepos.save(pinnedRepos).toObservable());
-            }
+            updatePinned(repoModel);
             sendToView(view -> {
                 view.onInitRepo();
                 view.onNavigationChanged(navTyp);
@@ -274,4 +270,12 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
     }
 
     @Override public void onMenuItemReselect(@IdRes int id, int position, boolean fromUser) {}
+
+    private void updatePinned(Repo repoModel) {
+        PinnedRepos pinnedRepos = PinnedRepos.get(repoModel.getFullName());
+        if (pinnedRepos != null) {
+            pinnedRepos.setPinnedRepo(repoModel);
+            manageObservable(PinnedRepos.update(pinnedRepos).toObservable());
+        }
+    }
 }

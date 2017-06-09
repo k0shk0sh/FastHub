@@ -4,10 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.support.annotation.AttrRes;
@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 
 /**
@@ -38,7 +39,6 @@ public class RecyclerFastScroller extends FrameLayout {
     final int mHiddenTranslationX;
     private final Runnable mHide;
     private final int mMinScrollHandleHeight;
-
 
     RecyclerView mRecyclerView;
 
@@ -125,6 +125,7 @@ public class RecyclerFastScroller extends FrameLayout {
             private float mInitialBarHeight;
             private float mLastPressedYAdjustedToInitial;
 
+            @SuppressLint("ClickableViewAccessibility")
             @Override public boolean onTouch(View v, MotionEvent event) {
                 if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
                     mHandle.setPressed(true);
@@ -154,7 +155,6 @@ public class RecyclerFastScroller extends FrameLayout {
                     mHandle.setPressed(false);
                     postAutoHide();
                 }
-                updateScroller();
                 return true;
             }
         });
@@ -187,7 +187,6 @@ public class RecyclerFastScroller extends FrameLayout {
         }
 
         mHideOverride = false;
-
         float y = ratio * (barHeight - calculatedHandleHeight);
         mHandle.setY(y);
     }
@@ -210,15 +209,15 @@ public class RecyclerFastScroller extends FrameLayout {
     }
 
     private void updateBarColorAndInset() {
-        Drawable drawable;
-
-        if (!isRTL(getContext())) {
-            drawable = new InsetDrawable(new ColorDrawable(mBarColor), mBarInset, 0, 0, 0);
-        } else {
-            drawable = new InsetDrawable(new ColorDrawable(mBarColor), 0, 0, mBarInset, 0);
-        }
-        drawable.setAlpha(57);
-        mBar.setBackground(drawable);
+//        Drawable drawable;
+//
+//        if (!isRTL(getContext())) {
+//            drawable = new InsetDrawable(new ColorDrawable(mBarColor), mBarInset, 0, 0, 0);
+//        } else {
+//            drawable = new InsetDrawable(new ColorDrawable(mBarColor), 0, 0, mBarInset, 0);
+//        }
+//        drawable.setAlpha(57);
+//        mBar.setBackground(drawable);
     }
 
     public void attachRecyclerView(RecyclerView recyclerView) {

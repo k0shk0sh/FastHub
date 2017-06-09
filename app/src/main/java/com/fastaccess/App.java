@@ -11,8 +11,6 @@ import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.provider.uil.UILProvider;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
 import io.fabric.sdk.android.Fabric;
@@ -34,30 +32,9 @@ import shortbread.Shortbread;
 public class App extends Application {
     private static App instance;
     private ReactiveEntityStore<Persistable> dataStore;
-    private static GoogleApiClient googleApiClient;
 
     @Override public void onCreate() {
         super.onCreate();
-//        final EmojiCompat.Config config;
-//        // Use a downloadable font for EmojiCompat
-//        final FontRequest fontRequest = new FontRequest(
-//                "com.google.android.gms.fonts",
-//                "com.google.android.gms",
-//                "Noto Color Emoji Compat",
-//                R.array.fonts_certificate);
-//        config = new FontRequestEmojiCompatConfig(getApplicationContext(), fontRequest)
-//                .setReplaceAll(true)
-//                .registerInitCallback(new EmojiCompat.InitCallback() {
-//                    @Override
-//                    public void onInitialized() {
-//                        Log.i(getClass().getSimpleName(), "EmojiCompat initialized");
-//                    }
-//                    @Override
-//                    public void onFailed(@Nullable Throwable throwable) {
-//                        Log.e(getClass().getSimpleName(), "EmojiCompat initialization failed", throwable);
-//                    }
-//                });
-//        EmojiCompat.init(config);
         instance = this;
         init();
     }
@@ -82,10 +59,6 @@ public class App extends Application {
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.CREDENTIALS_API)
-                .build();
-        googleApiClient.connect();
     }
 
     private void setupPreference() {
@@ -108,9 +81,5 @@ public class App extends Application {
             dataStore = ReactiveSupport.toReactiveStore(new EntityDataStore<Persistable>(configuration));
         }
         return dataStore;
-    }
-
-    public GoogleApiClient getGoogleApiClient() {
-        return googleApiClient;
     }
 }

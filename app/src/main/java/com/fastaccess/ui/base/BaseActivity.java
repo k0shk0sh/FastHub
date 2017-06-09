@@ -1,12 +1,11 @@
 package com.fastaccess.ui.base;
 
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,12 +35,12 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.gists.GistsListActivity;
-import com.fastaccess.ui.modules.login.LoginActivity;
 import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.donation.DonationActivity;
@@ -54,6 +53,9 @@ import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -77,6 +79,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+    @Nullable @BindView(R.id.adView) AdView adView;
     @State Bundle presenterStateBundle = new Bundle();
 
     private static int REFRESH_CODE = 64;
@@ -117,7 +120,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             getPresenter().onRestoreInstanceState(presenterStateBundle);
         }
         setupToolbarAndStatusBar(toolbar);
-        //showHideAds();
+        showHideAds();
         if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
             new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
         }
@@ -300,6 +303,44 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onScrollTop(int index) {}
 
+    @Override protected void onPause() {
+        if (adView != null && adView.isShown()) {
+            adView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override protected void onResume() {
+        super.onResume();
+        if (adView != null && adView.isShown()) {
+            adView.resume();
+        }
+    }
+
+    @Override protected void onDestroy() {
+        if (adView != null && adView.isShown()) {
+            adView.destroy();
+        }
+        super.onDestroy();
+    }
+
+    protected void showHideAds() {
+        if (adView != null) {
+            boolean isAdsEnabled = PrefGetter.isAdsEnabled();
+            if (isAdsEnabled) {
+                adView.setVisibility(View.VISIBLE);
+                MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
+                AdRequest adRequest = new AdRequest.Builder()
+                        .addTestDevice(getString(R.string.test_device_id))
+                        .build();
+                adView.loadAd(adRequest);
+            } else {
+                adView.destroy();
+                adView.setVisibility(View.GONE);
+            }
+        }
+    }
+
     protected void selectHome(boolean hideRepo) {
         if (extraNav != null) {
             if (hideRepo) {
@@ -315,31 +356,19 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     protected void selectProfile() {
         selectHome(true);
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.profile).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.profile).setChecked(true);
-        }
+        selectMenuItem(R.id.profile);
     }
 
     protected void selectPinned() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.pinnedMenu).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.pinnedMenu).setChecked(true);
-        }
+        selectMenuItem(R.id.pinnedMenu);
     }
 
     protected void onSelectNotifications() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.notifications).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.notifications).setChecked(true);
-        }
+        selectMenuItem(R.id.notifications);
     }
 
     protected void onSelectTrending() {
-        if (extraNav != null) {
-            extraNav.getMenu().findItem(R.id.trending).setCheckable(true);
-            extraNav.getMenu().findItem(R.id.trending).setChecked(true);
-        }
+        selectMenuItem(R.id.trending);
     }
 
     protected void onOpenOrgsDialog() {
@@ -349,6 +378,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     protected void showNavToRepoItem() {
         if (extraNav != null) {
             extraNav.getMenu().findItem(R.id.navToRepo).setVisible(true);
+        }
+    }
+
+    protected void selectMenuItem(@IdRes int id) {
+        if (extraNav != null) {
+            extraNav.getMenu().findItem(id).setCheckable(true);
+            extraNav.getMenu().findItem(id).setChecked(true);
         }
     }
 
@@ -398,119 +434,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     private void setupTheme() {
-        if (this instanceof LoginActivity || this instanceof LoginChooserActivity)
-            return; // we really should consider putting this outside as it starts growing :D
-        int themeMode = PrefGetter.getThemeType(getApplicationContext());
-        int themeColor = PrefGetter.getThemeColor(getApplicationContext());
-        if (themeMode == PrefGetter.LIGHT) {
-            switch (themeColor) {
-                case PrefGetter.RED:
-                    setTheme(R.style.ThemeLight_Red);
-                    break;
-                case PrefGetter.PINK:
-                    setTheme(R.style.ThemeLight_Pink);
-                    break;
-                case PrefGetter.PURPLE:
-                    setTheme(R.style.ThemeLight_Purple);
-                    break;
-                case PrefGetter.DEEP_PURPLE:
-                    setTheme(R.style.ThemeLight_DeepPurple);
-                    break;
-                case PrefGetter.INDIGO:
-                    setTheme(R.style.ThemeLight_Indigo);
-                    break;
-                case PrefGetter.BLUE:
-                    setTheme(R.style.ThemeLight);
-                    break;
-                case PrefGetter.LIGHT_BLUE:
-                    setTheme(R.style.ThemeLight_LightBlue);
-                    break;
-                case PrefGetter.CYAN:
-                    setTheme(R.style.ThemeLight_Cyan);
-                    break;
-                case PrefGetter.TEAL:
-                    setTheme(R.style.ThemeLight_Teal);
-                    break;
-                case PrefGetter.GREEN:
-                    setTheme(R.style.ThemeLight_Green);
-                    break;
-                case PrefGetter.LIGHT_GREEN:
-                    setTheme(R.style.ThemeLight_LightGreen);
-                    break;
-                case PrefGetter.LIME:
-                    setTheme(R.style.ThemeLight_Lime);
-                    break;
-                case PrefGetter.YELLOW:
-                    setTheme(R.style.ThemeLight_Yellow);
-                    break;
-                case PrefGetter.AMBER:
-                    setTheme(R.style.ThemeLight_Amber);
-                    break;
-                case PrefGetter.ORANGE:
-                    setTheme(R.style.ThemeLight_Orange);
-                    break;
-                case PrefGetter.DEEP_ORANGE:
-                    setTheme(R.style.ThemeLight_DeepOrange);
-                    break;
-                default:
-                    setTheme(R.style.ThemeLight);
-            }
-        } else if (themeMode == PrefGetter.DARK) {
-            switch (themeColor) {
-                case PrefGetter.RED:
-                    setTheme(R.style.ThemeDark_Red);
-                    break;
-                case PrefGetter.PINK:
-                    setTheme(R.style.ThemeDark_Pink);
-                    break;
-                case PrefGetter.PURPLE:
-                    setTheme(R.style.ThemeDark_Purple);
-                    break;
-                case PrefGetter.DEEP_PURPLE:
-                    setTheme(R.style.ThemeDark_DeepPurple);
-                    break;
-                case PrefGetter.INDIGO:
-                    setTheme(R.style.ThemeDark_Indigo);
-                    break;
-                case PrefGetter.BLUE:
-                    setTheme(R.style.ThemeDark);
-                    break;
-                case PrefGetter.LIGHT_BLUE:
-                    setTheme(R.style.ThemeDark_LightBlue);
-                    break;
-                case PrefGetter.CYAN:
-                    setTheme(R.style.ThemeDark_Cyan);
-                    break;
-                case PrefGetter.TEAL:
-                    setTheme(R.style.ThemeDark_Teal);
-                    break;
-                case PrefGetter.GREEN:
-                    setTheme(R.style.ThemeDark_Green);
-                    break;
-                case PrefGetter.LIGHT_GREEN:
-                    setTheme(R.style.ThemeDark_LightGreen);
-                    break;
-                case PrefGetter.LIME:
-                    setTheme(R.style.ThemeDark_Lime);
-                    break;
-                case PrefGetter.YELLOW:
-                    setTheme(R.style.ThemeDark_Yellow);
-                    break;
-                case PrefGetter.AMBER:
-                    setTheme(R.style.ThemeDark_Amber);
-                    break;
-                case PrefGetter.ORANGE:
-                    setTheme(R.style.ThemeDark_Orange);
-                    break;
-                case PrefGetter.DEEP_ORANGE:
-                    setTheme(R.style.ThemeDark_DeepOrange);
-                    break;
-                default:
-                    setTheme(R.style.ThemeDark);
-            }
-        }
-        setTaskDescription(new ActivityManager.TaskDescription(getString(R.string.app_name),
-                BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(this)));
+        ThemeEngine.INSTANCE.apply(this);
     }
 
     protected void setupNavigationView(@Nullable NavigationView extraNav) {

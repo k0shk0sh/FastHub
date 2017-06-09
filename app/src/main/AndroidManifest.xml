@@ -217,10 +217,12 @@
                 <category android:name="android.intent.category.BROWSABLE"/>
             </intent-filter>
         </activity>
+        <activity android:name=".ui.modules.theme.ThemeActivity"/>
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
-            android:exported="true">
+            android:exported="true"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
@@ -229,6 +231,7 @@
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
+        <service android:name=".provider.tasks.version.CheckVersionService"/>
         <service
             android:name=".provider.fcm.PushNotificationService"
             android:exported="false">

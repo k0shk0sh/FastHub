@@ -3,6 +3,7 @@
 
     <item android:color="?colorAccent" android:state_selected="true"/>
     <item android:color="?colorAccent" android:state_pressed="true"/>
+    <item android:color="?colorAccent" android:state_checked="true"/>
     <item android:color="?android:textColorSecondary"/>
 
 </selector>

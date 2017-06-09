@@ -9,8 +9,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|center"
-        android:layout_marginTop="@dimen/spacing_xs_large">
+        android:layout_gravity="top|center">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
@@ -71,62 +70,55 @@
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_xs_large"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
                     android:autoLink="map"
                     android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_location"
-
+                    android:gravity="center|start"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large"
                     tools:text="Cum classis nocere"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?dividerColor"/>
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/email"
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_xs_large"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
                     android:autoLink="email"
+                    android:background="@drawable/top_border"
                     android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_email"
+                    android:gravity="center|start"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large"
                     tools:text="Cum classis nocere"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?dividerColor"/>
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/link"
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_xs_large"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
                     android:autoLink="web"
+                    android:background="@drawable/top_border"
                     android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_insert_link"
+                    android:gravity="center|start"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large"
                     tools:text="Cum classis nocere"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?dividerColor"/>
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/joined"
                     style="@style/Base.TextAppearance.AppCompat.Subhead"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing_xs_large"
-                    android:layout_marginTop="@dimen/spacing_xs_large"
+                    android:background="@drawable/top_border"
                     android:drawablePadding="@dimen/spacing_xs_large"
                     android:drawableStart="@drawable/ic_time"
+                    android:gravity="center|start"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large"
                     tools:text="Cum classis nocere"/>
 
             </LinearLayout>

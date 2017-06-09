@@ -20,6 +20,7 @@ public class PrefGetter {
 
     public static final int LIGHT = 1;
     public static final int DARK = 2;
+    public static final int AMLOD = 3;
 
     public static final int RED = 1;
     public static final int PINK = 2;
@@ -41,6 +42,7 @@ public class PrefGetter {
     @IntDef({
             LIGHT,
             DARK,
+            AMLOD
     })
     @Retention(RetentionPolicy.SOURCE) @interface ThemeType {}
 
@@ -243,6 +245,8 @@ public class PrefGetter {
                 return DARK;
             } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.light_theme_mode))) {
                 return LIGHT;
+            } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.amlod_theme_mode))) {
+                return AMLOD;
             }
         }
         return LIGHT;

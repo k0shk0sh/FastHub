@@ -15,6 +15,7 @@ import com.fastaccess.ui.adapter.SettingsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.settings.category.SettingsCategoryActivity;
+import com.fastaccess.ui.modules.theme.ThemeActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -51,27 +52,25 @@ public class SettingsActivity extends BaseActivity {
         settings = new SettingsModel[]{
                 SettingsModel.newInstance(R.drawable.ic_ring, getString(R.string.notifications), ""),
                 SettingsModel.newInstance(R.drawable.ic_settings, getString(R.string.behavior), ""),
-                SettingsModel.newInstance(R.drawable.ic_brush, getString(R.string.customization), ""),
+                SettingsModel.newInstance(R.drawable.ic_edit, getString(R.string.customization), ""),
                 SettingsModel.newInstance(R.drawable.ic_backup, getString(R.string.backup), ""),
-                SettingsModel.newInstance(R.drawable.ic_language, getString(R.string.app_language), "")
+                SettingsModel.newInstance(R.drawable.ic_language, getString(R.string.app_language), ""),
+                SettingsModel.newInstance(R.drawable.ic_color_lens, getString(R.string.theme_title), "")
         };
         settingsList.setAdapter(new SettingsAdapter(this, settings));
         settingsList.setOnItemClickListener((parent, view, position, id) -> {
+            SettingsModel settingsModel = (SettingsModel) parent.getItemAtPosition(position);
             Intent intent = new Intent(this, SettingsCategoryActivity.class);
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.ITEM, position)
-                    .put(BundleConstant.EXTRA, settings[position].getTitle())
+                    .put(BundleConstant.EXTRA, settingsModel.getTitle())
                     .end());
-            switch (position) {
-                case 1:
-                    ActivityHelper.startReveal(this, intent, settingsList, THEME_CHANGE);
-                    break;
-                case 4:
-                    showLanguageList();
-                    break;
-                default:
-                    ActivityHelper.startReveal(this, intent, settingsList);
-                    break;
+            if (settingsModel.getTitle().equalsIgnoreCase(getString(R.string.app_language))) {
+                showLanguageList();
+            } else if (settingsModel.getTitle().equalsIgnoreCase(getString(R.string.theme_title))) {
+                ActivityHelper.startReveal(this, new Intent(this, ThemeActivity.class), view);
+            } else {
+                ActivityHelper.startReveal(this, intent, view);
             }
         });
     }

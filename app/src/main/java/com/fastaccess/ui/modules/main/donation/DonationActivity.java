@@ -6,6 +6,8 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.view.View;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.PurchaseEvent;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
@@ -94,6 +96,7 @@ public class DonationActivity extends BaseActivity {
                 .doFinally(() -> setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_USER))
                 .subscribe((purchase, throwable) -> {
                     if (throwable == null) {
+                        Answers.getInstance().logPurchase(new PurchaseEvent().putItemName(productKey));
                         showMessage(R.string.success, R.string.success_purchase_message);
                     } else {
                         if (throwable instanceof RxBillingServiceException) {

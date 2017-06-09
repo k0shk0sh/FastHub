@@ -1,6 +1,7 @@
 package com.fastaccess.ui.adapter.viewholder
 
 import android.view.View
+import butterknife.bindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.provider.colors.ColorsProvider
@@ -10,18 +11,18 @@ import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
 /**
- * Created by Kosh on 02 Jun 2017, 1:27 PM
+ * Created: FontTextView by Kosh on 02 Jun 2017, 1:27 PM
  */
 
 open class TrendingViewHolder(itemView: View, adapter: BaseRecyclerAdapter<TrendingModel,
         TrendingViewHolder, OnItemClickListener<TrendingModel>>) : BaseViewHolder<TrendingModel>(itemView, adapter) {
 
-    val title by lazy { itemView.findViewById(R.id.title) as FontTextView }
-    val description by lazy { itemView.findViewById(R.id.description) as FontTextView }
-    val todayStars by lazy { itemView.findViewById(R.id.todayStars) as FontTextView }
-    val stars by lazy { itemView.findViewById(R.id.stars) as FontTextView }
-    val fork by lazy { itemView.findViewById(R.id.forks) as FontTextView }
-    val lang by lazy { itemView.findViewById(R.id.language) as FontTextView }
+    val title: FontTextView by bindView(R.id.title)
+    val description: FontTextView by bindView(R.id.description)
+    val todayStars: FontTextView by bindView(R.id.todayStars)
+    val stars: FontTextView by bindView(R.id.stars)
+    val fork: FontTextView by bindView(R.id.forks)
+    val lang: FontTextView by bindView(R.id.language)
 
     override fun bind(t: TrendingModel) {
         title.text = t.title
