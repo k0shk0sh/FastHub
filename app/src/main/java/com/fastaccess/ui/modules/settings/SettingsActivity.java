@@ -48,7 +48,9 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setToolbarIcon(R.drawable.ic_back);
         setTitle(getString(R.string.settings));
-        setResult(RESULT_CANCELED);
+        if (savedInstanceState == null) {
+            setResult(RESULT_CANCELED);
+        }
         settings = new SettingsModel[]{
                 SettingsModel.newInstance(R.drawable.ic_ring, getString(R.string.notifications), ""),
                 SettingsModel.newInstance(R.drawable.ic_settings, getString(R.string.behavior), ""),
@@ -68,7 +70,7 @@ public class SettingsActivity extends BaseActivity {
             if (settingsModel.getTitle().equalsIgnoreCase(getString(R.string.app_language))) {
                 showLanguageList();
             } else if (settingsModel.getTitle().equalsIgnoreCase(getString(R.string.theme_title))) {
-                ActivityHelper.startReveal(this, new Intent(this, ThemeActivity.class), view);
+                ActivityHelper.startReveal(this, new Intent(this, ThemeActivity.class), view, THEME_CHANGE);
             } else {
                 ActivityHelper.startReveal(this, intent, view);
             }
@@ -76,8 +78,10 @@ public class SettingsActivity extends BaseActivity {
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == THEME_CHANGE)
+        if (requestCode == THEME_CHANGE) {
             setResult(resultCode);
+            finish();
+        }
     }
 
     @NonNull @Override public TiPresenter providePresenter() {

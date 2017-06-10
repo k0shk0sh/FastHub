@@ -50,7 +50,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private static int RESTORE_REQUEST_CODE = 256;
 
     private BaseMvp.FAView callback;
-    private String appTheme;
     private String appColor;
     private String app_lauguage;
 
@@ -64,7 +63,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         super.onAttach(context);
         this.callback = (BaseMvp.FAView) context;
         this.settingsCallback = (SettingsCallback) context;
-        appTheme = PrefHelper.getString("appTheme");
         appColor = PrefHelper.getString("appColor");
         app_lauguage = PrefHelper.getString("app_language");
     }
@@ -107,7 +105,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 findPreference("enable_ads").setVisible(false);
                 findPreference("recylerViewAnimation").setOnPreferenceChangeListener(this);
                 findPreference("rect_avatar").setOnPreferenceChangeListener(this);
-                findPreference("appTheme").setOnPreferenceChangeListener(this);
                 findPreference("appColor").setOnPreferenceChangeListener(this);
                 break;
             case 3:
@@ -186,12 +183,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             callback.onThemeChanged();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("rect_avatar")) {
-            callback.onThemeChanged();
-            return true;
-        } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
-            if (newValue.toString().equalsIgnoreCase(appTheme))
-                return true;
-            Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             callback.onThemeChanged();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {

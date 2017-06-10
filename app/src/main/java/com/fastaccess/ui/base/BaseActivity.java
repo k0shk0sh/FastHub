@@ -452,7 +452,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                         view.findViewById(R.id.email).setVisibility(View.GONE);
                     }
                     view.findViewById(R.id.userHolder).setOnClickListener(v -> UserPagerActivity.startActivity(this, userModel.getLogin()));
-
+                    view.findViewById(R.id.donatedIcon).setVisibility(PrefGetter.isProEnabled() || PrefGetter.isAmlodEnabled()
+                                                                      ? View.VISIBLE : View.GONE);
                 }
             }
         }

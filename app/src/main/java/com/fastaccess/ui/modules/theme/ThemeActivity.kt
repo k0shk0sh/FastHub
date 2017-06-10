@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.theme
 
+import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.TabLayout
@@ -58,5 +59,11 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             pager.systemUiVisibility = if (darkIcons) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else 0
         }
+    }
+
+    override fun onThemeApplied() {
+        setResult(Activity.RESULT_OK)
+        showMessage(R.string.success, R.string.change_theme_warning)
+        finish()
     }
 }

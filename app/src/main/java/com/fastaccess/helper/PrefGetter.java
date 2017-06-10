@@ -85,6 +85,8 @@ public class PrefGetter {
     private static final String SENT_VIA = "sent_via";
     private static final String SENT_VIA_BOX = "sent_via_enabled";
     private static final String PROFILE_BACKGROUND_URL = "profile_background_url";
+    private static final String AMLOD_THEME_ENABLED = "amlod_theme_enabled";
+    private static final String PRO_ITEMS = "pro_items";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -318,5 +320,22 @@ public class PrefGetter {
 
     public static boolean isNotificationSoundEnabled() {
         return PrefHelper.getBoolean("notificationSound");
+    }
+
+    public static void enableAmlodTheme() {
+        PrefHelper.set(AMLOD_THEME_ENABLED, true);
+    }
+
+    public static boolean isAmlodEnabled() {
+        return PrefHelper.getBoolean(AMLOD_THEME_ENABLED);
+    }
+
+    public static void setProItems() {
+        PrefHelper.set(PRO_ITEMS, true);
+        enableAmlodTheme();
+    }
+
+    public static boolean isProEnabled() {
+        return PrefHelper.getBoolean(PRO_ITEMS);
     }
 }
