@@ -71,7 +71,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="50 minutes ago"
+                            android:text="Dummy Content"
                             tools:ignore="HardcodedText"/>
                     </LinearLayout>
 
@@ -150,9 +150,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                android:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -201,9 +201,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                android:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -252,9 +252,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                android:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -303,9 +303,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                android:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -354,9 +354,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                android:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"

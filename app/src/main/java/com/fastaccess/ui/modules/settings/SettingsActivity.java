@@ -19,14 +19,16 @@ import com.fastaccess.ui.modules.theme.ThemeActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
+import java.util.ArrayList;
+
 import butterknife.BindView;
 
-public class SettingsActivity extends BaseActivity {
+public class SettingsActivity extends BaseActivity implements LanguageBottomSheetDialog.LanguageDialogListener {
 
     @BindView(R.id.settingsList) ListView settingsList;
 
     private static int THEME_CHANGE = 32;
-    private SettingsModel[] settings;
+    private ArrayList<SettingsModel> settings = new ArrayList<>();
 
     @Override protected int layout() {
         return R.layout.activity_settings;
@@ -51,25 +53,23 @@ public class SettingsActivity extends BaseActivity {
         if (savedInstanceState == null) {
             setResult(RESULT_CANCELED);
         }
-        settings = new SettingsModel[]{
-                SettingsModel.newInstance(R.drawable.ic_ring, getString(R.string.notifications), ""),
-                SettingsModel.newInstance(R.drawable.ic_settings, getString(R.string.behavior), ""),
-                SettingsModel.newInstance(R.drawable.ic_edit, getString(R.string.customization), ""),
-                SettingsModel.newInstance(R.drawable.ic_backup, getString(R.string.backup), ""),
-                SettingsModel.newInstance(R.drawable.ic_language, getString(R.string.app_language), ""),
-                SettingsModel.newInstance(R.drawable.ic_color_lens, getString(R.string.theme_title), "")
-        };
+        settings.add(new SettingsModel(R.drawable.ic_color_lens, getString(R.string.theme_title), SettingsModel.THEME));
+        settings.add(new SettingsModel(R.drawable.ic_edit, getString(R.string.customization), SettingsModel.CUSTOMIZATION));
+        settings.add(new SettingsModel(R.drawable.ic_ring, getString(R.string.notifications), SettingsModel.NOTIFICATION));
+        settings.add(new SettingsModel(R.drawable.ic_settings, getString(R.string.behavior), SettingsModel.BEHAVIOR));
+        settings.add(new SettingsModel(R.drawable.ic_backup, getString(R.string.backup), SettingsModel.BACKUP));
+        settings.add(new SettingsModel(R.drawable.ic_language, getString(R.string.app_language), SettingsModel.LANGUAGE));
         settingsList.setAdapter(new SettingsAdapter(this, settings));
         settingsList.setOnItemClickListener((parent, view, position, id) -> {
             SettingsModel settingsModel = (SettingsModel) parent.getItemAtPosition(position);
             Intent intent = new Intent(this, SettingsCategoryActivity.class);
             intent.putExtras(Bundler.start()
-                    .put(BundleConstant.ITEM, position)
+                    .put(BundleConstant.ITEM, settingsModel.getSettingsType())
                     .put(BundleConstant.EXTRA, settingsModel.getTitle())
                     .end());
-            if (settingsModel.getTitle().equalsIgnoreCase(getString(R.string.app_language))) {
+            if (settingsModel.getSettingsType() == SettingsModel.LANGUAGE) {
                 showLanguageList();
-            } else if (settingsModel.getTitle().equalsIgnoreCase(getString(R.string.theme_title))) {
+            } else if (settingsModel.getSettingsType() == SettingsModel.THEME) {
                 ActivityHelper.startReveal(this, new Intent(this, ThemeActivity.class), view, THEME_CHANGE);
             } else {
                 ActivityHelper.startReveal(this, intent, view);
@@ -78,7 +78,7 @@ public class SettingsActivity extends BaseActivity {
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == THEME_CHANGE) {
+        if (requestCode == THEME_CHANGE && resultCode == RESULT_OK) {
             setResult(resultCode);
             finish();
         }
@@ -86,6 +86,11 @@ public class SettingsActivity extends BaseActivity {
 
     @NonNull @Override public TiPresenter providePresenter() {
         return new BasePresenter();
+    }
+
+    @Override public void onLanguageChanged() {
+        setResult(RESULT_OK);
+        finish();
     }
 
     private void showLanguageList() {
