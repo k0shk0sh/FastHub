@@ -5,13 +5,11 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.TabLayout
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewAnimationUtils
 import butterknife.bindView
-import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter
@@ -28,11 +26,11 @@ import com.fastaccess.ui.widgets.ViewPagerView
 
 class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>(), ThemeFragmentMvp.ThemeListener {
 
-    val tabs: TabLayout by bindView(R.id.tabs)
     val pager: ViewPagerView by bindView(R.id.pager)
+    val parentLayout: View by bindView(R.id.parentLayout)
 
     override fun layout(): Int {
-        return R.layout.tabbed_viewpager
+        return R.layout.theme_viewpager
     }
 
     override fun isTransparent(): Boolean {
@@ -56,7 +54,6 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
         if (savedInstanceState == null) {
             onChangePrimaryDarkColor(ContextCompat.getColor(this, R.color.light_primary), true)
         }
-        tabs.visibility = View.GONE
         pager.adapter = FragmentsPagerAdapter(supportFragmentManager, FragmentPagerAdapterModel.buildForTheme())
         pager.clipToPadding = false
         val partialWidth = resources.getDimensionPixelSize(R.dimen.spacing_s_large)
@@ -74,21 +71,21 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
             view.systemUiVisibility = if (darkIcons) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR else view.systemUiVisibility and View
                     .SYSTEM_UI_FLAG_LIGHT_STATUS_BAR.inv()
         }
-        val cx = pager.width / 2
-        val cy = pager.height / 2
-        if (pager.isAttachedToWindow) {
+        val cx = parentLayout.width / 2
+        val cy = parentLayout.height / 2
+        if (parentLayout.isAttachedToWindow) {
             val finalRadius = Math.hypot(cx.toDouble(), cy.toDouble()).toFloat()
-            val anim = ViewAnimationUtils.createCircularReveal(pager, cx, cy, 0f, finalRadius)
+            val anim = ViewAnimationUtils.createCircularReveal(parentLayout, cx, cy, 0f, finalRadius)
             anim.addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator?) {
                     super.onAnimationEnd(animation)
                     window?.statusBarColor = color
                 }
             })
-            pager.setBackgroundColor(color)
+            parentLayout.setBackgroundColor(color)
             anim.start()
         } else {
-            pager.setBackgroundColor(color)
+            parentLayout.setBackgroundColor(color)
             window.statusBarColor = color
         }
     }

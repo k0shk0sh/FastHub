@@ -22,6 +22,7 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import io.reactivex.functions.Action;
 
 public class SettingsActivity extends BaseActivity implements LanguageBottomSheetDialog.LanguageDialogListener {
 
@@ -88,14 +89,19 @@ public class SettingsActivity extends BaseActivity implements LanguageBottomShee
         return new BasePresenter();
     }
 
-    @Override public void onLanguageChanged() {
-        setResult(RESULT_OK);
-        finish();
-    }
-
     private void showLanguageList() {
         LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
         languageBottomSheetDialog.onAttach((Context) this);
         languageBottomSheetDialog.show(getSupportFragmentManager(), "LanguageBottomSheetDialog");
+    }
+
+    @Override public void onLanguageChanged(Action action) {
+        try {
+            action.run();//dismiss dialog avoid leakage
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setResult(RESULT_OK);
+        finish();
     }
 }

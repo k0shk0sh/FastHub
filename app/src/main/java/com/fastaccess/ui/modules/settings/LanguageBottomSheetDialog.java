@@ -19,6 +19,7 @@ import com.fastaccess.ui.widgets.FontTextView;
 import java.util.Arrays;
 
 import butterknife.BindView;
+import io.reactivex.functions.Action;
 
 /**
  * Created by JediB on 5/12/2017.
@@ -26,7 +27,7 @@ import butterknife.BindView;
 
 public class LanguageBottomSheetDialog extends BaseBottomSheetDialog {
     public interface LanguageDialogListener {
-        void onLanguageChanged();
+        void onLanguageChanged(Action action);
     }
 
     public static final String TAG = LanguageBottomSheetDialog.class.getSimpleName();
@@ -80,7 +81,7 @@ public class LanguageBottomSheetDialog extends BaseBottomSheetDialog {
             int index = radioGroup.indexOfChild(radioGroup.findViewById(radioGroup.getCheckedRadioButtonId()));
             PrefHelper.set("app_language", values[index]);
             if (!values[index].equalsIgnoreCase(language)) {
-                if (listener != null) listener.onLanguageChanged();
+                if (listener != null) listener.onLanguageChanged(this::dismiss);
             }
         });
 
