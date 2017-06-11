@@ -3,8 +3,13 @@ package com.fastaccess.ui.widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
+import android.widget.Button;
+import android.widget.LinearLayout;
+
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
@@ -24,27 +29,34 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
 
     public ColorPickerPreference(Context context) {
         super(context);
+        init();
     }
 
     public ColorPickerPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
+        init();
     }
 
     public ColorPickerPreference(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        init();
     }
 
     public ColorPickerPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init();
     }
 
+    private void init() {
+        setWidgetLayoutResource(R.layout.preference_widget_color);
+    }
 
     @Override
     protected void onClick() {
         super.onClick();
 
         int selected_color = getSelected_color();
-        String title = String.format("Accent Color: (Current: %s)", getSelected_color_name());
+        String title = String.format("Accent Color: (Selected: %s)", getSelected_color_name());
         colorPicker = new ColorPicker(getContext());
         colorPicker.setRoundColorButton(true);
         colorPicker.setColors(R.array.theme_colors_hex);
@@ -54,6 +66,14 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
         colorPicker.getNegativeButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));
         colorPicker.setOnChooseColorListener(this);
         colorPicker.show();
+    }
+
+    @Override
+    public void onBindViewHolder(PreferenceViewHolder holder) {
+        super.onBindViewHolder(holder);
+        final Button colorButton = (Button) holder.findViewById(R.id.color);
+        colorButton.setBackgroundResource(R.drawable.circle_shape);
+        colorButton.getBackground().setColorFilter(getSelected_color(), PorterDuff.Mode.SRC_IN);
     }
 
     private int getSelected_color() {

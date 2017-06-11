@@ -10,8 +10,6 @@
     <com.fastaccess.ui.widgets.ColorPickerPreference
         android:defaultValue="@string/blue_theme_mode"
         android:dialogTitle="@string/theme_color_title"
-        android:entries="@array/theme_colors"
-        android:entryValues="@array/theme_colors"
         android:key="appColor"
         android:icon="@drawable/ic_color_lens"
         android:summary="@string/theme_color_summary"
