@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitFileModel;
@@ -22,7 +23,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:16 PM
@@ -64,7 +64,6 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         refresh.setEnabled(false);
         stateLayout.setEmptyText(R.string.no_files);
         recycler.setEmptyView(stateLayout, refresh);
-        recycler.addKeyLineDivider();
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

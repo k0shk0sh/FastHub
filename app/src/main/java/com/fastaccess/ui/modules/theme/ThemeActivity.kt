@@ -5,13 +5,13 @@ import android.animation.AnimatorListenerAdapter
 import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewAnimationUtils
 import butterknife.bindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
+import com.fastaccess.helper.PrefGetter
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.base.mvp.BaseMvp
@@ -51,9 +51,6 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            onChangePrimaryDarkColor(ContextCompat.getColor(this, R.color.light_primary), true)
-        }
         pager.adapter = FragmentsPagerAdapter(supportFragmentManager, FragmentPagerAdapterModel.buildForTheme())
         pager.clipToPadding = false
         val partialWidth = resources.getDimensionPixelSize(R.dimen.spacing_s_large)
@@ -62,7 +59,10 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
         pager.pageMargin = pageMargin
         pager.setPageTransformer(true, CardsPagerTransformerBasic(4, 10))
         pager.setPadding(pagerPadding, pagerPadding, pagerPadding, pagerPadding)
-
+        if (savedInstanceState == null) {
+            val theme = PrefGetter.getThemeType(this)
+            pager.setCurrentItem(theme - 1, true)
+        }
     }
 
     override fun onChangePrimaryDarkColor(color: Int, darkIcons: Boolean) {
@@ -91,9 +91,8 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
     }
 
     override fun onThemeApplied() {
-        setResult(Activity.RESULT_OK)
         showMessage(R.string.success, R.string.change_theme_warning)
-        finish()
+        onThemeChanged()
     }
 
     inner class CardsPagerTransformerBasic(private val baseElevation: Int, private val raisingElevation: Int) : ViewPager.PageTransformer {

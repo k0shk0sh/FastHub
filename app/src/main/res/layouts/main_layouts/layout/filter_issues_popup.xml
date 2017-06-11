@@ -5,16 +5,17 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <com.fastaccess.ui.widgets.FontTextView
-        android:id="@+id/add"
+    <com.fastaccess.ui.widgets.FontCheckbox
+        android:id="@+id/sortByUpdated"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:drawablePadding="@dimen/spacing_xs_large"
-        android:drawableStart="@drawable/ic_add"
+        android:button="@color/transparent"
+        android:drawablePadding="12sp"
+        android:drawableStart="?android:attr/listChoiceIndicatorMultiple"
         android:padding="@dimen/spacing_xs_large"
-        android:text="@string/add"/>
+        android:text="@string/last_updated"/>
 
     <com.fastaccess.ui.widgets.FontTextView
         android:id="@+id/search"
@@ -27,16 +28,15 @@
         android:padding="@dimen/spacing_xs_large"
         android:text="@string/search"/>
 
-    <com.fastaccess.ui.widgets.FontCheckbox
-        android:id="@+id/sortByUpdated"
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/add"
         style="@style/TextAppearance.AppCompat.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
-        android:button="@color/transparent"
         android:drawablePadding="@dimen/spacing_xs_large"
-        android:drawableStart="?android:attr/listChoiceIndicatorMultiple"
+        android:drawableStart="@drawable/ic_add"
         android:padding="@dimen/spacing_xs_large"
-        android:text="@string/last_updated"/>
+        android:text="@string/add"/>
 
 </LinearLayout>

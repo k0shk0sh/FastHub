@@ -32,13 +32,14 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     private static final String URL = "https://github.com/users/%s/contributions";
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
-        if (!TextUtils.equals(login, Login.getUser().getLogin()))
-            makeRestCall(RestProvider.getUserService().getFollowStatus(login),
-                    booleanResponse -> {
+        if (!TextUtils.equals(login, Login.getUser().getLogin())) {
+            manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getFollowStatus(login))
+                    .subscribe(booleanResponse -> {
                         isSuccessResponse = true;
                         isFollowing = booleanResponse.code() == 204;
                         sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
-                    });
+                    }, Throwable::printStackTrace));
+        }
     }
 
     @Override public boolean isSuccessResponse() {
@@ -80,7 +81,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         login = bundle.getString(BundleConstant.EXTRA);
         if (login != null) {
             loadOrgs();
-            loadContributions();
 //            loadUrlBackgroundImage();
             makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
                 onSendUserToView(userModel);
@@ -89,6 +89,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
                         onCheckFollowStatus(login);
                     }
+                    loadContributions();
                 }
             });
         }

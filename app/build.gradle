@@ -52,6 +52,9 @@ android {
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            ext.alwaysUpdateBuildId = false
+        }
     }
 
     sourceSets {

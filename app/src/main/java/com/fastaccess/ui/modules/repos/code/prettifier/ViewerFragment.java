@@ -127,8 +127,14 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onContentChanged(int progress) {
-        if (progress == 100) {
-            if (stateLayout != null) hideProgress();
+        if (loader != null) {
+            loader.setProgress(progress);
+            if (progress == 100) {
+                hideProgress();
+                if (!getPresenter().isMarkDown() && !getPresenter().isImage()) {
+                    webView.scrollToLine(getPresenter().url());
+                }
+            }
         }
     }
 
@@ -147,7 +153,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
                 onSetCode(getPresenter().downloadedStream());
             }
         }
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -172,6 +178,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         if (item.getItemId() == R.id.wrap) {
             item.setChecked(!item.isChecked());
             isWrap = item.isChecked();
+            showProgress(0);
             onSetCode(getPresenter().downloadedStream());
         }
         return super.onOptionsItemSelected(item);

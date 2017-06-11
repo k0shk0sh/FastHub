@@ -15,20 +15,13 @@ public class PrettifyHelper {
                 "    <meta charset=\"utf-8\">\n" +
                 "    <link rel=\"stylesheet\" href=\"./styles/" + css + "\">\n" +
                 "    " + wrapStyle + "\n" +
-                "</head>\n" +
-                "<body style=\"" + (isDark && textTooLarge(text) ? "color:white;" : "") + "\" onload=\"" + (textTooLarge(text) ? "" : "PR.prettyPrint()") + "\">\n" +
-                "<pre class=\"prettyprint linenums\">" + text + "</pre>\n" +
                 "<script src=\"./js/prettify.js\"></script>\n" +
-                "<script>\n" +
-                "function scrollToLineNumber(lineNo) {\n" +
-                "    var normalizedLineNo = (lineNo - 1) %% 10;\n" +
-                "    var nthLineNo = Math.floor((lineNo - 1) / 10);\n" +
-                "    var elLines = document.querySelectorAll('li.L' + normalizedLineNo);\n" +
-                "    if (elLines[nthLineNo]) {\n" +
-                "        elLines[nthLineNo].scrollIntoView();\n" +
-                "    }\n" +
-                "}" +
-                "</script>" +
+                "<script src=\"./js/prettify_line_number.js\"></script>\n" +
+                "</head>\n" +
+                "<body style=\"" + (isDark && textTooLarge(text) ? "color:white;" : "") + "\">\n" +
+                "<pre><code>" + text + "</code></pre>\n" +
+                "<script>" + (textTooLarge(text) ? "" : "hljs.initHighlightingOnLoad();\nhljs.initLineNumbersOnLoad();") + "</script>\n" +
+                "<script src=\"./js/scrollto.js\"></script>\n" +
                 "</body>\n" +
                 "</html>";
     }
@@ -69,7 +62,7 @@ public class PrettifyHelper {
     }
 
     private static boolean textTooLarge(@NonNull String text) {
-        return text.length() > 204800;//>200kb ? disable highlighting to avoid crash.
+        return text.length() > 304800;//>roughly 300kb ? disable highlighting to avoid crash.
     }
 
 }

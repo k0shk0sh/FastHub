@@ -56,7 +56,7 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                     if (throwable == null) {
                         Answers.getInstance().logPurchase(PurchaseEvent().putItemName(productKey))
                         showMessage(R.string.success, R.string.success_purchase_message)
-                        if (productKey == getString(R.string.donation_product_1)) {
+                        if (productKey == getString(R.string.donation_product_1) || productKey == getString(R.string.amlod_theme_purchase)) {
                             PrefGetter.enableAmlodTheme()
                         } else {
                             PrefGetter.setProItems()
