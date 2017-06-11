@@ -101,6 +101,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void hideProgress() {
         loader.setVisibility(View.GONE);
         stateLayout.hideProgress();
+        stateLayout.showReload(getPresenter().downloadedStream() == null ? 0 : 1);
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {

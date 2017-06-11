@@ -268,7 +268,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {
         if (id == R.id.issues && (getRepo() != null && !getRepo().isHasIssues())) {
-            sendToView(view -> view.showMessage(R.string.error, R.string.repo_issues_is_disabled));
+            sendToView(RepoPagerMvp.View::disableIssueTab);
             return;
         }
         if (getView() != null && isViewAttached() && fromUser) {

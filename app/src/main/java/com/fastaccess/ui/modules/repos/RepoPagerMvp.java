@@ -65,6 +65,8 @@ public interface RepoPagerMvp {
 
 
         boolean hasUserInteractedWithView();
+
+        void disableIssueTab();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BottomNavigation.OnMenuItemSelectionListener {
