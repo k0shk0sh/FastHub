@@ -23,7 +23,6 @@ import java.util.Date;
 
 public class TimelineProvider {
 
-
     @NonNull public static SpannableBuilder getStyledEvents(@NonNull IssueEvent issueEventModel, @NonNull Context context, boolean isMerged) {
         IssueEventType event = issueEventModel.getEvent();
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
@@ -74,6 +73,7 @@ public class TimelineProvider {
                             .append(from)
                             .append(" ")
                             .bold(issueEventModel.getRename().getFromValue())
+                            .append(" ")
                             .append(to)
                             .append(" ")
                             .bold(issueEventModel.getRename().getToValue());
