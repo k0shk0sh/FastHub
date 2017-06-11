@@ -256,6 +256,11 @@ public class PrefGetter {
 
     @ThemeColor private static int getThemeColor(@NonNull Resources resources) {
         String appColor = PrefHelper.getString("appColor");
+        return getThemeColor(resources, appColor);
+    }
+
+    // used for color picker to get the index of the color (enum) from the name of the color
+    public static int getThemeColor(@NonNull Resources resources, String appColor) {
         if (!InputHelper.isEmpty(appColor)) {
             if (appColor.equalsIgnoreCase(resources.getString(R.string.red_theme_mode)))
                 return RED;

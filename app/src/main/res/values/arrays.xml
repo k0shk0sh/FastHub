@@ -52,6 +52,25 @@
         <item>@string/deep_orange_theme_mode</item>
     </string-array>
 
+    <array name="theme_colors_hex" translatable="false">
+        <item>@color/material_red_700</item>
+        <item>@color/material_pink_700</item>
+        <item>@color/material_purple_700</item>
+        <item>@color/material_deep_purple_700</item>
+        <item>@color/material_indigo_700</item>
+        <item>@color/material_blue_700</item>
+        <item>@color/material_light_blue_700</item>
+        <item>@color/material_cyan_700</item>
+        <item>@color/material_teal_700</item>
+        <item>@color/material_green_700</item>
+        <item>@color/material_light_green_700</item>
+        <item>@color/material_lime_700</item>
+        <item>@color/material_yellow_700</item>
+        <item>@color/material_amber_700</item>
+        <item>@color/material_orange_700</item>
+        <item>@color/material_deep_orange_700</item>
+    </array>
+
     <string-array name="issues_filter">
         <item>@string/created</item>
         <item>@string/assigned</item>
