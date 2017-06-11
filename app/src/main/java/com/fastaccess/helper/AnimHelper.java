@@ -32,26 +32,11 @@ import java.util.List;
 
 public class AnimHelper {
 
-    public interface AnimationCallback {
-        void onAnimationEnd();
-
-        void onAnimationStart();
-    }
-
     private static final Interpolator FAST_OUT_LINEAR_IN_INTERPOLATOR = new FastOutLinearInInterpolator();
     private static final Interpolator LINEAR_OUT_SLOW_IN_INTERPOLATOR = new LinearOutSlowInInterpolator();
     private static final Interpolator interpolator = new LinearInterpolator();
 
     @UiThread private static void animateVisibility(@Nullable final View view, final boolean show, int visibility) {
-        animateVisibility(view, show, visibility, null);
-    }
-
-    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show) {
-        animateVisibility(view, show, View.GONE);
-    }
-
-    @UiThread private static void animateVisibility(@Nullable final View view, final boolean show, int visibility,
-                                                    @Nullable final AnimationCallback callback) {
         if (view == null) {
             return;
         }
@@ -59,23 +44,25 @@ public class AnimHelper {
             view.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 @Override public boolean onPreDraw() {
                     view.getViewTreeObserver().removeOnPreDrawListener(this);
-                    animateSafeVisibility(show, view, visibility, callback);
+                    animateSafeVisibility(show, view, visibility);
                     return true;
                 }
             });
         } else {
-            animateSafeVisibility(show, view, visibility, callback);
+            animateSafeVisibility(show, view, visibility);
         }
     }
 
-    @UiThread private static void animateSafeVisibility(final boolean show, @NonNull final View view, int visibility,
-                                                        @Nullable final AnimationCallback callback) {
+    @UiThread public static void animateVisibility(@Nullable final View view, final boolean show) {
+        animateVisibility(view, show, View.GONE);
+    }
+
+    @UiThread private static void animateSafeVisibility(final boolean show, @NonNull final View view, int visibility) {
         view.animate().cancel();
         ViewPropertyAnimator animator = view.animate().setDuration(200).alpha(show ? 1F : 0F).setInterpolator(new AccelerateInterpolator())
                 .setListener(new AnimatorListenerAdapter() {
                     @Override public void onAnimationStart(Animator animation) {
                         super.onAnimationStart(animation);
-                        if (callback != null) callback.onAnimationStart();
                         if (show) {
                             view.setScaleX(1);
                             view.setScaleY(1);
@@ -90,7 +77,6 @@ public class AnimHelper {
                             view.setScaleX(0);
                             view.setScaleY(0);
                         }
-                        if (callback != null) callback.onAnimationEnd();
                         animation.removeListener(this);
                         view.clearAnimation();
                     }

@@ -8,5 +8,6 @@ public enum MyIssuesType {
     CREATED,
     ASSIGNED,
     MENTIONED,
-    REVIEW
+    REVIEW,
+    PARTICIPATED
 }

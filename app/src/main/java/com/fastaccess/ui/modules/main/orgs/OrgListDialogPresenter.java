@@ -9,7 +9,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 15 Apr 2017, 1:54 PM
@@ -20,12 +20,18 @@ public class OrgListDialogPresenter extends BasePresenter<OrgListDialogMvp.View>
 
     @Override public void onLoadOrgs() {
         makeRestCall(RestProvider.getOrgService().getMyOrganizations()
-                .flatMap(userPageable -> userPageable.getItems() != null ? Observable.from(userPageable.getItems()) : Observable.empty())
+                .flatMap(userPageable -> {
+                    if (userPageable != null && userPageable.getItems() != null) {
+                        return Observable.fromIterable(userPageable.getItems());
+                    }
+                    return Observable.empty();
+                })
                 .map(user -> {
                     if (user != null) user.setType("Organization");
                     return user;
                 })
-                .toList(), list -> {
+                .toList()
+                .toObservable(), list -> {
             List<User> myOrgs = new ArrayList<>();
             if (list != null && !list.isEmpty()) {
                 myOrgs.addAll(list);

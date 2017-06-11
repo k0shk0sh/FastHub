@@ -17,16 +17,31 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/title"
-            style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="3"
-            android:textColor="?android:textColorPrimary"
-            android:textStyle="bold"
-            tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/issue_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
+                android:visibility="gone"
+                tools:src="@drawable/ic_issue_closed_small"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/title"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="3"
+                android:textColor="?android:textColorPrimary"
+                android:textStyle="bold"
+                tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

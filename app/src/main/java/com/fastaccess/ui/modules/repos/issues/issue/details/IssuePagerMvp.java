@@ -23,8 +23,8 @@ import java.util.List;
 public interface IssuePagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
-            AssigneesMvp.SelectedAssigneesListener {
-        void onSetupIssue();
+            AssigneesMvp.SelectedAssigneesListener, IssuePrCallback<Issue> {
+        void onSetupIssue(boolean isUpdate);
 
         void showSuccessIssueActionMsg(boolean isClose);
 
@@ -36,11 +36,10 @@ public interface IssuePagerMvp {
 
         void onUpdateMenu();
 
-        void onShowAssignees(@NonNull List<User> items);
-
         void onMileStoneSelected(@NonNull MilestoneModel milestoneModel);
 
         void onFinishActivity();
+
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -69,8 +68,6 @@ public interface IssuePagerMvp {
 
         void onLoadLabels();
 
-        void onLoadAssignees();
-
         void onPutMilestones(@NonNull MilestoneModel milestone);
 
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
@@ -84,6 +81,10 @@ public interface IssuePagerMvp {
         void onUpdateIssue(@NonNull Issue issueModel);
 
         void onSubscribeOrMute(boolean mute);
+    }
+
+    interface IssuePrCallback<T> {
+        @Nullable T getData();
     }
 
 }

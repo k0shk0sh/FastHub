@@ -24,11 +24,13 @@ public interface RepoPagerMvp {
     int CODE = 0;
     int ISSUES = 1;
     int PULL_REQUEST = 2;
+    int PROFILE = 3;
 
     @IntDef({
             CODE,
             ISSUES,
             PULL_REQUEST,
+            PROFILE
     })
     @Retention(RetentionPolicy.SOURCE) @interface RepoNavigationType {}
 
@@ -104,6 +106,8 @@ public interface RepoPagerMvp {
         void onDeleteRepo();
 
         void onPinUnpinRepo();
+
+        void updatePinned(int forks, int stars, int watching);
     }
 
     interface TabsBadgeListener {

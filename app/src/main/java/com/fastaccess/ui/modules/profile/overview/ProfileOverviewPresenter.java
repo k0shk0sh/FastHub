@@ -12,24 +12,34 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.widgets.contributions.ContributionsDay;
+import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
+
+import java.util.ArrayList;
+
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
  */
 
 class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> implements ProfileOverviewMvp.Presenter {
-    private boolean isSuccessResponse;
-    private boolean isFollowing;
-    private String login;
+    @com.evernote.android.state.State boolean isSuccessResponse;
+    @com.evernote.android.state.State boolean isFollowing;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State ArrayList<User> userOrgs = new ArrayList<>();
+    private ArrayList<ContributionsDay> contributions = new ArrayList<>();
+    private static final String URL = "https://github.com/users/%s/contributions";
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
-        if (!TextUtils.equals(login, Login.getUser().getLogin()))
-            makeRestCall(RestProvider.getUserService().getFollowStatus(login),
-                    booleanResponse -> {
+        if (!TextUtils.equals(login, Login.getUser().getLogin())) {
+            manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getFollowStatus(login))
+                    .subscribe(booleanResponse -> {
                         isSuccessResponse = true;
                         isFollowing = booleanResponse.code() == 204;
-                        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
-                    });
+                        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
+                    }, Throwable::printStackTrace));
+        }
     }
 
     @Override public boolean isSuccessResponse() {
@@ -41,21 +51,26 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onFollowButtonClicked(@NonNull String login) {
-        manageSubscription(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService().followUser(login)
-                                                             : RestProvider.getUserService().unfollowUser(login))
+        manageDisposable(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService().followUser(login)
+                                                           : RestProvider.getUserService().unfollowUser(login))
                 .subscribe(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         isFollowing = !isFollowing;
-                        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+                        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
                     }
                 }, this::onError));
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
+        int statusCode = RestProvider.getErrorCode(throwable);
+        if (statusCode == 404) {
+            sendToView(ProfileOverviewMvp.View::onUserNotFound);
+            return;
+        }
         if (!InputHelper.isEmpty(login)) {
             onWorkOffline(login);
         }
-        sendToView(ProfileOverviewMvp.View::onInvalidateMenuItem);
+        sendToView(ProfileOverviewMvp.View::invalidateFollowBtn);
         super.onError(throwable);
     }
 
@@ -65,16 +80,18 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         }
         login = bundle.getString(BundleConstant.EXTRA);
         if (login != null) {
-            makeRestCall(RestProvider.getUserService().getUser(login),
-                    userModel -> {
-                        onSendUserToView(userModel);
-                        if (userModel != null) {
-                            userModel.save(userModel);
-                            if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
-                                onCheckFollowStatus(login);
-                            }
-                        }
-                    });
+            loadOrgs();
+//            loadUrlBackgroundImage();
+            makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
+                onSendUserToView(userModel);
+                if (userModel != null) {
+                    userModel.save(userModel);
+                    if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
+                        onCheckFollowStatus(login);
+                    }
+                    loadContributions();
+                }
+            });
         }
     }
 
@@ -90,7 +107,38 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         sendToView(view -> view.onInitViews(userModel));
     }
 
+    @NonNull @Override public ArrayList<User> getOrgs() {
+        return userOrgs;
+    }
+
+    @NonNull @Override public ArrayList<ContributionsDay> getContributions() {
+        return contributions;
+    }
+
     @NonNull @Override public String getLogin() {
         return login;
+    }
+
+    private void loadContributions() {
+        String url = String.format(URL, login);
+        manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
+                .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
+                .subscribe(lists -> {
+                    contributions.clear();
+                    contributions.addAll(lists);
+                    sendToView(view -> view.onInitContributions(contributions));
+                }, Throwable::printStackTrace));
+    }
+
+    private void loadOrgs() {
+        boolean isMe = login.equalsIgnoreCase(Login.getUser() != null ? Login.getUser().getLogin() : "");
+        manageDisposable(RxHelper.getObserver(isMe ? RestProvider.getOrgService().getMyOrganizations()
+                                                   : RestProvider.getOrgService().getMyOrganizations(login))
+                .subscribe(response -> {
+                    if (response != null && response.getItems() != null) {
+                        userOrgs.addAll(response.getItems());
+                    }
+                    sendToView(view -> view.onInitOrgs(userOrgs));
+                }, Throwable::printStackTrace));
     }
 }

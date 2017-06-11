@@ -22,7 +22,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -30,7 +30,7 @@ import icepick.State;
 
 public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchCodePresenter> implements SearchCodeMvp.View {
 
-    @State String searchQuery;
+    @State String searchQuery = "";
     @State boolean showRepoName;
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
@@ -106,7 +106,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -134,6 +134,18 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         }
     }
 
+    @Override public void onQueueSearch(@NonNull String query) {
+        this.searchQuery = query;
+        if (getView() != null)
+            onSetSearchQuery(query, false);
+    }
+
+    @Override public void onQueueSearch(@NonNull String query, boolean showRepoName) {
+        this.searchQuery = query;
+        if (getView() != null)
+            onSetSearchQuery(query, showRepoName);
+    }
+
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), searchQuery);
@@ -144,18 +156,27 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
 
     @Override public void onItemClicked(@NonNull SearchCodeModel item) {
         if (item.getUrl() != null) {
-            CodeViewerActivity.startActivity(getContext(), item.getUrl());
+            CodeViewerActivity.startActivity(getContext(), item.getUrl(), item.getHtmlUrl());
         } else {
             showErrorMessage(getString(R.string.no_url));
         }
     }
 
     @Override public void onRefresh() {
+        if (searchQuery.length() == 0) {
+            refresh.setRefreshing(false);
+            return;
+        }
         getPresenter().onCallApi(1, searchQuery);
     }
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

@@ -41,8 +41,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     public static GistFilesListFragment newInstance(@NonNull GithubFileModel gistsModel) {
         GistFilesListFragment view = new GistFilesListFragment();
         view.setArguments(Bundler.start()
-                .putParcelableArrayList(BundleConstant.ITEM,
-                        gistsModel.values() != null ? new ArrayList<>(gistsModel.values()) : new ArrayList<FilesListModel>())
+                .putParcelableArrayList(BundleConstant.ITEM, new ArrayList<>(gistsModel.values()))
                 .end());
         return view;
     }
@@ -66,17 +65,18 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
         }
         if (!filesListModel.isEmpty()) {
             recycler.setAdapter(new GistFilesAdapter(filesListModel, getPresenter()));
+            recycler.addKeyLineDivider();
         }
     }
 
     @Override public void onOpenFile(@NonNull FilesListModel item) {
         if (item.getRawUrl() != null) {
             if (item.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(item.getRawUrl())) {
-                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
+                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description), false, true,
                         Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).put(BundleConstant.EXTRA, item.getRawUrl()).end())
                         .show(getChildFragmentManager(), "MessageDialogView");
             } else {
-                CodeViewerActivity.startActivity(getContext(), item.getRawUrl());
+                CodeViewerActivity.startActivity(getContext(), item.getRawUrl(), item.getRawUrl());
             }
         } else {
             showErrorMessage(getString(R.string.no_url));
@@ -93,5 +93,10 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
                 }
             }
         }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 }

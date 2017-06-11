@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.v4.widget.NestedScrollView
@@ -31,6 +31,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:webview_background="?android:windowBackground"/>
+
+    <ProgressBar
+        android:id="@+id/readmeLoader"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:indeterminate="false"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingStart="@dimen/spacing_xs_large"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
     <include layout="@layout/state_layout"/>
 </FrameLayout>

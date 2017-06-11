@@ -23,7 +23,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 19 Feb 2017, 6:34 PM

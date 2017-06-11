@@ -3,7 +3,9 @@ package com.fastaccess.ui.widgets;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
 import android.text.style.StyleSpan;
@@ -105,6 +107,20 @@ public class SpannableBuilder extends SpannableStringBuilder {
 
     public SpannableBuilder url(final CharSequence text) {
         if (!InputHelper.isEmpty(text)) return append(text, new URLSpan(text.toString()));
+        return this;
+    }
+
+    public SpannableBuilder clickable(final CharSequence text, final View.OnClickListener listener) {
+        if (!InputHelper.isEmpty(text)) return append(text, new ClickableSpan() {
+            @Override public void updateDrawState(TextPaint ds) {
+                ds.setColor(ds.linkColor);
+                ds.setUnderlineText(false);
+            }
+
+            @Override public void onClick(View widget) {
+                listener.onClick(widget);
+            }
+        });
         return this;
     }
 

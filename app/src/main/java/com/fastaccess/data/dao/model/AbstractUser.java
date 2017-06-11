@@ -5,21 +5,21 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.Table;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Observable;
 
 import static com.fastaccess.data.dao.model.User.FOLLOWER_NAME;
 import static com.fastaccess.data.dao.model.User.FOLLOWING_NAME;
@@ -72,10 +72,14 @@ public abstract class AbstractUser implements Parcelable {
 
     public void save(User entity) {
         if (getUser(entity.getId()) != null) {
-            App.getInstance().getDataStore().update(entity).toBlocking().value();
+            App.getInstance().getDataStore().update(entity).blockingGet();
         } else {
-            App.getInstance().getDataStore().insert(entity).toBlocking().value();
+            App.getInstance().getDataStore().insert(entity).blockingGet();
         }
+    }
+
+    protected Single<User> saveAsSingle(User entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
     @Nullable public static User getUser(String login) {
@@ -94,80 +98,72 @@ public abstract class AbstractUser implements Parcelable {
                 .firstOrNull();
     }
 
-    public static Observable saveUserFollowerList(@NonNull List<User> models, @NonNull String followingName) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(User.class)
-                            .where(FOLLOWING_NAME.eq(followingName))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(userModel -> {
-                                userModel.setFollowingName(followingName);
-                                userModel.save(userModel);
-                            });
-                })
-        );
+    public static Observable<User> saveUserFollowerList(@NonNull List<User> models, @NonNull String followingName) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(User.class)
+                .where(FOLLOWING_NAME.eq(followingName))
+                .get()
+                .single()
+                .toObservable()
+                .flatMap(integer -> Observable.fromIterable(models))
+                .flatMap(userModel -> {
+                    userModel.setFollowingName(followingName);
+                    return userModel.saveAsSingle(userModel).toObservable();
+                }));
     }
 
-    public static Observable saveUserFollowingList(@NonNull List<User> models, @NonNull String followerName) {
-        return RxHelper.safeObservable(Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(User.class)
-                    .where(FOLLOWER_NAME.eq(followerName))
-                    .get()
-                    .value();
-            Stream.of(models)
-                    .forEach(userModel -> {
-                        userModel.setFollowerName(followerName);
-                        userModel.save(userModel);
-                    });
-        }));
+    public static Observable<User> saveUserFollowingList(@NonNull List<User> models, @NonNull String followerName) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(User.class)
+                .where(FOLLOWER_NAME.eq(followerName))
+                .get()
+                .single()
+                .toObservable()
+                .flatMap(integer -> Observable.fromIterable(models))
+                .flatMap(userModel -> {
+                    userModel.setFollowerName(followerName);
+                    return userModel.saveAsSingle(userModel).toObservable();
+                }));
     }
 
-    public static Observable saveUserContributorList(@NonNull List<User> models, @NonNull String repoId) {
-        return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(User.class)
-                            .where(REPO_ID.eq(repoId))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(userModel -> {
-                                userModel.setRepoId(repoId);
-                                userModel.save(userModel);
-                            });
-                })
-        );
-
+    public static Observable<User> saveUserContributorList(@NonNull List<User> models, @NonNull String repoId) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(User.class)
+                .where(REPO_ID.eq(repoId))
+                .get()
+                .single()
+                .toObservable()
+                .flatMap(integer -> Observable.fromIterable(models))
+                .flatMap(userModel -> {
+                    userModel.setRepoId(repoId);
+                    return userModel.saveAsSingle(userModel).toObservable();
+                }));
     }
 
-    @NonNull public static Observable<List<User>> getUserFollowerList(@NonNull String following) {
+    @NonNull public static Single<List<User>> getUserFollowerList(@NonNull String following) {
         return App.getInstance().getDataStore()
                 .select(User.class)
                 .where(FOLLOWING_NAME.eq(following))
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
-    @NonNull public static Observable<List<User>> getUserFollowingList(@NonNull String follower) {
+    @NonNull public static Single<List<User>> getUserFollowingList(@NonNull String follower) {
         return App.getInstance().getDataStore()
                 .select(User.class)
                 .where(FOLLOWER_NAME.eq(follower))
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
-    @NonNull public static Observable<List<User>> getUserContributorList(@NonNull String repoId) {
+    @NonNull public static Single<List<User>> getUserContributorList(@NonNull String repoId) {
         return App.getInstance().getDataStore()
                 .select(User.class)
                 .where(REPO_ID.eq(repoId))
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 

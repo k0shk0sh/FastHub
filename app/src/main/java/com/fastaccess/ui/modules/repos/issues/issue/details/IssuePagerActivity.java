@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
@@ -47,7 +48,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -87,7 +87,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getIssue() != null && !InputHelper.isEmpty(getPresenter().getIssue().getTitle()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getIssue().getTitle(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
@@ -126,7 +126,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
-            if (getPresenter().isApiCalled()) onSetupIssue();
+            if (getPresenter().getIssue() != null) onSetupIssue(false);
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
@@ -139,7 +139,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 Bundle bundle = data.getExtras();
                 Issue issueModel = bundle.getParcelable(BundleConstant.ITEM);
-                if (issueModel != null) getPresenter().onUpdateIssue(issueModel);
+                if (issueModel != null) {
+                    getPresenter().onUpdateIssue(issueModel);
+                }
             }
         }
     }
@@ -155,12 +157,14 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             onNavToRepoClicked();
-        } else if (item.getItemId() == R.id.share) {
-            if (getPresenter().getIssue() != null) ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
+            return true;
+        }
+        Issue issueModel = getPresenter().getIssue();
+        if (issueModel == null) return false;
+        if (item.getItemId() == R.id.share) {
+            ActivityHelper.shareUrl(this, getPresenter().getIssue().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.closeIssue) {
-            Issue issueModel = getPresenter().getIssue();
-            if (issueModel == null) return true;
             MessageDialogView.newInstance(
                     issueModel.getState() == IssueState.open ? getString(R.string.close_issue) : getString(R.string.re_open_issue),
                     getString(R.string.confirm_message), Bundler.start().put(BundleConstant.EXTRA, true)
@@ -187,13 +191,17 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), "MilestoneDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.assignees) {
-            getPresenter().onLoadAssignees();
+            AssigneesDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId(), true)
+                    .show(getSupportFragmentManager(), "AssigneesDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.subscribe) {
             getPresenter().onSubscribeOrMute(false);
             return true;
         } else if (item.getItemId() == R.id.mute) {
             getPresenter().onSubscribeOrMute(true);
+            return true;
+        } else if (item.getItemId() == R.id.browser) {
+            ActivityHelper.startCustomTab(this, issueModel.getHtmlUrl());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -216,49 +224,37 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         labels.setVisible(isCollaborator || isRepoOwner);
         assignees.setVisible(isCollaborator || isRepoOwner);
         edit.setVisible(isCollaborator || isRepoOwner || isOwner);
-        menu.findItem(R.id.closeIssue).setVisible(isOwner || isCollaborator);
-        menu.findItem(R.id.lockIssue).setVisible(isOwner || isCollaborator);
-        menu.findItem(R.id.labels).setVisible(getPresenter().isRepoOwner() || isCollaborator);
-        if (isOwner) {
-            if (getPresenter().getIssue() == null) return super.onPrepareOptionsMenu(menu);
+        lockIssue.setVisible(isOwner || isCollaborator);
+        labels.setVisible(getPresenter().isRepoOwner() || isCollaborator);
+        closeIssue.setVisible(isOwner || isCollaborator);
+        if (getPresenter().getIssue() != null) {
             closeIssue.setTitle(getPresenter().getIssue().getState() == IssueState.closed ? getString(R.string.re_open) : getString(R.string.close));
             lockIssue.setTitle(isLocked ? getString(R.string.unlock_issue) : getString(R.string.lock_issue));
         }
         return super.onPrepareOptionsMenu(menu);
     }
 
-    @Override public void onSetupIssue() {
+    @Override public void onSetupIssue(boolean isUpdate) {
         hideProgress();
         if (getPresenter().getIssue() == null) {
             return;
         }
-        supportInvalidateOptionsMenu();
+        onUpdateMenu();
         Issue issueModel = getPresenter().getIssue();
         setTitle(String.format("#%s", issueModel.getNumber()));
-        User userModel = issueModel.getUser();
-        title.setText(issueModel.getTitle());
-        detailsIcon.setVisibility(InputHelper.isEmpty(issueModel.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
-        if (userModel != null) {
-            size.setVisibility(View.GONE);
-            String username;
-            CharSequence parsedDate;
-            if (issueModel.getState() == IssueState.closed) {
-                username = issueModel.getClosedBy() != null ? issueModel.getClosedBy().getLogin() : "N/A";
-                parsedDate = issueModel.getClosedAt() != null ? ParseDateFormat.getTimeAgo(issueModel.getClosedAt()) : "N/A";
-            } else {
-                parsedDate = ParseDateFormat.getTimeAgo(issueModel.getCreatedAt());
-                username = issueModel.getUser() != null ? issueModel.getUser().getLogin() : "N/A";
+        updateViews(issueModel);
+        if (isUpdate) {
+            IssueTimelineFragment issueDetailsView = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+            if (issueDetailsView != null && getPresenter().getIssue() != null) {
+                issueDetailsView.onUpdateHeader();
             }
-            date.setText(SpannableBuilder.builder()
-                    .append(ContextCompat.getDrawable(this,
-                            issueModel.getState() == IssueState.open ? R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small))
-                    .append(" ")
-                    .append(getString(issueModel.getState().getStatus()))
-                    .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
-                    .append(parsedDate));
-            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+        } else {
+            if (pager.getAdapter() == null) {
+                pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this)));
+            } else {
+                onUpdateTimeline();
+            }
         }
-        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForIssues(this, issueModel)));
         if (!getPresenter().isLocked() || getPresenter().isOwner()) {
             pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                 @Override public void onPageSelected(int position) {
@@ -300,21 +296,15 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     @Override public void onUpdateTimeline() {
-        showMessage(R.string.success, R.string.labels_added_successfully);
+        if (pager == null || pager.getAdapter() == null) return;
         IssueTimelineFragment issueDetailsView = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-        if (issueDetailsView != null) {
+        if (issueDetailsView != null && getPresenter().getIssue() != null) {
             issueDetailsView.onRefresh();
         }
     }
 
     @Override public void onUpdateMenu() {
-        supportInvalidateOptionsMenu();
-    }
-
-    @Override public void onShowAssignees(@NonNull List<User> items) {
-        hideProgress();
-        AssigneesDialogFragment.newInstance(items)
-                .show(getSupportFragmentManager(), "AssigneesDialogFragment");
+        invalidateOptionsMenu();
     }
 
     @Override public void onMileStoneSelected(@NonNull MilestoneModel milestoneModel) {
@@ -324,6 +314,10 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @Override public void onFinishActivity() {
         hideProgress();
         finish();
+    }
+
+    @Nullable @Override public Issue getData() {
+        return getPresenter().getIssue();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
@@ -337,7 +331,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         getPresenter().onPutLabels(labels);
     }
 
-    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users) {
+    @Override public void onSelectedAssignees(@NonNull ArrayList<User> users, boolean isAssignee) {
         getPresenter().onPutAssignees(users);
     }
 
@@ -366,5 +360,31 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             return;
         }
         fab.show();
+    }
+
+    private void updateViews(@NonNull Issue issueModel) {
+        User userModel = issueModel.getUser();
+        title.setText(issueModel.getTitle());
+        detailsIcon.setVisibility(InputHelper.isEmpty(issueModel.getTitle()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
+        if (userModel != null) {
+            size.setVisibility(View.GONE);
+            String username;
+            CharSequence parsedDate;
+            if (issueModel.getState() == IssueState.closed) {
+                username = issueModel.getClosedBy() != null ? issueModel.getClosedBy().getLogin() : "N/A";
+                parsedDate = issueModel.getClosedAt() != null ? ParseDateFormat.getTimeAgo(issueModel.getClosedAt()) : "N/A";
+            } else {
+                parsedDate = ParseDateFormat.getTimeAgo(issueModel.getCreatedAt());
+                username = issueModel.getUser() != null ? issueModel.getUser().getLogin() : "N/A";
+            }
+            date.setText(SpannableBuilder.builder()
+                    .append(ContextCompat.getDrawable(this,
+                            issueModel.getState() == IssueState.open ? R.drawable.ic_issue_opened_small : R.drawable.ic_issue_closed_small))
+                    .append(" ")
+                    .append(getString(issueModel.getState().getStatus()))
+                    .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
+                    .append(parsedDate).append(" ").bold(issueModel.getRepoId()));
+            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+        }
     }
 }

@@ -156,7 +156,7 @@
     <color name="material_light_green_accent_200">#B2FF59</color>
     <color name="material_light_green_accent_400">#76FF03</color>
     <color name="material_light_green_accent_700">#64DD17</color>
-    <color name="material_light_white">#FFFFFF</color>
+    <color name="material_light_white">#eeeeee</color>
     <color name="material_lime_100">#F0F4C3</color>
     <color name="material_lime_200">#E6EE9C</color>
     <color name="material_lime_300">#DCE775</color>

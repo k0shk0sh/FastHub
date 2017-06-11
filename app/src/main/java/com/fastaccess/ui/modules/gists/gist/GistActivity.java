@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.text.format.Formatter;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -72,26 +74,28 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getGist() != null && !InputHelper.isEmpty(getPresenter().getGist().getDescription()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getGist().getDescription())
+            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getGist().getDescription(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
-    @OnClick({R.id.startGist, R.id.forkGist}) public void onGistActions(View view) {
-        view.setEnabled(false);
+    @OnClick({R.id.startGist, R.id.forkGist, R.id.browser}) public void onGistActions(View view) {
+        if (getPresenter().getGist() == null) return;
+        if (view.getId() != R.id.browser) {
+            view.setEnabled(false);
+        }
         switch (view.getId()) {
             case R.id.startGist:
-                if (getPresenter().getGist() != null) {
-                    GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                            getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST);
-                    getPresenter().onStarGist();
-                }
+                GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
+                        getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST);
+                getPresenter().onStarGist();
                 break;
             case R.id.forkGist:
-                if (getPresenter().getGist() != null) {
-                    GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                            GithubActionService.FORK_GIST);
-                    getPresenter().onForkGist();
-                }
+                GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
+                        GithubActionService.FORK_GIST);
+                getPresenter().onForkGist();
+                break;
+            case R.id.browser:
+                ActivityHelper.startCustomTab(this, getPresenter().getGist().getHtmlUrl());
                 break;
         }
     }
@@ -196,7 +200,6 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         hideProgress();
         Gist gistsModel = getPresenter().getGist();
         if (gistsModel == null) {
-            finish();
             return;
         }
         String url = gistsModel.getOwner() != null ? gistsModel.getOwner().getAvatarUrl() :
@@ -206,7 +209,11 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         avatarLayout.setUrl(url, login);
         title.setText(gistsModel.getDisplayTitle(false, true));
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
-        date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()));
+        if (gistsModel.getCreatedAt().before(gistsModel.getUpdatedAt())) {
+            date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()), getString(R.string.edited)));
+        } else {
+            date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()));
+        }
         size.setText(Formatter.formatFileSize(this, gistsModel.getSize()));
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForGist(this, gistsModel)));
         tabs.setupWithViewPager(pager);
@@ -220,6 +227,20 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         onGistForked(getPresenter().isForked());
         onGistStarred(getPresenter().isStarred());
         hideShowFab();
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
+        }
     }
 
     private void hideShowFab() {

@@ -8,6 +8,7 @@ import com.fastaccess.data.dao.types.ReviewStateType;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -24,7 +25,9 @@ import lombok.Setter;
     private ReviewStateType state;
     private Date submittedAt;
     private String commitId;
-
+    private String diffText;
+    private List<ReviewCommentModel> comments;
+    private ReactionsModel reactions;
 
     public ReviewModel() {}
 
@@ -37,6 +40,9 @@ import lombok.Setter;
         dest.writeInt(this.state == null ? -1 : this.state.ordinal());
         dest.writeLong(this.submittedAt != null ? this.submittedAt.getTime() : -1);
         dest.writeString(this.commitId);
+        dest.writeString(this.diffText);
+        dest.writeTypedList(this.comments);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected ReviewModel(Parcel in) {
@@ -48,6 +54,9 @@ import lombok.Setter;
         long tmpSubmittedAt = in.readLong();
         this.submittedAt = tmpSubmittedAt == -1 ? null : new Date(tmpSubmittedAt);
         this.commitId = in.readString();
+        this.diffText = in.readString();
+        this.comments = in.createTypedArrayList(ReviewCommentModel.CREATOR);
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
     public static final Creator<ReviewModel> CREATOR = new Creator<ReviewModel>() {

@@ -14,7 +14,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.ArrayList;
 import java.util.List;
 
-import rx.Observable;
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:10 PM
@@ -23,10 +23,10 @@ import rx.Observable;
 class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements RepoFilesMvp.Presenter {
     private ArrayList<RepoFile> files = new ArrayList<>();
     private RepoPathsManager pathsModel = new RepoPathsManager();
-    private String repoId;
-    private String login;
-    private String path;
-    private String ref;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String path;
+    @com.evernote.android.state.State String ref;
 
     @Override public void onItemClick(int position, View v, RepoFile item) {
         if (getView() == null) return;
@@ -37,9 +37,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFile item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {}
 
     @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();
@@ -52,19 +50,18 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if ((repoId == null || login == null) || !files.isEmpty()) return;
-        manageSubscription(RxHelper.getObserver(RepoFile.getFiles(login, repoId))
+        manageDisposable(RxHelper.getObserver(RepoFile.getFiles(login, repoId).toObservable())
                 .flatMap(response -> {
                     if (response != null) {
-                        return Observable.from(response).sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
+                        return Observable.fromIterable(response).sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
                     }
                     return Observable.empty();
                 })
                 .toList()
                 .subscribe(models -> {
-                            files.addAll(models);
-                            sendToView(RepoFilesMvp.View::onNotifyAdapter);
-                        }
-                ));
+                    files.addAll(models);
+                    sendToView(RepoFilesMvp.View::onNotifyAdapter);
+                }));
     }
 
     @Override public void onCallApi(@Nullable RepoFile toAppend) {
@@ -72,15 +69,15 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         makeRestCall(RestProvider.getRepoService().getRepoFiles(login, repoId, path, ref)
                 .flatMap(response -> {
                     if (response != null && response.getItems() != null) {
-                        return Observable.from(response.getItems())
+                        return Observable.fromIterable(response.getItems())
                                 .sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
                     }
                     return Observable.empty();
                 })
-                .toList(), response -> {
+                .toList().toObservable(), response -> {
             files.clear();
             if (response != null) {
-                manageSubscription(RepoFile.save(response, login, repoId).subscribe());
+                manageObservable(RepoFile.save(response, login, repoId));
                 pathsModel.setFiles(ref, path, response);
                 files.addAll(response);
             }

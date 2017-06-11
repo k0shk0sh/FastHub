@@ -1,5 +1,6 @@
 package com.fastaccess.helper;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -19,6 +20,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.text.Layout;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -146,12 +148,23 @@ public class ViewHelper {
         );
     }
 
-    private static boolean isTablet(@NonNull Resources resources) {
-        return (resources.getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    public static boolean isTablet(@NonNull Activity activity) {
+        DisplayMetrics metrics = new DisplayMetrics();
+
+        float yInches = metrics.heightPixels / metrics.ydpi;
+        float xInches = metrics.widthPixels / metrics.xdpi;
+        double inches = Math.sqrt(xInches * xInches + yInches * yInches);
+        return inches >= 6.5;
     }
 
     @SuppressWarnings("ConstantConditions") public static boolean isTablet(@NonNull Context context) {
-        return context != null && isTablet(context.getResources());
+        if (context == null) return false;
+        Activity activity = ActivityHelper.getActivity(context);
+        if (activity != null) {
+            return isTablet(activity);
+        }
+        return (context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 
     public static boolean isLandscape(@NonNull Resources resources) {

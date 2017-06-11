@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.TextView;
 
@@ -24,7 +25,7 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import java.util.HashSet;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 31 Dec 2016, 1:36 AM
@@ -32,12 +33,10 @@ import icepick.State;
 
 public class RepoIssuesPagerFragment extends BaseFragment<RepoIssuesPagerMvp.View, RepoIssuesPagerPresenter> implements RepoIssuesPagerMvp.View {
 
-
     public static final String TAG = RepoIssuesPagerFragment.class.getSimpleName();
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.pager) ViewPagerView pager;
     @State HashSet<TabsCountStateModel> counts = new HashSet<>();
-
 
     public static RepoIssuesPagerFragment newInstance(@NonNull String repoId, @NonNull String login) {
         RepoIssuesPagerFragment view = new RepoIssuesPagerFragment();
@@ -62,6 +61,12 @@ public class RepoIssuesPagerFragment extends BaseFragment<RepoIssuesPagerMvp.Vie
         if (savedInstanceState != null && !counts.isEmpty()) {
             Stream.of(counts).forEach(this::updateCount);
         }
+        tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
+            @Override public void onTabReselected(TabLayout.Tab tab) {
+                super.onTabReselected(tab);
+                onScrollTop(tab.getPosition());
+            }
+        });
     }
 
     @NonNull @Override public RepoIssuesPagerPresenter providePresenter() {
@@ -97,6 +102,22 @@ public class RepoIssuesPagerFragment extends BaseFragment<RepoIssuesPagerMvp.Vie
         counts.add(model);
         if (tabs != null) {
             updateCount(model);
+        }
+    }
+
+    @Override public void onChangeIssueSort(boolean isLastUpdated) {
+        if (pager == null || pager.getAdapter() == null) return;
+        RepoClosedIssuesFragment closedIssues = (RepoClosedIssuesFragment) pager.getAdapter().instantiateItem(pager, 1);
+        if (closedIssues != null) closedIssues.onRefresh(isLastUpdated);
+        RepoOpenedIssuesFragment openedIssues = (RepoOpenedIssuesFragment) pager.getAdapter().instantiateItem(pager, 0);
+        if (openedIssues != null) openedIssues.onRefresh(isLastUpdated);
+    }
+
+    @Override public void onScrollTop(int index) {
+        if (pager == null || pager.getAdapter() == null) return;
+        Fragment fragment = (BaseFragment) pager.getAdapter().instantiateItem(pager, index);
+        if (fragment instanceof BaseFragment) {
+            ((BaseFragment) fragment).onScrollTop(index);
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.annimon.stream.Objects;
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
@@ -25,8 +26,6 @@ import com.fastaccess.ui.modules.repos.code.prettifier.ViewerFragment;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
-import icepick.State;
-
 /**
  * Created by Kosh on 27 Nov 2016, 3:43 PM
  */
@@ -34,14 +33,16 @@ import icepick.State;
 public class CodeViewerActivity extends BaseActivity {
 
     @State String url;
+    @State String htmlUrl;
 
-    public static void startActivity(@NonNull Context context, @NonNull String url) {
-        if (!InputHelper.isEmpty(url)) context.startActivity(createIntent(context, url));
+    public static void startActivity(@NonNull Context context, @NonNull String url, @NonNull String htmlUrl) {
+        if (!InputHelper.isEmpty(url)) context.startActivity(createIntent(context, url, htmlUrl));
     }
 
-    public static Intent createIntent(@NonNull Context context, @NonNull String url) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String url, @NonNull String htmlUrl) {
         Intent intent = new Intent(context, CodeViewerActivity.class);
         intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA_TWO, htmlUrl)
                 .put(BundleConstant.EXTRA, url)
                 .end());
         return intent;
@@ -74,6 +75,7 @@ public class CodeViewerActivity extends BaseActivity {
             Bundle bundle = Objects.requireNonNull(intent.getExtras());
             //noinspection ConstantConditions
             url = Objects.requireNonNull(bundle.getString(BundleConstant.EXTRA), "Url is null");
+            htmlUrl = bundle.getString(BundleConstant.EXTRA_TWO);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.container, ViewerFragment.newInstance(url), ViewerFragment.TAG)
@@ -95,13 +97,13 @@ public class CodeViewerActivity extends BaseActivity {
             }
             return true;
         } else if (item.getItemId() == R.id.browser) {
-            ActivityHelper.openChooser(this, url);
+            ActivityHelper.openChooser(this,  htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == R.id.copy) {
-            AppHelper.copyToClipboard(this, url);
+            AppHelper.copyToClipboard(this, htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == R.id.share) {
-            ActivityHelper.shareUrl(this, url);
+            ActivityHelper.shareUrl(this,  htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             Uri uri = Uri.parse(url);

@@ -6,17 +6,17 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.converters.RepoConverter;
+import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import lombok.NoArgsConstructor;
-import rx.Completable;
-import rx.Observable;
 
 import static com.fastaccess.data.dao.model.PinnedRepos.ID;
 import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
@@ -30,8 +30,8 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     @Column(unique = true) String repoFullName;
     @Convert(RepoConverter.class) Repo pinnedRepo;
 
-    public static Completable save(@NonNull PinnedRepos entity) {
-        return App.getInstance().getDataStore().insert(entity).toCompletable();
+    public static Single<PinnedRepos> update(@NonNull PinnedRepos entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().update(entity));
     }
 
     public static boolean pinUpin(@NonNull Repo repo) {
@@ -40,7 +40,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
             PinnedRepos pinned = new PinnedRepos();
             pinned.setRepoFullName(repo.getFullName());
             pinned.setPinnedRepo(repo);
-            save(pinned).toObservable().toBlocking().firstOrDefault(null);
+            App.getInstance().getDataStore().insert(pinned).blockingGet();
             return true;
         } else {
             delete(pinnedRepos.getId());
@@ -62,15 +62,16 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
                 .firstOrNull();
     }
 
+
     public static boolean isPinned(@NonNull String repoFullName) {
         return get(repoFullName) != null;
     }
 
-    @NonNull public static Observable<List<PinnedRepos>> getMyPinnedRepos() {
+    @NonNull public static Single<List<PinnedRepos>> getMyPinnedRepos() {
         return App.getInstance().getDataStore().select(PinnedRepos.class)
                 .orderBy(ID.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
 
     }

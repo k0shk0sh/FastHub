@@ -26,7 +26,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private MyIssuesType issuesType;
+    @com.evernote.android.state.State MyIssuesType issuesType;
     @NonNull private String login = Login.getUser().getLogin();
 
     @Override public void onItemClick(int position, View v, Issue item) {
@@ -38,7 +38,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
     }
 
     @Override public void onItemLongClick(int position, View v, Issue item) {
-        onItemClick(position, v, item);
+        if (getView() != null) getView().onShowPopupDetails(item);
     }
 
     @NonNull @Override public ArrayList<Issue> getIssues() {
@@ -95,6 +95,8 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
                 return RepoQueryProvider.getAssigned(login, parameter, false);
             case MENTIONED:
                 return RepoQueryProvider.getMentioned(login, parameter, false);
+            case PARTICIPATED:
+                return RepoQueryProvider.getParticipated(login, parameter, false);
         }
         return RepoQueryProvider.getMyIssuesPullRequestQuery(login, parameter, false);
     }

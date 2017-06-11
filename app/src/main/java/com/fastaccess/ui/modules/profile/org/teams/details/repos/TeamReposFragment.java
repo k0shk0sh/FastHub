@@ -53,7 +53,7 @@ public class TeamReposFragment extends BaseFragment<TeamReposMvp.View, TeamRepos
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -81,6 +81,8 @@ public class TeamReposFragment extends BaseFragment<TeamReposMvp.View, TeamRepos
 
     @Override public void showProgress(@StringRes int resId) {
 
+        refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
@@ -99,11 +101,6 @@ public class TeamReposFragment extends BaseFragment<TeamReposMvp.View, TeamRepos
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<Long> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), getArguments().getLong(BundleConstant.EXTRA));
@@ -117,5 +114,15 @@ public class TeamReposFragment extends BaseFragment<TeamReposMvp.View, TeamRepos
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

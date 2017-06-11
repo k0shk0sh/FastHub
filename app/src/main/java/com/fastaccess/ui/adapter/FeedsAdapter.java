@@ -16,12 +16,19 @@ import java.util.ArrayList;
 
 public class FeedsAdapter extends BaseRecyclerAdapter<Event, FeedsViewHolder, BaseViewHolder.OnItemClickListener<Event>> {
 
-    public FeedsAdapter(@NonNull ArrayList<Event> Events) {
-        super(Events);
+    private boolean noImage;
+
+    public FeedsAdapter(@NonNull ArrayList<Event> events) {
+        this(events, false);
+    }
+
+    public FeedsAdapter(@NonNull ArrayList<Event> events, boolean noImage) {
+        super(events);
+        this.noImage = noImage;
     }
 
     @Override protected FeedsViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return new FeedsViewHolder(FeedsViewHolder.getView(parent), this);
+        return new FeedsViewHolder(FeedsViewHolder.getView(parent, noImage), this);
     }
 
     @Override protected void onBindView(FeedsViewHolder holder, int position) {

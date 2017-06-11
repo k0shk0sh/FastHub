@@ -21,8 +21,8 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 
-import rx.Observable;
-import rx.schedulers.Schedulers;
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Kosh on 11 Mar 2017, 12:13 AM
@@ -108,7 +108,7 @@ public class ReadNotificationService extends IntentService {
     private void unSubscribeFromThread(long id) {
         RestProvider.getNotificationService()
                 .unSubscribe(id)
-                .doOnSubscribe(() -> notify(id, getNotification().build()))
+                .doOnSubscribe(disposable -> notify(id, getNotification().build()))
                 .subscribeOn(Schedulers.io())
                 .flatMap(notification1 -> Observable.create(subscriber -> markSingleAsRead(id)))
                 .subscribe(booleanResponse -> cancel(id), throwable -> cancel(id));
@@ -136,7 +136,7 @@ public class ReadNotificationService extends IntentService {
                 .subscribe();
         RestProvider.getNotificationService()
                 .markAsRead(String.valueOf(id))
-                .doOnSubscribe(() -> notify(id, getNotification().build()))
+                .doOnSubscribe(disposable -> notify(id, getNotification().build()))
                 .subscribeOn(Schedulers.io())
                 .subscribe(booleanResponse -> cancel(id), throwable -> cancel(id));
     }

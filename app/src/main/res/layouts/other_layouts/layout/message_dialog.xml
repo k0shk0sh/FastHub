@@ -2,12 +2,12 @@
 <FrameLayout
     android:id="@+id/messageLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?card_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,17 +33,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingEnd="@dimen/spacing_xs_large"
-                android:paddingStart="@dimen/spacing_xs_large">
+                android:orientation="vertical">
 
                 <com.prettifier.pretty.PrettifyWebView
                     android:id="@+id/prettifyWebView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    app:webview_background="?card_background"
                     android:minHeight="200dp"
-                    android:visibility="gone"
-                    app:webview_background="?card_background"/>
+                    android:visibility="gone"/>
 
                 <com.fastaccess.ui.widgets.FontTextView
                     android:id="@+id/message"
@@ -51,6 +49,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:autoLink="all"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
                     android:textColor="?android:attr/textColorSecondary"
                     tools:text="Hello World"/>
             </LinearLayout>

@@ -16,7 +16,8 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="@string/staggered_layout_manager"
+            android:scrollbars="vertical"
+            app:layoutManager="@string/grid_layout_manager"
             app:spanCount="@integer/small_spans"/>
 
     </com.fastaccess.ui.widgets.AppbarRefreshLayout>

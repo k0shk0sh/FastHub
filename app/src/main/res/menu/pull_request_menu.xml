@@ -40,6 +40,12 @@
                 android:id="@+id/assignees"
                 android:icon="@drawable/ic_profile"
                 android:title="@string/assignees"/>
+
+            <item
+                android:id="@+id/reviewers"
+                android:icon="@drawable/ic_eye"
+                android:title="@string/reviewers"/>
+
             <item
                 android:id="@+id/merge"
                 android:icon="@drawable/ic_merge"
@@ -72,6 +78,12 @@
         android:id="@+id/share"
         android:icon="@drawable/ic_share"
         android:title="@string/share"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/browser"
+        android:icon="@drawable/ic_brower"
+        android:title="@string/open_in_browser"
         app:showAsAction="always"/>
 
 </menu>

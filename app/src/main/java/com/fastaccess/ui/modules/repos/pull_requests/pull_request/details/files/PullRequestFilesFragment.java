@@ -9,7 +9,6 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileModel;
-import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -19,10 +18,12 @@ import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -35,7 +36,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore onLoadMore;
-    @State SparseBooleanArrayParcelable sparseBooleanArray;
+    @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
     private CommitFilesAdapter adapter;
 
     public static PullRequestFilesFragment newInstance(@NonNull String repoId, @NonNull String login, long number) {
@@ -77,6 +78,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
@@ -90,7 +92,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -109,11 +111,6 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore(getPresenter());
@@ -129,21 +126,26 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         onRefresh();
     }
 
-    @Override public void onToggle(int position, boolean isCollapsed) {
-        if (adapter.getItem(position).getPatch() == null) {
-            ActivityHelper.openChooser(getContext(), adapter.getItem(position).getBlobUrl());
+    @Override public void onToggle(long position, boolean isCollapsed) {
+        if (adapter.getItem((int) position).getPatch() == null) {
+            ActivityHelper.openChooser(getContext(), adapter.getItem((int) position).getBlobUrl());
         }
-        getSparseBooleanArray().put(position, isCollapsed);
+        toggleMap.put(position, isCollapsed);
     }
 
-    @Override public boolean isCollapsed(int position) {
-        return getSparseBooleanArray().get(position);
+    @Override public boolean isCollapsed(long position) {
+        Boolean toggle = toggleMap.get(position);
+        return toggle != null && toggle;
     }
 
-    public SparseBooleanArrayParcelable getSparseBooleanArray() {
-        if (sparseBooleanArray == null) {
-            sparseBooleanArray = new SparseBooleanArrayParcelable();
-        }
-        return sparseBooleanArray;
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
+    }
+
 }

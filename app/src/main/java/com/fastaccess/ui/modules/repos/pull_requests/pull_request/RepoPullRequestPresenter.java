@@ -24,13 +24,13 @@ import java.util.ArrayList;
 
 class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> implements RepoPullRequestMvp.Presenter {
 
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State IssueState issueState;
     private ArrayList<PullRequest> pullRequests = new ArrayList<>();
-    private String login;
-    private String repoId;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private IssueState issueState;
 
     @Override public int getCurrentPage() {
         return page;
@@ -60,6 +60,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         }
         this.issueState = parameter;
         if (page == 1) {
+            onCallCountApi(issueState);
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
@@ -72,7 +73,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         makeRestCall(RestProvider.getPullRequestService().getPullRequests(login, repoId, parameter.name(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageSubscription(PullRequest.save(response.getItems(), login, repoId).subscribe());
+                manageObservable(PullRequest.save(response.getItems(), login, repoId));
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
@@ -84,12 +85,11 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         issueState = (IssueState) bundle.getSerializable(BundleConstant.EXTRA_TWO);
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, issueState);
-            onCallCountApi(issueState);
         }
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageSubscription(RxHelper.getObserver(RestProvider.getPullRequestService()
+        manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService()
                 .getPullsWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, true), 0))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));
@@ -97,7 +97,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
 
     @Override public void onWorkOffline() {
         if (pullRequests.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(PullRequest.getPullRequests(repoId, login, issueState))
+            manageDisposable(RxHelper.getSingle(PullRequest.getPullRequests(repoId, login, issueState))
                     .subscribe(pulls -> sendToView(view -> {
                         view.onNotifyAdapter(pulls, 1);
                         view.onUpdateCount(pulls.size());
@@ -123,6 +123,6 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     }
 
     @Override public void onItemLongClick(int position, View v, PullRequest item) {
-        onItemClick(position, v, item);
+        if(getView()!=null)getView().onShowPullRequestPopup(item);
     }
 }

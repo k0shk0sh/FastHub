@@ -31,7 +31,6 @@ public class SlackInvitationService extends IntentService {
             body.setLast_name(login.getLogin());
             RxHelper.getObserver(RestProvider.getSlackService()
                     .invite(body))
-                    .onErrorReturn(throwable -> null)
                     .subscribe(response -> {
                         if (response != null) {
                             if (response.isOk()) {
@@ -40,7 +39,7 @@ public class SlackInvitationService extends IntentService {
                                 Toasty.info(getApplicationContext(), response.getError().replaceAll("_", " ")).show();
                             }
                         }
-                    });
+                    }, Throwable::printStackTrace);
         }
     }
 }

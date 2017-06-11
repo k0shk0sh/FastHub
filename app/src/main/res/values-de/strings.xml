@@ -69,14 +69,14 @@
     <string name="status">Status</string>
     <string name="confirm_message">Bist du sicher?</string>
     <string name="success">Erfolg</string>
-    <string name="to">an</string>
+    <string name="to">mit/an</string>
     <string name="error_deleting_comment">Kommentar konnte nicht gelöscht werden</string>
     <string name="delete">Löschen</string>
     <string name="comments">Kommentare</string>
     <string name="comment">Kommentar</string>
     <string name="success_merge">Erfolgreich gemerged</string>
     <string name="file">Datei</string>
-    <string name="file_menu">File menu</string>
+    <string name="file_menu">Dateimenü</string>
     <string name="files">Dateien</string>
     <string name="download">Herunterladen</string>
     <string name="back">Zurück</string>
@@ -84,7 +84,7 @@
     <string name="code_viewer">Code Betrachter</string>
     <string name="open_in_browser">In Browser öffnen</string>
     <string name="big_file">Große Datei</string>
-    <string name="big_file_description">Die Datei ist zu groß zum öffnen.\nKlicke auf "OK" um die Datei herunterzuladen</string>
+    <string name="big_file_description">Die Datei ist zu groß zum öffnen.\nWähle "OK" aus um die Datei herunterzuladen</string>
     <string name="viewer">Betrachter</string>
     <string name="submit">Abschicken</string>
     <string name="type_here">Hier schreiben</string>
@@ -121,22 +121,22 @@
     <string name="thank_you_for_feedback">Vielen Dank für dein Feedback!</string>
     <string name="current_version">Aktuelle Version</string>
     <string name="version">Version</string>
-    <string name="support_development_enable_ads">Unterstütze den Enwickler, indem du die Werbung aktivierst</string>
+    <string name="support_development_enable_ads">Unterstütze den Entwickler, indem du die Werbung aktivierst</string>
     <string name="username">Benutername</string>
     <string name="password">Passwort</string>
-    <string name="twoFactor">Two-Factor Authentifizierungscode</string>
+    <string name="twoFactor">Zwei-Faktor Authentifizierungscode</string>
     <string name="login">Anmelden</string>
     <string name="gist_description">Gist-Beschreibung</string>
     <string name="avatar_click_hint">Tippe auf einen Avatar um zu dem jeweiligen Profil zu gelangen</string>
     <string name="feeds_fork_hint">Tippe länger auf einen Fork um entweder die originale- oder die geforkte Repo anzuzeigen</string>
-    <string name="click_here_to_download_release_hint">Download releases</string>
+    <string name="click_here_to_download_release_hint">Releases herunterladen</string>
     <string name="options">Optionen</string>
-    <string name="click_file_option_hint">Download file or share directory</string>
+    <string name="click_file_option_hint">Datei herunterladen oder Ordner teilen</string> <!-- Unsure -->
     <string name="comment_hint">Tippe auf einen Kommentar um den jeweiligen Autor zu taggen oder deinen Kommentar zu bearbeiten
         \nTippe länger auf dem Kommentar um ihn zu löschen</string>
-    <string name="star_hint">Repo favorisieren/entfavorisieren</string>
+    <string name="star_hint">Repo favorisieren</string>
     <string name="watch">Beobachten</string>
-    <string name="watch_hint">Beobachten/Entbeobachten des Repos</string>
+    <string name="watch_hint">Repo Beobachten</string>
     <string name="pin_repo_hint">Pinne repos an um schneller auf sie zuzugreifen zu können</string>
     <string name="no_url">Keine URL gefunden</string>
     <string name="last_updated">Zuletzt geupdatet.</string>
@@ -162,7 +162,7 @@
     <string name="committed">Committed</string>
     <string name="downloaded">Heruntergeladen</string>
     <string name="followed">Gefolgt</string>
-    <string name="commented_on_issue">Issue kommentieren</string>
+    <string name="commented_on_issue">Issuekommentar</string>
     <string name="member">Mitglied</string>
     <string name="pr_comment_review">Pull Request Kommentar</string>
     <string name="pushed">Gepushed an</string>
@@ -171,7 +171,7 @@
     <string name="unknown">Unbekannt</string>
     <string name="commented_on_commit">Commit kommentieren</string>
     <string name="switch_branch">Branch wechseln</string>
-    <string name="assignees">Bevollmächtigte</string>
+    <string name="assignees">Assignees</string> <!-- Unsure -->
     <string name="edit">Bearbeiten</string>
     <string name="update_issue">Issue aktualisieren</string>
     <string name="update_pull_request">Pull Request aktualisieren</string>
@@ -182,14 +182,14 @@
     <string name="create_milestone">Meilenstein erstellen</string>
     <string name="error_creating_milestone">Konnte Meilenstein nicht erstellen</string>
     <string name="due_on">Fällig am</string>
-    <string name="no_assignees">Keine Bevollmächtigten</string>
+    <string name="no_assignees">Keine Assignees</string>
     <string name="this_value">dies</string>
-    <string name="commits_reflected">Commit wurden auf den ausgewählten Branch verschoben</string>
+    <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
-    <string name="background_job_summary">Wähle wie regelmäßig FastHub nach einem Update sucht.</string>
+    <string name="background_job_summary">Wähle wie regelmäßig FastHub nach neuen Benachrichtigungen sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
-    <string name="behavior">Verhalten</string>
+    <string name="behavior">Verhalten &amp; Aussehen</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
     <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub ausversehen verlässt</string>
@@ -210,7 +210,7 @@
     <string name="notification_settings">Benachrichtigung</string>
     <string name="turn_off">Ausschalten</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
-    <string name="two_factors_otp_error">Das einmalige Two-Factor Passwort wird benötigt</string>
+    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>
     <string name="no_issue">Kein Issue</string>
     <string name="copy">Kopieren</string>
     <string name="success_copied">kopiert</string>
@@ -227,9 +227,9 @@
     <string name="theme_title">Wähle ein Design</string>
     <string name="theme_summary">Wähle das Standarddesign aus</string>
     <string name="website">Webseite</string>
-    <string name="support_development">Unterstütze die Entwickler</string>
+    <string name="support_development">Unterstütze uns</string>
     <string name="success_purchase_message">Vielen Dank für deine Unterstützung!</string>
-    <string name="change_theme_warning">Wenn das Design nicht richtig dargestellt wird, beende die App manuell und starte sie neu.</string>
+    <string name="change_theme_warning">Wenn das Design nicht richtig dargestellt wird, beende die App und starte sie neu.</string>
     <string name="pin">Anpinnen</string>
     <string name="pinned">Pinnwand</string>
     <string name="unpin">Entpinnen</string>
@@ -259,7 +259,7 @@
     <string name="no_issues">Keine Issues</string>
     <string name="no_unread_notifications">Keine ungelesenen Benachrichtigungen.</string>
     <string name="my_gists">Meine Gists</string>
-    <string name="changelog">Letzte Änderungen</string>
+    <string name="changelog">Letzte Änderungen</string> <!-- Will change eventually -->
     <string name="notifications_hint">Tippe um die Benachrichtigungsliste zu öffnen oder wische zum verwerfen</string>
     <string name="home_long_click_hint">Tippe hier länger drauf um zum Hauptbildschirm zu gelangen</string>
     <string name="created">Erstellt</string>
@@ -275,13 +275,13 @@
     <string name="members">Mitglieder</string>
     <string name="no_members">Keine Mitglieder</string>
     <string name="no_teams">Keine Teams</string>
-    <string name="no_orgs">Keine Organisationen</string>
+    <string name="no_orgs">Organisation(en) nicht sichtbar?</string>
     <string name="mark_as_read">Als gelesen markieren</string>
     <string name="animations">Animationen</string>
     <string name="dialog_animation_summary">Popup-Animationen aktivieren</string>
     <string name="dialog_animation_title">Popup-Animation</string>
     <string name="milestones">Meilensteine</string>
-    <string name="assignee">Bevollmächtigte</string>
+    <string name="assignee">Assignee</string><!-- Still looking for a better translation -->
     <string name="checks_failed">Alle Checks sind fehlgeschlagen</string>
     <string name="checks_pending">Die Checks laufen noch</string>
     <string name="checks_passed">Die Checks wurden erfolgreich beendet</string>
@@ -301,7 +301,7 @@
     <string name="no_reactions">Keine Reaktionen</string>
     <string name="reactions">Reaktionen</string>
     <string name="wrap_content">Zeilenumbruch</string>
-    <string name="wrap_code_summary">Zeilenumbruch ist automatisch aktiviert</string>
+    <string name="wrap_code_summary">Zeilenumbruch wird automatisch aktiviert</string>
     <string name="wrap_code_title">Zeilenumbruch</string>
     <string name="open_source_libs">Open Source Bibliotheken</string>
     <string name="enable_notification_sound_summary">Benachrichtungston bei Benachrichtigungen abspielen.</string>
@@ -310,7 +310,7 @@
     <string name="personal_token">Persönlicher Token</string>
     <string name="basic_login">normal anmelden</string>
     <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link
-\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: FastHub benutzt keinen "Access Token", weil sobald die Two-Factor Authentifizierung aktiviert wurde, das Einmalige Password oder "One time password" nur für ca. eine Minute verwendet werden kann, weswegen du dann direkt ausgeloggt worden wärst, weil das One time password abgelaufen ist.</string>
+\nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
     <string name="insert">Einfügen</string>
     <string name="select">Auswählen</string>
     <string name="select_picture">Bild auswählen</string>
@@ -319,6 +319,7 @@
     <string name="support_with_10_00">Unterstützen mit 10$</string>
     <string name="support_with_20_00">Unterstützen mit 20$</string>
     <string name="app_language">App Sprache</string>
+    <string name="language">Sprache</string>
     <string name="choose_language_title">Spracheinstellung</string>
     <string name="choose_language_summary">Wähle deine bevorzugte Sprache</string>
     <string name="un_subscribe">Deabbonieren</string>
@@ -331,6 +332,56 @@
     <string name="choose_your_login_type">Wähle einen Authentifizierungstyp</string>
     <string name="files_only">In Dateien</string>
     <string name="paths_only">In Dateipfaden</string>
+    <string name="review_requests">Anfragen überprüfen</string>
+    <string name="join_slack">Slackgruppe beitreten</string>
+    <string name="join_slack_message">Möchtest du der FastHub Slackgruppe beitreten?</string>
+    <string name="successfully_invited">Erfolgreich eingeladen!</string>
+    <string name="reply">Antworten</string>
+    <string name="failed_selecting_image">Bild konnte nicht geladen werden.</string>
+	<string name="want_to_merge">möchte mergen</string>
+    <string name="watchers">Betrachter</string>
+    <string name="reviewers">Reviewer</string>
+    <string name="no_reviewers">Keine Reviewer</string>
+    <string name="sent_from_fasthub">Gesendet von meinem %1$s mit %2$s%3$s</string>
+    <string name="enable_signature">Signatur aktivieren</string>
+    <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
+    <string name="enable_signature_box">Signaturbox aktivieren</string>
+    <string name="enable_signature_box_summary">Häkchen setzen, damit die Signatur im Editor angezeigt wird</string>
+    <string name="tags">Tags</string>
+    <string name="add_comment">Kommentar hinzufügen</string>
+    <string name="banners">Einführung von Bannern</string>
+    <string name="banners_info">Mit FastHub 2.5.0 kannst du nun dein Profil mit einem Banner 
+        gestalten und jeder FastHub User wird dein Banner sehen und umgekehrt.\n\nWenn du 
+		selber ein Banner erstellen möchtest, ist es am besten wenn du als Auflösung etwas 
+		nimmst, was sich durch 1280x384 teilen lässt, sonst wird ein Teil des Bildes abgeschnitten.\n\n\n\n
+		Du kannst dein Banner jederzeit wechseln, indem du ein Gist namens "header.fst" erstellst 
+		und als Inhalt einen Direktlink zum Banner angibst. Oder du benutzt einfach den eingebauten Bildwähler!
+    </string>
+    <string name="edit_banner">BANNER AUSWÄHLEN</string>
+    <string name="image_error">Bild konnte nicht geladen werden.</string>
+    <string name="trending">Im Trend</string>
+    <string name="not_really_working">Leider kann derzeit nicht nach Emojis sortiert werden</string>
+    <string name="scroll_up">Hochscrollen</string>
+    <string name="scroll_down">Runterscrollen</string>
+    <string name="participated">Teilgenommen</string>
+    <string name="todo_checked">abgehakt</string>
+    <string name="todo_unchecked">ausstehend</string>
+    <string name="divider">Trenner</string>
+    <string name="no_user_found">Kein User gefunden</string>
+    <string name="no_trending">Nichts im Trend</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="reset">Zurücksetzten</string>
+    <string name="apply">Anwenden</string>
+    <string name="filter">Filter</string>
+    <string name="type">Typ</string>
+    <string name="Sort">Sortieren</string>
+    <string name="sort_direction">Sortierungsrichtung</string>
+    <string name="assignee_added">Assignee erfolgreich hinzugefügt</string>
+    <string name="reviewer_added">Reviewer erfolgreich hinzugefügt</string>
+    <string name="milestone_added">Meilenstein erfolgreich hinzugefügt</string>
+<string name="feed">Feed</string>
 </resources>
 
 

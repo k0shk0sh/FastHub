@@ -14,8 +14,8 @@ import lombok.Setter;
 @Getter @Setter
 public class SimpleUrlsModel implements Parcelable {
 
-    private String item;
-    private String url;
+    public String item;
+    public String url;
 
     public SimpleUrlsModel(String item, String url) {
         this.item = item;

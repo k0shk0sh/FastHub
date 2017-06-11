@@ -20,22 +20,21 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
-import rx.Observable;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:32 PM
  */
 
-@Entity @NoArgsConstructor public abstract class AbstractGist implements Parcelable {
+@Entity() @NoArgsConstructor public abstract class AbstractGist implements Parcelable {
     @SerializedName("nooope") @Key long id;
     String url;
     String forksUrl;
@@ -56,61 +55,53 @@ import rx.schedulers.Schedulers;
     @Column(name = "user_column") @Convert(UserConverter.class) User user;
     @Convert(UserConverter.class) User owner;
 
-    public Completable save(Gist modelEntity) {
-        return App.getInstance().getDataStore()
-                .delete(Gist.class)
-                .where(Gist.ID.eq(modelEntity.getId()))
+    public Single<Gist> save(Gist entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
+    }
+
+    public static Observable<Gist> save(@NonNull List<Gist> gists) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
+                .where(Gist.OWNER_NAME.isNull())
                 .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(modelEntity)
-                        .toCompletable());
+                .single()
+                .toObservable()
+                .flatMap(integer -> Observable.fromIterable(gists))
+                .flatMap(gist -> gist.save(gist).toObservable()));
     }
 
-    public static Completable save(@NonNull List<Gist> gists) {
-        return Completable.fromAction(() -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Gist.class)
-                    .where(Gist.OWNER_NAME.isNull())
-                    .get()
-                    .value();
-            Stream.of(gists).forEach(gist -> gist.save(gist));
-        }).subscribeOn(Schedulers.io());
+    public static Observable<Gist> save(@NonNull List<Gist> gists, @NonNull String ownerName) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
+        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
+                .where(Gist.OWNER_NAME.equal(ownerName))
+                .get()
+                .single()
+                .toObservable()
+                .flatMap(integer -> Observable.fromIterable(gists))
+                .map(gist -> {
+                    gist.setOwnerName(ownerName);
+                    return gist;
+                })
+                .flatMap(gist -> gist.save(gist).toObservable()));
     }
 
-    public static Observable save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        return RxHelper.safeObservable(Observable.create(subscriber -> {
-            SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-            singleEntityStore.delete(Gist.class)
-                    .where(Gist.OWNER_NAME.equal(ownerName))
-                    .get()
-                    .value();
-            Stream.of(gists)
-                    .forEach(gistsModel -> {
-                        gistsModel.setOwnerName(ownerName);
-                        gistsModel.save(gistsModel).toObservable().toBlocking().singleOrDefault(null);
-                    });
-        }));
-    }
-
-    @NonNull public static Observable<List<Gist>> getMyGists(@NonNull String ownerName) {
+    @NonNull public static Single<List<Gist>> getMyGists(@NonNull String ownerName) {
         return App.getInstance()
                 .getDataStore()
                 .select(Gist.class)
                 .where(Gist.OWNER_NAME.equal(ownerName))
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
-    @NonNull public static Observable<List<Gist>> getGists() {
+    @NonNull public static Single<List<Gist>> getGists() {
         return App.getInstance()
                 .getDataStore()
                 .select(Gist.class)
                 .where(Gist.OWNER_NAME.isNull())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -120,7 +111,7 @@ import rx.schedulers.Schedulers;
                 .select(Gist.class)
                 .where(Gist.GIST_ID.eq(gistId))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public boolean equals(Object o) {
@@ -176,7 +167,16 @@ import rx.schedulers.Schedulers;
             spannableBuilder.append(description);
         }
         if (InputHelper.isEmpty(spannableBuilder.toString())) {
-            if (isFromProfile) spannableBuilder.bold("N/A");
+            if (isFromProfile) {
+                List<FilesListModel> files = getFilesAsList();
+                if (!files.isEmpty()) {
+                    FilesListModel filesListModel = files.get(0);
+                    if (!InputHelper.isEmpty(filesListModel.getFilename()) && filesListModel.getFilename().trim().length() > 2) {
+                        spannableBuilder.append(" ")
+                                .append(filesListModel.getFilename());
+                    }
+                }
+            }
         }
         return spannableBuilder;
     }

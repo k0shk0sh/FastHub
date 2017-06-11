@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="@string/choose_your_login_type"
-                        android:textColor="@color/material_amber_700"/>
+                        android:textColor="@color/material_blue_accent_100"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,5 +141,31 @@
 
     </android.support.v4.widget.NestedScrollView>
 
+
+    <RelativeLayout
+        android:id="@+id/language_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/material_grey_200"
+        android:layout_gravity="bottom">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:alpha="0.5"
+            android:background="@color/material_light_white"/>
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/language_selector_clicker"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center"
+            android:padding="@dimen/spacing_xs_large"
+            android:text="@string/choose_language_title"
+            android:textAllCaps="true"/>
+    </RelativeLayout>
 
 </android.support.design.widget.CoordinatorLayout>

@@ -15,6 +15,7 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.MilestonesAdapter;
+import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.CreateMilestoneDialogFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
@@ -76,6 +77,9 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
 
     @Override public void onMilestoneSelected(@NonNull MilestoneModel milestoneModel) {
         onMilestoneSelected.onMilestoneSelected(milestoneModel);
+        if (getParentFragment() instanceof BaseDialogFragment) {
+            ((BaseDialogFragment) getParentFragment()).dismiss();
+        }
     }
 
     @Override protected int fragmentLayout() {
@@ -102,6 +106,7 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
         adapter.setListener(getPresenter());
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setAdapter(adapter);
+        recycler.addKeyLineDivider();
         if (savedInstanceState == null || (getPresenter().getMilestones().isEmpty() && !getPresenter().isApiCalled())) {
             getPresenter().onLoadMilestones(login, repo);
         }
@@ -110,6 +115,8 @@ public class MilestoneDialogFragment extends BaseFragment<MilestoneMvp.View, Mil
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

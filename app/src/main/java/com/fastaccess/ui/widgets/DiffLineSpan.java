@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -16,7 +17,10 @@ import android.text.style.LineBackgroundSpan;
 import android.text.style.MetricAffectingSpan;
 import android.text.style.TypefaceSpan;
 
+import com.fastaccess.App;
+import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
@@ -52,12 +56,20 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
 
     @NonNull public static SpannableStringBuilder getSpannable(@Nullable String text, @ColorInt int patchAdditionColor,
                                                                @ColorInt int patchDeletionColor, @ColorInt int patchRefColor) {
+        return getSpannable(text, patchAdditionColor, patchDeletionColor, patchRefColor, false);
+    }
+
+    @NonNull public static SpannableStringBuilder getSpannable(@Nullable String text, @ColorInt int patchAdditionColor,
+                                                               @ColorInt int patchDeletionColor, @ColorInt int patchRefColor,
+                                                               boolean truncate) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         if (!InputHelper.isEmpty(text)) {
             String[] split = text.split("\\r?\\n|\\r");
             if (split.length > 0) {
                 int lines = split.length;
+                int index = -1;
                 for (int i = 0; i < lines; i++) {
+                    if (truncate && (lines - i) > 3) continue;
                     String token = split[i];
                     if (i < (lines - 1)) {
                         token = token.concat("\n");
@@ -71,18 +83,26 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     } else if (token.startsWith("@@")) {
                         color = patchRefColor;
                     }
-                    String noNewLine = "\\No newline at end of file";
-                    token = token.replace(noNewLine, "");
+                    index = token.indexOf("\\ No newline at end of file");
+                    Logger.e(index);
+                    if (index != -1) {
+                        token = token.replace("\\ No newline at end of file", "");
+                    }
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
                         DiffLineSpan span = new DiffLineSpan(color);
                         spannableDiff.setSpan(span, 0, token.length(), SpannableString.SPAN_EXCLUSIVE_EXCLUSIVE);
-                        spannableDiff.setSpan(new TypefaceSpan("monospace"), 0, token.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                     }
                     builder.append(spannableDiff);
                 }
+                if (index != -1) {
+                    builder.insert(builder.length() - 1,
+                            SpannableBuilder.builder().append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
+                }
             }
         }
+        builder.setSpan(new TypefaceSpan("monospace"), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return builder;
     }
+
 }

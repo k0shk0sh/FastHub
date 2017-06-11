@@ -49,8 +49,8 @@ public class GitCommitModel implements Parcelable {
         this.committer = in.readParcelable(User.class.getClassLoader());
         this.tree = in.readParcelable(User.class.getClassLoader());
         this.distincted = in.readByte() != 0;
-        in.readList(parents, parents.getClass().getClassLoader());
-        in.readList(this.parents, GitCommitModel.class.getClassLoader());
+        this.parents = new GitCommitListModel();
+        in.readList(this.parents, this.parents.getClass().getClassLoader());
         this.commentCount = in.readInt();
     }
 

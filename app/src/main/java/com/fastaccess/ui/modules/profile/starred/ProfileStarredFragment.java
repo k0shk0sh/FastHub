@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.starred;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -32,11 +34,27 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
+    private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static ProfileStarredFragment newInstance(@NonNull String username) {
         ProfileStarredFragment view = new ProfileStarredFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, username).end());
         return view;
+    }
+
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
+        } else if (context instanceof RepoPagerMvp.TabsBadgeListener) {
+            tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        tabsBadgeListener = null;
+        super.onDetach();
     }
 
     @Override public void onNotifyAdapter(@Nullable List<Repo> items, int page) {
@@ -53,7 +71,7 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -80,7 +98,7 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -99,16 +117,17 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
         super.showMessage(titleRes, msgRes);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
-    }
-
     @NonNull @Override public OnLoadMore<String> getLoadMore() {
         if (onLoadMore == null) {
             onLoadMore = new OnLoadMore<>(getPresenter(), getArguments().getString(BundleConstant.EXTRA));
         }
         return onLoadMore;
+    }
+
+    @Override public void onUpdateCount(int starredCount) {
+        if (tabsBadgeListener != null) {
+            tabsBadgeListener.onSetBadge(3, starredCount);
+        }
     }
 
     @Override public void onRefresh() {
@@ -117,5 +136,15 @@ public class ProfileStarredFragment extends BaseFragment<ProfileStarredMvp.View,
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

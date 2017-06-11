@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
@@ -25,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -46,7 +44,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -83,6 +81,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     @Override public void showProgress(@StringRes int resId) {
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 
@@ -132,28 +131,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {
-        if (!PrefGetter.isUserIconGuideShowed()) {
-            new MaterialTapTargetPrompt.Builder(getActivity())
-                    .setTarget(itemView.findViewById(R.id.avatarLayout))
-                    .setPrimaryText(R.string.users)
-                    .setSecondaryText(R.string.avatar_click_hint)
-                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-
-                        }
-
-                        @Override public void onHidePromptComplete() {
-                            new MaterialTapTargetPrompt.Builder(getActivity())
-                                    .setTarget(itemView)
-                                    .setPrimaryText(R.string.fork)
-                                    .setSecondaryText(R.string.feeds_fork_hint)
-                                    .setCaptureTouchEventOutsidePrompt(true)
-                                    .show();
-                        }
-                    })
-                    .setCaptureTouchEventOutsidePrompt(true)
-                    .show();
-        }
+        if (!PrefGetter.isUserIconGuideShowed()) {}
     }
 
     private void showReload() {

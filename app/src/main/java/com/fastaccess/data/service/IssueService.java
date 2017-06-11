@@ -25,13 +25,14 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import rx.Observable;
+import io.reactivex.Observable;
 
 public interface IssueService {
 
     @GET("repos/{owner}/{repo}/issues")
     Observable<Pageable<Issue>> getRepositoryIssues(@Path("owner") String owner, @Path("repo") String repo,
-                                                    @Query("state") String state, @Query("page") int page);
+                                                    @Query("state") String state, @Query("sort") String sortBy,
+                                                    @Query("page") int page);
 
     @GET("search/issues") Observable<Pageable<Issue>> getIssuesWithCount(@NonNull @Query(value = "q", encoded = true) String query,
                                                                          @Query("page") int page);
@@ -44,7 +45,7 @@ public interface IssueService {
     Observable<Issue> getIssue(@Path("owner") String owner, @Path("repo") String repo,
                                @Path("number") int number);
 
-    @GET("repos/{owner}/{repo}/issues/{issue_number}/events?per_page=200")
+    @GET("repos/{owner}/{repo}/issues/{issue_number}/events?per_page=100")
     Observable<Pageable<IssueEvent>> getTimeline(@Path("owner") String owner, @Path("repo") String repo,
                                                  @Path("issue_number") int issue_number);
 
@@ -53,7 +54,7 @@ public interface IssueService {
                                   @Body IssueRequestModel issue);
 
     @PATCH("repos/{owner}/{repo}/issues/{number}")
-    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Issue> editIssue(@Path("owner") String owner, @Path("repo") String repo,
                                 @Path("number") int number,
                                 @Body IssueRequestModel issue);
@@ -66,11 +67,12 @@ public interface IssueService {
     Observable<Response<Boolean>> unlockIssue(@Path("owner") String owner, @Path("repo") String repo, @Path("number") int number);
 
 
-    @GET("repos/{owner}/{repo}/issues/{number}/comments?per_page=200")
+    @GET("repos/{owner}/{repo}/issues/{number}/comments?per_page=100")
     @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Pageable<Comment>> getIssueComments(@Path("owner") String owner,
                                                    @Path("repo") String repo,
-                                                   @Path("number") int number);
+                                                   @Path("number") int number,
+                                                   @Query("page") int page);
 
     @GET("repos/{owner}/{repo}/issues/{number}/comments/{id}")
     @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")

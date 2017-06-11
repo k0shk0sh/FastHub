@@ -1,5 +1,5 @@
 <resources>
-    <!-- Tolong gunakan EYD untuk berkontribusi di terjemahan ini.
+    <!-- Tolong gunakan PUEBI untuk berkontribusi di terjemahan ini.
          Jika Anda butuh seseorang untuk meninjau perubahan Anda, silakan menyebutkan nama pengguna
          yang berkaitan dengan terjemahan Bahasa Indonesia ini di berkas language_contributors.md
          yang lokasinya di direktori utama. -->
@@ -41,7 +41,7 @@
     <string name="releases">Rilis</string>
     <string name="no_body">Tidak ada</string>
     <string name="contributors">Kontributor</string>
-    <string name="by">Oleh</string>
+    <string name="by">oleh</string>
     <string name="close_issue">Tutup Isu</string>
     <string name="re_open_issue">Buka Kembali Isu</string>
     <string name="re_open">Buka Kembali</string>
@@ -165,6 +165,9 @@
     <string name="ten_minutes">10 menit</string>
     <string name="five_minutes">5 menit</string>
     <string name="one_minute">1 menit</string>
+    <string name="one_hour">1 jam</string>
+    <string name="two_hour">2 jam</string>
+    <string name="three_hour">3 jam</string>
     <string name="created_repo">Membuat</string>
     <string name="committed">Dikomit</string>
     <string name="downloaded">Diunduh</string>
@@ -197,10 +200,18 @@
     <string name="background_job_title">Jangka waktu sinkronisasi pemberitahuan</string>
     <string name="every">Setiap</string>
     <string name="behavior">Tindakan</string>
+    <string name="customization">Kustomisasi</string>
     <string name="recycler_view_animation_summary">Aktifkan daftar animasi</string>
     <string name="recycler_view_animation_title">Daftar animasi</string>
     <string name="back_button_summary">Nonaktifkan dialog yang mencegah penutupan aplikasi yang tidak disengaja</string>
     <string name="back_button_title">Tekan kembali untuk keluar</string>
+    <string name="restore">Pulihkan</string>
+    <string name="backup">Cadangan</string>
+    <string name="backed_up">Berhasil dicadangkan!</string>
+    <string name="select_backup">Pilih Cadangan untuk Dipulihkan</string>
+    <string name="permission_failed">Izin Tidak Diberikan.</string>
+    <string name="backup_summary">Terakhir diperbarui: %s</string>
+    <string name="now">Sekarang</string>
     <string name="unsaved_data_warning">Perubahan yang belum disimpan akan dibuang</string>
     <string name="private_repo">Pribadi</string>
     <string name="rect_avatar_summary">Gunakan avatar persegi panjang bulat bukan avatar melingkar</string>
@@ -233,6 +244,8 @@
     <string name="mark_notification_summary">Nonaktifkan tandai telah dibaca saat mengklik pemberitahuan.</string>
     <string name="theme_title">Pilih Tema</string>
     <string name="theme_summary">Pilih tema default Anda</string>
+    <string name="theme_color_summary">Pilih tema aksen warna</string>
+    <string name="theme_color_title">Tema Aksen Warna</string>
     <string name="website">Situs web</string>
     <string name="support_development">Dukung pengembangan</string>
     <string name="success_purchase_message">Terima kasih telah menjadi orang yang sangat mengagumkan!</string>
@@ -313,14 +326,15 @@
     <string name="wrap_code_title">Pembungkus Kode</string>
     <string name="open_source_libs">Pustaka sumber terbuka</string>
     <string name="enable_notification_sound_summary">Aktifkan suara pemberitahuan setelah pemberitahuan diterima.</string>
-    <string name="enable_notification_sound_title">Aktifkan suara pemberitahuan</string>
+    <string name="enable_notification_sound_title">Aktifkan Suara Pemberitahuan</string>
+    <string name="enable_notification_title">Aktifkan Pemberitahuan</string>
     <string name="login_with_personal_token">Masuk dengan token pribadi</string>
     <string name="personal_token">Token Pribadi</string>
     <string name="basic_login">Masuk melalui otentikasi dasar</string>
     <string name="no_orgs_description">Jika Anda benar-benar terikat pada organisasi dan Anda tidak dapat melihatnya di sini,
         silakan ikuti tautan di bawah ini.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nCatatan Tambahan: Alasan FastHub tidak menggunakan "Akses Token" adalah karena
-        jika salah satu organisasi Anda memiliki pengaturan 2FA yang diaktifkan, Kode OTP tersebut hanya dapat bertahan maksimum satu menit atau lebih, yang akan menyebabkan
-        FastHub untuk mengeluarkan Anda dengan segera karena GitHub menanggapi hal tersebut sebagai akses yang tidak sah.</string>
+        jika salah satu organisasi Anda memiliki pengaturan 2FA yang diaktifkan, Kode OTP tersebut hanya dapat bertahan maksimum satu menit atau lebih, yang menyebabkan
+        FastHub akan mengeluarkan Anda dengan segera karena GitHub menanggapi hal tersebut sebagai akses yang tidak sah.</string>
     <string name="insert">Memasukkan</string>
     <string name="select">Pilih</string>
     <string name="select_picture">Pilih Gambar</string>
@@ -329,9 +343,55 @@
     <string name="support_with_10_00">Dukung dengan $10.00</string>
     <string name="support_with_20_00">Dukung dengan $20.00</string>
     <string name="app_language">Bahasa Aplikasi</string>
+    <string name="language">Bahasa</string>
     <string name="choose_language_title">Pilih Bahasa</string>
     <string name="choose_language_summary">Pilih bahasa pilihan Anda</string>
     <string name="un_subscribe">Berhenti berlangganan</string>
     <string name="from">dari</string>
     <string name="in_value">di</string>
+    <string name="subscribe">Berlangganan</string>
+    <string name="repo_issues_is_disabled">Repo yang tidak mempunyai isu</string>
+    <string name="access_token">Akses Token</string>
+    <string name="basic_authentication">Otentikasi Dasar</string>
+    <string name="choose_your_login_type">Pilih tipe login Anda</string>
+    <string name="files_only">Di Berkas</string>
+    <string name="paths_only">Di Path</string>
+    <string name="review_requests">Permintaan Tinjauan</string>
+    <string name="join_slack">Bergabung di Slack</string>
+    <string name="join_slack_message">Apakah Anda ingin bergabung dengan grup FastHub di Slack?</string>
+    <string name="successfully_invited">Berhasil diundang</string>
+    <string name="reply">Balas</string>
+    <string name="failed_selecting_image">Gagal memuat gambar.</string>
+    <string name="want_to_merge">ingin merge</string>
+    <string name="watchers">Penonton</string>
+    <string name="reviewers">Peninjau</string>
+    <string name="no_reviewers">Tidak ada peninjau</string>
+    <string name="sent_from_fasthub">Dikirim dari %1$s menggunakan %2$s%3$s</string>
+    <string name="enable_signature">Aktifkan tanda tangan</string>
+    <string name="enable_signature_summary">Aktifkan kirim via tanda tangan</string>
+    <string name="enable_signature_box">Aktifkan Signature Box</string>
+    <string name="enable_signature_box_summary">Aktifkan kotak centang untuk toggle tanda tangan di editor teks</string>
+    <string name="tags">Tag</string>
+    <string name="add_comment">Tambah komentar</string>
+    <string name="banners">Memperkenalkan Banner</string>
+    <string name="banners_info">Dengan FastHub 2.5.0, Anda dapat lebih mengekspresikan diri dengan banner 
+        untuk halaman profil Anda.\n\nSiapa pun yang menggunakan FastHub, akan melihat header Anda dan Anda
+        juga akan melihat header orang lain juga! Jika Anda ingin membuat banner untuk diri sendiri, buatlah
+        dengan ukuran 1280x384px, jika tidak, itu akan dipotong.\n\n Anda bisa menambahkan atau mengganti
+        banner Anda kapan saja, dengan membuat gist "header.fst" dengan berkas yang berisi tautan langsung
+        ke gambar header.\n\nAtau bisa lebih sederhana lagi, cukup gunakan pemilih gambar yang sudah terpasang!
+    </string>
+    <string name="edit_banner">PILIH BANNER</string>
+    <string name="image_error">Gagal memuat gambar, silakan coba lagi nanti.</string>
+    <string name="trending">Tren</string>
+    <string name="not_really_working">Urutan berdasarkan emoji tidak benar-benar bekerja karena dibatasi oleh GitHub</string>
+    <string name="scroll_up">Gulir ke atas</string>
+    <string name="scroll_down">Gulir ke bawah</string>
+    <string name="participated">Berpartisipasi</string>
+    <string name="todo_checked">Todo dicentang</string>
+    <string name="todo_unchecked">Todo tidak dicentang</string>
+    <string name="divider">Pembagi</string>
+    <string name="no_user_found">Pengguna tidak ditemukan</string>
+    <string name="no_trending">Tidak ada tren</string>
+    <string name="filter">Filter</string>
 </resources>

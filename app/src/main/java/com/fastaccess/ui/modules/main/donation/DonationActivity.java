@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -15,10 +14,6 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import io.octo.bear.pago.Pago;
-import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by Kosh on 24 Mar 2017, 9:16 PM
@@ -28,22 +23,6 @@ public class DonationActivity extends BaseActivity {
     @BindView(R.id.cardsHolder) View cardsHolder;
     @BindView(R.id.appbar) AppBarLayout appBarLayout;
 
-    private Pago pago;
-    private Subscription subscription;
-
-    @NonNull public Pago getPago() {
-        if (pago == null) {
-            pago = new Pago(getApplicationContext());
-        }
-        return pago;
-    }
-
-    @Override protected void onDestroy() {
-        if (subscription != null && subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
-        }
-        super.onDestroy();
-    }
 
     @Override protected int layout() {
         return R.layout.support_development_layout;
@@ -66,23 +45,19 @@ public class DonationActivity extends BaseActivity {
         AnimHelper.animateVisibility(cardsHolder, true);
     }
 
-    @Override protected void onStop() {
-        super.onStop();
-    }
-
-    @OnClick(R.id.two) public void onTwoClicked() {
+    @OnClick(R.id.two) public void onTwoClicked(View v) {
         onProceed(getString(R.string.donation_product_1));
     }
 
-    @OnClick(R.id.five) public void onFiveClicked() {
+    @OnClick(R.id.five) public void onFiveClicked(View v) {
         onProceed(getString(R.string.donation_product_2));
     }
 
-    @OnClick(R.id.ten) public void onTenClicked() {
+    @OnClick(R.id.ten) public void onTenClicked(View v) {
         onProceed(getString(R.string.donation_product_3));
     }
 
-    @OnClick(R.id.twenty) public void onTwentyClicked() {
+    @OnClick(R.id.twenty) public void onTwentyClicked(View v) {
         onProceed(getString(R.string.donation_product_4));
     }
 
@@ -91,16 +66,7 @@ public class DonationActivity extends BaseActivity {
     }
 
     private void onProceed(@NonNull String productKey) {
-        subscription = getPago().purchaseProduct(productKey, "inapp:com.fastaccess.github:" + productKey)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .onErrorReturn(throwable -> {
-                    showErrorMessage(throwable.getMessage());
-                    return null;
-                })
-                .subscribe(order -> {
-                    Logger.e(order);
-                    if (order != null) showMessage(R.string.success, R.string.success_purchase_message);
-                }, Throwable::printStackTrace);
+        DonateActivity.Companion.start(this, productKey);
     }
+
 }

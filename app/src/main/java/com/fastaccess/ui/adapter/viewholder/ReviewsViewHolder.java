@@ -38,7 +38,7 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     public static ReviewsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new ReviewsViewHolder(getView(viewGroup, R.layout.issue_timeline_row_item), adapter);
+        return new ReviewsViewHolder(getView(viewGroup, R.layout.review_timeline_row_item), adapter);
     }
 
     @Override public void bind(@NonNull TimelineModel model) {

@@ -31,6 +31,8 @@ interface RepoPullRequestMvp {
         void onUpdateCount(int totalCount);
 
         void onOpenPullRequest(@NonNull PullsIssuesParser parser);
+
+        void onShowPullRequestPopup(@NonNull PullRequest item);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

@@ -25,7 +25,11 @@ interface SearchIssuesMvp {
 
         void onSetSearchQuery(@NonNull String query);
 
+        void onQueueSearch(@NonNull String query);
+
         @NonNull OnLoadMore<String> getLoadMore();
+
+        void onShowPopupDetails(@NonNull Issue item);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

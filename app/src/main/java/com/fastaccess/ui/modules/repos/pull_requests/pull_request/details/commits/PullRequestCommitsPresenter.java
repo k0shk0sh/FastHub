@@ -21,11 +21,10 @@ import java.util.ArrayList;
  */
 
 class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.View> implements PullRequestCommitsMvp.Presenter {
-
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State long number;
     private ArrayList<Commit> commits = new ArrayList<>();
-    private String login;
-    private String repoId;
-    private long number;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -66,7 +65,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        manageSubscription(Commit.save(response.getItems(), repoId, login, number).subscribe());
+                        manageObservable(Commit.save(response.getItems(), repoId, login, number));
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
@@ -87,7 +86,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
 
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Commit.getCommits(repoId, login, number))
+            manageDisposable(RxHelper.getSingle(Commit.getCommits(repoId, login, number))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
@@ -98,7 +97,5 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         CommitPagerActivity.createIntentForOffline(v.getContext(), item);
     }
 
-    @Override public void onItemLongClick(int position, View v, Commit item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Commit item) {}
 }

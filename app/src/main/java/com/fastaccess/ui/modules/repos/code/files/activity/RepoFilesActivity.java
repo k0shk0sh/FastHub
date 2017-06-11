@@ -25,7 +25,7 @@ import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
-import icepick.State;
+import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 08 Apr 2017, 4:24 PM

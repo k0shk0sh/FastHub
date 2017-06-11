@@ -21,10 +21,9 @@ import java.util.ArrayList;
  */
 
 class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implements RepoReleasesMvp.Presenter {
-
     private ArrayList<Release> releases = new ArrayList<>();
-    private String login;
-    private String repoId;
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -72,14 +71,6 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
 
     }
 
-    private void onResponse(Pageable<Release> response) {
-        lastPage = response.getLast();
-        if (getCurrentPage() == 1) {
-            manageSubscription(Release.save(response.getItems(), repoId, login).subscribe());
-        }
-        sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
-    }
-
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
@@ -90,7 +81,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
 
     @Override public void onWorkOffline() {
         if (releases.isEmpty()) {
-            manageSubscription(RxHelper.getObserver(Release.get(repoId, login))
+            manageDisposable(RxHelper.getSingle(Release.get(repoId, login))
                     .subscribe(releasesModels -> sendToView(view -> view.onNotifyAdapter(releasesModels, 1))));
         } else {
             sendToView(RepoReleasesMvp.View::hideProgress);
@@ -110,7 +101,13 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, Release item) {
-        onItemClick(position, v, item);
+    @Override public void onItemLongClick(int position, View v, Release item) {}
+
+    private void onResponse(Pageable<Release> response) {
+        lastPage = response.getLast();
+        if (getCurrentPage() == 1) {
+            manageObservable(Release.save(response.getItems(), repoId, login));
+        }
+        sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
     }
 }

@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
@@ -19,6 +21,7 @@ import com.fastaccess.ui.adapter.LabelsAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.create.CreateLabelDialogFragment;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import java.util.ArrayList;
@@ -29,7 +32,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import icepick.State;
 
 /**
  * Created by Kosh on 22 Feb 2017, 7:23 PM
@@ -39,7 +41,9 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
+    @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.add) View add;
+    @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Integer, LabelModel> selectionMap;
     private LabelsAdapter adapter;
     private LabelsMvp.SelectedLabelsListener callback;
@@ -85,6 +89,10 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        refresh.setEnabled(false);
+        stateLayout.setEmptyText(R.string.no_labels);
+        recycler.setEmptyView(stateLayout, refresh);
+        recycler.addKeyLineDivider();
         title.setText(R.string.labels);
         add.setVisibility(View.VISIBLE);
         List<LabelModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);

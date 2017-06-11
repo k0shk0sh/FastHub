@@ -29,10 +29,10 @@ import java.util.ArrayList;
 
 class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> implements PullRequestFilesMvp.Presenter {
 
+    @com.evernote.android.state.State String login;
+    @com.evernote.android.state.State String repoId;
+    @com.evernote.android.state.State long number;
     private ArrayList<CommitFileModel> files = new ArrayList<>();
-    private String login;
-    private String repoId;
-    private long number;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;

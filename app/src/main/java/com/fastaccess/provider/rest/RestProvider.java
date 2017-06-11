@@ -7,7 +7,6 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
@@ -19,6 +18,7 @@ import com.fastaccess.data.service.OrganizationService;
 import com.fastaccess.data.service.PullRequestService;
 import com.fastaccess.data.service.ReactionsService;
 import com.fastaccess.data.service.RepoService;
+import com.fastaccess.data.service.ReviewService;
 import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
@@ -35,15 +35,14 @@ import java.io.File;
 import java.lang.reflect.Modifier;
 import java.net.URI;
 
-import okhttp3.Cache;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
+import retrofit2.HttpException;
 import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.HttpException;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * Created by Kosh on 08 Feb 2017, 8:37 PM
@@ -51,9 +50,9 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 
 public class RestProvider {
 
-    private static Cache cache;
     public static final int PAGE_SIZE = 30;
 
+    private static OkHttpClient okHttpClient;
     public final static Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
@@ -61,35 +60,30 @@ public class RestProvider {
             .setPrettyPrinting()
             .create();
 
-    private static Cache provideCache() {
-        if (cache == null) {
-            int cacheSize = 20 * (1024 * 1024); //20MB
-            cache = new Cache(App.getInstance().getCacheDir(), cacheSize);
-        }
-        return cache;
-    }
-
     private static OkHttpClient provideOkHttpClient(boolean isRawString) {
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
-        if (BuildConfig.DEBUG) {
-            client.addInterceptor(new HttpLoggingInterceptor()
-                    .setLevel(HttpLoggingInterceptor.Level.BODY));
-        }
-        client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
-        if (!isRawString) client.addInterceptor(new PaginationInterceptor());
-        client.addInterceptor(chain -> {
-            Request original = chain.request();
-            if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
-                Request.Builder requestBuilder = original.newBuilder();
-                requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
-                        .addHeader("Content-type", "application/vnd.github.v3+json");
-                requestBuilder.method(original.method(), original.body());
-                Request request = requestBuilder.build();
-                return chain.proceed(request);
+        if (okHttpClient == null) {
+            OkHttpClient.Builder client = new OkHttpClient.Builder();
+            if (BuildConfig.DEBUG) {
+                client.addInterceptor(new HttpLoggingInterceptor()
+                        .setLevel(HttpLoggingInterceptor.Level.BODY));
             }
-            return chain.proceed(original);
-        });
-        return client.build();
+            client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
+            if (!isRawString) client.addInterceptor(new PaginationInterceptor());
+            client.addInterceptor(chain -> {
+                Request original = chain.request();
+                if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
+                    Request.Builder requestBuilder = original.newBuilder();
+                    requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
+                            .addHeader("Content-type", "application/vnd.github.v3+json");
+                    requestBuilder.method(original.method(), original.body());
+                    Request request = requestBuilder.build();
+                    return chain.proceed(request);
+                }
+                return chain.proceed(original);
+            });
+            okHttpClient = client.build();
+        }
+        return okHttpClient;
     }
 
     private static Retrofit provideRetrofit(boolean isRawString) {
@@ -97,7 +91,7 @@ public class RestProvider {
                 .baseUrl(BuildConfig.REST_URL)
                 .client(provideOkHttpClient(isRawString))
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
     }
 
@@ -143,8 +137,21 @@ public class RestProvider {
         return provideRetrofit().create(UserRestService.class);
     }
 
+    @NonNull public static UserRestService getContribution() {
+        return new Retrofit.Builder()
+                .baseUrl(BuildConfig.REST_URL)
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(UserRestService.class);
+    }
+
     @NonNull public static GistService getGistService() {
-        return provideRetrofit().create(GistService.class);
+        return getGistService(false);
+    }
+
+    @NonNull public static GistService getGistService(boolean isRaw) {
+        return provideRetrofit(isRaw).create(GistService.class);
     }
 
     @NonNull public static RepoService getRepoService() {
@@ -179,6 +186,10 @@ public class RestProvider {
         return provideRetrofit().create(OrganizationService.class);
     }
 
+    @NonNull public static ReviewService getReviewService() {
+        return provideRetrofit().create(ReviewService.class);
+    }
+
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {
         ResponseBody body = null;
         if (throwable instanceof HttpException) {
@@ -196,9 +207,13 @@ public class RestProvider {
         return new Retrofit.Builder()
                 .baseUrl("https://ok13pknpj4.execute-api.eu-central-1.amazonaws.com/prod/")
                 .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
                 .create(SlackService.class);
+    }
+
+    public static void clearHttpClient() {
+        okHttpClient = null;
     }
 
 }

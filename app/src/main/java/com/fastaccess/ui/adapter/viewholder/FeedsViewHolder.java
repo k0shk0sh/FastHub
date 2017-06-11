@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -27,7 +28,7 @@ import butterknife.BindView;
 
 public class FeedsViewHolder extends BaseViewHolder<Event> {
 
-    @BindView(R.id.avatarLayout) AvatarLayout avatar;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatar;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
@@ -38,15 +39,21 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         super(itemView, adapter);
     }
 
-    public static View getView(@NonNull ViewGroup viewGroup) {
-        return getView(viewGroup, R.layout.feeds_row_item);
+    public static View getView(@NonNull ViewGroup viewGroup, boolean noImage) {
+        if (noImage) {
+            return getView(viewGroup, R.layout.feeds_row_no_image_item);
+        } else {
+            return getView(viewGroup, R.layout.feeds_row_item);
+        }
     }
 
     @Override public void bind(@NonNull Event eventsModel) {
-        if (eventsModel.getActor() != null) {
-            avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
-        } else {
-            avatar.setUrl(null, null);
+        if (avatar != null) {
+            if (eventsModel.getActor() != null) {
+                avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
+            } else {
+                avatar.setUrl(null, null);
+            }
         }
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         spannableBuilder.append(eventsModel.getActor() != null ? eventsModel.getActor().getLogin() : "N/A").append(" ");
@@ -55,7 +62,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             EventsType type = eventsModel.getType();
             date.setGravity(Gravity.CENTER);
             date.setEventsIcon(type.getDrawableRes());
-            String action = null;
+            String action;
             if (type == EventsType.WatchEvent) {
                 action = itemView.getResources().getString(type.getType()).toLowerCase();
             } else if (type == EventsType.PullRequestEvent) {
@@ -74,16 +81,16 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(action != null ? action.toLowerCase() : "")
                     .append(eventsModel.getPayload() != null && eventsModel.getPayload().getAction() != null ? " " : "");
             if (type != EventsType.WatchEvent) {
-                if (type == EventsType.CreateEvent && eventsModel.getPayload()
-                        .getRefType().equalsIgnoreCase("branch")) {
+                if (type == EventsType.CreateEvent && eventsModel.getPayload() != null && eventsModel.getPayload().getRefType() != null) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")
                             .bold(eventsModel.getPayload().getRefType())
                             .append(" ")
-                            .append(to)
+                            .append(eventsModel.getPayload().getRef() != null ? eventsModel.getPayload().getRef() + " " : "")
+                            .append(in)
                             .append(" ");
-                } else if (type == EventsType.PushEvent && eventsModel.getPayload() != null) {
+                } else if ((type == EventsType.PushEvent || type == EventsType.DeleteEvent) && eventsModel.getPayload() != null) {
                     spannableBuilder
                             .bold(itemView.getResources().getString(type.getType()).toLowerCase())
                             .append(" ")
@@ -92,30 +99,44 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                             .append(in)
                             .append(" ");
                 } else {
-                    spannableBuilder.bold(itemView.getResources().getString(type
-                            .getType())
-                            .toLowerCase())
-                            .append(" ");
                     if (eventsModel.getPayload() != null) {
                         PayloadModel payloadModel = eventsModel.getPayload();
                         if (payloadModel.getTarget() != null) {
-                            spannableBuilder.append(payloadModel.getTarget().getLogin())
+                            spannableBuilder
+                                    .bold(payloadModel.getTarget().getLogin())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
                         } else if (payloadModel.getTeam() != null) {
-                            spannableBuilder.append(payloadModel.getTeam().getName())
+                            spannableBuilder
+                                    .bold(payloadModel.getTeam().getName())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
                         } else if (payloadModel.getMember() != null) {
-                            spannableBuilder.append(payloadModel.getMember().getName())
+                            spannableBuilder
+                                    .bold(payloadModel.getMember().getLogin())
+                                    .append(" ")
+                                    .append(in)
                                     .append(" ");
+                        } else {
+                            spannableBuilder.bold(itemView.getResources().getString(type.getType()).toLowerCase()).append(" ");
                         }
+                    } else {
+                        spannableBuilder.bold(itemView.getResources().getString(type.getType()).toLowerCase()).append(" ");
                     }
                 }
             }
         }
         if (eventsModel.getPayload() != null) {
             if (eventsModel.getPayload().getComment() != null) {
-                description.setText(eventsModel.getPayload().getComment().getBody());
+                MarkDownProvider.stripMdText(description, eventsModel.getPayload().getComment().getBody());
                 description.setVisibility(View.VISIBLE);
+                if (eventsModel.getPayload().getIssue() != null) {
+                    number = "#" + eventsModel.getPayload().getIssue().getNumber();
+                } else if (eventsModel.getPayload().getPullRequest() != null) {
+                    number = "#" + eventsModel.getPayload().getPullRequest().getNumber();
+                }
             } else if (eventsModel.getPayload().getIssue() != null) {
                 number = "#" + eventsModel.getPayload().getIssue().getNumber();
                 description.setText(eventsModel.getPayload().getIssue().getTitle());
@@ -132,7 +153,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             description.setText("");
             description.setVisibility(View.GONE);
         }
-        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "").append(number);
+        spannableBuilder.append(eventsModel.getRepo() != null ? eventsModel.getRepo().getName() : "")
+                .append(number);
         title.setText(spannableBuilder);
         date.setText(ParseDateFormat.getTimeAgo(eventsModel.getCreatedAt()));
     }

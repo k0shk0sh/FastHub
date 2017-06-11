@@ -8,8 +8,9 @@
     android:layout_gravity="start"
     android:clickable="true"
     android:fitsSystemWindows="true"
+    app:itemBackground="@color/transparent"
     android:focusable="true"
     app:headerLayout="@layout/drawer_header"
-    app:itemIconTint="?colorAccent"
-    app:itemTextColor="?colorAccent"
+    app:itemIconTint="@color/search_tab_highlighter"
+    app:itemTextColor="@color/search_tab_highlighter"
     app:menu="@menu/drawer_menu"/>

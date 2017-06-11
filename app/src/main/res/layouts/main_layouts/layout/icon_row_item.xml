@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/spacing_xs_large">
+
+    <com.fastaccess.ui.widgets.ForegroundImageView
+        android:id="@+id/iconItemImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/spacing_large"
+        tools:src="@drawable/ic_slack"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/iconItemImage"
+        android:orientation="vertical">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/iconItemTitle"
+            style="@style/TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:text="Setting"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/iconItemSummary"
+            style="?android:attr/textAppearanceListItemSecondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:alpha="0.7"
+            tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

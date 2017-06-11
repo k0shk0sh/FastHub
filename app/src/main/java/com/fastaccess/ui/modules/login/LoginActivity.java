@@ -12,25 +12,38 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
+import com.evernote.android.state.State;
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
+import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog;
+import com.miguelbcr.io.rx_billing_service.RxBillingService;
+import com.miguelbcr.io.rx_billing_service.entities.ProductType;
+import com.miguelbcr.io.rx_billing_service.entities.Purchase;
+
+import java.util.Arrays;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
-import icepick.State;
+import io.reactivex.functions.Action;
 
 /**
  * Created by Kosh on 08 Feb 2017, 9:10 PM
@@ -38,7 +51,7 @@ import icepick.State;
 
 public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> implements LoginMvp.View {
 
-
+    @Nullable @BindView(R.id.language_selector) RelativeLayout language_selector;
     @Nullable @BindView(R.id.usernameEditText) TextInputEditText usernameEditText;
     @Nullable @BindView(R.id.username) TextInputLayout username;
     @Nullable @BindView(R.id.passwordEditText) TextInputEditText passwordEditText;
@@ -47,7 +60,6 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     @Nullable @BindView(R.id.twoFactorEditText) TextInputEditText twoFactorEditText;
     @Nullable @BindView(R.id.login) FloatingActionButton login;
     @Nullable @BindView(R.id.progress) ProgressBar progress;
-
     @State boolean isBasicAuth;
 
     public static void start(@NonNull Activity activity, boolean isBasicAuth) {
@@ -56,13 +68,14 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
                 .put(BundleConstant.YES_NO_EXTRA, isBasicAuth)
                 .end());
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("smartLock", true);
         activity.startActivity(intent);
         activity.finish();
     }
 
     @Optional @OnClick(R.id.browserLogin) void onOpenBrowser() {
         Uri uri = getPresenter().getAuthorizationUrl();
-        ActivityHelper.login(this, uri);
+        ActivityHelper.startCustomTab(this, uri);
     }
 
     @Optional @OnClick(R.id.login) public void onClick() {
@@ -82,6 +95,10 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     @Optional @OnEditorAction(R.id.twoFactorEditText) public boolean onSend2FA() {
         doLogin();
         return true;
+    }
+
+    @Optional @OnClick(R.id.language_selector_clicker) public void onChangeLanguage() {
+        showLanguage();
     }
 
     @Override protected int layout() {
@@ -122,8 +139,16 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @Override public void onSuccessfullyLoggedIn() {
-        hideProgress();
-        new SlackBottomSheetDialog().show(getSupportFragmentManager(), "SlackBottomSheetDialog");
+        checkPurchases(() -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
+        });
+    }
+
+    @Override public void onSuccessfullyLoggedIn(Login userModel) {
+        onSuccessfullyLoggedIn();
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +159,13 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
                 isBasicAuth = getIntent().getExtras().getBoolean(BundleConstant.YES_NO_EXTRA);
             }
         }
-        if (password != null) password.setHint(isBasicAuth ? getString(R.string.password) : getString(R.string.access_token));
+        if (Arrays.asList(getResources().getStringArray(R.array.languages_array_values)).contains(Locale.getDefault().getLanguage())) {
+            String language = PrefHelper.getString("app_language");
+            PrefHelper.set("app_language", Locale.getDefault().getLanguage());
+            if (!BuildConfig.DEBUG) if (language_selector != null) language_selector.setVisibility(View.GONE);
+            if (!Locale.getDefault().getLanguage().equals(language)) recreate();
+        }
+
     }
 
     @Override protected void onNewIntent(Intent intent) {
@@ -167,13 +198,16 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     @Override public void showProgress(@StringRes int resId) {
         if (login == null) return;
         login.hide();
-        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(login.getWindowToken(), 0);
+        AppHelper.hideKeyboard(login);
         AnimHelper.animateVisibility(progress, true);
     }
 
     @Override public void onBackPressed() {
-        startActivity(new Intent(this, LoginChooserActivity.class));
+        if (!(this instanceof LoginChooserActivity)) {
+            startActivity(new Intent(this, LoginChooserActivity.class));
+        } else {
+            finish();
+        }
     }
 
     @Override public void hideProgress() {
@@ -182,11 +216,38 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         login.show();
     }
 
-    @Override public void onDismissed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finishAffinity();
+    protected void checkPurchases(Action action) {
+        RxBillingService.getInstance(this, BuildConfig.DEBUG)
+                .getPurchases(ProductType.IN_APP)
+                .doOnSubscribe(disposable -> showProgress(0))
+                .subscribe((purchases, throwable) -> {
+                    hideProgress();
+                    if (throwable == null) {
+                        Logger.e(purchases);
+                        if (purchases != null && !purchases.isEmpty()) {
+                            for (Purchase purchase : purchases) {
+                                String sku = purchase.sku();
+                                if (sku != null) {
+                                    Logger.e(sku);
+                                    if (sku.equalsIgnoreCase(getString(R.string.donation_product_1))) {
+                                        PrefGetter.enableAmlodTheme();
+                                    } else {
+                                        PrefGetter.setProItems();
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        throwable.printStackTrace();
+                    }
+                    action.run();
+                });
+    }
+
+    private void showLanguage() {
+        LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
+        languageBottomSheetDialog.onAttach((Context) this);
+        languageBottomSheetDialog.show(getSupportFragmentManager(), "LanguageBottomSheetDialog");
     }
 
     private void doLogin() {
@@ -195,7 +256,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
             getPresenter().login(InputHelper.toString(username),
                     InputHelper.toString(password),
                     InputHelper.toString(twoFactor),
-                    isBasicAuth);
+                    isBasicAuth, false);
         }
     }
 }

@@ -4,14 +4,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.UsersListModel;
 import com.fastaccess.data.dao.converters.LabelsListConverter;
 import com.fastaccess.data.dao.converters.MilestoneConverter;
 import com.fastaccess.data.dao.converters.PullRequestConverter;
+import com.fastaccess.data.dao.converters.ReactionsConverter;
 import com.fastaccess.data.dao.converters.RepoConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.converters.UsersConverter;
@@ -21,15 +22,15 @@ import com.fastaccess.helper.RxHelper;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.rx.SingleEntityStore;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
-import rx.Completable;
-import rx.Observable;
 
 import static com.fastaccess.data.dao.model.Issue.ID;
 import static com.fastaccess.data.dao.model.Issue.LOGIN;
@@ -66,46 +67,36 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     @Convert(RepoConverter.class) Repo repository;
     @Convert(PullRequestConverter.class) PullRequest pullRequest;
     @Convert(UserConverter.class) User closedBy;
+    @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
-    public Completable save(Issue entity) {
-        return App.getInstance().getDataStore()
-                .delete(Issue.class)
-                .where(ID.eq(entity.getId()))
-                .get()
-                .toSingle()
-                .toCompletable()
-                .andThen(App.getInstance().getDataStore()
-                        .insert(entity)
-                        .toCompletable());
+    public Single<Issue> save(Issue entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
-    public static Observable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
+    public static Observable<Issue> save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
+        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
         return RxHelper.safeObservable(
-                Observable.create(subscriber -> {
-                    SingleEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-                    singleEntityStore.delete(Issue.class)
-                            .where(REPO_ID.equal(repoId)
-                                    .and(LOGIN.equal(login)))
-                            .get()
-                            .value();
-                    Stream.of(models)
-                            .forEach(issueModel -> {
-                                issueModel.setRepoId(repoId);
-                                issueModel.setLogin(login);
-                                issueModel.save(issueModel).toObservable().toBlocking().singleOrDefault(null);
-                            });
-                })
-        );
+                singleEntityStore.delete(Issue.class)
+                        .where(REPO_ID.equal(repoId).and(LOGIN.equal(login)))
+                        .get()
+                        .single()
+                        .toObservable()
+                        .flatMap(integer -> Observable.fromIterable(models))
+                        .flatMap(issueModel -> {
+                            issueModel.setRepoId(repoId);
+                            issueModel.setLogin(login);
+                            return issueModel.save(issueModel).toObservable();
+                        }));
     }
 
-    public static Observable<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
+    public static Single<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
         return App.getInstance().getDataStore().select(Issue.class)
                 .where(REPO_ID.equal(repoId)
                         .and(LOGIN.equal(login))
                         .and(STATE.equal(issueState)))
                 .orderBy(UPDATED_AT.desc())
                 .get()
-                .toObservable()
+                .observable()
                 .toList();
     }
 
@@ -114,7 +105,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
                 .select(Issue.class)
                 .where(ID.equal(id))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     public static Observable<Issue> getIssueByNumber(int number, String repoId, String login) {
@@ -124,7 +115,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
                         .and(REPO_ID.eq(repoId))
                         .and(LOGIN.eq(login)))
                 .get()
-                .toObservable();
+                .observable();
     }
 
     @Override public int describeContents() { return 0; }
@@ -154,6 +145,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
         dest.writeParcelable(this.repository, flags);
         dest.writeParcelable(this.pullRequest, flags);
         dest.writeParcelable(this.closedBy, flags);
+        dest.writeParcelable(this.reactions, flags);
     }
 
     protected AbstractIssue(Parcel in) {
@@ -187,6 +179,7 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
         this.repository = in.readParcelable(Repo.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
         this.closedBy = in.readParcelable(User.class.getClassLoader());
+        this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
     }
 
     public static final Creator<Issue> CREATOR = new Creator<Issue>() {

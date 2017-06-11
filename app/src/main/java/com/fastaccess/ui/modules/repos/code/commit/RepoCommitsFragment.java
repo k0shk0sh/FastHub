@@ -105,6 +105,7 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
+        recycler.addKeyLineDivider();
         adapter = new CommitsAdapter(getPresenter().getCommits());
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
@@ -123,6 +124,8 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     }
 
     @Override public void showProgress(@StringRes int resId) {
+
+refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -192,6 +195,11 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

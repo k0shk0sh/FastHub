@@ -21,13 +21,21 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import java.util.Arrays;
 
 import okhttp3.Credentials;
-import retrofit2.adapter.rxjava.HttpException;
+import retrofit2.HttpException;
 
 /**
  * Created by Kosh on 09 Nov 2016, 9:43 PM
  */
 
-class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
+public class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
+
+    public LoginPresenter() {
+        RestProvider.clearHttpClient();
+    }
+
+    @Override protected void onDestroy() {
+        super.onDestroy();
+    }
 
     @Override public void onError(@NonNull Throwable throwable) {
         if (RestProvider.getErrorCode(throwable) == 401 && throwable instanceof HttpException) {
@@ -93,19 +101,23 @@ class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Pr
         if (userModel != null) {
             userModel.setToken(PrefGetter.getToken());
             userModel.save(userModel);
-            sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
+            if (getView() != null)
+                getView().onSuccessfullyLoggedIn(userModel);
+            else
+                sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @Override public void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode, boolean isBasicAuth) {
+    @Override public void login(@NonNull String username, @NonNull String password,
+                                @Nullable String twoFactorCode, boolean isBasicAuth, boolean ignore) {
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
         if (getView() == null) return;
-        getView().onEmptyUserName(usernameIsEmpty);
-        getView().onEmptyPassword(passwordIsEmpty);
-        if (!usernameIsEmpty && !passwordIsEmpty) {
+        getView().onEmptyUserName(!ignore && usernameIsEmpty);
+        getView().onEmptyPassword(!ignore && passwordIsEmpty);
+        if ((!usernameIsEmpty && !passwordIsEmpty) || ignore) {
             String authToken = Credentials.basic(username, password);
             if (isBasicAuth) {
                 AuthModel authModel = new AuthModel();

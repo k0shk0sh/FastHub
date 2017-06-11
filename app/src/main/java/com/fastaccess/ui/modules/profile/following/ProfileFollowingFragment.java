@@ -81,6 +81,8 @@ public class ProfileFollowingFragment extends BaseFragment<ProfileFollowingMvp.V
 
     @Override public void showProgress(@StringRes int resId) {
 
+refresh.setRefreshing(true);
+
         stateLayout.showProgress();
     }
 
@@ -112,6 +114,11 @@ public class ProfileFollowingFragment extends BaseFragment<ProfileFollowingMvp.V
 
     @Override public void onClick(View view) {
         onRefresh();
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) recycler.scrollToPosition(0);
     }
 
     private void showReload() {

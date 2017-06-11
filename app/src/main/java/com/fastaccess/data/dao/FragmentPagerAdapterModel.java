@@ -9,14 +9,18 @@ import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.Gist;
-import com.fastaccess.data.dao.model.Issue;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.dao.types.MyIssuesType;
+import com.fastaccess.ui.modules.gists.GistsFragment;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
 import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
+import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
+import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
+import com.fastaccess.ui.modules.profile.events.ProfileEventsFragment;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersFragment;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingFragment;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
@@ -48,6 +52,7 @@ import com.fastaccess.ui.modules.search.code.SearchCodeFragment;
 import com.fastaccess.ui.modules.search.issues.SearchIssuesFragment;
 import com.fastaccess.ui.modules.search.repos.SearchReposFragment;
 import com.fastaccess.ui.modules.search.users.SearchUsersFragment;
+import com.fastaccess.ui.modules.theme.fragment.ThemeFragment;
 
 import java.util.List;
 
@@ -70,6 +75,7 @@ import lombok.Setter;
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForProfile(@NonNull Context context, @NonNull String login) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.overview), ProfileOverviewFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.feed), ProfileEventsFragment.Companion.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), ProfileReposFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.starred), ProfileStarredFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.gists), ProfileGistsFragment.newInstance(login)),
@@ -98,8 +104,8 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context, @NonNull Issue issueModel) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance(issueModel)))
+    @NonNull public static List<FragmentPagerAdapterModel> buildForIssues(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), IssueTimelineFragment.newInstance()))
                 .collect(Collectors.toList());
     }
 
@@ -108,7 +114,7 @@ import lombok.Setter;
         String login = pullRequest.getLogin();
         String repoId = pullRequest.getRepoId();
         int number = pullRequest.getNumber();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), PullRequestTimelineFragment.newInstance(pullRequest)),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.details), PullRequestTimelineFragment.newInstance()),
                 new FragmentPagerAdapterModel(context.getString(R.string.commits), PullRequestCommitsFragment.newInstance(repoId, login, number)),
                 new FragmentPagerAdapterModel(context.getString(R.string.files), PullRequestFilesFragment.newInstance(repoId, login, number)))
                 .collect(Collectors.toList());
@@ -150,17 +156,33 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForNotifications(@NonNull Context context) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.unread), new UnreadNotificationsFragment()),
+                new FragmentPagerAdapterModel(context.getString(R.string.all), AllNotificationsFragment.newInstance()))
+                .collect(Collectors.toList());
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForGists(@NonNull Context context) {
+
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.my_gists), ProfileGistsFragment.newInstance(Login.getUser()
+                        .getLogin())),
+                new FragmentPagerAdapterModel(context.getString(R.string.public_gists), GistsFragment.newInstance()))
+                .collect(Collectors.toList());
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
                         MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.ASSIGNED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.mentioned),
-                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.MENTIONED)))
+                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.MENTIONED)),
+                new FragmentPagerAdapterModel(context.getString(R.string.participated),
+                        MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.PARTICIPATED)))
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
@@ -172,7 +194,7 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
         return Stream.of(
                 new FragmentPagerAdapterModel(context.getString(R.string.feeds), isMember ? OrgFeedsFragment.newInstance(login) : null),
                 new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login)),
@@ -183,9 +205,16 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForTeam(@NonNull Context context, long id) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForTeam(@NonNull Context context, long id) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.members), TeamMembersFragment.newInstance(id)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), TeamReposFragment.newInstance(id)))
+                .collect(Collectors.toList());
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForTheme() {
+        return Stream.of(new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeLight)),
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeDark)),
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)))
                 .collect(Collectors.toList());
     }
 }

@@ -22,6 +22,7 @@ interface OrgReposMvp {
         void onNotifyAdapter(@Nullable List<Repo> items, int page);
 
         @NonNull OnLoadMore<String> getLoadMore();
+        void onRepoFilterClicked();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -31,5 +32,7 @@ interface OrgReposMvp {
         @NonNull ArrayList<Repo> getRepos();
 
         void onWorkOffline(@NonNull String login);
+        void onFilterApply(String org);
+        void onTypeSelected(String selectedType);
     }
 }

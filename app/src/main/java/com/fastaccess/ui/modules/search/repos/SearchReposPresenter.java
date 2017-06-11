@@ -70,7 +70,5 @@ class SearchReposPresenter extends BasePresenter<SearchReposMvp.View> implements
         RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
     }
 
-    @Override public void onItemLongClick(int position, View v, Repo item) {
-        onItemClick(position, v, item);
-    }
+    @Override public void onItemLongClick(int position, View v, Repo item) {}
 }

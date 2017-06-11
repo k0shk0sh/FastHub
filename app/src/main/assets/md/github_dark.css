@@ -4,7 +4,6 @@ body {
     padding: 10px;
     line-height: 1.5;
     word-wrap: break-word;
-    background: #22252A;
     color: #ccc;
 }
 
@@ -27,8 +26,8 @@ body>:first-child {
     margin-top: 0!important
 }
 
-body>:last-child {
-    margin-bottom: 0!important
+body:last-child {
+    margin-bottom: 46px !important
 }
 
 body a:not([href]) {
@@ -85,7 +84,6 @@ body kbd {
     line-height: 10px;
     color: #656d78;
     vertical-align: middle;
-    background-color: #22252A;
     border: solid 1px #656d78;
     border-bottom-color: #bbb;
     border-radius: 3px;
@@ -206,7 +204,7 @@ body table th, body table td {
 }
 
 body table tr {
-    background-color: #22252A;
+    background-color: transparent;
     border-top: 1px solid #656d78
 }
 
@@ -373,7 +371,6 @@ body .highlight pre, body pre {
     overflow: auto;
     font-size: 85%;
     line-height: 1.45;
-    background-color: #2D3035;
     border-radius: 3px
 }
 

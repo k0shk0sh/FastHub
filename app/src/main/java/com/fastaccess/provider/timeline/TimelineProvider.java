@@ -24,7 +24,7 @@ import java.util.Date;
 public class TimelineProvider {
 
 
-    @NonNull public static SpannableBuilder getStyledEvents(@NonNull IssueEvent issueEventModel, @NonNull Context context) {
+    @NonNull public static SpannableBuilder getStyledEvents(@NonNull IssueEvent issueEventModel, @NonNull Context context, boolean isMerged) {
         IssueEventType event = issueEventModel.getEvent();
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         if (event != null) {
@@ -49,19 +49,30 @@ public class TimelineProvider {
                 } else if (issueEventModel.getActor() != null) {
                     spannableBuilder.bold(issueEventModel.getActor().getLogin());
                 }
-                spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
+                if (event == IssueEventType.closed) {
+                    if (isMerged) {
+                        spannableBuilder.append(" ").append(IssueEventType.merged.name());
+                    } else {
+                        spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
+                    }
+                } else {
+                    spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
+                }
                 if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ")
                             .bold(issueEventModel.getAssignee().getLogin());
                     Logger.e("Hello: " + spannableBuilder);
                 } else if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
-                    spannableBuilder.append(" ").append(event == IssueEventType.milestoned ? to : from)
+                    spannableBuilder.append(" ")
+                            .append(event == IssueEventType.milestoned ? to : from)
+                            .append(" ")
                             .bold(issueEventModel.getMilestone().getTitle());
                 } else if (event == IssueEventType.renamed) {
                     spannableBuilder
                             .append(" ")
                             .append(from)
+                            .append(" ")
                             .bold(issueEventModel.getRename().getFromValue())
                             .append(to)
                             .append(" ")

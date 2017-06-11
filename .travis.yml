@@ -4,17 +4,27 @@ android:
    - tools
    - tools
    - platform-tools
-   - android-25
-   - build-tools-25.0.2
-   - extra
+   - extra-android-m2repository
+   - extra-google-m2repository
 
 jdk: oraclejdk8
 
 sudo: required
 
+before_script:
+  - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;26.0.0" "platforms;26" --channel=2
+
 script:
-  - ./gradlew clean assembleFdroidDebug
-  - ./gradlew clean assembleGmsDebug
+  - ./gradlew clean assembleDebug
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
