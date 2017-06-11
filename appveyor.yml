@@ -2,7 +2,7 @@ image: Visual Studio 2017
 clone_folder: C:\FastHub
 
 environment:
-  ANDROID_HOME: C:\\Android\\android-sdk
+  ANDROID_HOME: C:\\android-sdk
 
 init:
   - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.3-windows.zip" -FileName "C:\android-tools.zip"
@@ -10,14 +10,14 @@ init:
 
 install:
   - cmd: 'echo   > C:/Users/appveyor/.android/repositories.cfg'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platform-tools" --channel=2'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "extras;android;m2repository" --channel=2'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "extras;google;m2repository" --channel=2'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "build-tools;26.0.0-rc2" --channel=2'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platforms;android-26" --channel=2'
+  - ps: 'echo "y" | & $ANDROID_HOME/tools/bin/sdkmanager.bat "platform-tools"'
+  - ps: 'echo "y" | & $ANDROID_HOME/tools/bin/sdkmanager.bat "extras;android;m2repository"'
+  - ps: 'echo "y" | & $ANDROID_HOME/tools/bin/sdkmanager.bat "extras;google;m2repository"'
+  - ps: 'echo "y" | & $ANDROID_HOME/tools/bin/sdkmanager.bat "build-tools;26.0.0"'
+  - ps: 'echo "y" | & $ANDROID_HOME/tools/bin/sdkmanager.bat "platforms;android-26"'
 
 build_script:
-  - cmd: gradlew clean assembleDebug
+  - cmd: gradlew clean assembleDebug --stacktrace
 
 test: off
 
