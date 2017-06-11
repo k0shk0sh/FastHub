@@ -214,8 +214,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         int size = commits != null ? commits.size() : -1;
         SpannableBuilder spanCommits = SpannableBuilder.builder();
         if (size > 0) {
-            if (size != 1) spanCommits.append(String.valueOf(eventsModel.getPayload().getSize())).append(" new commits").append(" ");
-            else spanCommits.append("1 new commit").append(" ");
+            if (size != 1) spanCommits.append(String.valueOf(eventsModel.getPayload().getSize())).append(" new commits").append("\n");
+            else spanCommits.append("1 new commit").append("\n");
             int max = 5;
             int appended = 0;
             for (GitCommitModel commit : commits) {
