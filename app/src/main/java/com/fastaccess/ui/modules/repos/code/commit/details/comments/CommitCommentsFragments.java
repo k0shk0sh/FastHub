@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -33,7 +34,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -68,7 +68,6 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
         stateLayout.setEmptyText(R.string.no_comments);
         recycler.setEmptyView(stateLayout, refresh);
         recycler.setItemViewCacheSize(30);
-        recycler.addKeyLineDivider();
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
         adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true, this);

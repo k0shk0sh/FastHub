@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.helper.ActivityHelper;
@@ -24,7 +25,6 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:28 PM
@@ -92,15 +92,7 @@ public class GistsListActivity extends BaseActivity {
         ActivityHelper.startReveal(this, new Intent(this, CreateGistActivity.class), fab);
     }
 
-    private TabLayout.Tab getTab(int titleId) {
-        return tabs.newTab().setText(titleId);
-    }
-
     private void setupTabs() {
-        TabLayout.Tab tab1 = getTab(R.string.my_gists);
-        TabLayout.Tab tab2 = getTab(R.string.public_gists);
-        tabs.addTab(tab1);
-        tabs.addTab(tab2);
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapterModel.buildForGists(this)));
         tabs.setupWithViewPager(pager);

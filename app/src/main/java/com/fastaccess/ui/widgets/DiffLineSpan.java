@@ -20,6 +20,7 @@ import android.text.style.TypefaceSpan;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
@@ -61,7 +62,6 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
     @NonNull public static SpannableStringBuilder getSpannable(@Nullable String text, @ColorInt int patchAdditionColor,
                                                                @ColorInt int patchDeletionColor, @ColorInt int patchRefColor,
                                                                boolean truncate) {
-        boolean noNewlineRemoved = false;
         SpannableStringBuilder builder = new SpannableStringBuilder();
         if (!InputHelper.isEmpty(text)) {
             String[] split = text.split("\\r?\\n|\\r");
@@ -82,9 +82,11 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                         color = patchDeletionColor;
                     } else if (token.startsWith("@@")) {
                         color = patchRefColor;
-                    } else if (firstChar == '\\') {
+                    }
+                    index = token.indexOf("\\ No newline at end of file");
+                    Logger.e(index);
+                    if (index != -1) {
                         token = token.replace("\\ No newline at end of file", "");
-                        index = i;
                     }
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
@@ -94,8 +96,8 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     builder.append(spannableDiff);
                 }
                 if (index != -1) {
-                    builder.insert(index, SpannableBuilder.builder()
-                            .append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
+                    builder.insert(builder.length() - 1,
+                            SpannableBuilder.builder().append(ContextCompat.getDrawable(App.getInstance(), R.drawable.ic_newline)));
                 }
             }
         }

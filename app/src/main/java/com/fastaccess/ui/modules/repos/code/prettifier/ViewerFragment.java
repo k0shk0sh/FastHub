@@ -10,19 +10,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 28 Nov 2016, 9:27 PM
@@ -128,8 +127,14 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onContentChanged(int progress) {
-        if (progress == 100) {
-            if (stateLayout != null) hideProgress();
+        if (loader != null) {
+            loader.setProgress(progress);
+            if (progress == 100) {
+                hideProgress();
+                if (!getPresenter().isMarkDown() && !getPresenter().isImage()) {
+                    webView.scrollToLine(getPresenter().url());
+                }
+            }
         }
     }
 
@@ -143,12 +148,12 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             getPresenter().onHandleIntent(getArguments());
         } else {
             if (getPresenter().isMarkDown()) {
-                onSetMdText(getPresenter().downloadedStream(), getArguments().getString(BundleConstant.EXTRA));
+                onSetMdText(getPresenter().downloadedStream(), getPresenter().url());
             } else {
                 onSetCode(getPresenter().downloadedStream());
             }
         }
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -160,11 +165,12 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem menuItem = menu.findItem(R.id.wrap);
-        Logger.e(getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage());
-        if (getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage()) {
-            menuItem.setVisible(false);
-        } else {
-            menuItem.setVisible(true).setCheckable(true).setChecked(isWrap);
+        if (menuItem != null) {
+            if (getPresenter().isMarkDown() || getPresenter().isRepo() || getPresenter().isImage()) {
+                menuItem.setVisible(false);
+            } else {
+                menuItem.setVisible(true).setCheckable(true).setChecked(isWrap);
+            }
         }
     }
 
@@ -172,6 +178,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         if (item.getItemId() == R.id.wrap) {
             item.setChecked(!item.isChecked());
             isWrap = item.isChecked();
+            showProgress(0);
             onSetCode(getPresenter().downloadedStream());
         }
         return super.onOptionsItemSelected(item);

@@ -185,6 +185,13 @@
                 android:value=".ui.modules.main.MainActivity"/>
         </activity>
 
+        <activity android:name=".ui.modules.theme.ThemeActivity"/>
+
+        <activity
+            android:name=".ui.modules.main.donation.DonateActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:theme="@style/ThemeTranslucent"/>
+
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -220,7 +227,8 @@
 
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
-            android:exported="false">
+            android:exported="true"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
@@ -229,6 +237,7 @@
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
         <service android:name=".provider.tasks.slack.SlackInvitationService"/>
+        <service android:name=".provider.tasks.version.CheckVersionService"/>
         <service
             android:name=".provider.fcm.PushNotificationService"
             android:exported="false">

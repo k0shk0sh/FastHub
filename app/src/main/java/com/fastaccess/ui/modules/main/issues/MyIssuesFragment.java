@@ -8,6 +8,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
@@ -25,7 +26,6 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 25 Mar 2017, 11:48 PM
@@ -128,12 +128,11 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
         recycler.setEmptyView(stateLayout, refresh);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
-        recycler.addDivider();
         adapter = new IssuesAdapter(getPresenter().getIssues(), false, true);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
-        recycler.addKeyLineDivider();
+        recycler.addDivider();
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null || (getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled())) {
             onRefresh();

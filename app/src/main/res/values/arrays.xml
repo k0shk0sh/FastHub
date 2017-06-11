@@ -30,6 +30,7 @@
     <string-array name="theme_modes" translatable="false">
         <item>@string/light_theme_mode</item>
         <item>@string/dark_theme_mode</item>
+        <item>@string/amlod_theme_mode</item>
     </string-array>
 
     <string-array name="theme_colors" translatable="false">
@@ -124,7 +125,7 @@
         <item>@string/all</item>
     </string-array>
 
-    <string-array name="trending_days_array">
+    <string-array name="trending_days_array" translatable="false">
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>

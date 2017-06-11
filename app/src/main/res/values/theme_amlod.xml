@@ -1,75 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <color name="amoledWindowBackground">#060606</color>
-    <color name="amoledDivider">#10000000</color>
-    <color name="amoled_patch_addition_color">@color/material_green_900</color>
-    <color name="amoled_patch_deletion_color">@color/material_red_900</color>
-    <color name="amoled_patch_ref_color">@color/material_blue_grey_500</color>
+    <color name="amlodWindowBackground">#000</color>
+    <color name="amlodDivider">#80949494</color>
 
-    <style name="ThemeAmoled" parent="ThemeAmoled.Base"/>
+    <style name="ThemeAmlod" parent="ThemeAmlod.Base"/>
 
-    <style name="ThemeAmoled.Base" parent="Theme.AppCompat.NoActionBar">
-        <item name="card_background">#000000</item>
-        <item name="icon_color">#E1E1E2</item>
-        <item name="timeLineBackground">@style/TimeLineBackgroundAmoled</item>
-        <item name="patch_addition">@color/amoled_patch_addition_color</item>
-        <item name="patch_deletion">@color/amoled_patch_deletion_color</item>
-        <item name="patch_ref">@color/amoled_patch_ref_color</item>
-        <item name="dividerColor">@color/amoledDivider</item>
-        <item name="android:windowBackground">@color/amoledWindowBackground</item>
-        <item name="colorPrimary">#000000</item>
-        <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">#2196F3</item>
+    <style name="ThemeAmlod.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="card_background">#0B0B12</item>
+        <item name="comment_box_style">@style/CommentBoxDarkAmlod</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundAmlod</item>
+        <item name="patch_addition">@color/dark_patch_addition_color</item>
+        <item name="patch_deletion">@color/dark_patch_deletion_color</item>
+        <item name="patch_ref">@color/dark_patch_ref_color</item>
+        <item name="dividerColor">@color/amlodDivider</item>
+        <item name="android:windowBackground">@color/amlodWindowBackground</item>
+        <item name="colorPrimary">#040408</item>
+        <item name="colorPrimaryDark">#08080F</item>
+        <item name="colorAccent">#483078</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="actionModeBackground">?colorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
-        <item name="android:textColorPrimary">#E1E1E2</item>
-        <item name="android:textColorSecondary">#B5B3B6</item>
-        <item name="android:textColorTertiary">#838186</item>
+        <item name="android:textColorPrimary">#eee</item>
+        <item name="android:textColorSecondary">#9E9E9E</item>
+        <item name="android:textColorTertiary">#ffe0e0e0</item>
         <item name="android:windowAllowEnterTransitionOverlap">true</item>
         <item name="android:windowAllowReturnTransitionOverlap">true</item>
         <item name="android:colorEdgeEffect">?colorPrimary</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:dialogTheme">@style/DialogThemeAmoled</item>
-        <item name="android:alertDialogTheme">@style/DialogThemeAmoled</item>
-        <item name="android:toolbarStyle">@style/ToolbarStyleAmoled</item>
+        <item name="android:dialogTheme">@style/DialogThemeAmlod</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod</item>
+        <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuAmlod</item>
     </style>
 
-
-    <style name="ToolbarStyleAmoled">
-        <item name="android:textColorPrimary">#E1E1E2</item>
-        <item name="colorControlNormal">#E1E1E2</item>
-        <item name="colorControlHighlight">?colorAccent</item>
-        <item name="popupTheme">@style/PopupThemeAmoled</item>
+    <style name="PopupMenuAmlod" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/amlodWindowBackground</item>
     </style>
 
-    <style name="PopupThemeAmoled" parent="ThemeOverlay.AppCompat">
-        <item name="android:colorBackground">@color/amoledWindowBackground</item>
+    <style name="ThemeAmlod.Red" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Red</item>
     </style>
 
-    <style name="TimeLineBackgroundAmoled">
+    <style name="ThemeAmlod.Pink" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Pink</item>
+    </style>
+
+    <style name="ThemeAmlod.Purple" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Purple</item>
+    </style>
+
+    <style name="ThemeAmlod.DeepPurple" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.DeepPurple</item>
+    </style>
+
+    <style name="ThemeAmlod.Indigo" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Indigo</item>
+    </style>
+
+    <style name="ThemeAmlod.LightBlue" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.LightBlue</item>
+    </style>
+
+    <style name="ThemeAmlod.Cyan" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Cyan</item>
+    </style>
+
+    <style name="ThemeAmlod.Teal" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_teal_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Teal</item>
+    </style>
+
+    <style name="ThemeAmlod.Green" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Green</item>
+    </style>
+
+    <style name="ThemeAmlod.LightGreen" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.LightGreen</item>
+    </style>
+
+    <style name="ThemeAmlod.Lime" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Lime</item>
+    </style>
+
+    <style name="ThemeAmlod.Yellow" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Yellow</item>
+    </style>
+
+    <style name="ThemeAmlod.Amber" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Amber</item>
+    </style>
+
+    <style name="ThemeAmlod.Orange" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.Orange</item>
+    </style>
+
+    <style name="ThemeAmlod.DeepOrange" parent="ThemeAmlod.Base">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+        <item name="android:alertDialogTheme">@style/DialogThemeAmlod.DeepOrange</item>
+    </style>
+
+    <style name="ToolbarStyleAmlod">
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="colorControlHighlight">#42ffffff</item>
+        <item name="popupTheme">@style/PopupThemeAmlod</item>
+    </style>
+
+    <style name="PopupThemeAmlod" parent="ThemeOverlay.AppCompat">
+        <item name="android:colorBackground">@color/amlodWindowBackground</item>
+    </style>
+
+    <style name="TimeLineBackgroundAmlod">
         <item name="android:background">@drawable/ic_timeline_arrow_left</item>
-        <item name="android:backgroundTint">#000000</item>
+        <item name="android:backgroundTint">#0B0B12</item>
     </style>
 
-    <style name="DialogThemeAmoled" parent="Theme.AppCompat.Dialog.Alert">
-        <item name="colorPrimary">#000000</item>
-        <item name="colorPrimaryDark">#000000</item>
-        <item name="colorAccent">#2196F3</item>
-        <item name="android:windowBackground">@color/amoledWindowBackground</item>
+    <style name="CommentBoxDarkAmlod">
+        <item name="android:background">@drawable/ic_edittext</item>
+        <item name="android:backgroundTint">#0B0B12</item>
     </style>
 
-    <style name="AppTheme.AboutActivity.Amoled" parent="ThemeAmoled">
+    <style name="DialogThemeAmlod" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="colorPrimary">#040408</item>
+        <item name="colorPrimaryDark">#08080F</item>
+        <item name="colorAccent">#483078</item>
+        <item name="android:windowBackground">@color/amlodWindowBackground</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Red" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_red_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Pink" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_pink_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Purple" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.DeepPurple" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_deep_purple_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Indigo" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_indigo_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.LightBlue" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_light_blue_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Cyan" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_cyan_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Teal" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_teal_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Green" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.LightGreen" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_light_green_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Lime" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_lime_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Yellow" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_yellow_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Amber" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_amber_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.Orange" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_orange_accent_700</item>
+    </style>
+
+    <style name="DialogThemeAmlod.DeepOrange" parent="DialogThemeAmlod">
+        <item name="colorAccent">@color/material_deep_orange_accent_700</item>
+    </style>
+
+    <style name="AppTheme.AboutActivity.Amlod" parent="ThemeAmlod">
         <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
-        <item name="colorPrimary">#050109</item>
-        <item name="colorPrimaryDark">#1C1C1C</item>
-        <item name="colorAccent">#2196F3</item>
+        <item name="colorPrimary">#040408</item>
+        <item name="colorPrimaryDark">#08080F</item>
+        <item name="colorAccent">#483078</item>
         <item name="mal_lightActionBar">false</item>
         <item name="mal_color_primary">#eee</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>

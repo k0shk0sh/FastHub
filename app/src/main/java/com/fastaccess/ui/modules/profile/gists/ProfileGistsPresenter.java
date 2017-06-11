@@ -4,10 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.gists.gist.GistActivity;
 
 import java.util.ArrayList;
 
@@ -59,13 +61,11 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
             sendToView(ProfileGistsMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getGistService().getUserGists(parameter, RestProvider.PAGE_SIZE, page),
+        makeRestCall(RestProvider.getGistService().getUserGists(parameter, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
-                    if (getCurrentPage() == 1) {
-                        manageObservable(Gist.save(listResponse.getItems(), parameter));
-                    }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
+                    manageObservable(Gist.save(Stream.of(listResponse.getItems()).toList()));
                 });
     }
 
@@ -83,7 +83,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
     }
 
     @Override public void onItemClick(int position, View v, Gist item) {
-        if (getView() != null) getView().onStartGistView(item.getGistId());
+        v.getContext().startActivity(GistActivity.createIntent(v.getContext(), item.getGistId()));
     }
 
     @Override public void onItemLongClick(int position, View v, Gist item) {}

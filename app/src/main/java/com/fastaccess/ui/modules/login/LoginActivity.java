@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.evernote.android.state.State;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
@@ -24,10 +25,15 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog;
+import com.miguelbcr.io.rx_billing_service.RxBillingService;
+import com.miguelbcr.io.rx_billing_service.entities.ProductType;
+import com.miguelbcr.io.rx_billing_service.entities.Purchase;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -37,7 +43,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
-import com.evernote.android.state.State;
+import io.reactivex.functions.Action;
 
 /**
  * Created by Kosh on 08 Feb 2017, 9:10 PM
@@ -54,11 +60,6 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     @Nullable @BindView(R.id.twoFactorEditText) TextInputEditText twoFactorEditText;
     @Nullable @BindView(R.id.login) FloatingActionButton login;
     @Nullable @BindView(R.id.progress) ProgressBar progress;
-
-//    private String pass;
-//    private static int RESOLUTION_CODE = 100;
-//    private static int RESOLUTION_CHOOSER_CODE = 101;
-
     @State boolean isBasicAuth;
 
     public static void start(@NonNull Activity activity, boolean isBasicAuth) {
@@ -138,45 +139,17 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @Override public void onSuccessfullyLoggedIn() {
-        hideProgress();
-        Intent intent = new Intent(this, MainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finishAffinity();
+        checkPurchases(() -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
+        });
     }
 
     @Override public void onSuccessfullyLoggedIn(Login userModel) {
-//        Credential credential = new Credential.Builder(userModel.getLogin())
-//                .setPassword(pass)
-//                .setProfilePictureUri(Uri.parse(userModel.getAvatarUrl()))
-//                .build();
-//        Auth.CredentialsApi.save(App.getInstance().getGoogleApiClient(), credential).setResultCallback(status -> {
-//            if (status.isSuccess()) {
-//                onSuccessfullyLoggedIn();
-//            } else if (status.hasResolution()) {
-//                try {
-//                    status.startResolutionForResult(this, RESOLUTION_CODE);
-//                } catch (IntentSender.SendIntentException e) {
-//                    e.printStackTrace();
-//                }
-//            } else {
-//                Log.e(getLoggingTag(), status + "");
-//                onSuccessfullyLoggedIn();
-//            }
-//        });
         onSuccessfullyLoggedIn();
     }
-
-//    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if (requestCode == RESOLUTION_CODE) {
-//            onSuccessfullyLoggedIn();
-//        } else if (requestCode == RESOLUTION_CHOOSER_CODE) {
-//            if (resultCode == RESULT_OK) {
-//                Credential credential = data.getParcelableExtra(Credential.EXTRA_KEY);
-//                doLogin(credential.getId(), credential.getPassword());
-//            }
-//        }
-//    }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.LoginTheme);
@@ -186,14 +159,6 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
                 isBasicAuth = getIntent().getExtras().getBoolean(BundleConstant.YES_NO_EXTRA);
             }
         }
-//        if (username != null)
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.) {
-//                username.setAutofillHints(View.AUTOFILL_HINT_USERNAME);
-//            }
-//        if (password != null) {
-//            password.setHint(isBasicAuth ? getString(R.string.password) : getString(R.string.access_token));
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) password.setAutofillHints(View.AUTOFILL_HINT_PASSWORD);
-//        }
         if (Arrays.asList(getResources().getStringArray(R.array.languages_array_values)).contains(Locale.getDefault().getLanguage())) {
             String language = PrefHelper.getString("app_language");
             PrefHelper.set("app_language", Locale.getDefault().getLanguage());
@@ -201,23 +166,6 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
             if (!Locale.getDefault().getLanguage().equals(language)) recreate();
         }
 
-//        if (isBasicAuth && getIntent() != null)
-//            if (getIntent().hasExtra("smartLock"))
-//                if (App.getInstance().getGoogleApiClient().isConnecting() &&
-//                        !App.getInstance().getGoogleApiClient().isConnected()) {
-//                    App.getInstance().getGoogleApiClient().registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
-//                        @Override
-//                        public void onConnected(@Nullable Bundle bundle) {
-//                            doCredentialRequest();
-//                        }
-//
-//                        @Override
-//                        public void onConnectionSuspended(int i) {
-//                        }
-//                    });
-//                } else {
-//                    doCredentialRequest();
-//                }
     }
 
     @Override protected void onNewIntent(Intent intent) {
@@ -268,25 +216,33 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         login.show();
     }
 
-//    private void doCredentialRequest() {
-//        CredentialRequest credentialRequest = new CredentialRequest.Builder()
-//                .setPasswordLoginSupported(true)
-//                .build();
-//        Auth.CredentialsApi.request(App.getInstance().getGoogleApiClient(), credentialRequest).setResultCallback(credentialRequestResult -> {
-//            if (credentialRequestResult.getStatus().isSuccess()) {
-//                doLogin(credentialRequestResult.getCredential().getId(),
-//                        credentialRequestResult.getCredential().getPassword());
-//            } else if (credentialRequestResult.getStatus().hasResolution())
-//                try {
-//                    credentialRequestResult.getStatus().startResolutionForResult(this, RESOLUTION_CHOOSER_CODE);
-//                } catch (IntentSender.SendIntentException e) {
-//                    e.printStackTrace();
-//                }
-//            else {
-//                Log.e(getLoggingTag(), credentialRequestResult.getStatus() + "");
-//            }
-//        });
-//    }
+    protected void checkPurchases(Action action) {
+        RxBillingService.getInstance(this, BuildConfig.DEBUG)
+                .getPurchases(ProductType.IN_APP)
+                .doOnSubscribe(disposable -> showProgress(0))
+                .subscribe((purchases, throwable) -> {
+                    hideProgress();
+                    if (throwable == null) {
+                        Logger.e(purchases);
+                        if (purchases != null && !purchases.isEmpty()) {
+                            for (Purchase purchase : purchases) {
+                                String sku = purchase.sku();
+                                if (sku != null) {
+                                    Logger.e(sku);
+                                    if (sku.equalsIgnoreCase(getString(R.string.donation_product_1))) {
+                                        PrefGetter.enableAmlodTheme();
+                                    } else {
+                                        PrefGetter.setProItems();
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        throwable.printStackTrace();
+                    }
+                    action.run();
+                });
+    }
 
     private void showLanguage() {
         LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
@@ -303,11 +259,4 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
                     isBasicAuth, false);
         }
     }
-
-//    private void doLogin(String username, String password) {
-//        if (progress == null || twoFactor == null || username == null || password == null) return;
-//        if (progress.getVisibility() == View.GONE) {
-//            getPresenter().login(username, password, "", isBasicAuth, true);
-//        }
-//    }
 }

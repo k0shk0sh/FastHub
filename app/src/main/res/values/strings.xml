@@ -294,6 +294,7 @@
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
     <string name="light_theme_mode" translatable="false">Light Theme</string>
     <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="amlod_theme_mode" translatable="false">Amlod Theme</string>
     <string name="red_theme_mode" translatable="false">Red</string>
     <string name="pink_theme_mode" translatable="false">Pink</string>
     <string name="purple_theme_mode" translatable="false">Purple</string>
@@ -473,9 +474,10 @@
     <string name="apply">Apply</string>
     <string name="filter">Filter</string>
     <string name="type">Type</string>
-    <string name="Sort">Sort</string>
     <string name="sort_direction">Sort direction</string>
     <string name="assignee_added">Assignee added successfully</string>
     <string name="reviewer_added">Reviewer added successfully</string>
     <string name="milestone_added">Milestone added successfully</string>
+    <string name="feed">Feed</string>
+    <string name="premium_theme">Premium Theme</string>
 </resources>

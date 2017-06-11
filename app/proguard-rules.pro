@@ -32,8 +32,7 @@
 }
 -keep class com.google.gson.** { *; }
 -keep class com.google.inject.** { *; }
--keep class org.apache.http.** { *; }
--keep class org.apache.james.mime4j.** { *; }
+-keep class org.apache.** { *; }
 -keep class javax.inject.** { *; }
 -keep class retrofit.** { *; }
 -keep class com.squareup.okhttp.** { *; }
@@ -45,7 +44,7 @@
 -dontwarn rx.**
 -dontwarn com.squareup.okhttp.**
 -dontwarn okio.**
--dontwarn org.apache.http.**
+-dontwarn org.apache.**
 -dontwarn android.net.http.AndroidHttpClient
 -dontwarn retrofit.**
 -dontwarn retrofit2.adapter.rxjava.CompletableHelper$**
@@ -72,7 +71,8 @@
 -keepclasseswithmembernames class * {
     @icepick.* <fields>;
 }
--keep class com.fastaccess.data.dao.** { *; }
+-keep class com.fastaccess.data.** { *; }
+-keep class com.fastaccess.provider.rest.** { *; }
 -keepclassmembers class com.prettifier.pretty.callback.MarkDownInterceptorInterface {
    public *;
 }
@@ -80,6 +80,7 @@
 -dontwarn java.util.**
 -dontwarn java.time.**
 -dontwarn javax.annotation.**
+-dontwarn org.jetbrains.annotations.**
 -dontwarn javax.cache.**
 -dontwarn javax.naming.**
 -dontwarn javax.transaction.**
@@ -101,11 +102,23 @@
     <fields>;
 }
 
--keep class net.nightwhistler.** {*;}
--keep class org.htmlcleaner.** {*;}
+-keep class net.nightwhistler.** { *; }
+-keep class org.htmlcleaner.** { *; }
 -dontwarn org.jaxen.**
 -dontwarn org.jdom.**
 -dontwarn com.google.android.gms.**
 -dontwarn android.animation.**
 -dontwarn java.io.**
--dontwarn  android.content.**
+-dontwarn android.content.**
+-dontwarn org.jdom.**
+-dontwarn kotlin.reflect.jvm.internal.impl.descriptors.CallableDescriptor
+-dontwarn kotlin.reflect.jvm.internal.impl.descriptors.ClassDescriptor
+-dontwarn kotlin.reflect.jvm.internal.impl.descriptors.ClassifierDescriptorWithTypeParameters
+-dontwarn kotlin.reflect.jvm.internal.impl.descriptors.annotations.AnnotationDescriptor
+-dontwarn kotlin.reflect.jvm.internal.impl.descriptors.impl.PropertyDescriptorImpl
+-dontwarn kotlin.reflect.jvm.internal.impl.load.java.JavaClassFinder
+-dontwarn kotlin.reflect.jvm.internal.impl.resolve.OverridingUtil
+-dontwarn kotlin.reflect.jvm.internal.impl.types.DescriptorSubstitutor
+-dontwarn kotlin.reflect.jvm.internal.impl.types.DescriptorSubstitutor
+-dontwarn kotlin.reflect.jvm.internal.impl.types.TypeConstructor
+-keeppackagenames org.jsoup.nodes

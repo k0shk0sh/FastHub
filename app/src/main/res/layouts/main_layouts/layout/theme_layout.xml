@@ -1,0 +1,1000 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinatorLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="?android:toolbarStyle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:minHeight="?actionBarSize"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            app:layout_scrollFlags="scroll|enterAlways"
+            tools:ignore="RtlSymmetry"
+            tools:showIn="@layout/header_title_with_toolbar">
+
+            <cn.gavinliu.android.lib.shapedimageview.ShapedImageView
+                android:layout_width="@dimen/large_icon_zie"
+                android:layout_height="@dimen/large_icon_zie"
+                android:layout_marginEnd="@dimen/avatar_margin_end"
+                android:layout_marginStart="@dimen/avatar_margin"
+                android:background="?selectableItemBackgroundBorderless"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_launcher"
+                android:transitionName="@string/icon_transition"
+                app:shape_mode="circle"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top|center"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Subhead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="@string/app_name_full"
+                            android:textColor="?android:textColorPrimary"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="start|center"
+                            android:text="Dummy Content"
+                            tools:ignore="HardcodedText"/>
+                    </LinearLayout>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/detailsIcon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="top"
+                        android:layout_marginEnd="@dimen/spacing_micro"
+                        android:background="?selectableItemBackgroundBorderless"
+                        android:contentDescription="@string/description"
+                        android:padding="@dimen/spacing_micro"
+                        android:src="@drawable/ic_info_outline"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:minHeight="?actionBarSize"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="@string/app_name_full"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/scroll_behavior">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.fastaccess.ui.widgets.ForegroundRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/grid_spacing"
+                    android:foreground="?android:selectableItemBackground"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.AvatarLayout
+                            android:layout_width="@dimen/large_icon_zie"
+                            android:layout_height="@dimen/large_icon_zie"
+                            android:layout_marginEnd="@dimen/avatar_margin_end"
+                            android:layout_marginStart="@dimen/avatar_margin"
+                            android:transitionName="@string/icon_transition"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Subhead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
+                                android:textColor="?android:textColorPrimary"
+                                android:transitionName="@string/title_transition"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="When the lover of everything experiences the acceptances of the visitor, the afterlife will know self."
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:visibility="visible"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+
+                <com.fastaccess.ui.widgets.ForegroundRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/grid_spacing"
+                    android:foreground="?android:selectableItemBackground"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.AvatarLayout
+                            android:layout_width="@dimen/large_icon_zie"
+                            android:layout_height="@dimen/large_icon_zie"
+                            android:layout_marginEnd="@dimen/avatar_margin_end"
+                            android:layout_marginStart="@dimen/avatar_margin"
+                            android:transitionName="@string/icon_transition"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Subhead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
+                                android:textColor="?android:textColorPrimary"
+                                android:transitionName="@string/title_transition"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="When the lover of everything experiences the acceptances of the visitor, the afterlife will know self."
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:visibility="visible"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+
+                <com.fastaccess.ui.widgets.ForegroundRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/grid_spacing"
+                    android:foreground="?android:selectableItemBackground"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.AvatarLayout
+                            android:layout_width="@dimen/large_icon_zie"
+                            android:layout_height="@dimen/large_icon_zie"
+                            android:layout_marginEnd="@dimen/avatar_margin_end"
+                            android:layout_marginStart="@dimen/avatar_margin"
+                            android:transitionName="@string/icon_transition"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Subhead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
+                                android:textColor="?android:textColorPrimary"
+                                android:transitionName="@string/title_transition"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="When the lover of everything experiences the acceptances of the visitor, the afterlife will know self."
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:visibility="visible"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+
+                <com.fastaccess.ui.widgets.ForegroundRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/grid_spacing"
+                    android:foreground="?android:selectableItemBackground"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.AvatarLayout
+                            android:layout_width="@dimen/large_icon_zie"
+                            android:layout_height="@dimen/large_icon_zie"
+                            android:layout_marginEnd="@dimen/avatar_margin_end"
+                            android:layout_marginStart="@dimen/avatar_margin"
+                            android:transitionName="@string/icon_transition"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Subhead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
+                                android:textColor="?android:textColorPrimary"
+                                android:transitionName="@string/title_transition"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="When the lover of everything experiences the acceptances of the visitor, the afterlife will know self."
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:visibility="visible"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+
+                <com.fastaccess.ui.widgets.ForegroundRelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/grid_spacing"
+                    android:foreground="?android:selectableItemBackground"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.AvatarLayout
+                            android:layout_width="@dimen/large_icon_zie"
+                            android:layout_height="@dimen/large_icon_zie"
+                            android:layout_marginEnd="@dimen/avatar_margin_end"
+                            android:layout_marginStart="@dimen/avatar_margin"
+                            android:transitionName="@string/icon_transition"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:orientation="vertical">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Subhead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
+                                android:textColor="?android:textColorPrimary"
+                                android:transitionName="@string/title_transition"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:maxLines="2"
+                                android:text="When the lover of everything experiences the acceptances of the visitor, the afterlife will know self."
+                                android:textColor="?android:attr/textColorSecondary"
+                                android:visibility="visible"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </com.fastaccess.ui.widgets.ForegroundRelativeLayout>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_micro"
+                    android:foreground="?android:selectableItemBackground"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:maxLines="2"
+                            android:text="The calm teleporter wisely discovers the planet."
+                            android:textColor="?android:textColorPrimary"
+                            android:textStyle="bold"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_micro"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:ellipsize="marquee"
+                            android:maxLines="4"
+                            android:text="Everyone loves the viscosity of ramen curry tossd with sichuan-style thyme."
+                            android:textColor="?android:textColorSecondary"/>
+
+                        <com.fastaccess.ui.widgets.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:orientation="horizontal"
+                            app:auto_gravity="start"
+                            app:auto_orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100,00"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_fork_small"
+                                android:gravity="start|center"
+                                android:text="500"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100 stars today"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_language_small"
+                                android:gravity="start|center"
+                                android:text="Kotlin"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?colorAccent"/>
+
+                        </com.fastaccess.ui.widgets.AutoLinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_micro"
+                    android:foreground="?android:selectableItemBackground"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:maxLines="2"
+                            android:text="The calm teleporter wisely discovers the planet."
+                            android:textColor="?android:textColorPrimary"
+                            android:textStyle="bold"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_micro"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:ellipsize="marquee"
+                            android:maxLines="4"
+                            android:text="Everyone loves the viscosity of ramen curry tossd with sichuan-style thyme."
+                            android:textColor="?android:textColorSecondary"/>
+
+                        <com.fastaccess.ui.widgets.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:orientation="horizontal"
+                            app:auto_gravity="start"
+                            app:auto_orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100,00"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_fork_small"
+                                android:gravity="start|center"
+                                android:text="500"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100 stars today"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_language_small"
+                                android:gravity="start|center"
+                                android:text="Kotlin"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?colorAccent"/>
+
+                        </com.fastaccess.ui.widgets.AutoLinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_micro"
+                    android:foreground="?android:selectableItemBackground"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:maxLines="2"
+                            android:text="The calm teleporter wisely discovers the planet."
+                            android:textColor="?android:textColorPrimary"
+                            android:textStyle="bold"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_micro"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:ellipsize="marquee"
+                            android:maxLines="4"
+                            android:text="Everyone loves the viscosity of ramen curry tossd with sichuan-style thyme."
+                            android:textColor="?android:textColorSecondary"/>
+
+                        <com.fastaccess.ui.widgets.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:orientation="horizontal"
+                            app:auto_gravity="start"
+                            app:auto_orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100,00"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_fork_small"
+                                android:gravity="start|center"
+                                android:text="500"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100 stars today"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_language_small"
+                                android:gravity="start|center"
+                                android:text="Kotlin"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?colorAccent"/>
+
+                        </com.fastaccess.ui.widgets.AutoLinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_micro"
+                    android:foreground="?android:selectableItemBackground"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:maxLines="2"
+                            android:text="The calm teleporter wisely discovers the planet."
+                            android:textColor="?android:textColorPrimary"
+                            android:textStyle="bold"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_micro"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:ellipsize="marquee"
+                            android:maxLines="4"
+                            android:text="Everyone loves the viscosity of ramen curry tossd with sichuan-style thyme."
+                            android:textColor="?android:textColorSecondary"/>
+
+                        <com.fastaccess.ui.widgets.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:orientation="horizontal"
+                            app:auto_gravity="start"
+                            app:auto_orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100,00"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_fork_small"
+                                android:gravity="start|center"
+                                android:text="500"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100 stars today"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_language_small"
+                                android:gravity="start|center"
+                                android:text="Kotlin"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?colorAccent"/>
+
+                        </com.fastaccess.ui.widgets.AutoLinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_micro"
+                    android:foreground="?android:selectableItemBackground"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:maxLines="2"
+                            android:text="The calm teleporter wisely discovers the planet."
+                            android:textColor="?android:textColorPrimary"
+                            android:textStyle="bold"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_micro"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:ellipsize="marquee"
+                            android:maxLines="4"
+                            android:text="Everyone loves the viscosity of ramen curry tossd with sichuan-style thyme."
+                            android:textColor="?android:textColorSecondary"/>
+
+                        <com.fastaccess.ui.widgets.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:orientation="horizontal"
+                            app:auto_gravity="start"
+                            app:auto_orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100,00"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_fork_small"
+                                android:gravity="start|center"
+                                android:text="500"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100 stars today"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_language_small"
+                                android:gravity="start|center"
+                                android:text="Kotlin"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?colorAccent"/>
+
+                        </com.fastaccess.ui.widgets.AutoLinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/spacing_micro"
+                    android:foreground="?android:selectableItemBackground"
+                    app:cardBackgroundColor="?card_background"
+                    app:contentPaddingBottom="@dimen/spacing_normal"
+                    app:contentPaddingLeft="@dimen/spacing_xs_large"
+                    app:contentPaddingRight="@dimen/spacing_xs_large"
+                    app:contentPaddingTop="@dimen/spacing_normal"
+                    tools:ignore="RtlSymmetry">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:maxLines="2"
+                            android:text="The calm teleporter wisely discovers the planet."
+                            android:textColor="?android:textColorPrimary"
+                            android:textStyle="bold"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_micro"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:ellipsize="marquee"
+                            android:maxLines="4"
+                            android:text="Everyone loves the viscosity of ramen curry tossd with sichuan-style thyme."
+                            android:textColor="?android:textColorSecondary"/>
+
+                        <com.fastaccess.ui.widgets.AutoLinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_micro"
+                            android:orientation="horizontal"
+                            app:auto_gravity="start"
+                            app:auto_orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100,00"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginEnd="@dimen/spacing_micro"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_fork_small"
+                                android:gravity="start|center"
+                                android:text="500"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Small"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_star_small"
+                                android:gravity="start|center"
+                                android:text="100 stars today"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?android:attr/textColorSecondary"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                style="@style/TextAppearance.AppCompat.Caption"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/spacing_normal"
+                                android:drawablePadding="@dimen/spacing_micro"
+                                android:drawableStart="@drawable/ic_language_small"
+                                android:gravity="start|center"
+                                android:text="Kotlin"
+                                android:textColor="?android:attr/textColorSecondary"
+                                app:drawableColor="?colorAccent"/>
+
+                        </com.fastaccess.ui.widgets.AutoLinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+    </FrameLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/apply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_done"
+        android:tint="@color/white"
+        app:fabSize="auto"/>
+</android.support.design.widget.CoordinatorLayout>

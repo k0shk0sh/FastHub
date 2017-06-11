@@ -41,8 +41,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     public static GistFilesListFragment newInstance(@NonNull GithubFileModel gistsModel) {
         GistFilesListFragment view = new GistFilesListFragment();
         view.setArguments(Bundler.start()
-                .putParcelableArrayList(BundleConstant.ITEM,
-                        gistsModel.values() != null ? new ArrayList<>(gistsModel.values()) : new ArrayList<FilesListModel>())
+                .putParcelableArrayList(BundleConstant.ITEM, new ArrayList<>(gistsModel.values()))
                 .end());
         return view;
     }

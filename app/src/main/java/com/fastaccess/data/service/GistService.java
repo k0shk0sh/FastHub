@@ -8,6 +8,7 @@ import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Gist;
 
+import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -19,7 +20,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 20 Nov 2016, 10:28 AM
@@ -38,11 +38,10 @@ public interface GistService {
 
     @GET("gists/public") Observable<Pageable<Gist>> getPublicGists(@Query("per_page") int perPage, @Query("page") int page);
 
-    @GET("gists") Observable<Pageable<Gist>> getMyGists(@Query("per_page") int perPage, @Query("page") int page);
+    @GET("gists") Observable<Pageable<Gist>> getMyGists(@Query("page") int page);
 
     @GET("users/{username}/gists")
-    Observable<Pageable<Gist>> getUserGists(@NonNull @Path("username") String username,
-                                            @Query("per_page") int perPage, @Query("page") int page);
+    Observable<Pageable<Gist>> getUserGists(@NonNull @Path("username") String username, @Query("page") int page);
 
     @GET("gists/{id}")
     Observable<Gist> getGist(@Path("id") String id);
