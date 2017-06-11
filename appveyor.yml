@@ -1,5 +1,5 @@
 image: Visual Studio 2017
-clone_folder: C:\FastHub
+clone_folder: C:\FH
 
 environment:
   ANDROID_HOME: C:\\Android\\android-sdk
