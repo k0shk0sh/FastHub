@@ -7,12 +7,16 @@ import android.graphics.PorterDuff;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceViewHolder;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,12 +60,14 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
         super.onClick();
 
         int selected_color = getSelected_color();
-        String title = String.format("Accent Color: (Selected: %s)", getSelected_color_name());
+        String title = String.format("Accent Color: (Currently: %s)", getSelected_color_name());
         colorPicker = new ColorPicker(getContext());
         colorPicker.setRoundColorButton(true);
         colorPicker.setColors(R.array.theme_colors_hex);
         colorPicker.setDefaultColorButton(selected_color);
         colorPicker.setTitle(title);
+        TextView title_tv = colorPicker.getDialogViewLayout().findViewById(R.id.title);
+        title_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         colorPicker.getPositiveButton().setTextColor(ViewHelper.getAccentColor(getContext()));
         colorPicker.getNegativeButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));
         colorPicker.setOnChooseColorListener(this);
