@@ -5,7 +5,7 @@ environment:
   ANDROID_HOME: C:\\Android\\android-sdk
 
 init:
-  - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.3-windows.zip" -FileName "C:\android-tools.zip"
+  - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.5-windows.zip" -FileName "C:\android-tools.zip"
   - cmd: 7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
 
 install:
