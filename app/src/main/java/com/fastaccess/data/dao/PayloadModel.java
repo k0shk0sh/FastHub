@@ -45,7 +45,7 @@ public class PayloadModel implements Parcelable {
     public String head;
     public String ref;
     public int size;
-    public List<Commit> commits;
+    public List<GitCommitModel> commits;
     public User user;
     public Release release;
     public User blockedUser;
@@ -100,7 +100,7 @@ public class PayloadModel implements Parcelable {
         this.head = in.readString();
         this.ref = in.readString();
         this.size = in.readInt();
-        this.commits = in.createTypedArrayList(Commit.CREATOR);
+        this.commits = in.createTypedArrayList(GitCommitModel.CREATOR);
         this.user = in.readParcelable(User.class.getClassLoader());
         this.release = in.readParcelable(Release.class.getClassLoader());
         this.blockedUser = in.readParcelable(User.class.getClassLoader());

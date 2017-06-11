@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.GitCommitModel;
 import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.TeamsModel;
 import com.fastaccess.data.dao.WikiModel;
 import com.fastaccess.data.dao.model.Comment;
-import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
@@ -61,6 +61,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         appendAvatar(eventsModel);
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
         appendActor(eventsModel, spannableBuilder);
+        description.setMaxLines(2);
         description.setText("");
         description.setVisibility(View.GONE);
         if (eventsModel.getType() != null) {
@@ -129,7 +130,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         spannableBuilder.bold(eventsModel.getPayload().getAction().replaceAll("_", ""))
                 .append(" ")
                 .append(eventsModel.getPayload().getInvitation() != null ? eventsModel.getPayload().getInvitation().getLogin() + " " : "")
-                .append("in")
+                .bold("in")
                 .append(" ")
                 .append(eventsModel.getPayload().getOrganization().getLogin());
     }
@@ -139,7 +140,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(!isColumn ? "project" : "column")
                 .append(" ")
-                .append("in")
+                .bold("in")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
     }
@@ -149,7 +150,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(eventsModel.getPayload().getBlockedUser().getLogin())
                 .append(" ")
-                .append("in")
+                .bold("in")
                 .append(" ")
                 .append(eventsModel.getPayload().getOrganization().getLogin());
     }
@@ -168,7 +169,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(release.getName())
                 .append(" ")
-                .append("at")
+                .bold("at")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
     }
@@ -180,7 +181,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(eventsModel.getPayload().getRef())
                 .append(" ")
-                .append("at")
+                .bold("at")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
     }
@@ -192,7 +193,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(user != null ? user.getLogin() : eventsModel.getRepo().getName())
                 .append(" ")
-                .append("in")
+                .bold("in")
                 .append(" ")
                 .append(teamsModel.getName() != null ? teamsModel.getName() : teamsModel.getSlug());
     }
@@ -206,10 +207,10 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(ref)
                 .append(" ")
-                .append("at")
+                .bold("at")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
-        final List<Commit> commits = eventsModel.getPayload().getCommits();
+        final List<GitCommitModel> commits = eventsModel.getPayload().getCommits();
         int size = commits != null ? commits.size() : -1;
         SpannableBuilder spanCommits = SpannableBuilder.builder();
         if (size > 0) {
@@ -217,22 +218,26 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             else spanCommits.append("1 new commit").append(" ");
             int max = 5;
             int appended = 0;
-            for (Commit commit : commits) {
+            for (GitCommitModel commit : commits) {
                 if (commit == null) continue;
                 String sha = commit.getSha();
                 if (TextUtils.isEmpty(sha)) continue;
-                if (sha.length() > 7) spanCommits.url(sha.substring(0, 7)).append(',');
-                else spanCommits.url(sha).append(',');
+                sha = sha.length() > 7 ? sha.substring(0, 7) : sha;
+                spanCommits.url(sha).append(" ")
+                        .append(commit.getMessage() != null ? commit.getMessage().replaceAll("\\r?\\n|\\r"," ") : "")
+                        .append("\n");
                 appended++;
                 if (appended == max) break;
             }
         }
         if (spanCommits.length() > 0) {
             int last = spanCommits.length();
+            description.setMaxLines(5);
             description.setText(spanCommits.delete(last - 1, last));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
+            description.setMaxLines(2);
             description.setVisibility(View.GONE);
         }
     }
@@ -242,15 +247,15 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         Comment comment = eventsModel.getPayload().getComment();
         spannableBuilder.bold("reviewed")
                 .append(" ")
-                .append("pull request")
-                .append("#")
-                .append(String.valueOf(pullRequest.getNumber()))
+                .bold("pull request")
                 .append(" ")
-                .append("in")
+                .bold("in")
                 .append(" ")
-                .append(eventsModel.getRepo().getName());
+                .append(eventsModel.getRepo().getName())
+                .bold("#")
+                .bold(String.valueOf(pullRequest.getNumber()));
         if (comment.getBody() != null) {
-            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\n", " "));
+            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r"," "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -266,16 +271,16 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         }
         spannableBuilder.bold(action)
                 .append(" ")
-                .append("pull request")
-                .append("#")
-                .append(String.valueOf(issue.getNumber()))
+                .bold("pull request")
                 .append(" ")
-                .append("in")
+                .bold("in")
                 .append(" ")
-                .append(eventsModel.getRepo().getName());
+                .append(eventsModel.getRepo().getName())
+                .bold("#")
+                .bold(String.valueOf(issue.getNumber()));
         if ("opened".equals(action) || "closed".equals(action)) {
             if (issue.getTitle() != null) {
-                MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\n", " "));
+                MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\\r?\\n|\\r"," "));
                 description.setVisibility(View.VISIBLE);
             } else {
                 description.setText("");
@@ -312,15 +317,15 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         Issue issue = eventsModel.getPayload().getIssue();
         spannableBuilder.bold(eventsModel.getPayload().getAction())
                 .append(" ")
-                .append("issue")
-                .append("#")
-                .append(String.valueOf(issue.getNumber()))
+                .bold("issue")
                 .append(" ")
-                .append("in")
+                .bold("in")
                 .append(" ")
-                .append(eventsModel.getRepo().getName());
+                .append(eventsModel.getRepo().getName())
+                .bold("#")
+                .bold(String.valueOf(issue.getNumber()));
         if (issue.getTitle() != null) {
-            MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\n", " "));
+            MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\\r?\\n|\\r"," "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -333,17 +338,17 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         Issue issue = eventsModel.getPayload().getIssue();
         spannableBuilder.bold("commented")
                 .append(" ")
-                .append("on")
+                .bold("on")
                 .append(" ")
-                .append(issue.getPullRequest() != null ? "pull request" : "issue")
-                .append("#")
-                .append(String.valueOf(issue.getNumber()))
+                .bold(issue.getPullRequest() != null ? "pull request" : "issue")
                 .append(" ")
-                .append("in")
+                .bold("in")
                 .append(" ")
-                .append(eventsModel.getRepo().getName());
+                .append(eventsModel.getRepo().getName())
+                .bold("#")
+                .bold(String.valueOf(issue.getNumber()));
         if (comment.getBody() != null) {
-            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\n", " "));
+            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r"," "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -364,7 +369,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(resources.getString(R.string.gollum))
                     .append(" ");
         }
-        spannableBuilder.append("in")
+        spannableBuilder.bold("in")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
 
@@ -411,11 +416,11 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(refType)
                 .append(" ")
                 .append(!"repository".equalsIgnoreCase(refType) ? payloadModel.getRef() + " " : "")
-                .append("at")
+                .bold("at")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
         if (payloadModel.getDescription() != null) {
-            MarkDownProvider.stripMdText(description, payloadModel.getDescription().replaceAll("\n", " "));
+            MarkDownProvider.stripMdText(description, payloadModel.getDescription().replaceAll("\\r?\\n|\\r"," "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -436,15 +441,17 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                           comment.getCommitId().substring(0, 10) : null;
         spannableBuilder.bold("commented")
                 .append(" ")
-                .append("on")
+                .bold("on")
                 .append(" ")
-                .append(commitId != null ? commitId : "")
+                .bold("commit")
                 .append(" ")
-                .append("in")
+                .url(commitId != null ? commitId : "")
+                .append(" ")
+                .bold("in")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
         if (comment != null && comment.getBody() != null) {
-            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\n", " "));
+            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r"," "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
