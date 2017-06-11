@@ -476,17 +476,23 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     @Override public void onChangeWatchedCount(boolean isWatched) {
         long count = InputHelper.toLong(watchRepo);
-        watchRepo.setText(numberFormat.format(isWatched ? (count + 1) : (count > 0 ? (count - 1) : 0)));
+        count = isWatched ? (count + 1) : (count > 0 ? (count - 1) : 0);
+        watchRepo.setText(numberFormat.format(count));
+        getPresenter().updatePinned((int)InputHelper.toLong(forkRepo),(int)InputHelper.toLong(starRepo),(int)InputHelper.toLong(watchRepo));
     }
 
     @Override public void onChangeStarCount(boolean isStarred) {
         long count = InputHelper.toLong(starRepo);
-        starRepo.setText(numberFormat.format(isStarred ? (count + 1) : (count > 0 ? (count - 1) : 0)));
+        count = isStarred ? (count + 1) : (count > 0 ? (count - 1) : 0);
+        starRepo.setText(numberFormat.format(count));
+        getPresenter().updatePinned((int)InputHelper.toLong(forkRepo),(int)InputHelper.toLong(starRepo),(int)InputHelper.toLong(watchRepo));
     }
 
     @Override public void onChangeForkCount(boolean isForked) {
         long count = InputHelper.toLong(forkRepo);
-        forkRepo.setText(numberFormat.format(isForked ? (count + 1) : (count > 0 ? (count - 1) : 0)));
+        count = isForked ? (count + 1) : (count > 0 ? (count - 1) : 0);
+        forkRepo.setText(numberFormat.format(count));
+        getPresenter().updatePinned((int)InputHelper.toLong(forkRepo),(int)InputHelper.toLong(starRepo),(int)InputHelper.toLong(watchRepo));
     }
 
     @Override public void onUserInteraction() {

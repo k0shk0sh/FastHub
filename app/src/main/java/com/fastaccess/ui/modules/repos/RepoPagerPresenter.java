@@ -259,6 +259,13 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         sendToView(view -> view.onRepoPinned(isPinned));
     }
 
+    @Override public void updatePinned(int forks, int stars, int watching) {
+        this.repo.setStargazersCount(stars);
+        this.repo.setForksCount(forks);
+        this.repo.setSubsCount(watching);
+        updatePinned(repo);
+    }
+
     @Override public void onMenuItemSelect(@IdRes int id, int position, boolean fromUser) {
         if (id == R.id.issues && (getRepo() != null && !getRepo().isHasIssues())) {
             sendToView(view -> view.showMessage(R.string.error, R.string.repo_issues_is_disabled));
