@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:windowBackground"
-    app:statusBarBackground="?colorPrimaryDark">
+    android:background="?android:windowBackground">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -19,8 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?colorPrimary"
-            android:clipChildren="false"
-            android:clipToPadding="false"
             android:minHeight="?actionBarSize"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/spacing_normal"
@@ -43,6 +40,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -73,7 +71,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
-                            android:text="50 minutes ago"
+                            android:text="Dummy Content"
                             tools:ignore="HardcodedText"/>
                     </LinearLayout>
 
@@ -152,9 +150,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                tools:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -203,9 +201,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                tools:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -254,9 +252,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                tools:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -305,9 +303,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                tools:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"
@@ -356,9 +354,9 @@
                                 android:layout_height="wrap_content"
                                 android:ellipsize="end"
                                 android:maxLines="3"
+                                android:text="Comrades wave from fortunes like wet biscuit eaters."
                                 android:textColor="?android:textColorPrimary"
-                                android:transitionName="@string/title_transition"
-                                tools:text="Comrades wave from fortunes like wet biscuit eaters."/>
+                                android:transitionName="@string/title_transition"/>
 
                             <com.fastaccess.ui.widgets.FontTextView
                                 style="@style/TextAppearance.AppCompat.Small"

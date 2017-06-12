@@ -1,122 +1,92 @@
-.prettyprint {
-    font-family: Menlo, "Bitstream Vera Sans Mono", "DejaVu Sans Mono", Monaco, Consolas, monospace !important;
-    border: 0 !important;
+/*
+
+Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+
+*/
+
+.hljs-comment,
+.hljs-quote {
+    color: #969896;
 }
 
-.pln {
-    color: #e6e9ed !important;
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+    color: #cc6666;
 }
 
-/* Specify class=linenums on a pre to get line numbering */
-ol.linenums {
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-    color: #656d78 !important;
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+    color: #de935f;
 }
 
-ol {
-    margin-left: 0 !important;
-    padding-left: 0.2em !important;
-    counter-reset: ol-item
+/* Tomorrow Yellow */
+.hljs-attribute {
+    color: #f0c674;
 }
 
-ol li:nth-child(-n+9) {
-    padding-left: 8px !important;
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+    color: #b5bd68;
 }
 
-ol li {
-    margin-left: 0 !important;
-    padding-left: 0 !important;
-    list-style-type: none !important;
-    counter-increment: ol-item
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+    color: #81a2be;
 }
 
-ol li:before {
-    content: counter(ol-item) " "
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+    color: #b294bb;
 }
 
-li.L0,
-li.L1,
-li.L2,
-li.L3,
-li.L4,
-li.L5,
-li.L6,
-li.L7,
-li.L8,
-li.L9 {
-    background: transparent !important;
+.hljs {
+    display: block;
+    overflow-x: auto;
+    color: #c5c8c6;
+    padding: 0px;
 }
 
-@media screen {
+.hljs-emphasis {
+    font-style: italic;
+}
 
-    /* string content */
-    .str {
-        color: #ffce54 !important;
-    }
+.hljs-strong {
+    font-weight: bold;
+}
 
-    /* keyword */
-    .kwd {
-        color: #4fc1e9 !important;
-    }
+td.hljs-ln-numbers {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    text-align: center;
+    color: #ccc;
+    border-right: 1px solid #CCC;
+    vertical-align: top;
+    padding-right: 5px;
+}
 
-    /* comment */
-    .com {
-        color: #656d78 !important;
-    }
-
-    /* type name */
-    .typ {
-        color: #4fc1e9 !important;
-    }
-
-    /* literal value */
-    .lit {
-        color: #ac92ec !important;
-    }
-
-    /* punctuation */
-    .pun {
-        color: #e6e9ed !important;
-    }
-
-    /* lisp open bracket */
-    .opn {
-        color: #e6e9ed !important;
-    }
-
-    /* lisp close bracket */
-    .clo {
-        color: #e6e9ed !important;
-    }
-
-    /* markup tag name */
-    .tag {
-        color: #ed5565 !important;
-    }
-
-    /* markup attribute name */
-    .atn {
-        color: #a0d468 !important;
-    }
-
-    /* markup attribute value */
-    .atv {
-        color: #ffce54 !important;
-    }
-
-    /* declaration */
-    .dec {
-        color: #ac92ec !important;
-    }
-
-    /* variable name */
-    .var {
-        color: #e6e9ed !important;
-    }
-
-    /* function name */
-    .fun {
-        color: #e6e9ed !important;
-    }
+.hljs-ln-line {
+    margin-left: 10px !important;
 }

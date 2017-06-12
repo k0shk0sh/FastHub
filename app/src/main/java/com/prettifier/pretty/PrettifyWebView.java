@@ -36,6 +36,8 @@ public class PrettifyWebView extends NestedWebView {
 
     public interface OnContentChangedListener {
         void onContentChanged(int progress);
+
+        void onScrollChanged(boolean reachedTop, int scroll);
     }
 
     public PrettifyWebView(Context context) {
@@ -100,6 +102,13 @@ public class PrettifyWebView extends NestedWebView {
         });
     }
 
+    @Override protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (onContentChangedListener != null) {
+            onContentChangedListener.onScrollChanged(t == 0, t);
+        }
+    }
+
     private boolean hitLinkResult(WebView.HitTestResult result) {
         return result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE || result.getType() == HitTestResult.IMAGE_TYPE ||
                 result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE;
@@ -119,19 +128,17 @@ public class PrettifyWebView extends NestedWebView {
         if (!InputHelper.isEmpty(source)) {
             String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
             post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
-            int lineNo = getLineNo(url);
-            if (lineNo != 0) {
-                setOnContentChangedListener(progress -> {
-                    Logger.e(progress);
-                    if (progress == 100) {
-                        if (isAttachedToWindow()) loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
-                    }
-                });
-            }
         }
     }
 
-    private int getLineNo(@Nullable String url) {
+    public void scrollToLine(@NonNull String url) {
+        int lineNo = getLineNo(url);
+        if (lineNo != 0) {
+            loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
+        }
+    }
+
+    public static int getLineNo(@Nullable String url) {
         int lineNo = 0;
         if (url != null) {
             try {
@@ -218,6 +225,6 @@ public class PrettifyWebView extends NestedWebView {
             startActivity(Uri.parse(url));
             return true;
         }
-    }
 
+    }
 }

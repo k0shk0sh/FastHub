@@ -295,6 +295,7 @@
     <string name="light_theme_mode" translatable="false">Light Theme</string>
     <string name="dark_theme_mode" translatable="false">Dark Theme</string>
     <string name="amlod_theme_mode" translatable="false">Amlod Theme</string>
+    <string name="mid_night_blue_theme_mode" translatable="false">Mid Night Blue</string>
     <string name="red_theme_mode" translatable="false">Red</string>
     <string name="pink_theme_mode" translatable="false">Pink</string>
     <string name="purple_theme_mode" translatable="false">Purple</string>
@@ -479,4 +480,5 @@
     <string name="reviewer_added">Reviewer added successfully</string>
     <string name="milestone_added">Milestone added successfully</string>
     <string name="feed">Feed</string>
+    <string name="premium_theme">Premium Theme</string>
 </resources>

@@ -9,9 +9,10 @@ import android.widget.BaseAdapter;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SettingsModel;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,20 +23,20 @@ import butterknife.ButterKnife;
 
 public class SettingsAdapter extends BaseAdapter {
 
-    private SettingsModel[] settings;
+    private ArrayList<SettingsModel> settings;
     private final LayoutInflater inflater;
 
-    public SettingsAdapter(@NonNull Context context, @NonNull SettingsModel[] settings) {
+    public SettingsAdapter(@NonNull Context context, @NonNull ArrayList<SettingsModel> settings) {
         this.settings = settings;
         this.inflater = LayoutInflater.from(context);
     }
 
     @Override public int getCount() {
-        return settings.length;
+        return settings.size();
     }
 
     @Override public SettingsModel getItem(int position) {
-        return settings[position];
+        return settings.get(position);
     }
 
     @Override public long getItemId(int position) {
@@ -52,14 +53,10 @@ public class SettingsAdapter extends BaseAdapter {
         } else {
             viewHolder = (ViewHolder) row.getTag();
         }
-        viewHolder.title.setText(settings[position].getTitle());
-        viewHolder.image.setImageResource(settings[position].getImage());
-        if (!InputHelper.isEmpty(settings[position].getSummary())) {
-            viewHolder.summary.setText(settings[position].getSummary());
-            viewHolder.summary.setVisibility(View.VISIBLE);
-        } else {
-            viewHolder.summary.setVisibility(View.GONE);
-        }
+        SettingsModel model = getItem(position);
+        viewHolder.title.setText(model.getTitle());
+        viewHolder.image.setImageResource(model.getImage());
+        viewHolder.summary.setVisibility(View.GONE);
         return row;
     }
 

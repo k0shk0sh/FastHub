@@ -1,12 +1,12 @@
 package com.fastaccess.ui.adapter.viewholder
 
 import android.view.View
-import butterknife.bindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.provider.colors.ColorsProvider
 import com.fastaccess.provider.emoji.EmojiParser
 import com.fastaccess.ui.widgets.FontTextView
+import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 
 import com.evernote.android.state.State;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.SettingsModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.ui.base.BaseActivity;
 
@@ -13,7 +14,7 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 public class SettingsCategoryActivity extends BaseActivity implements SettingsCategoryFragment.SettingsCallback {
 
     @State String title;
-    @State int settingsIndex;
+    @SettingsModel.SettingsType @State int settingsType;
 
     @Override protected int layout() {
         return R.layout.activity_settings_category;
@@ -37,7 +38,7 @@ public class SettingsCategoryActivity extends BaseActivity implements SettingsCa
         if (savedInstanceState == null) {
             Bundle bundle = getIntent().getExtras();
             title = bundle.getString(BundleConstant.EXTRA);
-            settingsIndex = bundle.getInt(BundleConstant.ITEM);
+            settingsType = bundle.getInt(BundleConstant.ITEM);
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.settingsContainer, new SettingsCategoryFragment())
@@ -50,7 +51,7 @@ public class SettingsCategoryActivity extends BaseActivity implements SettingsCa
         return new SettingsCategoryPresenter();
     }
 
-    @Override public int getSettingsType() {
-        return settingsIndex;
+    @SettingsModel.SettingsType @Override public int getSettingsType() {
+        return settingsType;
     }
 }

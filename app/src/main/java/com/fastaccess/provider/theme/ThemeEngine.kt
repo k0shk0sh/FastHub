@@ -88,6 +88,25 @@ object ThemeEngine {
                 PrefGetter.DEEP_ORANGE -> return R.style.ThemeAmlod_DeepOrange
                 else -> return R.style.ThemeAmlod
             }
+        } else if (themeMode == PrefGetter.MID_NIGHT_BLUE) {
+            when (themeColor) {
+                PrefGetter.RED -> return R.style.ThemeMidNighBlue_Red
+                PrefGetter.PINK -> return R.style.ThemeMidNighBlue_Pink
+                PrefGetter.PURPLE -> return R.style.ThemeMidNighBlue_Purple
+                PrefGetter.DEEP_PURPLE -> return R.style.ThemeMidNighBlue_DeepPurple
+                PrefGetter.INDIGO -> return R.style.ThemeMidNighBlue_Indigo
+                PrefGetter.BLUE -> return R.style.ThemeMidNighBlue
+                PrefGetter.LIGHT_BLUE -> return R.style.ThemeMidNighBlue_LightBlue
+                PrefGetter.CYAN -> return R.style.ThemeMidNighBlue_Cyan
+                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.ThemeMidNighBlue_Green
+                PrefGetter.LIGHT_GREEN -> return R.style.ThemeMidNighBlue_LightGreen
+                PrefGetter.LIME -> return R.style.ThemeMidNighBlue_Lime
+                PrefGetter.YELLOW -> return R.style.ThemeMidNighBlue_Yellow
+                PrefGetter.AMBER -> return R.style.ThemeMidNighBlue_Amber
+                PrefGetter.ORANGE -> return R.style.ThemeMidNighBlue_Orange
+                PrefGetter.DEEP_ORANGE -> return R.style.ThemeMidNighBlue_DeepOrange
+                else -> return R.style.ThemeMidNighBlue
+            }
         }
         return R.style.ThemeLight
     }
