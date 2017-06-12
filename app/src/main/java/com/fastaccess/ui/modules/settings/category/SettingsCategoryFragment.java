@@ -298,8 +298,10 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
         findPreference("enable_ads").setOnPreferenceChangeListener(this);
         signatureVia = findPreference("sent_via");
-        if (PrefHelper.getBoolean("sent_via_enabled"))
+        if (PrefHelper.getBoolean("sent_via_enabled")) {
+            signatureVia.setDefaultValue(false);
             getPreferenceScreen().removePreference(signatureVia);
+        }
     }
 
     private void addNotifications() {

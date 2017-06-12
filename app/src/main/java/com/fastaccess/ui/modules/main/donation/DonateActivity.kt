@@ -58,6 +58,8 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                         showMessage(R.string.success, R.string.success_purchase_message)
                         if (productKey == getString(R.string.donation_product_1) || productKey == getString(R.string.amlod_theme_purchase)) {
                             PrefGetter.enableAmlodTheme()
+                        } else if (productKey == getString(R.string.midnight_blue_theme_purchase)) {
+                            PrefGetter.enableMidNightBlueTheme()
                         } else {
                             PrefGetter.setProItems()
                         }

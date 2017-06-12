@@ -1,7 +1,9 @@
 function scrollToLineNumber(lineNo) {
     var div = document.querySelector('div[data-line-number="' + lineNo + '"]');
+    lineNo = lineNo - 5;
+    var toScrollTo = document.querySelector('div[data-line-number="' + lineNo + '"]');
     div.parentElement.style.backgroundColor = "rgb(248, 238, 199)";
-    smoothScroll(div);
+    if(toScrollTo != null) smoothScroll(toScrollTo);
 }
 var smoothScroll = function (elementId) {
     var MIN_PIXELS_PER_STEP = 16;
@@ -24,15 +26,11 @@ var smoothScroll = function (elementId) {
         (targetY - scrollContainer.scrollTop) / MAX_SCROLL_STEPS);
 
     var stepFunc = function () {
-        scrollContainer.scrollTop =
-            Math.min(targetY, pixelsPerStep + scrollContainer.scrollTop);
-
+        scrollContainer.scrollTop = Math.min(targetY, pixelsPerStep + scrollContainer.scrollTop);
         if (scrollContainer.scrollTop >= targetY) {
             return;
         }
-
         window.requestAnimationFrame(stepFunc);
     };
-
     window.requestAnimationFrame(stepFunc);
 };

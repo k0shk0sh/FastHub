@@ -22,14 +22,14 @@ android {
             storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    compileSdkVersion 25
+    buildToolsVersion "26.0.0-rc2"
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 301
-        versionName "3.0.1"
+        versionCode 310
+        versionName "3.1.0"
         signingConfig signingConfigs.signing
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
@@ -148,7 +148,6 @@ dependencies {
     implementation "com.github.miguelbcr:RxBillingService:0.0.3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'org.jsoup:jsoup:1.10.2'
-    implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation "com.evernote:android-state:${state_version}"
     implementation "petrov.kristiyan:colorpicker-library:1.1.4"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"

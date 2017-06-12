@@ -62,7 +62,7 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
         colorPicker.setColors(R.array.theme_colors_hex);
         colorPicker.setDefaultColorButton(selected_color);
         colorPicker.setTitle(title);
-        TextView title_tv = colorPicker.getDialogViewLayout().findViewById(R.id.title);
+        TextView title_tv = (TextView) colorPicker.getDialogViewLayout().findViewById(R.id.title);
         title_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         colorPicker.getPositiveButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));
         colorPicker.getNegativeButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));

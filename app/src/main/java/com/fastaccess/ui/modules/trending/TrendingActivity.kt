@@ -9,7 +9,6 @@ import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
-import butterknife.bindView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.BundleConstant
@@ -18,6 +17,7 @@ import com.fastaccess.helper.Logger
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
+import com.fastaccess.ui.widgets.bindView
 
 
 /**

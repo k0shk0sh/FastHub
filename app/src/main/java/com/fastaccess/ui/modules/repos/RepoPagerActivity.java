@@ -501,6 +501,12 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         return userInteracted;
     }
 
+    @Override public void disableIssueTab() {
+        showMessage(R.string.error, R.string.repo_issues_is_disabled);
+        bottomNavigation.setMenuItemEnabled(1, false);
+        bottomNavigation.setSelectedIndex(this.navType, true);
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.repo_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -629,6 +635,6 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     private void updatePinnedRepo() {
-        getPresenter().updatePinned((int) InputHelper.toLong(forkRepo),(int)InputHelper.toLong(starRepo),(int)InputHelper.toLong(watchRepo));
+        getPresenter().updatePinned((int) InputHelper.toLong(forkRepo), (int) InputHelper.toLong(starRepo), (int) InputHelper.toLong(watchRepo));
     }
 }
