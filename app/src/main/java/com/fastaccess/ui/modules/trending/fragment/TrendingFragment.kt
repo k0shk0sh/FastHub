@@ -3,7 +3,6 @@ package com.fastaccess.ui.modules.trending.fragment
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
-import butterknife.bindView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.TrendingModel
@@ -18,9 +17,9 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 
 class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragmentPresenter>(), TrendingFragmentMvp.View {
 
-    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
-    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
-    val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
+    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
+    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
+    val stateLayout: StateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
     val adapter by lazy { TrendingAdapter(presenter.getTendingList()) }
 
     @State var lang: String = ""

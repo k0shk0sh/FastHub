@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.overview;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,8 +15,10 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
+import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -89,7 +92,6 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
                         onCheckFollowStatus(login);
                     }
-                    loadContributions();
                 }
             });
         }
@@ -107,6 +109,21 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         sendToView(view -> view.onInitViews(userModel));
     }
 
+    @Override public void onLoadContributionWidget(@NonNull GitHubContributionsView gitHubContributionsView) {
+        if (contributions == null || contributions.isEmpty()) {
+            String url = String.format(URL, login);
+            manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
+                    .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
+                    .subscribe(lists -> {
+                        contributions.clear();
+                        contributions.addAll(lists);
+                        loadContributions(contributions, gitHubContributionsView);
+                    }, Throwable::printStackTrace));
+        } else {
+            loadContributions(contributions, gitHubContributionsView);
+        }
+    }
+
     @NonNull @Override public ArrayList<User> getOrgs() {
         return userOrgs;
     }
@@ -119,15 +136,11 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         return login;
     }
 
-    private void loadContributions() {
-        String url = String.format(URL, login);
-        manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
-                .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
-                .subscribe(lists -> {
-                    contributions.clear();
-                    contributions.addAll(lists);
-                    sendToView(view -> view.onInitContributions(contributions));
-                }, Throwable::printStackTrace));
+    private void loadContributions(ArrayList<ContributionsDay> contributions, GitHubContributionsView gitHubContributionsView) {
+        List<ContributionsDay> filter = gitHubContributionsView.getLastContributions(contributions);
+        Observable<Bitmap> bitmapObservable = Observable.just(gitHubContributionsView.drawOnCanvas(filter, contributions));
+        manageObservable(bitmapObservable
+                .doOnNext(bitmap -> sendToView(view -> view.onInitContributions(bitmap != null))));
     }
 
     private void loadOrgs() {
@@ -141,4 +154,5 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     sendToView(view -> view.onInitOrgs(userOrgs));
                 }, Throwable::printStackTrace));
     }
+
 }

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,12 +17,14 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
+import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
 /**
  * Created by Kosh on 28 Nov 2016, 9:27 PM
@@ -34,6 +37,9 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @BindView(R.id.readmeLoader) ProgressBar loader;
     @BindView(R.id.webView) PrettifyWebView webView;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    private AppBarLayout appBarLayout;
+    private BottomNavigation bottomNavigation;
+    private boolean scrolledTop = true;
     @State boolean isWrap = PrefGetter.isWrapCode();
 
     public static ViewerFragment newInstance(@NonNull String url) {
@@ -139,6 +145,24 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         }
     }
 
+    @Override public void onScrollChanged(boolean reachedTop, int scroll) {
+        if (getPresenter().isRepo()) {
+            if (appBarLayout != null && bottomNavigation != null) {
+                Logger.e(scroll, appBarLayout.getTotalScrollRange());
+                if (scroll == 0) {
+                    scrolledTop = true;
+                    bottomNavigation.setExpanded(true, false);
+                    appBarLayout.setExpanded(true, false);
+                } else if (scroll >= appBarLayout.getTotalScrollRange() && scrolledTop) {
+                    bottomNavigation.setExpanded(false, false);
+                    appBarLayout.setExpanded(false, false);
+                    scrolledTop = false;
+                }
+                webView.setNestedScrollingEnabled(scroll < 800);
+            }
+        }
+    }
+
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -155,6 +179,15 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             }
         }
         getActivity().invalidateOptionsMenu();
+        stateLayout.setEmptyText(R.string.no_data);
+        if (savedInstanceState == null) {
+            stateLayout.showReload(0);
+        }
+        stateLayout.setOnReloadListener(view1 -> getPresenter().onHandleIntent(getArguments()));
+        if (getPresenter().isRepo()) {
+            appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appbar);
+            bottomNavigation = (BottomNavigation) getActivity().findViewById(R.id.bottomNavigation);
+        }
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -188,5 +221,12 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onScrollTop(int index) {
         super.onScrollTop(index);
         if (webView != null) webView.scrollTo(0, 0);
+    }
+
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser && appBarLayout != null) {
+            appBarLayout.setVisibility(View.VISIBLE);
+        }
     }
 }
