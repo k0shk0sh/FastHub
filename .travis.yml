@@ -30,5 +30,5 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 notifications:
-  # slack: fasthub:mjJWGD8UpgSgKawKa5OqMNlR
+  slack: fasthub:mjJWGD8UpgSgKawKa5OqMNlR
   email: false
