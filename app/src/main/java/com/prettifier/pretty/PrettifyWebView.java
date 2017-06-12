@@ -36,6 +36,8 @@ public class PrettifyWebView extends NestedWebView {
 
     public interface OnContentChangedListener {
         void onContentChanged(int progress);
+
+        void onScrollChanged(boolean reachedTop, int scroll);
     }
 
     public PrettifyWebView(Context context) {
@@ -98,6 +100,13 @@ public class PrettifyWebView extends NestedWebView {
             }
             return false;
         });
+    }
+
+    @Override protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (onContentChangedListener != null) {
+            onContentChangedListener.onScrollChanged(t == 0, t);
+        }
     }
 
     private boolean hitLinkResult(WebView.HitTestResult result) {
@@ -216,6 +225,6 @@ public class PrettifyWebView extends NestedWebView {
             startActivity(Uri.parse(url));
             return true;
         }
-    }
 
+    }
 }

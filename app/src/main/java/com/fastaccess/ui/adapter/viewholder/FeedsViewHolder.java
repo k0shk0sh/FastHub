@@ -214,8 +214,8 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         int size = commits != null ? commits.size() : -1;
         SpannableBuilder spanCommits = SpannableBuilder.builder();
         if (size > 0) {
-            if (size != 1) spanCommits.append(String.valueOf(eventsModel.getPayload().getSize())).append(" new commits").append(" ");
-            else spanCommits.append("1 new commit").append(" ");
+            if (size != 1) spanCommits.append(String.valueOf(eventsModel.getPayload().getSize())).append(" new commits").append("\n");
+            else spanCommits.append("1 new commit").append("\n");
             int max = 5;
             int appended = 0;
             for (GitCommitModel commit : commits) {
@@ -224,7 +224,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 if (TextUtils.isEmpty(sha)) continue;
                 sha = sha.length() > 7 ? sha.substring(0, 7) : sha;
                 spanCommits.url(sha).append(" ")
-                        .append(commit.getMessage() != null ? commit.getMessage().replaceAll("\\r?\\n|\\r"," ") : "")
+                        .append(commit.getMessage() != null ? commit.getMessage().replaceAll("\\r?\\n|\\r", " ") : "")
                         .append("\n");
                 appended++;
                 if (appended == max) break;
@@ -255,7 +255,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .bold("#")
                 .bold(String.valueOf(pullRequest.getNumber()));
         if (comment.getBody() != null) {
-            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r"," "));
+            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r", " "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -280,7 +280,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .bold(String.valueOf(issue.getNumber()));
         if ("opened".equals(action) || "closed".equals(action)) {
             if (issue.getTitle() != null) {
-                MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\\r?\\n|\\r"," "));
+                MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\\r?\\n|\\r", " "));
                 description.setVisibility(View.VISIBLE);
             } else {
                 description.setText("");
@@ -325,7 +325,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .bold("#")
                 .bold(String.valueOf(issue.getNumber()));
         if (issue.getTitle() != null) {
-            MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\\r?\\n|\\r"," "));
+            MarkDownProvider.stripMdText(description, issue.getTitle().replaceAll("\\r?\\n|\\r", " "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -348,7 +348,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .bold("#")
                 .bold(String.valueOf(issue.getNumber()));
         if (comment.getBody() != null) {
-            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r"," "));
+            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r", " "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -420,7 +420,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
         if (payloadModel.getDescription() != null) {
-            MarkDownProvider.stripMdText(description, payloadModel.getDescription().replaceAll("\\r?\\n|\\r"," "));
+            MarkDownProvider.stripMdText(description, payloadModel.getDescription().replaceAll("\\r?\\n|\\r", " "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");
@@ -445,13 +445,12 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .bold("commit")
                 .append(" ")
-                .url(commitId != null ? commitId : "")
-                .append(" ")
                 .bold("in")
                 .append(" ")
-                .append(eventsModel.getRepo().getName());
+                .append(eventsModel.getRepo().getName())
+                .url(commitId != null ? "@" + commitId : "");
         if (comment != null && comment.getBody() != null) {
-            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r"," "));
+            MarkDownProvider.stripMdText(description, comment.getBody().replaceAll("\\r?\\n|\\r", " "));
             description.setVisibility(View.VISIBLE);
         } else {
             description.setText("");

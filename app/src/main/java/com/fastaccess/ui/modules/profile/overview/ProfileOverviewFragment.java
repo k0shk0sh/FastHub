@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.transition.AutoTransition;
+import android.support.transition.Transition;
 import android.support.transition.TransitionManager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.CardView;
@@ -38,7 +40,6 @@ import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
-import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
@@ -128,7 +129,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         onInitOrgs(getPresenter().getOrgs());
-        onInitContributions(getPresenter().getContributions());
         if (savedInstanceState == null) {
             getPresenter().onFragmentCreated(getArguments());
         } else {
@@ -151,6 +151,35 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
         progress.setVisibility(GONE);
         if (userModel == null) return;
+        if (getView() != null) {
+            if (this.userModel == null) {
+                TransitionManager.beginDelayedTransition((ViewGroup) getView(),
+                        new AutoTransition().addListener(new Transition.TransitionListener() {
+
+                            @Override public void onTransitionStart(@NonNull Transition transition) {
+
+                            }
+
+                            @Override public void onTransitionEnd(@NonNull Transition transition) {
+                                if (contributionView != null) getPresenter().onLoadContributionWidget(contributionView);
+                            }
+
+                            @Override public void onTransitionCancel(@NonNull Transition transition) {
+
+                            }
+
+                            @Override public void onTransitionPause(@NonNull Transition transition) {
+
+                            }
+
+                            @Override public void onTransitionResume(@NonNull Transition transition) {
+
+                            }
+                        }));
+            } else {
+                getPresenter().onLoadContributionWidget(contributionView);
+            }
+        }
         this.userModel = userModel;
         followBtn.setVisibility(!isMeOrOrganization() ? VISIBLE : GONE);
         username.setText(userModel.getLogin());
@@ -188,9 +217,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         if (InputHelper.isEmpty(userModel.getCreatedAt())) {
             joined.setVisibility(GONE);
         }
-        if (getView() != null) {
-            TransitionManager.beginDelayedTransition((ViewGroup) getView());
-        }
         followers.setText(SpannableBuilder.builder()
                 .append(getString(R.string.followers))
                 .append("\n")
@@ -211,15 +237,12 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
     }
 
-    @Override public void onInitContributions(@Nullable List<ContributionsDay> items) {
-        if (items != null && !items.isEmpty()) {
-            contributionView.onResponse(items);
-            contributionCard.setVisibility(VISIBLE);
-            contributionsCaption.setVisibility(VISIBLE);
-        } else {
-            contributionCard.setVisibility(GONE);
-            contributionsCaption.setVisibility(GONE);
+    @Override public void onInitContributions(boolean show) {
+        if (show) {
+            contributionView.onResponse();
         }
+        contributionCard.setVisibility(show ? VISIBLE : GONE);
+        contributionsCaption.setVisibility(show ? VISIBLE : GONE);
     }
 
     @Override public void onInitOrgs(@Nullable List<User> orgs) {

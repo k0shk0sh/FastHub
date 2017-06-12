@@ -266,7 +266,7 @@ import static com.annimon.stream.Collectors.toList;
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-        return models;
+        return Stream.of(models).sortBy(TimelineModel::getSortedDate).toList();
     }
 
     @Override public boolean equals(Object o) {
@@ -279,7 +279,6 @@ import static com.annimon.stream.Collectors.toList;
     @Override public int hashCode() {
         return comment != null ? (int) comment.getId() : 0;
     }
-
 
     @Override public int describeContents() { return 0; }
 

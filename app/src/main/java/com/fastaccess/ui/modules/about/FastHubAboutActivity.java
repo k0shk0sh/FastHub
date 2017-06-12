@@ -46,6 +46,8 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
             setTheme(R.style.AppTheme_AboutActivity_Dark);
         } else if (themeMode == PrefGetter.AMLOD) {
             setTheme(R.style.AppTheme_AboutActivity_Amlod);
+        } else if (themeMode == PrefGetter.MID_NIGHT_BLUE) {
+            setTheme(R.style.AppTheme_AboutActivity_MidNightBlue);
         }
         super.onCreate(savedInstanceState);
         malRecyclerview = findViewById(R.id.mal_recyclerview);

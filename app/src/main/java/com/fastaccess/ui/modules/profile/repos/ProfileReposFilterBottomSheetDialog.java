@@ -41,9 +41,12 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, currentFilterOptions.getTypesList());
-        ArrayAdapter<String> sortOptionsAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, currentFilterOptions.getSortOptionList());
-        ArrayAdapter<String> sortDirectionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, currentFilterOptions.getSortDirectionList());
+        ArrayAdapter<String> typesAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, currentFilterOptions.getTypesList
+                ());
+        ArrayAdapter<String> sortOptionsAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, currentFilterOptions
+                .getSortOptionList());
+        ArrayAdapter<String> sortDirectionAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, currentFilterOptions
+                .getSortDirectionList());
         typeSelectionSpinner.setAdapter(typesAdapter);
         sortSelectionSpinner.setAdapter(sortOptionsAdapter);
         sortDirectionSpinner.setAdapter(sortDirectionAdapter);
@@ -104,8 +107,7 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
         sortSelectionSpinner.setSelection(0);
     }
 
-    @Override
-    public void dismiss() {
+    @Override public void dismiss() {
         currentFilterOptions = null;
         super.dismiss();
     }
@@ -116,8 +118,11 @@ public class ProfileReposFilterBottomSheetDialog extends BaseBottomSheetDialog {
 
     public interface ProfileReposFilterChangeListener {
         void onFilterApply();
+
         void onTypeSelected(String selectedType);
+
         void onSortOptionSelected(String selectedSortOption);
+
         void onSortDirectionSelected(String selectedSortDirection);
     }
 }

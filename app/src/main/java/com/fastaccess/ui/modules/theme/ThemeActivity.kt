@@ -8,7 +8,7 @@ import android.os.Bundle
 import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewAnimationUtils
-import butterknife.bindView
+import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
 import com.fastaccess.helper.PrefGetter
