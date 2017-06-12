@@ -88,7 +88,6 @@ android {
     packagingOptions { exclude 'META-INF/rxjava.properties' }
 
     dexOptions {
-        preDexLibraries = false
         jumboMode true
     }
 
