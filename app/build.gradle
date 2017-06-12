@@ -150,6 +150,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.10.2'
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
     implementation "com.evernote:android-state:${state_version}"
+    implementation "petrov.kristiyan:colorpicker-library:1.1.4"
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "io.requery:requery-processor:${requery}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
