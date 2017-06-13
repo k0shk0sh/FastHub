@@ -82,7 +82,12 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
     private fun onSidebarClicked(item: MenuItem) {
         closeDrawerLayout()
         wiki.sidebar.first { it.title?.toLowerCase() == item.title.toString().toLowerCase() }
-                .let { presenter.onSidebarClicked(it) }
+                .let {
+                    if (it.title != null) {
+                        this.selectedTitle = it.title
+                        presenter.onSidebarClicked(it)
+                    }
+                }
     }
 
     private fun closeDrawerLayout() {
