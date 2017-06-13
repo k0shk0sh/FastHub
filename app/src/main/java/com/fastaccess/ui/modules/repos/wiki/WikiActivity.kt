@@ -53,6 +53,7 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
     }
 
     private fun loadMenu() {
+        navMenu.menu.clear()
         wiki.sidebar.onEach {
             navMenu.menu.add(R.id.languageGroup, it.title?.hashCode()!!, Menu.NONE, it.title)
                     .setCheckable(true)
@@ -80,14 +81,10 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
     }
 
     private fun onSidebarClicked(item: MenuItem) {
+        this.selectedTitle = item.title.toString()
         closeDrawerLayout()
         wiki.sidebar.first { it.title?.toLowerCase() == item.title.toString().toLowerCase() }
-                .let {
-                    if (it.title != null) {
-                        this.selectedTitle = it.title
-                        presenter.onSidebarClicked(it)
-                    }
-                }
+                .let { presenter.onSidebarClicked(it) }
     }
 
     private fun closeDrawerLayout() {

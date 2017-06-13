@@ -43,7 +43,14 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
             val document: Document = Jsoup.parse(body, "")
             val wikiWrapper = document.select("#wiki-wrapper")
             if (wikiWrapper.isNotEmpty()) {
-//                val header = wikiWrapper.select(".gh-header-title").html()
+                val cloneUrl = wikiWrapper.select(".clone-url")
+                val bottomRightBar = wikiWrapper.select(".wiki-custom-sidebar")
+                if (cloneUrl.isNotEmpty()) {
+                    cloneUrl.remove()
+                }
+                if (bottomRightBar.isNotEmpty()) {
+                    bottomRightBar.remove()
+                }
                 val wikiContent = wikiWrapper.select(".wiki-content")
                 val content = wikiContent.select(".markdown-body").html()
                 val rightBarList = wikiContent.select(".wiki-pages").select("li")
