@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
             if (getIntent() != null && getIntent().getBooleanExtra(SlackBottomSheetDialog.TAG, false)) {
                 new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
             }
-            checkPurchases(null);
         }
         selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);

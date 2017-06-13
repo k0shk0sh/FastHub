@@ -191,6 +191,14 @@
             android:name=".ui.modules.main.donation.DonateActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:theme="@style/ThemeTranslucent"/>
+        <activity
+            android:name=".ui.modules.repos.wiki.WikiActivity"
+            android:label="@string/gollum"
+            android:parentActivityName=".ui.modules.main.MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.main.MainActivity"/>
+        </activity>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

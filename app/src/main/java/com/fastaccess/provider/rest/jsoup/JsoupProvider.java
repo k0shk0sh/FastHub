@@ -1,7 +1,7 @@
 package com.fastaccess.provider.rest.jsoup;
 
 import com.fastaccess.BuildConfig;
-import com.fastaccess.data.service.TrendingService;
+import com.fastaccess.data.service.ScrapService;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
@@ -33,13 +33,23 @@ public class JsoupProvider {
         return okHttpClient;
     }
 
-    public static TrendingService getTrendingService() {
+    public static ScrapService getTrendingService() {
         return new Retrofit.Builder()
                 .baseUrl("https://github.com/trending/")
                 .client(provideOkHttpClient())
                 .addConverterFactory(new GithubResponseConverter(new Gson()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-                .create(TrendingService.class);
+                .create(ScrapService.class);
+    }
+
+    public static ScrapService getWiki() {
+        return new Retrofit.Builder()
+                .baseUrl("https://github.com/")
+                .client(provideOkHttpClient())
+                .addConverterFactory(new GithubResponseConverter(new Gson()))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(ScrapService.class);
     }
 }
