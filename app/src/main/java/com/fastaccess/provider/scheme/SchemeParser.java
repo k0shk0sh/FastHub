@@ -23,6 +23,7 @@ import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
+import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
 import com.fastaccess.ui.modules.trending.TrendingActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 
@@ -118,11 +119,12 @@ public class SchemeParser {
                 Intent issueIntent = getIssueIntent(context, data, showRepoBtn);
                 Intent releasesIntent = getReleases(context, data);
                 Intent repoIntent = getRepo(context, data);
+                Intent repoWikiIntent = getWiki(context, data);
                 Intent commit = getCommit(context, data, showRepoBtn);
                 Intent commits = getCommits(context, data, showRepoBtn);
                 Intent blob = getBlob(context, data);
                 Optional<Intent> intentOptional = returnNonNull(trending, userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
-                        createIssueIntent, issueIntent, releasesIntent, repoIntent, blob);
+                        createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     return intentOptional.get();
@@ -202,6 +204,18 @@ public class SchemeParser {
         String repoName = segments.get(1);
         return RepoPagerActivity.createIntent(context, repoName, owner);
     }
+
+    @Nullable private static Intent getWiki(@NonNull Context context, @NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        if (segments == null || segments.size() < 3) return null;
+        if ("wiki".equalsIgnoreCase(segments.get(2))) {
+            String owner = segments.get(0);
+            String repoName = segments.get(1);
+            return WikiActivity.Companion.getWiki(context, repoName, owner);
+        }
+        return null;
+    }
+
 
     /**
      * [[k0shk0sh, FastHub, issues], k0shk0sh/fastHub/(issues,pulls,commits, etc)]
