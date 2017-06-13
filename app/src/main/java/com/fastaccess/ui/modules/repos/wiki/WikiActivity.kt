@@ -48,7 +48,7 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
             loadMenu()
         }
         if (wiki.content != null) {
-            webView.setGithubContent(wiki.content, null)
+            webView.setGithubContent(wiki.content, null, true)
         }
     }
 
