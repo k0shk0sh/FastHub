@@ -151,11 +151,11 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
                 Logger.e(scroll, appBarLayout.getTotalScrollRange());
                 if (scroll == 0) {
                     scrolledTop = true;
-                    bottomNavigation.setExpanded(true, false);
-                    appBarLayout.setExpanded(true, false);
+                    bottomNavigation.setExpanded(true, true);
+                    appBarLayout.setExpanded(true, true);
                 } else if (scroll >= appBarLayout.getTotalScrollRange() && scrolledTop) {
-                    bottomNavigation.setExpanded(false, false);
-                    appBarLayout.setExpanded(false, false);
+                    bottomNavigation.setExpanded(false, true);
+                    appBarLayout.setExpanded(false, true);
                     scrolledTop = false;
                 }
                 webView.setNestedScrollingEnabled(scroll < 800);

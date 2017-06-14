@@ -24,7 +24,7 @@ public class MarkDownProvider {
     private static final String[] IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg"};
 
     private static final String[] MARKDOWN_EXTENSIONS = {
-            ".md", ".mkdn", ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron", ".rst"
+            ".md", ".mkdn", ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron", ".rst", "adoc"
     };
 
     private static final String[] ARCHIVE_EXTENSIONS = {

@@ -161,7 +161,11 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
-        addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
+        setGithubContent(source, baseUrl, false);
+    }
+
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling) {
+        addJavascriptInterface(new MarkDownInterceptorInterface(this, toggleNestScrolling), "Android");
         String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()));
         post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }

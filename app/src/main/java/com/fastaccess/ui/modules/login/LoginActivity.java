@@ -25,10 +25,15 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog;
+import com.miguelbcr.io.rx_billing_service.RxBillingService;
+import com.miguelbcr.io.rx_billing_service.entities.ProductType;
+import com.miguelbcr.io.rx_billing_service.entities.Purchase;
 
 import java.util.Arrays;
 import java.util.Locale;
@@ -38,6 +43,7 @@ import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
+import io.reactivex.functions.Action;
 
 /**
  * Created by Kosh on 08 Feb 2017, 9:10 PM
@@ -134,6 +140,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @Override public void onSuccessfullyLoggedIn() {
         checkPurchases(() -> {
+            hideProgress();
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -209,6 +216,34 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         progress.setVisibility(View.GONE);
         login.show();
     }
+
+    protected void checkPurchases(@Nullable Action action) {
+        getPresenter().manageViewDisposable(RxBillingService.getInstance(this, BuildConfig.DEBUG)
+                .getPurchases(ProductType.IN_APP)
+                .doOnSubscribe(disposable -> showProgress(0))
+                .subscribe((purchases, throwable) -> {
+                    hideProgress();
+                    if (throwable == null) {
+                        Logger.e(purchases);
+                        if (purchases != null && !purchases.isEmpty()) {
+                            for (Purchase purchase : purchases) {
+                                String sku = purchase.sku();
+                                if (sku != null) {
+                                    if (sku.equalsIgnoreCase(getString(R.string.donation_product_1))) {
+                                        PrefGetter.enableAmlodTheme();
+                                    } else {
+                                        PrefGetter.setProItems();
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        throwable.printStackTrace();
+                    }
+                    if (action != null) action.run();
+                }));
+    }
+
     private void showLanguage() {
         LanguageBottomSheetDialog languageBottomSheetDialog = new LanguageBottomSheetDialog();
         languageBottomSheetDialog.onAttach((Context) this);
