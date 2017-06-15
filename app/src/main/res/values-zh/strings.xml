@@ -134,7 +134,7 @@
     <string name="star_hint">收藏/取消收藏 此仓库</string>
     <string name="watch">关注</string>
     <string name="watch_hint">关注/取消关注 此仓库</string>
-    <string name="pin_repo_hint">固定仓库可以从导航栏中快速访问它们。</string>
+    <string name="pin_repo_hint">添加书签可以从导航栏快速访问它们。</string>
     <string name="no_url">找不到URL</string>
     <string name="last_updated">最后更新</string>
     <string name="preview">预览</string>
@@ -226,10 +226,10 @@
     <string name="support_development">支持开发</string>
     <string name="success_purchase_message">非常感谢！</string>
     <string name="change_theme_warning">如果主题没有正常显示，请重新打开此应用。</string>
-    <string name="pin">固定</string>
-    <string name="pinned">已固定仓库</string>
-    <string name="unpin">取消固定</string>
-    <string name="empty_pinned_repos">没有已固定的仓库，固定一些后就可以在这里看到它们了</string>
+    <string name="pin">书签</string>
+    <string name="pinned">书签</string>
+    <string name="unpin">删除书签</string>
+    <string name="empty_pinned_repos">空空如也，给仓库添加书签就可以在这里查看了</string>
     <string name="yes">Yes</string>
     <string name="no">No</string><!-- FACK!!The word is also included in the "No Pull Requests" prompt -->
     <string name="no_feeds">没有 Feeds</string>
