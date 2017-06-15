@@ -231,8 +231,6 @@
     <string name="theme_summary">Wähle das Standarddesign aus</string>
 	<string name="theme_color_summary">Wähle eine Akzentfarbe</string>
     <string name="theme_color_title">Akzentfarbe</string>
-    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
-    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Webseite</string>
     <string name="support_development">Unterstütze uns</string>
     <string name="success_purchase_message">Vielen Dank für deine Unterstützung!</string>
