@@ -5,7 +5,7 @@ using System.Xml;
 
 void Main(string[] args)
 {
-	string RootDir = AppDomain.CurrentDomain.BaseDirectory;
+	string RootDir = System.Reflection.Assembly.GetExecutingAssembly().Location;
 	string ResDir = Path.Combine(RootDir, @"app\src\main\res");
 
 	int TotalFiles = 0,
