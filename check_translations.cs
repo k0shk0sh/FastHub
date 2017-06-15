@@ -20,11 +20,11 @@ void Main(string[] args)
 
 		bool wasAdded = false;
 
-		foreach(XmlNode xmlNode in xRoot) {
+		foreach (XmlNode xmlNode in xRoot) {
 			if (xmlNode.Attributes == null) {
 				continue;
 			}
-			if(xmlNode.Attributes.Count > 0) {
+			if (xmlNode.Attributes.Count > 0) {
 				foreach (XmlNode attr in xmlNode.Attributes) {
 					if (attr == null) {
 						continue;
@@ -32,10 +32,11 @@ void Main(string[] args)
 					if (attr.Name == "translatable") {
 						TotalIssues++;
 						Console.WriteLine(@" {0}=""{1}"" in {2}", attr.Name, attr.Value, xmlNode.OuterXml);
-						if (!wasAdded) {
-							TotalFiles++;
-							wasAdded = true;
+						if (wasAdded) {
+							continue;
 						}
+						TotalFiles++;
+						wasAdded = true;
 					}
 				}
 			}
