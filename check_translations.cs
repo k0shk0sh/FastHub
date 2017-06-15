@@ -1,12 +1,16 @@
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
 using System.Xml;
 
 void Main(string[] args)
 {
 	string RootDir = System.Reflection.Assembly.GetExecutingAssembly().Location;
 	string ResDir = Path.Combine(RootDir, @"app\src\main\res");
+
+	PowerShell ps = PowerShell.Create();
 
 	int TotalFiles = 0,
 		TotalIssues = 0;
@@ -31,6 +35,8 @@ void Main(string[] args)
 					}
 					if (attr.Name == "translatable") {
 						TotalIssues++;
+						ps.AddCommand("Add-AppveyorMessage");
+						ps.AddArgument(String.Format(@"{0}=""{1}"" in {2}", attr.Name, attr.Value, xmlNode.OuterXml));
 						Console.WriteLine(@" {0}=""{1}"" in {2}", attr.Name, attr.Value, xmlNode.OuterXml);
 						if (wasAdded) {
 							continue;
@@ -45,6 +51,7 @@ void Main(string[] args)
 
 	Console.WriteLine("Found {0} issue(s) in {1} file(s).", TotalIssues, TotalFiles);
 	if (TotalIssues != 0) {
+		ps.Invoke();
 		Environment.Exit(101);
 	}
 }
