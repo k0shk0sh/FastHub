@@ -36,6 +36,7 @@ grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintain
   - Pinned Repos
   - Trending
 - **Repositories**
+  - Browse & Read Wiki
   - Search Repos
   - Browse and search Repos
   - See your public, private and forked Repos

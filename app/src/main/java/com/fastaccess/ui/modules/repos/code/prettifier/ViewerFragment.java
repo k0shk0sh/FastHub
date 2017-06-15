@@ -60,7 +60,6 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onSetImageUrl(@NonNull String url) {
-        onShowMdProgress();
         webView.loadImage(url);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
@@ -107,7 +106,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void hideProgress() {
         loader.setVisibility(View.GONE);
         stateLayout.hideProgress();
-        stateLayout.showReload(getPresenter().downloadedStream() == null ? 0 : 1);
+        if (!getPresenter().isImage()) stateLayout.showReload(getPresenter().downloadedStream() == null ? 0 : 1);
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {
