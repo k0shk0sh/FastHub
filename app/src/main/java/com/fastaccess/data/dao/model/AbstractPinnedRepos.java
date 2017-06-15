@@ -30,8 +30,8 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     @Column(unique = true) String repoFullName;
     @Convert(RepoConverter.class) Repo pinnedRepo;
 
-    public static Single<PinnedRepos> save(@NonNull PinnedRepos entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().insert(entity));
+    public static Single<PinnedRepos> update(@NonNull PinnedRepos entity) {
+        return RxHelper.getSingle(App.getInstance().getDataStore().update(entity));
     }
 
     public static boolean pinUpin(@NonNull Repo repo) {

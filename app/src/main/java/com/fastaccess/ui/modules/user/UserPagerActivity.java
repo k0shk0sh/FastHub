@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.user;
 
+import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -68,6 +70,9 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TYPE, isOrg)
                 .end());
+        if (context instanceof Service || context instanceof Application) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         return intent;
     }
 
@@ -188,7 +193,13 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     @OnClick(R.id.fab) public void onRepoFilterClicked() {
         if (isOrg) {
-            OrgReposFragment fragment = ((OrgReposFragment) pager.getAdapter().instantiateItem(pager, 1));
+            int position;
+            if (getPresenter().getIsMember() == 1) {
+                position = 2;
+            } else {
+                position = 1;
+            }
+            OrgReposFragment fragment = ((OrgReposFragment) pager.getAdapter().instantiateItem(pager, position));
             fragment.onRepoFilterClicked();
         } else {
             ProfileReposFragment fragment = ((ProfileReposFragment) pager.getAdapter().instantiateItem(pager, 2));
@@ -198,7 +209,11 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     private void hideShowFab(int position) {
         if (isOrg) {
-            if (position == 1) {
+            int orgPosition = position;
+            if (getPresenter().getIsMember() == 1) {
+                orgPosition = 2;
+            }
+            if (orgPosition == 1 || orgPosition == 2) {
                 fab.show();
             } else {
                 fab.hide();

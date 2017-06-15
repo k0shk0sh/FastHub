@@ -17,6 +17,7 @@ import com.fastaccess.helper.Logger
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
+import com.fastaccess.ui.widgets.bindView
 
 
 /**
@@ -26,13 +27,15 @@ import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
 class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), TrendingMvp.View {
 
     private var trendingFragment: TrendingFragment? = null
-    val navMenu by lazy { findViewById(R.id.navMenu) as NavigationView }
-    val daily by lazy { findViewById(R.id.daily) as TextView }
-    val weekly by lazy { findViewById(R.id.weekly) as TextView }
-    val monthly by lazy { findViewById(R.id.monthly) as TextView }
-    val drawerLayout by lazy { findViewById(R.id.drawer) as DrawerLayout }
 
-    @State var selectedTitle: String = ""
+    val navMenu: NavigationView by bindView(R.id.navMenu)
+    val daily: TextView by bindView(R.id.daily)
+    val weekly: TextView by bindView(R.id.weekly)
+    val monthly: TextView by bindView(R.id.monthly)
+    val drawerLayout: DrawerLayout by bindView(R.id.drawer)
+
+
+    @State var selectedTitle: String = "All Language"
 
     companion object {
         fun getTrendingIntent(context: Context, lang: String?, query: String?): Intent {
@@ -93,7 +96,10 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         daily.setOnClickListener { onDailyClicked() }
         weekly.setOnClickListener { onWeeklyClicked() }
         monthly.setOnClickListener { onMonthlyClicked() }
-        navMenu.setNavigationItemSelectedListener(this)
+        navMenu.setNavigationItemSelectedListener({ item ->
+            closeDrawerLayout()
+            onItemClicked(item)
+        })
         setupIntent(savedInstanceState)
         presenter.onLoadLanguage()
         onSelectTrending()
@@ -126,14 +132,13 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
-        selectedTitle = item?.title.toString()
+        when (item?.title.toString()) {
+            "All Language" -> selectedTitle = ""
+            else -> selectedTitle = item?.title.toString()
+        }
+        Logger.e(selectedTitle)
         setValues()
         return true
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        closeDrawerLayout()
-        return onItemClicked(item)
     }
 
     private fun closeDrawerLayout() {

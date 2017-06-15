@@ -1,13 +1,17 @@
 package com.fastaccess.ui.modules.profile.org;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.transition.TransitionManager;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.ActivityHelper;
@@ -22,7 +26,6 @@ import com.fastaccess.ui.widgets.FontTextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.evernote.android.state.State;
 
 import static android.view.View.GONE;
 
@@ -54,7 +57,7 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         if (userModel != null) ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
     }
 
-    @Override public void onInitViews(@Nullable User userModel) {
+    @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
         progress.setVisibility(View.GONE);
         if (userModel == null) return;
         this.userModel = userModel;
@@ -66,30 +69,31 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
             description.setVisibility(GONE);
         }
         avatarLayout.setUrl(userModel.getAvatarUrl(), null);
-        location.setText(InputHelper.toNA(userModel.getLocation()));
-        email.setText(InputHelper.toNA(userModel.getEmail()));
-        link.setText(InputHelper.toNA(userModel.getBlog()));
-        joined.setText(userModel.getCreatedAt() != null ? ParseDateFormat.getTimeAgo(userModel.getCreatedAt()) : "N/A");
-        ViewGroup parent = (ViewGroup) location.getParent();
-        if (location.getText().equals("N/A")) {
-            int i = parent.indexOfChild(location);
-            ((ViewGroup) location.getParent()).removeViewAt(i + 1);
+        avatarLayout.findViewById(R.id.avatar).setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
+                return true;
+            }
+            return false;
+        });
+        location.setText(userModel.getLocation());
+        email.setText(userModel.getEmail());
+        link.setText(userModel.getBlog());
+        joined.setText(ParseDateFormat.getTimeAgo(userModel.getCreatedAt()));
+        if (InputHelper.isEmpty(userModel.getLocation())) {
             location.setVisibility(GONE);
         }
-        if (email.getText().equals("N/A")) {
-            int i = parent.indexOfChild(email);
-            ((ViewGroup) email.getParent()).removeViewAt(i + 1);
+        if (InputHelper.isEmpty(userModel.getEmail())) {
             email.setVisibility(GONE);
         }
-        if (link.getText().equals("N/A")) {
-            int i = parent.indexOfChild(link);
-            ((ViewGroup) link.getParent()).removeViewAt(i + 1);
+        if (InputHelper.isEmpty(userModel.getBlog())) {
             link.setVisibility(GONE);
         }
-        if (joined.getText().equals("N/A")) {
-            int i = parent.indexOfChild(joined);
-            ((ViewGroup) joined.getParent()).removeViewAt(i + 1);
+        if (InputHelper.isEmpty(userModel.getCreatedAt())) {
             joined.setVisibility(GONE);
+        }
+        if (getView() != null) {
+            TransitionManager.beginDelayedTransition((ViewGroup) getView());
         }
     }
 

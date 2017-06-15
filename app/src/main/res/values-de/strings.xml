@@ -150,14 +150,17 @@
     <string name="mark_all_as_read">Alle als gelesen markieren</string>
     <string name="all_notifications">Alle Benachrichtigungen</string>
     <string name="unread">Ungelesen</string>
-    <string name="all">Alle</string>
+    <string name="all">Alle / Jede</string>
     <string name="delete_repo">Repo löschen</string>
     <string name="delete_repo_warning">Wenn du das Repo löschst, kannst du es nicht mehr wiederherstellen</string>
     <string name="thirty_minutes">30 Minuten</string>
     <string name="twenty_minutes">20 Minuten</string>
     <string name="ten_minutes">10 Minuten</string>
     <string name="five_minutes">5 Minuten</string>
-    <string name="one_minute">1 Minute</string>
+    <string name="one_minute">Minute</string>
+	<string name="one_hour">Stunde</string>
+    <string name="two_hour">2 Stunden</string>
+    <string name="three_hour">3 Stunden</string>
     <string name="created_repo">Erstellt</string>
     <string name="committed">Committed</string>
     <string name="downloaded">Heruntergeladen</string>
@@ -171,7 +174,7 @@
     <string name="unknown">Unbekannt</string>
     <string name="commented_on_commit">Commit kommentieren</string>
     <string name="switch_branch">Branch wechseln</string>
-    <string name="assignees">Bevollmächtigte</string> <!-- Unsure -->
+    <string name="assignees">Assignees</string>
     <string name="edit">Bearbeiten</string>
     <string name="update_issue">Issue aktualisieren</string>
     <string name="update_pull_request">Pull Request aktualisieren</string>
@@ -182,7 +185,7 @@
     <string name="create_milestone">Meilenstein erstellen</string>
     <string name="error_creating_milestone">Konnte Meilenstein nicht erstellen</string>
     <string name="due_on">Fällig am</string>
-    <string name="no_assignees">Keine Bevollmächtigten</string>
+    <string name="no_assignees">Keine Assignees</string>
     <string name="this_value">dies</string>
     <string name="commits_reflected">Commits wurden auf den ausgewählten Branch verschoben</string>
     <string name="general_settings">Allgemein</string>
@@ -210,7 +213,7 @@
     <string name="notification_settings">Benachrichtigung</string>
     <string name="turn_off">Ausschalten</string>
     <string name="unauthorized_user">Unauthorisierter Benutzer</string>
-    <string name="two_factors_otp_error">Das einmalige Two-Factor Passwort wird benötigt</string>
+    <string name="two_factors_otp_error">Das einmalige Zwei-Faktor Passwort wird benötigt</string>
     <string name="no_issue">Kein Issue</string>
     <string name="copy">Kopieren</string>
     <string name="success_copied">kopiert</string>
@@ -226,6 +229,10 @@
     <string name="mark_notification_summary">Benachrichtigung als gelesen markieren sobald sie angetippt wurde.</string>
     <string name="theme_title">Wähle ein Design</string>
     <string name="theme_summary">Wähle das Standarddesign aus</string>
+	<string name="theme_color_summary">Wähle eine Akzentfarbe</string>
+    <string name="theme_color_title">Akzentfarbe</string>
+    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
+    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Webseite</string>
     <string name="support_development">Unterstütze uns</string>
     <string name="success_purchase_message">Vielen Dank für deine Unterstützung!</string>
@@ -235,7 +242,7 @@
     <string name="unpin">Entpinnen</string>
     <string name="empty_pinned_repos">Du hast noch keine Repos angepinnt, pinne welche an, damit sie hier erscheinen</string>
     <string name="yes">Ja</string>
-    <string name="no">Nein</string>
+    <string name="no">Nein</string> <!--Will fix this negation problem soon-->
     <string name="no_feeds">Keine Feeds</string>
     <string name="no_gists">Keine Gists</string>
     <string name="no_comments">Keine Kommentare</string>
@@ -259,7 +266,7 @@
     <string name="no_issues">Keine Issues</string>
     <string name="no_unread_notifications">Keine ungelesenen Benachrichtigungen.</string>
     <string name="my_gists">Meine Gists</string>
-    <string name="changelog">Letzte Änderungen</string> <!-- Will change eventually -->
+    <string name="changelog">Letzte Änderungen</string>
     <string name="notifications_hint">Tippe um die Benachrichtigungsliste zu öffnen oder wische zum verwerfen</string>
     <string name="home_long_click_hint">Tippe hier länger drauf um zum Hauptbildschirm zu gelangen</string>
     <string name="created">Erstellt</string>
@@ -281,7 +288,7 @@
     <string name="dialog_animation_summary">Popup-Animationen aktivieren</string>
     <string name="dialog_animation_title">Popup-Animation</string>
     <string name="milestones">Meilensteine</string>
-    <string name="assignee">Bevollmächtigte</string><!-- Still looking for a better translation -->
+    <string name="assignee">Assignee</string>
     <string name="checks_failed">Alle Checks sind fehlgeschlagen</string>
     <string name="checks_pending">Die Checks laufen noch</string>
     <string name="checks_passed">Die Checks wurden erfolgreich beendet</string>
@@ -318,7 +325,7 @@
     <string name="support_with_5_00">Unterstützen mit 5$</string>
     <string name="support_with_10_00">Unterstützen mit 10$</string>
     <string name="support_with_20_00">Unterstützen mit 20$</string>
-    <string name="app_language">App Sprache</string>
+    <string name="app_language">Sprache</string>
     <string name="language">Sprache</string>
     <string name="choose_language_title">Spracheinstellung</string>
     <string name="choose_language_summary">Wähle deine bevorzugte Sprache</string>
@@ -332,7 +339,7 @@
     <string name="choose_your_login_type">Wähle einen Authentifizierungstyp</string>
     <string name="files_only">In Dateien</string>
     <string name="paths_only">In Dateipfaden</string>
-    <string name="review_requests">Anfragen überprüfen</string>
+    <string name="review_requests">PRs prüfen</string>
     <string name="join_slack">Slackgruppe beitreten</string>
     <string name="join_slack_message">Möchtest du der FastHub Slackgruppe beitreten?</string>
     <string name="successfully_invited">Erfolgreich eingeladen!</string>
@@ -346,8 +353,8 @@
     <string name="enable_signature">Signatur aktivieren</string>
     <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
     <string name="enable_signature_box">Signaturbox aktivieren</string>
-    <string name="enable_signature_box_summary">Häkchen setzen, damit die Signatur im Editor angezeigt wird</string>
-	<string name="tags">Tags</string>
+    <string name="enable_signature_box_summary">Die Signatur wird im Editor angezeigt, sobald aktiviert.</string>
+    <string name="tags">Tags</string>
     <string name="add_comment">Kommentar hinzufügen</string>
     <string name="banners">Einführung von Bannern</string>
     <string name="banners_info">Mit FastHub 2.5.0 kannst du nun dein Profil mit einem Banner 
@@ -359,6 +366,29 @@
     </string>
     <string name="edit_banner">BANNER AUSWÄHLEN</string>
     <string name="image_error">Bild konnte nicht geladen werden.</string>
+    <string name="trending">Im Trend</string>
+    <string name="not_really_working">Leider kann derzeit nicht nach Emojis sortiert werden</string>
+    <string name="scroll_up">Hochscrollen</string>
+    <string name="scroll_down">Runterscrollen</string>
+    <string name="participated">Teilnahme</string>
+    <string name="todo_checked">abgehakt</string>
+    <string name="todo_unchecked">ausstehend</string>
+    <string name="divider">Trenner</string>
+    <string name="no_user_found">Kein User gefunden</string>
+    <string name="no_trending">Nichts im Trend</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="reset">Zurücksetzten</string>
+    <string name="apply">Anwenden</string>
+    <string name="filter">Filter</string>
+    <string name="type">Typ</string>
+    <string name="Sort">Sortieren</string>
+    <string name="sort_direction">Sortierungsrichtung</string>
+    <string name="assignee_added">Assignee erfolgreich hinzugefügt</string>
+    <string name="reviewer_added">Reviewer erfolgreich hinzugefügt</string>
+    <string name="milestone_added">Meilenstein erfolgreich hinzugefügt</string>
+<string name="feed">Feed</string>
 </resources>
 
 

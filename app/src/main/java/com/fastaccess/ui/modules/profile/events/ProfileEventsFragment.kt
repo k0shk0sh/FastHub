@@ -25,9 +25,11 @@ import java.util.*
 
 open class ProfileEventsFragment : BaseFragment<ProfileEvents.View, ProfileEventsPresenter>(), ProfileEvents.View {
 
-    val recycler by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
-    val refresh by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
-    val stateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
+
+    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
+    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
+    val stateLayout: StateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
+
     val adapter by lazy { FeedsAdapter(presenter.getEvents(), true) }
     private var onLoadMore: OnLoadMore<String>? = null
 

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
+import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,16 +19,12 @@ import java.util.List;
 
 public interface ProfileOverviewMvp {
 
-    String HEADER_FST_URL = "https://gist.githubusercontent" +
-            ".com/k0shk0sh/44c5d0ba29d179c9e78bc892e8573138/raw/4d443b23dda00c568fc6905b3c28103d55d00b51/header.fst";
-    String HEADER_GIST_ID = "44c5d0ba29d179c9e78bc892e8573138";
-
     interface View extends BaseMvp.FAView {
         void onInitViews(@Nullable User userModel);
 
         void invalidateFollowBtn();
 
-        void onInitContributions(@Nullable List<ContributionsDay> items);
+        void onInitContributions(boolean show);
 
         void onInitOrgs(@Nullable List<User> orgs);
 
@@ -54,12 +51,12 @@ public interface ProfileOverviewMvp {
 
         void onSendUserToView(@Nullable User userModel);
 
+        void onLoadContributionWidget(@NonNull GitHubContributionsView view);
+
         @NonNull ArrayList<User> getOrgs();
 
         @NonNull ArrayList<ContributionsDay> getContributions();
 
         @NonNull String getLogin();
-
-        void onPostImage(@NonNull String path);
     }
 }

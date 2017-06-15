@@ -85,6 +85,9 @@ public interface RepoService {
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<Release>> getReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
+    @NonNull @GET("repos/{owner}/{repo}/releases/latest")
+    Observable<Release> getLatestRelease(@Path("owner") String owner, @Path("repo") String repo);
+
     @NonNull @GET("repos/{owner}/{repo}/tags")
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<Release>> getTagReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);

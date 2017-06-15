@@ -14,7 +14,6 @@ import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import butterknife.BindView;
-
 /**
  * Created by Kosh on 11 Nov 2016, 2:08 PM
  */
@@ -25,6 +24,7 @@ public class GistsViewHolder extends BaseViewHolder<Gist> {
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.date) FontTextView date;
     private boolean isFromProfile;
+
 
     private GistsViewHolder(@NonNull View itemView, @Nullable BaseRecyclerAdapter adapter, boolean isFromProfile) {
         super(itemView, adapter);
@@ -39,7 +39,6 @@ public class GistsViewHolder extends BaseViewHolder<Gist> {
             return new GistsViewHolder(getView(viewGroup, R.layout.feeds_row_no_image_item), adapter, true);
         }
     }
-
 
     @Override public void bind(@NonNull Gist item) {
         if (!isFromProfile) {

@@ -26,6 +26,14 @@
 
     </style>
 
+    <style name="ThemeTranslucent" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation</item>
+    </style>
+
     <style name="TextAppearance.Design.CollapsingToolbar.Expanded.LightText" parent="TextAppearance.Design.CollapsingToolbar.Expanded">
         <item name="android:textColor">@color/white</item>
     </style>

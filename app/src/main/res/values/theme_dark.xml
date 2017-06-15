@@ -40,6 +40,11 @@
         <item name="android:alertDialogTheme">@style/DialogThemeDark</item>
         <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
+        <item name="android:popupMenuStyle">@style/PopupMenuDark</item>
+    </style>
+
+    <style name="PopupMenuDark" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@color/darkWindowBackground</item>
     </style>
 
     <style name="ThemeDark.Red" parent="ThemeDark.Base">

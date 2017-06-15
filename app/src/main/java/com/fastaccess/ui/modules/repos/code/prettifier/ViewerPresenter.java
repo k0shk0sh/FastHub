@@ -33,7 +33,9 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         throwable.printStackTrace();
         int code = RestProvider.getErrorCode(throwable);
         if (code == 404) {
-            sendToView(view -> view.onShowError(isRepo ? R.string.no_readme_found : R.string.no_file_found));
+            if (!isRepo) {
+                sendToView(view -> view.onShowError(R.string.no_file_found));
+            }
         } else {
             if (code == 406) {
                 sendToView(view -> view.openUrl(url));

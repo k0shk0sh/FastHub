@@ -20,6 +20,8 @@ public class PrefGetter {
 
     public static final int LIGHT = 1;
     public static final int DARK = 2;
+    public static final int AMLOD = 3;
+    public static final int MID_NIGHT_BLUE = 4;
 
     public static final int RED = 1;
     public static final int PINK = 2;
@@ -41,6 +43,8 @@ public class PrefGetter {
     @IntDef({
             LIGHT,
             DARK,
+            AMLOD,
+            MID_NIGHT_BLUE
     })
     @Retention(RetentionPolicy.SOURCE) @interface ThemeType {}
 
@@ -83,6 +87,9 @@ public class PrefGetter {
     private static final String SENT_VIA = "sent_via";
     private static final String SENT_VIA_BOX = "sent_via_enabled";
     private static final String PROFILE_BACKGROUND_URL = "profile_background_url";
+    private static final String AMLOD_THEME_ENABLED = "amlod_theme_enabled";
+    private static final String MIDNIGHTBLUE_THEME_ENABLED = "midnightblue_theme_enabled";
+    private static final String PRO_ITEMS = "pro_items";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -243,6 +250,10 @@ public class PrefGetter {
                 return DARK;
             } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.light_theme_mode))) {
                 return LIGHT;
+            } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.amlod_theme_mode))) {
+                return AMLOD;
+            } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.mid_night_blue_theme_mode))) {
+                return MID_NIGHT_BLUE;
             }
         }
         return LIGHT;
@@ -250,6 +261,11 @@ public class PrefGetter {
 
     @ThemeColor private static int getThemeColor(@NonNull Resources resources) {
         String appColor = PrefHelper.getString("appColor");
+        return getThemeColor(resources, appColor);
+    }
+
+    // used for color picker to get the index of the color (enum) from the name of the color
+    public static int getThemeColor(@NonNull Resources resources, String appColor) {
         if (!InputHelper.isEmpty(appColor)) {
             if (appColor.equalsIgnoreCase(resources.getString(R.string.red_theme_mode)))
                 return RED;
@@ -314,5 +330,29 @@ public class PrefGetter {
 
     public static boolean isNotificationSoundEnabled() {
         return PrefHelper.getBoolean("notificationSound");
+    }
+
+    public static void enableAmlodTheme() {
+        PrefHelper.set(AMLOD_THEME_ENABLED, true);
+    }
+
+    public static boolean isAmlodEnabled() {
+        return PrefHelper.getBoolean(AMLOD_THEME_ENABLED);
+    }
+    public static void enableMidNightBlueTheme() {
+        PrefHelper.set(MIDNIGHTBLUE_THEME_ENABLED, true);
+    }
+
+    public static boolean isMidNightBlueThemeEnabled() {
+        return PrefHelper.getBoolean(MIDNIGHTBLUE_THEME_ENABLED);
+    }
+
+    public static void setProItems() {
+        PrefHelper.set(PRO_ITEMS, true);
+        enableAmlodTheme();
+    }
+
+    public static boolean isProEnabled() {
+        return PrefHelper.getBoolean(PRO_ITEMS);
     }
 }

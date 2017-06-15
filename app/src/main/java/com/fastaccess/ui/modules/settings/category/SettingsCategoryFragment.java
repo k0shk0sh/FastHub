@@ -11,20 +11,15 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
-import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Release;
-import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.data.dao.SettingsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
-import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
-import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,21 +37,20 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import butterknife.BindView;
 import es.dmoral.toasty.Toasty;
-import io.reactivex.disposables.Disposable;
 
 import static android.app.Activity.RESULT_OK;
 
 public class SettingsCategoryFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
 
-    @BindView(R.id.settingsContainer) FrameLayout settingsContainer;
+    public interface SettingsCallback {
+        @SettingsModel.SettingsType int getSettingsType();
+    }
 
     private static int PERMISSION_REQUEST_CODE = 128;
     private static int RESTORE_REQUEST_CODE = 256;
 
     private BaseMvp.FAView callback;
-    private String appTheme;
     private String appColor;
     private String app_lauguage;
 
@@ -64,129 +58,44 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationTime;
     private Preference notificationRead;
     private Preference notificationSound;
-    private Disposable disposable;
+    private SettingsCallback settingsCallback;
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
         this.callback = (BaseMvp.FAView) context;
-        appTheme = PrefHelper.getString("appTheme");
+        this.settingsCallback = (SettingsCallback) context;
         appColor = PrefHelper.getString("appColor");
         app_lauguage = PrefHelper.getString("app_language");
     }
 
+    @Override public void onDetach() {
+        callback = null;
+        settingsCallback = null;
+        super.onDetach();
+    }
+
+    @Override public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
     @Override public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-        int settings = getActivity().getIntent().getExtras().getInt("settings", 0);
-        switch (settings) {
-            case 0:
-                addPreferencesFromResource(R.xml.notification_settings);
-                notificationTime = findPreference("notificationTime");
-                notificationRead = findPreference("markNotificationAsRead");
-                notificationSound = findPreference("notificationSound");
-                findPreference("notificationTime").setOnPreferenceChangeListener(this);
-                findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
-                if (!PrefHelper.getBoolean("notificationEnabled")) {
-                    getPreferenceScreen().removePreference(notificationTime);
-                    getPreferenceScreen().removePreference(notificationRead);
-                    getPreferenceScreen().removePreference(notificationSound);
-                }
+        switch (settingsCallback.getSettingsType()) {
+            case SettingsModel.BACKUP:
+                addBackup();
                 break;
-            case 1:
-                addPreferencesFromResource(R.xml.behaviour_settings);
-                findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
-                signatureVia = findPreference("sent_via");
-                if (PrefHelper.getBoolean("sent_via_enabled"))
-                    getPreferenceScreen().removePreference(signatureVia);
+            case SettingsModel.BEHAVIOR:
+                addBehaviour();
                 break;
-            case 2:
-                addPreferencesFromResource(R.xml.customization_settings);
-                findPreference("enable_ads").setVisible(false);
-                findPreference("recylerViewAnimation").setOnPreferenceChangeListener(this);
-                findPreference("rect_avatar").setOnPreferenceChangeListener(this);
-                findPreference("appTheme").setOnPreferenceChangeListener(this);
-                findPreference("appColor").setOnPreferenceChangeListener(this);
+            case SettingsModel.CUSTOMIZATION:
+                addCustomization();
                 break;
-            case 3:
-                addPreferencesFromResource(R.xml.about_settings);
-                findPreference("showChangelog").setOnPreferenceClickListener(preference -> {
-                    new ChangelogBottomSheetDialog().show(getChildFragmentManager(), "ChangelogBottomSheetDialog");
-                    return true;
-                });
-                findPreference("joinSlack").setOnPreferenceClickListener(preference -> {
-                    ActivityHelper.startCustomTab(getActivity(), "http://rebrand.ly/fasthub");
-                    return true;
-                });
-                findPreference("currentVersion").setSummary(SpannableBuilder.builder()
-                        .append(getString(R.string.current_version))
-                        .append("(")
-                        .bold(BuildConfig.VERSION_NAME)
-                        .append(")"));
-                findPreference("currentVersion").setOnPreferenceClickListener(preference -> {
-                    disposable = Release.get("FastHub", "k0shk0sh").subscribe(releases -> {
-                        if (releases != null) {
-                            if (releases.get(0).getTagName().equals(BuildConfig.VERSION_NAME))
-                                Toasty.success(getContext(), getString(R.string.up_to_date)).show();
-                            else
-                                Toasty.warning(getContext(), getString(R.string.new_version)).show();
-                        }
-                    });
-                    return true;
-                });
+            case SettingsModel.LANGUAGE:
+                throw new RuntimeException("how is it possible language?");
+            case SettingsModel.NOTIFICATION:
+                addNotifications();
                 break;
-            case 4:
-                addPreferencesFromResource(R.xml.backup_settings);
-                findPreference("backup").setOnPreferenceClickListener((Preference preference) -> {
-
-
-                    if (ContextCompat.checkSelfPermission(getActivity(),
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        Map<String, ?> settings_ = PrefHelper.getAll();
-                        settings_.remove("token");
-                        String json = new Gson().toJson(settings_);
-                        String path =
-                                Environment.getExternalStorageDirectory() + File.separator + "FastHub";
-                        File folder = new File(path);
-                        folder.mkdirs();
-                        File backup = new File(folder, "backup.json");
-
-                        try {
-                            backup.createNewFile();
-                            FileOutputStream outputStream = new FileOutputStream(backup);
-                            OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream);
-                            myOutWriter.append(json);
-
-                            myOutWriter.close();
-
-                            outputStream.flush();
-                            outputStream.close();
-                        } catch (IOException e) {
-                            Log.e(getTag(), "Couldn't backup: " + e.toString());
-                        }
-
-                        PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd").format(new Date()));
-                    } else {
-                        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-                    }
-
-                    return true;
-                });
-                if (PrefHelper.getString("backed_up") != null)
-                    findPreference("backup").setSummary(getString(R.string.backup_summary, PrefHelper.getString("backed_up")));
-                else
-                    findPreference("backup").setSummary("");
-                findPreference("restore").setOnPreferenceClickListener(preference -> {
-                    if (ContextCompat.checkSelfPermission(getActivity(),
-                            Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                        showFileChooser();
-                    } else {
-                        requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
-                    }
-
-                    return true;
-                });
-                break;
-            default:
-                addPreferencesFromResource(R.xml.fasthub_settings);
-                break;
+            case SettingsModel.THEME:
+                throw new RuntimeException("how is it possible theme?");
         }
     }
 
@@ -215,12 +124,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         } else if (preference.getKey().equalsIgnoreCase("rect_avatar")) {
             callback.onThemeChanged();
             return true;
-        } else if (preference.getKey().equalsIgnoreCase("appTheme")) {
-            if (newValue.toString().equalsIgnoreCase(appTheme))
-                return true;
-            Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
-            callback.onThemeChanged();
-            return true;
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {
             if (newValue.toString().equalsIgnoreCase(appColor))
                 return true;
@@ -238,13 +141,15 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             else
                 getPreferenceScreen().addPreference(signatureVia);
             return true;
+        } else if (preference.getKey().equalsIgnoreCase("enable_ads")) {
+            callback.onThemeChanged();
+            return true;
         }
         return false;
     }
 
     @Override public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (permissions[0].equals(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -323,17 +228,94 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         }
     }
 
-    @Override public void onDestroyView() {
-        super.onDestroyView();
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-    }
-
     private void showFileChooser() {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("application/json");
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_backup)), RESTORE_REQUEST_CODE);
+    }
+
+    private void addBackup() {
+        addPreferencesFromResource(R.xml.backup_settings);
+        findPreference("backup").setOnPreferenceClickListener((Preference preference) -> {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Map<String, ?> settings_ = PrefHelper.getAll();
+                settings_.remove("token");
+                String json = new Gson().toJson(settings_);
+                String path =
+                        Environment.getExternalStorageDirectory() + File.separator + "FastHub";
+                File folder = new File(path);
+                folder.mkdirs();
+                File backup = new File(folder, "backup.json");
+
+                try {
+                    backup.createNewFile();
+                    FileOutputStream outputStream = new FileOutputStream(backup);
+                    OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream);
+                    myOutWriter.append(json);
+
+                    myOutWriter.close();
+
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    Log.e(getTag(), "Couldn't backup: " + e.toString());
+                }
+
+                PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
+            } else {
+                requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            }
+
+            return true;
+        });
+        if (PrefHelper.getString("backed_up") != null)
+            findPreference("backup").setSummary(getString(R.string.backup_summary, PrefHelper.getString("backed_up")));
+        else
+            findPreference("backup").setSummary("");
+        findPreference("restore").setOnPreferenceClickListener(preference -> {
+            if (ContextCompat.checkSelfPermission(getActivity(),
+                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                showFileChooser();
+            } else {
+                requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+            }
+
+            return true;
+        });
+    }
+
+    private void addCustomization() {
+        addPreferencesFromResource(R.xml.customization_settings);
+        findPreference("enable_ads").setVisible(false);
+        findPreference("recylerViewAnimation").setOnPreferenceChangeListener(this);
+        findPreference("rect_avatar").setOnPreferenceChangeListener(this);
+        findPreference("appColor").setOnPreferenceChangeListener(this);
+    }
+
+    private void addBehaviour() {
+        addPreferencesFromResource(R.xml.behaviour_settings);
+        findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
+        findPreference("enable_ads").setOnPreferenceChangeListener(this);
+        signatureVia = findPreference("sent_via");
+        if (PrefHelper.getBoolean("sent_via_enabled")) {
+            signatureVia.setDefaultValue(false);
+            getPreferenceScreen().removePreference(signatureVia);
+        }
+    }
+
+    private void addNotifications() {
+        addPreferencesFromResource(R.xml.notification_settings);
+        notificationTime = findPreference("notificationTime");
+        notificationRead = findPreference("markNotificationAsRead");
+        notificationSound = findPreference("notificationSound");
+        findPreference("notificationTime").setOnPreferenceChangeListener(this);
+        findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
+        if (!PrefHelper.getBoolean("notificationEnabled")) {
+            getPreferenceScreen().removePreference(notificationTime);
+            getPreferenceScreen().removePreference(notificationRead);
+            getPreferenceScreen().removePreference(notificationSound);
+        }
     }
 
 }

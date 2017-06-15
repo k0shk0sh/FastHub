@@ -58,7 +58,8 @@ public class AppHelper {
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {
-        return PrefGetter.getThemeType(resources) == PrefGetter.DARK;
+        int themeType = PrefGetter.getThemeType(resources);
+        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD;
     }
 
     @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {
@@ -81,14 +82,21 @@ public class AppHelper {
     }
 
     public static void updateAppLanguage(@NonNull Context context) {
+        String lang = PrefGetter.getAppLanguage();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            updateResources(context, PrefGetter.getAppLanguage());
+            updateResources(context, lang);
         }
-        updateResourcesLegacy(context, PrefGetter.getAppLanguage());
+        updateResourcesLegacy(context, lang);
     }
 
     private static void updateResources(Context context, String language) {
-        Locale locale = new Locale(language);
+        Locale locale;
+        String[] split = language.split("-");
+        if (split.length > 1) {
+            locale = new Locale(split[0], split[1]);
+        } else {
+            locale = new Locale(language);
+        }
         Locale.setDefault(locale);
         Configuration configuration = context.getResources().getConfiguration();
         configuration.setLocale(locale);
@@ -97,7 +105,13 @@ public class AppHelper {
 
     @SuppressWarnings("deprecation")
     private static void updateResourcesLegacy(Context context, String language) {
-        Locale locale = new Locale(language);
+        Locale locale;
+        String[] split = language.split("-");
+        if (split.length > 1) {
+            locale = new Locale(split[0], split[1]);
+        } else {
+            locale = new Locale(language);
+        }
         Locale.setDefault(locale);
         Resources resources = context.getResources();
         Configuration configuration = resources.getConfiguration();

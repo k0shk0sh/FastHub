@@ -1,34 +1,39 @@
 package com.fastaccess.data.dao;
 
+import android.support.annotation.IntDef;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * Created by JediB on 5/12/2017.
  */
 
-public class SettingsModel {
+@Getter @Setter @AllArgsConstructor public class SettingsModel {
 
-	private int image;
-	private String title;
-	private String summary;
 
-	public static SettingsModel newInstance(int icon, String title, String summary) {
-		SettingsModel setting = new SettingsModel();
-		setting.image = icon;
-		setting.title = title;
-		setting.summary = summary;
+    public static final int THEME = 0;
+    public static final int NOTIFICATION = 1;
+    public static final int BEHAVIOR = 2;
+    public static final int CUSTOMIZATION = 3;
+    public static final int BACKUP = 4;
+    public static final int LANGUAGE = 5;
 
-		return setting;
-	}
+    @IntDef({
+            THEME,
+            NOTIFICATION,
+            CUSTOMIZATION,
+            BEHAVIOR,
+            BACKUP,
+            LANGUAGE
+    })
+    @Retention(RetentionPolicy.SOURCE) public @interface SettingsType {}
 
-	public int getImage(){
-		return image;
-	}
-
-	public String getTitle(){
-		return title;
-	}
-
-	public String getSummary(){
-		return summary;
-	}
-
+    private int image;
+    private String title;
+    @SettingsType private int settingsType;
 }

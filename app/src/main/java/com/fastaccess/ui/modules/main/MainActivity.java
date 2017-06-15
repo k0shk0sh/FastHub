@@ -10,6 +10,7 @@ import android.support.v4.view.GravityCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
@@ -25,7 +26,6 @@ import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.evernote.android.state.State;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
 

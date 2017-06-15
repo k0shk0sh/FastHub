@@ -5,7 +5,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import com.evernote.android.state.State
 import com.fastaccess.R
-import com.fastaccess.data.dao.TrendingResponse
+import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.ui.adapter.TrendingAdapter
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.widgets.StateLayout
@@ -17,9 +17,9 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 
 class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragmentPresenter>(), TrendingFragmentMvp.View {
 
-    val recycler by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
-    val refresh by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
-    val stateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
+    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
+    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
+    val stateLayout: StateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
     val adapter by lazy { TrendingAdapter(presenter.getTendingList()) }
 
     @State var lang: String = ""
@@ -42,7 +42,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
         recycler.adapter = adapter
     }
 
-    override fun onNotifyAdapter(items: TrendingResponse) {
+    override fun onNotifyAdapter(items: TrendingModel) {
         adapter.addItem(items)
     }
 

@@ -3,8 +3,9 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.annimon.stream.Stream;
+import com.fastaccess.helper.InputHelper;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,19 +17,20 @@ public class FilterOptionsModel implements Parcelable {
 
     private static final String TYPE = "type";
     private static final String SORT = "sort";
+    private static final String AFFILIATION = "affiliation";
     private static final String DIRECTION = "direction";
 
-    private String type = "All";
+    private String type;
     private String sort = "Pushed";
     private String sortDirection = "descending";
     private Map<String, String> queryMap;
     private boolean isPersonalProfile;
 
-    private List<String> typesListForPersonalProfile =  new ArrayList<>(Arrays.asList("All", "Owner", "Public", "Private", "Member"));
-    private List<String> typesListForExternalProfile =  new ArrayList<>(Arrays.asList("All", "Owner", "Member"));
-    private List<String> typesListForOrganizationProfile =  new ArrayList<>(Arrays.asList("All", "Public", "Private", "Forks", "Sources", "Member"));
-    private List<String> sortOptionsList = new ArrayList<>(Arrays.asList("Pushed", "Created", "Updated", "Full Name"));
-    private List<String> sortDirectionList = new ArrayList<>(Arrays.asList("Descending", "Ascending"));
+    private List<String> typesListForPersonalProfile = Stream.of("Select", "All", "Owner", "Public", "Private", "Member").toList();
+    private List<String> typesListForExternalProfile = Stream.of("Select", "All", "Owner", "Member").toList();
+    private List<String> typesListForOrganizationProfile = Stream.of("Select", "All", "Public", "Private", "Forks", "Sources", "Member").toList();
+    private List<String> sortOptionsList = Stream.of("Pushed", "Created", "Updated", "Full Name").toList();
+    private List<String> sortDirectionList = Stream.of("Descending", "Ascending").toList();
     private boolean isOrg;
 
     public FilterOptionsModel() {
@@ -63,7 +65,7 @@ public class FilterOptionsModel implements Parcelable {
         this.sort = sort;
     }
 
-    public void setsortDirection(String sortDirection) {
+    public void setSortDirection(String sortDirection) {
         this.sortDirection = sortDirection;
     }
 
@@ -73,7 +75,13 @@ public class FilterOptionsModel implements Parcelable {
         } else {
             queryMap.clear();
         }
-        queryMap.put(TYPE, type.toLowerCase());
+        if (InputHelper.isEmpty(type) || "Select".equalsIgnoreCase(type)) {
+            queryMap.remove(TYPE);
+            queryMap.put(AFFILIATION, "owner,collaborator");
+        } else {
+            queryMap.remove(AFFILIATION);
+            queryMap.put(TYPE, type.toLowerCase());
+        }
         //Not supported for organization repo
         if (!isOrg) {
             if (sort.contains(" ")) {

@@ -9,38 +9,27 @@ import android.widget.ListView;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SettingsModel;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.SettingsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.settings.category.SettingsCategoryActivity;
+import com.fastaccess.ui.modules.theme.ThemeActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
-import butterknife.BindView;
-import butterknife.OnItemClick;
+import java.util.ArrayList;
 
-public class SettingsActivity extends BaseActivity {
+import butterknife.BindView;
+import io.reactivex.functions.Action;
+
+public class SettingsActivity extends BaseActivity implements LanguageBottomSheetDialog.LanguageDialogListener {
 
     @BindView(R.id.settingsList) ListView settingsList;
 
     private static int THEME_CHANGE = 32;
-    private SettingsModel[] settings;
-
-    @OnItemClick(R.id.settingsList) void onItemClick(int position) {
-        Intent intent = new Intent(this, SettingsCategoryActivity.class);
-        intent.putExtra("settings", position);
-        intent.putExtra("title", settings[position].getTitle());
-        switch (position) {
-            case 1:
-                ActivityHelper.startReveal(this, intent, settingsList, THEME_CHANGE);
-                break;
-            case 5:
-                showLanguageList();
-                break;
-            default:
-                ActivityHelper.startReveal(this, intent, settingsList);
-                break;
-        }
-    }
+    private ArrayList<SettingsModel> settings = new ArrayList<>();
 
     @Override protected int layout() {
         return R.layout.activity_settings;
@@ -62,17 +51,42 @@ public class SettingsActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setToolbarIcon(R.drawable.ic_back);
         setTitle(getString(R.string.settings));
-        setResult(RESULT_CANCELED);
-        settings = new SettingsModel[]{
-                SettingsModel.newInstance(R.drawable.ic_ring, getString(R.string.notifications), ""),
-                SettingsModel.newInstance(R.drawable.ic_settings, getString(R.string.behavior), ""),
-                SettingsModel.newInstance(R.drawable.ic_brush, getString(R.string.customization), ""),
-                SettingsModel.newInstance(R.drawable.ic_info, getString(R.string.about), ""),
-                SettingsModel.newInstance(R.drawable.ic_backup, getString(R.string.backup), ""),
-                SettingsModel.newInstance(R.drawable.ic_language, getString(R.string.app_language), "")
-        };
-
+        if (savedInstanceState == null) {
+            setResult(RESULT_CANCELED);
+        }
+        settings.add(new SettingsModel(R.drawable.ic_color_lens, getString(R.string.theme_title), SettingsModel.THEME));
+        settings.add(new SettingsModel(R.drawable.ic_edit, getString(R.string.customization), SettingsModel.CUSTOMIZATION));
+        settings.add(new SettingsModel(R.drawable.ic_ring, getString(R.string.notifications), SettingsModel.NOTIFICATION));
+        settings.add(new SettingsModel(R.drawable.ic_settings, getString(R.string.behavior), SettingsModel.BEHAVIOR));
+        settings.add(new SettingsModel(R.drawable.ic_backup, getString(R.string.backup), SettingsModel.BACKUP));
+        settings.add(new SettingsModel(R.drawable.ic_language, getString(R.string.app_language), SettingsModel.LANGUAGE));
         settingsList.setAdapter(new SettingsAdapter(this, settings));
+        settingsList.setOnItemClickListener((parent, view, position, id) -> {
+            SettingsModel settingsModel = (SettingsModel) parent.getItemAtPosition(position);
+            Intent intent = new Intent(this, SettingsCategoryActivity.class);
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.ITEM, settingsModel.getSettingsType())
+                    .put(BundleConstant.EXTRA, settingsModel.getTitle())
+                    .end());
+            if (settingsModel.getSettingsType() == SettingsModel.LANGUAGE) {
+                showLanguageList();
+            } else if (settingsModel.getSettingsType() == SettingsModel.THEME) {
+                ActivityHelper.startReveal(this, new Intent(this, ThemeActivity.class), view, THEME_CHANGE);
+            } else {
+                ActivityHelper.startReveal(this, intent, view);
+            }
+        });
+    }
+
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == THEME_CHANGE && resultCode == RESULT_OK) {
+            setResult(resultCode);
+            finish();
+        }
+    }
+
+    @NonNull @Override public TiPresenter providePresenter() {
+        return new BasePresenter();
     }
 
     private void showLanguageList() {
@@ -81,15 +95,13 @@ public class SettingsActivity extends BaseActivity {
         languageBottomSheetDialog.show(getSupportFragmentManager(), "LanguageBottomSheetDialog");
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == THEME_CHANGE)
-            setResult(resultCode);
-    }
-
-    @NonNull
-    @Override
-    public TiPresenter providePresenter() {
-        return new SettingsPresenter();
+    @Override public void onLanguageChanged(Action action) {
+        try {
+            action.run();//dismiss dialog avoid leakage
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        setResult(RESULT_OK);
+        finish();
     }
 }

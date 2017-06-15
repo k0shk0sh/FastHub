@@ -3,16 +3,18 @@ package com.fastaccess.ui.modules.settings.category;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.SettingsModel;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.ui.base.BaseActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
-import com.evernote.android.state.State;
-
-public class SettingsCategoryActivity extends BaseActivity {
+public class SettingsCategoryActivity extends BaseActivity implements SettingsCategoryFragment.SettingsCallback {
 
     @State String title;
+    @SettingsModel.SettingsType @State int settingsType;
 
     @Override protected int layout() {
         return R.layout.activity_settings_category;
@@ -34,11 +36,12 @@ public class SettingsCategoryActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setResult(RESULT_CANCELED);
         if (savedInstanceState == null) {
-            title = getIntent() != null ? getIntent().getStringExtra("title") : getString(R.string.settings);
-            SettingsCategoryFragment settingsCategoryFragment = new SettingsCategoryFragment();
+            Bundle bundle = getIntent().getExtras();
+            title = bundle.getString(BundleConstant.EXTRA);
+            settingsType = bundle.getInt(BundleConstant.ITEM);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.settingsContainer, settingsCategoryFragment)
+                    .replace(R.id.settingsContainer, new SettingsCategoryFragment())
                     .commit();
         }
         setTitle(title);
@@ -46,5 +49,9 @@ public class SettingsCategoryActivity extends BaseActivity {
 
     @NonNull @Override public TiPresenter providePresenter() {
         return new SettingsCategoryPresenter();
+    }
+
+    @SettingsModel.SettingsType @Override public int getSettingsType() {
+        return settingsType;
     }
 }
