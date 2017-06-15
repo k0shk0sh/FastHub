@@ -1,5 +1,3 @@
-//css_args /ac
-
 using System;
 using System.IO;
 using System.Linq;
@@ -20,7 +18,7 @@ void Main(string[] args)
 		xmlFile.Load(Path.Combine(dir, @"strings.xml"));
 		XmlElement xRoot = xmlFile.DocumentElement;
 
-		bool wasAdded;
+		bool wasAdded = false;
 
 		foreach(XmlNode xmlNode in xRoot) {
 			if (xmlNode.Attributes == null) {

@@ -21,7 +21,7 @@ build_script:
   - cmd: gradlew clean assembleDebug --stacktrace
 
 test_script:
-  - cmd: cscs check_translations.cs
+  - cmd: cscs /ac check_translations.cs
 
 artifacts:
 - path: \app\build\outputs\apk
