@@ -47,6 +47,7 @@ import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscMVp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
+import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -94,6 +95,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @BindView(R.id.filterLayout) View filterLayout;
     @BindView(R.id.topicsList) RecyclerView topicsList;
     @BindView(R.id.sortByUpdated) CheckBox sortByUpdated;
+    @BindView(R.id.wikiLayout) View wikiLayout;
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
@@ -198,7 +200,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
-    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout}) void onClick(View view) {
+    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout, R.id.wikiLayout}) void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
@@ -223,6 +225,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             case R.id.pinLayout:
                 pinLayout.setEnabled(false);
                 getPresenter().onPinUnpinRepo();
+                break;
+            case R.id.wikiLayout:
+                ActivityHelper.startReveal(this, WikiActivity.Companion.getWiki(this, repoId, login), wikiLayout);
                 break;
         }
     }
@@ -330,6 +335,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             topicsList.setVisibility(View.GONE);
         }
         onRepoPinned(AbstractPinnedRepos.isPinned(repoModel.getFullName()));
+        wikiLayout.setVisibility(repoModel.isHasWiki() ? View.VISIBLE : View.GONE);
         pinText.setText(R.string.pin);
         detailsIcon.setVisibility(InputHelper.isEmpty(repoModel.getDescription()) ? View.GONE : View.VISIBLE);
         language.setVisibility(InputHelper.isEmpty(repoModel.getLanguage()) ? View.GONE : View.VISIBLE);

@@ -11,7 +11,8 @@ import com.fastaccess.R;
 public enum StatusStateType {
     failure(R.drawable.ic_issues_small),
     pending(R.drawable.ic_time_small),
-    success(R.drawable.ic_check_small);
+    success(R.drawable.ic_check_small),
+    error(R.drawable.ic_issues_small);
 
     @DrawableRes private int drawableRes;
 

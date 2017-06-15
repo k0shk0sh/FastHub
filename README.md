@@ -1,6 +1,6 @@
 
-[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
-[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
+[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub) [![Build status](https://ci.appveyor.com/api/projects/status/2yhxx7hu6hju24bk?svg=true)](https://ci.appveyor.com/project/k0shk0sh/fasthub)
+[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub) [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=kosh20111@gmail.com)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
@@ -36,6 +36,7 @@ grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintain
   - Pinned Repos
   - Trending
 - **Repositories**
+  - Browse & Read Wiki
   - Search Repos
   - Browse and search Repos
   - See your public, private and forked Repos
@@ -117,6 +118,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 - Japanese [@Rintan](https://github.com/Rintan)
 - Italian [@Raffaele74](https://github.com/Raffaele74)
 - Lithuanian [@mistermantas](https://github.com/mistermantas)
+- Traditional Chinese [@maple3142](https://github.com/maple3142)
 
 # License
 

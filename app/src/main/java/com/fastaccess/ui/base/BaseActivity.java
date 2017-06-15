@@ -26,14 +26,12 @@ import android.widget.Toast;
 import com.evernote.android.state.State;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -58,9 +56,6 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.miguelbcr.io.rx_billing_service.RxBillingService;
-import com.miguelbcr.io.rx_billing_service.entities.ProductType;
-import com.miguelbcr.io.rx_billing_service.entities.Purchase;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.grandcentrix.thirtyinch.TiActivity;
@@ -70,7 +65,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import es.dmoral.toasty.Toasty;
-import io.reactivex.functions.Action;
 
 
 /**
@@ -437,33 +431,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (!isTransparent) {
             getWindow().setStatusBarColor(ViewHelper.getPrimaryDarkColor(this));
         }
-    }
-
-    protected void checkPurchases(@Nullable Action action) {
-        getPresenter().manageViewDisposable(RxBillingService.getInstance(this, BuildConfig.DEBUG)
-                .getPurchases(ProductType.IN_APP)
-                .doOnSubscribe(disposable -> showProgress(0))
-                .subscribe((purchases, throwable) -> {
-                    hideProgress();
-                    if (throwable == null) {
-                        Logger.e(purchases);
-                        if (purchases != null && !purchases.isEmpty()) {
-                            for (Purchase purchase : purchases) {
-                                String sku = purchase.sku();
-                                if (sku != null) {
-                                    if (sku.equalsIgnoreCase(getString(R.string.donation_product_1))) {
-                                        PrefGetter.enableAmlodTheme();
-                                    } else {
-                                        PrefGetter.setProItems();
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        throwable.printStackTrace();
-                    }
-                    if (action != null) action.run();
-                }));
     }
 
     private void setupTheme() {

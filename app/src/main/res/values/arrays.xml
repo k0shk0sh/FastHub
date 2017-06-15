@@ -119,6 +119,7 @@
         <item>German</item>
         <item>Turkish</item>
         <item>Chinese</item>
+        <item>Traditional Chinese</item>
         <item>Bahasa Indonesia</item>
         <item>Russian</item>
         <item>Italian</item>
@@ -131,6 +132,7 @@
         <item>de</item>
         <item>tr</item>
         <item>zh</item>
+        <item>zh-rTW</item>
         <item>in</item>
         <item>ru</item>
         <item>it</item>

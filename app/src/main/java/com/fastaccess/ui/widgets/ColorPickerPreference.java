@@ -55,8 +55,8 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
     protected void onClick() {
         super.onClick();
 
-        int selected_color = getSelected_color();
-        String title = String.format("Accent Color: (Currently: %s)", getSelected_color_name());
+        int selected_color = getSelectedColor();
+        String title = String.format("Accent Color: (Currently: %s)", getSelectedColorName());
         colorPicker = new ColorPicker(getContext());
         colorPicker.setRoundColorButton(true);
         colorPicker.setColors(R.array.theme_colors_hex);
@@ -64,7 +64,7 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
         colorPicker.setTitle(title);
         TextView title_tv = (TextView) colorPicker.getDialogViewLayout().findViewById(R.id.title);
         title_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-        colorPicker.getPositiveButton().setTextColor(ViewHelper.getAccentColor(getContext()));
+        colorPicker.getPositiveButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));
         colorPicker.getNegativeButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));
         colorPicker.setOnChooseColorListener(this);
         colorPicker.show();
@@ -75,10 +75,10 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
         super.onBindViewHolder(holder);
         final Button colorButton = (Button) holder.findViewById(R.id.color);
         colorButton.setBackgroundResource(R.drawable.circle_shape);
-        colorButton.getBackground().setColorFilter(getSelected_color(), PorterDuff.Mode.SRC_IN);
+        colorButton.getBackground().setColorFilter(getSelectedColor(), PorterDuff.Mode.SRC_IN);
     }
 
-    private int getSelected_color() {
+    private int getSelectedColor() {
         TypedArray colorTypedArray = getContext().getResources().obtainTypedArray(R.array.theme_colors_hex);
         String[] colorNames = getContext().getResources().getStringArray(R.array.theme_colors);
 
@@ -105,10 +105,10 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
 
     @Override
     public void onCancel() {
-
+        // do nothing when the dialog is canceled
     }
 
-    public String getSelected_color_name() {
+    public String getSelectedColorName() {
         String[] colorNames = getContext().getResources().getStringArray(R.array.theme_colors);
         return colorNames[PrefGetter.getThemeColor(getContext()) - 1];
     }
