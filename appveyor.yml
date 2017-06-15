@@ -7,6 +7,7 @@ environment:
 init:
   - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.5-windows.zip" -FileName "C:\android-tools.zip"
   - cmd: 7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
+  - cmd: cinst cs-script
 
 install:
   - cmd: 'echo   > C:/Users/appveyor/.android/repositories.cfg'
@@ -19,7 +20,8 @@ install:
 build_script:
   - cmd: gradlew clean assembleDebug --stacktrace
 
-test: off
+test_script:
+  - cmd: cscs check_translations.cs
 
 artifacts:
 - path: \app\build\outputs\apk
