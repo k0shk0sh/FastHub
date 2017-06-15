@@ -18,10 +18,10 @@ install:
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platforms;android-25"'
 
 build_script:
+  - cmd: cscs /ac check_translations.cs
   - cmd: gradlew clean assembleDebug --stacktrace
 
-test_script:
-  - cmd: cscs /ac check_translations.cs
+test: off
 
 artifacts:
 - path: \app\build\outputs\apk
