@@ -369,9 +369,6 @@
     <string name="divider">Trenner</string>
     <string name="no_user_found">Kein User gefunden</string>
     <string name="no_trending">Nichts im Trend</string>
-    <string name="daily" translatable="false">Daily</string>
-    <string name="weekly" translatable="false">Weekly</string>
-    <string name="monthly" translatable="false">Monthly</string>
     <string name="reset">Zurücksetzten</string>
     <string name="apply">Anwenden</string>
     <string name="filter">Filter</string>
