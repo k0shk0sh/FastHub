@@ -1,0 +1,481 @@
+<resources>
+    <string name="app_name" translatable="false">FastHub</string>
+    <string name="app_name_full" translatable="false">FastHub for Android</string>
+    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
+    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
+    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
+    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
+    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
+    <string name="in_progress">載入中，請稍後</string>
+    <string name="action">動作</string>
+    <string name="settings">設定</string>
+    <string name="discard">捨棄</string>
+    <string name="cancel">取消</string>
+    <string name="ok">確定</string>
+    <string name="no_data">沒有資料</string>
+    <string name="search">搜尋</string>
+    <string name="please_login">請登入以繼續使用FastHub</string>
+    <string name="sign_in_to_github">登入你的GitHub帳號以使用FastHub</string>
+    <string name="failed_login">登入失敗</string>
+    <string name="sign_in">登入</string>
+    <string name="share">分享</string>
+    <string name="reload">重新整理</string>
+    <string name="feeds">訊息源</string>
+    <string name="gists" translatable="false">Gists</string>
+    <string name="profile">個人檔案</string>
+    <string name="error">錯誤</string>
+    <string name="press_again_to_exit">再點一次以離開</string>
+    <string name="readme" translatable="false">Readme</string>
+    <string name="opened">開啟中</string>
+    <string name="closed">已關閉</string>
+    <string name="repo_chooser">選擇Repo</string>
+    <string name="commits" translatable="false">Commits</string>
+    <string name="followers">跟隨者</string>
+    <string name="following">跟隨中</string>
+    <string name="overview">概要</string>
+    <string name="repos" translatable="false">Repositories</string>
+    <string name="forked" translatable="false">Forked</string>
+    <string name="starred" translatable="false">Starred</string>
+    <string name="follow">跟隨</string>
+    <string name="unfollow">取消跟隨</string>
+    <string name="user">使用者</string>
+    <string name="icon_transition" translatable="false">profile_image_transition</string>
+    <string name="title_transition" translatable="false">profile_title_transition</string>
+    <string name="code" translatable="false">Code</string>
+    <string name="issues" translatable="false">Issues</string>
+    <string name="pull_requests" translatable="false">Pull Requests</string>
+    <string name="details">詳情</string>
+    <string name="repo" translatable="false">Repository</string>
+    <string name="archive_file_detected_error">檢測到檔案，請下載以檢視</string>
+    <string name="minimum_three_chars">最少字元數(3)</string>
+    <string name="no_file_found">沒有檔案</string>
+    <string name="no_readme_found">沒有Readme</string>
+    <string name="downloading">下載中...</string>
+    <string name="downloading_file">下載檔案中...</string>
+    <string name="released">發布於</string>
+    <string name="drafted">草稿</string>
+    <string name="releases">發布</string>
+    <string name="no_body">沒有內容</string>
+    <string name="download_as_zip" translatable="false">Source code (zip)</string>
+    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
+    <string name="contributors">貢獻者</string>
+    <string name="contributions">貢獻</string>
+    <string name="merged" translatable="false">Merged</string>
+    <string name="by">由</string>
+    <string name="star" translatable="false">Star</string>
+    <string name="stars" translatable="false">Stars</string>
+    <string name="fork" translatable="false">Fork</string>
+    <string name="forks" translatable="false">Forks</string>
+    <string name="close_issue">關閉Issue</string>
+    <string name="re_open_issue">重開Issue</string>
+    <string name="re_open">重開</string>
+    <string name="close">關閉</string>
+    <string name="success_re_opened">成功重開</string>
+    <string name="lock_issue_details">鎖定代表著:\n&#183;其他使用者無法新增評論到此Issue。\n&#183;你和其他有此Repo權限的協作者仍然能留下其他人能看到的評論。\n&#183;你未來還是能解鎖此Issue。\n</string>
+    <string name="unlock_issue_details">解鎖代表著:\n&#183;每個人都能在此Issue下新增評論。\n&#183;你未來還是能鎖定此Issue。\n</string>
+    <string name="lock_issue">鎖定</string>
+    <string name="unlock_issue">解鎖</string>
+    <string name="error_closing_issue">關閉Issue時發生錯誤，請重試。</string>
+    <string name="error_re_opening_issue">重開Issue時發生錯誤，請重試。</string>
+    <string name="success_closed">Issue已關閉</string>
+    <string name="no_description_provided"><p>沒有介紹</p></string>
+    <string name="header_one">標題一</string>
+    <string name="header_two">標題二</string>
+    <string name="header_three">標題三</string>
+    <string name="bold">粗體</string>
+    <string name="italic">斜體</string>
+    <string name="strike_through">刪除線</string>
+    <string name="bullet">無序列表</string>
+    <string name="numbered_list">有序列表</string>
+    <string name="header">標題</string>
+    <string name="quote">引用</string>
+    <string name="link">連結</string>
+    <string name="image">圖片</string>
+    <string name="deletion">刪除</string>
+    <string name="addition">新增</string>
+    <string name="changes">變化</string>
+    <string name="status">狀態</string>
+    <string name="confirm_message">確定?</string>
+    <string name="success">成功</string>
+    <string name="to">到</string>
+    <string name="error_deleting_comment">刪除評論時發生錯誤</string>
+    <string name="delete">刪除</string>
+    <string name="comments">評論</string>
+    <string name="comment">評論</string>
+    <string name="issue" translatable="false">Issue</string>
+    <string name="merge" translatable="false">Merge</string>
+    <string name="pull_request" translatable="false">Pull Request</string>
+    <string name="commit" translatable="false">Commit</string>
+    <string name="success_merge">合併成功</string>
+    <string name="file_menu">檔案選單</string>
+    <string name="files">檔案</string>
+    <string name="download">下載</string>
+    <string name="back">返回</string>
+    <string name="parent_folder">上一層</string>
+    <string name="code_viewer">程式碼檢視器</string>
+    <string name="open_in_browser">在瀏覽器中打開</string>
+    <string name="big_file">大檔案</string>
+    <string name="big_file_description">此檔案過大以開啟。\n點擊"確定"以下載。</string>
+    <string name="viewer">觀眾</string>
+    <string name="markdown" translatable="false">Markdown</string>
+    <string name="submit">提交</string>
+    <string name="type_here">在此輸入</string>
+    <string name="description">介紹</string>
+    <string name="file_name">檔名</string>
+    <string name="file_name_hint">檔名(含副檔名)</string>
+    <string name="create_secret_gist">私人Gist</string>
+    <string name="create_public_gist">公開Gist</string>
+    <string name="submit_as">提交為</string>
+    <string name="delete_gist">刪除</string>
+    <string name="error_deleting_gist">刪除gist時發生錯誤</string>
+    <string name="no_files">沒有檔案</string>
+    <string name="required_field">必填</string>
+    <string name="successfully_submitted">提交成功</string>
+    <string name="create_gist">新增Gist</string>
+    <string name="gist" translatable="false">Gist</string>
+    <string name="clear">清除</string>
+    <string name="users">使用者</string>
+    <string name="title">標題</string>
+    <string name="file">檔案</string>
+    <string name="milestone">里程碑</string>
+    <string name="assign_myself">分配給自己</string>
+    <string name="submit_issue">提交Issue</string>
+    <string name="error_creating_issue">新增issue時發生錯誤</string>
+    <string name="create_issue">新增Issue</string>
+    <string name="error_highlighting_editor">請取消選擇以繼續編輯</string>
+    <string name="notifications">通知</string>
+    <string name="unread_notification">您有未讀通知</string>
+    <string name="open">開啟</string>
+    <string name="notification_type">通知種類</string>
+    <string name="back_slash" translatable="false">/</string>
+    <string name="labels">標籤</string>
+    <string name="no_labels">沒有標籤</string>
+    <string name="labels_added_successfully">成功添加標籤</string>
+    <string name="submit_feedback">提交回報</string>
+    <string name="logout">登出</string>
+    <string name="thank_you_for_feedback">感謝您的回報!</string>
+    <string name="current_version">目前版本</string>
+    <string name="version">版本</string>
+    <string name="support_development_enable_ads">打開廣告以支持開發</string>
+    <string name="username">帳號</string>
+    <string name="password">密碼</string>
+    <string name="twoFactor">兩步驟驗證碼</string>
+    <string name="login">登入</string>
+    <string name="gist_description">Gist簡介</string>
+    <string name="avatar_click_hint">點擊頭像以打開個人資料</string>
+    <string name="feeds_fork_hint">長按fork來打開來源或forked的Repo</string>
+    <string name="click_here_to_download_release_hint">下載</string>
+    <string name="options">選項</string>
+    <string name="click_file_option_hint">下載檔案或分享目錄</string>
+    <string name="comment_hint">點擊評論來標記作者或編輯你的評論
+        \n長按刪除</string>
+    <string name="star_hint">收藏/取消收藏</string>
+    <string name="watch">關注</string>
+    <string name="watch_hint">關注/取消關注</string>
+    <string name="fork_repo_hint" translatable="false">Fork repo</string>
+    <string name="pin_repo_hint">把Repo加入書籤能從導航欄訪問</string>
+    <string name="dismiss_all">忽略全部</string>
+    <string name="no_url">找不到網址</string>
+    <string name="last_updated">最後更新</string>
+    <string name="preview">預覽</string>
+    <string name="view_code">語法標記</string>
+    <string name="click_to_toggle_highlighting">切換語法標記
+        \n滑到Markdown編輯器圖標以得到更多選項</string>
+    <string name="creation_date">創建日期</string>
+    <string name="creation_date_hint">檔案的創建日期</string>
+    <string name="last_updated_hint">檔案的更新日期</string>
+    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
+    <string name="mark_all_as_read">全部已讀</string>
+    <string name="all_notifications">全部通知</string>
+    <string name="unread">未讀</string>
+    <string name="all">全部</string>
+    <string name="delete_repo">刪除Repo</string>
+    <string name="delete_repo_warning">刪除Repo不能取消</string>
+    <string name="thirty_minutes">30分鐘</string>
+    <string name="twenty_minutes">20分鐘</string>
+    <string name="ten_minutes">10分鐘</string>
+    <string name="five_minutes">5分鐘</string>
+    <string name="one_minute">1分鐘</string>
+    <string name="one_hour">1小時</string>
+    <string name="two_hour">2小時</string>
+    <string name="three_hour">3小時</string>
+    <string name="created_repo">已新增</string>
+    <string name="committed">已提交</string>
+    <string name="downloaded">已下載</string>
+    <string name="followed">已跟隨</string>
+    <string name="created_gist" translatable="false">@string/gist</string>
+    <string name="gollum" translatable="false">Wiki</string>
+    <string name="commented_on_issue">評論Issue</string>
+    <string name="created_issue" translatable="false">Issue</string>
+    <string name="member">成員</string>
+    <string name="public_event" translatable="false">Open-sourced</string>
+    <string name="pr_comment_review">Pull Request評論</string>
+    <string name="pushed">Pushed到</string>
+    <string name="team_event">小組</string>
+    <string name="deleted">已刪除</string>
+    <string name="unknown">未知</string>
+    <string name="commented_on_commit">評論commit</string>
+    <string name="organization_event" translatable="false">Organization</string>
+    <string name="card_event" translatable="false">Card</string>
+    <string name="project_event" translatable="false">Project</string>
+    <string name="pr_review_event" translatable="false">Pull Request</string>
+    <string name="repo_event" translatable="false">Repository</string>
+    <string name="switch_branch">切換分支</string>
+    <string name="assignees">受理者</string>
+    <string name="edit">編輯</string>
+    <string name="edited">\u2022 已編輯</string>
+    <string name="update_issue">更新Issue</string>
+    <string name="update_pull_request">更新Pull Request</string>
+    <string name="no_milestones">沒有里程碑</string>
+    <string name="add">新增</string>
+    <string name="done">完成</string>
+    <string name="home">首頁</string>
+    <string name="create_milestone">創建里程碑</string>
+    <string name="error_creating_milestone">創建里程碑時發生錯誤</string>
+    <string name="due_on">截止於</string>
+    <string name="no_assignees">沒有受理者</string>
+    <string name="this_value">這個</string>
+    <string name="commits_reflected">Commits已被切換到選擇的分支</string>
+    <string name="general_settings">一般</string>
+    <string name="background_job_summary">更改檢查通知頻率</string>
+    <string name="background_job_title">檢查通知間隔</string>
+    <string name="every">每個</string>
+    <string name="behavior">行為</string>
+    <string name="customization">個人化</string>
+    <string name="recycler_view_animation_summary">開啟列表動畫</string>
+    <string name="recycler_view_animation_title">動畫</string>
+    <string name="back_button_summary">關閉退出app的Toast</string>
+    <string name="back_button_title">按返回以退出</string>
+    <string name="restore">還原</string>
+    <string name="backup">備份</string>
+    <string name="backed_up">成功備份!</string>
+    <string name="select_backup">選擇備份以還原</string>
+    <string name="permission_failed">沒有權限</string>
+    <string name="backup_summary">最後更新: %s</string>
+    <string name="now">現在</string>
+    <string name="unsaved_data_warning">所有尚未儲存的更改將被捨棄</string>
+    <string name="private_repo">私人</string>
+    <string name="rect_avatar_summary">用圓角矩形代替圓形頭像</string>
+    <string name="rect_avatar_title">頭像</string>
+    <string name="rate_app">評分此app</string>
+    <string name="author">作者</string>
+    <string name="fork_github">在Github上Fork此專案</string>
+    <string name="send_email">寄送email</string>
+    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
+    <string name="question_concerning_fasthub">關於FastHub的問題</string>
+    <string name="feedback">回報</string>
+    <string name="report_issue">回報Issue</string>
+    <string name="report_issue_here">有困擾嗎?在此回報</string>
+    <string name="about">關於</string>
+    <string name="notification_settings">通知</string>
+    <string name="turn_off">關閉</string>
+    <string name="unauthorized_user">未驗證的使用者</string>
+    <string name="two_factors_otp_error">必須兩步驟驗證</string>
+    <string name="no_issue">沒有Issue</string>
+    <string name="copy">複製</string>
+    <string name="success_copied">已複製</string>
+    <string name="commit_message">Commit訊息</string>
+    <string name="network_error">Error occurred while communicating to the server</string>
+    <string name="unexpected_error">Unexpected error while requesting API</string>
+    <string name="request_error">Error requesting server, please try again later</string>
+    <string name="marking_as_read">Marking notification as read</string>
+    <string name="forking_gist">Forking gist</string>
+    <string name="forking" formatted="true" translatable="false">Forking %s</string>
+    <string name="starring" formatted="true" translatable="false">Starring %s</string>
+    <string name="un_starring" formatted="true" translatable="false">Unstarring %s</string>
+    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
+    <string name="watching" formatted="true" translatable="false">Watching %s</string>
+    <string name="login_using_your_default_browser">Login using your default browser (OAuth)</string>
+    <string name="or_character">OR</string>
+    <string name="mark_notification_title">Disable Notification Read Status</string>
+    <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
+    <string name="light_theme_mode" translatable="false">Light Theme</string>
+    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="amlod_theme_mode" translatable="false">Amlod Theme</string>
+    <string name="mid_night_blue_theme_mode" translatable="false">Mid Night Blue</string>
+    <string name="red_theme_mode" translatable="false">Red</string>
+    <string name="pink_theme_mode" translatable="false">Pink</string>
+    <string name="purple_theme_mode" translatable="false">Purple</string>
+    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
+    <string name="indigo_theme_mode" translatable="false">Indigo</string>
+    <string name="blue_theme_mode" translatable="false">Blue</string>
+    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
+    <string name="cyan_theme_mode" translatable="false">Cyan</string>
+    <string name="teal_theme_mode" translatable="false">Teal</string>
+    <string name="green_theme_mode" translatable="false">Green</string>
+    <string name="light_green_theme_mode" translatable="false">Light Green</string>
+    <string name="lime_theme_mode" translatable="false">Lime</string>
+    <string name="yellow_theme_mode" translatable="false">Yellow</string>
+    <string name="amber_theme_mode" translatable="false">Amber</string>
+    <string name="orange_theme_mode" translatable="false">Orange</string>
+    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
+    <string name="theme_title">Choose Theme</string>
+    <string name="theme_summary">Choose your default theme</string>
+    <string name="theme_color_summary">Choose theme accent color</string>
+    <string name="theme_color_title">Theme Accent Color</string>
+    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
+    <string name="google_plus" translatable="false">Google+</string>
+    <string name="website">Website</string>
+    <string name="twitter" translatable="false">Twitter</string>
+    <string name="support_development">Support Development</string>
+    <string name="success_purchase_message">Thanks for being extremely awesome!</string>
+    <string name="change_theme_warning">If the theme didn\'t apply properly, please kill and open the app manually.</string>
+    <string name="pin">Pin</string>
+    <string name="pinned">Pinned</string>
+    <string name="unpin">Unpin</string>
+    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="no_feeds">No feeds</string>
+    <string name="no_gists">No gists</string>
+    <string name="no_comments">No comments</string>
+    <string name="no_notifications">No notifications</string>
+    <string name="no_followers">No followers</string>
+    <string name="no_followings">No followings</string>
+    <string name="no_repos">No repositories</string>
+    <string name="no_starred_repos">No starred repositories</string>
+    <string name="no_commits">No commits</string>
+    <string name="no_contributors">No contributors</string>
+    <string name="no_releases">No releases</string>
+    <string name="no_closed_issues">No closed issues</string>
+    <string name="no_opened_issues">No open issues</string>
+    <string name="no_events">No events</string>
+    <string name="no_open_pull_requests">No open pull requests</string>
+    <string name="no_closed_pull_request">No closed pull requests</string>
+    <string name="no_search_results">No search results</string>
+    <string name="read_write_permission_explanation">Please accept the permissions in order for FastHub to
+        store the files on your device to be able to view them</string>
+    <string name="public_gists">Public Gists</string>
+    <string name="enable_ads">Enable Ads</string>
+    <string name="no_issues">No issues</string>
+    <string name="no_unread_notifications">No unread notifications.</string>
+    <string name="my_gists">My Gists</string>
+    <string name="changelog">Changelog</string>
+    <string name="notifications_hint">Click to open notifications list or swipe to dismiss</string>
+    <string name="posting_reaction" formatted="true" translatable="false">Posting reaction %s</string>
+    <string name="home_long_click_hint">Long press to navigate to main screen from anywhere</string>
+    <string name="created">Created</string>
+    <string name="assigned">Assigned</string>
+    <string name="mentioned">Mentioned</string>
+    <string name="name">Name</string>
+    <string name="color">Color</string>
+    <string name="create_label">Create Label</string>
+    <string name="organization">Organization</string>
+    <string name="organizations">Organizations</string>
+    <string name="people">People</string>
+    <string name="teams">Teams</string>
+    <string name="members">Members</string>
+    <string name="no_members">No members</string>
+    <string name="no_teams">No teams</string>
+    <string name="no_orgs">No Organizations</string>
+    <string name="mark_as_read">Mark as read</string>
+    <string name="animations">Animations</string>
+    <string name="dialog_animation_summary">Enable popups animations</string>
+    <string name="dialog_animation_title">Popup animation</string>
+    <string name="milestones">Milestones</string>
+    <string name="assignee">Assignee</string>
+    <string name="checks_failed">All checks failed</string>
+    <string name="checks_pending">All checks are pending</string>
+    <string name="checks_passed">All checks are passed</string>
+    <string name="sort">Sort</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <string name="most_commented">Most commented</string>
+    <string name="least_commented">Least commented</string>
+    <string name="recently_updated">Recently updated</string>
+    <string name="least_recent_updated">Least recently updated</string>
+    <string name="up_to_date">You\'re up to date!</string>
+    <string name="new_version">A new version is available.</string>
+    <string name="empty_search_error">Search field can\'t be empty</string>
+    <string name="long_press_repo_fab_hint">Long press to create issue ticket on the fly</string>
+    <string name="commit_can_be_merged">This pull request can be merged</string>
+    <string name="reviewed">reviewed</string>
+    <string name="dismissed_review">dismissed their review</string>
+    <string name="approved_these_changes">approved these changes</string>
+    <string name="no_reactions">No reactions</string>
+    <string name="reactions">Reactions</string>
+    <string name="wrap_content">Wrap content</string>
+    <string name="wrap_code_summary">Wrap code in code viewer by default</string>
+    <string name="wrap_code_title">Wrap Code</string>
+    <string name="open_source_libs">Open source libraries</string>
+    <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
+    <string name="enable_notification_sound_title">Enable Notification Sound</string>
+    <string name="enable_notification_title">Enable Notifications</string>
+    <string name="login_with_personal_token">Login with personal token</string>
+    <string name="personal_token">Personal Token</string>
+    <string name="basic_login">Login via basic auth</string>
+    <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
+        below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
+        grant FastHub access to see list your organizations.</string>
+    <string name="insert">Insert</string>
+    <string name="select">Select</string>
+    <string name="select_picture">Select Picture</string>
+    <string name="support_with_2_00">Support with $2.00</string>
+    <string name="support_with_5_00">Support with $5.00</string>
+    <string name="support_with_10_00">Support with $10.00</string>
+    <string name="support_with_20_00">Support with $20.00</string>
+    <string name="app_language">App Language</string>
+    <string name="language">Language</string>
+    <string name="choose_language_title">Choose Language</string>
+    <string name="choose_language_summary">Choose your preferred language</string>
+    <string name="un_subscribe">Unsubscribe</string>
+    <string name="from">from</string>
+    <string name="in_value">in</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="repo_issues_is_disabled">The repo has no issues tab</string>
+    <string name="access_token">Access Token</string>
+    <string name="basic_authentication">Basic Authentication</string>
+    <string name="choose_your_login_type">Choose your login type</string>
+    <string name="files_only">In Files</string>
+    <string name="paths_only">In Paths</string>
+    <string name="review_requests">Review Requests</string>
+    <string name="join_slack">Join Slack</string>
+    <string name="join_slack_message">Would you like to join FastHub Slack group?</string>
+    <string name="successfully_invited">Successfully invited</string>
+    <string name="reply">Reply</string>
+    <string name="failed_selecting_image">Failed to load image.</string>
+    <string name="want_to_merge">wants to merge</string>
+    <string name="watchers">Watchers</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="no_reviewers">No reviewers</string>
+    <string name="sent_from_fasthub">Sent from my %1$s using %2$s%3$s</string>
+    <string name="enable_signature">Enable Signature</string>
+    <string name="enable_signature_summary">Enable sent via signature</string>
+    <string name="enable_signature_box">Enable Signature Box</string>
+    <string name="enable_signature_box_summary">Enable checkbox to toggle signature in text editor</string>
+    <string name="tags">Tags</string>
+    <string name="add_comment">Add comment</string>
+    <string name="banners">Introducing Banners</string>
+    <string name="banners_info">With FastHub 2.5.0, you can now better express yourself with banners
+        for your profile page.\n\nAnyone using the FastHub app, will see your header, and you\'ll
+        begin seeing other peoples headers as well! If you\'d like to create a banner for yourself,
+        make it 1280x384 or divisible, otherwise, it may get cropped.\n\nYou can add or change your
+        banner at any time, by creating a gist described "header.fst" with a file containing a
+        direct link to the header image.\n\nOr even simpler, just use the built-in image chooser!
+    </string>
+    <string name="edit_banner">CHOOSE BANNER</string>
+    <string name="image_error">Error loading image, please try again.</string>
+    <string name="trending">Trending</string>
+    <string name="not_really_working">Sort by emojies is not really working due to GitHub limitation</string>
+    <string name="scroll_up">Scroll Up</string>
+    <string name="scroll_down">Scroll down</string>
+    <string name="participated">Participated</string>
+    <string name="todo_checked">Todo checked</string>
+    <string name="todo_unchecked">Todo unchecked</string>
+    <string name="divider">Divider</string>
+    <string name="no_user_found">No user found</string>
+    <string name="no_trending">No trending</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="reset">Reset</string>
+    <string name="apply">Apply</string>
+    <string name="filter">Filter</string>
+    <string name="type">Type</string>
+    <string name="sort_direction">Sort direction</string>
+    <string name="assignee_added">Assignee added successfully</string>
+    <string name="reviewer_added">Reviewer added successfully</string>
+    <string name="milestone_added">Milestone added successfully</string>
+    <string name="feed">Feed</string>
+    <string name="premium_theme">Premium Theme</string>
+</resources>
