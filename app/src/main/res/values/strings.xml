@@ -77,8 +77,8 @@
     <string name="daily" translatable="false">Daily</string>
     <string name="weekly" translatable="false">Weekly</string>
     <string name="monthly" translatable="false">Monthly</string>
-    <string name="in_progress">Loading, please wait…</string>
     <!-- END OF DO NOT COPY -->
+    <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
     <string name="discard">Discard</string>

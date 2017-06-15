@@ -249,24 +249,26 @@ import static com.annimon.stream.Collectors.toList;
                             Collectors.mapping(o -> o, toList())));
             for (Map.Entry<Integer, List<ReviewCommentModel>> entry : mappedComments.entrySet()) {
                 List<ReviewCommentModel> reviewCommentModels = entry.getValue();
-                GroupedReviewModel groupedReviewModel = new GroupedReviewModel();
-                if (!reviewCommentModels.isEmpty()) {
-                    ReviewCommentModel reviewCommentModel = reviewCommentModels.get(0);
-                    groupedReviewModel.setPath(reviewCommentModel.getPath());
-                    groupedReviewModel.setDiffText(reviewCommentModel.getDiffHunk());
-                    groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
-                    groupedReviewModel.setPosition(reviewCommentModel.getOriginalPosition());
-                    groupedReviewModel.setId(reviewCommentModel.getId());
-                }
-                groupedReviewModel.setComments(reviewCommentModels);
-                models.add(new TimelineModel(groupedReviewModel));
+                models.add(new TimelineModel(Stream.of(reviewCommentModels)
+                        .filter(value -> value.getCreatedAt() != null)
+                        .findFirst()
+                        .map(reviewCommentModel -> {
+                            GroupedReviewModel groupedReviewModel = new GroupedReviewModel();
+                            groupedReviewModel.setPath(reviewCommentModel.getPath());
+                            groupedReviewModel.setDiffText(reviewCommentModel.getDiffHunk());
+                            groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
+                            groupedReviewModel.setPosition(reviewCommentModel.getOriginalPosition());
+                            groupedReviewModel.setId(reviewCommentModel.getId());
+                            groupedReviewModel.setComments(reviewCommentModels);
+                            return new GroupedReviewModel();
+                        }).get()));
             }
             models.addAll(Stream.of(reviews)
                     .filter(reviewModel -> !InputHelper.isEmpty(reviewModel.getBody()) || reviewModel.getState() == ReviewStateType.APPROVED)
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-        return Stream.of(models).sortBy(TimelineModel::getSortedDate).toList();
+        return models;
     }
 
     @Override public boolean equals(Object o) {
