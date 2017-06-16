@@ -10,8 +10,6 @@ void Main(string[] args)
 	string RootDir = System.Reflection.Assembly.GetExecutingAssembly().Location;
 	string ResDir = Path.Combine(RootDir, @"app\src\main\res");
 
-	PowerShell ps = PowerShell.Create();
-
 	int TotalFiles = 0,
 		TotalIssues = 0;
 
@@ -35,8 +33,10 @@ void Main(string[] args)
 					}
 					if (attr.Name == "translatable") {
 						TotalIssues++;
+						PowerShell ps = PowerShell.Create();
 						ps.AddCommand("Add-AppveyorMessage");
-						ps.AddArgument(String.Format(@"{0}=""{1}"" in {2}", attr.Name, attr.Value, xmlNode.OuterXml));
+						ps.AddArgument(String.Format(@"Found **{0}=""{1}""**  {4} in **""{2}""**.  {4}File: **""{3}""**", attr.Name, attr.Value, xmlNode.OuterXml, dir, Environment.NewLine));
+						ps.Invoke();
 						Console.WriteLine(@" {0}=""{1}"" in {2}", attr.Name, attr.Value, xmlNode.OuterXml);
 						if (wasAdded) {
 							continue;
@@ -51,6 +51,9 @@ void Main(string[] args)
 
 	Console.WriteLine("Found {0} issue(s) in {1} file(s).", TotalIssues, TotalFiles);
 	if (TotalIssues != 0) {
+		PowerShell ps = PowerShell.Create();
+		ps.AddCommand("Add-AppveyorMessage");
+		ps.AddArgument(@"Please, remove this/these string(s) and commit this change.");
 		ps.Invoke();
 		Environment.Exit(101);
 	}

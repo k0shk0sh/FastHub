@@ -31,7 +31,7 @@ deploy: off
 
 notifications:
 - provider: GitHubPullRequest
-  template: ":x: [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})  \n  \n**Messages:** \n{{#jobs}}{{#messages}}\n>{{message}}\n{{/messages}}{{/jobs}}"
+  template: ':x: [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})  <br>  <br>**Message(s):**  <br>{{#jobs}}{{#messages}}<br>{{message}}<br>{{/messages}}{{/jobs}}'
   on_build_success: false
   on_build_failure: true
   on_build_status_changed: false
