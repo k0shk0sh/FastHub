@@ -119,6 +119,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 - Italian [@Raffaele74](https://github.com/Raffaele74)
 - Lithuanian [@mistermantas](https://github.com/mistermantas)
 - Traditional Chinese [@maple3142](https://github.com/maple3142)
+- Portuguese [@caiorrs](https://github.com/caiorrs)
 
 # License
 
