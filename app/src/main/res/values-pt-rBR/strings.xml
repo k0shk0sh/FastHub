@@ -1,0 +1,483 @@
+<resources>
+    <string name="app_name" translatable="false">FastHub</string>
+    <string name="app_name_full" translatable="false">FastHub for Android</string>
+    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
+    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
+    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
+    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
+    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
+    <string name="in_progress">Carregando, por favor aguarde…</string>
+    <string name="action">Ação</string>
+    <string name="settings">Configuraçoes</string>
+    <string name="discard">Descartar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">OK</string>
+    <string name="no_data">Sem dados disponíveis</string>
+    <string name="search">Pesquisar</string>
+    <string name="please_login">Por favor entre para continuar utilizando o Fasthub</string>
+    <string name="sign_in_to_github">Entre na sua conta github para extrair o melhor do FastHub</string>
+    <string name="failed_login">Falha no login</string>
+    <string name="sign_in">Entrar</string>
+    <string name="share">Compartilhar</string>
+    <string name="reload">Recarregar</string>
+    <string name="feeds">Feeds</string>
+    <string name="gists" translatable="false">Gists</string>
+    <string name="profile">Perfil</string>
+    <string name="error">Erro</string>
+    <string name="press_again_to_exit">Toque novamente para sair</string>
+    <string name="readme" translatable="false">Readme</string>
+    <string name="opened">Aberto</string>
+    <string name="closed">Fechado</string>
+    <string name="repo_chooser">Escolher Repo</string>
+    <string name="commits" translatable="false">Commits</string>
+    <string name="followers">Seguidores</string>
+    <string name="following">Seguindo</string>
+    <string name="overview">Visão geral</string>
+    <string name="repos" translatable="false">Repositories</string>
+    <string name="forked" translatable="false">Forked</string>
+    <string name="starred" translatable="false">Starred</string>
+    <string name="follow">Seguir</string>
+    <string name="unfollow">Parar de seguir</string>
+    <string name="user">Usuário</string>
+    <string name="icon_transition" translatable="false">profile_image_transition</string>
+    <string name="title_transition" translatable="false">profile_title_transition</string>
+    <string name="code" translatable="false">Code</string>
+    <string name="issues" translatable="false">Issues</string>
+    <string name="pull_requests" translatable="false">Pull Requests</string>
+    <string name="details">Detalhes</string>
+    <string name="repo" translatable="false">Repository</string>
+    <string name="archive_file_detected_error">Arquivo arquivado detectado, por favor baixe o arquivo para ver seu conteúdo</string>
+    <string name="minimum_three_chars">Mínimo de cacracteres (3)</string>
+    <string name="no_file_found">Nenhum arquivo encontrado</string>
+    <string name="no_readme_found">Arquivo readme não encontrado</string>
+    <string name="downloading">Baixando…</string>
+    <string name="downloading_file">Baixando arquivo…</string>
+    <string name="released">Liberado</string>
+    <string name="drafted">Elaborado</string>
+    <string name="releases">Lançamentos</string>
+    <string name="no_body">Sem corpo</string>
+    <string name="download_as_zip" translatable="false">Source code (zip)</string>
+    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
+    <string name="contributors">Contribuidores</string>
+    <string name="contributions">Contribuiçoes</string>
+    <string name="merged" translatable="false">Merged</string>
+    <string name="by">por</string>
+    <string name="star" translatable="false">Star</string>
+    <string name="stars" translatable="false">Stars</string>
+    <string name="fork" translatable="false">Fork</string>
+    <string name="forks" translatable="false">Forks</string>
+    <string name="close_issue">Fechar Issue</string>
+    <string name="re_open_issue">Reabrir Issue</string>
+    <string name="re_open">Reabrir</string>
+    <string name="close">Fechar</string>
+    <string name="success_re_opened">Reaberto com sucesso</string>
+    <string name="lock_issue_details">Travar a conversa significa:\n&#183;Outros usuarios não podem adicionar novos comentários à esse issue.\n&#183;Voce e outros
+        colaboradores com acesso à este repositorio ainda podem deixar comentarios que outros podem ver.\n&#183;Você sempre pode desbloquear este issue novamento no
+        futuro.\n</string>
+    <string name="unlock_issue_details">Desbloquear a conversa significa:\n&#183;Todo mundo podera comentar neste issue novamente.\n&#183;Você sempre
+        pode bloquaear este issue novamente no futuro.\n</string>
+    <string name="lock_issue">Travar conversa</string>
+    <string name="unlock_issue">Desbloquear conversa</string>
+    <string name="error_closing_issue">Erro ao fechar o issue, por favor tente novamente mais tarde.</string>
+    <string name="error_re_opening_issue">Erro ao reabrir o issue, por favor tente novamente mais tarde.</string>
+    <string name="success_closed">Issue fechado com sucesso</string>
+    <string name="no_description_provided"><p>Descrição não fornecida</p></string>
+    <string name="header_one">Cabeçalho Um</string>
+    <string name="header_two">Cabeçalho Dois</string>
+    <string name="header_three">Cabeçalho Três</string>
+    <string name="bold">Negrito</string>
+    <string name="italic">Italico</string>
+    <string name="strike_through">Raspado</string>
+    <string name="bullet">Lista por tópicos</string>
+    <string name="numbered_list">Lista numerada</string>
+    <string name="header">Cabeçalho</string>
+    <string name="quote">Citar</string>
+    <string name="link">Link</string>
+    <string name="image">Imagem</string>
+    <string name="deletion">Deleção</string>
+    <string name="addition">Adição</string>
+    <string name="changes">Mudanças</string>
+    <string name="status">Status</string>
+    <string name="confirm_message">Tem certeza?</string>
+    <string name="success">Sucesso</string>
+    <string name="to">para</string>
+    <string name="error_deleting_comment">Erro ao deletar comentário</string>
+    <string name="delete">Excluir</string>
+    <string name="comments">Comentários</string>
+    <string name="comment">Comentar</string>
+    <string name="issue" translatable="false">Issue</string>
+    <string name="merge" translatable="false">Merge</string>
+    <string name="pull_request" translatable="false">Pull Request</string>
+    <string name="commit" translatable="false">Commit</string>
+    <string name="success_merge">Merge com sucesso</string>
+    <string name="file_menu">Menu arquivo</string>
+    <string name="files">Arquivos</string>
+    <string name="download">Baixar</string>
+    <string name="back">Voltar</string>
+    <string name="parent_folder">Diretório superior</string>
+    <string name="code_viewer">Visualizador de código</string>
+    <string name="open_in_browser">Abrir no browser</string>
+    <string name="big_file">Arquivo grande</string>
+    <string name="big_file_description">O arquivo é grande demais para ser aberto.\nPressione "OK" para baixá-lo.</string>
+    <string name="viewer">Visualizador</string>
+    <string name="markdown" translatable="false">Markdown</string>
+    <string name="submit">Enviar</string>
+    <string name="type_here">Digite aqui</string>
+    <string name="description">Descrição</string>
+    <string name="file_name">Nome do arquivo</string>
+    <string name="file_name_hint">Nome do arquivo com extensão</string>
+    <string name="create_secret_gist">Gist Secreto</string>
+    <string name="create_public_gist">Gist Público</string>
+    <string name="submit_as">Enviar como</string>
+    <string name="delete_gist">Excluir</string>
+    <string name="error_deleting_gist">Erro ao excluir gist</string>
+    <string name="no_files">Sem arquivos</string>
+    <string name="required_field">Campo necessário</string>
+    <string name="successfully_submitted">Enviado com sucesso</string>
+    <string name="create_gist">Criar Gist</string>
+    <string name="gist" translatable="false">Gist</string>
+    <string name="clear">Limpar</string>
+    <string name="users">Usuários</string>
+    <string name="title">Título</string>
+    <string name="file">Arquivo</string>
+    <string name="milestone">Milestone</string>
+    <string name="assign_myself">Assinar eu mesmo</string>
+    <string name="submit_issue">Enviar Issue</string>
+    <string name="error_creating_issue">Erro ao criar issue</string>
+    <string name="create_issue">Criar Issue</string>
+    <string name="error_highlighting_editor">Por favor desmarque a parte destacada para continuar a editar.</string>
+    <string name="notifications">Notificações</string>
+    <string name="unread_notification">Você tem notificações não lidas</string>
+    <string name="open">Abrir</string>
+    <string name="notification_type">Tipo de notificação</string>
+    <string name="back_slash" translatable="false">/</string>
+    <string name="labels">Rótulos</string>
+    <string name="no_labels">Sem rótulos</string>
+    <string name="labels_added_successfully">Rótulos adicionados com sucesso</string>
+    <string name="submit_feedback">Enviar opinião</string>
+    <string name="logout">Sair</string>
+    <string name="thank_you_for_feedback">Obrigado pela sua opinião!</string>
+    <string name="current_version">Versão atual</string>
+    <string name="version">Versão</string>
+    <string name="support_development_enable_ads">Apoie o desenvolvimento, habilite as propagandas</string>
+    <string name="username">Usuário</string>
+    <string name="password">Senha</string>
+    <string name="twoFactor">Código de autenticação de dois fatores</string>
+    <string name="login">Entrar</string>
+    <string name="gist_description">Descrição do Gist</string>
+    <string name="avatar_click_hint">Sempre que houver um avatar de usuário, você pode clicá-lo para abrir o perfil do usuário</string>
+    <string name="feeds_fork_hint">Toque e segure em um evento de fork para abrir o repo original ou o fork.</string>
+    <string name="click_here_to_download_release_hint">Baixar lançamentos</string>
+    <string name="options">Opções</string>
+    <string name="click_file_option_hint">Baixar arquivo ou compartilhar diretório</string>
+    <string name="comment_hint">Toque em um comentário para citar o seu autor ou editar seu comentário.
+        \nToque e segure no seu comentário para excluí-lo.</string>
+    <string name="star_hint">Favoritar/Desfavoritar repo</string>
+    <string name="watch">Vigiar</string>
+    <string name="watch_hint">Vigiar/parar de vigiar repo</string>
+    <string name="fork_repo_hint" translatable="false">Fork repo</string>
+    <string name="pin_repo_hint">Marcar repos para acessá-los mais rápido a partir do menu lateral.</string>
+    <string name="dismiss_all">Dispensar Tudo</string>
+    <string name="no_url">Nenuhma URL encontrada</string>
+    <string name="last_updated">Última atualização</string>
+    <string name="preview">Visualização</string>
+    <string name="view_code">Marcador de sintaxe</string>
+    <string name="click_to_toggle_highlighting">Alternar marcador de sintaxe.
+        \nRole até os ícones do editor de Markdown para mais opções.</string>
+    <string name="creation_date">Data de criação</string>
+    <string name="creation_date_hint">Quando o arquivo foi criado</string>
+    <string name="last_updated_hint">Quando o arquivo foi atualizado por último</string>
+    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
+    <string name="mark_all_as_read">Marcar tudo como lido</string>
+    <string name="all_notifications">Todas as notificações</string>
+    <string name="unread">Não lidas</string>
+    <string name="all">Todas</string>
+    <string name="delete_repo">Excluir Repo</string>
+    <string name="delete_repo_warning">Excluir este repo não pode ser desfeito</string>
+    <string name="thirty_minutes">30 minutos</string>
+    <string name="twenty_minutes">20 minutos</string>
+    <string name="ten_minutes">10 minutos</string>
+    <string name="five_minutes">5 minutos</string>
+    <string name="one_minute">1 minuto</string>
+    <string name="one_hour">1 hora</string>
+    <string name="two_hour">2 horas</string>
+    <string name="three_hour">3 horas</string>
+    <string name="created_repo">Criado</string>
+    <string name="committed">Commitado</string>
+    <string name="downloaded">Baixado</string>
+    <string name="followed">Seguido</string>
+    <string name="created_gist" translatable="false">@string/gist</string>
+    <string name="gollum" translatable="false">Wiki</string>
+    <string name="commented_on_issue">Comentar no Issue</string>
+    <string name="created_issue" translatable="false">Issue</string>
+    <string name="member">Membro</string>
+    <string name="public_event" translatable="false">Open-sourced</string>
+    <string name="pr_comment_review">Comentário Pull Request</string>
+    <string name="pushed">Pushe para</string>
+    <string name="team_event">Time</string>
+    <string name="deleted">Excluído</string>
+    <string name="unknown">Desconhecido</string>
+    <string name="commented_on_commit">Comentou no commit</string>
+    <string name="organization_event" translatable="false">Organization</string>
+    <string name="card_event" translatable="false">Card</string>
+    <string name="project_event" translatable="false">Project</string>
+    <string name="pr_review_event" translatable="false">Pull Request</string>
+    <string name="repo_event" translatable="false">Repository</string>
+    <string name="switch_branch">Trocar de Branch</string>
+    <string name="assignees">Administradores</string>
+    <string name="edit">Editar</string>
+    <string name="edited">\u2022 editado</string>
+    <string name="update_issue">Atualizar Issue</string>
+    <string name="update_pull_request">Atualizar Pull Request</string>
+    <string name="no_milestones">Sem milestones</string>
+    <string name="add">Adicionar</string>
+    <string name="done">Pronto</string>
+    <string name="home">Início</string>
+    <string name="create_milestone">Criar Milestone</string>
+    <string name="error_creating_milestone">Erro ao criar milestone</string>
+    <string name="due_on">Devido a</string>
+    <string name="no_assignees">Sem administradores</string>
+    <string name="this_value">este</string>
+    <string name="commits_reflected">Commits foram alterados para a branch selecionada</string>
+    <string name="general_settings">Geral</string>
+    <string name="background_job_summary">Mudar com que frequência o FastHub verifica por novas notificações</string>
+    <string name="background_job_title">Intervalo de Sincronização de Notificação</string>
+    <string name="every">A cada</string>
+    <string name="behavior">Comportamento</string>
+    <string name="customization">Personalização</string>
+    <string name="recycler_view_animation_summary">Habilitar animações de lista</string>
+    <string name="recycler_view_animation_title">Animações de Lista</string>
+    <string name="back_button_summary">Desabilitar diálogos para prevenir fechamento acidental do app</string>
+    <string name="back_button_title">Toque em voltar para sair</string>
+    <string name="restore">Restaurar</string>
+    <string name="backup">Backup</string>
+    <string name="backed_up">Backup feito com sucesso!</string>
+    <string name="select_backup">Selecionar backup para restaurar</string>
+    <string name="permission_failed">Permissão não concedida.</string>
+    <string name="backup_summary">Última atualização: %s</string>
+    <string name="now">Agora</string>
+    <string name="unsaved_data_warning">Qualquer mudança não salva será descartada</string>
+    <string name="private_repo">Privado</string>
+    <string name="rect_avatar_summary">Usar retângulos arredondados nos avatares no lugar de avatares circulares</string>
+    <string name="rect_avatar_title">Aparência dos avatares </string>
+    <string name="rate_app">Avaliar este app</string>
+    <string name="author">Autor</string>
+    <string name="fork_github">Faça Fork no GitHub</string>
+    <string name="send_email">Enviar um email</string>
+    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
+    <string name="question_concerning_fasthub">Problemas relacionados ao FastHub</string>
+    <string name="feedback">Feedback</string>
+    <string name="report_issue">Reportar um issue</string>
+    <string name="report_issue_here">Tendo problemas? Reporte-o aqui</string>
+    <string name="about">Sobre</string>
+    <string name="notification_settings">Notificação</string>
+    <string name="turn_off">Desligar</string>
+    <string name="unauthorized_user">Usuário não autorizado</string>
+    <string name="two_factors_otp_error">OTP de dois fatores é necessário</string>
+    <string name="no_issue">Sem issue</string>
+    <string name="copy">Copiar</string>
+    <string name="success_copied">Copiado</string>
+    <string name="commit_message">Comitar mensagem</string>
+    <string name="network_error">Ocorreu um erro enquanto se comunicava com o servidor</string>
+    <string name="unexpected_error">Erro inesperado enquanto estava requisitando a API</string>
+    <string name="request_error">Erro ao requisitar o servidor, por favor tente novamente mais tarde</string>
+    <string name="marking_as_read">Marcar notificação como lida</string>
+    <string name="forking_gist">Forking gist</string>
+    <string name="forking" formatted="true" translatable="false">Forking %s</string>
+    <string name="starring" formatted="true" translatable="false">Starring %s</string>
+    <string name="un_starring" formatted="true" translatable="false">Unstarring %s</string>
+    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
+    <string name="watching" formatted="true" translatable="false">Watching %s</string>
+    <string name="login_using_your_default_browser">Fazer login usando seu browser padrão (OAuth)</string>
+    <string name="or_character">OU</string>
+    <string name="mark_notification_title">Desabilitar o Estado de Leitura da Notificação</string>
+    <string name="mark_notification_summary">Desabilite marcar como lido ao clicar na notificação.</string>
+    <string name="light_theme_mode" translatable="false">Light Theme</string>
+    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
+    <string name="red_theme_mode" translatable="false">Red</string>
+    <string name="pink_theme_mode" translatable="false">Pink</string>
+    <string name="purple_theme_mode" translatable="false">Purple</string>
+    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
+    <string name="indigo_theme_mode" translatable="false">Indigo</string>
+    <string name="blue_theme_mode" translatable="false">Blue</string>
+    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
+    <string name="cyan_theme_mode" translatable="false">Cyan</string>
+    <string name="teal_theme_mode" translatable="false">Teal</string>
+    <string name="green_theme_mode" translatable="false">Green</string>
+    <string name="light_green_theme_mode" translatable="false">Light Green</string>
+    <string name="lime_theme_mode" translatable="false">Lime</string>
+    <string name="yellow_theme_mode" translatable="false">Yellow</string>
+    <string name="amber_theme_mode" translatable="false">Amber</string>
+    <string name="orange_theme_mode" translatable="false">Orange</string>
+    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
+    <string name="theme_title">Escolher Tema</string>
+    <string name="theme_summary">Escolha seu tema padrão</string>
+    <string name="theme_color_summary">Escolha a cor acentuada do tema</string>
+    <string name="theme_color_title">Cor Acentuada do Tema</string>
+    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
+    <string name="google_plus" translatable="false">Google+</string>
+    <string name="website">Website</string>
+    <string name="twitter" translatable="false">Twitter</string>
+    <string name="support_development">Apoiar o Desenvolvimento</string>
+    <string name="success_purchase_message">Obrigado por ser extremamente demais!</string>
+    <string name="change_theme_warning">Se o tema não foi aplicado corretamente, por favor feche o app e abra-o manualmente.</string>
+    <string name="pin">Marcar</string>
+    <string name="pinned">Marcado</string>
+    <string name="unpin">Desmarcar</string>
+    <string name="empty_pinned_repos">Nenhum repositório marcado, marcar alguns para vê-los aqui</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="no_feeds">Sem feeds</string>
+    <string name="no_gists">Sem gists</string>
+    <string name="no_comments">Sem comentários</string>
+    <string name="no_notifications">Sem notificações</string>
+    <string name="no_followers">Sem seguidores</string>
+    <string name="no_followings">Seguindo ninguém</string>
+    <string name="no_repos">Sem repositórios</string>
+    <string name="no_starred_repos">Sem repositórios favoritados</string>
+    <string name="no_commits">Sem commits</string>
+    <string name="no_contributors">Sem contribuidores</string>
+    <string name="no_releases">Sem lançamentos</string>
+    <string name="no_closed_issues">Sem issues fechados</string>
+    <string name="no_opened_issues">Sem issues abertos</string>
+    <string name="no_events">Sem eventos</string>
+    <string name="no_open_pull_requests">Sem pull requests abertos</string>
+    <string name="no_closed_pull_request">Sem pull requests fechados</string>
+    <string name="no_search_results">Sem resultados para a busca</string>
+    <string name="read_write_permission_explanation">Por favor aceite as permissões para permitir ao FastHub
+        armazenar os arquivos no seu dispositivo para poder visualizá-los</string>
+    <string name="public_gists">Gists Públicos</string>
+    <string name="enable_ads">Habilitar Propagandas</string>
+    <string name="no_issues">Sem issues</string>
+    <string name="no_unread_notifications">Sem notificações novas.</string>
+    <string name="my_gists">Meus Gists</string>
+    <string name="changelog">Changelog</string>
+    <string name="notifications_hint">Toque para abrir a lista de notificações ou deslize para ignorar</string>
+    <string name="posting_reaction" formatted="true" translatable="false">Postando reação %s</string>
+    <string name="home_long_click_hint">Toque e segure para ir para a tela principal, a partir de qualquer lugar</string>
+    <string name="created">Criado</string>
+    <string name="assigned">Atribuído</string>
+    <string name="mentioned">Mencionado</string>
+    <string name="name">Nome</string>
+    <string name="color">Cor</string>
+    <string name="create_label">Criar Rótulo</string>
+    <string name="organization">Organização</string>
+    <string name="organizations">Organizações</string>
+    <string name="people">Pessoas</string>
+    <string name="teams">Equipes</string>
+    <string name="members">Membros</string>
+    <string name="no_members">Sem membros</string>
+    <string name="no_teams">Sem equipes</string>
+    <string name="no_orgs">Sem Organizações</string>
+    <string name="mark_as_read">Marcar como lido</string>
+    <string name="animations">Animações</string>
+    <string name="dialog_animation_summary">Habilitar animações popup</string>
+    <string name="dialog_animation_title">Animação popup</string>
+    <string name="milestones">Milestones</string>
+    <string name="assignee">Administrador</string>
+    <string name="checks_failed">Todas as verificações falharam</string>
+    <string name="checks_pending">Todas as verificações estão pendentes</string>
+    <string name="checks_passed">Todas as verificações passaram</string>
+    <string name="sort">Ordenar</string>
+    <string name="newest">Mais novo</string>
+    <string name="oldest">Mais antigo</string>
+    <string name="most_commented">Mais comentados</string>
+    <string name="least_commented">Menos comentados</string>
+    <string name="recently_updated">Atualizado mais recentemente</string>
+    <string name="least_recent_updated">Atualizado menos recentemente</string>
+    <string name="up_to_date">Você está atualizado!</string>
+    <string name="new_version">Uma nova versão está disponível.</string>
+    <string name="empty_search_error">O campo de pesquisa não pode estar vazio</string>
+    <string name="long_press_repo_fab_hint">Toque e segure para criar um issue ticket</string>
+    <string name="commit_can_be_merged">Este pull request pode ser merged</string>
+    <string name="reviewed">revisado</string>
+    <string name="dismissed_review">rejeitou a revisão deles</string>
+    <string name="approved_these_changes">aprovou estas mudanças</string>
+    <string name="no_reactions">Sem reações</string>
+    <string name="reactions">Reações</string>
+    <string name="wrap_content">Envolver conteúdo</string>
+    <string name="wrap_code_summary">Envolva o código no visualizador de código por padrão</string>
+    <string name="wrap_code_title">Envolver Código</string>
+    <string name="open_source_libs">Bibliotecas de código aberto</string>
+    <string name="enable_notification_sound_summary">Habilitar som de notificação sempre que receber uma notificação.</string>
+    <string name="enable_notification_sound_title">Habilitar Som de Notificação</string>
+    <string name="enable_notification_title">Habilitar Notificações</string>
+    <string name="login_with_personal_token">Entrar com token pessoal</string>
+    <string name="personal_token">Token Pessoal</string>
+    <string name="basic_login">Entra com autenticação básica</string>
+    <string name="no_orgs_description">Se você está ligado a alguma organização e não consegue vê-las aqui, por favor entre no link abaixo.
+    	\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Você poderia usar o token de acesso para entrar, o que vai
+        permitir acesso ao FastHub para poder ver a lista de seuas organizações.</string>
+    <string name="insert">Inserir</string>
+    <string name="select">Selecionar</string>
+    <string name="select_picture">Selecionar Imagem</string>
+    <string name="support_with_2_00">Apoiar com $2.00</string>
+    <string name="support_with_5_00">Apoiar com $5.00</string>
+    <string name="support_with_10_00">Apoiar com $10.00</string>
+    <string name="support_with_20_00">Apoiar com $20.00</string>
+    <string name="app_language">Idiooma do App</string>
+    <string name="language">Idioma</string>
+    <string name="choose_language_title">Escolher Idioma</string>
+    <string name="choose_language_summary">Escolha seu idioma preferido</string>
+    <string name="un_subscribe">Cancelar inscrição</string>
+    <string name="from">de</string>
+    <string name="in_value">em</string>
+    <string name="subscribe">Inscrever-se</string>
+    <string name="repo_issues_is_disabled">O repo não tem aba de issues</string>
+    <string name="access_token">Token de Acesso</string>
+    <string name="basic_authentication">Autenticação Básica</string>
+    <string name="choose_your_login_type">Escolha como vai entrar</string>
+    <string name="files_only">Em Arquivos</string>
+    <string name="paths_only">Em Caminhos/Diretórios</string>
+    <string name="review_requests">Revisar Requests</string>
+    <string name="join_slack">Entrar no Slack</string>
+    <string name="join_slack_message">Você gostaria de entrar no grupo FastHub do Slack?</string>
+    <string name="successfully_invited">Convidado com sucesso</string>
+    <string name="reply">Resposta</string>
+    <string name="failed_selecting_image">Falhou ao carregar a imagem.</string>
+    <string name="want_to_merge">quer fazer merge</string>
+    <string name="watchers">Watchers</string>
+    <string name="reviewers">Reviewers</string>
+    <string name="no_reviewers">Sem reviewers</string>
+    <string name="sent_from_fasthub">Enviado do meu %1$s usando %2$s%3$s</string>
+    <string name="enable_signature">Habilitar Assinatura</string>
+    <string name="enable_signature_summary">Habilitar enviado via assinatura</string>
+    <string name="enable_signature_box">Habilitar Caixa de Assinatura</string>
+    <string name="enable_signature_box_summary">Habilitar checkbox para alternar a assinatura no editor de texto</string>
+    <string name="tags">Tags</string>
+    <string name="add_comment">Adicionar comentário</string>
+    <string name="banners">Apresentando Banners</string>
+    <string name="banners_info">Com o FastHub 2.5.0, agora você pode se expressar melhor com banners
+        para a sua página de perfil.\n\nQualquer um usando o app FastHub, verá o seu cabeçalho, e você
+        começará a ver os cabeçalhos de outras pessoas também! Se você quiser criar um banner para si,
+        faça-o 1280x384 oi divisível, caso contrário, ele pode ser cortado.\n\nVocê pode adicionar ou mudar
+        o seu banner a qualquer momento, criando um gist descrito "header.fst" com um arquivo contendo um
+        link direto para a imagem de cabeçalho.\n\nOu ainda mais simples, use o escolhedor de imagens embutido!
+    </string>
+    <string name="edit_banner">ESCOLHER BANNER</string>
+    <string name="image_error">Erro ao carregar a imagem, por favor tente novamente.</string>
+    <string name="trending">Trending</string>
+    <string name="not_really_working">Organizar por emojis ainda não está funcionando devido à limitações do GitHub</string>
+    <string name="scroll_up">Rolar para cima</string>
+    <string name="scroll_down">Rolar para baixo</string>
+    <string name="participated">Participou</string>
+    <string name="todo_checked">Todo marcado</string>
+    <string name="todo_unchecked">Todo desmarcado</string>
+    <string name="divider">Divisor</string>
+    <string name="no_user_found">Nenhum usuário encontrado</string>
+    <string name="no_trending">Sem trending</string>
+    <string name="daily" translatable="false">Daily</string>
+    <string name="weekly" translatable="false">Weekly</string>
+    <string name="monthly" translatable="false">Monthly</string>
+    <string name="reset">Restaurar</string>
+    <string name="apply">Aplicar</string>
+    <string name="filter">Filtrar</string>
+    <string name="type">Tipo</string>
+    <string name="Sort">Ordenar</string>
+    <string name="sort_direction">Direção do ordenamento</string>
+    <string name="assignee_added">Administrador adicionado com sucesso</string>
+    <string name="reviewer_added">Reviewer adicionado com sucesso</string>
+    <string name="milestone_added">Milestone adicionado com sucesso</string>
+    <string name="feed">Feed</string>
+    <string name="premium_theme">Tema Premium</string>
+</resources>
