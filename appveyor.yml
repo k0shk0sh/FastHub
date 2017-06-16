@@ -7,6 +7,7 @@ environment:
 init:
   - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.5-windows.zip" -FileName "C:\android-tools.zip"
   - cmd: 7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
+  - cmd: cinst cs-script
 
 install:
   - cmd: 'echo   > C:/Users/appveyor/.android/repositories.cfg'
@@ -17,6 +18,7 @@ install:
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platforms;android-25"'
 
 build_script:
+  - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cscs /ac check_translations.cs
   - cmd: gradlew clean assembleDebug --stacktrace
 
 test: off
@@ -26,3 +28,10 @@ artifacts:
   name: APKs
 
 deploy: off
+
+notifications:
+- provider: GitHubPullRequest
+  template: ':x: [Build {{&projectName}} {{buildVersion}} {{status}}]({{buildUrl}}) (commit {{commitUrl}} by @{{&commitAuthorUsername}})  <br>  <br>**Message(s):**  <br>{{#jobs}}{{#messages}}<br>{{message}}<br>{{/messages}}{{/jobs}}'
+  on_build_success: false
+  on_build_failure: true
+  on_build_status_changed: false
