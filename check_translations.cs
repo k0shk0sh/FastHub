@@ -1,6 +1,8 @@
 using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
+using System.Management.Automation;
 using System.Xml;
 
 void Main(string[] args)
@@ -31,6 +33,10 @@ void Main(string[] args)
 					}
 					if (attr.Name == "translatable") {
 						TotalIssues++;
+						PowerShell ps = PowerShell.Create();
+						ps.AddCommand("Add-AppveyorMessage");
+						ps.AddArgument(String.Format(@"Found **{0}=""{1}""**  {4} in **""{2}""**.  {4}File: **""{3}""**", attr.Name, attr.Value, xmlNode.OuterXml, dir, Environment.NewLine));
+						ps.Invoke();
 						Console.WriteLine(@" {0}=""{1}"" in {2}", attr.Name, attr.Value, xmlNode.OuterXml);
 						if (wasAdded) {
 							continue;
@@ -45,6 +51,10 @@ void Main(string[] args)
 
 	Console.WriteLine("Found {0} issue(s) in {1} file(s).", TotalIssues, TotalFiles);
 	if (TotalIssues != 0) {
+		PowerShell ps = PowerShell.Create();
+		ps.AddCommand("Add-AppveyorMessage");
+		ps.AddArgument(@"Please, remove this/these string(s) and commit this change.");
+		ps.Invoke();
 		Environment.Exit(101);
 	}
 }
