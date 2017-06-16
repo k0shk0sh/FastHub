@@ -1,11 +1,4 @@
 <resources>
-    <string name="app_name" translatable="false">FastHub</string>
-    <string name="app_name_full" translatable="false">FastHub for Android</string>
-    <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
-    <string name="grid_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager</string>
-    <string name="staggered_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.StaggeredManager</string>
-    <string name="scroll_behavior" translatable="false">@string/appbar_scrolling_view_behavior</string>
-    <string name="custom_tablet_provider" translatable="false">com.fastaccess.ui.widgets.TabletBehavior</string>
     <string name="in_progress">Carregando, por favor aguarde…</string>
     <string name="action">Ação</string>
     <string name="settings">Configuraçoes</string>
@@ -21,31 +14,19 @@
     <string name="share">Compartilhar</string>
     <string name="reload">Recarregar</string>
     <string name="feeds">Feeds</string>
-    <string name="gists" translatable="false">Gists</string>
     <string name="profile">Perfil</string>
     <string name="error">Erro</string>
     <string name="press_again_to_exit">Toque novamente para sair</string>
-    <string name="readme" translatable="false">Readme</string>
     <string name="opened">Aberto</string>
     <string name="closed">Fechado</string>
     <string name="repo_chooser">Escolher Repo</string>
-    <string name="commits" translatable="false">Commits</string>
     <string name="followers">Seguidores</string>
     <string name="following">Seguindo</string>
     <string name="overview">Visão geral</string>
-    <string name="repos" translatable="false">Repositories</string>
-    <string name="forked" translatable="false">Forked</string>
-    <string name="starred" translatable="false">Starred</string>
     <string name="follow">Seguir</string>
     <string name="unfollow">Parar de seguir</string>
     <string name="user">Usuário</string>
-    <string name="icon_transition" translatable="false">profile_image_transition</string>
-    <string name="title_transition" translatable="false">profile_title_transition</string>
-    <string name="code" translatable="false">Code</string>
-    <string name="issues" translatable="false">Issues</string>
-    <string name="pull_requests" translatable="false">Pull Requests</string>
     <string name="details">Detalhes</string>
-    <string name="repo" translatable="false">Repository</string>
     <string name="archive_file_detected_error">Arquivo arquivado detectado, por favor baixe o arquivo para ver seu conteúdo</string>
     <string name="minimum_three_chars">Mínimo de cacracteres (3)</string>
     <string name="no_file_found">Nenhum arquivo encontrado</string>
@@ -56,16 +37,9 @@
     <string name="drafted">Elaborado</string>
     <string name="releases">Lançamentos</string>
     <string name="no_body">Sem corpo</string>
-    <string name="download_as_zip" translatable="false">Source code (zip)</string>
-    <string name="download_as_tar" translatable="false">Source code (tar.gz)</string>
     <string name="contributors">Contribuidores</string>
     <string name="contributions">Contribuiçoes</string>
-    <string name="merged" translatable="false">Merged</string>
     <string name="by">por</string>
-    <string name="star" translatable="false">Star</string>
-    <string name="stars" translatable="false">Stars</string>
-    <string name="fork" translatable="false">Fork</string>
-    <string name="forks" translatable="false">Forks</string>
     <string name="close_issue">Fechar Issue</string>
     <string name="re_open_issue">Reabrir Issue</string>
     <string name="re_open">Reabrir</string>
@@ -105,10 +79,6 @@
     <string name="delete">Excluir</string>
     <string name="comments">Comentários</string>
     <string name="comment">Comentar</string>
-    <string name="issue" translatable="false">Issue</string>
-    <string name="merge" translatable="false">Merge</string>
-    <string name="pull_request" translatable="false">Pull Request</string>
-    <string name="commit" translatable="false">Commit</string>
     <string name="success_merge">Merge com sucesso</string>
     <string name="file_menu">Menu arquivo</string>
     <string name="files">Arquivos</string>
@@ -120,7 +90,6 @@
     <string name="big_file">Arquivo grande</string>
     <string name="big_file_description">O arquivo é grande demais para ser aberto.\nPressione "OK" para baixá-lo.</string>
     <string name="viewer">Visualizador</string>
-    <string name="markdown" translatable="false">Markdown</string>
     <string name="submit">Enviar</string>
     <string name="type_here">Digite aqui</string>
     <string name="description">Descrição</string>
@@ -135,7 +104,6 @@
     <string name="required_field">Campo necessário</string>
     <string name="successfully_submitted">Enviado com sucesso</string>
     <string name="create_gist">Criar Gist</string>
-    <string name="gist" translatable="false">Gist</string>
     <string name="clear">Limpar</string>
     <string name="users">Usuários</string>
     <string name="title">Título</string>
@@ -150,7 +118,6 @@
     <string name="unread_notification">Você tem notificações não lidas</string>
     <string name="open">Abrir</string>
     <string name="notification_type">Tipo de notificação</string>
-    <string name="back_slash" translatable="false">/</string>
     <string name="labels">Rótulos</string>
     <string name="no_labels">Sem rótulos</string>
     <string name="labels_added_successfully">Rótulos adicionados com sucesso</string>
@@ -175,7 +142,6 @@
     <string name="star_hint">Favoritar/Desfavoritar repo</string>
     <string name="watch">Vigiar</string>
     <string name="watch_hint">Vigiar/parar de vigiar repo</string>
-    <string name="fork_repo_hint" translatable="false">Fork repo</string>
     <string name="pin_repo_hint">Marcar repos para acessá-los mais rápido a partir do menu lateral.</string>
     <string name="dismiss_all">Dispensar Tudo</string>
     <string name="no_url">Nenuhma URL encontrada</string>
@@ -187,7 +153,6 @@
     <string name="creation_date">Data de criação</string>
     <string name="creation_date_hint">Quando o arquivo foi criado</string>
     <string name="last_updated_hint">Quando o arquivo foi atualizado por último</string>
-    <string name="bbn_fab_default_behavior" translatable="false">com.fastaccess.ui.widgets.FloatingActionButtonBehavior</string>
     <string name="mark_all_as_read">Marcar tudo como lido</string>
     <string name="all_notifications">Todas as notificações</string>
     <string name="unread">Não lidas</string>
@@ -206,23 +171,14 @@
     <string name="committed">Commitado</string>
     <string name="downloaded">Baixado</string>
     <string name="followed">Seguido</string>
-    <string name="created_gist" translatable="false">@string/gist</string>
-    <string name="gollum" translatable="false">Wiki</string>
     <string name="commented_on_issue">Comentar no Issue</string>
-    <string name="created_issue" translatable="false">Issue</string>
     <string name="member">Membro</string>
-    <string name="public_event" translatable="false">Open-sourced</string>
     <string name="pr_comment_review">Comentário Pull Request</string>
     <string name="pushed">Pushe para</string>
     <string name="team_event">Time</string>
     <string name="deleted">Excluído</string>
     <string name="unknown">Desconhecido</string>
     <string name="commented_on_commit">Comentou no commit</string>
-    <string name="organization_event" translatable="false">Organization</string>
-    <string name="card_event" translatable="false">Card</string>
-    <string name="project_event" translatable="false">Project</string>
-    <string name="pr_review_event" translatable="false">Pull Request</string>
-    <string name="repo_event" translatable="false">Repository</string>
     <string name="switch_branch">Trocar de Branch</string>
     <string name="assignees">Administradores</string>
     <string name="edit">Editar</string>
@@ -264,7 +220,6 @@
     <string name="author">Autor</string>
     <string name="fork_github">Faça Fork no GitHub</string>
     <string name="send_email">Enviar um email</string>
-    <string name="email_address" translatable="false">fastaccess.app@gmail.com</string>
     <string name="question_concerning_fasthub">Problemas relacionados ao FastHub</string>
     <string name="feedback">Feedback</string>
     <string name="report_issue">Reportar um issue</string>
@@ -283,41 +238,15 @@
     <string name="request_error">Erro ao requisitar o servidor, por favor tente novamente mais tarde</string>
     <string name="marking_as_read">Marcar notificação como lida</string>
     <string name="forking_gist">Forking gist</string>
-    <string name="forking" formatted="true" translatable="false">Forking %s</string>
-    <string name="starring" formatted="true" translatable="false">Starring %s</string>
-    <string name="un_starring" formatted="true" translatable="false">Unstarring %s</string>
-    <string name="un_watching" formatted="true" translatable="false">Unwatching %s</string>
-    <string name="watching" formatted="true" translatable="false">Watching %s</string>
     <string name="login_using_your_default_browser">Fazer login usando seu browser padrão (OAuth)</string>
     <string name="or_character">OU</string>
     <string name="mark_notification_title">Desabilitar o Estado de Leitura da Notificação</string>
     <string name="mark_notification_summary">Desabilite marcar como lido ao clicar na notificação.</string>
-    <string name="light_theme_mode" translatable="false">Light Theme</string>
-    <string name="dark_theme_mode" translatable="false">Dark Theme</string>
-    <string name="red_theme_mode" translatable="false">Red</string>
-    <string name="pink_theme_mode" translatable="false">Pink</string>
-    <string name="purple_theme_mode" translatable="false">Purple</string>
-    <string name="deep_purple_theme_mode" translatable="false">Deep Purple</string>
-    <string name="indigo_theme_mode" translatable="false">Indigo</string>
-    <string name="blue_theme_mode" translatable="false">Blue</string>
-    <string name="light_blue_theme_mode" translatable="false">Light Blue</string>
-    <string name="cyan_theme_mode" translatable="false">Cyan</string>
-    <string name="teal_theme_mode" translatable="false">Teal</string>
-    <string name="green_theme_mode" translatable="false">Green</string>
-    <string name="light_green_theme_mode" translatable="false">Light Green</string>
-    <string name="lime_theme_mode" translatable="false">Lime</string>
-    <string name="yellow_theme_mode" translatable="false">Yellow</string>
-    <string name="amber_theme_mode" translatable="false">Amber</string>
-    <string name="orange_theme_mode" translatable="false">Orange</string>
-    <string name="deep_orange_theme_mode" translatable="false">Deep Orange</string>
     <string name="theme_title">Escolher Tema</string>
     <string name="theme_summary">Escolha seu tema padrão</string>
     <string name="theme_color_summary">Escolha a cor acentuada do tema</string>
     <string name="theme_color_title">Cor Acentuada do Tema</string>
-    <string name="logo_designer" formatted="true" translatable="false">Logo Designer (%s)</string>
-    <string name="google_plus" translatable="false">Google+</string>
     <string name="website">Website</string>
-    <string name="twitter" translatable="false">Twitter</string>
     <string name="support_development">Apoiar o Desenvolvimento</string>
     <string name="success_purchase_message">Obrigado por ser extremamente demais!</string>
     <string name="change_theme_warning">Se o tema não foi aplicado corretamente, por favor feche o app e abra-o manualmente.</string>
@@ -353,7 +282,6 @@
     <string name="my_gists">Meus Gists</string>
     <string name="changelog">Changelog</string>
     <string name="notifications_hint">Toque para abrir a lista de notificações ou deslize para ignorar</string>
-    <string name="posting_reaction" formatted="true" translatable="false">Postando reação %s</string>
     <string name="home_long_click_hint">Toque e segure para ir para a tela principal, a partir de qualquer lugar</string>
     <string name="created">Criado</string>
     <string name="assigned">Atribuído</string>
@@ -466,9 +394,6 @@
     <string name="divider">Divisor</string>
     <string name="no_user_found">Nenhum usuário encontrado</string>
     <string name="no_trending">Sem trending</string>
-    <string name="daily" translatable="false">Daily</string>
-    <string name="weekly" translatable="false">Weekly</string>
-    <string name="monthly" translatable="false">Monthly</string>
     <string name="reset">Restaurar</string>
     <string name="apply">Aplicar</string>
     <string name="filter">Filtrar</string>
