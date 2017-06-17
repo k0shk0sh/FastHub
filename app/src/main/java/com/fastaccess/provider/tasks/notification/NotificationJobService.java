@@ -50,7 +50,7 @@ import static com.google.android.gms.gcm.GcmNetworkManager.RESULT_SUCCESS;
  * Created by Kosh on 19 Feb 2017, 6:32 PM
  */
 
-public class NotificationSchedulerJobTask extends GcmTaskService {
+public class NotificationJobService extends GcmTaskService {
     private final static String JOB_ID = "fasthub_notification";
 
     private final static int THIRTY_MINUTES = 30 * 60;
@@ -65,9 +65,9 @@ public class NotificationSchedulerJobTask extends GcmTaskService {
         Single.<Boolean>create(singleEmitter -> {
             if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS) {
                 GcmNetworkManager gcmNetworkManager = GcmNetworkManager.getInstance(context);
-                if (cancel) gcmNetworkManager.cancelAllTasks(NotificationSchedulerJobTask.class);
+                if (cancel) gcmNetworkManager.cancelAllTasks(NotificationJobService.class);
                 if (duration == -1) {
-                    gcmNetworkManager.cancelAllTasks(NotificationSchedulerJobTask.class);
+                    gcmNetworkManager.cancelAllTasks(NotificationJobService.class);
                     return;
                 }
                 final long finalDuration = duration <= 0 ? THIRTY_MINUTES : duration;
@@ -79,7 +79,7 @@ public class NotificationSchedulerJobTask extends GcmTaskService {
                         .setRequiredNetwork(PeriodicTask.NETWORK_STATE_ANY)
                         .setPeriod(finalDuration)
                         .setFlex(finalDuration)
-                        .setService(NotificationSchedulerJobTask.class)
+                        .setService(NotificationJobService.class)
                         .build();
                 gcmNetworkManager.schedule(task);
                 singleEmitter.onSuccess(true);

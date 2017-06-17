@@ -80,8 +80,6 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             builder.setSpan(new BackgroundColorSpan(color), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
             if (theme == PrefGetter.LIGHT) {
                 builder.setSpan(new ForegroundColorSpan(Color.RED), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
-            } else if (theme == PrefGetter.AMLOD) {
-                builder.setSpan(new ForegroundColorSpan(Color.BLUE), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
             }
             builder.setSpan(new TypefaceSpan("monospace"), stringStart, stringEnd, SPAN_EXCLUSIVE_EXCLUSIVE);
         }

@@ -133,7 +133,7 @@ dependencies {
     implementation 'com.github.GrenderG:Toasty:1.1.3'
     implementation 'com.github.JediBurrell:MaterialTapTargetPrompt:-SNAPSHOT'
     implementation 'com.github.k0shk0sh:RetainedDateTimePickers:1.0.2'
-    implementation 'com.github.daniel-stoneuk:material-about-library:1.8.1'
+    implementation 'com.github.k0shk0sh:material-about-library:master-SNAPSHOT'
     implementation "io.requery:requery:${requery}"
     implementation "io.requery:requery-android:${requery}"
     implementation('com.mikepenz:aboutlibraries:5.9.5@aar') { transitive = true }

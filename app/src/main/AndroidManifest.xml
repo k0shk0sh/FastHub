@@ -235,7 +235,7 @@
         </activity>
 
         <service
-            android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
+            android:name=".provider.tasks.notification.NotificationJobService"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
@@ -258,6 +258,15 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e"/>
+
+        <service
+            android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
+            tools:node="remove"/>
+
+        <service
+            android:name="com.firebase.jobdispatcher.JobService"
+            tools:node="remove"/>
+
     </application>
 
 </manifest>
