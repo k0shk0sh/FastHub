@@ -29,7 +29,7 @@
                 android:id="@+id/watchRepoImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_eye"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -55,7 +55,7 @@
                 android:id="@+id/starRepoImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_star"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -80,7 +80,7 @@
                 android:id="@+id/forkRepoImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_fork"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -107,7 +107,7 @@
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_book"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -134,7 +134,7 @@
                 android:id="@+id/pinImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_pin"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/mal_title_licenses"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_license"/>
 
             <com.fastaccess.ui.widgets.FontTextView

@@ -6,6 +6,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 
@@ -46,7 +47,7 @@ public class PrefGetter {
             AMLOD,
             MID_NIGHT_BLUE
     })
-    @Retention(RetentionPolicy.SOURCE) @interface ThemeType {}
+    @Retention(RetentionPolicy.SOURCE) public @interface ThemeType {}
 
     @IntDef({
             RED,
@@ -239,6 +240,10 @@ public class PrefGetter {
         return getThemeType(context.getResources());
     }
 
+    @ThemeType public static int getThemeType() {
+        return getThemeType(App.getInstance().getResources());
+    }
+
     @ThemeColor public static int getThemeColor(@NonNull Context context) {
         return getThemeColor(context.getResources());
     }
@@ -339,6 +344,7 @@ public class PrefGetter {
     public static boolean isAmlodEnabled() {
         return PrefHelper.getBoolean(AMLOD_THEME_ENABLED);
     }
+
     public static void enableMidNightBlueTheme() {
         PrefHelper.set(MIDNIGHTBLUE_THEME_ENABLED, true);
     }

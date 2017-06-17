@@ -41,8 +41,15 @@ public class GithubHelper {
             if (src.startsWith("http://") || src.startsWith("https://")) {
                 continue;
             }
-            String finalSrc = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + src;
-            source = source.replace("src=\"" + src + "\"", "src=\"" + finalSrc + "\"");
+            String finalSrc;
+            Logger.e(src);
+            if (src.startsWith("/" + owner + "/" + repoName)) {
+                finalSrc = "https://raw.githubusercontent.com/" + src;
+            } else {
+                finalSrc = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + src;
+            }
+            source = source.replace("src=\"" + src + "\"", "src=\"" + finalSrc
+                    .replace("raw/", "master/").replaceAll("//", "/") + "\"");
         }
         return validateLinks(source, baseUrl);
     }
@@ -62,8 +69,7 @@ public class GithubHelper {
                 link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href; //assuming always master is bad :'(
             } else {
                 String formattedLink = href.replaceFirst("./", "/");
-                link = "https://api.github.com/repos/" + owner + "/" + repoName +
-                        (formattedLink.startsWith("/") ? formattedLink : ("/" + formattedLink));
+                link = ("https://api.github.com/repos/" + owner + "/" + repoName + formattedLink).replaceAll("//", "/");
             }
             source = source.replace("href=\"" + href + "\"", "href=\"" + link + "\"");
         }

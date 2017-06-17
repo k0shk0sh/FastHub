@@ -179,7 +179,8 @@
         <activity
             android:name=".ui.modules.trending.TrendingActivity"
             android:label="@string/trending"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
@@ -236,9 +237,9 @@
         <service
             android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
             android:exported="true"
-            tools:ignore="ExportedService">
+            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>
-                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
+                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY"/>
             </intent-filter>
         </service>
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
