@@ -14,7 +14,7 @@ install:
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platform-tools"'
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "extras;android;m2repository"'
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "extras;google;m2repository"'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "build-tools;26.0.0-rc2" --channel=2'
+  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "build-tools;26.0.0"'
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platforms;android-25"'
 
 build_script:
