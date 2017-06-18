@@ -24,7 +24,7 @@
             android:layout_gravity="center"
             android:layout_marginEnd="@dimen/spacing_xs_large"
             android:contentDescription="@string/switch_branch"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_branch"/>
 
         <android.support.v7.widget.AppCompatSpinner

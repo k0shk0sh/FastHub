@@ -53,7 +53,7 @@ void Main(string[] args)
 	if (TotalIssues != 0) {
 		PowerShell ps = PowerShell.Create();
 		ps.AddCommand("Add-AppveyorMessage");
-		ps.AddArgument(@"Please, remove this/these string(s) and commit this change.");
+		ps.AddArgument(@"Please, remove the string(s) and commit again.");
 		ps.Invoke();
 		Environment.Exit(101);
 	}

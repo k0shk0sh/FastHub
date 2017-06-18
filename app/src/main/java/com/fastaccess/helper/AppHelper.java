@@ -58,8 +58,8 @@ public class AppHelper {
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {
-        int themeType = PrefGetter.getThemeType(resources);
-        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD;
+        @PrefGetter.ThemeType int themeType = PrefGetter.getThemeType(resources);
+        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD || themeType == PrefGetter.BLUISH;
     }
 
     @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {

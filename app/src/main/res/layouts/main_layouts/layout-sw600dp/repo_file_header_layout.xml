@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_micro"
-    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/spacing_micro"
     android:paddingTop="@dimen/spacing_micro"
     tools:ignore="RtlSymmetry"
     tools:showIn="@layout/repo_file_layout">
@@ -28,7 +28,7 @@
             android:layout_marginStart="@dimen/avatar_margin"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/home"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_home"/>
 
         <android.support.v7.widget.RecyclerView
@@ -46,11 +46,12 @@
         <com.fastaccess.ui.widgets.ForegroundImageView
             android:id="@+id/downloadRepoFiles"
             android:layout_width="wrap_content"
+            android:layout_marginEnd="@dimen/spacing_micro"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/download"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_download"/>
 
         <com.fastaccess.ui.widgets.ForegroundImageView
@@ -60,7 +61,7 @@
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/download"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_search"/>
     </LinearLayout>
 
@@ -78,7 +79,7 @@
             android:layout_marginEnd="@dimen/avatar_margin_end"
             android:layout_marginStart="@dimen/avatar_margin"
             android:contentDescription="@string/switch_branch"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_branch"/>
 
         <android.support.v7.widget.AppCompatSpinner

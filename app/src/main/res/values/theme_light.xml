@@ -215,6 +215,7 @@
         <item name="mal_color_primary">#212121</item>
         <item name="mal_color_secondary">#727272</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
+        <item name="mal_card_background">@color/cardview_light_background</item>
     </style>
 
 

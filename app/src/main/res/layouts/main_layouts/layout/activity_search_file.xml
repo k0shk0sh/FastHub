@@ -45,7 +45,7 @@
                     android:layout_gravity="center"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/clear"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_clear"
                     android:visibility="invisible"/>

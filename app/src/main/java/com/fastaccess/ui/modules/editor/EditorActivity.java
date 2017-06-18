@@ -103,44 +103,17 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.TEXT_CHANGED) void onEdited(CharSequence charSequence) {
         if (editText.isEnabled()) {
             savedText = charSequence;
-            char lastChar = 0;
-            if (charSequence.length() > 0) lastChar = charSequence.charAt(charSequence.length() - 1);
-            if (lastChar != 0) {
-                if (lastChar == '@') {
-                    inMentionMode = editText.getSelectionEnd();
-                    mention.setVisibility(GONE);
-                    listDivider.setVisibility(GONE);
-                    return;
-                } else if (lastChar == ' ')
-                    inMentionMode = -1;
-                else if (inMentionMode > -1)
-                    updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
-                else {
-                    String copy = editText.getText().toString().substring(0, editText.getSelectionEnd());
-                    String[] list = copy.split("\\s+");
-                    String last = list[list.length - 1];
-                    if (last.startsWith("@")) {
-                        inMentionMode = copy.lastIndexOf("@") + 1;
-                        updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
-                    }
-                }
-            } else {
-                inMentionMode = -1;
-            }
-            if (inMentionMode > -1)
-                if (mention != null) {
-                    mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
-                    listDivider.setVisibility(mention.getVisibility());
-                }
-
+            mention(charSequence);
         }
     }
 
     @OnItemClick(R.id.autocomplete) void onMentionSelection(int position) {
-        String complete = mention.getAdapter().getItem(position).toString() + " ";
-        int end = editText.getSelectionEnd();
-        editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
-        inMentionMode = -1;
+        try {
+            String complete = mention.getAdapter().getItem(position).toString() + " ";
+            int end = editText.getSelectionEnd();
+            editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
+            inMentionMode = -1;
+        } catch (Exception ignored) {}
         mention.setVisibility(GONE);
         listDivider.setVisibility(GONE);
     }
@@ -366,12 +339,45 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             for (String participant : participants)
                 if (participant.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()))
                     mentions.add(participant);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
-
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                    android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
             mention.setAdapter(adapter);
             Log.d(getLoggingTag(), mentions.toString());
         }
+    }
+
+    private void mention(CharSequence charSequence) {
+        try {
+            char lastChar = 0;
+            if (charSequence.length() > 0) lastChar = charSequence.charAt(charSequence.length() - 1);
+            if (lastChar != 0) {
+                if (lastChar == '@') {
+                    inMentionMode = editText.getSelectionEnd();
+                    mention.setVisibility(GONE);
+                    listDivider.setVisibility(GONE);
+                    return;
+                } else if (lastChar == ' ')
+                    inMentionMode = -1;
+                else if (inMentionMode > -1)
+                    updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                else {
+                    String copy = editText.getText().toString().substring(0, editText.getSelectionEnd());
+                    String[] list = copy.split("\\s+");
+                    String last = list[list.length - 1];
+                    if (last.startsWith("@")) {
+                        inMentionMode = copy.lastIndexOf("@") + 1;
+                        updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                    }
+                }
+            } else {
+                inMentionMode = -1;
+            }
+            if (inMentionMode > -1)
+                if (mention != null) {
+                    mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
+                    listDivider.setVisibility(mention.getVisibility());
+                }
+        } catch (Exception ignored) {}
     }
 
 }

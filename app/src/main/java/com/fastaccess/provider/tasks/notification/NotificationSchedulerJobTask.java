@@ -24,6 +24,7 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -164,7 +165,7 @@ public class NotificationSchedulerJobTask extends JobService {
                     }
 
                 }, throwable -> finishJob(job), () -> {
-                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor);
+                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor, notificationThreadModels.size() > 1);
                     showNotification(first.getId(), grouped);
                     finishJob(job);
                 });
@@ -255,10 +256,12 @@ public class NotificationSchedulerJobTask extends JobService {
         showNotification(thread.getId(), toAdd);
     }
 
-    private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor) {
+    private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor, boolean toNotificationActivity) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
+                new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
                 .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
-                .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))
                 .addAction(R.drawable.ic_eye_off, getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread

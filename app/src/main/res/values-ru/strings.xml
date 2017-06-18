@@ -13,7 +13,7 @@
     <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
     <string name="reload">Обновить</string>
-    <string name="feeds">Обвноления</string>
+    <string name="feeds">Обновления</string>
     <string name="profile">Профиль</string>
     <string name="error">Ошибка</string>
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
@@ -44,13 +44,13 @@
     <string name="details">Подробности</string>
     <string name="archive_file_detected_error">Обнаружен файл архива. Пожалуйста, скачайте этот файл, чтобы посмотреть его содержимое.</string>
     <string name="minimum_three_chars">Минимум 3 символа</string>
-    <string name="no_file_found">Файлы не найдены</string>
-    <string name="no_readme_found">README не найден</string>
+    <string name="no_file_found">Файлы отсутствуют</string>
+    <string name="no_readme_found">README отсутствует</string>
     <string name="downloading">Скачивание…</string>
     <string name="downloading_file">Скачивание файла…</string>
-    <string name="released">выпустил</string>
-    <string name="drafted">Черновые</string>
-    <string name="releases">Релизы</string>
+    <string name="released">выпустил(а)</string>
+    <string name="drafted">запланировал(а)</string>
+    <string name="releases">Сборки</string>
     <string name="no_body">Содержимое отсутствует</string>
     <string name="contributors">Вкладчики</string>
     <string name="contributions">Вклады</string>
@@ -122,7 +122,7 @@
     <string name="clear">Очистить</string>
     <string name="users">Пользователи</string>
     <string name="title">Название</string>
-    <string name="milestone">Тег</string>
+    <string name="milestone">Цель</string>
     <string name="assign_myself">Назначить себя</string>
     <string name="submit_issue">Опубликовать Вопрос</string>
     <string name="error_creating_issue">Ошибка создания Вопроса</string>
@@ -148,11 +148,11 @@
     <string name="gist_description">Описание Gist\'а</string>
     <string name="avatar_click_hint">Вы можете везде нажать на аватар пользователя, чтобы открыть его профиль</string>
     <string name="feeds_fork_hint">Долгое нажатие на событие ответвления позволяет открыть орининальный или клонированный репозиторий.</string>
-    <string name="click_here_to_download_release_hint">Скачать релизы</string>
+    <string name="click_here_to_download_release_hint">Скачать сборки</string>
     <string name="options">Опции</string>
     <string name="click_file_option_hint">Скачать файл или поделиться папкой</string>
-    <string name="comment_hint">Нажатие на комментарий помечает его автора или изменяет его, если комментарий ваш.
-        \nДолгое нажатие на ваш комментарий удаляет его.</string>
+    <string name="comment_hint">Нажатие на комментарий добавляет его автора к ответу или изменяет его, если комментарий ваш.
+        \nДлительное нажатие на ваш комментарий удаляет его.</string>
     <string name="star_hint">Добавить в Избранное/Удалить из Избранного</string>
     <string name="watch">Следить</string>
     <string name="watch_hint">Следить/перестать следить за репозиторием</string>
@@ -199,12 +199,12 @@
     <string name="edited">\u2022 изменено</string>
     <string name="update_issue">Обновить Вопрос</string>
     <string name="update_pull_request">Обновить Запрос на слияние</string>
-    <string name="no_milestones">Теги отсутствуют</string>
+    <string name="no_milestones">Цели отсутствуют</string>
     <string name="add">Добавить</string>
     <string name="done">Завершено</string>
     <string name="home">Начальный экран</string>
-    <string name="create_milestone">Создать тег</string>
-    <string name="error_creating_milestone">Ошибка создания тега</string>
+    <string name="create_milestone">Создать цель</string>
+    <string name="error_creating_milestone">Ошибка создания цели</string>
     <string name="due_on">Due on</string>
     <string name="no_assignees">Нет назначений</string>
     <string name="this_value">этот</string>
@@ -280,7 +280,7 @@
     <string name="no_starred_repos">Избранные репозитории отсутствуют</string>
     <string name="no_commits">Фиксации отсутствуют</string>
     <string name="no_contributors">Вкладчики отсутствуют</string>
-    <string name="no_releases">Релизы отсутствуют</string>
+    <string name="no_releases">Сборки отсутствуют</string>
     <string name="no_closed_issues">Закрытые Вопросы отсутствуют</string>
     <string name="no_opened_issues">Открытые Вопросы отсутствуют</string>
     <string name="no_events">События отсутствуют</string>
@@ -315,7 +315,7 @@
     <string name="animations">Анимации</string>
     <string name="dialog_animation_summary">Включить всплывающие анимации</string>
     <string name="dialog_animation_title">Всплывающая анимация</string>
-    <string name="milestones">Теги</string>
+    <string name="milestones">Цели</string>
     <string name="assignee">Назначенные</string>
     <string name="checks_failed">Одна или несколько проверок не пройдены</string>
     <string name="checks_pending">Ожидаются результаты проверок</string>
@@ -389,7 +389,7 @@
     <string name="todo_checked">Элемент списка TODO с галочкой</string>
     <string name="todo_unchecked">Элемент списка TODO без галочки</string>
     <string name="divider">Разделитель</string>
-    <string name="no_user_found">Пользователи не найдены</string>
+    <string name="no_user_found">Пользователи отсутствуют</string>
     <string name="no_trending">Тренды отсутствуют</string>
     <string name="reset">Сброс</string>
     <string name="apply">Применить</string>
@@ -398,6 +398,7 @@
     <string name="sort_direction">Порядок сортировки</string>
     <string name="assignee_added">Назначение успешно совершено</string>
     <string name="reviewer_added">Рецензент успешно добавлен</string>
-    <string name="milestone_added">Тег успешно добавлен</string>
+    <string name="milestone_added">Цель успешно добавлена</string>
     <string name="feed">Обновления</string>
+    <string name="premium_theme">Премиальная тема оформления</string>
 </resources>

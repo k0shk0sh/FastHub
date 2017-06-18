@@ -206,6 +206,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     @Override public void onBackPressed() {
         if (!(this instanceof LoginChooserActivity)) {
             startActivity(new Intent(this, LoginChooserActivity.class));
+            finish();
         } else {
             finish();
         }
