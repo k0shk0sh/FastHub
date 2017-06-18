@@ -293,9 +293,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REFRESH_CODE) {
-            if (resultCode == RESULT_OK) {
-                recreate();
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REFRESH_CODE) {
+                onThemeChanged();
             }
         }
         super.onActivityResult(requestCode, resultCode, data);

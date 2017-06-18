@@ -51,8 +51,14 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                 if (bottomRightBar.isNotEmpty()) {
                     bottomRightBar.remove()
                 }
+                val headerHtml = wikiWrapper.select(".gh-header")
+                val revision = headerHtml.select("a.history")
+                if (revision.isNotEmpty()) {
+                    revision.remove()
+                }
+                val header = headerHtml.html() + "<h1></h1>"
                 val wikiContent = wikiWrapper.select(".wiki-content")
-                val content = wikiContent.select(".markdown-body").html()
+                val content = header + wikiContent.select(".markdown-body").html()
                 val rightBarList = wikiContent.select(".wiki-pages").select("li")
                 val sidebarList = arrayListOf<WikiSideBarModel>()
                 if (rightBarList.isNotEmpty()) {
@@ -63,6 +69,8 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                     }
                 }
                 s.onNext(WikiContentModel(content, "", sidebarList))
+            } else {
+                s.onNext(WikiContentModel("<h2 align='center'>No Wiki</h4>", "", arrayListOf()))
             }
             s.onComplete()
         }

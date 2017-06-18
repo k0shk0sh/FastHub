@@ -19,7 +19,7 @@ import com.fastaccess.data.dao.SettingsModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
-import com.fastaccess.provider.tasks.notification.NotificationJobService;
+import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -106,17 +106,17 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 getPreferenceScreen().addPreference(notificationTime);
                 getPreferenceScreen().addPreference(notificationRead);
                 getPreferenceScreen().addPreference(notificationSound);
-                NotificationJobService.scheduleJob(App.getInstance(),
+                NotificationSchedulerJobTask.scheduleJob(App.getInstance(),
                         PrefGetter.getNotificationTaskDuration(), true);
             } else {
                 getPreferenceScreen().removePreference(notificationTime);
                 getPreferenceScreen().removePreference(notificationRead);
                 getPreferenceScreen().removePreference(notificationSound);
-                NotificationJobService.scheduleJob(App.getInstance(), -1, true);
+                NotificationSchedulerJobTask.scheduleJob(App.getInstance(), -1, true);
             }
             return true;
         } else if (preference.getKey().equalsIgnoreCase("notificationTime")) {
-            NotificationJobService.scheduleJob(App.getInstance(),
+            NotificationSchedulerJobTask.scheduleJob(App.getInstance(),
                     PrefGetter.notificationDurationMillis((String) newValue), true);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("recylerViewAnimation")) {
