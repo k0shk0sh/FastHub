@@ -3,8 +3,10 @@ package com.fastaccess.provider.theme
 import android.app.ActivityManager
 import android.graphics.BitmapFactory
 import android.support.annotation.StyleRes
+import com.danielstone.materialaboutlibrary.MaterialAboutActivity
 
 import com.fastaccess.R
+import com.fastaccess.helper.Logger
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.ui.base.BaseActivity
@@ -28,7 +30,25 @@ object ThemeEngine {
                 BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(activity)))
     }
 
+    fun applyForAbout(activity: MaterialAboutActivity) {
+        val themeMode = PrefGetter.getThemeType(activity)
+        if (themeMode == PrefGetter.LIGHT) {
+            activity.setTheme(R.style.AppTheme_AboutActivity_Light)
+        } else if (themeMode == PrefGetter.DARK) {
+            activity.setTheme(R.style.AppTheme_AboutActivity_Dark)
+        } else if (themeMode == PrefGetter.AMLOD) {
+            activity.setTheme(R.style.AppTheme_AboutActivity_Amlod)
+        } else if (themeMode == PrefGetter.MID_NIGHT_BLUE) {
+            activity.setTheme(R.style.AppTheme_AboutActivity_MidNightBlue)
+        } else if (themeMode == PrefGetter.BLUISH) {
+            activity.setTheme(R.style.AppTheme_AboutActivity_Bluish)
+        }
+        activity.setTaskDescription(ActivityManager.TaskDescription(activity.getString(R.string.app_name),
+                BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(activity)))
+    }
+
     @StyleRes fun getTheme(themeMode: Int, themeColor: Int): Int {
+        Logger.e(themeMode, themeColor)
         // I wish if I could simplify this :'( too many cases for the love of god.
         if (themeMode == PrefGetter.LIGHT) {
             when (themeColor) {
@@ -106,6 +126,25 @@ object ThemeEngine {
                 PrefGetter.ORANGE -> return R.style.ThemeMidNighBlue_Orange
                 PrefGetter.DEEP_ORANGE -> return R.style.ThemeMidNighBlue_DeepOrange
                 else -> return R.style.ThemeMidNighBlue
+            }
+        } else if (themeMode == PrefGetter.BLUISH) {
+            when (themeColor) {
+                PrefGetter.RED -> return R.style.ThemeBluish_Red
+                PrefGetter.PINK -> return R.style.ThemeBluish_Pink
+                PrefGetter.PURPLE -> return R.style.ThemeBluish_Purple
+                PrefGetter.DEEP_PURPLE -> return R.style.ThemeBluish_DeepPurple
+                PrefGetter.INDIGO -> return R.style.ThemeBluish_Indigo
+                PrefGetter.BLUE -> return R.style.ThemeBluish
+                PrefGetter.LIGHT_BLUE -> return R.style.ThemeBluish_LightBlue
+                PrefGetter.CYAN -> return R.style.ThemeBluish_Cyan
+                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.ThemeBluish_Green
+                PrefGetter.LIGHT_GREEN -> return R.style.ThemeBluish_LightGreen
+                PrefGetter.LIME -> return R.style.ThemeBluish_Lime
+                PrefGetter.YELLOW -> return R.style.ThemeBluish_Yellow
+                PrefGetter.AMBER -> return R.style.ThemeBluish_Amber
+                PrefGetter.ORANGE -> return R.style.ThemeBluish_Orange
+                PrefGetter.DEEP_ORANGE -> return R.style.ThemeBluish_DeepOrange
+                else -> return R.style.ThemeBluish
             }
         }
         return R.style.ThemeLight

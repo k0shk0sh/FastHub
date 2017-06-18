@@ -12,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Spinner;
 
 import com.annimon.stream.Objects;
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.RepoFile;
@@ -34,7 +35,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.OnTouch;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 18 Feb 2017, 2:10 AM
@@ -225,6 +225,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         if (savedInstanceState == null) {
+            getPresenter().onFragmentCreated(getArguments());
+        } else if (getPresenter().getPaths().isEmpty() && !getPresenter().isApiCalled()) {
             getPresenter().onFragmentCreated(getArguments());
         }
         setBranchesData(getPresenter().getBranches(), false);

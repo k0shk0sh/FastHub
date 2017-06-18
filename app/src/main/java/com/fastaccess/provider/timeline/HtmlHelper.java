@@ -1,6 +1,7 @@
 package com.fastaccess.provider.timeline;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -11,7 +12,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.handler.BetterLinkMovementExtended;
@@ -53,15 +54,14 @@ public class HtmlHelper {
     }
 
     private static HtmlSpanner initHtml(@NonNull TextView textView) {
-        boolean isDark = AppHelper.isNightMode(textView.getResources());
-        @ColorInt int windowBackground = isDark ? ViewHelper.getWindowBackground(textView.getContext()) :
-                                         ContextCompat.getColor(textView.getContext(), R.color.light_patch_ref_color);
+        @PrefGetter.ThemeType int theme = PrefGetter.getThemeType();
+        @ColorInt int windowBackground = getWindowBackground(theme);
         Drawable checked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_small);
         Drawable unchecked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_empty_small);
         HtmlSpanner mySpanner = new HtmlSpanner();
         mySpanner.setStripExtraWhiteSpace(true);
-        mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, isDark));
-        mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, isDark));
+        mySpanner.registerHandler("pre", new PreTagHandler(windowBackground, true, theme));
+        mySpanner.registerHandler("code", new PreTagHandler(windowBackground, false, theme));
         mySpanner.registerHandler("img", new DrawableHandler(textView));
         mySpanner.registerHandler("g-emoji", new EmojiHandler());
         mySpanner.registerHandler("blockquote", new QouteHandler(windowBackground));
@@ -88,6 +88,19 @@ public class HtmlHelper {
         tableHandler.setTextSize(18.0F);
         mySpanner.registerHandler("table", tableHandler);
         return mySpanner;
+    }
+
+    @ColorInt private static int getWindowBackground(@PrefGetter.ThemeType int theme) {
+        switch (theme) {
+            case PrefGetter.AMLOD:
+                return Color.parseColor("#0B162A");
+            case PrefGetter.BLUISH:
+                return Color.parseColor("#111C2C");
+            case PrefGetter.DARK:
+                return Color.parseColor("#22252A");
+            default:
+                return Color.parseColor("#EEEEEE");
+        }
     }
 
     private static final String TOGGLE_START = "<span class=\"email-hidden-toggle\">";

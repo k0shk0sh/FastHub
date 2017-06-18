@@ -5,32 +5,55 @@ function scrollToLineNumber(lineNo) {
     div.parentElement.style.backgroundColor = "rgb(248, 238, 199)";
     if(toScrollTo != null) smoothScroll(toScrollTo);
 }
-var smoothScroll = function (elementId) {
-    var MIN_PIXELS_PER_STEP = 16;
-    var MAX_SCROLL_STEPS = 30;
-    var target = elementId;
-    var scrollContainer = target;
-    do {
-        scrollContainer = scrollContainer.parentNode;
-        if (!scrollContainer) return;
-        scrollContainer.scrollTop += 1;
-    } while (scrollContainer.scrollTop == 0);
 
-    var targetY = 0;
-    do {
-        if (target == scrollContainer) break;
-        targetY += target.offsetTop;
-    } while (target = target.offsetParent);
+function currentYPosition() {
+    // Firefox, Chrome, Opera, Safari
+    if (self.pageYOffset) return self.pageYOffset;
+    // Internet Explorer 6 - standards mode
+    if (document.documentElement && document.documentElement.scrollTop)
+        return document.documentElement.scrollTop;
+    // Internet Explorer 6, 7 and 8
+    if (document.body.scrollTop) return document.body.scrollTop;
+    return 0;
+}
 
-    var pixelsPerStep = Math.max(MIN_PIXELS_PER_STEP,
-        (targetY - scrollContainer.scrollTop) / MAX_SCROLL_STEPS);
+function elmYPosition(element) {
+    var elm = element;
+    var y = elm.offsetTop;
+    var node = elm;
+    while (node.offsetParent && node.offsetParent != document.body) {
+        node = node.offsetParent;
+        y += node.offsetTop;
+    }
+    return y;
+}
 
-    var stepFunc = function () {
-        scrollContainer.scrollTop = Math.min(targetY, pixelsPerStep + scrollContainer.scrollTop);
-        if (scrollContainer.scrollTop >= targetY) {
-            return;
+function smoothScroll(element) {
+    var startY = currentYPosition();
+    var stopY = elmYPosition(element);
+    var distance = stopY > startY ? stopY - startY : startY - stopY;
+    if (distance < 100) {
+        scrollTo(0, stopY);
+        return;
+    }
+    var speed = Math.round(distance / 100);
+    if (speed >= 20) speed = 20;
+    var step = Math.round(distance / 25);
+    var leapY = stopY > startY ? startY + step : startY - step;
+    var timer = 0;
+    if (stopY > startY) {
+        for (var i = startY; i < stopY; i += step) {
+            setTimeout("window.scrollTo(0, " + leapY + ")", timer * speed);
+            leapY += step;
+            if (leapY > stopY) leapY = stopY;
+            timer++;
         }
-        window.requestAnimationFrame(stepFunc);
-    };
-    window.requestAnimationFrame(stepFunc);
-};
+        return;
+    }
+    for (var i = startY; i > stopY; i -= step) {
+        setTimeout("window.scrollTo(0, " + leapY + ")", timer * speed);
+        leapY -= step;
+        if (leapY < stopY) leapY = stopY;
+        timer++;
+    }
+}

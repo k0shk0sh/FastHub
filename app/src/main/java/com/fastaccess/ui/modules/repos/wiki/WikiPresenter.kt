@@ -4,6 +4,7 @@ import android.content.Intent
 import com.fastaccess.data.dao.wiki.WikiContentModel
 import com.fastaccess.data.dao.wiki.WikiSideBarModel
 import com.fastaccess.helper.BundleConstant
+import com.fastaccess.helper.Logger
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.rest.jsoup.JsoupProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -51,8 +52,14 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                 if (bottomRightBar.isNotEmpty()) {
                     bottomRightBar.remove()
                 }
+                val headerHtml = wikiWrapper.select(".gh-header .gh-header-meta")
+                val revision = headerHtml.select("a.history")
+                if (revision.isNotEmpty()) {
+                    revision.remove()
+                }
+                val header = "<div class='gh-header-meta'>${headerHtml.html()}</div>"
                 val wikiContent = wikiWrapper.select(".wiki-content")
-                val content = wikiContent.select(".markdown-body").html()
+                val content = header + wikiContent.select(".markdown-body").html()
                 val rightBarList = wikiContent.select(".wiki-pages").select("li")
                 val sidebarList = arrayListOf<WikiSideBarModel>()
                 if (rightBarList.isNotEmpty()) {
@@ -62,7 +69,10 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                         sidebarList.add(WikiSideBarModel(sidebarTitle, sidebarLink))
                     }
                 }
+                Logger.d(header)
                 s.onNext(WikiContentModel(content, "", sidebarList))
+            } else {
+                s.onNext(WikiContentModel("<h2 align='center'>No Wiki</h4>", "", arrayListOf()))
             }
             s.onComplete()
         }

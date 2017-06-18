@@ -1,6 +1,5 @@
 package com.fastaccess.data.dao;
 
-import android.graphics.Color;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -15,9 +14,6 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.data.dao.types.ReviewStateType;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.ParseDateFormat;
-import com.fastaccess.ui.widgets.LabelSpan;
-import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -180,64 +176,40 @@ import static com.annimon.stream.Collectors.toList;
                     }
                     return issueEvent.getActor().getLogin();
                 }));
-        for (List<IssueEvent> issueEvents : issueEventMap.values()) {
-            IssueEvent toAdd = null;
-            SpannableBuilder spannableBuilder = SpannableBuilder.builder();
-            for (IssueEvent issueEventModel : issueEvents) {
-                if (issueEventModel != null) {
-                    IssueEventType event = issueEventModel.getEvent();
-                    if (event != null) {
+        if (issueEventMap != null && !issueEventMap.isEmpty()) {
+            for (Map.Entry<String, List<IssueEvent>> stringListEntry : issueEventMap.entrySet()) {
+                List<LabelModel> labelModels = new ArrayList<>();
+                List<IssueEvent> events = stringListEntry.getValue();
+                IssueEvent toAdd = null;
+                for (IssueEvent event : events) {
+                    if (event.getEvent() == IssueEventType.labeled || event.getEvent() == IssueEventType.unlabeled) {
                         if (toAdd == null) {
-                            toAdd = issueEventModel;
+                            toAdd = event;
                         }
-                        long time = toAdd.getCreatedAt().after(issueEventModel.getCreatedAt()) ? (toAdd.getCreatedAt().getTime() - issueEventModel
-                                .getCreatedAt().getTime()) : (issueEventModel.getCreatedAt().getTime() - toAdd.getCreatedAt().getTime());
-                        if (TimeUnit.MINUTES.toMinutes(time) <= 2 && toAdd.getEvent() == event) {
-                            if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
-                                LabelModel labelModel = issueEventModel.getLabel();
-                                int color = Color.parseColor("#" + labelModel.getColor());
-                                spannableBuilder.append(" ")
-                                        .append(" " + labelModel.getName() + " ", new LabelSpan(color))
-                                        .append(" ");
-                            } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
-                                spannableBuilder.append(" ")
-                                        .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "",
-                                                new LabelSpan(Color.TRANSPARENT))
-                                        .append(" ");
-                            }
+                        long time = toAdd.getCreatedAt().after(event.getCreatedAt()) ? (toAdd.getCreatedAt().getTime() - event
+                                .getCreatedAt().getTime()) : (event.getCreatedAt().getTime() - toAdd.getCreatedAt().getTime());
+                        if (TimeUnit.MINUTES.toMinutes(time) <= 2 && toAdd.getEvent() == event.getEvent()) {
+                            labelModels.add(event.getLabel());
                         } else {
-                            models.add(new TimelineModel(issueEventModel));
+                            models.add(new TimelineModel(event));
                         }
                     } else {
-                        models.add(new TimelineModel(issueEventModel));
+                        models.add(new TimelineModel(event));
                     }
                 }
-            }
-            if (toAdd != null) {
-                SpannableBuilder builder = SpannableBuilder.builder();
-                if (toAdd.getAssignee() != null && toAdd.getAssigner() != null) {
-                    builder.bold(toAdd.getAssigner().getLogin(), new LabelSpan(Color.TRANSPARENT));
-                } else {
-                    if (toAdd.getActor() != null) {
-                        builder.bold(toAdd.getActor().getLogin(), new LabelSpan(Color.TRANSPARENT));
-                    }
+                if (toAdd != null) {
+                    toAdd.setLabels(labelModels);
+                    models.add(new TimelineModel(toAdd));
                 }
-                builder.append(" ")
-                        .append(toAdd.getEvent().name().replaceAll("_", " "), new LabelSpan(Color.TRANSPARENT));
-                toAdd.setLabels(SpannableBuilder.builder()
-                        .append(builder)
-                        .append(spannableBuilder)
-                        .append(" ")
-                        .append(ParseDateFormat.getTimeAgo(toAdd.getCreatedAt()), new LabelSpan(Color.TRANSPARENT)));
-                models.add(new TimelineModel(toAdd));
             }
         }
         return Stream.of(models)
-                .sortBy(timelineModel -> timelineModel.getEvent().getCreatedAt())
-                .collect(Collectors.toList());
+                .sortBy(TimelineModel::getSortedDate)
+                .toList();
     }
 
-    @NonNull private static List<TimelineModel> constructReviews(@NonNull List<ReviewModel> reviews, @Nullable List<ReviewCommentModel> comments) {
+    @NonNull private static List<TimelineModel> constructReviews
+            (@NonNull List<ReviewModel> reviews, @Nullable List<ReviewCommentModel> comments) {
         List<TimelineModel> models = new ArrayList<>();
         if (comments == null || comments.isEmpty()) {
             models.addAll(Stream.of(reviews)
@@ -258,6 +230,12 @@ import static com.annimon.stream.Collectors.toList;
                     groupedReviewModel.setPosition(reviewCommentModel.getOriginalPosition());
                     groupedReviewModel.setId(reviewCommentModel.getId());
                 }
+                for (ReviewCommentModel reviewCommentModel : reviewCommentModels) {
+                    if (reviewCommentModel.getCreatedAt() != null) {
+                        groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
+                        break;
+                    }
+                }
                 groupedReviewModel.setComments(reviewCommentModels);
                 models.add(new TimelineModel(groupedReviewModel));
             }
@@ -266,7 +244,7 @@ import static com.annimon.stream.Collectors.toList;
                     .map(TimelineModel::new)
                     .collect(Collectors.toList()));
         }
-        return Stream.of(models).sortBy(TimelineModel::getSortedDate).toList();
+        return models;
     }
 
     @Override public boolean equals(Object o) {

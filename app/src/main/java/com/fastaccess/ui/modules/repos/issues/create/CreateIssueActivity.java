@@ -38,7 +38,6 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     @BindView(R.id.title) TextInputLayout title;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.submit) View submit;
-
     @State String repoId;
     @State String login;
     @State Issue issue;

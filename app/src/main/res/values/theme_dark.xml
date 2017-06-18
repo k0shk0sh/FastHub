@@ -218,6 +218,7 @@
         <item name="mal_lightActionBar">false</item>
         <item name="mal_color_primary">#eee</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>
+        <item name="mal_card_background">#2D3035</item>
     </style>
 
 </resources>

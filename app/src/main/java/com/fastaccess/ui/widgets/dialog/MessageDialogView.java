@@ -76,7 +76,7 @@ public class MessageDialogView extends BaseBottomSheetDialog {
             if (msg != null) {
                 message.setVisibility(View.GONE);
                 prettifyWebView.setVisibility(View.VISIBLE);
-                prettifyWebView.setGithubContent(msg, null);
+                prettifyWebView.setGithubContent(msg, null, false, false);
                 prettifyWebView.setNestedScrollingEnabled(false);
                 return;
             }

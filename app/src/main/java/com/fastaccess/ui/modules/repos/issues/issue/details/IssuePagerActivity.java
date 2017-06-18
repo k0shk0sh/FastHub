@@ -242,6 +242,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         onUpdateMenu();
         Issue issueModel = getPresenter().getIssue();
         setTitle(String.format("#%s", issueModel.getNumber()));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setSubtitle(issueModel.getRepoId());
+        }
         updateViews(issueModel);
         if (isUpdate) {
             IssueTimelineFragment issueDetailsView = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
@@ -383,7 +386,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .append(" ")
                     .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
-                    .append(parsedDate).append(" ").bold(issueModel.getRepoId()));
+                    .append(parsedDate));
             avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
         }
     }

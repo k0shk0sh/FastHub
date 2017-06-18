@@ -74,11 +74,17 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
             SpannableBuilder builder = SpannableBuilder.builder();
             Stream.of(pullRequestStatusModel.getStatuses())
                     .filter(statusesModel -> statusesModel.getState() != null)
-                    .forEach(statusesModel -> builder
-                            .append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()))
-                            .append(" ")
-                            .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(), Uri.parse(statusesModel.getTargetUrl())))
-                            .append("\n"));
+                    .forEach(statusesModel -> {
+                        builder.append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()));
+                        if (!InputHelper.isEmpty(statusesModel.getTargetUrl())) {
+                            builder.append(" ")
+                                    .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(),
+                                            Uri.parse(statusesModel.getTargetUrl())))
+                                    .append("\n");
+                        } else {
+                            builder.append("\n");
+                        }
+                    });
             if (!InputHelper.isEmpty(builder)) {
                 statuses.setMovementMethod(LinkMovementMethod.getInstance());
                 statuses.setText(builder);

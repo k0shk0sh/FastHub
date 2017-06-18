@@ -119,11 +119,13 @@
         <item>German</item>
         <item>Turkish</item>
         <item>Chinese</item>
+        <item>Traditional Chinese</item>
         <item>Bahasa Indonesia</item>
         <item>Russian</item>
         <item>Italian</item>
         <item>Japanese</item>
         <item>Lithuanian</item>
+        <item>Brazilian Portuguese</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -131,11 +133,13 @@
         <item>de</item>
         <item>tr</item>
         <item>zh</item>
+        <item>zh-rTW</item>
         <item>in</item>
         <item>ru</item>
         <item>it</item>
         <item>ja</item>
         <item>lt</item>
+        <item>pt-rBR</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">
