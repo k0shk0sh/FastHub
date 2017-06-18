@@ -65,11 +65,24 @@ public class GithubHelper {
                 continue;
             }
             String link;
-            if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(href))) {
-                link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href; //assuming always master is bad :'(
+            if (href.startsWith("/" + owner + "/" + repoName)) {
+                if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(href))) {
+                    link = ("https://raw.githubusercontent.com/" + href)
+                            .replace("blob/", "master/")
+                            .replaceAll("//", "/");
+                } else {
+                    String formattedLink = href.replaceFirst("./", "/");
+                    link = "https://api.github.com/repos/" + formattedLink
+                            .replace("blob/", "master/")
+                            .replaceAll("//", "/");
+                }
             } else {
-                String formattedLink = href.replaceFirst("./", "/");
-                link = ("https://api.github.com/repos/" + owner + "/" + repoName + formattedLink).replaceAll("//", "/");
+                if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(href))) {
+                    link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href; //assuming always master is bad :'(
+                } else {
+                    String formattedLink = href.replaceFirst("./", "/");
+                    link = ("https://api.github.com/repos/" + owner + "/" + repoName + formattedLink).replaceAll("//", "/");
+                }
             }
             source = source.replace("href=\"" + href + "\"", "href=\"" + link + "\"");
         }
@@ -101,7 +114,7 @@ public class GithubHelper {
 
     @NonNull private static String getCodeStyle(@NonNull Context context, boolean isDark) {
         if (!isDark) return "";
-        String primaryColor = "#" + Integer.toHexString(ViewHelper.getPrimaryColor(context)).substring(2).toUpperCase();
+        String primaryColor = getCodeBackgroundColor(context);
         String accentColor = "#" + Integer.toHexString(ViewHelper.getAccentColor(context)).substring(2).toUpperCase();
         Logger.e(primaryColor, accentColor);
         return "<style>\n" +
@@ -110,6 +123,14 @@ public class GithubHelper {
                 (PrefGetter.getThemeType(context) == PrefGetter.AMLOD ? "border: solid 1px " + accentColor + " !important;\n" : "") +
                 "}\n" +
                 "</style>";
+    }
+
+    @NonNull private static String getCodeBackgroundColor(@NonNull Context context) {
+        @PrefGetter.ThemeType int themeType = PrefGetter.getThemeType();
+        if (themeType == PrefGetter.BLUISH) {
+            return "#" + Integer.toHexString(ViewHelper.getPrimaryDarkColor(context)).substring(2).toUpperCase();
+        }
+        return "#" + Integer.toHexString(ViewHelper.getPrimaryColor(context)).substring(2).toUpperCase();
     }
 
 }

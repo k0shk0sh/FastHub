@@ -195,10 +195,10 @@
         <activity
             android:name=".ui.modules.repos.wiki.WikiActivity"
             android:label="@string/gollum"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.modules.main.MainActivity"/>
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
         <activity
@@ -235,13 +235,13 @@
         </activity>
 
         <service
-            android:name=".provider.tasks.notification.NotificationJobService"
-            android:exported="true"
-            android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
+            android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
+            android:exported="false">
             <intent-filter>
-                <action android:name="com.google.android.gms.gcm.ACTION_TASK_READY"/>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
+
         <service android:name=".provider.tasks.notification.ReadNotificationService"/>
         <service android:name=".provider.tasks.git.GithubActionService"/>
         <service android:name=".provider.tasks.git.ReactionService"/>
@@ -258,14 +258,6 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="6ed82b6e0756853d7d782a3f547f84f9ecba217e"/>
-
-        <service
-            android:name=".provider.tasks.notification.NotificationSchedulerJobTask"
-            tools:node="remove"/>
-
-        <service
-            android:name="com.firebase.jobdispatcher.JobService"
-            tools:node="remove"/>
 
     </application>
 

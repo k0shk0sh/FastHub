@@ -83,7 +83,14 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         if (resultCode == Activity.RESULT_OK) {
             if (PrefGetter.isProEnabled() || PrefGetter.isMidNightBlueThemeEnabled()
                     || PrefGetter.isAmlodEnabled() || PrefGetter.isBluishEnabled()) {
-                themeListener?.onThemeApplied()
+                val productKey = data?.getStringExtra(BundleConstant.ITEM)
+                productKey?.let {
+                    when (it) {
+                        getString(R.string.amlod_theme_purchase) -> setTheme(getString(R.string.amlod_theme_mode))
+                        getString(R.string.midnight_blue_theme_purchase) -> setTheme(getString(R.string.mid_night_blue_theme_mode))
+                        getString(R.string.theme_bluish_purchase) -> setTheme(getString(R.string.bluish_theme))
+                    }
+                }
             }
         }
     }
@@ -101,38 +108,38 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     private fun setTheme() {
         when (theme) {
             R.style.ThemeLight -> {
-                PrefHelper.set(THEME, getString(R.string.light_theme_mode))
-                themeListener?.onThemeApplied()
+                setTheme(getString(R.string.light_theme_mode))
             }
             R.style.ThemeDark -> {
-                PrefHelper.set(THEME, getString(R.string.dark_theme_mode))
-                themeListener?.onThemeApplied()
+                setTheme(getString(R.string.dark_theme_mode))
             }
             R.style.ThemeAmlod -> {
                 if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set(THEME, getString(R.string.amlod_theme_mode))
-                    themeListener?.onThemeApplied()
+                    setTheme(getString(R.string.amlod_theme_mode))
                 } else {
                     DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
                 }
             }
             R.style.ThemeMidNighBlue -> {
                 if (PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set(THEME, getString(R.string.mid_night_blue_theme_mode))
-                    themeListener?.onThemeApplied()
+                    setTheme(getString(R.string.mid_night_blue_theme_mode))
                 } else {
                     DonateActivity.start(this, getString(R.string.midnight_blue_theme_purchase))
                 }
             }
             R.style.ThemeBluish -> {
                 if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set(THEME, getString(R.string.bluish_theme))
-                    themeListener?.onThemeApplied()
+                    setTheme(getString(R.string.bluish_theme))
                 } else {
                     DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
                 }
             }
         }
+    }
+
+    private fun setTheme(theme: String) {
+        PrefHelper.set(THEME, theme)
+        themeListener?.onThemeApplied()
     }
 
     private fun isPremiumTheme(): Boolean = theme != R.style.ThemeLight && theme != R.style.ThemeDark

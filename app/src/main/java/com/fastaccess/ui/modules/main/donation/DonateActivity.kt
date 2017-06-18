@@ -58,13 +58,17 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                         Answers.getInstance().logPurchase(PurchaseEvent().putItemName(productKey))
                         showMessage(R.string.success, R.string.success_purchase_message)
                         enableProduct(productKey)
-                        setResult(Activity.RESULT_OK)
+                        val intent = Intent()
+                        intent.putExtra(BundleConstant.ITEM, productKey)
+                        setResult(Activity.RESULT_OK, intent)
                     } else {
                         if (throwable is RxBillingServiceException) {
                             val code = throwable.code
                             if (code == RxBillingServiceError.ITEM_ALREADY_OWNED) {
                                 enableProduct(productKey)
-                                setResult(Activity.RESULT_OK)
+                                val intent = Intent()
+                                intent.putExtra(BundleConstant.ITEM, productKey)
+                                setResult(Activity.RESULT_OK, intent)
                             } else {
                                 showErrorMessage(throwable.message!!)
                                 Logger.e(code)
