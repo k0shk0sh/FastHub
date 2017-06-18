@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.widget.Toast;
 
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
@@ -24,15 +25,13 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.firebase.jobdispatcher.Constraint;
-import com.firebase.jobdispatcher.FirebaseJobDispatcher;
-import com.firebase.jobdispatcher.GooglePlayDriver;
-import com.firebase.jobdispatcher.Job;
-import com.firebase.jobdispatcher.JobParameters;
-import com.firebase.jobdispatcher.JobService;
-import com.firebase.jobdispatcher.Lifetime;
-import com.firebase.jobdispatcher.RetryStrategy;
-import com.firebase.jobdispatcher.Trigger;
+import com.fastaccess.ui.modules.notification.NotificationActivity;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.GcmTaskService;
+import com.google.android.gms.gcm.PeriodicTask;
+import com.google.android.gms.gcm.TaskParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
@@ -41,49 +40,21 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import static com.google.android.gms.gcm.GcmNetworkManager.RESULT_SUCCESS;
 
 /**
  * Created by Kosh on 19 Feb 2017, 6:32 PM
  */
 
-public class NotificationSchedulerJobTask extends JobService {
+public class NotificationJobService extends GcmTaskService {
     private final static String JOB_ID = "fasthub_notification";
 
     private final static int THIRTY_MINUTES = 30 * 60;
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
-
-    @Override public boolean onStartJob(JobParameters job) {
-        if (PrefGetter.getNotificationTaskDuration() == -1) {
-            scheduleJob(this, -1, false);
-            finishJob(job);
-            return true;
-        }
-        Login login = null;
-        try {
-            login = Login.getUser();
-        } catch (Exception ignored) {}
-        if (login != null) {
-            RestProvider.getNotificationService()
-                    .getNotifications(ParseDateFormat.getLastWeekDate())
-                    .subscribeOn(Schedulers.io())
-                    .subscribe(item -> {
-                        AppHelper.cancelAllNotifications(getApplicationContext());
-                        if (item != null) {
-                            onSave(item.getItems(), job);
-                        } else {
-                            finishJob(job);
-                        }
-                    }, throwable -> jobFinished(job, true));
-        } else {
-            finishJob(job);
-        }
-        return true;
-    }
-
-    @Override public boolean onStopJob(JobParameters jobParameters) {
-        return false;
-    }
 
     public static void scheduleJob(@NonNull Context context) {
         int duration = PrefGetter.getNotificationTaskDuration();
@@ -91,33 +62,47 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
-        if (cancel) dispatcher.cancel(JOB_ID);
-        if (duration == -1) {
-            dispatcher.cancel(JOB_ID);
-            return;
-        }
-        duration = duration <= 0 ? THIRTY_MINUTES : duration;
-        Job.Builder builder = dispatcher
-                .newJobBuilder()
-                .setTag(JOB_ID)
-                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-                .setLifetime(Lifetime.FOREVER)
-                .setRecurring(true)
-                .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(10, duration))
-                .setService(NotificationSchedulerJobTask.class);
-        dispatcher.mustSchedule(builder.build());
+        Single.<Boolean>create(singleEmitter -> {
+            if (GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS) {
+                GcmNetworkManager gcmNetworkManager = GcmNetworkManager.getInstance(context);
+                if (cancel) gcmNetworkManager.cancelAllTasks(NotificationJobService.class);
+                if (duration == -1) {
+                    gcmNetworkManager.cancelAllTasks(NotificationJobService.class);
+                    return;
+                }
+                final long finalDuration = duration <= 0 ? THIRTY_MINUTES : duration;
+                PeriodicTask task = new PeriodicTask.Builder()
+                        .setTag(JOB_ID)
+                        .setUpdateCurrent(true)
+                        .setPersisted(true)
+                        .setRequiresCharging(false)
+                        .setRequiredNetwork(PeriodicTask.NETWORK_STATE_ANY)
+                        .setPeriod(finalDuration)
+                        .setFlex(finalDuration)
+                        .setService(NotificationJobService.class)
+                        .build();
+                gcmNetworkManager.schedule(task);
+                singleEmitter.onSuccess(true);
+            }
+            singleEmitter.onSuccess(false);
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(o -> {
+                    if (!o) {
+                        Toast.makeText(context, "No Google API Service", Toast.LENGTH_SHORT).show();
+                    }
+                }, Throwable::printStackTrace);
     }
 
-    private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {
+    private void onSave(@Nullable List<Notification> notificationThreadModels, TaskParams job) {
         if (notificationThreadModels != null) {
             RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe(notification -> {/**/}, Throwable::printStackTrace);
             onNotifyUser(notificationThreadModels, job);
         }
     }
 
-    private void onNotifyUser(@NonNull List<Notification> notificationThreadModels, JobParameters job) {
+    private void onNotifyUser(@NonNull List<Notification> notificationThreadModels, TaskParams job) {
         long count = Stream.of(notificationThreadModels)
                 .filter(Notification::isUnread)
                 .count();
@@ -164,15 +149,13 @@ public class NotificationSchedulerJobTask extends JobService {
                     }
 
                 }, throwable -> finishJob(job), () -> {
-                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor);
+                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor, notificationThreadModels.size() > 1);
                     showNotification(first.getId(), grouped);
                     finishJob(job);
                 });
     }
 
-    private void finishJob(JobParameters job) {
-        jobFinished(job, false);
-    }
+    private void finishJob(TaskParams job) {}
 
     private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, String iconUrl) {
         if (!InputHelper.isEmpty(iconUrl)) {
@@ -255,10 +238,12 @@ public class NotificationSchedulerJobTask extends JobService {
         showNotification(thread.getId(), toAdd);
     }
 
-    private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor) {
+    private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor, boolean toNotificationActivity) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
+                new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
                 .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
-                .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))
                 .addAction(R.drawable.ic_eye_off, getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread
@@ -294,6 +279,39 @@ public class NotificationSchedulerJobTask extends JobService {
         Intent intent = ReadNotificationService.start(getApplicationContext(), id, url);
         return PendingIntent.getService(getApplicationContext(), InputHelper.getSafeIntId(id), intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @Override public int onRunTask(TaskParams job) {
+        if (PrefGetter.getNotificationTaskDuration() == -1) {
+            scheduleJob(this, -1, false);
+            finishJob(job);
+            return RESULT_SUCCESS;
+        }
+        Login login = null;
+        try {
+            login = Login.getUser();
+        } catch (Exception ignored) {}
+        if (login != null) {
+            RestProvider.getNotificationService()
+                    .getNotifications(ParseDateFormat.getLastWeekDate())
+                    .subscribeOn(Schedulers.io())
+                    .subscribe(item -> {
+                        AppHelper.cancelAllNotifications(getApplicationContext());
+                        if (item != null) {
+                            onSave(item.getItems(), job);
+                        } else {
+                            finishJob(job);
+                        }
+                    }, Throwable::printStackTrace);
+        } else {
+            finishJob(job);
+        }
+        return RESULT_SUCCESS;
+    }
+
+    @Override public void onInitializeTasks() {
+        super.onInitializeTasks();
+        scheduleJob(this);
     }
 
     private static class CustomNotificationModel {

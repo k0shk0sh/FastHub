@@ -18,7 +18,7 @@ install:
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platforms;android-25"'
 
 build_script:
-  - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cscs /ac check_translations.cs
+  - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cscs /ac C:\FH\.github\check_translations.cs
   - cmd: gradlew clean assembleDebug --stacktrace
 
 test: off

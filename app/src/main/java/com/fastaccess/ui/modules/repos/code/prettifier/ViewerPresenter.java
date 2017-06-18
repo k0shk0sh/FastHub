@@ -1,16 +1,15 @@
 package com.fastaccess.ui.modules.repos.code.prettifier;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.MarkdownModel;
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.ViewerFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
@@ -121,13 +120,14 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                 if (isMarkdown) {
                     MarkdownModel model = new MarkdownModel();
                     model.setText(downloadedStream);
-                    NameParser parser = new NameParser(url);
-                    if (parser.getUsername() != null && parser.getName() != null) {
-                        model.setContext(parser.getUsername() + "/" + parser.getName());
-                    } else {
-                        model.setContext("");
+                    Uri uri = Uri.parse(url);
+                    StringBuilder baseUrl = new StringBuilder();
+                    for (String s : uri.getPathSegments()) {
+                        if (!s.equalsIgnoreCase(uri.getLastPathSegment())) {
+                            baseUrl.append("/").append(s);
+                        }
                     }
-                    Logger.e(model.getContext());
+                    model.setContext(baseUrl.toString());
                     makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
                         isMarkdown = true;
                         downloadedStream = string;

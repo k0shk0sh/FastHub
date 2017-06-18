@@ -411,9 +411,10 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     private void updateViews(@NonNull PullRequest pullRequest) {
         setTitle(String.format("#%s", pullRequest.getNumber()));
-        date.setText(SpannableBuilder.builder().append(getPresenter().getMergeBy(pullRequest, getApplicationContext()))
-                .append(" ")
-                .bold(pullRequest.getRepoId()));
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setSubtitle(pullRequest.getRepoId());
+        }
+        date.setText(SpannableBuilder.builder().append(getPresenter().getMergeBy(pullRequest, getApplicationContext())));
         size.setVisibility(View.GONE);
         User userModel = pullRequest.getUser();
         if (userModel != null) {

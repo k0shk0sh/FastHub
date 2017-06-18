@@ -2,21 +2,29 @@ package com.fastaccess.ui.modules.trending
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.os.Handler
+import android.support.annotation.ColorInt
 import android.support.design.widget.NavigationView
 import android.support.v4.widget.DrawerLayout
+import android.text.Editable
 import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
+import butterknife.OnClick
+import butterknife.OnEditorAction
+import butterknife.OnTextChanged
 import com.evernote.android.state.State
 import com.fastaccess.R
-import com.fastaccess.helper.BundleConstant
-import com.fastaccess.helper.Bundler
-import com.fastaccess.helper.Logger
+import com.fastaccess.helper.*
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
+import com.fastaccess.ui.widgets.FontEditText
 import com.fastaccess.ui.widgets.bindView
 
 
@@ -25,7 +33,6 @@ import com.fastaccess.ui.widgets.bindView
  */
 
 class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), TrendingMvp.View {
-
     private var trendingFragment: TrendingFragment? = null
 
     val navMenu: NavigationView by bindView(R.id.navMenu)
@@ -33,22 +40,28 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
     val weekly: TextView by bindView(R.id.weekly)
     val monthly: TextView by bindView(R.id.monthly)
     val drawerLayout: DrawerLayout by bindView(R.id.drawer)
+    val clear: View by bindView(R.id.clear)
+    val searchEditText: FontEditText by bindView(R.id.searchEditText)
 
 
     @State var selectedTitle: String = "All Language"
 
-    companion object {
-        fun getTrendingIntent(context: Context, lang: String?, query: String?): Intent {
-            val intent = Intent(context, TrendingActivity::class.java)
-            intent.putExtras(Bundler.start()
-                    .put(BundleConstant.EXTRA, lang)
-                    .put(BundleConstant.EXTRA_TWO, query)
-                    .end())
-            return intent
+    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) fun onTextChange(s: Editable) {
+        val text = s.toString()
+        if (text.isEmpty()) {
+            AnimHelper.animateVisibility(clear, false)
+        } else {
+            AnimHelper.animateVisibility(clear, true)
         }
     }
 
-    fun onDailyClicked() {
+    @OnEditorAction(R.id.searchEditText) fun onSearch(): Boolean {
+        presenter.onFilterLanguage(InputHelper.toString(searchEditText))
+        ViewHelper.hideKeyboard(searchEditText)
+        return true
+    }
+
+    @OnClick(R.id.daily) fun onDailyClicked() {
         Logger.e()
         daily.isSelected = true
         weekly.isSelected = false
@@ -56,52 +69,58 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         setValues()
     }
 
-    fun onWeeklyClicked() {
+    @OnClick(R.id.weekly) fun onWeeklyClicked() {
         weekly.isSelected = true
         daily.isSelected = false
         monthly.isSelected = false
         setValues()
     }
 
-    fun onMonthlyClicked() {
+    @OnClick(R.id.monthly) fun onMonthlyClicked() {
         monthly.isSelected = true
         weekly.isSelected = false
         daily.isSelected = false
         setValues()
     }
 
-    override fun layout(): Int {
-        return R.layout.trending_activity_layout
+    @OnClick(R.id.clear) fun onClearSearch() {
+        ViewHelper.hideKeyboard(searchEditText)
+        searchEditText.setText("")
+        onClearMenu()
+        presenter.onLoadLanguage()
     }
 
-    override fun isTransparent(): Boolean {
-        return true
-    }
+    override fun layout(): Int = R.layout.trending_activity_layout
 
-    override fun canBack(): Boolean {
-        return true
-    }
+    override fun isTransparent(): Boolean = true
 
-    override fun isSecured(): Boolean {
-        return false
-    }
+    override fun canBack(): Boolean = true
 
-    override fun providePresenter(): TrendingPresenter {
-        return TrendingPresenter()
-    }
+    override fun isSecured(): Boolean = false
+
+    override fun providePresenter(): TrendingPresenter = TrendingPresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        navMenu.itemIconTintList = null
         trendingFragment = supportFragmentManager.findFragmentById(R.id.trendingFragment) as TrendingFragment?
-        daily.setOnClickListener { onDailyClicked() }
-        weekly.setOnClickListener { onWeeklyClicked() }
-        monthly.setOnClickListener { onMonthlyClicked() }
         navMenu.setNavigationItemSelectedListener({ item ->
             closeDrawerLayout()
             onItemClicked(item)
         })
         setupIntent(savedInstanceState)
-        presenter.onLoadLanguage()
+        if (savedInstanceState == null) {
+            presenter.onLoadLanguage()
+        } else {
+             Handler().postDelayed({
+                 Logger.e(searchEditText.text)
+                 if (InputHelper.isEmpty(searchEditText)) { //searchEditText.text is always empty even tho there is a text in it !!!!!!!
+                     presenter.onLoadLanguage()
+                 } else {
+                     presenter.onFilterLanguage(InputHelper.toString(searchEditText))
+                 }
+             }, 300)
+        }
         onSelectTrending()
     }
 
@@ -125,10 +144,15 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         }
     }
 
-    override fun onAppend(title: String) {
+    override fun onAppend(title: String, color: Int) {
         navMenu.menu.add(R.id.languageGroup, title.hashCode(), Menu.NONE, title)
                 .setCheckable(true)
+                .setIcon(createOvalShape(color))
                 .isChecked = title.toLowerCase() == selectedTitle.toLowerCase()
+    }
+
+    override fun onClearMenu() {
+        navMenu.menu.clear()
     }
 
     private fun onItemClicked(item: MenuItem?): Boolean {
@@ -186,6 +210,25 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
                 daily.isSelected = true
             }
             setValues()
+        }
+    }
+
+    private fun createOvalShape(@ColorInt color: Int): GradientDrawable {
+        val drawable = GradientDrawable()
+        drawable.shape = GradientDrawable.OVAL
+        drawable.setSize(24, 24)
+        drawable.setColor(if (color == 0) Color.LTGRAY else color)
+        return drawable
+    }
+
+    companion object {
+        fun getTrendingIntent(context: Context, lang: String?, query: String?): Intent {
+            val intent = Intent(context, TrendingActivity::class.java)
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.EXTRA, lang)
+                    .put(BundleConstant.EXTRA_TWO, query)
+                    .end())
+            return intent
         }
     }
 }

@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.zzhoujay.markdown.style.CodeSpan;
 
@@ -106,6 +107,11 @@ public class TimelineProvider {
             }
         }
         return spannableBuilder;
+    }
+
+    public static void appendLabels(@NonNull LabelModel labelModel, @NonNull SpannableBuilder spannableBuilder) {
+        int color = Color.parseColor("#" + labelModel.getColor());
+        spannableBuilder.append(" ").append(" " + labelModel.getName() + " ", new LabelSpan(color));
     }
 
     @NonNull private static CharSequence getDate(@Nullable Date date) {

@@ -7,7 +7,7 @@
     android:layout_margin="@dimen/grid_spacing"
     android:foreground="?android:selectableItemBackground"
     android:paddingBottom="@dimen/spacing_normal"
-    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/spacing_micro"
     android:paddingTop="@dimen/spacing_normal"
     tools:ignore="RtlSymmetry">
 
@@ -25,7 +25,7 @@
             android:layout_marginStart="@dimen/avatar_margin"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/file"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_micro"
             tools:src="@drawable/ic_file_document"/>
 
         <LinearLayout
@@ -62,7 +62,7 @@
             android:layout_gravity="center"
             android:background="?selectableItemBackgroundBorderless"
             android:contentDescription="@string/file_menu"
-            android:padding="@dimen/spacing_normal"
+            android:padding="@dimen/spacing_micro"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_overflow"/>
     </LinearLayout>

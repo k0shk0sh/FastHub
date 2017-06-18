@@ -34,7 +34,7 @@
                     android:layout_gravity="center"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/back"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_clear"/>
 
@@ -56,7 +56,8 @@
                     android:layout_gravity="center"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/add"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_micro"
+                    android:layout_marginEnd="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_add"
                     android:visibility="gone"/>
@@ -68,7 +69,7 @@
                     android:layout_gravity="center"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/submit"
-                    android:padding="@dimen/spacing_normal"
+                    android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_send"/>
 

@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="?selectableItemBackgroundBorderless"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_download"
                 tools:src="@drawable/ic_notification"/>

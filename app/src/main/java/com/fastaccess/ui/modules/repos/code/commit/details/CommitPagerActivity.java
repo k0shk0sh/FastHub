@@ -163,9 +163,11 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
-        date.setText(SpannableBuilder.builder().append(ParseDateFormat.getTimeAgo(dateValue))
+        date.setText(SpannableBuilder.builder()
+                .bold(getPresenter().repoId)
                 .append(" ")
-                .bold(getPresenter().repoId));
+                .append(" ")
+                .append(ParseDateFormat.getTimeAgo(dateValue)));
         avatarLayout.setUrl(avatar, login);
         addition.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getAdditions() : 0));
         deletion.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getDeletions() : 0));

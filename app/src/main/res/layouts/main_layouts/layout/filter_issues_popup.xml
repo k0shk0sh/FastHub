@@ -12,9 +12,12 @@
         android:layout_height="wrap_content"
         android:background="?selectableItemBackground"
         android:button="@color/transparent"
-        android:drawablePadding="12sp"
+        android:drawablePadding="12dp"
         android:drawableStart="?android:attr/listChoiceIndicatorMultiple"
-        android:padding="@dimen/spacing_xs_large"
+        android:paddingBottom="@dimen/spacing_xs_large"
+        android:paddingEnd="@dimen/spacing_xs_large"
+        android:paddingStart="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_xs_large"
         android:text="@string/last_updated"/>
 
     <com.fastaccess.ui.widgets.FontTextView

@@ -9,7 +9,7 @@ import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
-import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
+import com.fastaccess.provider.tasks.notification.NotificationJobService;
 import com.fastaccess.provider.uil.UILProvider;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
@@ -55,7 +55,7 @@ public class App extends Application {
         setupPreference();
         UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
-        NotificationSchedulerJobTask.scheduleJob(this);
+        NotificationJobService.scheduleJob(this);
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();

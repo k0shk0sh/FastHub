@@ -7,11 +7,14 @@ import com.fastaccess.ui.base.mvp.BaseMvp
  */
 
 interface TrendingMvp {
-    interface View : BaseMvp.FAView{
-        fun onAppend(title: String)
+    interface View : BaseMvp.FAView {
+        fun onAppend(title: String, color: Int)
+        fun onClearMenu()
     }
 
     interface Presenter {
         fun onLoadLanguage()
+
+        fun onFilterLanguage(key: String)
     }
 }

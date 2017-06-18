@@ -209,14 +209,18 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     private void hideShowFab(int position) {
         if (isOrg) {
-            int orgPosition = position;
             if (getPresenter().getIsMember() == 1) {
-                orgPosition = 2;
-            }
-            if (orgPosition == 1 || orgPosition == 2) {
-                fab.show();
+                if (position == 2) {
+                    fab.show();
+                } else {
+                    fab.hide();
+                }
             } else {
-                fab.hide();
+                if (position == 1) {
+                    fab.show();
+                } else {
+                    fab.hide();
+                }
             }
         } else {
             if (position == 2) {

@@ -3,7 +3,6 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelModel;
@@ -58,7 +57,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     String issueId;
     String repoId;
     String login;
-    @Transient CharSequence labels;
+    @Transient List<LabelModel> labels;
 
     public Single save(IssueEvent entity) {
         return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
@@ -116,7 +115,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         dest.writeString(this.issueId);
         dest.writeString(this.repoId);
         dest.writeString(this.login);
-        TextUtils.writeToParcel(labels, dest, flags);
+        dest.writeTypedList(this.labels);
     }
 
     protected AbstractIssueEvent(Parcel in) {
@@ -139,7 +138,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         this.issueId = in.readString();
         this.repoId = in.readString();
         this.login = in.readString();
-        this.labels = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        this.labels = in.createTypedArrayList(LabelModel.CREATOR);
     }
 
     public static final Creator<IssueEvent> CREATOR = new Creator<IssueEvent>() {

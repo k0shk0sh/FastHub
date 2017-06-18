@@ -26,6 +26,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     val apply: FloatingActionButton by lazy { view!!.findViewById(R.id.apply) as FloatingActionButton }
     val toolbar: Toolbar by lazy { view!!.findViewById(R.id.toolbar) as Toolbar }
 
+    private val THEME = "appTheme"
     private var primaryDarkColor: Int = 0
     private var theme: Int = 0
     private var themeListener: ThemeFragmentMvp.ThemeListener? = null
@@ -80,7 +81,8 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (PrefGetter.isProEnabled() || PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isAmlodEnabled()) {
+            if (PrefGetter.isProEnabled() || PrefGetter.isMidNightBlueThemeEnabled()
+                    || PrefGetter.isAmlodEnabled() || PrefGetter.isBluishEnabled()) {
                 themeListener?.onThemeApplied()
             }
         }
@@ -99,32 +101,40 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     private fun setTheme() {
         when (theme) {
             R.style.ThemeLight -> {
-                PrefHelper.set("appTheme", getString(R.string.light_theme_mode))
+                PrefHelper.set(THEME, getString(R.string.light_theme_mode))
                 themeListener?.onThemeApplied()
             }
             R.style.ThemeDark -> {
-                PrefHelper.set("appTheme", getString(R.string.dark_theme_mode))
+                PrefHelper.set(THEME, getString(R.string.dark_theme_mode))
                 themeListener?.onThemeApplied()
             }
             R.style.ThemeAmlod -> {
                 if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set("appTheme", getString(R.string.amlod_theme_mode))
+                    PrefHelper.set(THEME, getString(R.string.amlod_theme_mode))
                     themeListener?.onThemeApplied()
                 } else {
                     DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
                 }
             }
             R.style.ThemeMidNighBlue -> {
-                if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set("appTheme", getString(R.string.mid_night_blue_theme_mode))
+                if (PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isProEnabled()) {
+                    PrefHelper.set(THEME, getString(R.string.mid_night_blue_theme_mode))
                     themeListener?.onThemeApplied()
                 } else {
                     DonateActivity.start(this, getString(R.string.midnight_blue_theme_purchase))
                 }
             }
+            R.style.ThemeBluish -> {
+                if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
+                    PrefHelper.set(THEME, getString(R.string.bluish_theme))
+                    themeListener?.onThemeApplied()
+                } else {
+                    DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
+                }
+            }
         }
     }
 
-    private fun isPremiumTheme(): Boolean = theme == R.style.ThemeAmlod || theme == R.style.ThemeMidNighBlue
+    private fun isPremiumTheme(): Boolean = theme != R.style.ThemeLight && theme != R.style.ThemeDark
 
 }
