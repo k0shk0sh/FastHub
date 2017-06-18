@@ -113,7 +113,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             int end = editText.getSelectionEnd();
             editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
             inMentionMode = -1;
-        } catch (IndexOutOfBoundsException ignored) {}
+        } catch (Exception ignored) {}
         mention.setVisibility(GONE);
         listDivider.setVisibility(GONE);
     }
@@ -339,9 +339,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             for (String participant : participants)
                 if (participant.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()))
                     mentions.add(participant);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
-
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                    android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
             mention.setAdapter(adapter);
             Log.d(getLoggingTag(), mentions.toString());
         }
@@ -378,7 +377,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                     mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
                     listDivider.setVisibility(mention.getVisibility());
                 }
-        } catch (ArrayIndexOutOfBoundsException ignored) {}
+        } catch (Exception ignored) {}
     }
 
 }

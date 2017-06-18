@@ -121,6 +121,12 @@ body h1 {
     border-bottom: 1px solid #eee
 }
 
+.gh-header-meta {
+    padding-bottom: .3em;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #eee
+}
+
 body h2 {
     padding-bottom: .3em;
     font-size: 1.5em;

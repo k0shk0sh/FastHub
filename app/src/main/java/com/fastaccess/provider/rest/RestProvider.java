@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.widget.Toast;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
@@ -105,8 +106,12 @@ public class RestProvider {
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri);
         File direct = new File(Environment.getExternalStorageDirectory() + File.separator + context.getString(R.string.app_name));
-        if (!direct.exists()) {
-            direct.mkdirs();
+        if (!direct.isDirectory() || !direct.exists()) {
+            boolean isCreated = direct.mkdirs();
+            if (!isCreated) {
+                Toast.makeText(context, "Unable to create directory to download file", Toast.LENGTH_SHORT).show();
+                return;
+            }
         }
         String fileName = "";
         NameParser nameParser = new NameParser(url);
