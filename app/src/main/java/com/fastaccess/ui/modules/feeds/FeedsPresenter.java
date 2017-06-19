@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
-class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Presenter {
+public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements FeedsMvp.Presenter {
     private ArrayList<Event> eventsModels = new ArrayList<>();
     private int page;
     private int previousTotal;

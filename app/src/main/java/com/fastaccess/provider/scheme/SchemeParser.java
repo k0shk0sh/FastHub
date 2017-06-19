@@ -13,6 +13,7 @@ import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -107,6 +108,7 @@ public class SchemeParser {
         } else if (HOST_GISTS_RAW.equalsIgnoreCase(data.getHost())) {
             return getGistFile(context, data);
         } else {
+            if (MarkDownProvider.isArchive(data.toString())) return null;
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY)) {
