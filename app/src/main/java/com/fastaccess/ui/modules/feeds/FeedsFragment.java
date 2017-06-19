@@ -15,7 +15,6 @@ import com.fastaccess.data.dao.GitCommitModel;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
@@ -58,7 +57,6 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new FeedsAdapter(getPresenter().getEvents());
-        adapter.setGuideListener(this);
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
@@ -147,10 +145,6 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
                     nameParser.getUsername(), model.getSha(), true);
             getContext().startActivity(intent);
         }
-    }
-
-    @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {
-        if (!PrefGetter.isUserIconGuideShowed()) {}
     }
 
     private void showReload() {
