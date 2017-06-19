@@ -1,7 +1,9 @@
 package com.fastaccess.ui.modules.profile.org.feeds;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -10,6 +12,8 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.GitCommitModel;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.helper.ActivityHelper;
@@ -22,6 +26,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -129,6 +134,12 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
         return onLoadMore;
     }
 
+    @Override public void onOpenCommitChooser(@NonNull List<GitCommitModel> commits) {
+        ListDialogView<GitCommitModel> dialogView = new ListDialogView<>();
+        dialogView.initArguments(getString(R.string.commits), commits);
+        dialogView.show(getChildFragmentManager(), "ListDialogView");
+    }
+
     @Override public void onDestroyView() {
         recycler.removeOnScrollListener(getLoadMore());
         super.onDestroyView();
@@ -138,8 +149,16 @@ public class OrgFeedsFragment extends BaseFragment<OrgFeedsMvp.View, OrgFeedsPre
         onRefresh();
     }
 
-    @Override public void onItemSelected(SimpleUrlsModel item) {
-        SchemeParser.launchUri(getContext(), Uri.parse(item.getItem()));
+    @Override public void onItemSelected(Parcelable item) {
+        if (item instanceof SimpleUrlsModel) {
+            SchemeParser.launchUri(getContext(), Uri.parse(((SimpleUrlsModel) item).getItem()));
+        } else if (item instanceof GitCommitModel) {
+            GitCommitModel model = (GitCommitModel) item;
+            NameParser nameParser = new NameParser(model.getUrl());
+            Intent intent = CommitPagerActivity.createIntent(getContext(), nameParser.getName(),
+                    nameParser.getUsername(), model.getSha(), true);
+            getContext().startActivity(intent);
+        }
     }
 
     @Override public void onShowGuide(@NonNull View itemView, @NonNull Event model) {

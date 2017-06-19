@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.evernote.android.state.State;
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
@@ -127,7 +128,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @Override public void onRequire2Fa() {
-        Toasty.warning(this, getString(R.string.two_factors_otp_error)).show();
+        Toasty.warning(App.getInstance(), getString(R.string.two_factors_otp_error)).show();
         if (twoFactor == null) return;
         twoFactor.setVisibility(View.VISIBLE);
         hideProgress();

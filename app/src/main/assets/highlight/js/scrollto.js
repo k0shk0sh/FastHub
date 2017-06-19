@@ -1,9 +1,21 @@
-function scrollToLineNumber(lineNo) {
-    var div = document.querySelector('div[data-line-number="' + lineNo + '"]');
-    lineNo = lineNo - 5;
-    var toScrollTo = document.querySelector('div[data-line-number="' + lineNo + '"]');
-    div.parentElement.style.backgroundColor = "rgb(248, 238, 199)";
-    if(toScrollTo != null) smoothScroll(toScrollTo);
+function scrollToLineNumber(lineNo, secondLineNo) {
+    console.log(lineNo + "\n" + secondLineNo);
+    var scrollTo = secondLineNo > lineNo ? secondLineNo : lineNo;
+    var div = document.querySelector('div[data-line-number="' + scrollTo + '"]');
+    var scrollToPosition = scrollTo - 5;
+    var toScrollTo = document.querySelector('div[data-line-number="' + scrollToPosition + '"]');
+    if (secondLineNo > lineNo) {
+        for (var i = lineNo; i < secondLineNo + 1; i++) {
+            var highlighted = document.querySelector('div[data-line-number="' + i + '"]');
+            if(highlighted != null)
+                highlighted.parentElement.style.backgroundColor = "rgb(248, 238, 199)";
+
+            if(secondLineNo == i) break;
+        }
+    } else {
+        div.parentElement.style.backgroundColor = "rgb(248, 238, 199)";
+    }
+    if (toScrollTo != null) smoothScroll(toScrollTo);
 }
 
 function currentYPosition() {

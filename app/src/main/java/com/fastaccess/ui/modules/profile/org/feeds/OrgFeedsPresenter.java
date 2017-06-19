@@ -20,6 +20,7 @@ import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 
 import java.util.ArrayList;
 
@@ -97,18 +98,31 @@ class OrgFeedsPresenter extends BasePresenter<OrgFeedsMvp.View> implements OrgFe
             PayloadModel payloadModel = item.getPayload();
             if (payloadModel != null) {
                 if (payloadModel.getHead() != null) {
+                    if (payloadModel.getCommits() != null && payloadModel.getCommits().size() > 1) {
+                        sendToView(view -> view.onOpenCommitChooser(payloadModel.getCommits()));
+                    } else {
+                        Repo repoModel = item.getRepo();
+                        NameParser nameParser = new NameParser(repoModel.getUrl());
+                        Intent intent = CommitPagerActivity.createIntent(v.getContext(), nameParser.getName(),
+                                nameParser.getUsername(), payloadModel.getHead(), true);
+                        v.getContext().startActivity(intent);
+                    }
+                } else if (payloadModel.getIssue() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(payloadModel.getIssue().getHtmlUrl()), true);
+                } else if (payloadModel.getPullRequest() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(payloadModel.getPullRequest().getHtmlUrl()), true);
+                } else if (payloadModel.getComment() != null) {
+                    SchemeParser.launchUri(v.getContext(), Uri.parse(payloadModel.getComment().getHtmlUrl()), true);
+                } else if (item.getType() == EventsType.ReleaseEvent && payloadModel.getRelease() != null) {
+                    NameParser nameParser = new NameParser(payloadModel.getRelease().getHtmlUrl());
+                    v.getContext().startActivity(ReleasesListActivity.getIntent(v.getContext(), nameParser.getUsername(), nameParser.getName(),
+                            payloadModel.getRelease().getId()));
+
+                } else if (item.getType() == EventsType.CreateEvent && "tag".equalsIgnoreCase(payloadModel.getRefType())) {
                     Repo repoModel = item.getRepo();
-                    Uri uri = Uri.parse(repoModel.getName());
-                    if (uri == null || uri.getPathSegments().size() < 1) return;
-                    Intent intent = CommitPagerActivity.createIntent(v.getContext(), uri.getLastPathSegment(), uri.getPathSegments().get(0),
-                            payloadModel.getHead(), true);
-                    v.getContext().startActivity(intent);
-                } else if (item.getPayload().getIssue() != null) {
-                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getIssue().getHtmlUrl()), true);
-                } else if (item.getPayload().getPullRequest() != null) {
-                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getPullRequest().getHtmlUrl()), true);
-                } else if (item.getPayload().getComment() != null) {
-                    SchemeParser.launchUri(v.getContext(), Uri.parse(item.getPayload().getComment().getHtmlUrl()), true);
+                    NameParser nameParser = new NameParser(repoModel.getUrl());
+                    v.getContext().startActivity(ReleasesListActivity.getIntent(v.getContext(), nameParser.getUsername(), nameParser.getName(),
+                            payloadModel.getRef()));
                 } else {
                     Repo repoModel = item.getRepo();
                     if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(repoModel.getName()), true);

@@ -32,6 +32,7 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
     val stateLayout: StateLayout by bindView(R.id.stateLayout)
     val webView: PrettifyWebView by bindView(R.id.webView)
 
+
     @State var wiki = WikiContentModel(null, null, arrayListOf())
     @State var selectedTitle: String = "Home"
 

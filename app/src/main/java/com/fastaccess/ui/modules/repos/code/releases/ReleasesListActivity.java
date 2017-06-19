@@ -10,8 +10,7 @@ import com.fastaccess.R;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.base.BaseActivity;
-
-import net.grandcentrix.thirtyinch.TiPresenter;
+import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 /**
  * Created by Kosh on 25 May 2017, 7:13 PM
@@ -19,11 +18,28 @@ import net.grandcentrix.thirtyinch.TiPresenter;
 
 public class ReleasesListActivity extends BaseActivity {
 
-
     public static Intent getIntent(@NonNull Context context, @NonNull String username, @NonNull String repoId) {
         Intent intent = new Intent(context, ReleasesListActivity.class);
         intent.putExtras(Bundler.start().put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, username)
+                .end());
+        return intent;
+    }
+
+    public static Intent getIntent(@NonNull Context context, @NonNull String username, @NonNull String repoId, @NonNull String tag) {
+        Intent intent = new Intent(context, ReleasesListActivity.class);
+        intent.putExtras(Bundler.start().put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA, username)
+                .put(BundleConstant.EXTRA_THREE, tag)
+                .end());
+        return intent;
+    }
+
+    public static Intent getIntent(@NonNull Context context, @NonNull String username, @NonNull String repoId, long id) {
+        Intent intent = new Intent(context, ReleasesListActivity.class);
+        intent.putExtras(Bundler.start().put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA, username)
+                .put(BundleConstant.EXTRA_TWO, id)
                 .end());
         return intent;
     }
@@ -44,8 +60,8 @@ public class ReleasesListActivity extends BaseActivity {
         return false;
     }
 
-    @NonNull @Override public TiPresenter providePresenter() {
-        return new RepoReleasesPresenter();
+    @NonNull @Override public BasePresenter providePresenter() {
+        return new BasePresenter();
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,8 +74,9 @@ public class ReleasesListActivity extends BaseActivity {
                 //noinspection ConstantConditions
                 getSupportFragmentManager()
                         .beginTransaction()
-                        .replace(R.id.container, RepoReleasesFragment.newInstance(bundle.getString(BundleConstant.ID),
-                                bundle.getString(BundleConstant.EXTRA)))
+                        .replace(R.id.container, RepoReleasesFragment
+                                .newInstance(bundle.getString(BundleConstant.ID), bundle.getString(BundleConstant.EXTRA),
+                                        bundle.getString(BundleConstant.EXTRA_THREE), bundle.getLong(BundleConstant.EXTRA_TWO)))
                         .commit();
             }
         }

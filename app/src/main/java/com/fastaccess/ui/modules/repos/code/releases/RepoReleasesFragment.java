@@ -55,6 +55,17 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         return view;
     }
 
+    public static RepoReleasesFragment newInstance(@NonNull String repoId, @NonNull String login, @Nullable String tag, long id) {
+        RepoReleasesFragment view = new RepoReleasesFragment();
+        view.setArguments(Bundler.start()
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.EXTRA_TWO, id)
+                .put(BundleConstant.EXTRA_THREE, tag)
+                .end());
+        return view;
+    }
+
     @Override public void onNotifyAdapter(@Nullable List<Release> items, int page) {
         hideProgress();
         if (items == null || items.isEmpty()) {
@@ -118,7 +129,8 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
                                 })
                                 .show());
                 adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
-                ActivityHelper.showDismissHints(getContext(), () -> {});
+                ActivityHelper.showDismissHints(getContext(), () -> {
+                });
             }
         }
     }

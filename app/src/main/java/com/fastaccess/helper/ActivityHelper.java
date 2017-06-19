@@ -30,6 +30,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 
 import java.util.ArrayList;
@@ -49,18 +50,6 @@ public class ActivityHelper {
         else if (content instanceof Activity) return (Activity) content;
         else if (content instanceof ContextWrapper) return getActivity(((ContextWrapper) content).getBaseContext());
         return null;
-    }
-
-    public static void login(@NonNull Activity activity, @NonNull Uri url) {
-        try {
-            Uri uri = Uri.parse("googlechrome://navigate?url=" + url);
-            Intent i = new Intent(Intent.ACTION_VIEW, uri);
-            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            activity.startActivity(i);
-        } catch (ActivityNotFoundException e) {
-            Toasty.info(activity, "Chrome is required to login").show();
-            e.printStackTrace();
-        }
     }
 
     public static void startCustomTab(@NonNull Activity context, @NonNull Uri url) {
@@ -164,7 +153,7 @@ public class ActivityHelper {
                     .setText(url)
                     .startChooser();
         } catch (ActivityNotFoundException e) {
-            Toasty.error(context, e.getMessage(), Toast.LENGTH_LONG).show();
+            Toasty.error(App.getInstance(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -207,7 +196,7 @@ public class ActivityHelper {
             return false;
         } else if (isExplanationNeeded(activity, Manifest.permission.READ_EXTERNAL_STORAGE)
                 || isExplanationNeeded(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Toasty.error(activity, activity.getString(R.string.read_write_permission_explanation), Toast.LENGTH_LONG).show();
+            Toasty.error(App.getInstance(), activity.getString(R.string.read_write_permission_explanation), Toast.LENGTH_LONG).show();
             return false;
         }
         return true;
