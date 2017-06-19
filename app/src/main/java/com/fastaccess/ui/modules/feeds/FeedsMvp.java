@@ -1,9 +1,11 @@
 package com.fastaccess.ui.modules.feeds;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 
+import com.fastaccess.data.dao.GitCommitModel;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -19,9 +21,9 @@ import java.util.List;
  * Created by Kosh on 11 Nov 2016, 12:35 PM
  */
 
-interface FeedsMvp {
+public interface FeedsMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener,
-            android.view.View.OnClickListener, ListDialogView.onSimpleItemSelection<SimpleUrlsModel>,
+            android.view.View.OnClickListener, ListDialogView.onSimpleItemSelection<Parcelable>,
             BaseRecyclerAdapter.GuideListener<Event> {
 
         void onNotifyAdapter(@Nullable List<Event> events, int page);
@@ -29,6 +31,8 @@ interface FeedsMvp {
         void onOpenRepoChooser(@NonNull ArrayList<SimpleUrlsModel> models);
 
         @NonNull OnLoadMore getLoadMore();
+
+        void onOpenCommitChooser(@NonNull List<GitCommitModel> commits);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

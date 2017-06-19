@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.evernote.android.state.State;
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
@@ -159,7 +160,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "BannerDialogFragment");
             if (BuildConfig.DEBUG)
                 // Doesn't need a string, will only show up in debug.
-                Toasty.warning(this, "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
+                Toasty.warning(App.getInstance(), "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
         } else {
             getPresenter().onActionClicked(editText, v.getId());
         }
