@@ -21,11 +21,13 @@ build_script:
   - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cscs /ac C:\FH\.github\check_translations.cs
   - cmd: gradlew clean assembleDebug --stacktrace
 
+after_build:
+  - cmd: RENAME C:\FH\app\build\outputs\apk\debug\app-debug.apk fasthub-debug-%APPVEYOR_BUILD_VERSION%.apk
+
 test: off
 
 artifacts:
-- path: \app\build\outputs\apk
-  name: APKs
+- path: \app\build\outputs\apk\debug\fasthub-debug-%APPVEYOR_BUILD_VERSION%.apk
 
 deploy: off
 
