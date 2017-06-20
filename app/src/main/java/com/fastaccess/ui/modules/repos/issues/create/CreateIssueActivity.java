@@ -215,8 +215,8 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
             }
         }
         if (isFeedback) setTitle(R.string.submit_feedback);
-        if (BuildConfig.DEBUG) {
-            if (isFeedback) new AlertDialog.Builder(this)
+        if (BuildConfig.DEBUG && isFeedback) {
+            new AlertDialog.Builder(this)
                     .setTitle("You are currently using a debug build")
                     .setMessage("If you have found a bug, please report it on slack." + "\n" +
                             "Feature requests can be submitted here." + "\n" + "Happy Testing")
@@ -224,7 +224,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                         dialogInterface.dismiss();
                     })
                     .show();
-        };
+        }
         if (toolbar != null) toolbar.setSubtitle(login + "/" + repoId);
     }
 
