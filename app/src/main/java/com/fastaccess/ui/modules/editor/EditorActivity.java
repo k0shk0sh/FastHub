@@ -19,8 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.evernote.android.state.State;
-import com.fastaccess.App;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -47,7 +45,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
-import es.dmoral.toasty.Toasty;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import static android.view.View.GONE;
@@ -158,9 +155,6 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "BannerDialogFragment");
         } else if (v.getId() == R.id.image) {
             EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "BannerDialogFragment");
-            if (BuildConfig.DEBUG)
-                // Doesn't need a string, will only show up in debug.
-                Toasty.warning(App.getInstance(), "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
         } else {
             getPresenter().onActionClicked(editText, v.getId());
         }
