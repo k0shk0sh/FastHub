@@ -54,6 +54,7 @@ android {
         }
         debug {
             applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
             ext.alwaysUpdateBuildId = false
         }
 
