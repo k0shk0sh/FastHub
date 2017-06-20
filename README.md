@@ -116,6 +116,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 - Lithuanian [@mistermantas](https://github.com/mistermantas)
 - Russian [@dedepete](https://github.com/dedepete)
 - Turkish [@kutsan](https://github.com/kutsan)
+- Portuguese [@caiorrs](https://github.com/caiorrs)
 
 # License
 
