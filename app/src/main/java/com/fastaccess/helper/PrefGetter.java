@@ -6,6 +6,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 
@@ -22,6 +23,7 @@ public class PrefGetter {
     public static final int DARK = 2;
     public static final int AMLOD = 3;
     public static final int MID_NIGHT_BLUE = 4;
+    public static final int BLUISH = 5;
 
     public static final int RED = 1;
     public static final int PINK = 2;
@@ -44,9 +46,10 @@ public class PrefGetter {
             LIGHT,
             DARK,
             AMLOD,
-            MID_NIGHT_BLUE
+            MID_NIGHT_BLUE,
+            BLUISH
     })
-    @Retention(RetentionPolicy.SOURCE) @interface ThemeType {}
+    @Retention(RetentionPolicy.SOURCE) public @interface ThemeType {}
 
     @IntDef({
             RED,
@@ -89,6 +92,7 @@ public class PrefGetter {
     private static final String PROFILE_BACKGROUND_URL = "profile_background_url";
     private static final String AMLOD_THEME_ENABLED = "amlod_theme_enabled";
     private static final String MIDNIGHTBLUE_THEME_ENABLED = "midnightblue_theme_enabled";
+    private static final String BLUISH_THEME_ENABLED = "bluish_theme_enabled";
     private static final String PRO_ITEMS = "pro_items";
 
     public static void setToken(@NonNull String token) {
@@ -239,6 +243,10 @@ public class PrefGetter {
         return getThemeType(context.getResources());
     }
 
+    @ThemeType public static int getThemeType() {
+        return getThemeType(App.getInstance().getResources());
+    }
+
     @ThemeColor public static int getThemeColor(@NonNull Context context) {
         return getThemeColor(context.getResources());
     }
@@ -254,6 +262,8 @@ public class PrefGetter {
                 return AMLOD;
             } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.mid_night_blue_theme_mode))) {
                 return MID_NIGHT_BLUE;
+            } else if (appTheme.equalsIgnoreCase(resources.getString(R.string.bluish_theme))) {
+                return BLUISH;
             }
         }
         return LIGHT;
@@ -339,12 +349,21 @@ public class PrefGetter {
     public static boolean isAmlodEnabled() {
         return PrefHelper.getBoolean(AMLOD_THEME_ENABLED);
     }
+
     public static void enableMidNightBlueTheme() {
         PrefHelper.set(MIDNIGHTBLUE_THEME_ENABLED, true);
     }
 
     public static boolean isMidNightBlueThemeEnabled() {
         return PrefHelper.getBoolean(MIDNIGHTBLUE_THEME_ENABLED);
+    }
+
+    public static boolean isBluishEnabled() {
+        return PrefHelper.getBoolean(BLUISH_THEME_ENABLED);
+    }
+
+    public static void enableBluishTheme() {
+        PrefHelper.set(BLUISH_THEME_ENABLED, true);
     }
 
     public static void setProItems() {
@@ -354,5 +373,9 @@ public class PrefGetter {
 
     public static boolean isProEnabled() {
         return PrefHelper.getBoolean(PRO_ITEMS);
+    }
+
+    public static boolean hasSupported() {
+        return isProEnabled() || isAmlodEnabled() || isBluishEnabled();
     }
 }

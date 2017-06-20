@@ -99,6 +99,7 @@ Ads are no longer available until further notice
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
 - [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
+- [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
 - **Fabric** analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
 
@@ -119,6 +120,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 - Italian [@Raffaele74](https://github.com/Raffaele74)
 - Lithuanian [@mistermantas](https://github.com/mistermantas)
 - Traditional Chinese [@maple3142](https://github.com/maple3142)
+- Portuguese [@caiorrs](https://github.com/caiorrs)
 
 # License
 

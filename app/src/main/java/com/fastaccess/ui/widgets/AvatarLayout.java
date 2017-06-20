@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -46,7 +47,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return false;
         if (toast != null) toast.cancel();
-        toast = Toast.makeText(getContext(), view.getContentDescription(), Toast.LENGTH_SHORT);
+        toast = Toast.makeText(App.getInstance(), view.getContentDescription(), Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
         return true;

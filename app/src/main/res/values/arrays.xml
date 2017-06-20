@@ -125,6 +125,7 @@
         <item>Italian</item>
         <item>Japanese</item>
         <item>Lithuanian</item>
+        <item>Brazilian Portuguese</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -138,6 +139,7 @@
         <item>it</item>
         <item>ja</item>
         <item>lt</item>
+        <item>pt-rBR</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">

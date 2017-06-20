@@ -3,6 +3,7 @@ package com.fastaccess.ui.modules.about;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.view.MenuItem;
@@ -14,13 +15,14 @@ import com.danielstone.materialaboutlibrary.MaterialAboutActivity;
 import com.danielstone.materialaboutlibrary.items.MaterialAboutActionItem;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutCard;
 import com.danielstone.materialaboutlibrary.model.MaterialAboutList;
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.version.CheckVersionService;
+import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
@@ -39,21 +41,12 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
 
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
-        int themeMode = PrefGetter.getThemeType(getApplicationContext());
-        if (themeMode == PrefGetter.LIGHT) {
-            setTheme(R.style.AppTheme_AboutActivity_Light);
-        } else if (themeMode == PrefGetter.DARK) {
-            setTheme(R.style.AppTheme_AboutActivity_Dark);
-        } else if (themeMode == PrefGetter.AMLOD) {
-            setTheme(R.style.AppTheme_AboutActivity_Amlod);
-        } else if (themeMode == PrefGetter.MID_NIGHT_BLUE) {
-            setTheme(R.style.AppTheme_AboutActivity_MidNightBlue);
-        }
+        ThemeEngine.INSTANCE.applyForAbout(this);
         super.onCreate(savedInstanceState);
         malRecyclerview = findViewById(R.id.mal_recyclerview);
     }
 
-    @Override protected MaterialAboutList getMaterialAboutList(Context context) {
+    @NonNull @Override protected MaterialAboutList getMaterialAboutList(@NonNull Context context) {
         MaterialAboutCard.Builder appCardBuilder = new MaterialAboutCard.Builder();
         buildApp(context, appCardBuilder);
         MaterialAboutCard.Builder miscCardBuilder = new MaterialAboutCard.Builder();
@@ -72,7 +65,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == BundleConstant.REQUEST_CODE) {
-            Toasty.success(this, getString(R.string.thank_you_for_feedback), Toast.LENGTH_SHORT).show();
+            Toasty.success(App.getInstance(), getString(R.string.thank_you_for_feedback), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -88,17 +81,17 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
         logoAuthor.addItem(new MaterialAboutActionItem.Builder()
                 .text(R.string.google_plus)
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
-                .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://plus.google.com/+KevinAguilarC"))
+                .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "https://plus.google.com/+KevinAguilarC"))
                 .build())
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.twitter)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
-                        .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://twitter.com/kevttob"))
+                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "https://twitter.com/kevttob"))
                         .build())
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.website)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_brower))
-                        .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "https://www.221pixels.com/"))
+                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "https://www.221pixels.com/"))
                         .build());
     }
 
@@ -108,12 +101,12 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .text("Kosh Sergani")
                 .subText("k0shk0sh")
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
-                .setOnClickListener(b -> UserPagerActivity.startActivity(context, "k0shk0sh"))
+                .setOnClickAction(() -> UserPagerActivity.startActivity(context, "k0shk0sh"))
                 .build())
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.fork_github)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_github))
-                        .setOnClickListener(b -> startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh")))
+                        .setOnClickAction(() -> startActivity(RepoPagerActivity.createIntent(this, "FastHub", "k0shk0sh")))
                         .build())
                 .addItem(ConvenienceBuilder.createEmailItem(context, ContextCompat.getDrawable(context, R.drawable.ic_email),
                         getString(R.string.send_email), true, getString(R.string.email_address), getString(R.string.question_concerning_fasthub)));
@@ -124,17 +117,17 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.changelog)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_track_changes))
-                        .setOnClickListener(b -> new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog"))
+                        .setOnClickAction(() -> new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog"))
                         .build())
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.join_slack)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_slack))
-                        .setOnClickListener(b -> ActivityHelper.startCustomTab(this, "http://rebrand.ly/fasthub"))
+                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "http://rebrand.ly/fasthub"))
                         .build())
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.open_source_libs)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_github))
-                        .setOnClickListener(b -> new LibsBuilder()
+                        .setOnClickAction(() -> new LibsBuilder()
                                 .withActivityStyle(AppHelper.isNightMode(getResources()) ? Libs.ActivityStyle.DARK : Libs.ActivityStyle.LIGHT)
                                 .withAutoDetect(true)
                                 .withAboutIconShown(true)
@@ -148,7 +141,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .text(getString(R.string.version))
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_update))
                 .subText(BuildConfig.VERSION_NAME)
-                .setOnClickListener(b -> startService(new Intent(this, CheckVersionService.class)))
+                .setOnClickAction(() -> startService(new Intent(this, CheckVersionService.class)))
                 .build())
                 .addItem(ConvenienceBuilder.createRateActionItem(context, ContextCompat.getDrawable(context, R.drawable.ic_star_filled),
                         getString(R.string.rate_app), null))
@@ -156,7 +149,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                         .text(R.string.report_issue)
                         .subText(R.string.report_issue_here)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_bug))
-                        .setOnClickListener(b -> CreateIssueActivity.startForResult(this, CreateIssueActivity.startForResult(this), malRecyclerview))
+                        .setOnClickAction(() -> CreateIssueActivity.startForResult(this, CreateIssueActivity.startForResult(this), malRecyclerview))
                         .build());
     }
 }

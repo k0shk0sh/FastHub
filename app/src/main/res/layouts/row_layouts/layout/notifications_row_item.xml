@@ -109,7 +109,7 @@
                                 android:layout_height="wrap_content"
                                 android:background="?selectableItemBackgroundBorderless"
                                 android:contentDescription="@string/un_subscribe"
-                                android:padding="@dimen/spacing_normal"
+                                android:padding="@dimen/spacing_micro"
                                 android:src="@drawable/ic_unsubscribe"/>
 
                             <com.fastaccess.ui.widgets.ForegroundImageView
@@ -119,7 +119,7 @@
                                 android:layout_marginStart="@dimen/spacing_normal"
                                 android:background="?selectableItemBackgroundBorderless"
                                 android:contentDescription="@string/un_subscribe"
-                                android:padding="@dimen/spacing_normal"
+                                android:padding="@dimen/spacing_micro"
                                 android:src="@drawable/ic_done"/>
                         </LinearLayout>
 

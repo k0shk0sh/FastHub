@@ -16,7 +16,7 @@ import com.fastaccess.data.dao.wiki.WikiContentModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.ui.base.BaseActivity
-import com.fastaccess.ui.modules.main.MainActivity
+import com.fastaccess.ui.modules.repos.RepoPagerActivity
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.bindView
 import com.prettifier.pretty.PrettifyWebView
@@ -31,6 +31,7 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
     val progressbar: ProgressBar by bindView(R.id.progress)
     val stateLayout: StateLayout by bindView(R.id.stateLayout)
     val webView: PrettifyWebView by bindView(R.id.webView)
+
 
     @State var wiki = WikiContentModel(null, null, arrayListOf())
     @State var selectedTitle: String = "Home"
@@ -104,7 +105,9 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
                 return true
             }
             android.R.id.home -> {
-                startActivity(Intent(this, MainActivity::class.java))
+                if (!presenter.login.isNullOrEmpty() && !presenter.repoId.isNullOrEmpty()) {
+                    startActivity(RepoPagerActivity.createIntent(this, presenter.repoId!!, presenter.login!!))
+                }
                 finish()
                 return true
             }

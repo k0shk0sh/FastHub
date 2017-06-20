@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.helper.ViewHelper;
 
 
@@ -25,7 +26,7 @@ public class ForegroundImageView extends AppCompatImageView {
             setOnLongClickListener(view -> {
                 if (getContentDescription() != null) {
                     if (toast != null) toast.cancel();
-                    toast = Toast.makeText(getContext(), getContentDescription(), Toast.LENGTH_SHORT);
+                    toast = Toast.makeText(App.getInstance(), getContentDescription(), Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                     return true;

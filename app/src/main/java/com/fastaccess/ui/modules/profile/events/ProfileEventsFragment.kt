@@ -2,10 +2,13 @@ package com.fastaccess.ui.modules.profile.events
 
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import android.support.annotation.StringRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import com.fastaccess.R
+import com.fastaccess.data.dao.GitCommitModel
+import com.fastaccess.data.dao.NameParser
 import com.fastaccess.data.dao.SimpleUrlsModel
 import com.fastaccess.data.dao.model.Event
 import com.fastaccess.helper.BundleConstant
@@ -14,6 +17,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore
 import com.fastaccess.provider.scheme.SchemeParser
 import com.fastaccess.ui.adapter.FeedsAdapter
 import com.fastaccess.ui.base.BaseFragment
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.dialog.ListDialogView
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
@@ -23,8 +27,7 @@ import java.util.*
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
-open class ProfileEventsFragment : BaseFragment<ProfileEvents.View, ProfileEventsPresenter>(), ProfileEvents.View {
-
+open class ProfileEventsFragment : BaseFragment<ProfileEventsMvp.View, ProfileEventsPresenter>(), ProfileEventsMvp.View {
 
     val recycler: DynamicRecyclerView  by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
     val refresh: SwipeRefreshLayout by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
@@ -116,13 +119,26 @@ open class ProfileEventsFragment : BaseFragment<ProfileEvents.View, ProfileEvent
         onRefresh()
     }
 
-    override fun onItemSelected(item: SimpleUrlsModel) {
-        SchemeParser.launchUri(context, Uri.parse(item.item))
+    override fun onItemSelected(item: Parcelable) {
+        if (item is SimpleUrlsModel) {
+            SchemeParser.launchUri(context, Uri.parse(item.item))
+        } else if (item is GitCommitModel) {
+            val nameParser = NameParser(item.url)
+            val intent = CommitPagerActivity.createIntent(context, nameParser.name,
+                    nameParser.username, item.sha, true)
+            context.startActivity(intent)
+        }
     }
 
     override fun onScrollTop(index: Int) {
         super.onScrollTop(index)
         recycler.scrollToPosition(0)
+    }
+
+    override fun onOpenCommitChooser(commits: List<GitCommitModel>) {
+        val dialogView = ListDialogView<GitCommitModel>()
+        dialogView.initArguments(getString(R.string.commits), commits)
+        dialogView.show(childFragmentManager, "ListDialogView")
     }
 
     private fun showReload() {

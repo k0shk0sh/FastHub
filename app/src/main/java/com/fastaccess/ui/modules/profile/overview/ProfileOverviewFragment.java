@@ -238,6 +238,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onInitContributions(boolean show) {
+        if (contributionView == null) return;
         if (show) {
             contributionView.onResponse();
         }

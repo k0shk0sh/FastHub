@@ -353,7 +353,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
         long repoSize = repoModel.getSize() > 0 ? (repoModel.getSize() * 1000) : repoModel.getSize();
         date.setText(SpannableBuilder.builder()
-                .append(ParseDateFormat.getTimeAgo(repoModel.getUpdatedAt()))
+                .append(ParseDateFormat.getTimeAgo(repoModel.getPushedAt()))
                 .append(" ,")
                 .append(" ")
                 .append(Formatter.formatFileSize(this, repoSize)));

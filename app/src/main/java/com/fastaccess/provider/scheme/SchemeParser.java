@@ -13,6 +13,7 @@ import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -107,6 +108,7 @@ public class SchemeParser {
         } else if (HOST_GISTS_RAW.equalsIgnoreCase(data.getHost())) {
             return getGistFile(context, data);
         } else {
+            if (MarkDownProvider.isArchive(data.toString())) return null;
             String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY)) {
@@ -216,7 +218,6 @@ public class SchemeParser {
         return null;
     }
 
-
     /**
      * [[k0shk0sh, FastHub, issues], k0shk0sh/fastHub/(issues,pulls,commits, etc)]
      */
@@ -274,7 +275,12 @@ public class SchemeParser {
 
     @Nullable private static String getGistId(@NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        return segments != null && !segments.isEmpty() ? segments.get(0) : null;
+        if (segments.size() != 1 && segments.size() != 2) return null;
+        String gistId = segments.get(segments.size() - 1);
+        if (InputHelper.isEmpty(gistId)) return null;
+        if (TextUtils.isDigitsOnly(gistId)) return gistId;
+        else if (gistId.matches("[a-fA-F0-9]+")) return gistId;
+        else return null;
     }
 
     @Nullable private static Intent getUser(@NonNull Context context, @NonNull Uri uri) {

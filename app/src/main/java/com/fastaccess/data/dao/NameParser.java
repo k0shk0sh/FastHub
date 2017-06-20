@@ -17,8 +17,8 @@ import lombok.Setter;
 @Getter @Setter
 public class NameParser {
 
-    private String name;
-    private String username;
+    public String name;
+    public String username;
 
     public NameParser(@Nullable String url) {
         if (!InputHelper.isEmpty(url)) {
