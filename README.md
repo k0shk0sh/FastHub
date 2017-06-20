@@ -75,7 +75,7 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
   - _FastHub is actively developed. More features will come!_
 
 ~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.~~  
-Adverts will not be available until the further notice.
+Adverts will not be available until the further notice!
 
 # Specs / Open-source libraries:
 
