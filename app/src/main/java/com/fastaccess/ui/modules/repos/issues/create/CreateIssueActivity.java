@@ -8,10 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.evernote.android.state.State;
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
@@ -213,6 +215,14 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
             }
         }
         if (isFeedback) setTitle(R.string.submit_feedback);
+        if (BuildConfig.DEBUG && isFeedback) {
+            new AlertDialog.Builder(this)
+                    .setTitle("You are currently using a debug build")
+                    .setMessage("If you have found a bug, please report it on slack." + "\n" +
+                            "Feature requests can be submitted here." + "\n" + "Happy Testing")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        }
         if (toolbar != null) toolbar.setSubtitle(login + "/" + repoId);
     }
 
