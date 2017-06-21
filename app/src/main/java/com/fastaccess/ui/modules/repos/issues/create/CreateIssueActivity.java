@@ -220,9 +220,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                     .setTitle("You are currently using a debug build")
                     .setMessage("If you have found a bug, please report it on slack." + "\n" +
                             "Feature requests can be submitted here." + "\n" + "Happy Testing")
-                    .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
-                        dialogInterface.dismiss();
-                    })
+                    .setPositiveButton(android.R.string.ok, null)
                     .show();
         }
         if (toolbar != null) toolbar.setSubtitle(login + "/" + repoId);
