@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 
@@ -54,7 +55,7 @@ public class AppHelper {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), uri);
         clipboard.setPrimaryClip(clip);
-        Toasty.success(context, context.getString(R.string.success_copied)).show();
+        Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {

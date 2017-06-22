@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
@@ -109,7 +110,7 @@ public class RestProvider {
         if (!direct.isDirectory() || !direct.exists()) {
             boolean isCreated = direct.mkdirs();
             if (!isCreated) {
-                Toast.makeText(context, "Unable to create directory to download file", Toast.LENGTH_SHORT).show();
+                Toast.makeText(App.getInstance(), "Unable to create directory to download file", Toast.LENGTH_SHORT).show();
                 return;
             }
         }

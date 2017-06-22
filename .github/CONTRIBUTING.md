@@ -2,13 +2,9 @@
 
 If you have a question in mind, feel free to come our public [Slack](https://rebrand.ly/fasthub) channel.
 
-### Registering GitHub Account
+### Optional
 
-Before you clone the project, Please read the guide below to be able to login from FastHub.
-
-[GitHub Guide](https://auth0.com/docs/connections/social/github)
-
-- Please update debug_gradle.properties file and change below:
+- Please update debug_gradle.properties file and change below if you like to use your own keys:
     - github_client_id= your  github clientId
     - github_secret= your github secret
     - redirect_url= (redirect_url must match the url defined in `AndroidManifest` under `LoginView`)

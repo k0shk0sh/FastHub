@@ -28,11 +28,11 @@ public class PrettifyHelper {
 
     @NonNull private static final String WRAPPED_STYLE =
             "<style>\n " +
-                    "pre, pre code, table {\n" +
-                    "    white-space: pre-wrap !important;\n" +
-                    "    word-wrap: break-all !important;\n" +
-                    "    word-wrap: break-word !important;\n" +
-                    "}\n" +
+                    "td.hljs-ln-code {\n" +
+                    "    word-wrap: break-word;\n" +
+                    "    word-break: break-all;\n" +
+                    "    white-space: pre-wrap;\n" +
+                    "}" +
                     "img {\n" +
                     "    max-width: 100% !important;\n" +
                     "}\n" +
@@ -46,7 +46,6 @@ public class PrettifyHelper {
                     "    text-indent: -12px !important;\n" +
                     "}" +
                     "</style>";
-
 
     @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap) {
         return getHtmlContent(getStyle(isDark), getFormattedSource(source), wrap ? WRAPPED_STYLE : "", isDark);

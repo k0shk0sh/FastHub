@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -20,7 +21,7 @@ public class LinksParserActivity extends Activity {
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (Login.getUser() == null) {
-            Toast.makeText(this, R.string.please_login, Toast.LENGTH_SHORT).show();
+            Toast.makeText(App.getInstance(), R.string.please_login, Toast.LENGTH_SHORT).show();
             startActivity(new Intent(this, LoginActivity.class));
             finish();
             return;
