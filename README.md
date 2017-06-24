@@ -77,7 +77,7 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
 ~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.~~  
 _Ads currently not available._
 
-# Specs / Open-source libraries:
+## Specs / Open-source libraries:
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
 - **Kotlin** all new modules starting from 2.5.3 will be written in **#Kotlin**.
@@ -99,32 +99,54 @@ _Ads currently not available._
 - **Fabric** analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
 
-# Contribution
+## Contribution
 
 You love FastHub? You want new features or bug fixes?  
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
 Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-### Language Contributors
+## Language Contributors
 
-- Chinese (Simplified) [@Devifish](https://github.com/Devifish)
-- Chinese (Traditional) [@maple3142](https://github.com/maple3142)
-- German [@failex234](https://github.com/failex234)
-- Indonesian [@dikiaap](https://github.com/dikiaap)
-- Italian [@Raffaele74](https://github.com/Raffaele74)
-- Japanese [@Rintan](https://github.com/Rintan)
-- Lithuanian [@mistermantas](https://github.com/mistermantas)
-- Russian [@dedepete](https://github.com/dedepete)
-- Turkish [@kutsan](https://github.com/kutsan)
-- Portuguese [@caiorrs](https://github.com/caiorrs)
+<details>
+  <summary>
+    <p>- Chinese (Simplified) [@Devifish](https://github.com/Devifish)</p>
+    <p>- Chinese (Traditional) [@maple3142](https://github.com/maple3142)</p>
+    <p>- German [@failex234](https://github.com/failex234)</p>
+    <p>- Indonesian [@dikiaap](https://github.com/dikiaap)</p>
+    <p>- Italian [@Raffaele74](https://github.com/Raffaele74)</p>
+    <p>- Japanese [@Rintan](https://github.com/Rintan)</p>
+    <p>- Lithuanian [@mistermantas](https://github.com/mistermantas)</p>
+    <p>- Russian [@dedepete](https://github.com/dedepete)</p>
+    <p>- Turkish [@kutsan](https://github.com/kutsan)</p>
+    <p>- Portuguese [@caiorrs](https://github.com/caiorrs)</p>
+  </summary>
+</details>
 
-# License
+## FAQ
+
+<details>
+  <summary>Why can't I see my **Organizations** either _Private_ or _Public ones_?</summary>
+  <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button, 
+  alternatively login via **Access Token** which will ease this setup.</p>
+</details>
+
+<details>
+  <summary>I tried to login via Access Token & OTP but it does not work?</summary>
+  <p>You can't login via Access Token & OTP all together due to the lifetime of the OTP code, you'll be required to login in every few seconds.</p>
+</details>
+ 
+<details>
+  <summary>Why my Private Repo Wiki does not show up?</summary>
+  <p>It's due to FastHub scraping GitHub Wiki page & transform it to something Android does.</p>
+</details>
+
+## License
 
 > Copyright (C) 2017 Kosh.  
 > Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html) license.  
 > (See the [LICENSE](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE) file for the whole license text.)
 
-# Screenshots
+## Screenshots
 
 | Mobile Light | Mobile Dark |
 |:-:|:-:|
@@ -134,7 +156,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 |:-:|:-:|
 | ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
 
-# FastHub Logo
+## FastHub Logo
 
 **FastHub** logo is designed by **Kevin Aguilar**.  
 [Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  

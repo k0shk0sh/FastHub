@@ -213,7 +213,8 @@ public class SchemeParser {
         if ("wiki".equalsIgnoreCase(segments.get(2))) {
             String owner = segments.get(0);
             String repoName = segments.get(1);
-            return WikiActivity.Companion.getWiki(context, repoName, owner);
+            return WikiActivity.Companion.getWiki(context, repoName, owner,
+                    "wiki".equalsIgnoreCase(uri.getLastPathSegment()) ? null : uri.getLastPathSegment());
         }
         return null;
     }
@@ -233,6 +234,8 @@ public class SchemeParser {
                     String owner = segments.get(1);
                     String repoName = segments.get(2);
                     return RepoPagerActivity.createIntent(context, repoName, owner);
+                } else if ("orgs".equalsIgnoreCase(segments.get(0))) {
+                    return null;
                 } else {
                     String owner = segments.get(0);
                     String repoName = segments.get(1);
@@ -288,7 +291,11 @@ public class SchemeParser {
         if (segments != null && !segments.isEmpty() && segments.size() == 1) {
             return UserPagerActivity.createIntent(context, segments.get(0));
         } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {
-            return UserPagerActivity.createIntent(context, segments.get(1), true);
+            if ("invitation".equalsIgnoreCase(uri.getLastPathSegment())) {
+                return null;
+            } else {
+                return UserPagerActivity.createIntent(context, segments.get(1), true);
+            }
         }
         return null;
     }

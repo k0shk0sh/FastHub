@@ -94,6 +94,7 @@ public class PrefGetter {
     private static final String MIDNIGHTBLUE_THEME_ENABLED = "midnightblue_theme_enabled";
     private static final String BLUISH_THEME_ENABLED = "bluish_theme_enabled";
     private static final String PRO_ITEMS = "pro_items";
+    private static final String CODE_THEME = "code_theme";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -377,5 +378,13 @@ public class PrefGetter {
 
     public static boolean hasSupported() {
         return isProEnabled() || isAmlodEnabled() || isBluishEnabled();
+    }
+
+    public static String getCodeTheme() {
+        return PrefHelper.getString(CODE_THEME);
+    }
+
+    public static void setCodeTheme(@NonNull String theme) {
+        PrefHelper.set(CODE_THEME, theme);
     }
 }

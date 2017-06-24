@@ -149,8 +149,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                             sendToView(view -> view.onSetupIssue(true));
                         }
                     })
-                    .subscribe(issue -> {/**/},
-                            throwable -> sendToView(view -> view.showErrorIssueActionMsg(currentIssue.getState() == IssueState.open))));
+                    .subscribe(issue -> {/**/}, this::onError));
         }
     }
 
@@ -196,9 +195,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         IssueRequestModel issueRequestModel = IssueRequestModel.clone(issueModel, false);
         makeRestCall(RestProvider.getIssueService().editIssue(login, repoId, issueNumber, issueRequestModel),
                 issue -> {
-                    this.issueModel = issue;
-                    issueModel.setLogin(login);
-                    issueModel.setRepoId(repoId);
+                    this.issueModel.setMilestone(issue.getMilestone());
                     manageObservable(issue.save(issueModel).toObservable());
                     sendToView(view -> updateTimeline(view, R.string.labels_added_successfully));
                 });
@@ -225,9 +222,6 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         assigneesRequestModel.setAssignees(assignees);
         makeRestCall(RestProvider.getIssueService().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
                 issue -> {
-                    this.issueModel = issue;
-                    issueModel.setLogin(login);
-                    issueModel.setRepoId(repoId);
                     UsersListModel assignee = new UsersListModel();
                     assignee.addAll(users);
                     issueModel.setAssignees(assignee);

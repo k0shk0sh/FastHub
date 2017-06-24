@@ -9,35 +9,42 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
+import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitFileListModel;
 import com.fastaccess.data.dao.CommitFileModel;
+import com.fastaccess.data.dao.CommitLinesModel;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.code.commit.viewer.FullCommitFileActivity;
+import com.fastaccess.ui.modules.code.CodeViewerActivity;
 
 import java.util.ArrayList;
+
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:10 PM
  */
 
 class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements CommitFilesMvp.Presenter {
+    @com.evernote.android.state.State String sha;
+    private ArrayList<CommitFileChanges> files = new ArrayList<>();
 
-    private CommitFileListModel files = new CommitFileListModel();
-
-    @Override public void onItemClick(int position, View v, CommitFileModel item) {
+    @Override public void onItemClick(int position, View v, CommitFileChanges model) {
         if (v.getId() == R.id.open) {
+            CommitFileModel item = model.getCommitFileModel();
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             MenuInflater inflater = popup.getMenuInflater();
             inflater.inflate(R.menu.commit_row_menu, popup.getMenu());
             popup.setOnMenuItemClickListener(item1 -> {
                 switch (item1.getItemId()) {
                     case R.id.open:
-                        FullCommitFileActivity.start(v.getContext(), item);
+                        v.getContext().startActivity(CodeViewerActivity.createIntent(v.getContext(), item.getContentsUrl(), item.getBlobUrl()));
                         break;
                     case R.id.share:
                         ActivityHelper.shareUrl(v.getContext(), item.getBlobUrl());
@@ -59,26 +66,42 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommitFileModel item) {}
+    @Override public void onItemLongClick(int position, View v, CommitFileChanges item) {}
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
         if (bundle != null) {
-            String sha = bundle.getString(BundleConstant.ID);
+            sha = bundle.getString(BundleConstant.ID);
             if (!InputHelper.isEmpty(sha)) {
                 CommitFileListModel commitFiles = CommitFilesSingleton.getInstance().getByCommitId(sha);
-                ArrayList<CommitFileModel> fileModels = new ArrayList<>();
                 if (commitFiles != null) {
-                    fileModels.addAll(commitFiles);
-                    CommitFilesSingleton.getInstance().clear();
+                    manageObservable(Observable.just(commitFiles)
+                            .map(CommitFileChanges::construct)
+                            .doFinally(() -> CommitFilesSingleton.getInstance().clear())
+                            .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges))));
                 }
-                sendToView(view -> view.onNotifyAdapter(fileModels));
+
             }
         } else {
             throw new NullPointerException("Bundle is null");
         }
     }
 
-    @NonNull @Override public CommitFileListModel getFiles() {
+    @NonNull @Override public ArrayList<CommitFileChanges> getFiles() {
         return files;
+    }
+
+    @Override public void onSubmitComment(@NonNull String comment, @NonNull CommitLinesModel item, @Nullable Bundle bundle) {
+        if (bundle != null) {
+            String blob = bundle.getString(BundleConstant.ITEM);
+            String path = bundle.getString(BundleConstant.EXTRA);
+            if (path == null || sha == null) return;
+            CommentRequestModel commentRequestModel = new CommentRequestModel();
+            commentRequestModel.setBody(comment);
+            commentRequestModel.setPath(path);
+            commentRequestModel.setPosition(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            NameParser nameParser = new NameParser(blob);
+            makeRestCall(RestProvider.getRepoService().postCommitComment(nameParser.getUsername(),
+                    nameParser.getName(), sha, commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
+        }
     }
 }

@@ -142,10 +142,15 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
 
     companion object {
         fun getWiki(context: Context, repoId: String?, username: String?): Intent {
+            return getWiki(context, repoId, username, null)
+        }
+
+        fun getWiki(context: Context, repoId: String?, username: String?, page: String?): Intent {
             val intent = Intent(context, WikiActivity::class.java)
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.EXTRA, username)
+                    .put(BundleConstant.EXTRA_TWO, page)
                     .end())
             return intent
         }

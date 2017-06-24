@@ -1,5 +1,7 @@
 <resources>
     <!-- DO NOT COPY -->
+
+
     <string name="app_name" translatable="false">FastHub</string>
     <string name="app_name_full" translatable="false">FastHub for Android</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
@@ -78,6 +80,9 @@
     <string name="daily" translatable="false">Daily</string>
     <string name="weekly" translatable="false">Weekly</string>
     <string name="monthly" translatable="false">Monthly</string>
+    <string name="squash" translatable="false">Squash</string>
+    <string name="rebase" translatable="false">Rebase</string>
+    <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
     <!-- END OF DO NOT COPY -->
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
@@ -292,7 +297,7 @@
     <string name="permission_failed">Permission Not Granted.</string>
     <string name="backup_summary">Last update: %s</string>
     <string name="now">Now</string>
-    <string name="unsaved_data_warning">Any unsaved changes will be discarded</string>
+    <string name="unsaved_data_warning">Discard unsaved changes?</string>
     <string name="private_repo">Private</string>
     <string name="rect_avatar_summary">Use rounded rectangle avatars instead of circular avatars</string>
     <string name="rect_avatar_title">Avatar Appearance</string>
@@ -415,7 +420,8 @@
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
-        grant FastHub access to see list your organizations.</string>
+        grant FastHub access to see list your organizations.\nYou could also open up https://github.com/settings/applications and look for
+        FastHub, open it then scroll to Organization access and click on Grant Button.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
@@ -484,4 +490,5 @@
     <string name="milestone_added">Milestone added successfully</string>
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
+    <string name="choose_code_theme">Choose Code theme</string>
 </resources>

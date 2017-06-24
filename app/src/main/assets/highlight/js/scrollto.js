@@ -2,13 +2,13 @@ function scrollToLineNumber(lineNo, secondLineNo) {
     console.log(lineNo + "\n" + secondLineNo);
     var scrollTo = secondLineNo > lineNo ? secondLineNo : lineNo;
     var div = document.querySelector('div[data-line-number="' + scrollTo + '"]');
-    var scrollToPosition = scrollTo - 5;
+    var scrollToPosition = scrollTo > 5 ? (scrollTo - 5) : scrollTo;
     var toScrollTo = document.querySelector('div[data-line-number="' + scrollToPosition + '"]');
     if (secondLineNo > lineNo) {
         for (var i = lineNo; i < secondLineNo + 1; i++) {
             var highlighted = document.querySelector('div[data-line-number="' + i + '"]');
             if(highlighted != null)
-                highlighted.parentElement.style.backgroundColor = "rgb(248, 238, 199)";
+                highlighted.parentElement.style.backgroundColor = "rgb(3, 102, 214)";
 
             if(secondLineNo == i) break;
         }
@@ -19,12 +19,6 @@ function scrollToLineNumber(lineNo, secondLineNo) {
 }
 
 function currentYPosition() {
-    // Firefox, Chrome, Opera, Safari
-    if (self.pageYOffset) return self.pageYOffset;
-    // Internet Explorer 6 - standards mode
-    if (document.documentElement && document.documentElement.scrollTop)
-        return document.documentElement.scrollTop;
-    // Internet Explorer 6, 7 and 8
     if (document.body.scrollTop) return document.body.scrollTop;
     return 0;
 }

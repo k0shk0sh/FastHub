@@ -154,6 +154,19 @@
         <item>Monthly</item>
     </string-array>
 
+    <string-array name="merge_method" translatable="false">
+        <item>@string/merge</item>
+        <item>@string/squash</item>
+        <item>@string/rebase</item>
+    </string-array>
+
+    <string-array name="review_methods" translatable="false">
+        <item>PENDING</item>
+        <item>APPROVE</item>
+        <item>REQUEST CHANGES</item>
+        <item>COMMENT</item>
+    </string-array>
+
     <!-- EmojiCompat Downloadable Fonts Arrays -->
     <array name="fonts_certificate" translatable="false">
         <item>@array/com_google_android_gms_fonts_certs_dev</item>

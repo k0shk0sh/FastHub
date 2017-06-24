@@ -41,6 +41,7 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuDark</item>
+        <item name="android:spinnerDropDownItemStyle">@style/PopupMenuDark</item>
     </style>
 
     <style name="PopupMenuDark" parent="Widget.AppCompat.PopupMenu">

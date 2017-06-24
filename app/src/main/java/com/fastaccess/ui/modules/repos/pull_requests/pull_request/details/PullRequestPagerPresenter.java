@@ -11,6 +11,7 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.AssigneesRequestModel;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
@@ -46,6 +47,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State boolean isCollaborator;
     @com.evernote.android.state.State boolean showToRepoBtn;
+    @com.evernote.android.state.State ArrayList<CommentRequestModel> reviewComments = new ArrayList<>();
 
     @Nullable @Override public PullRequest getPullRequest() {
         return pullRequest;
@@ -198,9 +200,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         IssueRequestModel issueRequestModel = IssueRequestModel.clone(pullRequest, false);
         makeRestCall(RestProvider.getPullRequestService().editIssue(login, repoId, issueNumber, issueRequestModel),
                 pr -> {
-                    this.pullRequest = pr;
-                    pullRequest.setLogin(login);
-                    pullRequest.setRepoId(repoId);
+                    this.pullRequest.setMilestone(pr.getMilestone());
                     manageObservable(pr.save(pullRequest).toObservable());
                     sendToView(view -> updateTimeline(view, R.string.labels_added_successfully));
                 });
@@ -216,12 +216,9 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             assigneesRequestModel.setAssignees(assignees);
             makeRestCall(RestProvider.getPullRequestService().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
                     pullRequestResponse -> {
-                        this.pullRequest = pullRequestResponse;
-                        pullRequest.setLogin(login);
-                        pullRequest.setRepoId(repoId);
-                        UsersListModel assignee = new UsersListModel();
-                        assignee.addAll(users);
-                        pullRequest.setAssignees(assignee);
+                        UsersListModel usersListModel = new UsersListModel();
+                        usersListModel.addAll(users);
+                        this.pullRequest.setAssignees(usersListModel);
                         manageObservable(pullRequest.save(pullRequest).toObservable());
                         sendToView(view -> updateTimeline(view, R.string.assignee_added));
                     }
@@ -234,22 +231,24 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         }
     }
 
-    @Override public void onMerge(@NonNull String msg) {
+    @Override public void onMerge(@NonNull String msg, @NonNull String mergeMethod) {
         if (isMergeable() && (isCollaborator() || isRepoOwner())) {//double the checking
             if (getPullRequest() == null || getPullRequest().getHead() == null || getPullRequest().getHead().getSha() == null) return;
             MergeRequestModel mergeRequestModel = new MergeRequestModel();
             mergeRequestModel.setSha(getPullRequest().getHead().getSha());
             mergeRequestModel.setCommitMessage(msg);
-            manageDisposable(
-                    RxHelper.getObserver(RestProvider.getPullRequestService().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
-                            .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
-                            .subscribe(mergeResponseModel -> {
-                                if (mergeResponseModel.isMerged()) {
-                                    sendToView(view -> updateTimeline(view, R.string.success_merge));
-                                } else {
-                                    sendToView(view -> view.showErrorMessage(mergeResponseModel.getMessage()));
-                                }
-                            }, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage())))
+            mergeRequestModel.setMergeMethod(mergeMethod.toLowerCase());
+            manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService()
+                    .mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
+                    .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
+                    .subscribe(mergeResponseModel -> {
+                        if (mergeResponseModel.isMerged()) {
+                            pullRequest.setMerged(true);
+                            sendToView(view -> updateTimeline(view, R.string.success_merge));
+                        } else {
+                            sendToView(view -> view.showErrorMessage(mergeResponseModel.getMessage()));
+                        }
+                    }, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage())))
             );
         }
     }
@@ -278,6 +277,23 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onRefresh() {
         callApi();
+    }
+
+    @NonNull @Override public ArrayList<CommentRequestModel> getCommitComment() {
+        return reviewComments;
+    }
+
+    @Override public void onAddComment(@NonNull CommentRequestModel comment) {
+        int index = reviewComments.indexOf(comment);
+        if (index != -1) {
+            reviewComments.set(index, comment);
+        } else {
+            reviewComments.add(comment);
+        }
+    }
+
+    @Override public boolean hasReviewComments() {
+        return reviewComments.size() > 0;
     }
 
     private void callApi() {

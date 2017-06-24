@@ -9,12 +9,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.evernote.android.state.State;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -22,6 +24,7 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -68,6 +71,9 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @BindView(R.id.pager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    @BindView(R.id.reviewsCount) FontTextView reviewsCount;
+    @BindView(R.id.submitReviews) FontTextView submitReviews;
+    @BindView(R.id.prReviewHolder) CardView prReviewHolder;
     @State boolean isClosed;
     @State boolean isOpened;
 
@@ -101,6 +107,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             view.onStartNewComment();
         }
     }
+
+    @OnClick(R.id.submitReviews) public void onSubmitReviews() {}
 
     @Override protected int layout() {
         return R.layout.issue_pager_activity;
@@ -336,6 +344,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override public void onUpdateTimeline() {
+        supportInvalidateOptionsMenu();
         PullRequestTimelineFragment pullRequestDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
         if (pullRequestDetailsView != null && getPresenter().getPullRequest() != null) {
             pullRequestDetailsView.onRefresh();
@@ -351,8 +360,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         finish();
     }
 
-    @Override public void onMerge(@NonNull String msg) {
-        getPresenter().onMerge(msg);
+    @Override public void onAddComment(CommentRequestModel comment) {
+        getPresenter().onAddComment(comment);
+        AnimHelper.mimicFabVisibility(getPresenter().hasReviewComments(), prReviewHolder, null);
+        reviewsCount.setText(String.format("%s", getPresenter().getCommitComment().size()));
+    }
+
+    @Override public void onMerge(@NonNull String msg, @NonNull String mergeMethod) {
+        getPresenter().onMerge(msg, mergeMethod);
     }
 
     @Override protected void onNavToRepoClicked() {

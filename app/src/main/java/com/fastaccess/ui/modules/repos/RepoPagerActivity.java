@@ -203,9 +203,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout, R.id.wikiLayout}) void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
-                MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
-                        Bundler.start().put(BundleConstant.EXTRA, true)
-                                .put(BundleConstant.YES_NO_EXTRA, true).end())
+                MessageDialogView.newInstance(getString(R.string.fork), String.format("%s %s/%s?", getString(R.string.fork), login, repoId),
+                        Bundler.start().put(BundleConstant.EXTRA, true).put(BundleConstant.YES_NO_EXTRA, true).end())
                         .show(getSupportFragmentManager(), MessageDialogView.TAG);
                 break;
             case R.id.starRepoLayout:
@@ -526,7 +525,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             menuItem.setTitle(repoModel.getParent().getFullName());
         }
 //        menu.findItem(R.id.deleteRepo).setVisible(getPresenter().isRepoOwner());
-        menu.findItem(R.id.deleteRepo).setVisible(false);//removing delete permission.
+        if (menu.findItem(R.id.deleteRepo) != null) menu.findItem(R.id.deleteRepo).setVisible(false);//removing delete permission.
         return super.onPrepareOptionsMenu(menu);
     }
 

@@ -42,13 +42,18 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     private boolean scrolledTop = true;
     @State boolean isWrap = PrefGetter.isWrapCode();
 
-    public static ViewerFragment newInstance(@NonNull String url) {
-        return newInstance(url, false);
+    public static ViewerFragment newInstance(@NonNull String url, @Nullable String htmlUrl) {
+        return newInstance(url, htmlUrl, false);
     }
 
     public static ViewerFragment newInstance(@NonNull String url, boolean isRepo) {
+        return newInstance(url, null, isRepo);
+    }
+
+    public static ViewerFragment newInstance(@NonNull String url, @Nullable String htmlUrl, boolean isRepo) {
         return newInstance(Bundler.start()
                 .put(BundleConstant.ITEM, url)
+                .put(BundleConstant.EXTRA_TWO, htmlUrl)
                 .put(BundleConstant.EXTRA, isRepo)
                 .end());
     }
@@ -75,7 +80,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     @Override public void onSetCode(@NonNull String text) {
         webView.setVisibility(View.VISIBLE);
-        webView.setSource(text, isWrap, getPresenter().url());
+        webView.setSource(text, isWrap);
         webView.setOnContentChangedListener(this);
         getActivity().supportInvalidateOptionsMenu();
     }

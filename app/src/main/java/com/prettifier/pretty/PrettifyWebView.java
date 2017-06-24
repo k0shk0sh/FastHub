@@ -118,17 +118,34 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source, boolean wrap, @Nullable String url) {
-        WebSettings settings = getSettings();
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        settings.setSupportZoom(!wrap);
-        settings.setBuiltInZoomControls(!wrap);
-        if (!wrap) settings.setDisplayZoomControls(false);
+    public void setThemeSource(@NonNull String source, @Nullable String theme) {
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
-            post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(true);
+            settings.setBuiltInZoomControls(true);
+            settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, theme);
+            loadCode(page);
         }
+    }
+
+    public void setSource(@NonNull String source, boolean wrap) {
+        if (!InputHelper.isEmpty(source)) {
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(!wrap);
+            settings.setBuiltInZoomControls(!wrap);
+            if (!wrap) settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
+            loadCode(page);
+        }
+    }
+
+    private void loadCode(String page) {
+        post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
     }
 
     public void scrollToLine(@NonNull String url) {

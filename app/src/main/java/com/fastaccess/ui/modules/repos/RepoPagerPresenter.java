@@ -194,7 +194,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
             case RepoPagerMvp.CODE:
                 if (codePagerView == null) {
                     onAddAndHide(fragmentManager, RepoCodePagerFragment.newInstance(repoId(), login(),
-                            getRepo().getUrl(), getRepo().getDefaultBranch()), currentVisible);
+                            getRepo().getHtmlUrl(), getRepo().getUrl(), getRepo().getDefaultBranch()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, codePagerView, currentVisible);
                 }

@@ -123,8 +123,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         } else {
             quote.setMaxLines(3);
         }
-        quote.setCompoundDrawablesWithIntrinsicBounds(0, 0, quote.getMaxLines() == 3
-                                                            ? R.drawable.ic_arrow_drop_down : R.drawable.ic_arrow_drop_up, 0);
+        quote.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                quote.getMaxLines() == 3 ? R.drawable.ic_arrow_drop_down : R.drawable.ic_arrow_drop_up, 0);
     }
 
     @OnClick(R.id.view) void onViewMarkDown() {

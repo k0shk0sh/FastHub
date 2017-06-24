@@ -117,6 +117,7 @@ public interface RepoService {
     Observable<Comment> postCommitComment(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                           @NonNull @Path("sha") String ref, @Body CommentRequestModel model);
 
+
     @NonNull @PATCH("repos/{owner}/{repo}/comments/{id}")
     @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> editCommitComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,

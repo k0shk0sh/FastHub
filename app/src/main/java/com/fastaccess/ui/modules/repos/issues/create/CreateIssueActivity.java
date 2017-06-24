@@ -22,10 +22,12 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.EditorActivity;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -230,6 +232,24 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
         super.onActivityResult(requestCode, resultCode, data);
         AppHelper.hideKeyboard(title);
         getPresenter().onActivityForResult(resultCode, requestCode, data);
+    }
+
+    @Override public void onBackPressed() {
+        if (InputHelper.isEmpty(title)) {
+            super.onBackPressed();
+        } else {
+            ViewHelper.hideKeyboard(title);
+            MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
+                    Bundler.start().put("primary_extra", getString(R.string.discard)).put("secondary_extra", getString(R.string.cancel))
+                            .put(BundleConstant.EXTRA, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
+        }
+    }
+
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk && bundle != null) {
+            finish();
+        }
     }
 
     @OnTouch(R.id.description) boolean onTouch(MotionEvent event) {

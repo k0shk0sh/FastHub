@@ -16,6 +16,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.settings.category.SettingsCategoryActivity;
 import com.fastaccess.ui.modules.theme.ThemeActivity;
+import com.fastaccess.ui.modules.theme.code.ThemeCodeActivity;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
 
@@ -55,6 +56,7 @@ public class SettingsActivity extends BaseActivity implements LanguageBottomShee
             setResult(RESULT_CANCELED);
         }
         settings.add(new SettingsModel(R.drawable.ic_color_lens, getString(R.string.theme_title), SettingsModel.THEME));
+        settings.add(new SettingsModel(R.drawable.ic_color_lens, getString(R.string.choose_code_theme), SettingsModel.CODE_THEME));
         settings.add(new SettingsModel(R.drawable.ic_edit, getString(R.string.customization), SettingsModel.CUSTOMIZATION));
         settings.add(new SettingsModel(R.drawable.ic_ring, getString(R.string.notifications), SettingsModel.NOTIFICATION));
         settings.add(new SettingsModel(R.drawable.ic_settings, getString(R.string.behavior), SettingsModel.BEHAVIOR));
@@ -72,6 +74,8 @@ public class SettingsActivity extends BaseActivity implements LanguageBottomShee
                 showLanguageList();
             } else if (settingsModel.getSettingsType() == SettingsModel.THEME) {
                 ActivityHelper.startReveal(this, new Intent(this, ThemeActivity.class), view, THEME_CHANGE);
+            } else if (settingsModel.getSettingsType() == SettingsModel.CODE_THEME) {
+                ActivityHelper.startReveal(this, new Intent(this, ThemeCodeActivity.class), view, THEME_CHANGE);
             } else {
                 ActivityHelper.startReveal(this, intent, view);
             }
