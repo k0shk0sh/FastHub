@@ -108,16 +108,17 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 ## Language Contributors
 
 <details>
-       <summary>- Chinese (Simplified) [@Devifish](https://github.com/Devifish)</summary>
-       <summary>- Chinese (Traditional) [@maple3142](https://github.com/maple3142)</summary>
-       <summary>- German [@failex234](https://github.com/failex234)</summary>
-       <summary>- Indonesian [@dikiaap](https://github.com/dikiaap)</summary>
-       <summary>- Italian [@Raffaele74](https://github.com/Raffaele74)</summary>
-       <summary>- Japanese [@Rintan](https://github.com/Rintan)</summary>
-       <summary>- Lithuanian [@mistermantas](https://github.com/mistermantas)</summary>
-       <summary>- Russian [@dedepete](https://github.com/dedepete)</summary>
-       <summary>- Turkish [@kutsan](https://github.com/kutsan)</summary>
-       <summary>- Portuguese [@caiorrs](https://github.com/caiorrs)</summary>
+       <summary>Thanks for those who contributed to FastHub by adding their language</summary>
+           <p>- Chinese (Simplified) [@Devifish](https://github.com/Devifish)</p>
+           <p>- Chinese (Traditional) [@maple3142](https://github.com/maple3142)</p>
+           <p>- German [@failex234](https://github.com/failex234)</p>
+           <p>- Indonesian [@dikiaap](https://github.com/dikiaap)</p>
+           <p>- Italian [@Raffaele74](https://github.com/Raffaele74)</p>
+           <p>- Japanese [@Rintan](https://github.com/Rintan)</p>
+           <p>- Lithuanian [@mistermantas](https://github.com/mistermantas)</p>
+           <p>- Russian [@dedepete](https://github.com/dedepete)</p>
+           <p>- Turkish [@kutsan](https://github.com/kutsan)</p>
+           <p>- Portuguese [@caiorrs](https://github.com/caiorrs)</p>
 </details>
 
 ## FAQ
