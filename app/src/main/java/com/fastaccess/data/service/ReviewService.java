@@ -6,6 +6,7 @@ import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.ReviewModel;
+import com.fastaccess.data.dao.ReviewRequestModel;
 
 import io.reactivex.Observable;
 import retrofit2.Response;
@@ -63,9 +64,9 @@ public interface ReviewService {
     @DELETE("repos/{owner}/{repo}/pulls/comments/{id}")
     @Headers("Accept: application/vnd.github.black-cat-preview")
     Observable<Response<Boolean>> deleteComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);
-    //
-//    @POST("repos/{owner}/{repo}/pulls/{number}/reviews")
-//    @Headers("Accept: application/vnd.github.black-cat-preview")
-//    Observable<Response> submitPrReview(@Path("owner") String owner, @Path("repo") String repo,
-//                                        @Path("number") long number, @NonNull @Body ReviewRequestModel body);
+
+    @POST("repos/{owner}/{repo}/pulls/{number}/reviews")
+    @Headers("Accept: application/vnd.github.black-cat-preview")
+    Observable<Response<ReviewModel>> submitPrReview(@Path("owner") String owner, @Path("repo") String repo,
+                                        @Path("number") long number, @NonNull @Body ReviewRequestModel body);
 }

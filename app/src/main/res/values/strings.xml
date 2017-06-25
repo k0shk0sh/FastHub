@@ -83,6 +83,7 @@
     <string name="squash" translatable="false">Squash</string>
     <string name="rebase" translatable="false">Rebase</string>
     <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
+    <string name="review_changes" translatable="false">Review Changes</string>
     <!-- END OF DO NOT COPY -->
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>

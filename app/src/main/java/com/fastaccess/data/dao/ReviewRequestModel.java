@@ -13,10 +13,10 @@ import lombok.Setter;
  */
 
 @Getter @Setter public class ReviewRequestModel implements Parcelable {
-    private String commitId;
-    private String body;
-    private String event;
-    private List<CommentRequestModel> comments;
+    public String commitId;
+    public String body;
+    public String event;
+    public List<CommentRequestModel> comments;
 
     @Override public int describeContents() { return 0; }
 

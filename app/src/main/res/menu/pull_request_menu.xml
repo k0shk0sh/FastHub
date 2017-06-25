@@ -74,6 +74,13 @@
         </menu>
     </item>
 
+
+    <item
+        android:id="@+id/reviewChanges"
+        android:icon="@drawable/ic_pull_requests"
+        android:title="@string/review_changes"
+        app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/share"
         android:icon="@drawable/ic_share"

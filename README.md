@@ -124,9 +124,9 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 ## FAQ
 
 <details>
-  <summary>Why can't I see my **Organizations** either _Private_ or _Public ones_?</summary>
+  <summary>Why can't I see my <b>Organizations</b> either _Private_ or <i>Public ones</i>?</summary>
   <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button, 
-  alternatively login via **Access Token** which will ease this setup.</p>
+  alternatively login via <b>Access Token</b> which will ease this setup.</p>
 </details>
 
 <details>

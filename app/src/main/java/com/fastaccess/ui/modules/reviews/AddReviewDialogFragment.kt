@@ -23,7 +23,7 @@ import com.fastaccess.ui.widgets.SpannableBuilder
 /**
  * Created by Kosh on 24 Jun 2017, 12:32 PM
  */
-class AddReviewBottomSheetDialog : BaseDialogFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
+class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
 
     val toolbar: Toolbar by lazy { view!!.findViewById(R.id.toolbar) as Toolbar }
     val textView: TextView by lazy { view!!.findViewById(R.id.text) as TextView }
@@ -48,7 +48,7 @@ class AddReviewBottomSheetDialog : BaseDialogFragment<BaseMvp.FAView, BasePresen
         super.onDetach()
     }
 
-    override fun fragmentLayout(): Int = R.layout.review_dialog_layout
+    override fun fragmentLayout(): Int = R.layout.review_comment_dialog_layout
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         val item = arguments.getParcelable<CommitLinesModel>(BundleConstant.ITEM)
@@ -88,8 +88,8 @@ class AddReviewBottomSheetDialog : BaseDialogFragment<BaseMvp.FAView, BasePresen
     override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
 
     companion object {
-        fun newInstance(commitLinesModel: CommitLinesModel, bundle: Bundle? = null): AddReviewBottomSheetDialog {
-            val dialog = AddReviewBottomSheetDialog()
+        fun newInstance(commitLinesModel: CommitLinesModel, bundle: Bundle? = null): AddReviewDialogFragment {
+            val dialog = AddReviewDialogFragment()
             dialog.arguments = Bundler.start()
                     .put(BundleConstant.ITEM, commitLinesModel)
                     .put(BundleConstant.EXTRA, bundle)

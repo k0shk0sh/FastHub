@@ -19,7 +19,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerMvp;
-import com.fastaccess.ui.modules.reviews.AddReviewBottomSheetDialog;
+import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -122,10 +122,10 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override public void onPatchClicked(int groupPosition, int childPosition, View v, CommitFileModel commit, CommitLinesModel item) {
-        AddReviewBottomSheetDialog.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getBlobUrl())
+        AddReviewDialogFragment.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getBlobUrl())
                 .put(BundleConstant.EXTRA, commit.getFilename())
                 .end())
-                .show(getChildFragmentManager(), "AddReviewBottomSheetDialog");
+                .show(getChildFragmentManager(), "AddReviewDialogFragment");
     }
 
     @Override public void onCommentAdded(@NonNull String comment, @NonNull CommitLinesModel item, Bundle bundle) {

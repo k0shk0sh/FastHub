@@ -20,7 +20,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.reviews.AddReviewBottomSheetDialog;
+import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -164,8 +164,8 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onPatchClicked(int groupPosition, int childPosition, View v, CommitFileModel commit, CommitLinesModel item) {
-        AddReviewBottomSheetDialog.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getBlobUrl()).end())
-                .show(getChildFragmentManager(), "AddReviewBottomSheetDialog");
+        AddReviewDialogFragment.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getFilename()).end())
+                .show(getChildFragmentManager(), "AddReviewDialogFragment");
     }
 
     @Override public void onCommentAdded(@NonNull String comment, @NonNull CommitLinesModel item, Bundle bundle) {
