@@ -139,7 +139,7 @@
         <item>it</item>
         <item>ja</item>
         <item>lt</item>
-        <item>br</item>
+        <item>pt-rBR</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">
@@ -152,6 +152,18 @@
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
+    </string-array>
+
+    <string-array name="merge_method" translatable="false">
+        <item>@string/merge</item>
+        <item>@string/squash</item>
+        <item>@string/rebase</item>
+    </string-array>
+
+    <string-array name="review_methods" translatable="false">
+        <item>APPROVE</item>
+        <item>REQUEST CHANGES</item>
+        <item>COMMENT</item>
     </string-array>
 
     <!-- EmojiCompat Downloadable Fonts Arrays -->

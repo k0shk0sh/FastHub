@@ -22,9 +22,13 @@ import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
     private final int color;
+    public static Pattern HUNK_TITLE = Pattern.compile("@@ -(\\d+),(\\d)+ \\+(\\d+),(\\d)+.*");
 
     private DiffLineSpan(int color) {
         this.color = color;
@@ -68,6 +72,7 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
             if (split.length > 0) {
                 int lines = split.length;
                 int index = -1;
+                int lineNo = -1;
                 for (int i = 0; i < lines; i++) {
                     if (truncate && (lines - i) > 3) continue;
                     String token = split[i];
@@ -76,18 +81,30 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     }
                     char firstChar = token.charAt(0);
                     int color = Color.TRANSPARENT;
-                    if (firstChar == '+') {
+                    if (token.startsWith("@@")) {
+                        color = patchRefColor;
+                        Matcher matcher = HUNK_TITLE.matcher(token.trim());
+                        if (matcher.matches()) {
+                            try {
+                                int leftLineNo = Math.abs(Integer.parseInt(matcher.group(1))) - 1;
+                                int rightLineNo = Integer.parseInt(matcher.group(1)) - 1;
+                                lineNo = leftLineNo <= 0 ? rightLineNo : leftLineNo;
+                            } catch (NumberFormatException e) {e.printStackTrace();}
+                        }
+                    } else if (firstChar == '+') {
+                        ++lineNo;
                         color = patchAdditionColor;
                     } else if (firstChar == '-') {
+                        ++lineNo;
                         color = patchDeletionColor;
-                    } else if (token.startsWith("@@")) {
-                        color = patchRefColor;
+                    } else {
+                        ++lineNo;
                     }
                     index = token.indexOf("\\ No newline at end of file");
-                    Logger.e(index);
                     if (index != -1) {
                         token = token.replace("\\ No newline at end of file", "");
                     }
+                    Logger.e(lineNo);
                     SpannableString spannableDiff = new SpannableString(token);
                     if (color != Color.TRANSPARENT) {
                         DiffLineSpan span = new DiffLineSpan(color);

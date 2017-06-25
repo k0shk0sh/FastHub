@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -16,8 +17,6 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseDialogFragment;
-import com.fastaccess.ui.modules.profile.banner.BannerInfoActivity;
-import com.fastaccess.ui.modules.profile.banner.BannerInfoMvp;
 import com.fastaccess.ui.widgets.FontButton;
 
 import java.io.File;
@@ -88,7 +87,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
                 if (!InputHelper.isEmpty(path)) {
                     getPresenter().onSubmit(InputHelper.toString(title), new File(path));
                 } else {
-                    Toasty.error(getContext(), getString(R.string.failed_selecting_image)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.failed_selecting_image)).show();
                 }
             }
         }

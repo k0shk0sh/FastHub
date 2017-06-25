@@ -7,12 +7,11 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.TabsCountStateModel;
@@ -34,7 +33,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
 import butterknife.OnTextChanged;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 08 Dec 2016, 8:22 PM
@@ -62,13 +60,9 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
         }
     }
 
-    @OnEditorAction(R.id.searchEditText) boolean onEditor(int actionId, KeyEvent keyEvent) {
-        if (keyEvent != null && keyEvent.getAction() == KeyEvent.KEYCODE_SEARCH) {
-            getPresenter().onSearchClicked(pager, searchEditText);
-        } else if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            getPresenter().onSearchClicked(pager, searchEditText);
-        }
-        return false;
+    @OnEditorAction(R.id.searchEditText) boolean onEditor() {
+        getPresenter().onSearchClicked(pager, searchEditText);
+        return true;
     }
 
     @OnClick(value = {R.id.clear}) void onClear(View view) {

@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.evernote.android.state.State;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -46,7 +45,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
-import es.dmoral.toasty.Toasty;
 import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import static android.view.View.GONE;
@@ -103,44 +101,17 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.TEXT_CHANGED) void onEdited(CharSequence charSequence) {
         if (editText.isEnabled()) {
             savedText = charSequence;
-            char lastChar = 0;
-            if (charSequence.length() > 0) lastChar = charSequence.charAt(charSequence.length() - 1);
-            if (lastChar != 0) {
-                if (lastChar == '@') {
-                    inMentionMode = editText.getSelectionEnd();
-                    mention.setVisibility(GONE);
-                    listDivider.setVisibility(GONE);
-                    return;
-                } else if (lastChar == ' ')
-                    inMentionMode = -1;
-                else if (inMentionMode > -1)
-                    updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
-                else {
-                    String copy = editText.getText().toString().substring(0, editText.getSelectionEnd());
-                    String[] list = copy.split("\\s+");
-                    String last = list[list.length - 1];
-                    if (last.startsWith("@")) {
-                        inMentionMode = copy.lastIndexOf("@") + 1;
-                        updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
-                    }
-                }
-            } else {
-                inMentionMode = -1;
-            }
-            if (inMentionMode > -1)
-                if (mention != null) {
-                    mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
-                    listDivider.setVisibility(mention.getVisibility());
-                }
-
+            mention(charSequence);
         }
     }
 
     @OnItemClick(R.id.autocomplete) void onMentionSelection(int position) {
-        String complete = mention.getAdapter().getItem(position).toString() + " ";
-        int end = editText.getSelectionEnd();
-        editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
-        inMentionMode = -1;
+        try {
+            String complete = mention.getAdapter().getItem(position).toString() + " ";
+            int end = editText.getSelectionEnd();
+            editText.getText().replace(inMentionMode, end, complete, 0, complete.length());
+            inMentionMode = -1;
+        } catch (Exception ignored) {}
         mention.setVisibility(GONE);
         listDivider.setVisibility(GONE);
     }
@@ -152,8 +123,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         } else {
             quote.setMaxLines(3);
         }
-        quote.setCompoundDrawablesWithIntrinsicBounds(0, 0, quote.getMaxLines() == 3
-                                                            ? R.drawable.ic_arrow_drop_down : R.drawable.ic_arrow_drop_up, 0);
+        quote.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+                quote.getMaxLines() == 3 ? R.drawable.ic_arrow_drop_down : R.drawable.ic_arrow_drop_up, 0);
     }
 
     @OnClick(R.id.view) void onViewMarkDown() {
@@ -184,9 +155,6 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "BannerDialogFragment");
         } else if (v.getId() == R.id.image) {
             EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "BannerDialogFragment");
-            if (BuildConfig.DEBUG)
-                // Doesn't need a string, will only show up in debug.
-                Toasty.warning(this, "Image upload won't work unless you've entered your Imgur keys. You are on a debug build.").show();
         } else {
             getPresenter().onActionClicked(editText, v.getId());
         }
@@ -366,12 +334,45 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             for (String participant : participants)
                 if (participant.toLowerCase().startsWith(mentioning.replace("@", "").toLowerCase()))
                     mentions.add(participant);
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                    android.R.layout.simple_list_item_1, android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
-
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
+                    android.R.id.text1, mentions.subList(0, Math.min(mentions.size(), 3)));
             mention.setAdapter(adapter);
             Log.d(getLoggingTag(), mentions.toString());
         }
+    }
+
+    private void mention(CharSequence charSequence) {
+        try {
+            char lastChar = 0;
+            if (charSequence.length() > 0) lastChar = charSequence.charAt(charSequence.length() - 1);
+            if (lastChar != 0) {
+                if (lastChar == '@') {
+                    inMentionMode = editText.getSelectionEnd();
+                    mention.setVisibility(GONE);
+                    listDivider.setVisibility(GONE);
+                    return;
+                } else if (lastChar == ' ')
+                    inMentionMode = -1;
+                else if (inMentionMode > -1)
+                    updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                else {
+                    String copy = editText.getText().toString().substring(0, editText.getSelectionEnd());
+                    String[] list = copy.split("\\s+");
+                    String last = list[list.length - 1];
+                    if (last.startsWith("@")) {
+                        inMentionMode = copy.lastIndexOf("@") + 1;
+                        updateMentionList(charSequence.toString().substring(inMentionMode, editText.getSelectionEnd()));
+                    }
+                }
+            } else {
+                inMentionMode = -1;
+            }
+            if (inMentionMode > -1)
+                if (mention != null) {
+                    mention.setVisibility(inMentionMode > 0 ? View.VISIBLE : GONE);
+                    listDivider.setVisibility(mention.getVisibility());
+                }
+        } catch (Exception ignored) {}
     }
 
 }

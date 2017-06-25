@@ -79,7 +79,7 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
     public void setOnLinkClickListener(OnLinkClickListener onLinkClickListener) {
         if (this == singleInstance) {
             throw new UnsupportedOperationException("SettingsModel a click listener on the instance returned by getInstance() is not supported. Please " +
-                    "use newInstance() or any of the linkify() methods instead.");
+                    "use startForResult() or any of the linkify() methods instead.");
         } else {
             this.onLinkClickListener = onLinkClickListener;
         }

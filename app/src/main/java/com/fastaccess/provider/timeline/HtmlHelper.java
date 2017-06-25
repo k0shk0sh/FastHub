@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
@@ -55,9 +56,7 @@ public class HtmlHelper {
 
     private static HtmlSpanner initHtml(@NonNull TextView textView) {
         @PrefGetter.ThemeType int theme = PrefGetter.getThemeType();
-        @ColorInt int windowBackground = theme == PrefGetter.DARK ? ViewHelper.getWindowBackground(textView.getContext()) :
-                                         theme == PrefGetter.LIGHT ? ContextCompat.getColor(textView.getContext(), R.color.light_patch_ref_color) :
-                                         Color.LTGRAY;
+        @ColorInt int windowBackground = getWindowBackground(theme);
         Drawable checked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_small);
         Drawable unchecked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_empty_small);
         HtmlSpanner mySpanner = new HtmlSpanner();
@@ -83,13 +82,26 @@ public class HtmlHelper {
         mySpanner.registerHandler("a", new LinkHandler());
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
-        WindowManager windowManager = (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
         windowManager.getDefaultDisplay().getRealSize(point);
         tableHandler.setTableWidth((int) (point.x / 1.2));
         tableHandler.setTextSize(18.0F);
         mySpanner.registerHandler("table", tableHandler);
         return mySpanner;
+    }
+
+    @ColorInt private static int getWindowBackground(@PrefGetter.ThemeType int theme) {
+        switch (theme) {
+            case PrefGetter.AMLOD:
+                return Color.parseColor("#0B162A");
+            case PrefGetter.BLUISH:
+                return Color.parseColor("#111C2C");
+            case PrefGetter.DARK:
+                return Color.parseColor("#22252A");
+            default:
+                return Color.parseColor("#EEEEEE");
+        }
     }
 
     private static final String TOGGLE_START = "<span class=\"email-hidden-toggle\">";

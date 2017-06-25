@@ -9,19 +9,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.evernote.android.state.State;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
+import com.fastaccess.data.dao.ReviewRequestModel;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -38,6 +42,7 @@ import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFr
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullRequestDialogFragment;
+import com.fastaccess.ui.modules.reviews.changes.ReviewChangesActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -68,6 +73,9 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @BindView(R.id.pager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    @BindView(R.id.reviewsCount) FontTextView reviewsCount;
+    @BindView(R.id.submitReviews) FontTextView submitReviews;
+    @BindView(R.id.prReviewHolder) CardView prReviewHolder;
     @State boolean isClosed;
     @State boolean isOpened;
 
@@ -100,6 +108,10 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         if (view != null) {
             view.onStartNewComment();
         }
+    }
+
+    @OnClick(R.id.submitReviews) public void onSubmitReviews(View view) {
+        addPrReview(view);
     }
 
     @Override protected int layout() {
@@ -136,8 +148,9 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && data != null) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
+                if (data == null) return;
                 Bundle bundle = data.getExtras();
                 PullRequest pullRequest = bundle.getParcelable(BundleConstant.ITEM);
                 if (pullRequest != null) {
@@ -145,6 +158,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 } else {
                     getPresenter().onRefresh();
                 }
+            } else if (requestCode == BundleConstant.REVIEW_REQUEST_CODE) {
+                onUpdateTimeline();
             }
         }
     }
@@ -206,6 +221,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         } else if (item.getItemId() == R.id.browser) {
             ActivityHelper.startCustomTab(this, pullRequest.getHtmlUrl());
             return true;
+        } else if (item.getItemId() == R.id.reviewChanges) {
+            addPrReview(item.getActionView() == null ? title : item.getActionView());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -336,6 +353,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override public void onUpdateTimeline() {
+        supportInvalidateOptionsMenu();
+        if (pager == null || pager.getAdapter() == null) return;
         PullRequestTimelineFragment pullRequestDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
         if (pullRequestDetailsView != null && getPresenter().getPullRequest() != null) {
             pullRequestDetailsView.onRefresh();
@@ -351,8 +370,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         finish();
     }
 
-    @Override public void onMerge(@NonNull String msg) {
-        getPresenter().onMerge(msg);
+    @Override public void onAddComment(CommentRequestModel comment) {
+        getPresenter().onAddComment(comment);
+        AnimHelper.mimicFabVisibility(getPresenter().hasReviewComments(), prReviewHolder, null);
+        reviewsCount.setText(String.format("%s", getPresenter().getCommitComment().size()));
+    }
+
+    @Override public void onMerge(@NonNull String msg, @NonNull String mergeMethod) {
+        getPresenter().onMerge(msg, mergeMethod);
     }
 
     @Override protected void onNavToRepoClicked() {
@@ -377,6 +402,16 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @Nullable @Override public PullRequest getData() {
         return getPresenter().getPullRequest();
+    }
+
+    private void addPrReview(@NonNull View view) {
+        PullRequest pullRequest = getPresenter().getPullRequest();
+        if (pullRequest == null) return;
+        ReviewRequestModel requestModel = new ReviewRequestModel();
+        requestModel.setComments(getPresenter().getCommitComment().isEmpty() ? null : getPresenter().getCommitComment());
+        requestModel.setCommitId(pullRequest.getHead().getSha());
+        ReviewChangesActivity.Companion.startForResult(this, view, requestModel, getPresenter().getRepoId(),
+                getPresenter().getLogin(), pullRequest.getNumber());
     }
 
     private void initTabs(@NonNull PullRequest pullRequest) {

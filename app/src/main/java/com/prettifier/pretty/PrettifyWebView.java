@@ -118,42 +118,53 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source, boolean wrap, @Nullable String url) {
-        WebSettings settings = getSettings();
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        settings.setSupportZoom(!wrap);
-        settings.setBuiltInZoomControls(!wrap);
-        if (!wrap) settings.setDisplayZoomControls(false);
+    public void setThemeSource(@NonNull String source, @Nullable String theme) {
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
-            post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(true);
+            settings.setBuiltInZoomControls(true);
+            settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, theme);
+            loadCode(page);
         }
+    }
+
+    public void setSource(@NonNull String source, boolean wrap) {
+        if (!InputHelper.isEmpty(source)) {
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(!wrap);
+            settings.setBuiltInZoomControls(!wrap);
+            if (!wrap) settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
+            loadCode(page);
+        }
+    }
+
+    private void loadCode(String page) {
+        post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
     }
 
     public void scrollToLine(@NonNull String url) {
-        int lineNo = getLineNo(url);
-        if (lineNo != 0) {
-            loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
+        String[] lineNo = getLineNo(url);
+        if (lineNo != null && lineNo.length > 1) {
+            loadUrl("javascript:scrollToLineNumber('" + lineNo[0] + "', '" + lineNo[1] + "')");
+        } else if (lineNo != null) {
+            loadUrl("javascript:scrollToLineNumber('" + lineNo[0] + "', '0')");
         }
     }
 
-    public static int getLineNo(@Nullable String url) {
-        int lineNo = 0;
+    public static String[] getLineNo(@Nullable String url) {
+        String lineNo[] = null;
         if (url != null) {
             try {
                 Uri uri = Uri.parse(url);
                 String lineNumber = uri.getEncodedFragment();
-                Logger.e(lineNumber);
                 if (lineNumber != null) {
-                    String[] toSplit = lineNumber.split("-");
-                    if (toSplit.length > 1) {
-                        lineNumber = toSplit[toSplit.length - 1];
-                    }
-                    Logger.e(lineNumber);
-                    lineNumber = lineNumber.replace("L", "");
-                    lineNo = Integer.valueOf(lineNumber);
-                    Logger.e(lineNo);
+                    lineNo = lineNumber.replaceAll("L", "").split("-");
                 }
             } catch (Exception ignored) {}
         }
@@ -165,7 +176,11 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling) {
-        addJavascriptInterface(new MarkDownInterceptorInterface(this, toggleNestScrolling), "Android");
+        setGithubContent(source, baseUrl, toggleNestScrolling, true);
+    }
+
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling, boolean enableBridge) {
+        if (enableBridge) addJavascriptInterface(new MarkDownInterceptorInterface(this, toggleNestScrolling), "Android");
         String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()));
         post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }

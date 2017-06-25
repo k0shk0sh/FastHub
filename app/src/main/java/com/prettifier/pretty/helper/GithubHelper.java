@@ -1,16 +1,16 @@
 package com.prettifier.pretty.helper;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.webkit.MimeTypeMap;
 
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,6 +35,23 @@ public class GithubHelper {
         NameParser nameParser = new NameParser(baseUrl);
         String owner = nameParser.getUsername();
         String repoName = nameParser.getName();
+        Uri uri = Uri.parse(baseUrl);
+        ArrayList<String> paths = new ArrayList<>(uri.getPathSegments());
+        StringBuilder builder = new StringBuilder();
+        builder.append(owner).append("/").append(repoName).append("/");
+        boolean containsMaster = paths.size() > 3;
+        if (!containsMaster) {
+            builder.append("master/");
+        } else {
+            paths.remove("blob");
+        }
+        paths.remove(owner);
+        paths.remove(repoName);
+        for (String path : paths) {
+            if (!path.equalsIgnoreCase(uri.getLastPathSegment())) {
+                builder.append(path).append("/");
+            }
+        }
         Matcher matcher = IMAGE_TAG_MATCHER.matcher(source);
         while (matcher.find()) {
             String src = matcher.group(1).trim();
@@ -46,8 +63,9 @@ public class GithubHelper {
             if (src.startsWith("/" + owner + "/" + repoName)) {
                 finalSrc = "https://raw.githubusercontent.com/" + src;
             } else {
-                finalSrc = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + src;
+                finalSrc = "https://raw.githubusercontent.com/" + builder.toString() + src;
             }
+            Logger.e(finalSrc);
             source = source.replace("src=\"" + src + "\"", "src=\"" + finalSrc
                     .replace("raw/", "master/").replaceAll("//", "/") + "\"");
         }
@@ -59,18 +77,27 @@ public class GithubHelper {
         String owner = nameParser.getUsername();
         String repoName = nameParser.getName();
         Matcher matcher = LINK_TAG_MATCHER.matcher(source);
+        Uri uri = Uri.parse(baseUrl);
+        ArrayList<String> paths = new ArrayList<>(uri.getPathSegments());
+        StringBuilder builder = new StringBuilder();
+        builder.append("https://").append(uri.getAuthority()).append("/").append(owner).append("/").append(repoName).append("/");
+        boolean containsMaster = paths.size() > 3 && paths.get(2).equalsIgnoreCase("blob");
+        if (!containsMaster) {
+            builder.append("blob/master/");
+        }
+        paths.remove(owner);
+        paths.remove(repoName);
+        for (String path : paths) {
+            if (!path.equalsIgnoreCase(uri.getLastPathSegment())) {
+                builder.append(path).append("/");
+            }
+        }
         while (matcher.find()) {
             String href = matcher.group(1).trim();
             if (href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
                 continue;
             }
-            String link;
-            if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(href))) {
-                link = "https://raw.githubusercontent.com/" + owner + "/" + repoName + "/master/" + href; //assuming always master is bad :'(
-            } else {
-                String formattedLink = href.replaceFirst("./", "/");
-                link = ("https://api.github.com/repos/" + owner + "/" + repoName + formattedLink).replaceAll("//", "/");
-            }
+            String link = builder.toString() + "" + href;
             source = source.replace("href=\"" + href + "\"", "href=\"" + link + "\"");
         }
         return source;
@@ -101,15 +128,22 @@ public class GithubHelper {
 
     @NonNull private static String getCodeStyle(@NonNull Context context, boolean isDark) {
         if (!isDark) return "";
-        String primaryColor = "#" + Integer.toHexString(ViewHelper.getPrimaryColor(context)).substring(2).toUpperCase();
+        String primaryColor = getCodeBackgroundColor(context);
         String accentColor = "#" + Integer.toHexString(ViewHelper.getAccentColor(context)).substring(2).toUpperCase();
-        Logger.e(primaryColor, accentColor);
         return "<style>\n" +
                 "body .highlight pre, body pre {\n" +
                 "background-color: " + primaryColor + " !important;\n" +
                 (PrefGetter.getThemeType(context) == PrefGetter.AMLOD ? "border: solid 1px " + accentColor + " !important;\n" : "") +
                 "}\n" +
                 "</style>";
+    }
+
+    @NonNull private static String getCodeBackgroundColor(@NonNull Context context) {
+        @PrefGetter.ThemeType int themeType = PrefGetter.getThemeType();
+        if (themeType == PrefGetter.BLUISH) {
+            return "#" + Integer.toHexString(ViewHelper.getPrimaryDarkColor(context)).substring(2).toUpperCase();
+        }
+        return "#" + Integer.toHexString(ViewHelper.getPrimaryColor(context)).substring(2).toUpperCase();
     }
 
 }

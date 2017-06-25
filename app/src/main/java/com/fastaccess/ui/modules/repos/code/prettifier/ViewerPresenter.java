@@ -27,6 +27,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
     @com.evernote.android.state.State boolean isRepo;
     @com.evernote.android.state.State boolean isImage;
     @com.evernote.android.state.State String url;
+    @com.evernote.android.state.State String htmlUrl;
 
     @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();
@@ -49,6 +50,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         if (intent == null) return;
         isRepo = intent.getBoolean(BundleConstant.EXTRA);
         url = intent.getString(BundleConstant.ITEM);
+        htmlUrl = intent.getString(BundleConstant.EXTRA_TWO);
         if (!InputHelper.isEmpty(url)) {
             if (MarkDownProvider.isArchive(url)) {
                 sendToView(view -> view.onShowError(R.string.archive_file_detected_error));
@@ -114,7 +116,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                 fileModel.setMarkdown(true);
                 isMarkdown = true;
                 isRepo = true;
-                sendToView(view -> view.onSetMdText(downloadedStream, url));
+                sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
             } else {
                 isMarkdown = MarkDownProvider.isMarkdown(url);
                 if (isMarkdown) {
@@ -134,7 +136,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         fileModel.setMarkdown(true);
                         fileModel.setContent(downloadedStream);
                         manageObservable(fileModel.save(fileModel).toObservable());
-                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                        sendToView(view -> view.onSetMdText(downloadedStream,  htmlUrl == null ? url : htmlUrl));
                     });
                     return;
                 }

@@ -35,7 +35,7 @@ import com.fastaccess.ui.modules.profile.overview.ProfileOverviewFragment;
 import com.fastaccess.ui.modules.profile.repos.ProfileReposFragment;
 import com.fastaccess.ui.modules.profile.starred.ProfileStarredFragment;
 import com.fastaccess.ui.modules.repos.code.commit.RepoCommitsFragment;
-import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragments;
+import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragment;
 import com.fastaccess.ui.modules.repos.code.commit.details.files.CommitFilesFragment;
 import com.fastaccess.ui.modules.repos.code.contributors.RepoContributorsFragment;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
@@ -86,8 +86,9 @@ import lombok.Setter;
 
     public static List<FragmentPagerAdapterModel> buildForRepoCode(@NonNull Context context, @NonNull String repoId,
                                                                    @NonNull String login, @NonNull String url,
-                                                                   @NonNull String defaultBranch) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.readme), ViewerFragment.newInstance(url, true)),
+                                                                   @NonNull String defaultBranch,
+                                                                   @NonNull String htmlUrl) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.readme), ViewerFragment.newInstance(url, htmlUrl, true)),
                 new FragmentPagerAdapterModel(context.getString(R.string.files), RepoFilePathFragment.newInstance(login, repoId, null,
                         defaultBranch)),
                 new FragmentPagerAdapterModel(context.getString(R.string.commits), RepoCommitsFragment.newInstance(repoId, login, defaultBranch)),
@@ -143,9 +144,8 @@ import lombok.Setter;
         String login = commitModel.getLogin();
         String repoId = commitModel.getRepoId();
         String sha = commitModel.getSha();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesFragment.newInstance(commitModel.getSha(),
-                commitModel.getFiles()))
-                , new FragmentPagerAdapterModel(context.getString(R.string.comments), CommitCommentsFragments.newInstance(login, repoId, sha)))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesFragment.newInstance(commitModel.getSha(), commitModel.getFiles())),
+                new FragmentPagerAdapterModel(context.getString(R.string.comments), CommitCommentsFragment.newInstance(login, repoId, sha)))
                 .collect(Collectors.toList());
     }
 
@@ -214,8 +214,8 @@ import lombok.Setter;
     @NonNull public static List<FragmentPagerAdapterModel> buildForTheme() {
         return Stream.of(new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeLight)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeDark)),
-                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)))
-//                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeMidNighBlue)))
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)),
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)))
                 .collect(Collectors.toList());
     }
 }

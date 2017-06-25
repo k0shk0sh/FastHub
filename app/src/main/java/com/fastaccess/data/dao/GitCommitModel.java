@@ -17,15 +17,15 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class GitCommitModel implements Parcelable {
 
-    private String sha;
-    private String url;
-    private String message;
-    private User author;
-    private User committer;
-    private User tree;
-    private @SerializedName("distinct") boolean distincted;
-    private GitCommitListModel parents;
-    private int commentCount;
+    public String sha;
+    public String url;
+    public String message;
+    public User author;
+    public User committer;
+    public User tree;
+    public @SerializedName("distinct") boolean distincted;
+    public GitCommitListModel parents;
+    public int commentCount;
 
     @Override public int describeContents() { return 0; }
 
@@ -59,4 +59,8 @@ public class GitCommitModel implements Parcelable {
 
         @Override public GitCommitModel[] newArray(int size) {return new GitCommitModel[size];}
     };
+
+    @Override public String toString() {
+        return sha != null && sha.length() > 10 ? sha.substring(0, 10) : "N/A";
+    }
 }

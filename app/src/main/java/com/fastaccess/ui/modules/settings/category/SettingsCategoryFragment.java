@@ -90,13 +90,11 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             case SettingsModel.CUSTOMIZATION:
                 addCustomization();
                 break;
-            case SettingsModel.LANGUAGE:
-                throw new RuntimeException("how is it possible language?");
             case SettingsModel.NOTIFICATION:
                 addNotifications();
                 break;
-            case SettingsModel.THEME:
-                throw new RuntimeException("how is it possible theme?");
+            default:
+                Toast.makeText(App.getInstance(), "You reached the impossible :'(", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -128,7 +126,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {
             if (newValue.toString().equalsIgnoreCase(appColor))
                 return true;
-            Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
+            Toasty.warning(App.getInstance(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             callback.onThemeChanged();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("app_language")) {
@@ -176,15 +174,15 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     }
                     PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
                     findPreference("backup").setSummary(getString(R.string.backup_summary, getString(R.string.now)));
-                    Toasty.success(getContext(), getString(R.string.backed_up)).show();
+                    Toasty.success(App.getInstance(), getString(R.string.backed_up)).show();
                 } else {
-                    Toasty.error(getContext(), getString(R.string.permission_failed)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.permission_failed)).show();
                 }
             } else if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showFileChooser();
                 } else {
-                    Toasty.error(getContext(), getString(R.string.permission_failed)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.permission_failed)).show();
                 }
             }
         }
@@ -207,7 +205,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                         }
                     }
                 } catch (IOException e) {
-                    Toasty.error(getContext(), getString(R.string.error)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.error)).show();
                 }
                 if (!InputHelper.isEmpty(json)) {
                     Gson gson = new Gson();

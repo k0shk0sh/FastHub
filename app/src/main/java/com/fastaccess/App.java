@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.core.CrashlyticsCore;
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
@@ -45,7 +46,9 @@ public class App extends Application {
 
     private void init() {
         Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics())
+                .kits(new Crashlytics.Builder()
+                        .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                        .build())
                 .debuggable(BuildConfig.DEBUG)
                 .build();
         Fabric.with(fabric);

@@ -17,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.evernote.android.state.State;
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -170,7 +171,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     }
 
     @OnClick(R.id.author) public void onAuthorClicked() {
-        Toasty.info(this, "GitHub doesn't have this API yet!\nYou can try typing it yourself for example author:k0shk0sh",
+        Toasty.info(App.getInstance(), "GitHub doesn't have this API yet!\nYou can try typing it yourself for example author:k0shk0sh",
                 Toast.LENGTH_LONG).show();
     }
 

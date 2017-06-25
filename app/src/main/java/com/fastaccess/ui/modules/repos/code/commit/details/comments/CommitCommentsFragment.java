@@ -39,7 +39,7 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
-public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View, CommitCommentsPresenter> implements CommitCommentsMvp.View {
+public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View, CommitCommentsPresenter> implements CommitCommentsMvp.View {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
@@ -49,8 +49,8 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     private IssuePullsTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
 
-    public static CommitCommentsFragments newInstance(@NonNull String login, @NonNull String repoId, @NonNull String sha) {
-        CommitCommentsFragments view = new CommitCommentsFragments();
+    public static CommitCommentsFragment newInstance(@NonNull String login, @NonNull String repoId, @NonNull String sha) {
+        CommitCommentsFragment view = new CommitCommentsFragment();
         view.setArguments(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
@@ -200,6 +200,12 @@ public class CommitCommentsFragments extends BaseFragment<CommitCommentsMvp.View
     @Override public void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId) {
         ReactionsDialogFragment.newInstance(login, repoId, reactionTypes, commentId, ReactionsProvider.COMMIT)
                 .show(getChildFragmentManager(), "ReactionsDialogFragment");
+    }
+
+    @Override public void addComment(@NonNull Comment newComment) {
+        if (adapter != null) {
+            adapter.addItem(TimelineModel.constructComment(newComment));
+        }
     }
 
     @Override public void onDestroyView() {
