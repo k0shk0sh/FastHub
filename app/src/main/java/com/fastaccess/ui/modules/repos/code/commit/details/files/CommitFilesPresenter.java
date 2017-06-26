@@ -20,6 +20,7 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 
@@ -76,7 +77,8 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
                 if (commitFiles != null) {
                     manageObservable(Observable.just(commitFiles)
                             .map(CommitFileChanges::construct)
-                            .doFinally(() -> CommitFilesSingleton.getInstance().clear())
+                            .doOnSubscribe(disposable -> sendToView(CommitFilesMvp.View::clearAdapter))
+                            .doFinally(() -> sendToView(BaseMvp.FAView::hideProgress))
                             .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges))));
                 }
 
@@ -103,5 +105,10 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
             makeRestCall(RestProvider.getRepoService().postCommitComment(nameParser.getUsername(),
                     nameParser.getName(), sha, commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
         }
+    }
+
+    @Override protected void onDestroy() {
+        CommitFilesSingleton.getInstance().clear();
+        super.onDestroy();
     }
 }

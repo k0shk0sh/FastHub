@@ -164,6 +164,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onPatchClicked(int groupPosition, int childPosition, View v, CommitFileModel commit, CommitLinesModel item) {
+        if (item.getText().startsWith("@@")) return;
         AddReviewDialogFragment.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getFilename()).end())
                 .show(getChildFragmentManager(), "AddReviewDialogFragment");
     }

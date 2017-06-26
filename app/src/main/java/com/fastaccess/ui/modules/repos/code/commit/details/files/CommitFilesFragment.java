@@ -69,12 +69,10 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override public void onNotifyAdapter(@Nullable List<CommitFileChanges> items) {
-        stateLayout.hideReload();
-        if (items == null || items.isEmpty()) {
-            adapter.clear();
-            return;
+        hideProgress();
+        if (items != null) {
+            adapter.insertItems(items);
         }
-        adapter.insertItems(items);
     }
 
     @Override public void onCommentAdded(@NonNull Comment newComment) {
@@ -82,6 +80,15 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         if (viewCallback != null) {
             viewCallback.onAddComment(newComment);
         }
+    }
+
+    @Override public void clearAdapter() {
+        refresh.setRefreshing(true);
+        adapter.clear();
+    }
+
+    @Override public void hideProgress() {
+        refresh.setRefreshing(false);
     }
 
     @Override protected int fragmentLayout() {
@@ -95,7 +102,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this, this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        if (savedInstanceState == null) {
+        if (savedInstanceState == null || adapter.isEmpty()) {
             getPresenter().onFragmentCreated(getArguments());
         }
     }
@@ -122,6 +129,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override public void onPatchClicked(int groupPosition, int childPosition, View v, CommitFileModel commit, CommitLinesModel item) {
+        if (item.getText().startsWith("@@")) return;
         AddReviewDialogFragment.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getBlobUrl())
                 .put(BundleConstant.EXTRA, commit.getFilename())
                 .end())

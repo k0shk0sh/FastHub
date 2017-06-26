@@ -11,12 +11,12 @@ class ReviewChangesPresenter : BasePresenter<ReviewChangesMvp.View>(), ReviewCha
 
     override fun onSubmit(reviewRequest: ReviewRequestModel, repoId: String, owner: String, number: Long, comment: String, method: String) {
         reviewRequest.body = comment
-        reviewRequest.event = method
+        reviewRequest.event = method.replace(" ", "_").toUpperCase()
         makeRestCall(RestProvider.getReviewService().submitPrReview(owner, repoId, number, reviewRequest), {
             if (it.isSuccessful && it.code() == 200) {
                 sendToView { it.onSuccessfullySubmitted() }
             } else {
-                sendToView { it.onErrorSubmitting()}
+                sendToView { it.onErrorSubmitting() }
             }
         })
     }

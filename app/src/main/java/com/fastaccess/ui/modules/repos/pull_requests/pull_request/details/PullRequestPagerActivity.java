@@ -21,6 +21,7 @@ import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.ReviewRequestModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueState;
@@ -160,6 +161,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 }
             } else if (requestCode == BundleConstant.REVIEW_REQUEST_CODE) {
                 onUpdateTimeline();
+                getPresenter().getCommitComment().clear();
+                AnimHelper.mimicFabVisibility(false, prReviewHolder, null);
             }
         }
     }
@@ -407,11 +410,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     private void addPrReview(@NonNull View view) {
         PullRequest pullRequest = getPresenter().getPullRequest();
         if (pullRequest == null) return;
+        User author = pullRequest.getHead().getAuthor() != null ? pullRequest.getHead().getAuthor() :
+                      pullRequest.getHead().getUser() != null ? pullRequest.getHead().getUser() : pullRequest.getUser(); // fallback to user object
         ReviewRequestModel requestModel = new ReviewRequestModel();
         requestModel.setComments(getPresenter().getCommitComment().isEmpty() ? null : getPresenter().getCommitComment());
         requestModel.setCommitId(pullRequest.getHead().getSha());
+        boolean isAuthor = author != null && Login.getUser().getLogin().equalsIgnoreCase(author.getLogin());
         ReviewChangesActivity.Companion.startForResult(this, view, requestModel, getPresenter().getRepoId(),
-                getPresenter().getLogin(), pullRequest.getNumber());
+                getPresenter().getLogin(), pullRequest.getNumber(), isAuthor);
     }
 
     private void initTabs(@NonNull PullRequest pullRequest) {

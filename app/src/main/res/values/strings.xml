@@ -84,6 +84,8 @@
     <string name="rebase" translatable="false">Rebase</string>
     <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
     <string name="review_changes" translatable="false">Review Changes</string>
+    <string name="enterprise" translatable="false">Enterprise</string>
+
     <!-- END OF DO NOT COPY -->
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
@@ -421,7 +423,7 @@
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
-        grant FastHub access to see list your organizations.\nYou could also open up https://github.com/settings/applications and look for
+        grant FastHub access to list your organizations.\nYou could also open up https://github.com/settings/applications and look for
         FastHub, open it then scroll to Organization access and click on Grant Button.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>

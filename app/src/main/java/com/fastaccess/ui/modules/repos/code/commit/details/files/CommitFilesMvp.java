@@ -27,6 +27,8 @@ interface CommitFilesMvp {
         void onNotifyAdapter(@Nullable List<CommitFileChanges> items);
 
         void onCommentAdded(@NonNull Comment newComment);
+
+        void clearAdapter();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommitFileChanges> {

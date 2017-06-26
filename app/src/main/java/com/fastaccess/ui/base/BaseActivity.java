@@ -189,7 +189,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                     ProgressDialogFragment.TAG);
             if (fragment == null) {
                 isProgressShowing = true;
-                fragment = ProgressDialogFragment.newInstance(msg, false);
+                fragment = ProgressDialogFragment.newInstance(msg, true);
                 fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
             }
         }

@@ -10,6 +10,7 @@ import com.annimon.stream.Stream;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,21 +25,28 @@ import lombok.Setter;
 
     public CommitFileChanges() {}
 
+    public static Observable<CommitFileChanges> constructToObservable(@Nullable List<CommitFileModel> files) {
+        if (files == null || files.isEmpty()) return Observable.empty();
+        return Observable.fromIterable(files).map(CommitFileChanges::getCommitFileChanges);
+    }
+
     @NonNull public static List<CommitFileChanges> construct(@Nullable List<CommitFileModel> files) {
         if (files == null || files.isEmpty()) {
             return new ArrayList<>();
         }
         return Stream.of(files)
-                .map(m -> {
-                    CommitFileChanges model = new CommitFileChanges();
-                    model.setLinesModel(CommitLinesModel.getLines(m.getPatch()));
-                    if (m.getPatch() != null) {
-                        m.setPatch("fake");
-                    }
-                    model.setCommitFileModel(m);
-                    return model;
-                })
+                .map(CommitFileChanges::getCommitFileChanges)
                 .toList();
+    }
+
+    @NonNull private static CommitFileChanges getCommitFileChanges(CommitFileModel m) {
+        CommitFileChanges model = new CommitFileChanges();
+        model.setLinesModel(CommitLinesModel.getLines(m.getPatch()));
+        if (m.getPatch() != null) {
+            m.setPatch("fake");
+        }
+        model.setCommitFileModel(m);
+        return model;
     }
 
     @Override public int describeContents() { return 0; }
