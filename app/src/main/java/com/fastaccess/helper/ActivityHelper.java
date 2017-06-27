@@ -149,7 +149,7 @@ public class ActivityHelper {
         try {
             ShareCompat.IntentBuilder.from(activity)
                     .setChooserTitle(context.getString(R.string.share))
-                    .setType("text/*")
+                    .setType("text/plain")
                     .setText(url)
                     .startChooser();
         } catch (ActivityNotFoundException e) {
