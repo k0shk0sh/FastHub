@@ -1,5 +1,5 @@
 <resources>
-    <!-- DO NOT COPY -->
+    <!-- DO NOT COPY! START COPYING FROM LINE 91 -->
 
 
     <string name="app_name" translatable="false">FastHub</string>
@@ -87,6 +87,7 @@
     <string name="enterprise" translatable="false">Enterprise</string>
 
     <!-- END OF DO NOT COPY -->
+
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
@@ -96,7 +97,7 @@
     <string name="no_data">No data available</string>
     <string name="search">Search</string>
     <string name="please_login">Please sign in to continue using FastHub</string>
-    <string name="sign_in_to_github">Sign in to your GitHub account to get the best out of FastHub</string>
+    <string name="sign_in_to_github">Sign in using your GitHub account to use FastHub</string>
     <string name="failed_login">Failed to sign in</string>
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
@@ -341,7 +342,7 @@
     <string name="pin">Pin</string>
     <string name="pinned">Pinned</string>
     <string name="unpin">Unpin</string>
-    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here</string>
+    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_feeds">No feeds</string>
@@ -391,7 +392,7 @@
     <string name="dialog_animation_title">Popup animation</string>
     <string name="milestones">Milestones</string>
     <string name="assignee">Assignee</string>
-    <string name="checks_failed">Some checks failed</string>
+    <string name="checks_failed">Some checks have failed</string>
     <string name="checks_pending">All checks are pending</string>
     <string name="checks_passed">All checks are passed</string>
     <string name="sort">Sort</string>
@@ -418,7 +419,7 @@
     <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
     <string name="enable_notification_sound_title">Enable Notification Sound</string>
     <string name="enable_notification_title">Enable Notifications</string>
-    <string name="login_with_personal_token">Login with personal token</string>
+    <string name="login_with_personal_token">Login with a personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
@@ -440,7 +441,7 @@
     <string name="from">from</string>
     <string name="in_value">in</string>
     <string name="subscribe">Subscribe</string>
-    <string name="repo_issues_is_disabled">The repo has no issues tab</string>
+    <string name="repo_issues_is_disabled">Issues have been disabled in this repo</string>
     <string name="access_token">Access Token</string>
     <string name="basic_authentication">Basic Authentication</string>
     <string name="choose_your_login_type">Choose your login type</string>
