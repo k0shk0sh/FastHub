@@ -8,8 +8,8 @@ import android.support.annotation.Nullable;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.model.IssueEvent;
+import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueEventType;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.LabelSpan;
@@ -44,10 +44,14 @@ public class TimelineProvider {
                 spannableBuilder.append(" ").append(" " + labelModel.getName() + " ", new CodeSpan(color, ViewHelper.generateTextColor(color), 5));
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
             } else {
+                User user = null;
                 if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
-                    spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
+                    user = issueEventModel.getAssigner();
                 } else if (issueEventModel.getActor() != null) {
-                    spannableBuilder.bold(issueEventModel.getActor().getLogin());
+                    user = issueEventModel.getActor();
+                }
+                if (user != null) {
+                    spannableBuilder.bold(user.getLogin());
                 }
                 if (event == IssueEventType.closed) {
                     if (isMerged) {
@@ -55,15 +59,18 @@ public class TimelineProvider {
                     } else {
                         spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
                     }
+                } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
+                    spannableBuilder
+                            .append(" ");
+                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
+                        spannableBuilder.append("self-assigned this");
+                    } else {
+                        spannableBuilder.bold(issueEventModel.getAssignee().getLogin());
+                    }
                 } else {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
                 }
-                if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
-                    spannableBuilder
-                            .append(" ")
-                            .bold(issueEventModel.getAssignee().getLogin());
-                    Logger.e("Hello: " + spannableBuilder);
-                } else if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
+                if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
                     spannableBuilder.append(" ")
                             .append(event == IssueEventType.milestoned ? to : from)
                             .append(" ")

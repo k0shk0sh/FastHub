@@ -95,45 +95,16 @@
                         android:paddingStart="@dimen/spacing_large"
                         android:text="@string/or_character"/>
 
-                    <LinearLayout
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/accessToken"
+                        style="@style/TextAppearance.AppCompat.Title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/spacing_normal"
-                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:background="?selectableItemBackground"
                         android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/accessToken"
-                            style="@style/TextAppearance.AppCompat.Title"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="?selectableItemBackground"
-                            android:gravity="center"
-                            android:paddingStart="@dimen/spacing_xs_large"
-                            android:text="@string/access_token"
-                            android:textColor="@color/material_pink_700"/>
-
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/left_border">
-
-                            <com.fastaccess.ui.widgets.FontTextView
-                                android:id="@+id/enterprise"
-                                style="@style/TextAppearance.AppCompat.Title"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="?selectableItemBackground"
-                                android:gravity="center"
-                                android:padding="@dimen/spacing_xs_large"
-                                android:text="@string/enterprise"
-                                android:textColor="@color/material_purple_700"/>
-                        </LinearLayout>
-                    </LinearLayout>
+                        android:padding="@dimen/spacing_xs_large"
+                        android:text="@string/access_token"
+                        android:textColor="@color/material_pink_700"/>
 
                     <com.fastaccess.ui.widgets.FontTextView
                         style="@style/TextAppearance.AppCompat.Small"

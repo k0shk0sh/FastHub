@@ -494,4 +494,5 @@
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
     <string name="choose_code_theme">Choose Code theme</string>
+    <string name="endpoint_hint">https://github.mydomain.com</string>
 </resources>

@@ -222,4 +222,31 @@ public class RestProvider {
         okHttpClient = null;
     }
 
+    @NonNull public static String getEndpoint(@NonNull String url) {
+        if (url.startsWith("http://")) {
+            url = url.replace("http://", "https://");
+        }
+        if (!url.startsWith("https://")) {
+            url = "https://" + url;
+        }
+        return getEnterpriseUrl(url);
+    }
+
+    @NonNull public static String getEnterpriseUrl(@NonNull String url) {
+        if (url.endsWith("/api/v3/")) {
+            return url;
+        } else if (url.endsWith("/api/")) {
+            return url + "v3/";
+        } else if (url.endsWith("/api")) {
+            return url + "/v3/";
+        } else if (url.endsWith("/api/v3")) {
+            return url + "/";
+        } else if (!url.endsWith("/")) {
+            return url + "/api/v3/";
+        } else if (url.endsWith("/")) {
+            return url + "api/v3/";
+        }
+        return url;
+    }
+
 }

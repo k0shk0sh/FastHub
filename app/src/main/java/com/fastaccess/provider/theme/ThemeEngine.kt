@@ -265,5 +265,5 @@ object ThemeEngine {
     }
 
     private fun hasTheme(activity: BaseActivity<*, *>) = (activity is LoginChooserActivity || activity is LoginActivity ||
-            activity is DonateActivity || activity is ReviewChangesActivity)
+             activity is DonateActivity || activity is ReviewChangesActivity)
 }

@@ -42,6 +42,7 @@
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuDark</item>
         <item name="android:spinnerDropDownItemStyle">@style/PopupMenuDark</item>
+        <item name="android:navigationBarColor">#2D3035</item>
     </style>
 
     <style name="PopupMenuDark" parent="Widget.AppCompat.PopupMenu">

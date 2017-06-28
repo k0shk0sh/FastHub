@@ -73,11 +73,20 @@
                             android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>
 
+                    <com.fastaccess.ui.widgets.FontCheckbox
+                        android:id="@+id/accessTokenCheckbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:text="@string/access_token"/>
+
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
                         android:hint="@string/password"
                         app:passwordToggleEnabled="true"
                         app:passwordToggleTint="?colorAccent">
@@ -105,6 +114,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:imeOptions="actionSend"
+                            android:inputType="text"
+                            android:maxLines="1"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/endpoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/endpointEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/endpoint_hint"
                             android:inputType="text"
                             android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>

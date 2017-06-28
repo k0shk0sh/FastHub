@@ -38,6 +38,7 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuAmlod</item>
+        <item name="android:navigationBarColor">#040408</item>
     </style>
 
     <style name="PopupMenuAmlod" parent="Widget.AppCompat.PopupMenu">
