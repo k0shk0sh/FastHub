@@ -67,7 +67,7 @@
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/date"
-                            style="@style/TextAppearance.AppCompat.Small"
+                            style="@style/TextAppearance.AppCompat.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center"
@@ -75,7 +75,7 @@
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/size"
-                            style="@style/TextAppearance.AppCompat.Small"
+                            style="@style/TextAppearance.AppCompat.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
@@ -84,7 +84,7 @@
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/language"
-                            style="@style/TextAppearance.AppCompat.Small"
+                            style="@style/TextAppearance.AppCompat.Caption"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"

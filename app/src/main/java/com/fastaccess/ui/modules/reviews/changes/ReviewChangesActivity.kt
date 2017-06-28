@@ -16,6 +16,7 @@ import com.fastaccess.data.dao.ReviewRequestModel
 import com.fastaccess.helper.*
 import com.fastaccess.provider.theme.ThemeEngine
 import com.fastaccess.ui.base.BaseActivity
+import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment
 
 /**
@@ -24,9 +25,9 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment
 class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesPresenter>(), ReviewChangesMvp.View {
 
 
-    val toolbar: Toolbar by lazy { findViewById(R.id.toolbar) as Toolbar }
-    val spinner: Spinner by lazy { findViewById(R.id.reviewMethod) as Spinner }
-    val editText: TextInputLayout by lazy { findViewById(R.id.editText) as TextInputLayout }
+    val toolbar: Toolbar by bindView(R.id.toolbar)
+    val spinner: Spinner by bindView(R.id.reviewMethod)
+    val editText: TextInputLayout by bindView(R.id.editText)
 
     @State var reviewRequest: ReviewRequestModel? = null
     @State var repoId: String? = null

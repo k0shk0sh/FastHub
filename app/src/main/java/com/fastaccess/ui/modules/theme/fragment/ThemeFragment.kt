@@ -23,8 +23,8 @@ import com.fastaccess.ui.widgets.SpannableBuilder
 
 class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter>(), ThemeFragmentMvp.View {
 
-    val apply: FloatingActionButton by lazy { view!!.findViewById(R.id.apply) as FloatingActionButton }
-    val toolbar: Toolbar by lazy { view!!.findViewById(R.id.toolbar) as Toolbar }
+    val apply: FloatingActionButton by lazy { view!!.findViewById<FloatingActionButton>(R.id.apply) }
+    val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
 
     private val THEME = "appTheme"
     private var primaryDarkColor: Int = 0

@@ -22,7 +22,7 @@ android {
             storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
         }
     }
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion "26.0.0"
     defaultConfig {
         applicationId "com.fastaccess.github"

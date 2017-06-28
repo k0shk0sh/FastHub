@@ -177,7 +177,7 @@
     <string name="code_viewer">Code viewer</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="big_file">Large file</string>
-    <string name="big_file_description">The file is too big to open.\nPress "OK" to download it instead.</string>
+    <string name="big_file_description">The file is too big to open.\nPress "Yes" to download it instead.</string>
     <string name="viewer">Viewer</string>
     <string name="submit">Submit</string>
     <string name="type_here">Type here</string>

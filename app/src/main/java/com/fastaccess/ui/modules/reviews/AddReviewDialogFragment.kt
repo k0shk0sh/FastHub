@@ -25,10 +25,10 @@ import com.fastaccess.ui.widgets.SpannableBuilder
  */
 class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
 
-    val toolbar: Toolbar by lazy { view!!.findViewById(R.id.toolbar) as Toolbar }
-    val textView: TextView by lazy { view!!.findViewById(R.id.text) as TextView }
-    val lineNo: TextView by lazy { view!!.findViewById(R.id.lineNo) as TextView }
-    val editText: TextInputLayout by lazy { view!!.findViewById(R.id.editText) as TextInputLayout }
+    val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
+    val textView: TextView by lazy { view!!.findViewById<TextView>(R.id.text) }
+    val lineNo: TextView by lazy { view!!.findViewById<TextView>(R.id.lineNo) }
+    val editText: TextInputLayout by lazy { view!!.findViewById<TextInputLayout>(R.id.editText) }
     val spacePattern = "\\s+".toRegex()
 
 

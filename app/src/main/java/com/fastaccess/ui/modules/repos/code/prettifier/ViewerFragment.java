@@ -153,7 +153,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         if (getPresenter().isRepo()) {
             if (appBarLayout != null && bottomNavigation != null) {
                 Logger.e(scroll, appBarLayout.getTotalScrollRange());
-                if (scroll == 0) {
+                if (scroll <= (appBarLayout.getTotalScrollRange() / 2)) {
                     scrolledTop = true;
                     bottomNavigation.setExpanded(true, true);
                     appBarLayout.setExpanded(true, true);
@@ -162,7 +162,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
                     appBarLayout.setExpanded(false, true);
                     scrolledTop = false;
                 }
-                webView.setNestedScrollingEnabled(scroll < 800);
+                webView.setNestedScrollingEnabled(scroll <= (appBarLayout.getTotalScrollRange() * 2));
             }
         }
     }
@@ -189,8 +189,8 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         }
         stateLayout.setOnReloadListener(view1 -> getPresenter().onHandleIntent(getArguments()));
         if (getPresenter().isRepo()) {
-            appBarLayout = (AppBarLayout) getActivity().findViewById(R.id.appbar);
-            bottomNavigation = (BottomNavigation) getActivity().findViewById(R.id.bottomNavigation);
+            appBarLayout = getActivity().findViewById(R.id.appbar);
+            bottomNavigation = getActivity().findViewById(R.id.bottomNavigation);
         }
     }
 

@@ -61,6 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/spacing_normal"
                     android:layout_marginTop="@dimen/spacing_micro"
                     android:autoLink="all"
                     tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>

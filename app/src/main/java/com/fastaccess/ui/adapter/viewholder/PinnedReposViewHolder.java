@@ -11,11 +11,11 @@ import com.fastaccess.data.dao.model.PinnedRepos;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
-import com.fastaccess.ui.widgets.color.ColorGenerator;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -79,7 +79,7 @@ public class PinnedReposViewHolder extends BaseViewHolder<PinnedRepos> {
         date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
         if (!InputHelper.isEmpty(repo.getLanguage())) {
             language.setText(repo.getLanguage());
-            language.setTextColor(ColorGenerator.getColor(itemView.getContext(), repo.getLanguage()));
+            language.setTextColor(ColorsProvider.getColorAsColor(repo.getLanguage(), language.getContext()));
             language.setVisibility(View.VISIBLE);
         }
     }

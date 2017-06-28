@@ -189,7 +189,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
-            MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription(), false, true)
+            MessageDialogView.newInstance(repoModel.getFullName(), repoModel.getDescription(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
     }

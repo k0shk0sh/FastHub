@@ -120,7 +120,6 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
     @Override public void onSetSearchQuery(@NonNull String query) {
         this.searchQuery = query;
         getLoadMore().reset();
-        recycler.scrollToPosition(0);
         adapter.clear();
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());

@@ -122,7 +122,6 @@ public class SearchIssuesFragment extends BaseFragment<SearchIssuesMvp.View, Sea
     @Override public void onSetSearchQuery(@NonNull String query) {
         this.searchQuery = query;
         getLoadMore().reset();
-        recycler.scrollToPosition(0);
         adapter.clear();
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());
