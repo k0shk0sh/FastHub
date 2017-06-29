@@ -32,6 +32,7 @@ public class TimelineProvider {
             String from = context.getString(R.string.from);
             String thisString = context.getString(R.string.this_value);
             String in = context.getString(R.string.in_value);
+            String commit = context.getString(R.string.commit);
             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                 if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
                     spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
@@ -53,11 +54,15 @@ public class TimelineProvider {
                 if (user != null) {
                     spannableBuilder.bold(user.getLogin());
                 }
-                if (event == IssueEventType.closed) {
+                if (event == IssueEventType.closed || event == IssueEventType.reopened) {
                     if (isMerged) {
                         spannableBuilder.append(" ").append(IssueEventType.merged.name());
                     } else {
-                        spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
+                        spannableBuilder
+                                .append(" ")
+                                .append(event.name().replaceAll("_", " "))
+                                .append(" ")
+                                .append(thisString);
                     }
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
@@ -88,9 +93,7 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
                     spannableBuilder
                             .append(" ")
-                            .append(thisString)
-                            .append(" ")
-                            .append(in)
+                            .append(commit)
                             .append(" ")
                             .url(substring(issueEventModel.getCommitId()));
                 } else if (event == IssueEventType.review_requested) {
@@ -99,11 +102,9 @@ public class TimelineProvider {
                             .append(from)
                             .append(" ")
                             .bold(issueEventModel.getRequestedReviewer().getLogin());
-                } else if (event == IssueEventType.closed || event == IssueEventType.reopened) {
+                } else if (event == IssueEventType.closed) {
                     if (issueEventModel.getCommitId() != null) {
                         spannableBuilder
-                                .append(" ")
-                                .append(thisString)
                                 .append(" ")
                                 .append(in)
                                 .append(" ")
