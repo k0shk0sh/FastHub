@@ -119,6 +119,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
            <p>- Russian [@dedepete](https://github.com/dedepete)</p>
            <p>- Turkish [@kutsan](https://github.com/kutsan)</p>
            <p>- Portuguese [@caiorrs](https://github.com/caiorrs)</p>
+           <p>- Czech [@hejsekvojtech](https://github.com/hejsekvojtech)</p>
 </details>
 
 ## FAQ
