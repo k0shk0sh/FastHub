@@ -319,8 +319,7 @@
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
     <string name="no_issue">No issue</string>
-    <string name="copy">Copy</string>
-    <string name="copy_repo_url">Copy repo URL</string>
+    <string name="copy">Copy URL</string>
     <string name="success_copied">Copied</string>
     <string name="commit_message">Commit message</string>
     <string name="network_error">Error occurred while communicating to the server</string>
