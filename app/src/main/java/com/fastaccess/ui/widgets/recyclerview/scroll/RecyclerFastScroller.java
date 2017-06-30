@@ -23,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 
 /**
@@ -34,28 +33,25 @@ public class RecyclerFastScroller extends FrameLayout {
 
     private static final int DEFAULT_AUTO_HIDE_DELAY = 1500;
 
-    private final View mBar;
-    private final View mHandle;
-    final int mHiddenTranslationX;
-    private final Runnable mHide;
-    private final int mMinScrollHandleHeight;
+    private final View bar;
+    private final View handle;
+    final int hiddenTranslationX;
+    private final Runnable hideRunnable;
+    private final int minScrollHandleHeight;
+    private RecyclerView recyclerView;
+    private AnimatorSet animator;
+    boolean animatingIn;
 
-    RecyclerView mRecyclerView;
-
-    AnimatorSet mAnimator;
-    boolean mAnimatingIn;
-
-    private int mHideDelay;
-    private boolean mHidingEnabled;
-    private int mHandleNormalColor;
-    private int mHandlePressedColor;
-    private int mBarColor;
-    private int mTouchTargetWidth;
-    private int mBarInset;
+    private int hideDelay;
+    private boolean hidingEnabled;
+    private int handleNormalColor;
+    private int handlePressedColor;
+    private int touchTargetWidth;
+    private int barInset;
     private OnLoadMore onLoadMore;
-    private boolean mHideOverride;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.AdapterDataObserver mAdapterObserver = new RecyclerView.AdapterDataObserver() {
+    private boolean hideOverride;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.AdapterDataObserver adapterObserver = new RecyclerView.AdapterDataObserver() {
         @Override public void onChanged() {
             super.onChanged();
             requestLayout();
@@ -68,81 +64,66 @@ public class RecyclerFastScroller extends FrameLayout {
 
     public RecyclerFastScroller(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
-
-        mBarColor = resolveColor(context, R.attr.colorControlNormal);
-
-        mHandleNormalColor = resolveColor(context, R.attr.colorControlNormal);
-
-        mHandlePressedColor = resolveColor(context, R.attr.colorAccent);
-
-        mTouchTargetWidth = convertDpToPx(context, 24);
-
-        mHideDelay = DEFAULT_AUTO_HIDE_DELAY;
-
-        mHidingEnabled = true;
-
+        handleNormalColor = resolveColor(context, R.attr.colorControlNormal);
+        handlePressedColor = resolveColor(context, R.attr.colorAccent);
+        touchTargetWidth = convertDpToPx(context, 24);
+        hideDelay = DEFAULT_AUTO_HIDE_DELAY;
+        hidingEnabled = true;
         int fortyEightDp = convertDpToPx(context, 48);
         setLayoutParams(new ViewGroup.LayoutParams(fortyEightDp, ViewGroup.LayoutParams.MATCH_PARENT));
-
-        mBar = new View(context);
-        mHandle = new View(context);
-        addView(mBar);
-        addView(mHandle);
-
+        bar = new View(context);
+        handle = new View(context);
+        addView(bar);
+        addView(handle);
         int eightDp = convertDpToPx(getContext(), 8);
-        mBarInset = mTouchTargetWidth - eightDp;
-
-        if (mTouchTargetWidth > fortyEightDp) {
+        barInset = touchTargetWidth - eightDp;
+        if (touchTargetWidth > fortyEightDp) {
             throw new RuntimeException("Touch target width cannot be larger than 48dp!");
         }
-
-        mBar.setLayoutParams(new LayoutParams(mTouchTargetWidth, ViewGroup.LayoutParams.MATCH_PARENT, GravityCompat.END));
-        mHandle.setLayoutParams(new LayoutParams(mTouchTargetWidth, convertDpToPx(context, 80), GravityCompat.END));
-
+        bar.setLayoutParams(new LayoutParams(touchTargetWidth, ViewGroup.LayoutParams.MATCH_PARENT, GravityCompat.END));
+        handle.setLayoutParams(new LayoutParams(touchTargetWidth, convertDpToPx(context, 80), GravityCompat.END));
         updateHandleColorsAndInset();
         updateBarColorAndInset();
-
-        mMinScrollHandleHeight = fortyEightDp;
-
-        mHiddenTranslationX = (isRTL(getContext()) ? -1 : 1) * eightDp;
-        mHide = () -> {
-            if (!mHandle.isPressed()) {
-                if (mAnimator != null && mAnimator.isStarted()) {
-                    mAnimator.cancel();
+        minScrollHandleHeight = fortyEightDp;
+        hiddenTranslationX = ((isRTL(getContext()) ? -1 : 1) * eightDp) + convertDpToPx(getContext(), 4);
+        hideRunnable = () -> {
+            if (!handle.isPressed()) {
+                if (animator != null && animator.isStarted()) {
+                    animator.cancel();
                 }
-                mAnimator = new AnimatorSet();
+                animator = new AnimatorSet();
                 ObjectAnimator animator2 = ObjectAnimator.ofFloat(RecyclerFastScroller.this, View.TRANSLATION_X,
-                        mHiddenTranslationX);
+                        hiddenTranslationX);
                 animator2.setInterpolator(new FastOutLinearInInterpolator());
                 animator2.setDuration(150);
-                mHandle.setEnabled(false);
-                mAnimator.play(animator2);
-                mAnimator.start();
+                handle.setEnabled(false);
+                animator.play(animator2);
+                animator.start();
             }
         };
 
-        mHandle.setOnTouchListener(new OnTouchListener() {
+        handle.setOnTouchListener(new OnTouchListener() {
             private float mInitialBarHeight;
             private float mLastPressedYAdjustedToInitial;
 
             @SuppressLint("ClickableViewAccessibility")
             @Override public boolean onTouch(View v, MotionEvent event) {
                 if (event.getActionMasked() == MotionEvent.ACTION_DOWN) {
-                    mHandle.setPressed(true);
-                    mRecyclerView.stopScroll();
-                    mInitialBarHeight = mBar.getHeight();
-                    mLastPressedYAdjustedToInitial = event.getY() + mHandle.getY() + mBar.getY();
+                    handle.setPressed(true);
+                    recyclerView.stopScroll();
+                    mInitialBarHeight = bar.getHeight();
+                    mLastPressedYAdjustedToInitial = event.getY() + handle.getY() + bar.getY();
                 } else if (event.getActionMasked() == MotionEvent.ACTION_MOVE) {
-                    float newHandlePressedY = event.getY() + mHandle.getY() + mBar.getY();
-                    int barHeight = mBar.getHeight();
+                    float newHandlePressedY = event.getY() + handle.getY() + bar.getY();
+                    int barHeight = bar.getHeight();
                     float newHandlePressedYAdjustedToInitial = newHandlePressedY + (mInitialBarHeight - barHeight);
                     float deltaPressedYFromLastAdjustedToInitial = newHandlePressedYAdjustedToInitial - mLastPressedYAdjustedToInitial;
-                    int dY = (int) ((deltaPressedYFromLastAdjustedToInitial / mInitialBarHeight) * (mRecyclerView.computeVerticalScrollRange()));
-                    if (mRecyclerView != null) {
+                    int dY = (int) ((deltaPressedYFromLastAdjustedToInitial / mInitialBarHeight) * (recyclerView.computeVerticalScrollRange()));
+                    if (recyclerView != null) {
                         try {
-                            mRecyclerView.scrollBy(0, dY);
+                            recyclerView.scrollBy(0, dY);
                             if (onLoadMore != null) {
-                                onLoadMore.onScrollStateChanged(mRecyclerView, RecyclerView.SCROLL_STATE_DRAGGING);
+                                onLoadMore.onScrollStateChanged(recyclerView, RecyclerView.SCROLL_STATE_DRAGGING);
                             }
                         } catch (Exception t) {
                             t.printStackTrace();
@@ -151,15 +132,14 @@ public class RecyclerFastScroller extends FrameLayout {
                     mLastPressedYAdjustedToInitial = newHandlePressedYAdjustedToInitial;
                 } else if (event.getActionMasked() == MotionEvent.ACTION_UP) {
                     mLastPressedYAdjustedToInitial = -1;
-                    mRecyclerView.stopNestedScroll();
-                    mHandle.setPressed(false);
+                    recyclerView.stopNestedScroll();
+                    handle.setPressed(false);
                     postAutoHide();
                 }
                 return true;
             }
         });
-
-        setTranslationX(mHiddenTranslationX);
+        setTranslationX(hiddenTranslationX);
     }
 
     @Override protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -168,27 +148,23 @@ public class RecyclerFastScroller extends FrameLayout {
     }
 
     private void updateScroller() {
-        if (mRecyclerView == null) return;
-        int scrollOffset = mRecyclerView.computeVerticalScrollOffset();
-        int verticalScrollRange = mRecyclerView.computeVerticalScrollRange() + mRecyclerView.getPaddingBottom();
-
-        int barHeight = mBar.getHeight();
+        if (recyclerView == null) return;
+        int scrollOffset = recyclerView.computeVerticalScrollOffset();
+        int verticalScrollRange = recyclerView.computeVerticalScrollRange() + recyclerView.getPaddingBottom();
+        int barHeight = bar.getHeight();
         float ratio = (float) scrollOffset / (verticalScrollRange - barHeight);
-
         int calculatedHandleHeight = (int) ((float) barHeight / verticalScrollRange * barHeight);
-        if (calculatedHandleHeight < mMinScrollHandleHeight) {
-            calculatedHandleHeight = mMinScrollHandleHeight;
+        if (calculatedHandleHeight < minScrollHandleHeight) {
+            calculatedHandleHeight = minScrollHandleHeight;
         }
-
         if (calculatedHandleHeight >= barHeight) {
-            setTranslationX(mHiddenTranslationX);
-            mHideOverride = true;
+            setTranslationX(hiddenTranslationX);
+            hideOverride = true;
             return;
         }
-
-        mHideOverride = false;
+        hideOverride = false;
         float y = ratio * (barHeight - calculatedHandleHeight);
-        mHandle.setY(y);
+        handle.setY(y);
     }
 
     private void updateHandleColorsAndInset() {
@@ -196,44 +172,44 @@ public class RecyclerFastScroller extends FrameLayout {
 
         if (!isRTL(getContext())) {
             drawable.addState(View.PRESSED_ENABLED_STATE_SET,
-                    new InsetDrawable(new ColorDrawable(mHandlePressedColor), mBarInset, 0, 0, 0));
+                    new InsetDrawable(new ColorDrawable(handlePressedColor), barInset, 0, 0, 0));
             drawable.addState(View.EMPTY_STATE_SET,
-                    new InsetDrawable(new ColorDrawable(mHandleNormalColor), mBarInset, 0, 0, 0));
+                    new InsetDrawable(new ColorDrawable(handleNormalColor), barInset, 0, 0, 0));
         } else {
             drawable.addState(View.PRESSED_ENABLED_STATE_SET,
-                    new InsetDrawable(new ColorDrawable(mHandlePressedColor), 0, 0, mBarInset, 0));
+                    new InsetDrawable(new ColorDrawable(handlePressedColor), 0, 0, barInset, 0));
             drawable.addState(View.EMPTY_STATE_SET,
-                    new InsetDrawable(new ColorDrawable(mHandleNormalColor), 0, 0, mBarInset, 0));
+                    new InsetDrawable(new ColorDrawable(handleNormalColor), 0, 0, barInset, 0));
         }
-        mHandle.setBackground(drawable);
+        handle.setBackground(drawable);
     }
 
     private void updateBarColorAndInset() {
 //        Drawable drawable;
 //
 //        if (!isRTL(getContext())) {
-//            drawable = new InsetDrawable(new ColorDrawable(mBarColor), mBarInset, 0, 0, 0);
+//            drawable = new InsetDrawable(new ColorDrawable(mBarColor), barInset, 0, 0, 0);
 //        } else {
-//            drawable = new InsetDrawable(new ColorDrawable(mBarColor), 0, 0, mBarInset, 0);
+//            drawable = new InsetDrawable(new ColorDrawable(mBarColor), 0, 0, barInset, 0);
 //        }
 //        drawable.setAlpha(57);
-//        mBar.setBackground(drawable);
+//        bar.setBackground(drawable);
     }
 
     public void attachRecyclerView(RecyclerView recyclerView) {
-        mRecyclerView = recyclerView;
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        this.recyclerView = recyclerView;
+        this.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 RecyclerFastScroller.this.show();
             }
         });
-        if (recyclerView.getAdapter() != null && recyclerView.getAdapter() != mAdapter) {
-            if (mAdapter != null) {
-                mAdapter.unregisterAdapterDataObserver(mAdapterObserver);
+        if (recyclerView.getAdapter() != null && recyclerView.getAdapter() != adapter) {
+            if (adapter != null) {
+                adapter.unregisterAdapterDataObserver(adapterObserver);
             }
-            recyclerView.getAdapter().registerAdapterDataObserver(mAdapterObserver);
-            mAdapter = recyclerView.getAdapter();
+            recyclerView.getAdapter().registerAdapterDataObserver(adapterObserver);
+            adapter = recyclerView.getAdapter();
         }
     }
 
@@ -243,16 +219,16 @@ public class RecyclerFastScroller extends FrameLayout {
         post(new Runnable() {
             @Override
             public void run() {
-                if (mHideOverride) {
+                if (hideOverride) {
                     return;
                 }
 
-                mHandle.setEnabled(true);
-                if (!mAnimatingIn && getTranslationX() != 0) {
-                    if (mAnimator != null && mAnimator.isStarted()) {
-                        mAnimator.cancel();
+                handle.setEnabled(true);
+                if (!animatingIn && getTranslationX() != 0) {
+                    if (animator != null && animator.isStarted()) {
+                        animator.cancel();
                     }
-                    mAnimator = new AnimatorSet();
+                    animator = new AnimatorSet();
                     ObjectAnimator animator = ObjectAnimator.ofFloat(RecyclerFastScroller.this, View.TRANSLATION_X, 0);
                     animator.setInterpolator(new LinearOutSlowInInterpolator());
                     animator.setDuration(100);
@@ -260,12 +236,12 @@ public class RecyclerFastScroller extends FrameLayout {
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             super.onAnimationEnd(animation);
-                            mAnimatingIn = false;
+                            animatingIn = false;
                         }
                     });
-                    mAnimatingIn = true;
-                    mAnimator.play(animator);
-                    mAnimator.start();
+                    animatingIn = true;
+                    RecyclerFastScroller.this.animator.play(animator);
+                    RecyclerFastScroller.this.animator.start();
                 }
                 postAutoHide();
             }
@@ -273,9 +249,9 @@ public class RecyclerFastScroller extends FrameLayout {
     }
 
     void postAutoHide() {
-        if (mRecyclerView != null && mHidingEnabled) {
-            mRecyclerView.removeCallbacks(mHide);
-            mRecyclerView.postDelayed(mHide, mHideDelay);
+        if (recyclerView != null && hidingEnabled) {
+            recyclerView.removeCallbacks(hideRunnable);
+            recyclerView.postDelayed(hideRunnable, hideDelay);
         }
     }
 

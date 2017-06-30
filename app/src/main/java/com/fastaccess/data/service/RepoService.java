@@ -176,4 +176,7 @@ public interface RepoService {
 
     @NonNull @GET("/repos/{owner}/{repo}/forks")
     Observable<Pageable<Repo>> getForks(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("repos/{owner}/{repo}/license") @Headers("Accept: application/vnd.github.html")
+    Observable<String> getLicense(@Path("owner") String owner, @Path("repo") String repo);
 }

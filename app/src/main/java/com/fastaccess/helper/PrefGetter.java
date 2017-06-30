@@ -95,6 +95,7 @@ public class PrefGetter {
     private static final String BLUISH_THEME_ENABLED = "bluish_theme_enabled";
     private static final String PRO_ITEMS = "pro_items";
     private static final String CODE_THEME = "code_theme";
+    private static final String ENTERPRISE_URL = "ENTERPRISE_URL";
 
     public static void setToken(@NonNull String token) {
         PrefHelper.set(TOKEN, token);
@@ -386,5 +387,17 @@ public class PrefGetter {
 
     public static void setCodeTheme(@NonNull String theme) {
         PrefHelper.set(CODE_THEME, theme);
+    }
+
+    public static String getEnterpriseUrl() {
+        return PrefHelper.getString(ENTERPRISE_URL);
+    }
+
+    public static void setEnterpriseUrl(@Nullable String value) {
+        if (InputHelper.isEmpty(value)) {
+            PrefHelper.clearKey(ENTERPRISE_URL);
+        } else {
+            PrefHelper.set(ENTERPRISE_URL, value);
+        }
     }
 }

@@ -68,21 +68,23 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         webView.loadImage(url);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onSetMdText(@NonNull String text, String baseUrl) {
         webView.setVisibility(View.VISIBLE);
+        loader.setIndeterminate(false);
         webView.setGithubContent(text, baseUrl);
         webView.setOnContentChangedListener(this);
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onSetCode(@NonNull String text) {
         webView.setVisibility(View.VISIBLE);
+        loader.setIndeterminate(false);
         webView.setSource(text, isWrap);
         webView.setOnContentChangedListener(this);
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onShowError(@NonNull String msg) {
@@ -96,6 +98,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onShowMdProgress() {
+        loader.setIndeterminate(true);
         loader.setVisibility(View.VISIBLE);
         stateLayout.showProgress();
     }

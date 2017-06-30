@@ -60,40 +60,6 @@
                         android:textColor="?android:textColorPrimary"
                         tools:text="One must invent the visitor in order to Bliss happens when you follow art so compassionately that whatsoever you are luring is your relativity.praise the sinner of remarkable vision."/>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/date"
-                            style="@style/TextAppearance.AppCompat.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center"
-                            tools:text="50 minutes ago"/>
-
-                        <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/size"
-                            style="@style/TextAppearance.AppCompat.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/spacing_normal"
-                            tools:text="50 minutes ago"/>
-
-                        <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/language"
-                            style="@style/TextAppearance.AppCompat.Caption"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/spacing_normal"
-                            android:visibility="gone"
-                            tools:text="Java"
-                            tools:visibility="visible"/>
-
-                    </LinearLayout>
                 </LinearLayout>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
@@ -114,12 +80,48 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
+                    android:layout_marginEnd="2dp"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/description"
                     android:padding="@dimen/spacing_micro"
                     android:src="@drawable/ic_info_outline"
                     android:visibility="gone"
                     tools:visibility="visible"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/date"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center"
+                    tools:text="50 minutes ago"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/size"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    tools:text="50 minutes ago"/>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/language"
+                    style="@style/TextAppearance.AppCompat.Caption"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="@dimen/spacing_normal"
+                    android:visibility="gone"
+                    tools:text="Java"
+                    tools:visibility="visible"/>
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

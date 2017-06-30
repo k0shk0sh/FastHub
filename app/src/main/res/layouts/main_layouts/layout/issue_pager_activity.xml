@@ -119,7 +119,8 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="@dimen/spacing_normal"
                         android:layout_weight="1"
-                        android:text="@string/pull_request_reviews"/>
+                        android:text="@string/pull_request_reviews"
+                        android:textColor="@color/white"/>
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/submitReviews"
@@ -130,7 +131,8 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:padding="@dimen/spacing_normal"
                         android:text="@string/submit"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Small"/>
+                        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                        android:textColor="@color/white"/>
 
                 </LinearLayout>
 

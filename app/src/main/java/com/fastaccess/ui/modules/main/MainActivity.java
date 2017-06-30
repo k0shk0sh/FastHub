@@ -11,11 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.evernote.android.state.State;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
@@ -25,9 +23,6 @@ import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
 import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
-import com.miguelbcr.io.rx_billing_service.RxBillingService;
-import com.miguelbcr.io.rx_billing_service.entities.ProductType;
-import com.miguelbcr.io.rx_billing_service.entities.Purchase;
 
 import butterknife.BindView;
 import butterknife.OnClick;

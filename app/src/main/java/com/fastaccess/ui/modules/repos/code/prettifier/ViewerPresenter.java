@@ -13,6 +13,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import io.reactivex.Observable;
@@ -36,6 +37,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             if (!isRepo) {
                 sendToView(view -> view.onShowError(R.string.no_file_found));
             }
+            sendToView(BaseMvp.FAView::hideProgress);
         } else {
             if (code == 406) {
                 sendToView(view -> view.openUrl(url));
