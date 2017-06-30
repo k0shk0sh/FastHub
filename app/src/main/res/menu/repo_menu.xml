@@ -15,7 +15,7 @@
     <item
         android:id="@+id/copy"
         android:icon="@drawable/ic_copy"
-        android:title="@string/copy_repo_url"
+        android:title="@string/copy"
         app:showAsAction="never"/>
 
     <item
