@@ -319,7 +319,7 @@
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
     <string name="no_issue">No issue</string>
-    <string name="copy">Copy</string>
+    <string name="copy">Copy URL</string>
     <string name="success_copied">Copied</string>
     <string name="commit_message">Commit message</string>
     <string name="network_error">Error occurred while communicating to the server</string>
@@ -394,7 +394,7 @@
     <string name="assignee">Assignee</string>
     <string name="checks_failed">Some checks have failed</string>
     <string name="checks_pending">All checks are pending</string>
-    <string name="checks_passed">All checks are passed</string>
+    <string name="checks_passed">All checks have passed</string>
     <string name="sort">Sort</string>
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
