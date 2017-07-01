@@ -118,7 +118,7 @@
         <item>English</item>
         <item>German</item>
         <item>Turkish</item>
-        <item>Chinese</item>
+        <item>Simplified Chinese</item>
         <item>Traditional Chinese</item>
         <item>Bahasa Indonesia</item>
         <item>Russian</item>
@@ -127,13 +127,14 @@
         <item>Lithuanian</item>
         <item>Brazilian Portuguese</item>
         <item>Czech</item>
+        <item>Spanish</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
         <item>en</item>
         <item>de</item>
         <item>tr</item>
-        <item>zh</item>
+        <item>zh-rCN</item>
         <item>zh-rTW</item>
         <item>in</item>
         <item>ru</item>
@@ -142,6 +143,7 @@
         <item>lt</item>
         <item>pt-rBR</item>
         <item>cs</item>
+        <item>es</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">

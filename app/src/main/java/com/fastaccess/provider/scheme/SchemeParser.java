@@ -11,9 +11,12 @@ import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
+import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -45,6 +48,11 @@ import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
  */
 
 public class SchemeParser {
+
+
+    public static void launchUri(@NonNull Context context, @NonNull String url) {
+        launchUri(context, Uri.parse(url), false);
+    }
 
     public static void launchUri(@NonNull Context context, @NonNull Uri data) {
         launchUri(context, data, false);
@@ -110,8 +118,11 @@ public class SchemeParser {
         } else {
             if (MarkDownProvider.isArchive(data.toString())) return null;
             String authority = data.getAuthority();
+            boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(RestProvider.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
+                    .equalsIgnoreCase(authority);
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
-                    TextUtils.equals(authority, API_AUTHORITY)) {
+                    TextUtils.equals(authority, API_AUTHORITY) || isEnterprise) {
+                Logger.e(data);
                 Intent trending = getTrending(context, data);
                 Intent userIntent = getUser(context, data);
                 Intent repoIssues = getRepoIssueIntent(context, data);
@@ -129,9 +140,17 @@ public class SchemeParser {
                         createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
-                    return intentOptional.get();
+                    Intent intent = intentOptional.get();
+                    if (intent.getExtras() != null) {
+                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+                    }
+                    return intent;
                 } else {
-                    return getGeneralRepo(context, data);
+                    Intent intent = getGeneralRepo(context, data);
+                    if (intent != null && intent.getExtras() != null) {
+                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+                    }
+                    return intent;
                 }
             }
         }
@@ -224,7 +243,9 @@ public class SchemeParser {
      */
     @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
         //TODO parse deeper links to their associate views. meantime fallback to repoPage
-        if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY)) {
+        boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(RestProvider.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
+                .equalsIgnoreCase(uri.getAuthority());
+        if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY) || isEnterprise) {
             List<String> segments = uri.getPathSegments();
             if (segments == null || segments.isEmpty()) return null;
             if (segments.size() == 1) {
@@ -346,6 +367,26 @@ public class SchemeParser {
             if (uri.getPathSegments().get(2).equals("releases")) {
                 String owner = segments.get(0);
                 String repo = segments.get(1);
+                String tag = uri.getLastPathSegment();
+                if (tag != null && !repo.equalsIgnoreCase(tag)) {
+                    if (TextUtils.isDigitsOnly(tag)) {
+                        return ReleasesListActivity.getIntent(context, owner, repo, InputHelper.toLong(tag));
+                    } else {
+                        return ReleasesListActivity.getIntent(context, owner, repo, tag);
+                    }
+                }
+                return ReleasesListActivity.getIntent(context, owner, repo);
+            } else if (segments.size() > 3 && segments.get(3).equalsIgnoreCase("releases")) {
+                String owner = segments.get(1);
+                String repo = segments.get(2);
+                String tag = uri.getLastPathSegment();
+                if (tag != null && !repo.equalsIgnoreCase(tag)) {
+                    if (TextUtils.isDigitsOnly(tag)) {
+                        return ReleasesListActivity.getIntent(context, owner, repo, InputHelper.toLong(tag));
+                    } else {
+                        return ReleasesListActivity.getIntent(context, owner, repo, tag);
+                    }
+                }
                 return ReleasesListActivity.getIntent(context, owner, repo);
             }
             return null;

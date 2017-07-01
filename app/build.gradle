@@ -53,7 +53,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            signingConfig signingConfigs.signing
+//            signingConfig signingConfigs.signing
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             ext.alwaysUpdateBuildId = false
@@ -120,7 +120,6 @@ dependencies {
     implementation "com.android.support:preference-v14:${supportVersion}"
     implementation "com.android.support:customtabs:${supportVersion}"
     implementation "com.android.support:palette-v7:${supportVersion}"
-//    implementation "com.android.support:support-emoji-appcompat:${supportVersion}"
     implementation "net.grandcentrix.thirtyinch:thirtyinch:${thirtyinchVersion}"
     implementation "net.grandcentrix.thirtyinch:thirtyinch-rx2:${thirtyinchVersion}"
     implementation "com.squareup.retrofit2:retrofit:${retrofit}"

@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.dao.types.MyIssuesType;
+import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.gists.GistsFragment;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.gists.gist.files.GistFilesListFragment;
@@ -20,12 +21,10 @@ import com.fastaccess.ui.modules.main.issues.MyIssuesFragment;
 import com.fastaccess.ui.modules.main.pullrequests.MyPullRequestFragment;
 import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
 import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
-import com.fastaccess.ui.modules.profile.events.ProfileEventsFragment;
 import com.fastaccess.ui.modules.profile.followers.ProfileFollowersFragment;
 import com.fastaccess.ui.modules.profile.following.ProfileFollowingFragment;
 import com.fastaccess.ui.modules.profile.gists.ProfileGistsFragment;
 import com.fastaccess.ui.modules.profile.org.OrgProfileOverviewFragment;
-import com.fastaccess.ui.modules.profile.org.feeds.OrgFeedsFragment;
 import com.fastaccess.ui.modules.profile.org.members.OrgMembersFragment;
 import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment;
 import com.fastaccess.ui.modules.profile.org.teams.OrgTeamFragment;
@@ -75,7 +74,7 @@ import lombok.Setter;
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForProfile(@NonNull Context context, @NonNull String login) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.overview), ProfileOverviewFragment.newInstance(login)),
-                new FragmentPagerAdapterModel(context.getString(R.string.feed), ProfileEventsFragment.Companion.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.feed), FeedsFragment.newInstance(login, false)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), ProfileReposFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.starred), ProfileStarredFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.gists), ProfileGistsFragment.newInstance(login)),
@@ -144,7 +143,8 @@ import lombok.Setter;
         String login = commitModel.getLogin();
         String repoId = commitModel.getRepoId();
         String sha = commitModel.getSha();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesFragment.newInstance(commitModel.getSha(), commitModel.getFiles())),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesFragment.newInstance(commitModel.getSha(),
+                commitModel.getFiles())),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), CommitCommentsFragment.newInstance(login, repoId, sha)))
                 .collect(Collectors.toList());
     }
@@ -170,7 +170,7 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context, boolean isEnterprise) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
@@ -182,7 +182,7 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context, boolean isEnterprise) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
@@ -196,7 +196,7 @@ import lombok.Setter;
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
         return Stream.of(
-                new FragmentPagerAdapterModel(context.getString(R.string.feeds), isMember ? OrgFeedsFragment.newInstance(login) : null),
+                new FragmentPagerAdapterModel(context.getString(R.string.feeds), isMember ? FeedsFragment.newInstance(login, true) : null),
                 new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), OrgReposFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersFragment.newInstance(login)),

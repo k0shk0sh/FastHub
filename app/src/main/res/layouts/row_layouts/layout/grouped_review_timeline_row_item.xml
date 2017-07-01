@@ -91,29 +91,46 @@
                 android:orientation="vertical"
                 android:visibility="gone"
                 app:layoutManager="@string/staggered_layout_manager"
-                app:spanCount="@integer/micro_spans"
-                tools:listitem="@layout/review_comments_row_item"
-                tools:visibility="visible"/>
+                app:spanCount="@integer/micro_spans"/>
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?dividerColor"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/addCommentPreview"
-                style="@style/TextAppearance.AppCompat.Subhead"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:drawableEnd="@drawable/ic_comment"
-                android:drawablePadding="@dimen/spacing_normal"
-                android:gravity="start|center"
-                android:hint="@string/add_comment"
-                android:paddingBottom="@dimen/spacing_normal"
-                android:paddingEnd="@dimen/spacing_xs_large"
-                android:paddingStart="@dimen/spacing_xs_large"
-                android:paddingTop="@dimen/spacing_xs_large"/>
+                android:orientation="horizontal">
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/addCommentPreview"
+                    style="@style/TextAppearance.AppCompat.Subhead"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@color/transparent"
+                    android:drawableEnd="@drawable/ic_comment"
+                    android:drawablePadding="@dimen/spacing_normal"
+                    android:gravity="start|center"
+                    android:layout_gravity="center"
+                    android:hint="@string/add_comment"
+                    android:paddingBottom="@dimen/spacing_normal"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large"/>
+
+                <com.fastaccess.ui.widgets.ForegroundImageView
+                    android:id="@+id/bottomToggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_micro"
+                    android:background="?selectableItemBackgroundBorderless"
+                    android:padding="@dimen/spacing_micro"
+                    android:src="@drawable/ic_arrow_drop_down"/>
+
+            </LinearLayout>
 
 
         </LinearLayout>

@@ -95,16 +95,44 @@
                         android:paddingStart="@dimen/spacing_large"
                         android:text="@string/or_character"/>
 
-                    <com.fastaccess.ui.widgets.FontTextView
-                        android:id="@+id/accessToken"
-                        style="@style/TextAppearance.AppCompat.Title"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="?selectableItemBackground"
-                        android:gravity="center"
-                        android:padding="@dimen/spacing_xs_large"
-                        android:text="@string/access_token"
-                        android:textColor="@color/material_pink_700"/>
+                        android:orientation="horizontal">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/accessToken"
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?selectableItemBackground"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
+                            android:text="@string/access_token"
+                            android:textColor="@color/material_pink_700"/>
+
+                        <View
+                            android:layout_width="0.5dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:layout_marginTop="@dimen/spacing_normal"
+                            android:background="@drawable/left_border"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/enterprise"
+                            style="@style/TextAppearance.AppCompat.Medium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="?selectableItemBackground"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/spacing_xs_large"
+                            android:paddingTop="@dimen/spacing_xs_large"
+                            android:text="@string/enterprise"
+                            android:textColor="@color/material_purple_700"/>
+                    </LinearLayout>
 
                     <com.fastaccess.ui.widgets.FontTextView
                         style="@style/TextAppearance.AppCompat.Small"

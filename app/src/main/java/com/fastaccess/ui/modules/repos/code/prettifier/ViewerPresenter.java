@@ -105,9 +105,9 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             return;
         }
         Observable<String> streamObservable = MarkDownProvider.isMarkdown(url)
-                                              ? RestProvider.getRepoService(true).getFileAsHtmlStream(url)
-                                              : RestProvider.getRepoService(true).getFileAsStream(url);
-        makeRestCall(isRepo ? RestProvider.getRepoService(true).getReadmeHtml(url)
+                                              ? RestProvider.getRepoService().getFileAsHtmlStream(url)
+                                              : RestProvider.getRepoService().getFileAsStream(url);
+        makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url)
                             : streamObservable, content -> {
             downloadedStream = content;
             ViewerFile fileModel = new ViewerFile();
@@ -138,7 +138,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         fileModel.setMarkdown(true);
                         fileModel.setContent(downloadedStream);
                         manageObservable(fileModel.save(fileModel).toObservable());
-                        sendToView(view -> view.onSetMdText(downloadedStream,  htmlUrl == null ? url : htmlUrl));
+                        sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
                     });
                     return;
                 }

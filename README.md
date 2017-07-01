@@ -120,6 +120,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
            <p>- Turkish [@kutsan](https://github.com/kutsan)</p>
            <p>- Portuguese [@caiorrs](https://github.com/caiorrs)</p>
            <p>- Czech [@hejsekvojtech](https://github.com/hejsekvojtech)</p>
+           <p>- Spanish [@alete89](https://github.com/alete89)</p>
 </details>
 
 ## FAQ
