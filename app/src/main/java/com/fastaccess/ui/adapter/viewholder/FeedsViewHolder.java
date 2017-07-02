@@ -209,7 +209,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .bold("at")
                 .append(" ")
-                .append(eventsModel.getRepo().getName());
+                .url(eventsModel.getRepo().getName());
         final List<GitCommitModel> commits = eventsModel.getPayload().getCommits();
         int size = commits != null ? commits.size() : -1;
         SpannableBuilder spanCommits = SpannableBuilder.builder();
@@ -251,7 +251,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .bold("in")
                 .append(" ")
-                .append(eventsModel.getRepo().getName())
+                .url(eventsModel.getRepo().getName())
                 .bold("#")
                 .bold(String.valueOf(pullRequest.getNumber()));
         if (comment.getBody() != null) {
@@ -269,13 +269,14 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         if ("synchronize".equals(action)) {
             action = "updated";
         }
+        if (eventsModel.getPayload().getPullRequest().isMerged()) {
+            action = "merged";
+        }
         spannableBuilder.bold(action)
                 .append(" ")
                 .bold("pull request")
                 .append(" ")
-                .bold("in")
-                .append(" ")
-                .append(eventsModel.getRepo().getName())
+                .url(eventsModel.getRepo().getName())
                 .bold("#")
                 .bold(String.valueOf(issue.getNumber()));
         if ("opened".equals(action) || "closed".equals(action)) {
@@ -296,7 +297,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         }
         spannableBuilder.append("made")
                 .append(" ")
-                .append(eventsModel.getRepo().getName())
+                .url(eventsModel.getRepo().getName())
                 .append(" ")
                 .append(action);
     }
@@ -310,7 +311,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append("to")
                 .append(" ")
-                .append(eventsModel.getRepo().getName());
+                .url(eventsModel.getRepo().getName());
     }
 
     private void appendIssueEvent(SpannableBuilder spannableBuilder, Event eventsModel) {
@@ -319,9 +320,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .bold("issue")
                 .append(" ")
-                .bold("in")
-                .append(" ")
-                .append(eventsModel.getRepo().getName())
+                .url(eventsModel.getRepo().getName())
                 .bold("#")
                 .bold(String.valueOf(issue.getNumber()));
         if (issue.getTitle() != null) {
@@ -342,9 +341,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .bold(issue.getPullRequest() != null ? "pull request" : "issue")
                 .append(" ")
-                .bold("in")
-                .append(" ")
-                .append(eventsModel.getRepo().getName())
+                .url(eventsModel.getRepo().getName())
                 .bold("#")
                 .bold(String.valueOf(issue.getNumber()));
         if (comment.getBody() != null) {
@@ -444,8 +441,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .bold("on")
                 .append(" ")
                 .bold("commit")
-                .append(" ")
-                .bold("in")
                 .append(" ")
                 .append(eventsModel.getRepo().getName())
                 .url(commitId != null ? "@" + commitId : "");
