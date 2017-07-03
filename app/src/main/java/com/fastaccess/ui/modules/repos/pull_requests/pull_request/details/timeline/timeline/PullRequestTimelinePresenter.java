@@ -291,7 +291,9 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             return;
         }
         setCurrentPage(page);
-        loadEverything(login, repoId, number, parameter.getHead().getSha(), parameter.isMergeable(), page);
+        if (parameter.getHead() != null) {
+            loadEverything(login, repoId, number, parameter.getHead().getSha(), parameter.isMergeable(), page);
+        }
     }
 
     private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable, int page) {

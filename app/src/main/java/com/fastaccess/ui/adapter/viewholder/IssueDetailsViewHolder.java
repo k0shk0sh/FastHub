@@ -185,12 +185,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     private void setupDate(@NonNull Date createdDate, @NonNull Date updated) {
-        if (createdDate.before(updated)) {
-            date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(updated),
-                    date.getResources().getString(R.string.edited)));
-        } else {
-            date.setText(ParseDateFormat.getTimeAgo(createdDate));
-        }
+        date.setText(ParseDateFormat.getTimeAgo(createdDate));
     }
 
     private void appendEmojies(@NonNull ReactionsModel reaction) {

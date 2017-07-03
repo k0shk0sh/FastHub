@@ -62,8 +62,9 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
             String url = InputHelper.isEmpty(model.getDownloadUrl()) ? model.getUrl() : model.getDownloadUrl();
             if (InputHelper.isEmpty(url)) return;
             if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(url)) {
-                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description), false, true,
-                        Bundler.start().put(BundleConstant.EXTRA, model.getDownloadUrl())
+                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
+                        false, true, Bundler.start()
+                                .put(BundleConstant.EXTRA, model.getDownloadUrl())
                                 .put(BundleConstant.YES_NO_EXTRA, true)
                                 .end())
                         .show(getChildFragmentManager(), "MessageDialogView");

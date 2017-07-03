@@ -2,7 +2,6 @@ package com.fastaccess.ui.widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -78,21 +77,22 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         inflate(getContext(), R.layout.avatar_layout, this);
         if (isInEditMode()) return;
         ButterKnife.bind(this);
+        setBackground(false);
         if (PrefGetter.isRectAvatar()) {
             avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 15);
         }
     }
 
     @Override public void onLoadingStarted(String imageUri, View view) {
-        setBackground(false);
+//        setBackground(false);
     }
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-        setBackground(true);
+//        setBackground(false);
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-        setBackground(true);
+//        setBackground(true);
     }
 
     @Override public void onLoadingCancelled(String imageUri, View view) {}
@@ -109,19 +109,24 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
-            avatar.setImageResource(R.drawable.ic_github_dark);
+            avatar.setImageResource(R.drawable.ic_incognito_avatar);
         }
     }
 
     private void setBackground(boolean clear) {
-        if (clear) {
-            setBackgroundColor(Color.TRANSPARENT);
+//        if (clear) {
+//            setBackgroundColor(Color.TRANSPARENT);
+//        } else {
+//            if (PrefGetter.isRectAvatar()) {
+//                setBackgroundResource(R.drawable.rect_shape);
+//            } else {
+//                setBackgroundResource(R.drawable.circle_shape);
+//            }
+//        }
+        if (PrefGetter.isRectAvatar()) {
+            setBackgroundResource(R.drawable.rect_shape);
         } else {
-            if (PrefGetter.isRectAvatar()) {
-                setBackgroundResource(R.drawable.rect_shape);
-            } else {
-                setBackgroundResource(R.drawable.circle_shape);
-            }
+            setBackgroundResource(R.drawable.circle_shape);
         }
     }
 }

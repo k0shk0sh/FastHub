@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.feeds;
 
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,6 +37,8 @@ public interface FeedsMvp {
     interface Presenter extends BaseMvp.FAPresenter,
             BaseViewHolder.OnItemClickListener<Event>,
             BaseMvp.PaginationListener {
+
+        void onFragmentCreated(@NonNull Bundle argument);
 
         void onCallApi(int page);
 

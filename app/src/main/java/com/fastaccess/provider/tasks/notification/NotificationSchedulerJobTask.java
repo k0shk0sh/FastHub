@@ -106,7 +106,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(10, duration))
+                .setTrigger(Trigger.executionWindow(duration / 2, duration))
                 .setService(NotificationSchedulerJobTask.class);
         dispatcher.mustSchedule(builder.build());
     }

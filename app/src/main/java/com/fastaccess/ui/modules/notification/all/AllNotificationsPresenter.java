@@ -106,14 +106,13 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 //                .toList();
         Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService().getAllNotifications()
                 .flatMap(response -> {
-                    if (response.getItems() != null) {
+                    if (response.getItems() != null && !response.getItems().isEmpty()) {
                         return Observable.zip(Notification.save(response.getItems()), Observable.just(GroupedNotificationModel.construct
                                 (response.getItems())), (notification, groupedNotificationModels) -> groupedNotificationModels);
-                    } else {
-                        return Observable.just(GroupedNotificationModel.construct(response.getItems()));
                     }
+                    return Observable.empty();
                 });
-        makeRestCall(observable, response -> sendToView(view -> view.onNotifyAdapter(response)));
+        makeRestCall(observable.doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)), response -> sendToView(view -> view.onNotifyAdapter(response)));
     }
 
     @Override public void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data) {

@@ -38,6 +38,7 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuAmlod</item>
+        <item name="android:navigationBarColor">#040408</item>
     </style>
 
     <style name="PopupMenuAmlod" parent="Widget.AppCompat.PopupMenu">
@@ -141,6 +142,13 @@
     </style>
 
     <style name="DialogThemeAmlod" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">#050910</item>
+        <item name="comment_box_style">@style/CommentBoxDarkAmlod</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundAmlod</item>
         <item name="colorPrimary">#040408</item>
         <item name="colorPrimaryDark">#08080F</item>
         <item name="colorAccent">#483078</item>

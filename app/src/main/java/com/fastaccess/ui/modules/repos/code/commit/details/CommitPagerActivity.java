@@ -17,6 +17,7 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -29,7 +30,7 @@ import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
-import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragments;
+import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -83,13 +84,14 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true, false)
+            MessageDialogView.newInstance(String.format("%s/%s", getPresenter().getLogin(), getPresenter().getRepoId()),
+                    getPresenter().getCommit().getGitCommit().getMessage(), true, false)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick(R.id.fab) void onAddComment() {
         if (pager == null || pager.getAdapter() == null) return;
-        CommitCommentsFragments view = (CommitCommentsFragments) pager.getAdapter().instantiateItem(pager, 1);
+        CommitCommentsFragment view = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
         if (view != null) {
             view.onStartNewComment();
         }
@@ -208,6 +210,15 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     @Override public void onFinishActivity() {
         hideProgress();
         finish();
+    }
+
+    @Override public void onAddComment(@NonNull Comment newComment) {
+        if (pager != null && pager.getAdapter() != null) {
+            CommitCommentsFragment fragment = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+            if (fragment != null) {
+                fragment.addComment(newComment);
+            }
+        }
     }
 
     @Override public void onBackPressed() {

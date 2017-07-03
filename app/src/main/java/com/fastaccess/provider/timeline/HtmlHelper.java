@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
@@ -81,7 +82,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("a", new LinkHandler());
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
-        WindowManager windowManager = (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
         windowManager.getDefaultDisplay().getRealSize(point);
         tableHandler.setTableWidth((int) (point.x / 1.2));

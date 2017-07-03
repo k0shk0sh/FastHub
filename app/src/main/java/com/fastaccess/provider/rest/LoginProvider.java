@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.data.service.LoginRestService;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
 import com.google.gson.FieldNamingPolicy;
@@ -41,9 +42,9 @@ public class LoginProvider {
         return client.build();
     }
 
-    private static Retrofit provideRetrofit(@Nullable String authToken, @Nullable String otp) {
+    private static Retrofit provideRetrofit(@Nullable String authToken, @Nullable String otp, @Nullable String enterpriseUrl) {
         return new Retrofit.Builder()
-                .baseUrl(BuildConfig.REST_URL)
+                .baseUrl(InputHelper.isEmpty(enterpriseUrl) ? BuildConfig.REST_URL : RestProvider.getEndpoint(enterpriseUrl))
                 .client(provideOkHttpClient(authToken, otp))
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -60,7 +61,8 @@ public class LoginProvider {
                 .create(LoginRestService.class);
     }
 
-    @NonNull public static LoginRestService getLoginRestService(@NonNull String authToken, @Nullable String otp) {
-        return provideRetrofit(authToken, otp).create(LoginRestService.class);
+    @NonNull public static LoginRestService getLoginRestService(@NonNull String authToken, @Nullable String otp,
+                                                                @Nullable String endpoint) {
+        return provideRetrofit(authToken, otp, endpoint).create(LoginRestService.class);
     }
 }

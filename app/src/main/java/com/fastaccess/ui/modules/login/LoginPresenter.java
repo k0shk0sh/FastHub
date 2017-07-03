@@ -29,7 +29,7 @@ import retrofit2.HttpException;
 
 public class LoginPresenter extends BasePresenter<LoginMvp.View> implements LoginMvp.Presenter {
 
-    public LoginPresenter() {
+    LoginPresenter() {
         RestProvider.clearHttpClient();
     }
 
@@ -66,10 +66,22 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @NonNull @Override public Uri getAuthorizationUrl() {
-        return new Uri.Builder()
-                .scheme("https")
-                .authority("github.com")
+    @NonNull @Override public Uri getAuthorizationUrl(@Nullable String endpoint) {
+        Uri.Builder builder = new Uri.Builder();
+        if (!InputHelper.isEmpty(endpoint)) {
+            endpoint = RestProvider.getEndpoint(endpoint);
+            Uri uri = Uri.parse(endpoint);
+            if (uri.getScheme() != null && uri.getAuthority() != null) {
+                builder.scheme(uri.getScheme())
+                        .authority(uri.getAuthority());
+            } else {
+                throw new IllegalArgumentException("Uri is invalid: " + endpoint);
+            }
+        } else {
+            builder.scheme("https")
+                    .authority("github.com");
+        }
+        return builder
                 .appendPath("login")
                 .appendPath("oauth")
                 .appendPath("authorize")
@@ -101,25 +113,26 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         if (userModel != null) {
             userModel.setToken(PrefGetter.getToken());
             userModel.save(userModel);
-            if (getView() != null)
-                getView().onSuccessfullyLoggedIn(userModel);
-            else
-                sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
+            sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
     @Override public void login(@NonNull String username, @NonNull String password,
-                                @Nullable String twoFactorCode, boolean isBasicAuth, boolean ignore) {
+                                @Nullable String twoFactorCode, boolean isBasicAuth,
+                                @Nullable String endpoint, boolean isEnterprise) {
+        setEnterprise(isEnterprise);
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
+        boolean endpointIsEmpty = InputHelper.isEmpty(endpoint) && isEnterprise;
         if (getView() == null) return;
-        getView().onEmptyUserName(!ignore && usernameIsEmpty);
-        getView().onEmptyPassword(!ignore && passwordIsEmpty);
-        if ((!usernameIsEmpty && !passwordIsEmpty) || ignore) {
+        getView().onEmptyUserName(usernameIsEmpty);
+        getView().onEmptyPassword(passwordIsEmpty);
+        getView().onEmptyEndpoint(endpointIsEmpty);
+        if ((!usernameIsEmpty && !passwordIsEmpty)) {
             String authToken = Credentials.basic(username, password);
-            if (isBasicAuth) {
+            if (isBasicAuth && !isEnterprise) {
                 AuthModel authModel = new AuthModel();
                 authModel.setScopes(Arrays.asList("user", "repo", "gist", "notifications", "read:org"));
                 authModel.setNote(BuildConfig.APPLICATION_ID);
@@ -129,20 +142,37 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
                 if (!InputHelper.isEmpty(twoFactorCode)) {
                     authModel.setOtpCode(twoFactorCode);
                 }
-                makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode).login(authModel), accessTokenModel -> {
+                makeRestCall(LoginProvider.getLoginRestService(authToken, twoFactorCode, null).login(authModel), accessTokenModel -> {
                     if (!InputHelper.isEmpty(twoFactorCode)) {
                         PrefGetter.setOtpCode(twoFactorCode);
                     }
                     onTokenResponse(accessTokenModel);
                 });
             } else {
-                makeRestCall(LoginProvider.getLoginRestService(authToken, null).loginAccessToken(), login -> {
-                    if (login != null) {
-                        PrefGetter.setToken(InputHelper.toString(password));
-                    }
-                    onUserResponse(login);
-                });
+                accessTokenLogin(password, endpoint, twoFactorCode, authToken, isEnterprise);
             }
+        }
+    }
+
+    private void accessTokenLogin(@NonNull String password, @Nullable String endpoint, @Nullable String otp, String authToken, boolean isEnterprise) {
+        if (!isEnterprise) {
+            makeRestCall(LoginProvider.getLoginRestService(authToken, otp, endpoint).loginAccessToken(), login -> {
+                PrefGetter.setToken(password);
+                onUserResponse(login);
+            });
+        } else {
+            makeRestCall(LoginProvider.getLoginRestService(authToken, otp, endpoint).loginAccessToken(), login -> {
+                if (login != null) {
+                    if (!InputHelper.isEmpty(otp)) {
+                        PrefGetter.setEnterpriseOtpCode(otp);
+                    }
+                    PrefGetter.setTokenEnterprise(authToken);
+                }
+                if (!InputHelper.isEmpty(endpoint)) {
+                    PrefGetter.setEnterpriseUrl(endpoint);
+                }
+                onUserResponse(login);
+            });
         }
     }
 }

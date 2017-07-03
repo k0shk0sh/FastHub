@@ -91,7 +91,7 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     private void showParentOrSelf(boolean showRecyclerView) {
-        if(parentView!=null)
+        if (parentView != null)
             parentView.setVisibility(VISIBLE);
         setVisibility(VISIBLE);
         emptyView.setVisibility(!showRecyclerView ? VISIBLE : GONE);
@@ -124,8 +124,17 @@ public class DynamicRecyclerView extends RecyclerView {
     }
 
     public void addDivider() {
-        if (!ViewHelper.isTablet(getContext())) {
-            Resources resources = getResources();
+        addDivider(false);
+    }
+
+    public void addDivider(boolean allScreens) {
+        Resources resources = getResources();
+        if (!allScreens) {
+            if (!ViewHelper.isTablet(getContext())) {
+                addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
+                        ViewHelper.getListDivider(getContext())));
+            }
+        } else {
             addItemDecoration(new InsetDividerDecoration(resources.getDimensionPixelSize(R.dimen.divider_height), 0,
                     ViewHelper.getListDivider(getContext())));
         }

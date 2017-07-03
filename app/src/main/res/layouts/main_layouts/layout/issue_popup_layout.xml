@@ -71,13 +71,17 @@
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_micro"
+                        android:background="@drawable/bottom_border"
+                        android:paddingBottom="@dimen/spacing_normal"
                         tools:text="Hello world"/>
 
                     <com.fastaccess.ui.widgets.FontTextView
                         android:id="@+id/body"
-                        style="@style/TextAppearance.AppCompat.Small"
+                        style="@style/TextAppearance.AppCompat.Caption"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/spacing_normal"
                         tools:text="Hello world"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>

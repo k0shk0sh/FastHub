@@ -189,9 +189,20 @@
         <activity android:name=".ui.modules.theme.ThemeActivity"/>
 
         <activity
+            android:name=".ui.modules.theme.code.ThemeCodeActivity"
+            android:label="@string/theme_title"/>
+
+        <activity
             android:name=".ui.modules.main.donation.DonateActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:theme="@style/ThemeTranslucent"/>
+
+        <activity
+            android:name=".ui.modules.reviews.changes.ReviewChangesActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/review_changes"
+            android:theme="@style/ThemeTranslucent"/>
+
         <activity
             android:name=".ui.modules.repos.wiki.WikiActivity"
             android:label="@string/gollum"

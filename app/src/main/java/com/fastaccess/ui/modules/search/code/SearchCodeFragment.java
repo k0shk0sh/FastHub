@@ -124,7 +124,6 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         this.searchQuery = query;
         this.showRepoName = showRepoName;
         getLoadMore().reset();
-        recycler.scrollToPosition(0);
         adapter.clear();
         adapter.showRepoName(showRepoName);
         if (!InputHelper.isEmpty(query)) {

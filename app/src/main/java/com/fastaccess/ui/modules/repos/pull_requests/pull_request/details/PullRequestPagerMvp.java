@@ -14,6 +14,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullReqeustMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
@@ -28,7 +29,7 @@ public interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
             AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback,
-            IssuePagerMvp.IssuePrCallback<PullRequest> {
+            IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback {
 
         void onSetupIssue(boolean update);
 
@@ -45,7 +46,7 @@ public interface PullRequestPagerMvp {
         void onFinishActivity();
     }
 
-    interface Presenter extends BaseMvp.FAPresenter {
+    interface Presenter extends BaseMvp.FAPresenter, PullRequestFilesMvp.CommitCommentCallback {
 
         @Nullable PullRequest getPullRequest();
 
@@ -71,7 +72,7 @@ public interface PullRequestPagerMvp {
 
         @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
-        void onMerge(String msg);
+        void onMerge(String s, String msg);
 
         void onLoadLabels();
 

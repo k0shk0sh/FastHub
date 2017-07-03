@@ -17,6 +17,7 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -40,6 +41,7 @@ public class CodeViewerActivity extends BaseActivity {
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String url, @NonNull String htmlUrl) {
+        Logger.e(url, htmlUrl);
         Intent intent = new Intent(context, CodeViewerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TWO, htmlUrl)
@@ -78,7 +80,7 @@ public class CodeViewerActivity extends BaseActivity {
             htmlUrl = bundle.getString(BundleConstant.EXTRA_TWO);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, ViewerFragment.newInstance(url), ViewerFragment.TAG)
+                    .replace(R.id.container, ViewerFragment.newInstance(url, htmlUrl), ViewerFragment.TAG)
                     .commit();
         }
         setTitle(Uri.parse(url).getLastPathSegment());
@@ -97,13 +99,13 @@ public class CodeViewerActivity extends BaseActivity {
             }
             return true;
         } else if (item.getItemId() == R.id.browser) {
-            ActivityHelper.openChooser(this,  htmlUrl != null ? htmlUrl : url);
+            ActivityHelper.openChooser(this, htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == R.id.copy) {
             AppHelper.copyToClipboard(this, htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == R.id.share) {
-            ActivityHelper.shareUrl(this,  htmlUrl != null ? htmlUrl : url);
+            ActivityHelper.shareUrl(this, htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             Uri uri = Uri.parse(url);

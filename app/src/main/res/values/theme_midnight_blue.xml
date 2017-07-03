@@ -118,6 +118,13 @@
     </style>
 
     <style name="DialogThemeMidNighBlue" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">@color/cardview_light_background</item>
+        <item name="icon_color">#212121</item>
+        <item name="comment_box_style">@style/CommentBoxLight</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundLight</item>
         <item name="colorPrimary">#213040</item>
         <item name="colorPrimaryDark">#101B27</item>
         <item name="colorAccent">#4C5B6A</item>

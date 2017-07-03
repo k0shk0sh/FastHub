@@ -7,16 +7,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
-import com.fastaccess.App;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
-import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -25,15 +22,18 @@ import static com.fastaccess.helper.AppHelper.getFragmentByTag;
  * Created by Kosh on 09 Nov 2016, 7:53 PM
  */
 
-class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
+public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
 
 
-    MainPresenter() {
+    @com.evernote.android.state.State boolean isEnterprise;
+
+    MainPresenter(boolean isEnterprise) {
+        this.isEnterprise = isEnterprise;
         manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getUser())
                 .flatMap(login -> login.update(login))
                 .subscribe(login -> {
                     if (login != null) {
-                        sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
+                        sendToView(view -> view.onUpdateDrawerMenuHeader(isEnterprise));
                     }
                 }, Throwable::printStackTrace/*fail silently*/));
     }
@@ -50,25 +50,25 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag(fragmentManager, MyIssuesPagerFragment.TAG);
         switch (type) {
             case MainMvp.PROFILE:
-                UserPagerActivity.startActivity(App.getInstance().getApplicationContext(), Login.getUser().getLogin());
+                sendToView(MainMvp.View::onOpenProfile);
                 break;
             case MainMvp.FEEDS:
                 if (homeView == null) {
-                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(isEnterprise), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, homeView, currentVisible);
                 }
                 break;
             case MainMvp.PULL_REQUESTS:
                 if (pullRequestView == null) {
-                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(isEnterprise), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestView, currentVisible);
                 }
                 break;
             case MainMvp.ISSUES:
                 if (issuesView == null) {
-                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(isEnterprise), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }

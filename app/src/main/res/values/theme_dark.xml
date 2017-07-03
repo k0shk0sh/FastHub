@@ -41,6 +41,8 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuDark</item>
+        <item name="android:spinnerDropDownItemStyle">@style/PopupMenuDark</item>
+        <item name="android:navigationBarColor">#2D3035</item>
     </style>
 
     <style name="PopupMenuDark" parent="Widget.AppCompat.PopupMenu">
@@ -144,6 +146,13 @@
     </style>
 
     <style name="DialogThemeDark" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleDark</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">#2D3035</item>
+        <item name="comment_box_style">@style/CommentBoxDark</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundDark</item>
         <item name="colorPrimary">#2D3035</item>
         <item name="colorPrimaryDark">#26282C</item>
         <item name="colorAccent">#2196F3</item>

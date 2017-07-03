@@ -1,6 +1,5 @@
 package com.fastaccess.ui.modules.feeds;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -12,14 +11,15 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitCommitModel;
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
+import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -43,8 +43,30 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     private FeedsAdapter adapter;
     private OnLoadMore onLoadMore;
 
-    public static FeedsFragment newInstance() {
-        return new FeedsFragment();
+    public static FeedsFragment newInstance(@NonNull String user) {
+        return newInstance(user, false);
+    }
+
+    public static FeedsFragment newInstance(@Nullable String user, boolean isOrg) {
+        return newInstance(user, isOrg, false);
+    }
+
+    public static FeedsFragment newInstance(@Nullable String user, boolean isOrg, boolean isEnterprise) {
+        FeedsFragment feedsFragment = new FeedsFragment();
+        feedsFragment.setArguments(Bundler.start()
+                .put(BundleConstant.EXTRA, user)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .put(BundleConstant.EXTRA_TWO, isOrg)
+                .end());
+        return feedsFragment;
+    }
+
+    public static FeedsFragment newInstance(boolean isEnterprise) {
+        FeedsFragment feedsFragment = new FeedsFragment();
+        feedsFragment.setArguments(Bundler.start()
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .end());
+        return feedsFragment;
     }
 
     @Override protected int fragmentLayout() {
@@ -56,13 +78,13 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        adapter = new FeedsAdapter(getPresenter().getEvents());
+        adapter = new FeedsAdapter(getPresenter().getEvents(), isProfile());
         adapter.setListener(getPresenter());
         getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (getPresenter().getEvents().isEmpty() && !getPresenter().isApiCalled()) {
-            onRefresh();
+            getPresenter().onFragmentCreated(getArguments());
         }
     }
 
@@ -140,15 +162,23 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
             SchemeParser.launchUri(getContext(), Uri.parse(((SimpleUrlsModel) item).getItem()));
         } else if (item instanceof GitCommitModel) {
             GitCommitModel model = (GitCommitModel) item;
-            NameParser nameParser = new NameParser(model.getUrl());
-            Intent intent = CommitPagerActivity.createIntent(getContext(), nameParser.getName(),
-                    nameParser.getUsername(), model.getSha(), true);
-            getContext().startActivity(intent);
+            SchemeParser.launchUri(getContext(), Uri.parse(model.getUrl()));
+        }
+    }
+
+    @Override public void onScrollTop(int index) {
+        super.onScrollTop(index);
+        if (recycler != null) {
+            recycler.scrollToPosition(0);
         }
     }
 
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    public boolean isProfile() {
+        return !InputHelper.isEmpty(getArguments().getString(BundleConstant.EXTRA)) && !getArguments().getBoolean(BundleConstant.EXTRA_TWO);
     }
 }

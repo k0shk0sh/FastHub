@@ -43,6 +43,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
+import com.fastaccess.ui.modules.repos.extras.license.RepoLicenseBottomSheet;
 import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscMVp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
@@ -189,7 +190,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         Repo repoModel = getPresenter().getRepo();
         if (repoModel != null && !InputHelper.isEmpty(repoModel.getDescription())) {
-            MessageDialogView.newInstance(getString(R.string.details), repoModel.getDescription(), false, true)
+            MessageDialogView.newInstance(repoModel.getFullName(), repoModel.getDescription(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
     }
@@ -200,12 +201,12 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
-    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout, R.id.wikiLayout}) void onClick(View view) {
+    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout, R.id.wikiLayout, R.id.licenseLayout})
+    void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
-                MessageDialogView.newInstance(getString(R.string.fork), getString(R.string.confirm_message),
-                        Bundler.start().put(BundleConstant.EXTRA, true)
-                                .put(BundleConstant.YES_NO_EXTRA, true).end())
+                MessageDialogView.newInstance(getString(R.string.fork), String.format("%s %s/%s?", getString(R.string.fork), login, repoId),
+                        Bundler.start().put(BundleConstant.EXTRA, true).put(BundleConstant.YES_NO_EXTRA, true).end())
                         .show(getSupportFragmentManager(), MessageDialogView.TAG);
                 break;
             case R.id.starRepoLayout:
@@ -228,6 +229,12 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                 break;
             case R.id.wikiLayout:
                 ActivityHelper.startReveal(this, WikiActivity.Companion.getWiki(this, repoId, login), wikiLayout);
+                break;
+            case R.id.licenseLayout:
+                LicenseModel licenseModel = getPresenter().getRepo().getLicense();
+                String license = !InputHelper.isEmpty(licenseModel.getSpdxId()) ? licenseModel.getSpdxId() : licenseModel.getName();
+                RepoLicenseBottomSheet.Companion.newInstance(getPresenter().login(), getPresenter().repoId(), license)
+                        .show(getSupportFragmentManager(), "RepoLicenseBottomSheet");
                 break;
         }
     }
@@ -526,7 +533,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             menuItem.setTitle(repoModel.getParent().getFullName());
         }
 //        menu.findItem(R.id.deleteRepo).setVisible(getPresenter().isRepoOwner());
-        menu.findItem(R.id.deleteRepo).setVisible(false);//removing delete permission.
+        if (menu.findItem(R.id.deleteRepo) != null) menu.findItem(R.id.deleteRepo).setVisible(false);//removing delete permission.
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -536,6 +543,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             finish();
         } else if (item.getItemId() == R.id.share) {
             if (getPresenter().getRepo() != null) ActivityHelper.shareUrl(this, getPresenter().getRepo().getHtmlUrl());
+            return true;
+        } else if (item.getItemId() == R.id.browser) {
+            if (getPresenter().getRepo() != null) ActivityHelper.startCustomTab(this, getPresenter().getRepo().getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.copy) {
             if (getPresenter().getRepo() != null) AppHelper.copyToClipboard(this, getPresenter().getRepo().getHtmlUrl());

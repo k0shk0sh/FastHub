@@ -13,6 +13,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import io.reactivex.Observable;
@@ -27,6 +28,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
     @com.evernote.android.state.State boolean isRepo;
     @com.evernote.android.state.State boolean isImage;
     @com.evernote.android.state.State String url;
+    @com.evernote.android.state.State String htmlUrl;
 
     @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();
@@ -35,6 +37,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             if (!isRepo) {
                 sendToView(view -> view.onShowError(R.string.no_file_found));
             }
+            sendToView(BaseMvp.FAView::hideProgress);
         } else {
             if (code == 406) {
                 sendToView(view -> view.openUrl(url));
@@ -49,6 +52,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         if (intent == null) return;
         isRepo = intent.getBoolean(BundleConstant.EXTRA);
         url = intent.getString(BundleConstant.ITEM);
+        htmlUrl = intent.getString(BundleConstant.EXTRA_TWO);
         if (!InputHelper.isEmpty(url)) {
             if (MarkDownProvider.isArchive(url)) {
                 sendToView(view -> view.onShowError(R.string.archive_file_detected_error));
@@ -101,9 +105,9 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             return;
         }
         Observable<String> streamObservable = MarkDownProvider.isMarkdown(url)
-                                              ? RestProvider.getRepoService(true).getFileAsHtmlStream(url)
-                                              : RestProvider.getRepoService(true).getFileAsStream(url);
-        makeRestCall(isRepo ? RestProvider.getRepoService(true).getReadmeHtml(url)
+                                              ? RestProvider.getRepoService().getFileAsHtmlStream(url)
+                                              : RestProvider.getRepoService().getFileAsStream(url);
+        makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url)
                             : streamObservable, content -> {
             downloadedStream = content;
             ViewerFile fileModel = new ViewerFile();
@@ -114,7 +118,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                 fileModel.setMarkdown(true);
                 isMarkdown = true;
                 isRepo = true;
-                sendToView(view -> view.onSetMdText(downloadedStream, url));
+                sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
             } else {
                 isMarkdown = MarkDownProvider.isMarkdown(url);
                 if (isMarkdown) {
@@ -134,7 +138,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         fileModel.setMarkdown(true);
                         fileModel.setContent(downloadedStream);
                         manageObservable(fileModel.save(fileModel).toObservable());
-                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                        sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
                     });
                     return;
                 }

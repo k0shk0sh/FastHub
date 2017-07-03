@@ -73,7 +73,10 @@ import lombok.NoArgsConstructor;
 //        }
 //        entity.setIsLoggedIn(true); TODO for multiple logins
         App.getInstance().getDataStore()
-                .insert(entity)
+                .delete(Login.class)
+                .get()
+                .single()
+                .flatMap(integer -> App.getInstance().getDataStore().insert(entity))
                 .blockingGet();
     }
 

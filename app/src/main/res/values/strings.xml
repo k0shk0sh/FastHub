@@ -1,5 +1,7 @@
 <resources>
-    <!-- DO NOT COPY -->
+    <!-- DO NOT COPY! START COPYING FROM LINE 91 -->
+
+
     <string name="app_name" translatable="false">FastHub</string>
     <string name="app_name_full" translatable="false">FastHub for Android</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
@@ -78,7 +80,14 @@
     <string name="daily" translatable="false">Daily</string>
     <string name="weekly" translatable="false">Weekly</string>
     <string name="monthly" translatable="false">Monthly</string>
+    <string name="squash" translatable="false">Squash</string>
+    <string name="rebase" translatable="false">Rebase</string>
+    <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
+    <string name="review_changes" translatable="false">Review Changes</string>
+    <string name="enterprise" translatable="false">Enterprise</string>
+
     <!-- END OF DO NOT COPY -->
+
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
@@ -88,7 +97,7 @@
     <string name="no_data">No data available</string>
     <string name="search">Search</string>
     <string name="please_login">Please sign in to continue using FastHub</string>
-    <string name="sign_in_to_github">Sign in to your GitHub account to get the best out of FastHub</string>
+    <string name="sign_in_to_github">Sign in using your GitHub account to use FastHub</string>
     <string name="failed_login">Failed to sign in</string>
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
@@ -168,7 +177,7 @@
     <string name="code_viewer">Code viewer</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="big_file">Large file</string>
-    <string name="big_file_description">The file is too big to open.\nPress "OK" to download it instead.</string>
+    <string name="big_file_description">The file is too big to open.\nPress "Yes" to download it instead.</string>
     <string name="viewer">Viewer</string>
     <string name="submit">Submit</string>
     <string name="type_here">Type here</string>
@@ -292,7 +301,7 @@
     <string name="permission_failed">Permission Not Granted.</string>
     <string name="backup_summary">Last update: %s</string>
     <string name="now">Now</string>
-    <string name="unsaved_data_warning">Any unsaved changes will be discarded</string>
+    <string name="unsaved_data_warning">Discard unsaved changes?</string>
     <string name="private_repo">Private</string>
     <string name="rect_avatar_summary">Use rounded rectangle avatars instead of circular avatars</string>
     <string name="rect_avatar_title">Avatar Appearance</string>
@@ -310,7 +319,7 @@
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
     <string name="no_issue">No issue</string>
-    <string name="copy">Copy</string>
+    <string name="copy">Copy URL</string>
     <string name="success_copied">Copied</string>
     <string name="commit_message">Commit message</string>
     <string name="network_error">Error occurred while communicating to the server</string>
@@ -333,7 +342,7 @@
     <string name="pin">Pin</string>
     <string name="pinned">Pinned</string>
     <string name="unpin">Unpin</string>
-    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here</string>
+    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_feeds">No feeds</string>
@@ -383,9 +392,9 @@
     <string name="dialog_animation_title">Popup animation</string>
     <string name="milestones">Milestones</string>
     <string name="assignee">Assignee</string>
-    <string name="checks_failed">Some checks failed</string>
+    <string name="checks_failed">Some checks have failed</string>
     <string name="checks_pending">All checks are pending</string>
-    <string name="checks_passed">All checks are passed</string>
+    <string name="checks_passed">All checks have passed</string>
     <string name="sort">Sort</string>
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
@@ -410,12 +419,13 @@
     <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
     <string name="enable_notification_sound_title">Enable Notification Sound</string>
     <string name="enable_notification_title">Enable Notifications</string>
-    <string name="login_with_personal_token">Login with personal token</string>
+    <string name="login_with_personal_token">Login with a personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
-        grant FastHub access to see list your organizations.</string>
+        grant FastHub access to list your organizations.\nYou could also open up https://github.com/settings/applications and look for
+        FastHub, open it then scroll to Organization access and click on Grant Button.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
@@ -431,7 +441,7 @@
     <string name="from">from</string>
     <string name="in_value">in</string>
     <string name="subscribe">Subscribe</string>
-    <string name="repo_issues_is_disabled">The repo has no issues tab</string>
+    <string name="repo_issues_is_disabled">Issues have been disabled in this repo</string>
     <string name="access_token">Access Token</string>
     <string name="basic_authentication">Basic Authentication</string>
     <string name="choose_your_login_type">Choose your login type</string>
@@ -484,4 +494,6 @@
     <string name="milestone_added">Milestone added successfully</string>
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
+    <string name="choose_code_theme">Choose Code theme</string>
+    <string name="endpoint_hint">https://github.mydomain.com</string>
 </resources>

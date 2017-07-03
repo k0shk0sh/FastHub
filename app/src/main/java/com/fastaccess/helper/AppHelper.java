@@ -28,7 +28,6 @@ import es.dmoral.toasty.Toasty;
 
 public class AppHelper {
 
-
     public static void hideKeyboard(@NonNull View view) {
         InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -125,9 +124,21 @@ public class AppHelper {
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {
             return InputHelper.capitalizeFirstLetter(model);
+        } else if (isEmulator()){
+            return "Android Emulator";
         } else {
             return InputHelper.capitalizeFirstLetter(manufacturer) + " " + model;
         }
     }
 
+    private static boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
+    }
 }

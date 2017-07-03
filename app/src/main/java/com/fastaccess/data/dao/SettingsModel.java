@@ -22,6 +22,7 @@ import lombok.Setter;
     public static final int CUSTOMIZATION = 3;
     public static final int BACKUP = 4;
     public static final int LANGUAGE = 5;
+    public static final int CODE_THEME = 6;
 
     @IntDef({
             THEME,
@@ -29,7 +30,8 @@ import lombok.Setter;
             CUSTOMIZATION,
             BEHAVIOR,
             BACKUP,
-            LANGUAGE
+            LANGUAGE,
+            CODE_THEME
     })
     @Retention(RetentionPolicy.SOURCE) public @interface SettingsType {}
 
