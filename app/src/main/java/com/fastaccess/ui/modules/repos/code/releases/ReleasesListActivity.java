@@ -71,13 +71,18 @@ public class ReleasesListActivity extends BaseActivity {
                 finish();
             } else {
                 Bundle bundle = getIntent().getExtras();
+                String repoId = bundle.getString(BundleConstant.ID);
+                String login = bundle.getString(BundleConstant.EXTRA);
+
                 //noinspection ConstantConditions
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.container, RepoReleasesFragment
-                                .newInstance(bundle.getString(BundleConstant.ID), bundle.getString(BundleConstant.EXTRA),
+                                .newInstance(repoId, login,
                                         bundle.getString(BundleConstant.EXTRA_THREE), bundle.getLong(BundleConstant.EXTRA_TWO)))
                         .commit();
+
+                setTaskName(repoId + "/" + login + " " + getString(R.string.releases));
             }
         }
     }

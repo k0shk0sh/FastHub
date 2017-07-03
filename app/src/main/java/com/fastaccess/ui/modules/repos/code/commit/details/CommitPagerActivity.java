@@ -41,6 +41,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kotlin.text.StringsKt;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -163,6 +164,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
         HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
+        setTaskName(commit.getLogin() + "/" + commit.getRepoId() + " - Commit " + StringsKt.take(commit.getSha(), 5));
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
         date.setText(SpannableBuilder.builder()

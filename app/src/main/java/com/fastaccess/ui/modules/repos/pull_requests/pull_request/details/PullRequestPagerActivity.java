@@ -273,6 +273,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         }
         invalidateOptionsMenu();
         PullRequest pullRequest = getPresenter().getPullRequest();
+        setTaskName(pullRequest.getRepoId() + " - " + pullRequest.getTitle());
         updateViews(pullRequest);
         Logger.e(pullRequest.getBodyHtml());
         if (update) {

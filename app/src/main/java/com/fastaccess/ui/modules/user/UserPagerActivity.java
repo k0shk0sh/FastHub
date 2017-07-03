@@ -113,6 +113,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             finish();
             return;
         }
+        setTaskName(login);
         setTitle(login);
         if (login.equalsIgnoreCase(Login.getUser().getLogin())) {
             selectProfile();
@@ -179,6 +180,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabs.setupWithViewPager(pager);
+        setTaskName(login);
     }
 
     @Override public void onSetBadge(int tabIndex, int count) {

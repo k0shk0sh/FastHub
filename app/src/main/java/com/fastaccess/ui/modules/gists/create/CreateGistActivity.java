@@ -82,6 +82,8 @@ public class CreateGistActivity extends BaseActivity<CreateGistMvp.View, CreateG
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setTaskName(getString(R.string.create_gist));
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

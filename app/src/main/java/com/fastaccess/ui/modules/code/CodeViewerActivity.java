@@ -83,7 +83,9 @@ public class CodeViewerActivity extends BaseActivity {
                     .replace(R.id.container, ViewerFragment.newInstance(url, htmlUrl), ViewerFragment.TAG)
                     .commit();
         }
-        setTitle(Uri.parse(url).getLastPathSegment());
+        String title = Uri.parse(url).getLastPathSegment();
+        setTitle(title);
+        setTaskName(title);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

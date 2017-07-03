@@ -333,6 +333,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         if (getPresenter().getRepo() == null) {
             return;
         }
+        setTaskName(getPresenter().getRepo().getFullName());
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
         if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
