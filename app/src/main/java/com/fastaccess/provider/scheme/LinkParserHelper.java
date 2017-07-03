@@ -23,7 +23,7 @@ class LinkParserHelper {
     static final String API_AUTHORITY = "api.github.com";
     static final String PROTOCOL_HTTPS = "https";
     static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "settings", "blog", "explore",
-            "dashboard", "repositories", "logout", "sessions", "site", "security", "contact", "about", "logos", "login", "")
+            "dashboard", "repositories", "logout", "sessions", "site", "security", "contact", "about", "logos", "login", "pricing", "")
             .collect(Collectors.toCollection(ArrayList::new));
 
 
