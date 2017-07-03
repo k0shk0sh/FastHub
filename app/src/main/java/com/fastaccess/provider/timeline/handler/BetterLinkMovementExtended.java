@@ -44,7 +44,7 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
     }
 
     private final class LinkClickGestureListener extends GestureDetector.SimpleOnGestureListener {
-        GestureDetector.SimpleOnGestureListener listener = null;
+        private GestureDetector.SimpleOnGestureListener listener = null;
 
         @Override public boolean onDown(MotionEvent e) {
             if(listener != null) listener.onDown(e);
@@ -150,13 +150,11 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
 
         boolean ret = gestureDetector.onTouchEvent(event);
 
-        if(!ret) {
-            if(event.getAction() == MotionEvent.ACTION_UP) {
-                clickGestureListener.listener = null;
-                removeUrlHighlightColor(view);
-                this.touchStartedOverLink = false;
-                ret = true;
-            }
+        if(!ret && event.getAction() == MotionEvent.ACTION_UP) {
+            clickGestureListener.listener = null;
+            removeUrlHighlightColor(view);
+            this.touchStartedOverLink = false;
+            ret = true;
         }
 
         return ret;
