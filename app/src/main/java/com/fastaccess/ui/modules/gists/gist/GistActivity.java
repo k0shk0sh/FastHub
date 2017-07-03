@@ -208,6 +208,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                        gistsModel.getUser() != null ? gistsModel.getUser().getLogin() : "";
         avatarLayout.setUrl(url, login);
         title.setText(gistsModel.getDisplayTitle(false, true));
+        setTaskName(gistsModel.getDisplayTitle(false, true).toString());
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
         if (gistsModel.getCreatedAt().before(gistsModel.getUpdatedAt())) {
             date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()), getString(R.string.edited)));

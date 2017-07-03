@@ -15,7 +15,7 @@ class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Present
         manageObservable(RxHelper.getObserver(Observable.fromIterable(ColorsProvider.languages()))
                 .doOnSubscribe { sendToView { it.onClearMenu() } }
                 .filter { it.toLowerCase().contains(key.toLowerCase()) }
-                .doOnNext({ t: String -> sendWithColor(t) }))
+                .doOnNext(this::sendWithColor))
     }
 
     private fun sendWithColor(t: String) {

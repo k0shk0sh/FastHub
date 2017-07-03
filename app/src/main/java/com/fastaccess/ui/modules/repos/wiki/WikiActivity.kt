@@ -79,10 +79,12 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
         }
 
         toolbar?.subtitle = presenter.login + "/" + presenter.repoId
+        setTaskName("${presenter.login}/${presenter.repoId} - Wiki - $selectedTitle")
     }
 
     private fun onSidebarClicked(item: MenuItem) {
         this.selectedTitle = item.title.toString()
+        setTaskName("${presenter.login}/${presenter.repoId} - Wiki - $selectedTitle")
         closeDrawerLayout()
         wiki.sidebar.first { it.title?.toLowerCase() == item.title.toString().toLowerCase() }
                 .let { presenter.onSidebarClicked(it) }

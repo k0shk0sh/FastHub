@@ -242,6 +242,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         }
         onUpdateMenu();
         Issue issueModel = getPresenter().getIssue();
+        setTaskName(issueModel.getRepoId() + " - " + issueModel.getTitle());
         setTitle(String.format("#%s", issueModel.getNumber()));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setSubtitle(issueModel.getRepoId());

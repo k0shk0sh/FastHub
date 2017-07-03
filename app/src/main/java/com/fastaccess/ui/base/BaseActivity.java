@@ -1,5 +1,6 @@
 package com.fastaccess.ui.base;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -102,6 +103,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
+        setTaskName(null);
         setupTheme();
         AppHelper.updateAppLanguage(this);
         super.onCreate(savedInstanceState);
@@ -322,6 +324,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             adView.destroy();
         }
         super.onDestroy();
+    }
+
+    protected void setTaskName(@Nullable String name) {
+        setTaskDescription(new ActivityManager.TaskDescription(name, null, ViewHelper.getPrimaryDarkColor(this)));
     }
 
     protected void showHideAds() {

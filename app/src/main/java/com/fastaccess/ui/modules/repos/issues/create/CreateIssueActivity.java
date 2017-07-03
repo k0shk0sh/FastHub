@@ -226,6 +226,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                     .show();
         }
         if (toolbar != null) toolbar.setSubtitle(login + "/" + repoId);
+        setTaskName(login + "/" + repoId + " - " + (isFeedback ? getString(R.string.submit_feedback) : getString(R.string.create_issue)));
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {

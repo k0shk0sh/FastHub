@@ -49,7 +49,7 @@ public class LinksParserActivity extends Activity {
     }
 
     private void onUriReceived() {
-        SchemeParser.launchUri(this, getIntent().getData());
+        SchemeParser.launchUri(this, getIntent().getData(), false, true);
         finish();
     }
 }
