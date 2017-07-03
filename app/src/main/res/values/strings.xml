@@ -207,6 +207,7 @@
     <string name="notifications">Notifications</string>
     <string name="unread_notification">You have unread notifications</string>
     <string name="open">Open</string>
+    <string name="open_new_window">Open in new window</string>
     <string name="notification_type">Notification type</string>
     <string name="labels">Labels</string>
     <string name="no_labels">No labels</string>
