@@ -195,7 +195,8 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
             int spanStart = text.getSpanStart(spanWithText.span());
             int spanEnd = text.getSpanEnd(spanWithText.span());
             Logger.e(text.getClass().getName());
-            text.setSpan(new BackgroundColorSpan(textView.getHighlightColor()), spanStart, spanEnd, 18);
+            Selection.removeSelection(text);
+            text.setSpan(new BackgroundColorSpan(textView.getHighlightColor()), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             textView.setText(text);
             Selection.setSelection(text, spanStart, spanEnd);
         }
