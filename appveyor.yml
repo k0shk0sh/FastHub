@@ -7,7 +7,7 @@ environment:
 init:
   - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.5-windows.zip" -FileName "C:\android-tools.zip"
   - cmd: 7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
-  - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cinst cs-script
+  - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cinst cs-script --version=3.25.3.0
 
 install:
   - cmd: 'echo   > C:/Users/appveyor/.android/repositories.cfg'
