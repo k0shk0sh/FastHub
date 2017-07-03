@@ -256,7 +256,7 @@
     <string name="or_character">ИЛИ</string>
     <string name="mark_notification_title">Отключить статус о прочтении</string>
     <string name="mark_notification_summary">Отключить маркировку как прочтённое до клика на уведомление.</string>
-    <string name="theme_title">Выбрать тему</string>
+    <string name="theme_title">Выбрать тему оформления</string>
     <string name="theme_summary">Выбрать тему по умолчанию</string>
     <string name="theme_color_summary">Выберите цвет акцента темы</string>
     <string name="theme_color_title">Цвет акцента темы</string>
@@ -400,5 +400,6 @@
     <string name="reviewer_added">Рецензент успешно добавлен</string>
     <string name="milestone_added">Цель успешно добавлена</string>
     <string name="feed">Обновления</string>
-    <string name="premium_theme">Премиальная тема оформления</string>
+    <string name="premium_theme">Премиальная тема</string>
+    <string name="choose_code_theme">Выбрать цвет. палитру кода</string>
 </resources>
