@@ -32,7 +32,6 @@ public class TimelineProvider {
             String from = context.getString(R.string.from);
             String thisString = context.getString(R.string.this_value);
             String in = context.getString(R.string.in_value);
-            String commit = context.getString(R.string.commit);
             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                 if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
                     spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
@@ -75,12 +74,13 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ");
-                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
-                        spannableBuilder.append("self-assigned this");
+                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())){
+                        spannableBuilder
+                                .append(event == IssueEventType.assigned ? "self-assigned this" : "removed their assignment");
                     } else {
                         spannableBuilder
-                                .append(" ")
-                                .append(context.getString(R.string.assigned))
+                                .append(event == IssueEventType.assigned ? "assigned" : "unassigned");
+                        spannableBuilder
                                 .append(" ")
                                 .bold(issueEventModel.getAssignee().getLogin());
                     }
@@ -105,7 +105,7 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
                     spannableBuilder
                             .append(" ")
-                            .append(commit)
+                            .append("commit")
                             .append(" ")
                             .url(substring(issueEventModel.getCommitId()));
                 } else if (event == IssueEventType.review_requested) {
