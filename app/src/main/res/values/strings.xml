@@ -385,7 +385,8 @@
     <string name="members">Members</string>
     <string name="no_members">No members</string>
     <string name="no_teams">No teams</string>
-    <string name="no_orgs">Don\'t see your Organisations\?</string>
+    <string name="no_orgs">No Organizations</string>
+    <string name="no_orgs_dialog_title">Don\'t see your Organisations\?</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="animations">Animations</string>
     <string name="dialog_animation_summary">Enable popups animations</string>
