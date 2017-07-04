@@ -1,5 +1,7 @@
 package com.fastaccess.provider.timeline;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -8,7 +10,9 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.HapticFeedbackConstants;
 import android.view.WindowManager;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.fastaccess.App;
@@ -50,6 +54,30 @@ public class HtmlHelper {
         BetterLinkMovementExtended betterLinkMovementMethod = BetterLinkMovementExtended.linkifyHtml(textView);
         betterLinkMovementMethod.setOnLinkClickListener((view, url) -> {
             SchemeParser.launchUri(view.getContext(), Uri.parse(url));
+            return true;
+        });
+        betterLinkMovementMethod.setOnLinkLongClickListener((view, url) -> {
+            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            PopupMenu menu = new PopupMenu(view.getContext(), view);
+            menu.setOnMenuItemClickListener(menuItem -> {
+                switch(menuItem.getItemId()) {
+                    case R.id.copy:
+                        ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("URL", url);
+                        clipboard.setPrimaryClip(clip);
+                        return true;
+                    case R.id.open:
+                        SchemeParser.launchUri(view.getContext(), Uri.parse(url));
+                        return true;
+                    case R.id.open_new_window:
+                        SchemeParser.launchUri(view.getContext(), Uri.parse(url), false, true);
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            menu.inflate(R.menu.link_popup_menu);
+            menu.show();
             return true;
         });
     }

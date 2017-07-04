@@ -1,5 +1,6 @@
 package com.fastaccess.provider.timeline.handler;
 
+import android.content.Context;
 import android.graphics.RectF;
 import android.text.Layout;
 import android.text.Selection;
@@ -10,6 +11,7 @@ import android.text.style.BackgroundColorSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.URLSpan;
 import android.text.util.Linkify;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,62 +29,63 @@ import com.fastaccess.helper.Logger;
 public class BetterLinkMovementExtended extends LinkMovementMethod {
     private static final Class SPAN_CLASS = ClickableSpan.class;
     private static final int LINKIFY_NONE = -2;
-    private static BetterLinkMovementExtended singleInstance;
     private BetterLinkMovementExtended.OnLinkClickListener onLinkClickListener;
+    private BetterLinkMovementExtended.OnLinkLongClickListener onLinkLongClickListener;
     private final RectF touchedLineBounds = new RectF();
     private boolean isUrlHighlighted;
     private boolean touchStartedOverLink;
     private int activeTextViewHashcode;
 
-    public static BetterLinkMovementExtended newInstance() {
-        return new BetterLinkMovementExtended();
+    private final GestureDetector gestureDetector;
+    private final LinkClickGestureListener clickGestureListener = new LinkClickGestureListener();
+
+    private BetterLinkMovementExtended(Context context) {
+        gestureDetector = new GestureDetector(context, clickGestureListener);
     }
 
-    private static BetterLinkMovementExtended linkify(int linkifyMask, TextView... textViews) {
-        BetterLinkMovementExtended movementMethod = newInstance();
-        TextView[] var3 = textViews;
-        int var4 = textViews.length;
+    private final class LinkClickGestureListener extends GestureDetector.SimpleOnGestureListener {
+        private GestureDetector.SimpleOnGestureListener listener = null;
 
-        for (int var5 = 0; var5 < var4; ++var5) {
-            TextView textView = var3[var5];
-            addLinks(linkifyMask, movementMethod, textView);
+        @Override public boolean onDown(MotionEvent e) {
+            if(listener != null) listener.onDown(e);
+            return true;
         }
 
+        @Override public boolean onSingleTapUp(MotionEvent e) {
+            return listener == null || listener.onSingleTapUp(e);
+        }
+
+        @Override public void onLongPress(MotionEvent e) {
+            if(listener != null) listener.onLongPress(e);
+        }
+    }
+
+    private static BetterLinkMovementExtended linkify(int linkifyMask, TextView textView) {
+        BetterLinkMovementExtended movementMethod = new BetterLinkMovementExtended(textView.getContext());
+        addLinks(linkifyMask, movementMethod, textView);
         return movementMethod;
     }
 
-    public static BetterLinkMovementExtended linkifyHtml(TextView... textViews) {
-        return linkify(-2, (TextView[]) textViews);
+    public static BetterLinkMovementExtended linkifyHtml(TextView textView) {
+        return linkify(LINKIFY_NONE, textView);
     }
 
     private static BetterLinkMovementExtended linkify(int linkifyMask, ViewGroup viewGroup) {
-        BetterLinkMovementExtended movementMethod = newInstance();
+        BetterLinkMovementExtended movementMethod = new BetterLinkMovementExtended(viewGroup.getContext());
         rAddLinks(linkifyMask, viewGroup, movementMethod);
         return movementMethod;
     }
 
     public static BetterLinkMovementExtended linkifyHtml(ViewGroup viewGroup) {
-        return linkify(-2, (ViewGroup) viewGroup);
-    }
-
-    public static BetterLinkMovementExtended getInstance() {
-        if (singleInstance == null) {
-            singleInstance = new BetterLinkMovementExtended();
-        }
-
-        return singleInstance;
-    }
-
-    private BetterLinkMovementExtended() {
+        return linkify(LINKIFY_NONE, viewGroup);
     }
 
     public void setOnLinkClickListener(OnLinkClickListener onLinkClickListener) {
-        if (this == singleInstance) {
-            throw new UnsupportedOperationException("SettingsModel a click listener on the instance returned by getInstance() is not supported. Please " +
-                    "use startForResult() or any of the linkify() methods instead.");
-        } else {
-            this.onLinkClickListener = onLinkClickListener;
-        }
+        this.onLinkClickListener = onLinkClickListener;
+    }
+
+    public void setOnLinkLongClickListener(OnLinkLongClickListener onLinkLongClickListener) {
+        this.onLinkLongClickListener = onLinkLongClickListener;
     }
 
     private static void rAddLinks(int linkifyMask, ViewGroup viewGroup, BetterLinkMovementExtended movementMethod) {
@@ -100,7 +103,7 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
 
     private static void addLinks(int linkifyMask, BetterLinkMovementExtended movementMethod, TextView textView) {
         textView.setMovementMethod(movementMethod);
-        if (linkifyMask != -2) {
+        if (linkifyMask != LINKIFY_NONE) {
             Linkify.addLinks(textView, linkifyMask);
         }
 
@@ -119,23 +122,42 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
             this.removeUrlHighlightColor(view);
         }
 
-        switch (event.getAction()) {
-            case 0:
-                this.touchStartedOverLink = touchedClickableSpan != null;
+        clickGestureListener.listener = new GestureDetector.SimpleOnGestureListener() {
+            @Override public boolean onDown(MotionEvent e) {
+                touchStartedOverLink = touchedClickableSpan != null;
                 return true;
-            case 1:
-                if (touchedClickableSpan != null && this.touchStartedOverLink) {
-                    this.dispatchUrlClick(view, touchedClickableSpan);
-                    this.removeUrlHighlightColor(view);
+            }
+
+            @Override public boolean onSingleTapUp(MotionEvent e) {
+                if (touchedClickableSpan != null && touchStartedOverLink) {
+                    dispatchUrlClick(view, touchedClickableSpan);
+                    removeUrlHighlightColor(view);
                 }
 
-                this.touchStartedOverLink = false;
+                touchStartedOverLink = false;
                 return true;
-            case 2:
-                return true;
-            default:
-                return false;
+            }
+
+            @Override public void onLongPress(MotionEvent e) {
+                if (touchedClickableSpan != null && touchStartedOverLink) {
+                    dispatchUrlLongClick(view, touchedClickableSpan);
+                    removeUrlHighlightColor(view);
+                }
+
+                touchStartedOverLink = false;
+            }
+        };
+
+        boolean ret = gestureDetector.onTouchEvent(event);
+
+        if(!ret && event.getAction() == MotionEvent.ACTION_UP) {
+            clickGestureListener.listener = null;
+            removeUrlHighlightColor(view);
+            this.touchStartedOverLink = false;
+            ret = true;
         }
+
+        return ret;
     }
 
     private BetterLinkMovementExtended.ClickableSpanWithText findClickableSpanUnderTouch(TextView textView, Spannable text, MotionEvent event) {
@@ -171,11 +193,10 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
             int spanStart = text.getSpanStart(spanWithText.span());
             int spanEnd = text.getSpanEnd(spanWithText.span());
             Logger.e(text.getClass().getName());
-            if (text instanceof URLSpan) {
-                text.setSpan(new BackgroundColorSpan(textView.getHighlightColor()), spanStart, spanEnd, 18);
-                textView.setText(text);
-                Selection.setSelection(text, spanStart, spanEnd);
-            }
+            Selection.removeSelection(text);
+            text.setSpan(new BackgroundColorSpan(textView.getHighlightColor()), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
+            textView.setText(text);
+            Selection.setSelection(text, spanStart, spanEnd);
         }
     }
 
@@ -201,6 +222,11 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
             spanWithText.span().onClick(textView);
         }
 
+    }
+
+    private void dispatchUrlLongClick(TextView textView, BetterLinkMovementExtended.ClickableSpanWithText spanWithText) {
+        String spanUrl = spanWithText.text();
+        if(onLinkLongClickListener != null) onLinkLongClickListener.onLongClick(textView, spanUrl);
     }
 
     static class ClickableSpanWithText {
@@ -235,6 +261,10 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
     }
 
     public interface OnLinkClickListener {
-        boolean onClick(TextView var1, String var2);
+        boolean onClick(TextView view, String link);
+    }
+
+    public interface OnLinkLongClickListener {
+        boolean onLongClick(TextView view, String link);
     }
 }
