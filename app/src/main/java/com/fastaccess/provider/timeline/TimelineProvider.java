@@ -32,7 +32,6 @@ public class TimelineProvider {
             String from = context.getString(R.string.from);
             String thisString = context.getString(R.string.this_value);
             String in = context.getString(R.string.in_value);
-            String commit = context.getString(R.string.commit);
             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                 if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
                     spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
@@ -64,13 +63,26 @@ public class TimelineProvider {
                                 .append(" ")
                                 .append(thisString);
                     }
+                    if (issueEventModel.getCommitId() != null) {
+                        spannableBuilder
+                                .append(" ")
+                                .append(in)
+                                .append(" ")
+                                .url(substring(issueEventModel.getCommitId()));
+
+                    }
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ");
-                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
-                        spannableBuilder.append("self-assigned this");
+                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())){
+                        spannableBuilder
+                                .append(event == IssueEventType.assigned ? "self-assigned this" : "removed their assignment");
                     } else {
-                        spannableBuilder.bold(issueEventModel.getAssignee().getLogin());
+                        spannableBuilder
+                                .append(event == IssueEventType.assigned ? "assigned" : "unassigned");
+                        spannableBuilder
+                                .append(" ")
+                                .bold(issueEventModel.getAssignee().getLogin());
                     }
                 } else {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
@@ -93,7 +105,7 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
                     spannableBuilder
                             .append(" ")
-                            .append(commit)
+                            .append("commit")
                             .append(" ")
                             .url(substring(issueEventModel.getCommitId()));
                 } else if (event == IssueEventType.review_requested) {
@@ -102,14 +114,6 @@ public class TimelineProvider {
                             .append(from)
                             .append(" ")
                             .bold(issueEventModel.getRequestedReviewer().getLogin());
-                } else if (event == IssueEventType.closed) {
-                    if (issueEventModel.getCommitId() != null) {
-                        spannableBuilder
-                                .append(" ")
-                                .append(in)
-                                .append(" ")
-                                .url(substring(issueEventModel.getCommitId()));
-                    }
                 }
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
             }

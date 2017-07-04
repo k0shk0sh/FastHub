@@ -20,7 +20,7 @@ public enum IssueEventType {
     renamed(R.drawable.ic_edit),
     reopened(R.drawable.ic_issue_opened),
     subscribed(R.drawable.ic_subscribe),
-    unassigned(R.drawable.ic_announcement),
+    unassigned(R.drawable.ic_profile),
     unlabeled(R.drawable.ic_label),
     unlocked(R.drawable.ic_unsubscribe),
     unsubscribed(R.drawable.ic_eye_off),

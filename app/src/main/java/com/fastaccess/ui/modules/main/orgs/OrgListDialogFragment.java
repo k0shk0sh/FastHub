@@ -54,7 +54,7 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
         toolbar.setTitle(R.string.organizations);
         toolbar.inflateMenu(R.menu.add_menu);
         toolbar.getMenu().findItem(R.id.add).setIcon(R.drawable.ic_info_outline)
-                .setTitle(R.string.no_orgs);
+                .setTitle(R.string.no_orgs_dialog_title);
         toolbar.setOnMenuItemClickListener(item -> {
             MessageDialogView.newInstance(getString(R.string.no_orgs), getString(R.string.no_orgs_description), false, true)
                     .show(getChildFragmentManager(), MessageDialogView.TAG);
