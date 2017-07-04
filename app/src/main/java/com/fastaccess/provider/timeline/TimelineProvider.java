@@ -64,13 +64,25 @@ public class TimelineProvider {
                                 .append(" ")
                                 .append(thisString);
                     }
+                    if (issueEventModel.getCommitId() != null) {
+                        spannableBuilder
+                                .append(" ")
+                                .append(in)
+                                .append(" ")
+                                .url(substring(issueEventModel.getCommitId()));
+
+                    }
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ");
                     if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
                         spannableBuilder.append("self-assigned this");
                     } else {
-                        spannableBuilder.bold(issueEventModel.getAssignee().getLogin());
+                        spannableBuilder
+                                .append(" ")
+                                .append(context.getString(R.string.assigned))
+                                .append(" ")
+                                .bold(issueEventModel.getAssignee().getLogin());
                     }
                 } else {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
@@ -102,14 +114,6 @@ public class TimelineProvider {
                             .append(from)
                             .append(" ")
                             .bold(issueEventModel.getRequestedReviewer().getLogin());
-                } else if (event == IssueEventType.closed) {
-                    if (issueEventModel.getCommitId() != null) {
-                        spannableBuilder
-                                .append(" ")
-                                .append(in)
-                                .append(" ")
-                                .url(substring(issueEventModel.getCommitId()));
-                    }
                 }
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
             }
