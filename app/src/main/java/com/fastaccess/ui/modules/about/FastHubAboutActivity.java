@@ -39,7 +39,6 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
 
     private View malRecyclerview;
 
-
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         ThemeEngine.INSTANCE.applyForAbout(this);
         super.onCreate(savedInstanceState);
@@ -53,9 +52,11 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
         buildMisc(context, miscCardBuilder);
         MaterialAboutCard.Builder authorCardBuilder = new MaterialAboutCard.Builder();
         buildAuthor(context, authorCardBuilder);
+        MaterialAboutCard.Builder newLogoAuthor = new MaterialAboutCard.Builder();
         MaterialAboutCard.Builder logoAuthor = new MaterialAboutCard.Builder();
-        buildLogo(context, logoAuthor);
-        return new MaterialAboutList(appCardBuilder.build(), miscCardBuilder.build(), authorCardBuilder.build(), logoAuthor.build());
+        buildLogo(context, newLogoAuthor, logoAuthor);
+        return new MaterialAboutList(appCardBuilder.build(), miscCardBuilder.build(), authorCardBuilder.build(),
+                newLogoAuthor.build(), logoAuthor.build());
     }
 
     @Override protected CharSequence getActivityTitle() {
@@ -76,8 +77,25 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
         return false;//override
     }
 
-    private void buildLogo(Context context, MaterialAboutCard.Builder logoAuthor) {
-        logoAuthor.title(getString(R.string.logo_designer, "Kevin Aguilar"));
+    private void buildLogo(Context context, MaterialAboutCard.Builder newLogoAuthor, MaterialAboutCard.Builder logoAuthor) {
+        newLogoAuthor.title(getString(R.string.logo_designer, "Cookicons"));
+        newLogoAuthor.addItem(new MaterialAboutActionItem.Builder()
+                .text(R.string.google_plus)
+                .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
+                .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "https://plus.google.com/+CookiconsDesign"))
+                .build())
+                .addItem(new MaterialAboutActionItem.Builder()
+                        .text(R.string.twitter)
+                        .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
+                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "https://twitter.com/mcookie"))
+                        .build())
+                .addItem(new MaterialAboutActionItem.Builder()
+                        .text(R.string.website)
+                        .icon(ContextCompat.getDrawable(context, R.drawable.ic_brower))
+                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "https://cookicons.co/"))
+                        .build());
+
+        logoAuthor.title(String.format("Old %s", getString(R.string.logo_designer, "Kevin Aguilar")));
         logoAuthor.addItem(new MaterialAboutActionItem.Builder()
                 .text(R.string.google_plus)
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))

@@ -25,9 +25,9 @@ import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
+import com.fastaccess.provider.rest.interceptors.ContentTypeInterceptor;
 import com.fastaccess.provider.rest.interceptors.PaginationInterceptor;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
@@ -35,11 +35,8 @@ import com.google.gson.GsonBuilder;
 
 import java.io.File;
 import java.lang.reflect.Modifier;
-import java.net.URI;
 
-import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.HttpException;
@@ -62,43 +59,28 @@ public class RestProvider {
             .setPrettyPrinting()
             .create();
 
-    private static OkHttpClient provideOkHttpClient(boolean isRawString) {
+    private static OkHttpClient provideOkHttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder client = new OkHttpClient.Builder();
             if (BuildConfig.DEBUG) {
                 client.addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
             }
-            client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode()));
-            if (!isRawString) client.addInterceptor(new PaginationInterceptor());
-            client.addInterceptor(chain -> {
-                Request original = chain.request();
-                if (original.url() != HttpUrl.get(URI.create(NotificationService.SUBSCRIPTION_URL))) {
-                    Request.Builder requestBuilder = original.newBuilder();
-                    requestBuilder.addHeader("Accept", "application/vnd.github.v3+json")
-                            .addHeader("Content-type", "application/vnd.github.v3+json");
-                    requestBuilder.method(original.method(), original.body());
-                    Request request = requestBuilder.build();
-                    return chain.proceed(request);
-                }
-                return chain.proceed(original);
-            });
+            client.addInterceptor(new AuthenticationInterceptor());
+            client.addInterceptor(new PaginationInterceptor());
+            client.addInterceptor(new ContentTypeInterceptor());
             okHttpClient = client.build();
         }
         return okHttpClient;
     }
 
-    private static Retrofit provideRetrofit(boolean isRawString) {
+    private static Retrofit provideRetrofit() {
         return new Retrofit.Builder()
                 .baseUrl(BuildConfig.REST_URL)
-                .client(provideOkHttpClient(isRawString))
+                .client(provideOkHttpClient())
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build();
-    }
-
-    private static Retrofit provideRetrofit() {
-        return provideRetrofit(false);
     }
 
     public static void downloadFile(@NonNull Context context, @NonNull String url) {
@@ -153,19 +135,11 @@ public class RestProvider {
     }
 
     @NonNull public static GistService getGistService() {
-        return getGistService(false);
-    }
-
-    @NonNull public static GistService getGistService(boolean isRaw) {
-        return provideRetrofit(isRaw).create(GistService.class);
+        return provideRetrofit().create(GistService.class);
     }
 
     @NonNull public static RepoService getRepoService() {
-        return getRepoService(false);
-    }
-
-    @NonNull public static RepoService getRepoService(boolean isRawString) {
-        return provideRetrofit(isRawString).create(RepoService.class);
+        return provideRetrofit().create(RepoService.class);
     }
 
     @NonNull public static IssueService getIssueService() {

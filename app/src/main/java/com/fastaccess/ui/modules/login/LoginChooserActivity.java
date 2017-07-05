@@ -5,7 +5,6 @@ import android.os.Bundle;
 import com.fastaccess.R;
 
 import butterknife.OnClick;
-import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Kosh on 28 Apr 2017, 9:03 PM
@@ -30,7 +29,6 @@ public class LoginChooserActivity extends LoginActivity {
     }
 
     @OnClick(R.id.enterprise) void onEnterpriseClicked() {
-        Toasty.normal(this, "Coming soon!").show();
-//        LoginActivity.start(this, true, true);
+        LoginActivity.start(this, true, true);
     }
 }

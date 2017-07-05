@@ -33,6 +33,6 @@ public enum IssueEventType {
     IssueEventType(int iconResId) {this.iconResId = iconResId;}
 
     public int getIconResId() {
-        return iconResId;
+        return iconResId == 0 ? R.drawable.ic_label : iconResId;
     }
 }

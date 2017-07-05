@@ -12,7 +12,7 @@ before_script:
   - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "extras;android;m2repository" "extras;google;m2repository" "build-tools;26.0.0" "platforms;android-26"
 
 script:
-  - ./gradlew clean assembleDebug --stacktrace
+  - ./gradlew clean assembleNightlyDebug --stacktrace
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock

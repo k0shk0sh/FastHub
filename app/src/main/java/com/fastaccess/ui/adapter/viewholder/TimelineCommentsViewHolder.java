@@ -111,7 +111,12 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             avatar.setUrl(null, null);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());
+            String body = commentsModel.getBodyHtml();
+            if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
+                body = "<small color='grey'><i>Commented at <b>line(" + commentsModel.getPosition() + ")</b> in "
+                        + commentsModel.getPath() + "</i></small><br/>" + body;
+            }
+            HtmlHelper.htmlIntoTextView(comment, body);
         } else {
             comment.setText("");
         }

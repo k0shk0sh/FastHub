@@ -2,6 +2,7 @@ package com.fastaccess.provider.scheme;
 
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by Kosh on 11 Apr 2017, 10:02 PM
  */
 
-class LinkParserHelper {
+public class LinkParserHelper {
     static final String HOST_DEFAULT = "github.com";
     static final String HOST_GISTS = "gist.github.com";
     static final String HOST_GISTS_RAW = "gist.githubusercontent.com";
@@ -59,5 +60,14 @@ class LinkParserHelper {
             urlBuilder.appendQueryParameter("ref", branch);
         }
         return urlBuilder != null ? urlBuilder.build() : uri;
+    }
+
+    public static boolean isNotEnterprise(@Nullable String url) {
+        return url != null && !url.equalsIgnoreCase(HOST_DEFAULT) &&
+                !url.equalsIgnoreCase(HOST_GISTS) &&
+                !url.equalsIgnoreCase(HOST_GISTS_RAW) &&
+                !url.equalsIgnoreCase(RAW_AUTHORITY) &&
+                !url.equalsIgnoreCase(API_AUTHORITY);
+
     }
 }

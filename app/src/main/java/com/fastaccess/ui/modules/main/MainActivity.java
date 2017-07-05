@@ -41,7 +41,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     @OnClick(R.id.fab) void onFilter() {}
 
     @NonNull @Override public MainPresenter providePresenter() {
-        return new MainPresenter(false);
+        return new MainPresenter();
     }
 
     @Override protected int layout() {

@@ -34,7 +34,6 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -123,8 +122,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         setupToolbarAndStatusBar(toolbar);
         showHideAds();
-        if (savedInstanceState == null && PrefGetter.showWhatsNew()) {
-            new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
+        if (savedInstanceState == null) {
+            if (getIntent() != null && getIntent().getExtras() != null) {
+                getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
+            }
+            if (PrefGetter.showWhatsNew()) {
+                new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
+            }
         }
         setupNavigationView(extraNav);
         setupDrawer();
@@ -210,7 +214,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
         ImageLoader.getInstance().clearDiskCache();
         ImageLoader.getInstance().clearMemoryCache();
-        PrefHelper.clearKey("token");
+        PrefGetter.setToken(null);
+        PrefGetter.setEnterpriseUrl(null);
+        PrefGetter.setOtpCode(null);
+        PrefGetter.setEnterpriseOtpCode(null);
         App.getInstance().getDataStore()
                 .delete(Login.class)
                 .get()

@@ -24,16 +24,12 @@ import static com.fastaccess.helper.AppHelper.getFragmentByTag;
 
 public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
 
-
-    @com.evernote.android.state.State boolean isEnterprise;
-
-    MainPresenter(boolean isEnterprise) {
-        this.isEnterprise = isEnterprise;
+    MainPresenter() {
         manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getUser())
                 .flatMap(login -> login.update(login))
                 .subscribe(login -> {
                     if (login != null) {
-                        sendToView(view -> view.onUpdateDrawerMenuHeader(isEnterprise));
+                        sendToView(view -> view.onUpdateDrawerMenuHeader(isEnterprise()));
                     }
                 }, Throwable::printStackTrace/*fail silently*/));
     }
@@ -54,21 +50,21 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                 break;
             case MainMvp.FEEDS:
                 if (homeView == null) {
-                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(isEnterprise), currentVisible);
+                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(isEnterprise()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, homeView, currentVisible);
                 }
                 break;
             case MainMvp.PULL_REQUESTS:
                 if (pullRequestView == null) {
-                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(isEnterprise), currentVisible);
+                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(isEnterprise()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestView, currentVisible);
                 }
                 break;
             case MainMvp.ISSUES:
                 if (issuesView == null) {
-                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(isEnterprise), currentVisible);
+                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(isEnterprise()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }
