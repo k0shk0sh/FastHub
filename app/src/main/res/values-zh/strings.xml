@@ -387,7 +387,6 @@
     <string name="want_to_merge">想要合并</string>
     <string name="watchers">关注者</string>
     <string name="comment_hint">触摸评论来标记其作者或编辑您的评论。\n\n长按你的评论删除它。</string>
-    <string name="Sort">分类</string>
     <string name="divider">分割线</string>
     <string name="banners_info">使用FastHub 2.5.0，您现在可以更好地为自己的个人资料页面展示横幅。\n\n任何使用FastHub应用的人都会看到您的标题，您也可以看到其他人的标题！ 如果你想为自己创建一个横幅，使它成为1280x384或其它等比大小，否则可能会被裁剪。\n\n您可以随时添加或更改您的横幅，通过创建一个描述为“header.fst”的 Gist，其中包含一个有横幅链接的文件。\n\n或者更简单，只需使用内置的图像选择器！</string>
     <string name="drafted">构思</string>
