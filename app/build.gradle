@@ -14,12 +14,34 @@ buildProperties {
 }
 
 android {
+    if (project.hasProperty("gradle.properties")) {
+        signingConfigs {
+            signing {
+                keyAlias buildProperties.secrets['android_key_alias'].string
+                keyPassword buildProperties.secrets['android_store_password'].string
+                storeFile file('fastaccess-public')
+                storePassword buildProperties.secrets['android_store_password'].string
+            }
+            debug {
+                keyAlias buildProperties.notThere['android_key_alias'].string
+                keyPassword buildProperties.notThere['android_store_password'].string
+                storeFile file('fastaccess-public')
+                storePassword buildProperties.notThere['android_store_password'].string
+            }
+        }
+    }
     signingConfigs {
         signing {
-            keyAlias((buildProperties.secrets['android_key_alias'] | buildProperties.notThere['android_key_alias']).string)
-            keyPassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
+            keyAlias buildProperties.notThere['android_key_alias'].string
+            keyPassword buildProperties.notThere['android_store_password'].string
             storeFile file('fastaccess-public')
-            storePassword((buildProperties.secrets['android_store_password'] | buildProperties.notThere['android_store_password']).string)
+            storePassword buildProperties.notThere['android_store_password'].string
+        }
+        debug {
+            keyAlias buildProperties.notThere['android_key_alias'].string
+            keyPassword buildProperties.notThere['android_store_password'].string
+            storeFile file('fastaccess-public')
+            storePassword buildProperties.notThere['android_store_password'].string
         }
     }
     compileSdkVersion 26
@@ -45,7 +67,6 @@ android {
         }
     }
 
-    flavorDimensions "default"
 
     buildTypes {
         release {
@@ -54,19 +75,14 @@ android {
             signingConfig signingConfigs.signing
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    productFlavors {
-        nightly {
-            flavorDimensions "default"
-            signingConfig signingConfigs.signing
+        debug {
+            signingConfig signingConfigs.debug
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             ext.alwaysUpdateBuildId = false
         }
-
-        production { flavorDimensions "default" }
     }
+
 
     sourceSets {
         main {
@@ -155,11 +171,11 @@ dependencies {
     implementation "com.google.android.gms:play-services-ads:${gms}"
     implementation 'com.firebase:firebase-jobdispatcher:0.6.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') { transitive = true }
-    implementation "com.github.miguelbcr:RxBillingService:0.0.3"
+    implementation 'com.github.miguelbcr:RxBillingService:0.0.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'org.jsoup:jsoup:1.10.2'
     implementation "com.evernote:android-state:${state_version}"
-    implementation "petrov.kristiyan:colorpicker-library:1.1.4"
+    implementation 'petrov.kristiyan:colorpicker-library:1.1.4'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "io.requery:requery-processor:${requery}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
@@ -167,7 +183,8 @@ dependencies {
     kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     kapt "org.projectlombok:lombok:${lombokVersion}"
-//    testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
+
+    //    testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"
     testImplementation "org.assertj:assertj-core:${assertjVersion}"
