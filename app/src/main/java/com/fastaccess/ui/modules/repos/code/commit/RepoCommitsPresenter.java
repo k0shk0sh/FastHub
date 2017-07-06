@@ -6,9 +6,6 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.annimon.stream.Collectors;
-import com.annimon.stream.Stream;
-import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
@@ -19,9 +16,6 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -30,7 +24,6 @@ import io.reactivex.Observable;
 class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements RepoCommitsMvp.Presenter {
 
     private ArrayList<Commit> commits = new ArrayList<>();
-    private ArrayList<BranchesModel> branches = new ArrayList<>();
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State String branch;
@@ -86,37 +79,8 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         repoId = bundle.getString(BundleConstant.ID);
         login = bundle.getString(BundleConstant.EXTRA);
         branch = bundle.getString(BundleConstant.EXTRA_TWO);
-        if (branches.isEmpty()) {
+        if (!InputHelper.isEmpty(branch)) {
             getCommitCount(branch);
-            Observable<List<BranchesModel>> observable = RxHelper.getObserver(Observable.zip(
-                    RestProvider.getRepoService().getBranches(login, repoId),
-                    RestProvider.getRepoService().getTags(login, repoId),
-                    (branchPageable, tags) -> {
-                        ArrayList<BranchesModel> branchesModels = new ArrayList<>();
-                        if (branchPageable != null && branchPageable.getItems() != null) {
-                            branchesModels.addAll(Stream.of(branchPageable.getItems())
-                                    .map(branchesModel -> {
-                                        branchesModel.setTag(false);
-                                        return branchesModel;
-                                    }).collect(Collectors.toList()));
-                        }
-                        if (tags != null && tags.getItems() != null) {
-                            branchesModels.addAll(Stream.of(tags.getItems())
-                                    .map(branchesModel -> {
-                                        branchesModel.setTag(true);
-                                        return branchesModel;
-                                    }).collect(Collectors.toList()));
-
-                        }
-                        return branchesModels;
-                    }));
-            manageDisposable(observable
-                    .doOnSubscribe(disposable -> sendToView(RepoCommitsMvp.View::showBranchesProgress))
-                    .subscribe(branchesModels -> {
-                        branches.clear();
-                        branches.addAll(branchesModels);
-                        sendToView(view -> view.setBranchesData(branches, true));
-                    }, throwable -> sendToView(view -> view.setBranchesData(branches, true))));
         }
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
             onCallApi(1, null);
@@ -125,10 +89,6 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     @NonNull @Override public ArrayList<Commit> getCommits() {
         return commits;
-    }
-
-    @NonNull @Override public ArrayList<BranchesModel> getBranches() {
-        return branches;
     }
 
     @Override public void onWorkOffline() {

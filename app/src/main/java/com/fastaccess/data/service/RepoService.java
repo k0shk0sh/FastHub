@@ -150,10 +150,12 @@ public interface RepoService {
 
 
     @NonNull @GET("repos/{owner}/{repo}/branches")
-    Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+    Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                                    @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/tags")
-    Observable<Pageable<BranchesModel>> getTags(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+    Observable<Pageable<BranchesModel>> getTags(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                                @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/milestones")
     Observable<Pageable<MilestoneModel>> getMilestones(@Path("owner") String owner, @Path("repo") String repo);

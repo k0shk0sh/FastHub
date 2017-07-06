@@ -69,27 +69,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
             android:contentDescription="@string/switch_branch"
             android:padding="@dimen/spacing_micro"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
             android:src="@drawable/ic_branch"/>
 
-        <android.support.v7.widget.AppCompatSpinner
+        <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/branches"
-            android:layout_width="0dp"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:spinnerMode="dialog"
-            app:backgroundTint="?colorAccent"
-            tools:entries="@array/notification_types"/>
-
-        <ProgressBar
-            android:id="@+id/branchesProgress"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
+            android:background="?selectableItemBackground"
+            android:drawableEnd="@drawable/ic_arrow_drop_down"
+            android:gravity="start|center"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_micro"
+            android:paddingTop="@dimen/spacing_normal"
+            tools:ignore="NestedWeights"
+            tools:text="Escargot combines greatly with minced sausages."/>
 
 
     </LinearLayout>
