@@ -44,7 +44,6 @@ import shortbread.Shortcut;
 @Shortcut(id = "profile", icon = R.drawable.ic_profile_shortcut, shortLabelRes = R.string.profile, backStack = {MainActivity.class}, rank = 4)
 public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPagerPresenter> implements UserPagerMvp.View {
 
-
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.tabbedPager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;

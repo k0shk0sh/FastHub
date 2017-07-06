@@ -45,8 +45,6 @@ android {
         }
     }
 
-    flavorDimensions "default"
-
     buildTypes {
         release {
             minifyEnabled true
@@ -54,18 +52,15 @@ android {
             signingConfig signingConfigs.signing
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
-    }
-
-    productFlavors {
-        nightly {
-            flavorDimensions "default"
-            signingConfig signingConfigs.signing
+        debug {
+            if (!rootProject.file('gradle.properties').exists()) {
+                signingConfig signingConfigs.signing
+            }
             applicationIdSuffix ".debug"
             versionNameSuffix "-debug"
             ext.alwaysUpdateBuildId = false
         }
 
-        production { flavorDimensions "default" }
     }
 
     sourceSets {

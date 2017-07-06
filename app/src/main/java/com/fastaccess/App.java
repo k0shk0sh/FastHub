@@ -45,13 +45,7 @@ public class App extends Application {
     }
 
     private void init() {
-        Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics.Builder()
-                        .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                        .build())
-                .debuggable(BuildConfig.DEBUG)
-                .build();
-        Fabric.with(fabric);
+        initFabric();
         RxBillingService.register(this);
         deleteDatabase("database.db");
         getDataStore();//init requery before anything.
@@ -62,6 +56,16 @@ public class App extends Application {
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();
+    }
+
+    private void initFabric() {
+        Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics.Builder()
+                        .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                        .build())
+                .debuggable(BuildConfig.DEBUG)
+                .build();
+        Fabric.with(fabric);
     }
 
     private void setupPreference() {

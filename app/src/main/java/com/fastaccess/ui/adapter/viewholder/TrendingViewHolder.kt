@@ -38,9 +38,11 @@ open class TrendingViewHolder(itemView: View, adapter: BaseRecyclerAdapter<Trend
         fork.text = t.forks
         lang.text = t.language
         if (!t.language.isNullOrEmpty()) {
-            lang.tintDrawables(ColorsProvider.getColorAsColor(t.language!!, itemView.context))
-            lang.setTextColor(ColorsProvider.getColorAsColor(t.language, itemView.context))
+            val color = ColorsProvider.getColorAsColor(t.language!!, itemView.context)
+            lang.tintDrawables(color)
+            lang.setTextColor(color)
         }
+        todayStars.visibility = if (t.todayStars.isNullOrEmpty()) View.GONE else View.VISIBLE
         lang.visibility = if (t.language.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 

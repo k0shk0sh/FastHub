@@ -57,17 +57,16 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         }
         setCurrentPage(page);
         if (Login.getUser() == null) return;// I can't understand how this could possibly be reached lol.
-        Observable<Pageable<Event>> observable = null;
+        Observable<Pageable<Event>> observable;
         if (user != null) {
             if (isOrg) {
-                RestProvider.getOrgService().getReceivedEvents(user, page);
+                observable = RestProvider.getOrgService().getReceivedEvents(user, page);
             } else {
                 observable = RestProvider.getUserService().getUserEvents(user, page);
             }
         } else {
             observable = RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page);
         }
-        if (observable == null) return;
         makeRestCall(observable, response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {

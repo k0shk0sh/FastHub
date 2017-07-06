@@ -55,18 +55,14 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
         FeedsFragment feedsFragment = new FeedsFragment();
         feedsFragment.setArguments(Bundler.start()
                 .put(BundleConstant.EXTRA, user)
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .put(BundleConstant.EXTRA_TWO, isOrg)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return feedsFragment;
     }
 
     public static FeedsFragment newInstance(boolean isEnterprise) {
-        FeedsFragment feedsFragment = new FeedsFragment();
-        feedsFragment.setArguments(Bundler.start()
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
-                .end());
-        return feedsFragment;
+        return newInstance(null, false, isEnterprise);
     }
 
     @Override protected int fragmentLayout() {
