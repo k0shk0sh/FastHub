@@ -7,9 +7,14 @@ environment:
 init:
   - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.5-windows.zip" -FileName "C:\android-tools.zip"
   - cmd: 7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
-  - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cinst cs-script --version=3.25.3.0
 
 install:
+  - ps: |
+      IF ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+        cinst cs-script
+        cscs
+        cscs -ac:2 -nl C:\FH\.github\check_translations.cs
+      }
   - cmd: 'echo   > C:/Users/appveyor/.android/repositories.cfg'
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platform-tools"'
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "extras;android;m2repository"'
@@ -18,7 +23,6 @@ install:
   - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platforms;android-25"'
 
 build_script:
-  - cmd: IF NOT [%APPVEYOR_PULL_REQUEST_NUMBER%] == [] cscs /ac C:\FH\.github\check_translations.cs
   - cmd: gradlew clean assembleDebug --stacktrace
 
 after_build:
