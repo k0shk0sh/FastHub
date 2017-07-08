@@ -23,6 +23,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -206,7 +207,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                      gistsModel.getUser() != null ? gistsModel.getUser().getAvatarUrl() : "";
         String login = gistsModel.getOwner() != null ? gistsModel.getOwner().getLogin() :
                        gistsModel.getUser() != null ? gistsModel.getUser().getLogin() : "";
-        avatarLayout.setUrl(url, login);
+        avatarLayout.setUrl(url, login, false, LinkParserHelper.isEnterprise(gistsModel.getUrl()));
         title.setText(gistsModel.getDisplayTitle(false, true));
         setTaskName(gistsModel.getDisplayTitle(false, true).toString());
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);

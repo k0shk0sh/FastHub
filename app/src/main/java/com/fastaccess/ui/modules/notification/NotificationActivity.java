@@ -80,10 +80,6 @@ public class NotificationActivity extends BaseActivity {
     }
 
     private void setupTabs() {
-        TabLayout.Tab tab1 = getTab(R.string.unread);
-        TabLayout.Tab tab2 = getTab(R.string.all);
-        tabs.addTab(tab1);
-        tabs.addTab(tab2);
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapterModel.buildForNotifications(this)));
         tabs.setupWithViewPager(pager);

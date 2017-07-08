@@ -43,7 +43,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
             sendToView(GistMvp.View::onSetupDetails);
         } else if (gistId != null) {
             checkStarring(gistId);
-            makeRestCall(RestProvider.getGistService().getGist(gistId), gistsModel -> {
+            makeRestCall(RestProvider.getGistService(isEnterprise()).getGist(gistId), gistsModel -> {
                 this.gist = gistsModel;
                 sendToView(GistMvp.View::onSetupDetails);
             });
@@ -54,7 +54,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onDeleteGist() {
         if (getGist() == null) return;
-        manageDisposable(RxHelper.getObserver(RestProvider.getGistService().deleteGist(getGist().getGistId()))
+        manageDisposable(RxHelper.getObserver(RestProvider.getGistService(isEnterprise()).deleteGist(getGist().getGistId()))
                 .doOnSubscribe(disposable -> onSubscribed())
                 .doOnNext(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
@@ -92,7 +92,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
     }
 
     @Override public void checkStarring(@NonNull String gistId) {
-        makeRestCall(RestProvider.getGistService().checkGistStar(gistId),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).checkGistStar(gistId),
                 booleanResponse -> {
                     isGistStarred = booleanResponse.code() == 204;
                     sendToView(view -> view.onGistStarred(isGistStarred));

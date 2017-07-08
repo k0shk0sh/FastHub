@@ -138,8 +138,15 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
  
 <details>
   <summary>Why my Private Repo Wiki does not show up?</summary>
-  <p>It's due to FastHub scraping GitHub Wiki page & transform it to something Android does.</p>
+  <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
 </details>
+
+<details>
+  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
+  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it, 
+  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> cases your Oauth token will do the trick.</p>
+</details>
+
 
 ## License
 

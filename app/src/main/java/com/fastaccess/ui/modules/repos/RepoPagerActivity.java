@@ -25,6 +25,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.LicenseModel;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
@@ -37,6 +38,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -49,6 +51,7 @@ import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscMVp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
 import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -355,9 +358,11 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
         watchRepo.setText(numberFormat.format(repoModel.getSubsCount()));
         if (repoModel.getOwner() != null) {
-            avatarLayout.setUrl(repoModel.getOwner().getAvatarUrl(), repoModel.getOwner().getLogin(), repoModel.getOwner().isOrganizationType());
+            avatarLayout.setUrl(repoModel.getOwner().getAvatarUrl(), repoModel.getOwner().getLogin(),
+                    repoModel.getOwner().isOrganizationType(), LinkParserHelper.isEnterprise(repoModel.getUrl()));
         } else if (repoModel.getOrganization() != null) {
-            avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin(), true);
+            avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin(), true,
+                    LinkParserHelper.isEnterprise(repoModel.getUrl()));
         }
         long repoSize = repoModel.getSize() > 0 ? (repoModel.getSize() * 1000) : repoModel.getSize();
         date.setText(SpannableBuilder.builder()
@@ -519,6 +524,10 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         showMessage(R.string.error, R.string.repo_issues_is_disabled);
         bottomNavigation.setMenuItemEnabled(1, false);
         bottomNavigation.setSelectedIndex(this.navType, true);
+    }
+
+    @Override public void openUserProfile() {
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {

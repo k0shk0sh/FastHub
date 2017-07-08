@@ -12,10 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.ReactionsModel;
+import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
@@ -98,7 +99,8 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     @Override public void bind(@NonNull ReviewCommentModel commentModel) {
-        avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser().isOrganizationType());
+        avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser()
+                .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getUrl()));
         name.setText(commentModel.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {

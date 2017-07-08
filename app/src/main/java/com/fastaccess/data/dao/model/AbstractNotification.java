@@ -20,8 +20,6 @@ import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
-import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 /**
@@ -40,7 +38,12 @@ import lombok.NoArgsConstructor;
     @Nullable boolean isSubscribed;
 
     public Single<Notification> save(Notification entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
+        return RxHelper.getSingle(App.getInstance().getDataStore()
+                .delete(Notification.class)
+                .where(Notification.ID.eq(entity.getId()))
+                .get()
+                .single()
+                .flatMap(integer -> App.getInstance().getDataStore().insert(entity)));
     }
 
     public static Completable markAsRead(long id) {
@@ -62,13 +65,8 @@ import lombok.NoArgsConstructor;
         if (models == null) {
             return Observable.empty();
         }
-        ReactiveEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(dataSource.delete(Notification.class)
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models)))
-                .flatMap(notification -> notification.save(notification).toObservable());
+        return RxHelper.safeObservable(Observable.fromIterable(models)
+                .flatMap(notification -> notification.save(notification).toObservable()));
     }
 
     public static Single<List<Notification>> getUnreadNotifications() {
@@ -82,7 +80,7 @@ import lombok.NoArgsConstructor;
                 .toList();
     }
 
-    public static Single<List<Notification>> getAlltNotifications() {
+    public static Single<List<Notification>> getAllNotifications() {
         return App.getInstance()
                 .getDataStore()
                 .select(Notification.class)
@@ -97,6 +95,7 @@ import lombok.NoArgsConstructor;
                 .getDataStore()
                 .count(Notification.class)
                 .where(Notification.UNREAD.equal(true))
+                .limit(1)
                 .get()
                 .value() > 0;
     }

@@ -182,7 +182,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public boolean isLoggedIn() {
-        return !InputHelper.isEmpty(PrefGetter.getToken()) && Login.getUser() != null;
+        return Login.getUser() != null;
     }
 
     @Override public void showProgress(@StringRes int resId) {
@@ -249,7 +249,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 startActivity(intent);
                 finish();
             } else if (item.getItemId() == R.id.profile) {
-                startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin()));
+                startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise()));
             } else if (item.getItemId() == R.id.logout) {
                 onLogoutPressed();
             } else if (item.getItemId() == R.id.settings) {
@@ -331,6 +331,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             adView.destroy();
         }
         super.onDestroy();
+    }
+
+    @Override public boolean isEnterprise() {
+        return getPresenter().isEnterprise();
     }
 
     protected void setTaskName(@Nullable String name) {
@@ -457,14 +461,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             if (userModel != null) {
                 View view = extraNav.getHeaderView(0);
                 if (view != null) {
-                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin(),
+                            false, PrefGetter.isEnterprise());
                     ((TextView) view.findViewById(R.id.username)).setText(userModel.getLogin());
                     if (!InputHelper.isEmpty(userModel.getName())) {
                         ((TextView) view.findViewById(R.id.email)).setText(userModel.getName());
                     } else {
                         view.findViewById(R.id.email).setVisibility(View.GONE);
                     }
-                    view.findViewById(R.id.userHolder).setOnClickListener(v -> UserPagerActivity.startActivity(this, userModel.getLogin()));
+                    view.findViewById(R.id.userHolder).setOnClickListener(v -> startActivity(UserPagerActivity.createIntent(this,
+                            Login.getUser().getLogin(), false, PrefGetter.isEnterprise())));
                     view.findViewById(R.id.donatedIcon).setVisibility(PrefGetter.hasSupported() ? View.VISIBLE : View.GONE);
                 }
             }

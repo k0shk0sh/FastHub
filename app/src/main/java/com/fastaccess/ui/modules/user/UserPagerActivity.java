@@ -51,12 +51,8 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     @State boolean isOrg;
     @State HashSet<TabsCountStateModel> counts = new HashSet<>();
 
-    public static void startActivity(@NonNull Context context, @NonNull String login) {
-        startActivity(context, login, false);
-    }
-
-    public static void startActivity(@NonNull Context context, @NonNull String login, boolean isOrg) {
-        context.startActivity(createIntent(context, login, isOrg));
+    public static void startActivity(@NonNull Context context, @NonNull String login, boolean isOrg, boolean isEnterprise) {
+        context.startActivity(createIntent(context, login, isOrg, isEnterprise));
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String login) {
@@ -64,9 +60,14 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg) {
+        return createIntent(context, login, isOrg, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg, boolean isEnterprise) {
         Intent intent = new Intent(context, UserPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .put(BundleConstant.EXTRA_TYPE, isOrg)
                 .end());
         if (context instanceof Service || context instanceof Application) {

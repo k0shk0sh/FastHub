@@ -16,6 +16,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
@@ -106,9 +107,10 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @Override public void bind(@NonNull TimelineModel timelineModel) {
         Comment commentsModel = timelineModel.getComment();
         if (commentsModel.getUser() != null) {
-            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
+            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
+                    false, LinkParserHelper.isEnterprise(commentsModel.getUrl()));
         } else {
-            avatar.setUrl(null, null);
+            avatar.setUrl(null, null, false, false);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             String body = commentsModel.getBodyHtml();

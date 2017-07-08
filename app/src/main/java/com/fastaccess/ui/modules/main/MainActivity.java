@@ -15,6 +15,8 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
@@ -85,6 +87,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
+        Logger.e(Notification.hasUnreadNotifications());
         if (isLoggedIn() && Notification.hasUnreadNotifications()) {
             ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
         }
@@ -119,12 +122,12 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 
-    @Override public void onUpdateDrawerMenuHeader(boolean isEnterprise) {
+    @Override public void onUpdateDrawerMenuHeader() {
         setupNavigationView(extraNav);
     }
 
     @Override public void onOpenProfile() {
-        UserPagerActivity.startActivity(this, Login.getUser().getLogin());
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")

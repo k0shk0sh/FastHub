@@ -10,8 +10,10 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
@@ -32,11 +34,11 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State ArrayList<User> userOrgs = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
-    private static final String URL = "https://github.com/users/%s/contributions";
+    private static final String URL = "https://%s/users/%s/contributions";
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
         if (!TextUtils.equals(login, Login.getUser().getLogin())) {
-            manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getFollowStatus(login))
+            manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getFollowStatus(login))
                     .subscribe(booleanResponse -> {
                         isSuccessResponse = true;
                         isFollowing = booleanResponse.code() == 204;
@@ -54,8 +56,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onFollowButtonClicked(@NonNull String login) {
-        manageDisposable(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService().followUser(login)
-                                                           : RestProvider.getUserService().unfollowUser(login))
+        manageDisposable(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService(isEnterprise()).followUser(login)
+                                                           : RestProvider.getUserService(isEnterprise()).unfollowUser(login))
                 .subscribe(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         isFollowing = !isFollowing;
@@ -85,7 +87,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (login != null) {
             loadOrgs();
 //            loadUrlBackgroundImage();
-            makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
+            makeRestCall(RestProvider.getUserService(isEnterprise()).getUser(login), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {
                     userModel.save(userModel);
@@ -111,8 +113,9 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     @Override public void onLoadContributionWidget(@NonNull GitHubContributionsView gitHubContributionsView) {
         if (contributions == null || contributions.isEmpty()) {
-            String url = String.format(URL, login);
-            manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
+            String url = String.format(URL, isEnterprise() ? LinkParserHelper.stripScheme(PrefGetter.getEnterpriseUrl())
+                                                           : LinkParserHelper.HOST_DEFAULT, login);
+            manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getContributions(url))
                     .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
                     .subscribe(lists -> {
                         contributions.clear();
@@ -145,8 +148,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     private void loadOrgs() {
         boolean isMe = login.equalsIgnoreCase(Login.getUser() != null ? Login.getUser().getLogin() : "");
-        manageDisposable(RxHelper.getObserver(isMe ? RestProvider.getOrgService().getMyOrganizations()
-                                                   : RestProvider.getOrgService().getMyOrganizations(login))
+        manageDisposable(RxHelper.getObserver(isMe ? RestProvider.getOrgService(isEnterprise()).getMyOrganizations()
+                                                   : RestProvider.getOrgService(isEnterprise()).getMyOrganizations(login))
                 .subscribe(response -> {
                     if (response != null && response.getItems() != null) {
                         userOrgs.addAll(response.getItems());

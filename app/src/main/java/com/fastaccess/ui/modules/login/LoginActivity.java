@@ -32,6 +32,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog;
 import com.fastaccess.ui.widgets.FontCheckbox;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 import com.miguelbcr.io.rx_billing_service.entities.ProductType;
 import com.miguelbcr.io.rx_billing_service.entities.Purchase;
@@ -67,6 +68,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     @Nullable @BindView(R.id.endpoint) TextInputLayout endpoint;
     @State boolean isBasicAuth;
     @State boolean isEnterprise;
+    @State boolean extraLogin;
 
     public static void start(@NonNull Activity activity, boolean isBasicAuth) {
         PrefGetter.setEnterpriseUrl(null);
@@ -86,6 +88,11 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @Optional @OnClick(R.id.browserLogin) void onOpenBrowser() {
+        if (isEnterprise && InputHelper.isEmpty(endpoint)) {
+            endpoint.setError(getString(R.string.required_field));
+            return;
+        }
+        if (endpoint != null) endpoint.setError(null);
         Uri uri = getPresenter().getAuthorizationUrl(endpoint != null ? InputHelper.toString(endpoint) : null);
         ActivityHelper.startCustomTab(this, uri);
     }
@@ -105,6 +112,8 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         if (twoFactor == null || twoFactorEditText == null) return false;
         if (twoFactor.getVisibility() == View.VISIBLE) {
             twoFactorEditText.requestFocus();
+        } else if (endpoint != null && endpoint.getVisibility() == View.VISIBLE) {
+            endpoint.requestFocus();
         } else {
             doLogin();
         }
@@ -166,14 +175,19 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         if (endpoint != null) endpoint.setError(isEmpty ? getString(R.string.required_field) : null);
     }
 
-    @Override public void onSuccessfullyLoggedIn() {
-        checkPurchases(() -> {
-            hideProgress();
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finishAffinity();
-        });
+    @Override public void onSuccessfullyLoggedIn(boolean extraLogin) {
+        if (isEnterprise && extraLogin) {
+            MessageDialogView.newInstance(getString(R.string.details), getString(R.string.enterprise_login_warning), false, true)
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
+        } else {
+            checkPurchases(() -> {
+                hideProgress();
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            });
+        }
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -200,13 +214,13 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
 
     @Override protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        getPresenter().onHandleAuthIntent(intent);
+        getPresenter().onHandleAuthIntent(intent, extraLogin);
         setIntent(null);
     }
 
     @Override protected void onResume() {
         super.onResume();
-        getPresenter().onHandleAuthIntent(getIntent());
+        getPresenter().onHandleAuthIntent(getIntent(), extraLogin);
         setIntent(null);
     }
 
@@ -254,6 +268,24 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk) {
+            getUserToken();
+        }
+    }
+
+    @Override public void onDialogDismissed() {
+        super.onDialogDismissed();
+        getUserToken();
+    }
+
+    private void getUserToken() {
+        extraLogin = true;
+        Uri uri = getPresenter().getAuthorizationUrl(null);
+        ActivityHelper.startCustomTab(this, uri);
     }
 
     protected void checkPurchases(@Nullable Action action) {

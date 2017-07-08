@@ -27,6 +27,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -389,7 +390,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
                     .append(parsedDate));
-            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin(), false, LinkParserHelper.isEnterprise(issueModel.getUrl()));
         }
     }
 }

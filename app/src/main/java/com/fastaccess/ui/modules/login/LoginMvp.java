@@ -25,18 +25,18 @@ public interface LoginMvp {
 
         void onEmptyEndpoint(boolean isEmpty);
 
-        void onSuccessfullyLoggedIn();
+        void onSuccessfullyLoggedIn(boolean extraLogin);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
         @NonNull Uri getAuthorizationUrl(@Nullable String endpoint);
 
-        void onHandleAuthIntent(@Nullable Intent intent);
+        void onHandleAuthIntent(@Nullable Intent intent, boolean extraLogin);
 
         void onTokenResponse(@Nullable AccessTokenModel response);
 
-        void onUserResponse(@Nullable Login response);
+        void onUserResponse(@Nullable Login response, boolean isEnterprise);
 
         void login(@NonNull String username, @NonNull String password,
                    @Nullable String twoFactorCode, boolean isBasicAuth,

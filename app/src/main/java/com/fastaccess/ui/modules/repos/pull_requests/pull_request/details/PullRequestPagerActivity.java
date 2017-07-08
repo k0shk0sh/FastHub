@@ -32,6 +32,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
@@ -462,7 +463,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         User userModel = pullRequest.getUser();
         if (userModel != null) {
             title.setText(SpannableBuilder.builder().append(userModel.getLogin()).append("/").append(pullRequest.getTitle()));
-            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin(), false,
+                    LinkParserHelper.isEnterprise(pullRequest.getUrl()));
         } else {
             title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
         }

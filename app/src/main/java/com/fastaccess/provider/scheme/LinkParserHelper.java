@@ -7,7 +7,9 @@ import android.support.annotation.Nullable;
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ObjectsCompat;
+import com.fastaccess.helper.PrefGetter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +19,7 @@ import java.util.List;
  */
 
 public class LinkParserHelper {
-    static final String HOST_DEFAULT = "github.com";
+    public static final String HOST_DEFAULT = "github.com";
     static final String HOST_GISTS = "gist.github.com";
     static final String HOST_GISTS_RAW = "gist.githubusercontent.com";
     static final String RAW_AUTHORITY = "raw.githubusercontent.com";
@@ -62,12 +64,49 @@ public class LinkParserHelper {
         return urlBuilder != null ? urlBuilder.build() : uri;
     }
 
-    public static boolean isNotEnterprise(@Nullable String url) {
-        return url != null && !url.equalsIgnoreCase(HOST_DEFAULT) &&
-                !url.equalsIgnoreCase(HOST_GISTS) &&
-                !url.equalsIgnoreCase(HOST_GISTS_RAW) &&
-                !url.equalsIgnoreCase(RAW_AUTHORITY) &&
-                !url.equalsIgnoreCase(API_AUTHORITY);
+    public static boolean isEnterprise(@Nullable String url) {
+        if (InputHelper.isEmpty(url) || !PrefGetter.isEnterprise()) return false;
+        try {
+            Uri enterpriseUri = Uri.parse(getEndpoint(PrefGetter.getEnterpriseUrl()));
+            if (enterpriseUri != null) {
+                return url.equalsIgnoreCase(enterpriseUri.getAuthority());
+            }
+        } catch (Exception ignored) {}
+        return false;
+    }
 
+    public static String stripScheme(@NonNull String url) {
+        try {
+            Uri uri = Uri.parse(url);
+            return uri.getAuthority();
+        } catch (Exception ignored) {}
+        return url;
+    }
+
+    @NonNull public static String getEndpoint(@NonNull String url) {
+        if (url.startsWith("http://")) {
+            url = url.replace("http://", "https://");
+        }
+        if (!url.startsWith("https://")) {
+            url = "https://" + url;
+        }
+        return getEnterpriseUrl(url);
+    }
+
+    @NonNull public static String getEnterpriseUrl(@NonNull String url) {
+        if (url.endsWith("/api/v3/")) {
+            return url;
+        } else if (url.endsWith("/api/")) {
+            return url + "v3/";
+        } else if (url.endsWith("/api")) {
+            return url + "/v3/";
+        } else if (url.endsWith("/api/v3")) {
+            return url + "/";
+        } else if (!url.endsWith("/")) {
+            return url + "/api/v3/";
+        } else if (url.endsWith("/")) {
+            return url + "api/v3/";
+        }
+        return url;
     }
 }

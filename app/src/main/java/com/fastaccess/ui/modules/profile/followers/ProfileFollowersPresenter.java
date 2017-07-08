@@ -60,7 +60,7 @@ class ProfileFollowersPresenter extends BasePresenter<ProfileFollowersMvp.View> 
             sendToView(ProfileFollowersMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getUserService().getFollowers(parameter, page),
+        makeRestCall(RestProvider.getUserService(isEnterprise()).getFollowers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {

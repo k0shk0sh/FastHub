@@ -56,7 +56,7 @@ import lombok.NoArgsConstructor;
     @Nullable boolean isLoggedIn;
 
     public Observable<Login> update(Login login) {
-        login.setToken(PrefGetter.getToken());
+        login.setToken(PrefGetter.isEnterprise() ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
         login.setIsLoggedIn(true);
         return RxHelper.safeObservable(App.getInstance().getDataStore().update(login).toObservable());
     }

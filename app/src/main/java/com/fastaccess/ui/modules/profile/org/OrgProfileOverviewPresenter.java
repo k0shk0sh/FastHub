@@ -30,7 +30,7 @@ public class OrgProfileOverviewPresenter extends BasePresenter<OrgProfileOvervie
         }
         login = bundle.getString(BundleConstant.EXTRA);
         if (login != null) {
-            makeRestCall(RestProvider.getOrgService().getOrganization(login),
+            makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrganization(login),
                     this::onSendUserToView);
         }
     }

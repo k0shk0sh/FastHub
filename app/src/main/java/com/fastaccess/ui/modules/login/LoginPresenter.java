@@ -16,6 +16,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.LoginProvider;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
             String token = modelResponse.getToken() != null ? modelResponse.getToken() : modelResponse.getAccessToken();
             if (!InputHelper.isEmpty(token)) {
                 PrefGetter.setToken(token);
-                makeRestCall(RestProvider.getUserService().getUser(), this::onUserResponse);
+                makeRestCall(RestProvider.getUserService(false).getUser(), login -> onUserResponse(login, false));
                 return;
             }
         }
@@ -69,7 +70,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     @NonNull @Override public Uri getAuthorizationUrl(@Nullable String endpoint) {
         Uri.Builder builder = new Uri.Builder();
         if (!InputHelper.isEmpty(endpoint)) {
-            endpoint = RestProvider.getEndpoint(endpoint);
+            endpoint = LinkParserHelper.getEndpoint(endpoint);
             Uri uri = Uri.parse(endpoint);
             if (uri.getScheme() != null && uri.getAuthority() != null) {
                 builder.scheme(uri.getScheme())
@@ -81,8 +82,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
             builder.scheme("https")
                     .authority("github.com");
         }
-        return builder
-                .appendPath("login")
+        return builder.appendPath("login")
                 .appendPath("oauth")
                 .appendPath("authorize")
                 .appendQueryParameter("client_id", GithubConfigHelper.getClientId())
@@ -92,16 +92,27 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
                 .build();
     }
 
-    @Override public void onHandleAuthIntent(@Nullable Intent intent) {
+    @Override public void onHandleAuthIntent(@Nullable Intent intent, boolean extraLogin) {
         Logger.e(intent, intent != null ? intent.getExtras() : "N/A");
         if (intent != null && intent.getData() != null) {
             Uri uri = intent.getData();
-            Logger.e(uri.toString());
+            Logger.e(uri.toString(), extraLogin);
             if (uri.toString().startsWith(GithubConfigHelper.getRedirectUrl())) {
                 String tokenCode = uri.getQueryParameter("code");
                 if (!InputHelper.isEmpty(tokenCode)) {
                     makeRestCall(LoginProvider.getLoginRestService().getAccessToken(tokenCode, GithubConfigHelper.getClientId(),
-                            GithubConfigHelper.getSecret(), BuildConfig.APPLICATION_ID, GithubConfigHelper.getRedirectUrl()), this::onTokenResponse);
+                            GithubConfigHelper.getSecret(), BuildConfig.APPLICATION_ID, GithubConfigHelper.getRedirectUrl()),
+                            modelResponse -> {
+                                if (extraLogin) {
+                                    String token = modelResponse.getToken() != null ? modelResponse.getToken() : modelResponse.getAccessToken();
+                                    if (!InputHelper.isEmpty(token)) {
+                                        PrefGetter.setToken(token);
+                                        sendToView(view -> view.onSuccessfullyLoggedIn(false));
+                                        return;
+                                    }
+                                }
+                                onTokenResponse(modelResponse);
+                            });
                 } else {
                     sendToView(view -> view.showMessage(R.string.error, R.string.error));
                 }
@@ -109,11 +120,12 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         }
     }
 
-    @Override public void onUserResponse(@Nullable Login userModel) {
+    @Override public void onUserResponse(@Nullable Login userModel, boolean isEnterprise) {
         if (userModel != null) {
-            userModel.setToken(PrefGetter.getToken());
+            Logger.e(isEnterprise, PrefGetter.getEnterpriseToken(), PrefGetter.getToken());
+            userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
             userModel.save(userModel);
-            sendToView(LoginMvp.View::onSuccessfullyLoggedIn);
+            sendToView(view -> view.onSuccessfullyLoggedIn(isEnterprise));
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
@@ -155,24 +167,19 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     }
 
     private void accessTokenLogin(@NonNull String password, @Nullable String endpoint, @Nullable String otp, String authToken, boolean isEnterprise) {
-        if (!isEnterprise) {
-            makeRestCall(LoginProvider.getLoginRestService(authToken, otp, endpoint).loginAccessToken(), login -> {
+        makeRestCall(LoginProvider.getLoginRestService(authToken, otp, endpoint).loginAccessToken(), login -> {
+            if (!isEnterprise) {
                 PrefGetter.setToken(password);
-                onUserResponse(login);
-            });
-        } else {
-            makeRestCall(LoginProvider.getLoginRestService(authToken, otp, endpoint).loginAccessToken(), login -> {
-                if (login != null) {
-                    if (!InputHelper.isEmpty(otp)) {
-                        PrefGetter.setEnterpriseOtpCode(otp);
-                    }
-                    PrefGetter.setTokenEnterprise(authToken);
+            } else {
+                if (!InputHelper.isEmpty(otp)) {
+                    PrefGetter.setEnterpriseOtpCode(otp);
                 }
+                PrefGetter.setTokenEnterprise(authToken);
                 if (!InputHelper.isEmpty(endpoint)) {
                     PrefGetter.setEnterpriseUrl(endpoint);
                 }
-                onUserResponse(login);
-            });
-        }
+            }
+            onUserResponse(login, isEnterprise);
+        });
     }
 }

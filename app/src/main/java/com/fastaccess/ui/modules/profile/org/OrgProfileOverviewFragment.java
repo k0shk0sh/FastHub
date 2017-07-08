@@ -68,7 +68,7 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
         } else {
             description.setVisibility(GONE);
         }
-        avatarLayout.setUrl(userModel.getAvatarUrl(), null);
+        avatarLayout.setUrl(userModel.getAvatarUrl(), null, false, false);
         avatarLayout.findViewById(R.id.avatar).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());

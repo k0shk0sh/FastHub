@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -45,9 +46,10 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
         ReviewModel review = model.getReview();
         if (review != null) {
             if (review.getUser() != null) {
-                avatarLayout.setUrl(review.getUser().getAvatarUrl(), review.getUser().getLogin());
+                avatarLayout.setUrl(review.getUser().getAvatarUrl(), review.getUser().getLogin(), false,
+                        LinkParserHelper.isEnterprise(review.getUser().getUrl()));
             } else {
-                avatarLayout.setUrl(null, null);
+                avatarLayout.setUrl(null, null, false, false);
             }
             if (review.getState() != null) {
                 stateImage.setImageResource(review.getState().getDrawableRes());

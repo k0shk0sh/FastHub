@@ -19,7 +19,7 @@ public class OrgListDialogPresenter extends BasePresenter<OrgListDialogMvp.View>
     private ArrayList<User> orgs = new ArrayList<>();
 
     @Override public void onLoadOrgs() {
-        makeRestCall(RestProvider.getOrgService().getMyOrganizations()
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getMyOrganizations()
                 .flatMap(userPageable -> {
                     if (userPageable != null && userPageable.getItems() != null) {
                         return Observable.fromIterable(userPageable.getItems());

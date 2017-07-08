@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.TimelineProvider;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -48,10 +49,12 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
         IssueEvent issueEventModel = timelineModel.getEvent();
         IssueEventType event = issueEventModel.getEvent();
         if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
-            avatarLayout.setUrl(issueEventModel.getAssigner().getAvatarUrl(), issueEventModel.getAssigner().getLogin());
+            avatarLayout.setUrl(issueEventModel.getAssigner().getAvatarUrl(), issueEventModel.getAssigner().getLogin(),
+                    false, LinkParserHelper.isEnterprise(issueEventModel.getUrl()));
         } else {
             if (issueEventModel.getActor() != null) {
-                avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin());
+                avatarLayout.setUrl(issueEventModel.getActor().getAvatarUrl(), issueEventModel.getActor().getLogin(),
+                        false, LinkParserHelper.isEnterprise(issueEventModel.getUrl()));
             }
         }
         if (event != null) {

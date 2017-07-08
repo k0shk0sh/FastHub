@@ -9,6 +9,7 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.data.dao.types.MyIssuesType;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RepoQueryProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -28,6 +29,10 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
     private int lastPage = Integer.MAX_VALUE;
     @com.evernote.android.state.State MyIssuesType issuesType;
     @NonNull private String login = Login.getUser().getLogin();
+
+    MyIssuesPresenter() {
+        setEnterprise(PrefGetter.isEnterprise());
+    }
 
     @Override public void onItemClick(int position, View v, Issue item) {
         PullsIssuesParser parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
@@ -78,7 +83,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getIssueService().getIssuesWithCount(getUrl(parameter), page), issues -> {
+        makeRestCall(RestProvider.getIssueService(isEnterprise()).getIssuesWithCount(getUrl(parameter), page), issues -> {
             lastPage = issues.getLast();
             if (getCurrentPage() == 1) {
                 sendToView(view -> view.onSetCount(issues.getTotalCount()));

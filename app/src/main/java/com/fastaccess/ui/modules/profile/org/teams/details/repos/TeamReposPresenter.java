@@ -55,7 +55,7 @@ class TeamReposPresenter extends BasePresenter<TeamReposMvp.View> implements Tea
             sendToView(TeamReposMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getOrgService().getTeamRepos(parameter, page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getTeamRepos(parameter, page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));

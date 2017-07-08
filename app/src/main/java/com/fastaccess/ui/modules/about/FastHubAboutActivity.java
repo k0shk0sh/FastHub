@@ -21,6 +21,7 @@ import com.fastaccess.R;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.tasks.version.CheckVersionService;
 import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
@@ -119,7 +120,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .text("Kosh Sergani")
                 .subText("k0shk0sh")
                 .icon(ContextCompat.getDrawable(context, R.drawable.ic_profile))
-                .setOnClickAction(() -> UserPagerActivity.startActivity(context, "k0shk0sh"))
+                .setOnClickAction(() -> UserPagerActivity.startActivity(context, "k0shk0sh", false, PrefGetter.isEnterprise()))
                 .build())
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.fork_github)

@@ -143,7 +143,7 @@ import lombok.Setter;
         String login = commitModel.getLogin();
         String repoId = commitModel.getRepoId();
         String sha = commitModel.getSha();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesFragment.newInstance(commitModel.getSha(),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), CommitFilesFragment.newInstance(commitModel.getSha(),
                 commitModel.getFiles())),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), CommitCommentsFragment.newInstance(login, repoId, sha)))
                 .collect(Collectors.toList());

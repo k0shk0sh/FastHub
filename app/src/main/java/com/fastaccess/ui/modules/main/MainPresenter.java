@@ -8,6 +8,8 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -25,11 +27,13 @@ import static com.fastaccess.helper.AppHelper.getFragmentByTag;
 public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
 
     MainPresenter() {
-        manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getUser())
+        setEnterprise(PrefGetter.isEnterprise());
+        Logger.e(isEnterprise());
+        manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getUser())
                 .flatMap(login -> login.update(login))
                 .subscribe(login -> {
                     if (login != null) {
-                        sendToView(view -> view.onUpdateDrawerMenuHeader(isEnterprise()));
+                        sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
                     }
                 }, Throwable::printStackTrace/*fail silently*/));
     }

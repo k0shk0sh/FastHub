@@ -11,6 +11,7 @@ import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
@@ -117,8 +118,14 @@ public class TimelineProvider {
                     spannableBuilder
                             .append(" ")
                             .append(from)
-                            .append(" ")
-                            .bold(issueEventModel.getRequestedReviewer().getLogin());
+                            .append(" ");
+                    if (issueEventModel.getRequestedTeam() != null) {
+                        String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
+                                      ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
+                        spannableBuilder.bold(name).append(" ").append("team");
+                    } else if (issueEventModel.getRequestedReviewer() != null) {
+                        spannableBuilder.append(issueEventModel.getRequestedReviewer().getLogin());
+                    }
                 }
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
             }

@@ -46,7 +46,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                 CreateIssueModel createIssue = new CreateIssueModel();
                 createIssue.setBody(InputHelper.toString(description));
                 createIssue.setTitle(title);
-                makeRestCall(RestProvider.getIssueService().createIssue(login, repo, createIssue),
+                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssue(login, repo, createIssue),
                         issueModel -> {
                             if (issueModel != null) {
                                 sendToView(view -> view.onSuccessSubmission(issueModel));
@@ -60,7 +60,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                     issue.setTitle(title);
                     int number = issue.getNumber();
                     IssueRequestModel requestModel = IssueRequestModel.clone(issue, false);
-                    makeRestCall(RestProvider.getIssueService().editIssue(login, repo, number, requestModel),
+                    makeRestCall(RestProvider.getIssueService(isEnterprise()).editIssue(login, repo, number, requestModel),
                             issueModel -> {
                                 if (issueModel != null) {
                                     Logger.e(issueModel.getBodyHtml());
@@ -75,8 +75,8 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                     pullRequestModel.setBody(InputHelper.toString(description));
                     pullRequestModel.setTitle(title);
                     IssueRequestModel requestModel = IssueRequestModel.clone(pullRequestModel, false);
-                    makeRestCall(RestProvider.getPullRequestService().editPullRequest(login, repo, number, requestModel)
-                            .flatMap(pullRequest1 -> RestProvider.getIssueService().getIssue(login, repo, number),
+                    makeRestCall(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(login, repo, number, requestModel)
+                            .flatMap(pullRequest1 -> RestProvider.getIssueService(isEnterprise()).getIssue(login, repo, number),
                                     (pullRequest1, issueReaction) -> {//hack to get reactions from issue api
                                         if (issueReaction != null) {
                                             pullRequest1.setReactions(issueReaction.getReactions());

@@ -22,6 +22,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.markdown.MarkDownProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -453,9 +454,11 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
     private void appendAvatar(@NonNull Event eventsModel) {
         if (avatar != null) {
             if (eventsModel.getActor() != null) {
-                avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
+                avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(),
+                        eventsModel.getActor().isOrganizationType(),
+                        LinkParserHelper.isEnterprise(eventsModel.getActor().getUrl()));
             } else {
-                avatar.setUrl(null, null);
+                avatar.setUrl(null, null, false, false);
             }
         }
     }

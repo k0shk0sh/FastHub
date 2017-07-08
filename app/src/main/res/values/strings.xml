@@ -1,6 +1,5 @@
 <resources>
-    <!-- DO NOT COPY! START COPYING FROM LINE BELOW -->
-
+    <!-- DO NOT COPY!  -->
 
     <string name="app_name" translatable="false">FastHub</string>
     <string name="app_name_full" translatable="false">FastHub for Android</string>
@@ -88,7 +87,7 @@
     <string name="endpoint_hint" translatable="false">https://github.mydomain.com</string>
     <string name="no_branches" translatable="false">No Branches or Tags</string>
 
-    <!-- END OF DO NOT COPY -->
+    <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
@@ -499,4 +498,7 @@
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
     <string name="choose_code_theme">Choose Code color palette</string>
+    <string name="enterprise_login_warning">Please do (OAuth) login to your GitHub account in order to access everything from GitHub API
+        otherwise you\'ll end be kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to GitHub
+        API is coming from your Enterprise Account.</string>
 </resources>

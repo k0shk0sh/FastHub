@@ -112,7 +112,7 @@ public class GithubActionService extends IntentService {
     private void forkGist(@Nullable String id) {
         if (id != null) {
             String msg = getString(R.string.forking, getString(R.string.gist));
-            RestProvider.getGistService()
+            RestProvider.getGistService(false)//TODO
                     .forkGist(id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
@@ -136,7 +136,7 @@ public class GithubActionService extends IntentService {
     private void starGist(@Nullable String id) {
         if (id != null) {
             String msg = getString(R.string.starring, getString(R.string.gist));
-            RestProvider.getGistService()
+            RestProvider.getGistService(false)//TODO
                     .starGist(id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())
@@ -160,7 +160,7 @@ public class GithubActionService extends IntentService {
     private void unStarGist(@Nullable String id) {
         if (id != null) {
             String msg = getString(R.string.un_starring, getString(R.string.gist));
-            RestProvider.getGistService()
+            RestProvider.getGistService(false)//TODO
                     .unStarGist(id)
                     .doOnSubscribe(disposable -> showNotification(msg))
                     .subscribeOn(Schedulers.io())

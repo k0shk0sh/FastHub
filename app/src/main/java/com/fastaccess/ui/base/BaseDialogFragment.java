@@ -66,6 +66,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
             StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
+        getPresenter().setEnterprise(isEnterprise());
     }
 
     @Override public void dismiss() {
@@ -155,4 +156,9 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void onScrollTop(int index) {}
+
+    @Override public boolean isEnterprise() {
+        return callback.isEnterprise();
+    }
 }
+

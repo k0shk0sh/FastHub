@@ -9,6 +9,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -40,14 +41,15 @@ public class CommitsViewHolder extends BaseViewHolder<Commit> {
 
     @Override public void bind(@NonNull Commit commit) {
         title.setText(commit.getGitCommit().getMessage());
-        String login = commit.getAuthor() != null ? commit.getAuthor().getLogin() : commit.getGitCommit().getAuthor().getName();
+        String login = commit.getAuthor() != null ? commit.getAuthor().getLogin() : commit.getGitCommit().getAuthor().getLogin();
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date date = commit.getGitCommit().getAuthor().getDate();
         details.setText(SpannableBuilder.builder()
                 .bold(InputHelper.toNA(login))
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(date)));
-        avatarLayout.setUrl(avatar, login);
+        avatarLayout.setUrl(avatar, login, false, LinkParserHelper
+                .isEnterprise(commit.getAuthor() != null ? commit.getAuthor().getUrl() : commit.getGitCommit().getAuthor().getUrl()));
         avatarLayout.setVisibility(View.VISIBLE);
         if (commit.getGitCommit() != null && commit.getGitCommit().getCommentCount() > 0) {
             commentsNo.setText(String.valueOf(commit.getGitCommit() != null ? commit.getGitCommit().getCommentCount() : 0));

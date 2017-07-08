@@ -65,7 +65,7 @@ public class NotificationSchedulerJobTask extends JobService {
             login = Login.getUser();
         } catch (Exception ignored) {}
         if (login != null) {
-            RestProvider.getNotificationService()
+            RestProvider.getNotificationService(PrefGetter.isEnterprise())
                     .getNotifications(ParseDateFormat.getLastWeekDate())
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
@@ -137,7 +137,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 .flatMap(notification -> {
                     Logger.e(notification.getSubject().getTitle());
                     if (notification.getSubject() != null && notification.getSubject().getLatestCommentUrl() != null) {
-                        return RestProvider.getNotificationService()
+                        return RestProvider.getNotificationService(PrefGetter.isEnterprise())
                                 .getComment(notification.getSubject().getLatestCommentUrl())
                                 .subscribeOn(Schedulers.io());
                     } else {

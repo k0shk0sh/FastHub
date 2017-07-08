@@ -87,7 +87,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
         if (!InputHelper.isEmpty(savedText)) {
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
-            makeRestCall(RestProvider.getGistService().editGistComment(gistId, id, requestModel),
+            makeRestCall(RestProvider.getGistService(isEnterprise()).editGistComment(gistId, id, requestModel),
                     comment -> sendToView(view -> view.onSendResultAndFinish(comment, false)));
         }
     }
@@ -96,7 +96,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
         if (!InputHelper.isEmpty(savedText)) {
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
-            makeRestCall(RestProvider.getGistService().createGistComment(gistId, requestModel),
+            makeRestCall(RestProvider.getGistService(isEnterprise()).createGistComment(gistId, requestModel),
                     comment -> sendToView(view -> view.onSendResultAndFinish(comment, true)));
         }
     }
@@ -194,7 +194,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
         if (!InputHelper.isEmpty(savedText)) {
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
-            makeRestCall(RestProvider.getIssueService().createIssueComment(login, itemId, issueNumber, requestModel),
+            makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(login, itemId, issueNumber, requestModel),
                     comment -> sendToView(view -> view.onSendResultAndFinish(comment, true)));
         }
     }
@@ -203,7 +203,7 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
         if (!InputHelper.isEmpty(savedText)) {
             CommentRequestModel requestModel = new CommentRequestModel();
             requestModel.setBody(savedText.toString());
-            makeRestCall(RestProvider.getIssueService().editIssueComment(login, itemId, id, requestModel),
+            makeRestCall(RestProvider.getIssueService(isEnterprise()).editIssueComment(login, itemId, id, requestModel),
                     comment -> sendToView(view -> view.onSendResultAndFinish(comment, false)));
         }
     }

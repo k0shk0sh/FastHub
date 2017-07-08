@@ -10,6 +10,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
@@ -53,9 +54,10 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
 
     @Override public void bind(@NonNull Comment commentsModel) {
         if (commentsModel.getUser() != null) {
-            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(), commentsModel.getUser().isOrganizationType());
+            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
+                    commentsModel.getUser().isOrganizationType(), LinkParserHelper.isEnterprise(commentsModel.getUser().getUrl()));
         } else {
-            avatar.setUrl(null, null);
+            avatar.setUrl(null, null, false, false);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());

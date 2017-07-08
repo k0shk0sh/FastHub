@@ -66,7 +66,7 @@ public class SchemeParser {
         Logger.e(data);
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
-            if(newDocument) {
+            if (newDocument) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
             }
             context.startActivity(intent);
@@ -120,7 +120,7 @@ public class SchemeParser {
         } else {
             if (MarkDownProvider.isArchive(data.toString())) return null;
             String authority = data.getAuthority();
-            boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(RestProvider.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
+            boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
                     .equalsIgnoreCase(authority);
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY) || isEnterprise) {
@@ -143,14 +143,14 @@ public class SchemeParser {
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     Intent intent = intentOptional.get();
-                    if (intent.getExtras() != null) {
-                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+                    if (intent.getExtras() != null && isEnterprise) {
+                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, true);
                     }
                     return intent;
                 } else {
                     Intent intent = getGeneralRepo(context, data);
-                    if (intent != null && intent.getExtras() != null) {
-                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+                    if (intent != null && intent.getExtras() != null && isEnterprise) {
+                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, true);
                     }
                     return intent;
                 }
@@ -245,7 +245,7 @@ public class SchemeParser {
      */
     @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
         //TODO parse deeper links to their associate views. meantime fallback to repoPage
-        boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(RestProvider.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
+        boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
                 .equalsIgnoreCase(uri.getAuthority());
         if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY) || isEnterprise) {
             List<String> segments = uri.getPathSegments();

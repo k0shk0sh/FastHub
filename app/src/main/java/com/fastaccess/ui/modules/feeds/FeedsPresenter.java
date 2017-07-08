@@ -16,6 +16,8 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -56,16 +58,19 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
             return;
         }
         setCurrentPage(page);
-        if (Login.getUser() == null) return;// I can't understand how this could possibly be reached lol.
+        Login login = Login.getUser();
+        if (login == null) return;// I can't understand how this could possibly be reached lol.
         Observable<Pageable<Event>> observable;
         if (user != null) {
             if (isOrg) {
-                observable = RestProvider.getOrgService().getReceivedEvents(user, page);
+                observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(user, page);
             } else {
-                observable = RestProvider.getUserService().getUserEvents(user, page);
+                observable = RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
+                                                         ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
             }
         } else {
-            observable = RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page);
+            observable = RestProvider.getUserService(PrefGetter.isEnterprise())
+                    .getReceivedEvents(login.getLogin(), page);
         }
         makeRestCall(observable, response -> {
             lastPage = response.getLast();
@@ -110,7 +115,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
     }
 
     @Override public void onWorkOffline() {
-        if (eventsModels.isEmpty()) {
+        if (eventsModels.isEmpty() && InputHelper.isEmpty(user)) {
             manageDisposable(RxHelper.getObserver(Event.getEvents().toObservable())
                     .subscribe(modelList -> {
                         if (modelList != null) {

@@ -25,10 +25,12 @@ import com.fastaccess.data.service.SearchService;
 import com.fastaccess.data.service.SlackService;
 import com.fastaccess.data.service.UserRestService;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
 import com.fastaccess.provider.rest.interceptors.ContentTypeInterceptor;
 import com.fastaccess.provider.rest.interceptors.PaginationInterceptor;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -75,8 +77,13 @@ public class RestProvider {
     }
 
     private static Retrofit provideRetrofit() {
+        return provideRetrofit(false);
+    }
+
+    private static Retrofit provideRetrofit(boolean isEnterprise) {
         return new Retrofit.Builder()
-                .baseUrl(BuildConfig.REST_URL)
+                .baseUrl(isEnterprise && PrefGetter.isEnterprise() ? LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl())
+                                                                   : BuildConfig.REST_URL)
                 .client(provideOkHttpClient())
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
@@ -121,49 +128,40 @@ public class RestProvider {
         return -1;
     }
 
-    @NonNull public static UserRestService getUserService() {
-        return provideRetrofit().create(UserRestService.class);
+    @NonNull public static UserRestService getUserService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(UserRestService.class);
     }
 
-    @NonNull public static UserRestService getContribution() {
-        return new Retrofit.Builder()
-                .baseUrl(BuildConfig.REST_URL)
-                .addConverterFactory(new GithubResponseConverter(gson))
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build()
-                .create(UserRestService.class);
-    }
-
-    @NonNull public static GistService getGistService() {
-        return provideRetrofit().create(GistService.class);
+    @NonNull public static GistService getGistService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(GistService.class);
     }
 
     @NonNull public static RepoService getRepoService() {
         return provideRetrofit().create(RepoService.class);
     }
 
-    @NonNull public static IssueService getIssueService() {
-        return provideRetrofit().create(IssueService.class);
+    @NonNull public static IssueService getIssueService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(IssueService.class);
     }
 
-    @NonNull public static PullRequestService getPullRequestService() {
-        return provideRetrofit().create(PullRequestService.class);
+    @NonNull public static PullRequestService getPullRequestService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(PullRequestService.class);
     }
 
     @NonNull public static SearchService getSearchService() {
         return provideRetrofit().create(SearchService.class);
     }
 
-    @NonNull public static NotificationService getNotificationService() {
-        return provideRetrofit().create(NotificationService.class);
+    @NonNull public static NotificationService getNotificationService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(NotificationService.class);
     }
 
     @NonNull public static ReactionsService getReactionsService() {
         return provideRetrofit().create(ReactionsService.class);
     }
 
-    @NonNull public static OrganizationService getOrgService() {
-        return provideRetrofit().create(OrganizationService.class);
+    @NonNull public static OrganizationService getOrgService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(OrganizationService.class);
     }
 
     @NonNull public static ReviewService getReviewService() {
@@ -194,33 +192,6 @@ public class RestProvider {
 
     public static void clearHttpClient() {
         okHttpClient = null;
-    }
-
-    @NonNull public static String getEndpoint(@NonNull String url) {
-        if (url.startsWith("http://")) {
-            url = url.replace("http://", "https://");
-        }
-        if (!url.startsWith("https://")) {
-            url = "https://" + url;
-        }
-        return getEnterpriseUrl(url);
-    }
-
-    @NonNull public static String getEnterpriseUrl(@NonNull String url) {
-        if (url.endsWith("/api/v3/")) {
-            return url;
-        } else if (url.endsWith("/api/")) {
-            return url + "v3/";
-        } else if (url.endsWith("/api")) {
-            return url + "/v3/";
-        } else if (url.endsWith("/api/v3")) {
-            return url + "/";
-        } else if (!url.endsWith("/")) {
-            return url + "/api/v3/";
-        } else if (url.endsWith("/")) {
-            return url + "api/v3/";
-        }
-        return url;
     }
 
 }

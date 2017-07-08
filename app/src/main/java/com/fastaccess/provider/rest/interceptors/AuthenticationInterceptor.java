@@ -34,10 +34,10 @@ public class AuthenticationInterceptor implements Interceptor {
     @Override public Response intercept(@NonNull Chain chain) throws IOException {
         Request original = chain.request();
         Request.Builder builder = original.newBuilder();
-        boolean isEnterprise = PrefGetter.isEnterprise() && LinkParserHelper.isNotEnterprise(original.url() != null ? original.url().host() : null);
-        Logger.e(isEnterprise);
+        boolean isEnterprise = LinkParserHelper.isEnterprise(original.url().host());
         String authToken = InputHelper.isEmpty(token) ? isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken() : token;
         String otpCode = InputHelper.isEmpty(otp) ? isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode() : otp;
+        Logger.e(isEnterprise, authToken, otpCode);
         if (!InputHelper.isEmpty(authToken)) {
             builder.header("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
         }
@@ -45,7 +45,6 @@ public class AuthenticationInterceptor implements Interceptor {
             builder.addHeader("X-GitHub-OTP", otpCode.trim());
         }
         if (!isScrapping) builder.addHeader("User-Agent", "FastHub");
-
         Request request = builder.build();
         return chain.proceed(request);
     }

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -60,6 +61,8 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
             StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
+        Logger.e(isEnterprise());
+        getPresenter().setEnterprise(isEnterprise());
     }
 
     @SuppressLint("RestrictedApi") @Nullable @Override
@@ -131,6 +134,10 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onScrollTop(int index) {}
+
+    @Override public boolean isEnterprise() {
+        return callback.isEnterprise();
+    }
 
     protected boolean isSafe() {
         return getView() != null && getActivity() != null && !getActivity().isFinishing();
