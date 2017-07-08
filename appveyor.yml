@@ -5,10 +5,10 @@ environment:
   ANDROID_HOME: 'C:\Android\android-sdk'
 
 init:
-  - cmd: |
+  - ps: |
       appveyor DownloadFile "https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip" -FileName "C:\android-tools.zip"
-      ECHO "Extracting SDK tools..."
-      7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
+      Write-Host "Extracting SDK tools..."
+      7z x "C:\android-tools.zip" -o"$env:ANDROID_HOME" > nul
 
 install:
   - ps: |
@@ -27,10 +27,10 @@ install:
       }
 
 build_script:
-  - cmd: gradlew clean assembleDebug --stacktrace
+  - ps: .\gradlew clean assembleDebug --stacktrace
 
 after_build:
-  - cmd: RENAME C:\FH\app\build\outputs\apk\debug\app-debug.apk fasthub-debug-%APPVEYOR_BUILD_VERSION%.apk
+  - ps: Rename-Item -Path "C:\FH\app\build\outputs\apk\debug\app-debug.apk" -NewName "fasthub-debug-$env:APPVEYOR_BUILD_VERSION.apk"
 
 test: off
 
