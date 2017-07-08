@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -37,7 +36,6 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
         }
         Bundle bundle = intent.getExtras();
         gistId = bundle.getString(BundleConstant.EXTRA);
-        Logger.e(gistId);
         if (gist != null) {
             checkStarring(gist.getGistId());
             sendToView(GistMvp.View::onSetupDetails);

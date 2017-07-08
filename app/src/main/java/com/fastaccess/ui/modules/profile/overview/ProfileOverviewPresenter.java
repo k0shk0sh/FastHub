@@ -10,10 +10,8 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
@@ -34,7 +32,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State ArrayList<User> userOrgs = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
-    private static final String URL = "https://%s/users/%s/contributions";
+    private static final String URL = "https://github.com/users/%s/contributions";
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
         if (!TextUtils.equals(login, Login.getUser().getLogin())) {
@@ -112,18 +110,19 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onLoadContributionWidget(@NonNull GitHubContributionsView gitHubContributionsView) {
-        if (contributions == null || contributions.isEmpty()) {
-            String url = String.format(URL, isEnterprise() ? LinkParserHelper.stripScheme(PrefGetter.getEnterpriseUrl())
-                                                           : LinkParserHelper.HOST_DEFAULT, login);
-            manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getContributions(url))
-                    .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
-                    .subscribe(lists -> {
-                        contributions.clear();
-                        contributions.addAll(lists);
-                        loadContributions(contributions, gitHubContributionsView);
-                    }, Throwable::printStackTrace));
-        } else {
-            loadContributions(contributions, gitHubContributionsView);
+        if (!isEnterprise()) {
+            if (contributions == null || contributions.isEmpty()) {
+                String url = String.format(URL, login);
+                manageDisposable(RxHelper.getObserver(RestProvider.getUserService(false).getContributions(url))
+                        .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
+                        .subscribe(lists -> {
+                            contributions.clear();
+                            contributions.addAll(lists);
+                            loadContributions(contributions, gitHubContributionsView);
+                        }, Throwable::printStackTrace));
+            } else {
+                loadContributions(contributions, gitHubContributionsView);
+            }
         }
     }
 
@@ -141,9 +140,11 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     private void loadContributions(ArrayList<ContributionsDay> contributions, GitHubContributionsView gitHubContributionsView) {
         List<ContributionsDay> filter = gitHubContributionsView.getLastContributions(contributions);
-        Observable<Bitmap> bitmapObservable = Observable.just(gitHubContributionsView.drawOnCanvas(filter, contributions));
-        manageObservable(bitmapObservable
-                .doOnNext(bitmap -> sendToView(view -> view.onInitContributions(bitmap != null))));
+        if (filter != null && contributions != null) {
+            Observable<Bitmap> bitmapObservable = Observable.just(gitHubContributionsView.drawOnCanvas(filter, contributions));
+            manageObservable(bitmapObservable
+                    .doOnNext(bitmap -> sendToView(view -> view.onInitContributions(bitmap != null))));
+        }
     }
 
     private void loadOrgs() {

@@ -89,7 +89,9 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     }
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-//        setBackground(false);
+        if (failReason.getCause() != null) failReason.getCause().printStackTrace();
+//        setBackground();
+        setImageOnFailed();
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
@@ -107,8 +109,12 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
-            avatar.setImageResource(R.drawable.ic_incognito_avatar);
+            setImageOnFailed();
         }
+    }
+
+    private void setImageOnFailed() {
+        avatar.setImageResource(R.mipmap.foreground);
     }
 
     private void setBackground() {

@@ -37,7 +37,7 @@ public class AuthenticationInterceptor implements Interceptor {
         boolean isEnterprise = LinkParserHelper.isEnterprise(original.url().host());
         String authToken = InputHelper.isEmpty(token) ? isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken() : token;
         String otpCode = InputHelper.isEmpty(otp) ? isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode() : otp;
-        Logger.e(isEnterprise, authToken, otpCode);
+        Logger.e(isEnterprise);
         if (!InputHelper.isEmpty(authToken)) {
             builder.header("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
         }

@@ -18,7 +18,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -154,7 +153,6 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
 
     @Override public void onBackPressed() {
         int position = adapter.getItemCount() > 2 ? adapter.getItemCount() - 2 : adapter.getItemCount() - 1;
-        Logger.e(position, adapter.getItemCount());
         if (position > 0 && position <= adapter.getItemCount()) {
             if (position == 1) position = 0;
             RepoFile repoFilesModel = adapter.getItem(position);

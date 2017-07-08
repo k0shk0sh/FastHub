@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.data.dao.model.Login;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -61,7 +60,6 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
             StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
-        Logger.e(isEnterprise());
         getPresenter().setEnterprise(isEnterprise());
     }
 

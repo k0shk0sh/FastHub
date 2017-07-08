@@ -102,6 +102,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             if (getIntent() != null && getIntent().getExtras() != null) {
                 login = getIntent().getExtras().getString(BundleConstant.EXTRA);
                 isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
+                getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
                 if (!InputHelper.isEmpty(login) && isOrg) {
                     getPresenter().checkOrgMembership(login);
                 }
@@ -175,7 +176,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     @Override public void onInitOrg(boolean isMember) {
         hideProgress();
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
-                FragmentPagerAdapterModel.buildForOrg(this, login, isMember));
+                FragmentPagerAdapterModel.buildForOrg(this, login, isMember, isEnterprise()));
         pager.setAdapter(adapter);
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);

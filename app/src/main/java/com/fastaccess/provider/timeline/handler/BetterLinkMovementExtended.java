@@ -17,8 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.fastaccess.helper.Logger;
-
 
 /**
  * Created by Kosh on 23 Apr 2017, 12:09 PM
@@ -192,7 +190,6 @@ public class BetterLinkMovementExtended extends LinkMovementMethod {
             this.isUrlHighlighted = true;
             int spanStart = text.getSpanStart(spanWithText.span());
             int spanEnd = text.getSpanEnd(spanWithText.span());
-            Logger.e(text.getClass().getName());
             Selection.removeSelection(text);
             text.setSpan(new BackgroundColorSpan(textView.getHighlightColor()), spanStart, spanEnd, Spanned.SPAN_INCLUSIVE_INCLUSIVE);
             textView.setText(text);

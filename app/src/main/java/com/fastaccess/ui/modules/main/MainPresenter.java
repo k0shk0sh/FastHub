@@ -8,7 +8,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -28,7 +27,6 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
 
     MainPresenter() {
         setEnterprise(PrefGetter.isEnterprise());
-        Logger.e(isEnterprise());
         manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getUser())
                 .flatMap(login -> login.update(login))
                 .subscribe(login -> {

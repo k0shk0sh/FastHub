@@ -80,10 +80,9 @@ public class RestProvider {
         return provideRetrofit(false);
     }
 
-    private static Retrofit provideRetrofit(boolean isEnterprise) {
+    private static Retrofit provideRetrofit(boolean enterprise) {
         return new Retrofit.Builder()
-                .baseUrl(isEnterprise && PrefGetter.isEnterprise() ? LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl())
-                                                                   : BuildConfig.REST_URL)
+                .baseUrl(enterprise && PrefGetter.isEnterprise() ? LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl()) : BuildConfig.REST_URL)
                 .client(provideOkHttpClient())
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

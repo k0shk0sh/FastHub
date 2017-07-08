@@ -135,7 +135,6 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 .filter(group -> group.getNotification().getRepository().getFullName().equalsIgnoreCase(repo.getFullName()))
                 .map(GroupedNotificationModel::getNotification)
                 .subscribe(notification -> {
-                    Logger.e(notification.getUrl());
                     notification.setUnread(false);
                     manageObservable(notification.save(notification).toObservable());
                     sendToView(view -> view.onReadNotification(notification));

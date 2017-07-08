@@ -18,7 +18,6 @@ import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -49,13 +48,14 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
                 .end());
         return fragment;
     }
+
     @Override protected int fragmentLayout() {
         return R.layout.tabbed_viewpager;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getChildFragmentManager(),
-                FragmentPagerAdapterModel.buildForMyIssues(getContext(), getArguments().getBoolean(BundleConstant.IS_ENTERPRISE)));
+                FragmentPagerAdapterModel.buildForMyIssues(getContext()));
         pager.setAdapter(adapter);
         //noinspection deprecation
         tabs.setTabsFromPagerAdapter(adapter);
@@ -102,7 +102,6 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
         model.setTabIndex(tabIndex);
         model.setCount(count);
         boolean removed = counts.remove(model);
-        Logger.e(removed);
         counts.add(model);
         if (tabs != null) {
             updateCount(model);
@@ -117,7 +116,6 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
     }
 
     private void selectTab(int position, boolean fromViewPager) {
-        Logger.e(position, fromViewPager);
         if (!fromViewPager) {
             onShowFilterMenu(getModelAtIndex(position), ViewHelper.getTabTextView(tabs, position));
             pager.setCurrentItem(position);

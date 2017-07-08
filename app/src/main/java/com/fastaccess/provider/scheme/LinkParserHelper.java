@@ -8,6 +8,7 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ObjectsCompat;
 import com.fastaccess.helper.PrefGetter;
 
@@ -68,8 +69,12 @@ public class LinkParserHelper {
         if (InputHelper.isEmpty(url) || !PrefGetter.isEnterprise()) return false;
         try {
             Uri enterpriseUri = Uri.parse(getEndpoint(PrefGetter.getEnterpriseUrl()));
+            Uri uri = Uri.parse(url);
             if (enterpriseUri != null) {
-                return url.equalsIgnoreCase(enterpriseUri.getAuthority());
+                boolean isEnterprise = enterpriseUri.getAuthority().equalsIgnoreCase(uri != null && uri.getAuthority() != null
+                                                                                     ? uri.getAuthority() : url);
+                Logger.e(isEnterprise, enterpriseUri.getAuthority(), uri != null ? uri.getAuthority() : "N/A");
+                return isEnterprise;
             }
         } catch (Exception ignored) {}
         return false;
@@ -78,7 +83,7 @@ public class LinkParserHelper {
     public static String stripScheme(@NonNull String url) {
         try {
             Uri uri = Uri.parse(url);
-            return uri.getAuthority();
+            return !InputHelper.isEmpty(uri.getAuthority()) ? uri.getAuthority() : url;
         } catch (Exception ignored) {}
         return url;
     }
@@ -93,7 +98,7 @@ public class LinkParserHelper {
         return getEnterpriseUrl(url);
     }
 
-    @NonNull public static String getEnterpriseUrl(@NonNull String url) {
+    @NonNull private static String getEnterpriseUrl(@NonNull String url) {
         if (url.endsWith("/api/v3/")) {
             return url;
         } else if (url.endsWith("/api/")) {

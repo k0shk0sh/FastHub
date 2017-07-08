@@ -30,7 +30,6 @@ import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
@@ -276,7 +275,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         PullRequest pullRequest = getPresenter().getPullRequest();
         setTaskName(pullRequest.getRepoId() + " - " + pullRequest.getTitle());
         updateViews(pullRequest);
-        Logger.e(pullRequest.getBodyHtml());
         if (update) {
             PullRequestTimelineFragment issueDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
             if (issueDetailsView != null && getPresenter().getPullRequest() != null) {
@@ -332,7 +330,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
-        Logger.e(labels, labels.size());
         getPresenter().onPutLabels(labels);
     }
 

@@ -17,7 +17,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -209,7 +208,6 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
     }
 
     @Override public void onItemSelected(SimpleUrlsModel item) {
-        Logger.e(item, item.getUrl());
         if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
             RestProvider.downloadFile(getContext(), item.getUrl());
         }

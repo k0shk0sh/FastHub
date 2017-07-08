@@ -9,7 +9,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.data.dao.CommitLinesModel;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.CommitLinesAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesMvp;
@@ -118,7 +117,6 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
     }
 
     @Override public void onItemClick(int position, View v, CommitLinesModel item) {
-        Logger.e(item.getText());
         if (onPatchClickListener != null && adapter != null) {
             int groupPosition = getAdapterPosition();
             CommitFileChanges commitFileChanges = (CommitFileChanges) adapter.getItem(groupPosition);

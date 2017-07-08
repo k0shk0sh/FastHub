@@ -95,7 +95,6 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
                     if (index != -1) {
                         token = token.replace("\\ No newline at end of file", "");
                     }
-                    Logger.e(leftLineNo, rightLineNo);
                     models.add(new CommitLinesModel(token, color, token.startsWith("@@") || !addLeft ? -1 : leftLineNo,
                             token.startsWith("@@") || !addRight ? -1 : rightLineNo, index != -1));
                 }

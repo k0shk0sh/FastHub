@@ -35,7 +35,7 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
     private ReposAdapter adapter;
     private ProfileReposFilterBottomSheetDialog dialog;
 
-    public static OrgReposFragment newInstance(@NonNull String username) {
+    public static OrgReposFragment newInstance(@NonNull String username, boolean isEnterprise) {
         OrgReposFragment view = new OrgReposFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, username).end());
         return view;

@@ -93,10 +93,8 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
     }
 
     @Override public void onHandleAuthIntent(@Nullable Intent intent, boolean extraLogin) {
-        Logger.e(intent, intent != null ? intent.getExtras() : "N/A");
         if (intent != null && intent.getData() != null) {
             Uri uri = intent.getData();
-            Logger.e(uri.toString(), extraLogin);
             if (uri.toString().startsWith(GithubConfigHelper.getRedirectUrl())) {
                 String tokenCode = uri.getQueryParameter("code");
                 if (!InputHelper.isEmpty(tokenCode)) {
@@ -122,7 +120,6 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
 
     @Override public void onUserResponse(@Nullable Login userModel, boolean isEnterprise) {
         if (userModel != null) {
-            Logger.e(isEnterprise, PrefGetter.getEnterpriseToken(), PrefGetter.getToken());
             userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
             userModel.save(userModel);
             sendToView(view -> view.onSuccessfullyLoggedIn(isEnterprise));

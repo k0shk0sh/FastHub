@@ -33,7 +33,7 @@ public class OrgTeamFragment extends BaseFragment<OrgTeamMvp.View, OrgTeamPresen
     private OnLoadMore<String> onLoadMore;
     private TeamsAdapter adapter;
 
-    public static OrgTeamFragment newInstance(@NonNull String username) {
+    public static OrgTeamFragment newInstance(@NonNull String username, boolean isEnterprise) {
         OrgTeamFragment view = new OrgTeamFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, username).end());
         return view;

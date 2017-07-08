@@ -18,7 +18,6 @@ import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -56,7 +55,7 @@ public class MyPullsPagerFragment extends BaseFragment<MyPullsPagerMvp.View, MyP
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getChildFragmentManager(),
-                FragmentPagerAdapterModel.buildForMyPulls(getContext(), getArguments().getBoolean(BundleConstant.IS_ENTERPRISE)));
+                FragmentPagerAdapterModel.buildForMyPulls(getContext()));
         pager.setAdapter(adapter);
         //noinspection deprecation
         tabs.setTabsFromPagerAdapter(adapter);
@@ -73,7 +72,6 @@ public class MyPullsPagerFragment extends BaseFragment<MyPullsPagerMvp.View, MyP
         });
         tabs.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override public void onTabSelected(TabLayout.Tab tab) {
-                Logger.e(tab.getTag());
                 if (tab.getTag() == null) {
                     int position = tab.getPosition();
                     selectTab(position, false);
@@ -104,7 +102,6 @@ public class MyPullsPagerFragment extends BaseFragment<MyPullsPagerMvp.View, MyP
         model.setTabIndex(tabIndex);
         model.setCount(count);
         boolean removed = counts.remove(model);
-        Logger.e(removed);
         counts.add(model);
         if (tabs != null) {
             updateCount(model);
@@ -119,7 +116,6 @@ public class MyPullsPagerFragment extends BaseFragment<MyPullsPagerMvp.View, MyP
     }
 
     private void selectTab(int position, boolean fromViewPager) {
-        Logger.e(position, fromViewPager);
         if (!fromViewPager) {
             onShowFilterMenu(getModelAtIndex(position), ViewHelper.getTabTextView(tabs, position));
             pager.setCurrentItem(position);

@@ -15,7 +15,6 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -114,7 +113,6 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     private void addReactionCount(View v) {
         if (adapter != null) {
             TimelineModel timelineModel = (TimelineModel) adapter.getItem(getAdapterPosition());
-            Logger.e(timelineModel);
             if (timelineModel == null) return;
             ReactionsModel reactionsModel = null;
             PullRequest pullRequest = timelineModel.getPullRequest();

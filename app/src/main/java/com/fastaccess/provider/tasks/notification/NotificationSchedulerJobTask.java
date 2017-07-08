@@ -19,7 +19,6 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
@@ -135,7 +134,6 @@ public class NotificationSchedulerJobTask extends JobService {
                 .filter(notification -> notification.isUnread() && first.getId() != notification.getId())
                 .take(10)
                 .flatMap(notification -> {
-                    Logger.e(notification.getSubject().getTitle());
                     if (notification.getSubject() != null && notification.getSubject().getLatestCommentUrl() != null) {
                         return RestProvider.getNotificationService(PrefGetter.isEnterprise())
                                 .getComment(notification.getSubject().getLatestCommentUrl())

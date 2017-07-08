@@ -17,7 +17,6 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -41,7 +40,6 @@ public class CodeViewerActivity extends BaseActivity {
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String url, @NonNull String htmlUrl) {
-        Logger.e(url, htmlUrl);
         Intent intent = new Intent(context, CodeViewerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TWO, htmlUrl)

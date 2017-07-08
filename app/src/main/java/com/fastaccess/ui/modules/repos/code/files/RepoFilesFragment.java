@@ -18,7 +18,6 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
@@ -128,7 +127,6 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
 
     @Override public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Logger.e(hidden);
         if (!hidden && adapter != null && isSafe()) {
             if (!PrefGetter.isFileOptionHintShow()) {
                 ActivityHelper.showDismissHints(getContext(), () -> {

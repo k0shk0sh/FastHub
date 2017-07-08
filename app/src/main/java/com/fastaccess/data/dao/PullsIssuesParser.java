@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 
 import java.util.List;
 
@@ -27,7 +26,6 @@ public class PullsIssuesParser implements Parcelable {
     public static PullsIssuesParser getForPullRequest(@NonNull String url) {
         Uri uri = Uri.parse(url);
         List<String> segments = uri.getPathSegments();
-        Logger.e(url, uri, segments);
         if (segments == null || segments.size() < 4) return null;
         if (!"pull".equals(segments.get(2))) return null;
         String owner = segments.get(0);

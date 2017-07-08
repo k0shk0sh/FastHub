@@ -334,7 +334,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public boolean isEnterprise() {
-        return getPresenter().isEnterprise();
+        return getPresenter() != null && getPresenter().isEnterprise();
     }
 
     protected void setTaskName(@Nullable String name) {

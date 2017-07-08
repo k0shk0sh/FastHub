@@ -55,6 +55,7 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
         if (getArguments().getString(BundleConstant.EXTRA) == null) {
             throw new NullPointerException("Username is null");
         }
+        getPresenter().setEnterprise(getArguments().getBoolean(BundleConstant.IS_ENTERPRISE));
         stateLayout.setEmptyText(R.string.no_gists);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);

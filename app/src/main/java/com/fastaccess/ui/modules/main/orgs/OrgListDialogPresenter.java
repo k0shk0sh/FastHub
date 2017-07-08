@@ -3,6 +3,7 @@ package com.fastaccess.ui.modules.main.orgs;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -19,7 +20,7 @@ public class OrgListDialogPresenter extends BasePresenter<OrgListDialogMvp.View>
     private ArrayList<User> orgs = new ArrayList<>();
 
     @Override public void onLoadOrgs() {
-        makeRestCall(RestProvider.getOrgService(isEnterprise()).getMyOrganizations()
+        makeRestCall(RestProvider.getOrgService(PrefGetter.isEnterprise()).getMyOrganizations()
                 .flatMap(userPageable -> {
                     if (userPageable != null && userPageable.getItems() != null) {
                         return Observable.fromIterable(userPageable.getItems());
