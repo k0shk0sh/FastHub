@@ -2,15 +2,17 @@ image: Visual Studio 2017
 clone_folder: C:\FH
 
 environment:
-  ANDROID_HOME: C:\\Android\\android-sdk
+  ANDROID_HOME: 'C:\Android\android-sdk'
 
 init:
-  - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.5-windows.zip" -FileName "C:\android-tools.zip"
-  - cmd: 7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
+  - cmd: |
+      appveyor DownloadFile "https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip" -FileName "C:\android-tools.zip"
+      ECHO "Extracting SDK tools..."
+      7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
 
 install:
-  - cmd: 'echo   > C:/Users/appveyor/.android/repositories.cfg'
   - ps: |
+      Write-Output "" > ~\.android\repositories.cfg
       if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
         Write-Host "PR detected. Installing C# Script Engine and doing translations check:"
         cinst cs-script
@@ -21,7 +23,7 @@ install:
       $pkgs = '"platform-tools"', '"extras;android;m2repository"', '"extras;google;m2repository"', '"build-tools;26.0.0"', '"platforms;android-25"'
       foreach ($pkg in $pkgs) {
         Write-Host "Installing ${pkg}:"
-        echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat ${pkg}
+        echo "y" | & $env:ANDROID_HOME\tools\bin\sdkmanager.bat ${pkg}
       }
 
 build_script:
