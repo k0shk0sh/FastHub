@@ -8,7 +8,7 @@ init:
   - ps: |
       appveyor DownloadFile "https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip" -FileName "C:\android-tools.zip"
       Write-Host "Extracting SDK tools..."
-      7z x "C:\android-tools.zip" -o"$env:ANDROID_HOME" > nul
+      7z x "C:\android-tools.zip" -o"$env:ANDROID_HOME" | Out-Null
 
 install:
   - ps: |
