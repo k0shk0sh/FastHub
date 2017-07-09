@@ -27,7 +27,7 @@ install:
       }
 
 build_script:
-  - ps: .\gradlew clean assembleDebug --stacktrace
+  - cmd: gradlew clean assembleDebug --stacktrace
 
 after_build:
   - ps: Rename-Item -Path "C:\FH\app\build\outputs\apk\debug\app-debug.apk" -NewName "fasthub-debug-$env:APPVEYOR_BUILD_VERSION.apk"
