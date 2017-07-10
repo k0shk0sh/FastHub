@@ -167,7 +167,7 @@ import lombok.Getter;
         Issue issue = getView().getIssue();
         String login = issue.getLogin();
         String repoId = issue.getRepoId();
-        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType);
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType, isEnterprise());
         if (observable != null) manageObservable(observable);
     }
 

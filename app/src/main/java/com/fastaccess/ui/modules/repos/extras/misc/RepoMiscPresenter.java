@@ -78,13 +78,13 @@ public class RepoMiscPresenter extends BasePresenter<RepoMiscMVp.View> implement
         }
         switch (type) {
             case RepoMiscMVp.WATCHERS:
-                makeRestCall(RestProvider.getRepoService().getWatchers(owner, repo, page), response -> onResponse(page, response));
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).getWatchers(owner, repo, page), response -> onResponse(page, response));
                 break;
             case RepoMiscMVp.STARS:
-                makeRestCall(RestProvider.getRepoService().getStargazers(owner, repo, page), response -> onResponse(page, response));
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).getStargazers(owner, repo, page), response -> onResponse(page, response));
                 break;
             case RepoMiscMVp.FORKS:
-                makeRestCall(RestProvider.getRepoService().getForks(owner, repo, page)
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).getForks(owner, repo, page)
                         .flatMap(repoPageable -> {
                             lastPage = repoPageable.getLast();
                             return Observable.fromIterable(repoPageable.getItems())

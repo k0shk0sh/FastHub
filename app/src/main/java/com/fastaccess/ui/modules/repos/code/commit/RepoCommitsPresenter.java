@@ -63,7 +63,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService().getCommits(login, repoId, branch, page),
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommits(login, repoId, branch, page),
                 response -> {
                     if (response != null && response.getItems() != null) {
                         lastPage = response.getLast();
@@ -119,7 +119,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
     @Override public void onItemLongClick(int position, View v, Commit item) {}
 
     private void getCommitCount(@NonNull String branch) {
-        manageDisposable(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService()
+        manageDisposable(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService(isEnterprise())
                 .getCommitCounts(login, repoId, branch)))
                 .subscribe(response -> {
                     if (response != null) {

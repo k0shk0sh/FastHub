@@ -2,9 +2,9 @@ package com.fastaccess.data.dao.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
@@ -54,26 +54,30 @@ import lombok.NoArgsConstructor;
     String token;
     int contributions;
     @Nullable boolean isLoggedIn;
+    @Nullable boolean isEnterprise;
+    @Nullable String otpCode;
 
     public Observable<Login> update(Login login) {
-        login.setToken(PrefGetter.isEnterprise() ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
-        login.setIsLoggedIn(true);
+        Login current = getUser();
+        login.setIsEnterprise(current.isIsEnterprise());
+        login.setToken(current.getToken());
         return RxHelper.safeObservable(App.getInstance().getDataStore().update(login).toObservable());
     }
 
+    public Observable<Login> saveObservable(Login entity) {
+        return App.getInstance().getDataStore()
+                .delete(Login.class)
+                .where(Login.LOGIN.eq(entity.getLogin()))
+                .get()
+                .single()
+                .flatMap(integer -> App.getInstance().getDataStore().insert(entity))
+                .toObservable();
+    }
+
     public void save(Login entity) {
-//        Login login = getUser();
-//        if (login != null) {
-//            if (!login.getLogin().equalsIgnoreCase(entity.getLogin())) {
-//                App.getInstance().getDataStore().delete(login).toBlocking().value();
-//            } else {
-//                login.setIsLoggedIn(false);
-//                App.getInstance().getDataStore().update(login).toBlocking().value();
-//            }
-//        }
-//        entity.setIsLoggedIn(true); TODO for multiple logins
         App.getInstance().getDataStore()
                 .delete(Login.class)
+                .where(Login.LOGIN.eq(entity.getLogin()))
                 .get()
                 .single()
                 .flatMap(integer -> App.getInstance().getDataStore().insert(entity))
@@ -84,9 +88,43 @@ import lombok.NoArgsConstructor;
         return App.getInstance().getDataStore()
                 .select(Login.class)
                 .where(Login.LOGIN.notNull()
+                        .and(Login.TOKEN.notNull())
+                        .and(Login.IS_LOGGED_IN.eq(true)))
+                .get()
+                .firstOrNull();
+    }
+
+    public static Login getUser(@NonNull String login) {
+        return App.getInstance().getDataStore()
+                .select(Login.class)
+                .where(Login.LOGIN.eq(login)
                         .and(Login.TOKEN.notNull()))
                 .get()
                 .firstOrNull();
+    }
+
+    public static Observable<Login> getAccounts() {
+        return App.getInstance().getDataStore()
+                .select(Login.class)
+                .where(Login.IS_LOGGED_IN.eq(false))
+                .orderBy(Login.LOGIN.desc())
+                .get()
+                .observable();
+    }
+
+    public static void logout() {
+        if (getUser() == null) return;
+        Login login = getUser();
+        login.setIsLoggedIn(false);
+        App.getInstance().getDataStore().update(login).blockingGet();
+    }
+
+    public static boolean hasNormalLogin() {
+        return App.getInstance().getDataStore()
+                .count(Login.class)
+                .where(Login.IS_ENTERPRISE.eq(false))
+                .get()
+                .value() > 0;
     }
 
     @Override public int describeContents() { return 0; }
@@ -125,6 +163,8 @@ import lombok.NoArgsConstructor;
         dest.writeString(this.token);
         dest.writeInt(this.contributions);
         dest.writeByte(this.isLoggedIn ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isEnterprise ? (byte) 1 : (byte) 0);
+        dest.writeString(this.otpCode);
     }
 
     protected AbstractLogin(Parcel in) {
@@ -163,6 +203,8 @@ import lombok.NoArgsConstructor;
         this.token = in.readString();
         this.contributions = in.readInt();
         this.isLoggedIn = in.readByte() != 0;
+        this.isEnterprise = in.readByte() != 0;
+        this.otpCode = in.readString();
     }
 
     public static final Creator<Login> CREATOR = new Creator<Login>() {

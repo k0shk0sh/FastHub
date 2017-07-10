@@ -154,7 +154,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
     }
 
     @Override public boolean isEnterprise() {
-        return callback.isEnterprise();
+        return callback != null && callback.isEnterprise();
     }
 
 }

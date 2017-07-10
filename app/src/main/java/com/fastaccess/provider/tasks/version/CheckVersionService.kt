@@ -14,7 +14,7 @@ import com.fastaccess.provider.rest.RestProvider
 class CheckVersionService : IntentService("CheckVersionService") {
 
     override fun onHandleIntent(p0: Intent?) {
-        RxHelper.getObserver(RestProvider.getRepoService()
+        RxHelper.getObserver(RestProvider.getRepoService(false)
                 .getLatestRelease("k0shk0sh", "FastHub"))
                 .subscribe({
                     if (it != null) {

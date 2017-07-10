@@ -87,12 +87,12 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         switch (view.getId()) {
             case R.id.startGist:
                 GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                        getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST);
+                        getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST, isEnterprise());
                 getPresenter().onStarGist();
                 break;
             case R.id.forkGist:
                 GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                        GithubActionService.FORK_GIST);
+                        GithubActionService.FORK_GIST, isEnterprise());
                 getPresenter().onForkGist();
                 break;
             case R.id.browser:

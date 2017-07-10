@@ -215,14 +215,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             case R.id.starRepoLayout:
                 if (!InputHelper.isEmpty(getPresenter().login()) && !InputHelper.isEmpty(getPresenter().repoId())) {
                     GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
-                            getPresenter().isStarred() ? GithubActionService.UNSTAR_REPO : GithubActionService.STAR_REPO);
+                            getPresenter().isStarred() ? GithubActionService.UNSTAR_REPO : GithubActionService.STAR_REPO, isEnterprise());
                     getPresenter().onStar();
                 }
                 break;
             case R.id.watchRepoLayout:
                 if (!InputHelper.isEmpty(getPresenter().login()) && !InputHelper.isEmpty(getPresenter().repoId())) {
                     GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
-                            getPresenter().isWatched() ? GithubActionService.UNWATCH_REPO : GithubActionService.WATCH_REPO);
+                            getPresenter().isWatched() ? GithubActionService.UNWATCH_REPO : GithubActionService.WATCH_REPO, isEnterprise());
                     getPresenter().onWatch();
                 }
                 break;
@@ -583,7 +583,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             boolean fork = bundle.getBoolean(BundleConstant.EXTRA);
             if (fork) {
                 if (getPresenter().login() != null && getPresenter().repoId() != null && !getPresenter().isForked()) {
-                    GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(), GithubActionService.FORK_REPO);
+                    GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
+                            GithubActionService.FORK_REPO, isEnterprise());
                     getPresenter().onFork();
                 }
             }

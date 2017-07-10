@@ -501,4 +501,5 @@
     <string name="enterprise_login_warning">Please do (OAuth) login to your GitHub account in order to access everything from GitHub API
         otherwise you\'ll end be kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to GitHub
         API is coming from your Enterprise Account.</string>
+    <string name="add_account">Add Account</string>
 </resources>

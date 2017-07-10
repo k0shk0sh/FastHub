@@ -115,6 +115,7 @@ public class CreateGistActivity extends BaseActivity<CreateGistMvp.View, CreateG
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, InputHelper.toString(savedText))
                     .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                     .end());
             ActivityHelper.startReveal(this, intent, fileContent, BundleConstant.REQUEST_CODE);
             return true;

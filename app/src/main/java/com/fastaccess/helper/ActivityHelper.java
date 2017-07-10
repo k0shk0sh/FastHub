@@ -3,6 +3,7 @@ package com.fastaccess.helper;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -297,6 +298,12 @@ public class ActivityHelper {
         int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
 
         return Math.abs(contentViewTop - statusBarHeight);
+    }
+
+    public static void activateActivity(Context context, final Class<? extends Activity> activity, final boolean activate) {
+        final PackageManager pm = context.getPackageManager();
+        final int flag = activate ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        pm.setComponentEnabledSetting(new ComponentName(context, activity), flag, PackageManager.DONT_KILL_APP);
     }
 
 }

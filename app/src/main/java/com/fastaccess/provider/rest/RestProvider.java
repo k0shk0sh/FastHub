@@ -135,8 +135,8 @@ public class RestProvider {
         return provideRetrofit(enterprise).create(GistService.class);
     }
 
-    @NonNull public static RepoService getRepoService() {
-        return provideRetrofit().create(RepoService.class);
+    @NonNull public static RepoService getRepoService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(RepoService.class);
     }
 
     @NonNull public static IssueService getIssueService(boolean enterprise) {
@@ -147,24 +147,33 @@ public class RestProvider {
         return provideRetrofit(enterprise).create(PullRequestService.class);
     }
 
-    @NonNull public static SearchService getSearchService() {
-        return provideRetrofit().create(SearchService.class);
-    }
-
     @NonNull public static NotificationService getNotificationService(boolean enterprise) {
         return provideRetrofit(enterprise).create(NotificationService.class);
     }
 
-    @NonNull public static ReactionsService getReactionsService() {
-        return provideRetrofit().create(ReactionsService.class);
+    @NonNull public static ReactionsService getReactionsService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(ReactionsService.class);
     }
 
     @NonNull public static OrganizationService getOrgService(boolean enterprise) {
         return provideRetrofit(enterprise).create(OrganizationService.class);
     }
 
-    @NonNull public static ReviewService getReviewService() {
+    @NonNull public static ReviewService getReviewService(boolean enterprise) {
         return provideRetrofit().create(ReviewService.class);
+    }
+
+    @NonNull public static UserRestService getContribution() {
+        return new Retrofit.Builder()
+                .baseUrl(BuildConfig.REST_URL)
+                .addConverterFactory(new GithubResponseConverter(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build()
+                .create(UserRestService.class);
+    }
+
+    @NonNull public static SearchService getSearchService() {
+        return provideRetrofit().create(SearchService.class);
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {

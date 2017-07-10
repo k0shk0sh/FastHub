@@ -19,6 +19,7 @@ import com.evernote.android.state.State;
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
@@ -176,7 +177,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @Override public void onSuccessfullyLoggedIn(boolean extraLogin) {
-        if (isEnterprise && extraLogin) {
+        if (isEnterprise && extraLogin && !Login.hasNormalLogin()) {
             MessageDialogView.newInstance(getString(R.string.details), getString(R.string.enterprise_login_warning), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
         } else {

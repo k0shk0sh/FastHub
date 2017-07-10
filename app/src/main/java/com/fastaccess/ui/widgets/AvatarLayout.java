@@ -114,7 +114,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     }
 
     private void setImageOnFailed() {
-        avatar.setImageResource(R.mipmap.foreground);
+        avatar.setImageResource(R.drawable.ic_github);
     }
 
     private void setBackground() {

@@ -175,7 +175,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onLoadLabels() {
         manageDisposable(
-                RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
+                RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .doOnNext(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
@@ -270,7 +270,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     private void getIssueFromApi() {
         makeRestCall(RxHelper.getObserver(Observable.zip(RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
-                RestProvider.getRepoService().isCollaborator(login, repoId, Login.getUser().getLogin()),
+                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
                 (issue, booleanResponse) -> {
                     isCollaborator = booleanResponse.code() == 204;
                     return issue;

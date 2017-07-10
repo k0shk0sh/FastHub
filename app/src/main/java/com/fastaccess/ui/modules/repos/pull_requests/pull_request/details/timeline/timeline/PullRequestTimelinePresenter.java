@@ -170,7 +170,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             } else {
                 int groupPosition = bundle.getInt(BundleConstant.EXTRA_TWO);
                 int commentPosition = bundle.getInt(BundleConstant.EXTRA_THREE);
-                makeRestCall(RestProvider.getReviewService().deleteComment(login, repoId, commId),
+                makeRestCall(RestProvider.getReviewService(isEnterprise()).deleteComment(login, repoId, commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 view.onRemoveReviewComment(groupPosition, commentPosition);
@@ -187,7 +187,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         PullRequest pullRequest = getView().getPullRequest();
         String login = pullRequest.getLogin();
         String repoId = pullRequest.getRepoId();
-        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType);
+        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType, isEnterprise());
         if (observable != null) //noinspection unchecked
             manageObservable(observable);
     }
@@ -308,8 +308,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             observable = Observable.zip(RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number),
                     RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page),
                     RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha),
-                    RestProvider.getReviewService().getReviews(login, repoId, number),
-                    RestProvider.getReviewService().getPrReviewComments(login, repoId, number),
+                    RestProvider.getReviewService(isEnterprise()).getReviews(login, repoId, number),
+                    RestProvider.getReviewService(isEnterprise()).getPrReviewComments(login, repoId, number),
                     (issueEventPageable, commentPageable, statuses, reviews, reviewComments) -> {
                         if (statuses != null) {
                             statuses.setMergable(isMergeable);

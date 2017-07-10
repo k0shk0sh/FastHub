@@ -37,7 +37,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     private void callApi(int navTyp) {
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
-        makeRestCall(RestProvider.getRepoService().getRepo(login(), repoId()), repoModel -> {
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getRepo(login(), repoId()), repoModel -> {
             this.repo = repoModel;
             manageObservable(this.repo.save(repo).toObservable());
             updatePinned(repoModel);
@@ -131,7 +131,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (getRepo() != null) {
             String login = login();
             String name = repoId();
-            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService().isWatchingRepo(login, name))
+            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).isWatchingRepo(login, name))
                     .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableWatch(false)))
                     .doOnNext(subscriptionModel -> sendToView(view -> view.onRepoWatched(isWatched = subscriptionModel.isSubscribed())))
                     .subscribe(o -> {/**/}, throwable -> {
@@ -145,7 +145,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (getRepo() != null) {
             String login = login();
             String name = repoId();
-            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService().checkStarring(login, name))
+            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).checkStarring(login, name))
                     .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableStar(false)))
                     .doOnNext(response -> sendToView(view -> view.onRepoStarred(isStarred = response.code() == 204)))
                     .subscribe(booleanResponse -> {/**/}, throwable -> {
@@ -240,7 +240,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onDeleteRepo() {
         if (isRepoOwner()) {
-            makeRestCall(RestProvider.getRepoService().deleteRepo(login, repoId),
+            makeRestCall(RestProvider.getRepoService(isEnterprise()).deleteRepo(login, repoId),
                     booleanResponse -> {
                         if (booleanResponse.code() == 204) {
 //                            if (repo != null) repo.delete().execute();

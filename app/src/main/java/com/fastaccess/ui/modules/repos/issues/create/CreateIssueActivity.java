@@ -262,6 +262,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, InputHelper.toString(savedText))
                     .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                     .end());
             ActivityHelper.startReveal(this, intent, submit, BundleConstant.REQUEST_CODE);
             return true;

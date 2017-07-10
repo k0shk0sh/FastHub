@@ -158,7 +158,8 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
                     SchemeParser.launchUri(v.getContext(), uri);
                 } else {
                     Repo repoModel = item.getRepo();
-                    if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(repoModel.getName()), true);
+                    if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), repoModel.getHtmlUrl() != null
+                                                                                       ? repoModel.getHtmlUrl() : repoModel.getUrl());
                 }
             }
         }

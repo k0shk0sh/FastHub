@@ -68,7 +68,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Override public void onCallApi(@Nullable RepoFile toAppend) {
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService().getRepoFiles(login, repoId, path, ref)
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getRepoFiles(login, repoId, path, ref)
                 .flatMap(response -> {
                     if (response != null && response.getItems() != null) {
                         return Observable.fromIterable(response.getItems())

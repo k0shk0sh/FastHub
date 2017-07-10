@@ -54,7 +54,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
             sendToView(RepoContributorsMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getRepoService().getContributors(login, repoId, page),
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getContributors(login, repoId, page),
                 response -> {
                     if (response != null) {
                         lastPage = response.getLast();

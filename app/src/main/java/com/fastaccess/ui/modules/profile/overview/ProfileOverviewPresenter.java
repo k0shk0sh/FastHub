@@ -113,7 +113,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (!isEnterprise()) {
             if (contributions == null || contributions.isEmpty()) {
                 String url = String.format(URL, login);
-                manageDisposable(RxHelper.getObserver(RestProvider.getUserService(false).getContributions(url))
+                manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
                         .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
                         .subscribe(lists -> {
                             contributions.clear();

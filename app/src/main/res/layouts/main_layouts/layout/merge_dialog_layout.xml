@@ -28,15 +28,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="end"
         android:paddingTop="@dimen/spacing_normal">
 
         <android.support.v7.widget.AppCompatSpinner
             android:id="@+id/mergeMethod"
             style="@style/Widget.AppCompat.Spinner.Underlined"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:entries="@array/merge_method"
             android:minWidth="150dp"/>
 
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:text="@string/cancel"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@color/material_pink_700"/>
 
         <com.fastaccess.ui.widgets.FontButton
@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:text="@string/merge"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="?colorAccent"/>
 
     </LinearLayout>

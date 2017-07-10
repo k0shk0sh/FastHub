@@ -34,8 +34,8 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
 
     private fun getObservable(login: String, repoId: String, page: Int): Observable<ArrayList<BranchesModel>> {
         return RxHelper.getObserver(Observable.zip(
-                RestProvider.getRepoService().getBranches(login, repoId, page),
-                RestProvider.getRepoService().getTags(login, repoId, page),
+                RestProvider.getRepoService(isEnterprise()).getBranches(login, repoId, page),
+                RestProvider.getRepoService(isEnterprise()).getTags(login, repoId, page),
                 BiFunction({ branchPageable: Pageable<BranchesModel>?, tags: Pageable<BranchesModel>? ->
                     val branchesModels = ArrayList<BranchesModel>()
                     if (branchPageable != null) {

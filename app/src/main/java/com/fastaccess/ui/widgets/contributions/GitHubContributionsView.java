@@ -378,10 +378,9 @@ public class GitHubContributionsView extends View {
     }
 
     public List<ContributionsDay> getLastContributions(List<ContributionsDay> contributions) {
-        if (contributions == null) return null;
         int lastWeekDays = contributions.size() % 7;
         int lastDays = (lastWeekDays > 0) ? lastWeekDays + (lastWeeks - 1) * 7 : lastWeeks * 7;
-        return contributions.size() > lastDays ? contributions.subList(contributions.size() - lastDays, contributions.size()) : contributions;
+        return contributions.subList(contributions.size() - lastDays, contributions.size());
     }
 }
 

@@ -12,7 +12,6 @@ import com.fastaccess.data.dao.AuthModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.GithubConfigHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.LoginProvider;
 import com.fastaccess.provider.rest.RestProvider;
@@ -21,6 +20,7 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.Arrays;
 
+import io.reactivex.Observable;
 import okhttp3.Credentials;
 import retrofit2.HttpException;
 
@@ -120,9 +120,19 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
 
     @Override public void onUserResponse(@Nullable Login userModel, boolean isEnterprise) {
         if (userModel != null) {
-            userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
-            userModel.save(userModel);
-            sendToView(view -> view.onSuccessfullyLoggedIn(isEnterprise));
+            manageObservable(Observable.fromPublisher(s -> {
+                Login currentUser = Login.getUser();
+                if (currentUser != null) {
+                    currentUser.setIsLoggedIn(false);
+                    currentUser.save(currentUser);
+                }
+                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
+                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
+                userModel.setIsLoggedIn(true);
+                userModel.save(userModel);
+                s.onNext(userModel);
+                s.onComplete();
+            }).doOnComplete(() -> sendToView(view -> view.onSuccessfullyLoggedIn(isEnterprise))));
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));

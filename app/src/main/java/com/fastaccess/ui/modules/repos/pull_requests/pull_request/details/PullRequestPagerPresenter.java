@@ -170,7 +170,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onLoadLabels() {
         manageDisposable(
-                RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
+                RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .subscribe(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
@@ -299,7 +299,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     private void callApi() {
         makeRestCall(RxHelper.getObserver(Observable.zip(RestProvider.getPullRequestService(isEnterprise())
                         .getPullRequest(login, repoId, issueNumber),
-                RestProvider.getRepoService().isCollaborator(login, repoId, Login.getUser().getLogin()),
+                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
                 RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
                 (pullRequestModel, booleanResponse, issue) -> {
                     this.pullRequest = pullRequestModel;

@@ -4,7 +4,6 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -21,7 +20,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.evernote.android.state.State;
@@ -32,25 +30,16 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.about.FastHubAboutActivity;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
-import com.fastaccess.ui.modules.gists.GistsListActivity;
 import com.fastaccess.ui.modules.login.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.main.donation.DonationActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
-import com.fastaccess.ui.modules.notification.NotificationActivity;
-import com.fastaccess.ui.modules.pinned.PinnedReposActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
-import com.fastaccess.ui.modules.trending.TrendingActivity;
-import com.fastaccess.ui.modules.user.UserPagerActivity;
-import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
@@ -79,7 +68,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
+    @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
     @Nullable @BindView(R.id.adView) AdView adView;
+    private MainNavDrawer mainNavDrawer;
+
     @State Bundle presenterStateBundle = new Bundle();
 
     private static int REFRESH_CODE = 64;
@@ -130,7 +122,8 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 new ChangelogBottomSheetDialog().show(getSupportFragmentManager(), "ChangelogBottomSheetDialog");
             }
         }
-        setupNavigationView(extraNav);
+        mainNavDrawer = new MainNavDrawer(this, extraNav, accountsNav);
+        setupNavigationView();
         setupDrawer();
     }
 
@@ -218,10 +211,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         PrefGetter.setEnterpriseUrl(null);
         PrefGetter.setOtpCode(null);
         PrefGetter.setEnterpriseOtpCode(null);
-        App.getInstance().getDataStore()
-                .delete(Login.class)
-                .get()
-                .value();
+        Login.logout();
         Intent intent = new Intent(this, LoginChooserActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
@@ -232,38 +222,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         }
-        if (item.isChecked()) return false;
-        new Handler().postDelayed(() -> {
-            if (isFinishing()) return;
-            if (item.getItemId() == R.id.navToRepo) {
-                onNavToRepoClicked();
-            } else if (item.getItemId() == R.id.supportDev) {
-                startActivity(new Intent(this, DonationActivity.class));
-            } else if (item.getItemId() == R.id.gists) {
-                GistsListActivity.startActivity(this, false);
-            } else if (item.getItemId() == R.id.pinnedMenu) {
-                PinnedReposActivity.startActivity(this);
-            } else if (item.getItemId() == R.id.mainView) {
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                finish();
-            } else if (item.getItemId() == R.id.profile) {
-                startActivity(UserPagerActivity.createIntent(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise()));
-            } else if (item.getItemId() == R.id.logout) {
-                onLogoutPressed();
-            } else if (item.getItemId() == R.id.settings) {
-                onOpenSettings();
-            } else if (item.getItemId() == R.id.about) {
-                startActivity(new Intent(this, FastHubAboutActivity.class));
-            } else if (item.getItemId() == R.id.orgs) {
-                onOpenOrgsDialog();
-            } else if (item.getItemId() == R.id.notifications) {
-                startActivity(new Intent(this, NotificationActivity.class));
-            } else if (item.getItemId() == R.id.trending) {
-                startActivity(new Intent(this, TrendingActivity.class));
-            }
-        }, 250);
+        mainNavDrawer.onMainNavItemClick(item);
         return false;
     }
 
@@ -454,27 +413,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         ThemeEngine.INSTANCE.apply(this);
     }
 
-    protected void setupNavigationView(@Nullable NavigationView extraNav) {
+    protected void setupNavigationView() {
         if (extraNav != null) {
             extraNav.setNavigationItemSelectedListener(this);
-            Login userModel = Login.getUser();
-            if (userModel != null) {
-                View view = extraNav.getHeaderView(0);
-                if (view != null) {
-                    ((AvatarLayout) view.findViewById(R.id.avatarLayout)).setUrl(userModel.getAvatarUrl(), userModel.getLogin(),
-                            false, PrefGetter.isEnterprise());
-                    ((TextView) view.findViewById(R.id.username)).setText(userModel.getLogin());
-                    if (!InputHelper.isEmpty(userModel.getName())) {
-                        ((TextView) view.findViewById(R.id.email)).setText(userModel.getName());
-                    } else {
-                        view.findViewById(R.id.email).setVisibility(View.GONE);
-                    }
-                    view.findViewById(R.id.userHolder).setOnClickListener(v -> startActivity(UserPagerActivity.createIntent(this,
-                            Login.getUser().getLogin(), false, PrefGetter.isEnterprise())));
-                    view.findViewById(R.id.donatedIcon).setVisibility(PrefGetter.hasSupported() ? View.VISIBLE : View.GONE);
-                }
-            }
         }
+        mainNavDrawer.setupViewDrawer();
     }
 
     private void setupDrawer() {
@@ -538,5 +481,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         }
         if (hadContentDescription) toolbar.setNavigationContentDescription(null);
         return navIcon;
+    }
+
+    protected void onRestartApp() {
+        onThemeChanged();
     }
 }
