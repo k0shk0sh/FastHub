@@ -1,19 +1,19 @@
 package com.fastaccess.ui.modules.repos.code.prettifier;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.MarkdownModel;
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.ViewerFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import io.reactivex.Observable;
@@ -28,12 +28,16 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
     @com.evernote.android.state.State boolean isRepo;
     @com.evernote.android.state.State boolean isImage;
     @com.evernote.android.state.State String url;
+    @com.evernote.android.state.State String htmlUrl;
 
     @Override public void onError(@NonNull Throwable throwable) {
         throwable.printStackTrace();
         int code = RestProvider.getErrorCode(throwable);
         if (code == 404) {
-            sendToView(view -> view.onShowError(isRepo ? R.string.no_readme_found : R.string.no_file_found));
+            if (!isRepo) {
+                sendToView(view -> view.onShowError(R.string.no_file_found));
+            }
+            sendToView(BaseMvp.FAView::hideProgress);
         } else {
             if (code == 406) {
                 sendToView(view -> view.openUrl(url));
@@ -48,6 +52,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         if (intent == null) return;
         isRepo = intent.getBoolean(BundleConstant.EXTRA);
         url = intent.getString(BundleConstant.ITEM);
+        htmlUrl = intent.getString(BundleConstant.EXTRA_TWO);
         if (!InputHelper.isEmpty(url)) {
             if (MarkDownProvider.isArchive(url)) {
                 sendToView(view -> view.onShowError(R.string.archive_file_detected_error));
@@ -100,9 +105,9 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             return;
         }
         Observable<String> streamObservable = MarkDownProvider.isMarkdown(url)
-                                              ? RestProvider.getRepoService(true).getFileAsHtmlStream(url)
-                                              : RestProvider.getRepoService(true).getFileAsStream(url);
-        makeRestCall(isRepo ? RestProvider.getRepoService(true).getReadmeHtml(url)
+                                              ? RestProvider.getRepoService(isEnterprise()).getFileAsHtmlStream(url)
+                                              : RestProvider.getRepoService(isEnterprise()).getFileAsStream(url);
+        makeRestCall(isRepo ? RestProvider.getRepoService(isEnterprise()).getReadmeHtml(url)
                             : streamObservable, content -> {
             downloadedStream = content;
             ViewerFile fileModel = new ViewerFile();
@@ -113,26 +118,27 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                 fileModel.setMarkdown(true);
                 isMarkdown = true;
                 isRepo = true;
-                sendToView(view -> view.onSetMdText(downloadedStream, url));
+                sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
             } else {
                 isMarkdown = MarkDownProvider.isMarkdown(url);
                 if (isMarkdown) {
                     MarkdownModel model = new MarkdownModel();
                     model.setText(downloadedStream);
-                    NameParser parser = new NameParser(url);
-                    if (parser.getUsername() != null && parser.getName() != null) {
-                        model.setContext(parser.getUsername() + "/" + parser.getName());
-                    } else {
-                        model.setContext("");
+                    Uri uri = Uri.parse(url);
+                    StringBuilder baseUrl = new StringBuilder();
+                    for (String s : uri.getPathSegments()) {
+                        if (!s.equalsIgnoreCase(uri.getLastPathSegment())) {
+                            baseUrl.append("/").append(s);
+                        }
                     }
-                    Logger.e(model.getContext());
-                    makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
+                    model.setContext(baseUrl.toString());
+                    makeRestCall(RestProvider.getRepoService(isEnterprise()).convertReadmeToHtml(model), string -> {
                         isMarkdown = true;
                         downloadedStream = string;
                         fileModel.setMarkdown(true);
                         fileModel.setContent(downloadedStream);
                         manageObservable(fileModel.save(fileModel).toObservable());
-                        sendToView(view -> view.onSetMdText(downloadedStream, url));
+                        sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
                     });
                     return;
                 }

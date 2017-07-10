@@ -14,6 +14,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 
@@ -26,7 +27,6 @@ import es.dmoral.toasty.Toasty;
  */
 
 public class AppHelper {
-
 
     public static void hideKeyboard(@NonNull View view) {
         InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -54,12 +54,12 @@ public class AppHelper {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), uri);
         clipboard.setPrimaryClip(clip);
-        Toasty.success(context, context.getString(R.string.success_copied)).show();
+        Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {
-        int themeType = PrefGetter.getThemeType(resources);
-        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD;
+        @PrefGetter.ThemeType int themeType = PrefGetter.getThemeType(resources);
+        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD || themeType == PrefGetter.BLUISH;
     }
 
     @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {
@@ -82,14 +82,21 @@ public class AppHelper {
     }
 
     public static void updateAppLanguage(@NonNull Context context) {
+        String lang = PrefGetter.getAppLanguage();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            updateResources(context, PrefGetter.getAppLanguage());
+            updateResources(context, lang);
         }
-        updateResourcesLegacy(context, PrefGetter.getAppLanguage());
+        updateResourcesLegacy(context, lang);
     }
 
     private static void updateResources(Context context, String language) {
-        Locale locale = new Locale(language);
+        Locale locale;
+        String[] split = language.split("-");
+        if (split.length > 1) {
+            locale = new Locale(split[0], split[1]);
+        } else {
+            locale = new Locale(language);
+        }
         Locale.setDefault(locale);
         Configuration configuration = context.getResources().getConfiguration();
         configuration.setLocale(locale);
@@ -98,7 +105,13 @@ public class AppHelper {
 
     @SuppressWarnings("deprecation")
     private static void updateResourcesLegacy(Context context, String language) {
-        Locale locale = new Locale(language);
+        Locale locale;
+        String[] split = language.split("-");
+        if (split.length > 1) {
+            locale = new Locale(split[0], split[1]);
+        } else {
+            locale = new Locale(language);
+        }
         Locale.setDefault(locale);
         Resources resources = context.getResources();
         Configuration configuration = resources.getConfiguration();
@@ -111,9 +124,21 @@ public class AppHelper {
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {
             return InputHelper.capitalizeFirstLetter(model);
+        } else if (isEmulator()){
+            return "Android Emulator";
         } else {
             return InputHelper.capitalizeFirstLetter(manufacturer) + " " + model;
         }
     }
 
+    private static boolean isEmulator() {
+        return Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk".equals(Build.PRODUCT);
+    }
 }

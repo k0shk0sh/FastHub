@@ -1,12 +1,12 @@
 package com.fastaccess.ui.adapter.viewholder
 
 import android.view.View
-import butterknife.bindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.provider.colors.ColorsProvider
 import com.fastaccess.provider.emoji.EmojiParser
 import com.fastaccess.ui.widgets.FontTextView
+import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
@@ -38,9 +38,11 @@ open class TrendingViewHolder(itemView: View, adapter: BaseRecyclerAdapter<Trend
         fork.text = t.forks
         lang.text = t.language
         if (!t.language.isNullOrEmpty()) {
-            lang.tintDrawables(ColorsProvider.getColorAsColor(t.language!!, itemView.context))
-            lang.setTextColor(ColorsProvider.getColorAsColor(t.language, itemView.context))
+            val color = ColorsProvider.getColorAsColor(t.language!!, itemView.context)
+            lang.tintDrawables(color)
+            lang.setTextColor(color)
         }
+        todayStars.visibility = if (t.todayStars.isNullOrEmpty()) View.GONE else View.VISIBLE
         lang.visibility = if (t.language.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 

@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Gist;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -47,7 +47,8 @@ public class GistsViewHolder extends BaseViewHolder<Gist> {
             if (avatar != null) {
                 String url = item.getOwner() != null ? item.getOwner().getAvatarUrl() : item.getUser() != null ? item.getUser().getAvatarUrl() : null;
                 String login = item.getOwner() != null ? item.getOwner().getLogin() : item.getUser() != null ? item.getUser().getLogin() : null;
-                avatar.setUrl(url, login);
+                avatar.setUrl(url, login, false, LinkParserHelper.isEnterprise(
+                        item.getOwner() != null ? item.getOwner().getHtmlUrl() : item.getUser() != null ? item.getUser().getHtmlUrl() : null));
             }
         }
         title.setText(item.getDisplayTitle(isFromProfile));

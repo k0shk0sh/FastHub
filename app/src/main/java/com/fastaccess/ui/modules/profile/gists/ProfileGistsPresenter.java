@@ -23,6 +23,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 
+
     @Override public int getCurrentPage() {
         return page;
     }
@@ -61,7 +62,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
             sendToView(ProfileGistsMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getGistService().getUserGists(parameter, page),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).getUserGists(parameter, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));

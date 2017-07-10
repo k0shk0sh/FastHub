@@ -19,11 +19,11 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -64,7 +64,7 @@ public class NotificationSchedulerJobTask extends JobService {
             login = Login.getUser();
         } catch (Exception ignored) {}
         if (login != null) {
-            RestProvider.getNotificationService()
+            RestProvider.getNotificationService(PrefGetter.isEnterprise())
                     .getNotifications(ParseDateFormat.getLastWeekDate())
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
@@ -105,7 +105,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(10, duration))
+                .setTrigger(Trigger.executionWindow(duration / 2, duration))
                 .setService(NotificationSchedulerJobTask.class);
         dispatcher.mustSchedule(builder.build());
     }
@@ -134,9 +134,8 @@ public class NotificationSchedulerJobTask extends JobService {
                 .filter(notification -> notification.isUnread() && first.getId() != notification.getId())
                 .take(10)
                 .flatMap(notification -> {
-                    Logger.e(notification.getSubject().getTitle());
                     if (notification.getSubject() != null && notification.getSubject().getLatestCommentUrl() != null) {
-                        return RestProvider.getNotificationService()
+                        return RestProvider.getNotificationService(PrefGetter.isEnterprise())
                                 .getComment(notification.getSubject().getLatestCommentUrl())
                                 .subscribeOn(Schedulers.io());
                     } else {
@@ -164,7 +163,7 @@ public class NotificationSchedulerJobTask extends JobService {
                     }
 
                 }, throwable -> finishJob(job), () -> {
-                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor);
+                    android.app.Notification grouped = getSummaryGroupNotification(first, accentColor, notificationThreadModels.size() > 1);
                     showNotification(first.getId(), grouped);
                     finishJob(job);
                 });
@@ -255,10 +254,12 @@ public class NotificationSchedulerJobTask extends JobService {
         showNotification(thread.getId(), toAdd);
     }
 
-    private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor) {
+    private android.app.Notification getSummaryGroupNotification(@NonNull Notification thread, int accentColor, boolean toNotificationActivity) {
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0,
+                new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
                 .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
-                .setContentIntent(getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
+                .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))
                 .addAction(R.drawable.ic_eye_off, getString(R.string.mark_as_read), getReadOnlyPendingIntent(thread.getId(), thread
@@ -273,7 +274,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
-        return new NotificationCompat.Builder(this)
+        return new NotificationCompat.Builder(this, title)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);

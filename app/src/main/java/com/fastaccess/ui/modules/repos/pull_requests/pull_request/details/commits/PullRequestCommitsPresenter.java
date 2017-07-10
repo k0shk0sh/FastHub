@@ -61,7 +61,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequestCommits(login, repoId, number, page),
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestCommits(login, repoId, number, page),
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {

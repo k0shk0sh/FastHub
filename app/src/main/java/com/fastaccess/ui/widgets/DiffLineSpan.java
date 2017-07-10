@@ -20,11 +20,13 @@ import android.text.style.TypefaceSpan;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
+
+import java.util.regex.Pattern;
 
 public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundSpan {
     private Rect rect = new Rect();
     private final int color;
+    public static Pattern HUNK_TITLE = Pattern.compile("^.*-([0-9]+)(?:,([0-9]+))? \\+([0-9]+)(?:,([0-9]+))?.*$");
 
     private DiffLineSpan(int color) {
         this.color = color;
@@ -76,15 +78,14 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                     }
                     char firstChar = token.charAt(0);
                     int color = Color.TRANSPARENT;
-                    if (firstChar == '+') {
+                    if (token.startsWith("@@")) {
+                        color = patchRefColor;
+                    } else if (firstChar == '+') {
                         color = patchAdditionColor;
                     } else if (firstChar == '-') {
                         color = patchDeletionColor;
-                    } else if (token.startsWith("@@")) {
-                        color = patchRefColor;
                     }
                     index = token.indexOf("\\ No newline at end of file");
-                    Logger.e(index);
                     if (index != -1) {
                         token = token.replace("\\ No newline at end of file", "");
                     }

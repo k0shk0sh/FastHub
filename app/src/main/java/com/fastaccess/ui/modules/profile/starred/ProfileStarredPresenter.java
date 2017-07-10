@@ -68,15 +68,15 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         }
         Observable<Pageable<Repo>> observable;
         if (starredCount == -1) {
-            observable = Observable.zip(RestProvider.getUserService().getStarred(parameter, page),
-                    RestProvider.getUserService().getStarredCount(parameter), (repoPageable, count) -> {
+            observable = Observable.zip(RestProvider.getUserService(isEnterprise()).getStarred(parameter, page),
+                    RestProvider.getUserService(isEnterprise()).getStarredCount(parameter), (repoPageable, count) -> {
                         if (count != null) {
                             starredCount = count.getLast();
                         }
                         return repoPageable;
                     });
         } else {
-            observable = RestProvider.getUserService().getStarred(parameter, page);
+            observable = RestProvider.getUserService(isEnterprise()).getStarred(parameter, page);
         }
         makeRestCall(observable, repoModelPageable -> {
             lastPage = repoModelPageable.getLast();

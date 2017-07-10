@@ -70,7 +70,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequests(login, repoId, parameter.name(), page), response -> {
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequests(login, repoId, parameter.name(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
                 manageObservable(PullRequest.save(response.getItems(), login, repoId));
@@ -89,7 +89,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService()
+        manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService(isEnterprise())
                 .getPullsWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, true), 0))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));

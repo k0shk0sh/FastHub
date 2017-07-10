@@ -11,11 +11,16 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
 /**
  * Created by Kosh on 26 Nov 2016, 10:48 AM
  */
 
 public class UILProvider {
+
+    private static HashMap<String, String> headers = new LinkedHashMap<>();
 
     private final static long ONE_DAY = 24 * (60 * 60);
 
@@ -38,6 +43,7 @@ public class UILProvider {
     private static DisplayImageOptions getOptions() {
         return new DisplayImageOptions.Builder()
                 .delayBeforeLoading(0)
+                .extraForDownloader(headers)
                 .resetViewBeforeLoading(true)
                 .cacheOnDisk(true)
                 .cacheInMemory(true)
@@ -45,4 +51,12 @@ public class UILProvider {
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
     }
+
+    public static void destoryUIL(@NonNull Context context) {
+        if (ImageLoader.getInstance().isInited()) {
+            ImageLoader.getInstance().destroy();
+            initUIL(context);
+        }
+    }
+
 }

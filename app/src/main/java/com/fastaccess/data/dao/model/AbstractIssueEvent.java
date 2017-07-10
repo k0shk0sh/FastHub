@@ -3,16 +3,17 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.RenameModel;
+import com.fastaccess.data.dao.TeamsModel;
 import com.fastaccess.data.dao.converters.IssueConverter;
 import com.fastaccess.data.dao.converters.LabelConverter;
 import com.fastaccess.data.dao.converters.MilestoneConverter;
 import com.fastaccess.data.dao.converters.RenameConverter;
+import com.fastaccess.data.dao.converters.TeamConverter;
 import com.fastaccess.data.dao.converters.UserConverter;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.RxHelper;
@@ -48,6 +49,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     @Convert(UserConverter.class) User assigner;
     @Convert(UserConverter.class) User assignee;
     @Convert(UserConverter.class) User requestedReviewer;
+    @Convert(TeamConverter.class) TeamsModel requestedTeam;
     @Convert(MilestoneConverter.class) MilestoneModel milestone;
     @Convert(RenameConverter.class) RenameModel rename;
     @Convert(IssueConverter.class) Issue source;
@@ -58,7 +60,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     String issueId;
     String repoId;
     String login;
-    @Transient CharSequence labels;
+    @Transient List<LabelModel> labels;
 
     public Single save(IssueEvent entity) {
         return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
@@ -106,6 +108,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         dest.writeParcelable(this.assigner, flags);
         dest.writeParcelable(this.assignee, flags);
         dest.writeParcelable(this.requestedReviewer, flags);
+        dest.writeParcelable(this.requestedTeam, flags);
         dest.writeParcelable(this.milestone, flags);
         dest.writeParcelable(this.rename, flags);
         dest.writeParcelable(this.source, flags);
@@ -116,7 +119,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         dest.writeString(this.issueId);
         dest.writeString(this.repoId);
         dest.writeString(this.login);
-        TextUtils.writeToParcel(labels, dest, flags);
+        dest.writeTypedList(this.labels);
     }
 
     protected AbstractIssueEvent(Parcel in) {
@@ -128,6 +131,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         this.assigner = in.readParcelable(User.class.getClassLoader());
         this.assignee = in.readParcelable(User.class.getClassLoader());
         this.requestedReviewer = in.readParcelable(User.class.getClassLoader());
+        this.requestedTeam = in.readParcelable(TeamsModel.class.getClassLoader());
         this.milestone = in.readParcelable(MilestoneModel.class.getClassLoader());
         this.rename = in.readParcelable(RenameModel.class.getClassLoader());
         this.source = in.readParcelable(Issue.class.getClassLoader());
@@ -139,7 +143,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         this.issueId = in.readString();
         this.repoId = in.readString();
         this.login = in.readString();
-        this.labels = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(in);
+        this.labels = in.createTypedArrayList(LabelModel.CREATOR);
     }
 
     public static final Creator<IssueEvent> CREATOR = new Creator<IssueEvent>() {

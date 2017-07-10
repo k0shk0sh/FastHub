@@ -1,6 +1,7 @@
 package com.fastaccess.provider.rest.interceptors;
 
 import android.net.Uri;
+import android.support.annotation.NonNull;
 
 import com.fastaccess.helper.InputHelper;
 
@@ -12,7 +13,7 @@ import okhttp3.ResponseBody;
 
 public class PaginationInterceptor implements Interceptor {
 
-    @Override public Response intercept(Chain chain) throws IOException {
+    @Override public Response intercept(@NonNull Chain chain) throws IOException {
         Response response = chain.proceed(chain.request());
         if (response.isSuccessful()) {
             if (response.peekBody(1).string().equals("[")) {

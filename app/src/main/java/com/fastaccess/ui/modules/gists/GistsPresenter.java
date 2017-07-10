@@ -53,7 +53,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getGistService().getPublicGists(RestProvider.PAGE_SIZE, page),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).getPublicGists(RestProvider.PAGE_SIZE, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {

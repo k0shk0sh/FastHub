@@ -78,10 +78,12 @@ public class CodeViewerActivity extends BaseActivity {
             htmlUrl = bundle.getString(BundleConstant.EXTRA_TWO);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .replace(R.id.container, ViewerFragment.newInstance(url), ViewerFragment.TAG)
+                    .replace(R.id.container, ViewerFragment.newInstance(url, htmlUrl), ViewerFragment.TAG)
                     .commit();
         }
-        setTitle(Uri.parse(url).getLastPathSegment());
+        String title = Uri.parse(url).getLastPathSegment();
+        setTitle(title);
+        setTaskName(title);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -97,13 +99,13 @@ public class CodeViewerActivity extends BaseActivity {
             }
             return true;
         } else if (item.getItemId() == R.id.browser) {
-            ActivityHelper.openChooser(this,  htmlUrl != null ? htmlUrl : url);
+            ActivityHelper.openChooser(this, htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == R.id.copy) {
             AppHelper.copyToClipboard(this, htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == R.id.share) {
-            ActivityHelper.shareUrl(this,  htmlUrl != null ? htmlUrl : url);
+            ActivityHelper.shareUrl(this, htmlUrl != null ? htmlUrl : url);
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             Uri uri = Uri.parse(url);

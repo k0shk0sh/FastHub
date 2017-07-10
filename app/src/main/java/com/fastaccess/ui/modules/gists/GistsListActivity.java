@@ -70,6 +70,7 @@ public class GistsListActivity extends BaseActivity {
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(R.string.gists);
+        setTaskName(getString(R.string.gists));
         setupTabs();
         fab.show();
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {

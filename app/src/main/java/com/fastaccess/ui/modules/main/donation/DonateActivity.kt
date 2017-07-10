@@ -13,6 +13,7 @@ import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.miguelbcr.io.rx_billing_service.RxBillingService
+import com.miguelbcr.io.rx_billing_service.RxBillingServiceError
 import com.miguelbcr.io.rx_billing_service.RxBillingServiceException
 import com.miguelbcr.io.rx_billing_service.entities.ProductType
 import com.miguelbcr.io.rx_billing_service.entities.Purchase
@@ -56,23 +57,37 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                     if (throwable == null) {
                         Answers.getInstance().logPurchase(PurchaseEvent().putItemName(productKey))
                         showMessage(R.string.success, R.string.success_purchase_message)
-                        if (productKey == getString(R.string.donation_product_1) || productKey == getString(R.string.amlod_theme_purchase)) {
-                            PrefGetter.enableAmlodTheme()
-                        } else {
-                            PrefGetter.setProItems()
-                        }
-                        setResult(Activity.RESULT_OK)
+                        enableProduct(productKey)
+                        val intent = Intent()
+                        intent.putExtra(BundleConstant.ITEM, productKey)
+                        setResult(Activity.RESULT_OK, intent)
                     } else {
                         if (throwable is RxBillingServiceException) {
                             val code = throwable.code
-                            showErrorMessage(throwable.message!!)
-                            Logger.e(code)
-                            setResult(Activity.RESULT_CANCELED)
+                            if (code == RxBillingServiceError.ITEM_ALREADY_OWNED) {
+                                enableProduct(productKey)
+                                val intent = Intent()
+                                intent.putExtra(BundleConstant.ITEM, productKey)
+                                setResult(Activity.RESULT_OK, intent)
+                            } else {
+                                showErrorMessage(throwable.message!!)
+                                Logger.e(code)
+                                setResult(Activity.RESULT_CANCELED)
+                            }
                         }
                         throwable.printStackTrace()
                     }
                     finish()
                 }
+    }
+
+    private fun enableProduct(productKey: String) {
+        when (productKey) {
+            getString(R.string.donation_product_1), getString(R.string.amlod_theme_purchase) -> PrefGetter.enableAmlodTheme()
+            getString(R.string.midnight_blue_theme_purchase) -> PrefGetter.enableMidNightBlueTheme()
+            getString(R.string.theme_bluish_purchase) -> PrefGetter.enableBluishTheme()
+            else -> PrefGetter.setProItems()
+        }
     }
 
     override fun onDestroy() {

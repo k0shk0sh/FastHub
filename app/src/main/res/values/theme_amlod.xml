@@ -7,7 +7,7 @@
     <style name="ThemeAmlod" parent="ThemeAmlod.Base"/>
 
     <style name="ThemeAmlod.Base" parent="Theme.AppCompat.NoActionBar">
-        <item name="card_background">#0B0B12</item>
+        <item name="card_background">#050910</item>
         <item name="comment_box_style">@style/CommentBoxDarkAmlod</item>
         <item name="icon_color">#eee</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundAmlod</item>
@@ -17,7 +17,7 @@
         <item name="dividerColor">@color/amlodDivider</item>
         <item name="android:windowBackground">@color/amlodWindowBackground</item>
         <item name="colorPrimary">#040408</item>
-        <item name="colorPrimaryDark">#08080F</item>
+        <item name="colorPrimaryDark">#010102</item>
         <item name="colorAccent">#483078</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="actionModeBackground">?colorPrimary</item>
@@ -38,6 +38,7 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuAmlod</item>
+        <item name="android:navigationBarColor">#040408</item>
     </style>
 
     <style name="PopupMenuAmlod" parent="Widget.AppCompat.PopupMenu">
@@ -132,15 +133,22 @@
 
     <style name="TimeLineBackgroundAmlod">
         <item name="android:background">@drawable/ic_timeline_arrow_left</item>
-        <item name="android:backgroundTint">#0B0B12</item>
+        <item name="android:backgroundTint">#050910</item>
     </style>
 
     <style name="CommentBoxDarkAmlod">
         <item name="android:background">@drawable/ic_edittext</item>
-        <item name="android:backgroundTint">#0B0B12</item>
+        <item name="android:backgroundTint">#050910</item>
     </style>
 
     <style name="DialogThemeAmlod" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleAmlod</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">#050910</item>
+        <item name="comment_box_style">@style/CommentBoxDarkAmlod</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundAmlod</item>
         <item name="colorPrimary">#040408</item>
         <item name="colorPrimaryDark">#08080F</item>
         <item name="colorAccent">#483078</item>
@@ -215,6 +223,7 @@
         <item name="mal_lightActionBar">false</item>
         <item name="mal_color_primary">#eee</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>
+        <item name="mal_card_background">#050910</item>
     </style>
 
 </resources>

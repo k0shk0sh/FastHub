@@ -60,6 +60,7 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
             StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
+        getPresenter().setEnterprise(isEnterprise());
     }
 
     @SuppressLint("RestrictedApi") @Nullable @Override
@@ -131,6 +132,10 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onScrollTop(int index) {}
+
+    @Override public boolean isEnterprise() {
+        return callback != null && callback.isEnterprise();
+    }
 
     protected boolean isSafe() {
         return getView() != null && getActivity() != null && !getActivity().isFinishing();

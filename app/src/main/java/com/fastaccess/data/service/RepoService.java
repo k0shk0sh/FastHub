@@ -18,6 +18,7 @@ import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.model.User;
 
+import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -29,7 +30,6 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
-import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 10 Dec 2016, 3:16 PM
@@ -85,12 +85,20 @@ public interface RepoService {
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<Release>> getReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
 
+    @NonNull @GET("repos/{owner}/{repo}/releases/{id}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    Observable<Release> getRelease(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id);
+
     @NonNull @GET("repos/{owner}/{repo}/releases/latest")
     Observable<Release> getLatestRelease(@Path("owner") String owner, @Path("repo") String repo);
 
     @NonNull @GET("repos/{owner}/{repo}/tags")
     @Headers("Accept: application/vnd.github.VERSION.full+json")
     Observable<Pageable<Release>> getTagReleases(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("repos/{owner}/{repo}/tags/{tag}")
+    @Headers("Accept: application/vnd.github.VERSION.full+json")
+    Observable<Release> getTagRelease(@Path("owner") String owner, @Path("repo") String repo, @Path("tag") String tag);
 
     @NonNull @GET("repos/{owner}/{repo}/contributors")
     Observable<Pageable<User>> getContributors(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
@@ -109,6 +117,7 @@ public interface RepoService {
     Observable<Comment> postCommitComment(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                           @NonNull @Path("sha") String ref, @Body CommentRequestModel model);
 
+
     @NonNull @PATCH("repos/{owner}/{repo}/comments/{id}")
     @Headers("Accept: application/vnd.github.VERSION.full+json, application/vnd.github.squirrel-girl-preview")
     Observable<Comment> editCommitComment(@Path("owner") String owner, @Path("repo") String repo, @Path("id") long id,
@@ -126,7 +135,7 @@ public interface RepoService {
     Observable<TreeResponseModel> getRepoTree(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
                                               @NonNull @Path("sha") String sha);
 
-    @NonNull @GET("repos/{owner}/{repo}/labels")
+    @NonNull @GET("repos/{owner}/{repo}/labels?per_page=100")
     Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
     @NonNull @POST("repos/{owner}/{repo}/labels")
@@ -141,10 +150,12 @@ public interface RepoService {
 
 
     @NonNull @GET("repos/{owner}/{repo}/branches")
-    Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+    Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                                    @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/tags")
-    Observable<Pageable<BranchesModel>> getTags(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+    Observable<Pageable<BranchesModel>> getTags(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                                @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/milestones")
     Observable<Pageable<MilestoneModel>> getMilestones(@Path("owner") String owner, @Path("repo") String repo);
@@ -167,4 +178,7 @@ public interface RepoService {
 
     @NonNull @GET("/repos/{owner}/{repo}/forks")
     Observable<Pageable<Repo>> getForks(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("repos/{owner}/{repo}/license") @Headers("Accept: application/vnd.github.html")
+    Observable<String> getLicense(@Path("owner") String owner, @Path("repo") String repo);
 }

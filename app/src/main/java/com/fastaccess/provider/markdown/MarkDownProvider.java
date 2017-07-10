@@ -24,7 +24,7 @@ public class MarkDownProvider {
     private static final String[] IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".gif", ".svg"};
 
     private static final String[] MARKDOWN_EXTENSIONS = {
-            ".md", ".mkdn", ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron", ".rst"
+            ".md", ".mkdn", ".mdwn", ".mdown", ".markdown", ".mkd", ".mkdown", ".ron", ".rst", "adoc"
     };
 
     private static final String[] ARCHIVE_EXTENSIONS = {
@@ -34,15 +34,19 @@ public class MarkDownProvider {
     private MarkDownProvider() {}
 
     public static void setMdText(@NonNull TextView textView, String markdown) {
-        Parser parser = Parser.builder().build();
-        Node node = parser.parse(markdown);
-        HtmlHelper.htmlIntoTextView(textView, HtmlRenderer.builder().build().render(node));
+        if (!InputHelper.isEmpty(markdown)) {
+            Parser parser = Parser.builder().build();
+            Node node = parser.parse(markdown);
+            HtmlHelper.htmlIntoTextView(textView, HtmlRenderer.builder().build().render(node));
+        }
     }
 
     public static void stripMdText(@NonNull TextView textView, String markdown) {
-        Parser parser = Parser.builder().build();
-        Node node = parser.parse(markdown);
-        textView.setText(stripHtml(HtmlRenderer.builder().build().render(node)));
+        if (!InputHelper.isEmpty(markdown)) {
+            Parser parser = Parser.builder().build();
+            Node node = parser.parse(markdown);
+            textView.setText(stripHtml(HtmlRenderer.builder().build().render(node)));
+        }
     }
 
     private static String stripHtml(String html) {

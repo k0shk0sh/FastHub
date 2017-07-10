@@ -41,6 +41,8 @@ public interface BaseMvp {
         void onThemeChanged();
 
         void onOpenSettings();
+
+        boolean isEnterprise();
     }
 
     interface FAPresenter {

@@ -148,7 +148,7 @@ import lombok.Getter;
             if (commId != 0) {
                 if (getView() == null || getView().getIssue() == null) return;
                 Issue issue = getView().getIssue();
-                makeRestCall(RestProvider.getIssueService().deleteIssueComment(issue.getLogin(), issue.getRepoId(), commId),
+                makeRestCall(RestProvider.getIssueService(isEnterprise()).deleteIssueComment(issue.getLogin(), issue.getRepoId(), commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
@@ -167,7 +167,7 @@ import lombok.Getter;
         Issue issue = getView().getIssue();
         String login = issue.getLogin();
         String repoId = issue.getRepoId();
-        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType);
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, reactionType, isEnterprise());
         if (observable != null) manageObservable(observable);
     }
 
@@ -217,14 +217,14 @@ import lombok.Getter;
         int number = parameter.getNumber();
         Observable<List<TimelineModel>> observable;
         if (page > 1) {
-            observable = RestProvider.getIssueService().getIssueComments(login, repoId, number, page)
+            observable = RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page)
                     .map(comments -> {
                         lastPage = comments != null ? comments.getLast() : 0;
                         return TimelineModel.construct(comments != null ? comments.getItems() : null);
                     });
         } else {
-            observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
-                    RestProvider.getIssueService().getIssueComments(login, repoId, number, page),
+            observable = Observable.zip(RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number),
+                    RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page),
                     (issueEventPageable, commentPageable) -> {
                         lastPage = commentPageable != null ? commentPageable.getLast() : 0;
                         return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,

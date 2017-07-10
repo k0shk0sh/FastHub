@@ -74,8 +74,8 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
         }
         filterOptions.setIsPersonalProfile(TextUtils.equals(currentLoggedIn, username));
         makeRestCall(TextUtils.equals(currentLoggedIn, username)
-                     ? RestProvider.getUserService().getRepos(filterOptions.getQueryMap(), page)
-                     : RestProvider.getUserService().getRepos(parameter, filterOptions.getQueryMap(), page),
+                     ? RestProvider.getUserService(isEnterprise()).getRepos(filterOptions.getQueryMap(), page)
+                     : RestProvider.getUserService(isEnterprise()).getRepos(parameter, filterOptions.getQueryMap(), page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {

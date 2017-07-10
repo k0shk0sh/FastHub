@@ -18,6 +18,7 @@ public class MergeRequestModel implements Parcelable {
     private String sha;
     private String base;
     private String head;
+    private String mergeMethod = "merge";
 
     @Override public int describeContents() { return 0; }
 

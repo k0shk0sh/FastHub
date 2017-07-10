@@ -55,7 +55,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
             sendToView(OrgTeamMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getOrgService().getOrgTeams(parameter, page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgTeams(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));

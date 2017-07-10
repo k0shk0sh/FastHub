@@ -8,6 +8,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.InputHelper;
@@ -21,7 +22,6 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -121,7 +121,6 @@ public class SearchUsersFragment extends BaseFragment<SearchUsersMvp.View, Searc
         this.searchQuery = query;
         getLoadMore().reset();
         adapter.clear();
-        recycler.scrollToPosition(0);
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());
             recycler.addOnScrollListener(getLoadMore());

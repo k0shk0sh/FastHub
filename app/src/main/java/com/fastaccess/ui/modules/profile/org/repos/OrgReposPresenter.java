@@ -65,7 +65,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
             return;
         }
         filterOptions.setOrg(true);
-        makeRestCall(RestProvider.getOrgService().getOrgRepos(parameter, filterOptions.getQueryMap(), page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgRepos(parameter, filterOptions.getQueryMap(), page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {

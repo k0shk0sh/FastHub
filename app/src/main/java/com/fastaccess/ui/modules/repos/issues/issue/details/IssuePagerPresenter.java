@@ -25,6 +25,7 @@ import com.fastaccess.data.service.IssueService;
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -62,6 +63,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     @Override public void onActivityCreated(@Nullable Intent intent) {
+        Logger.e(isEnterprise());
         if (intent != null && intent.getExtras() != null) {
             issueModel = intent.getExtras().getParcelable(BundleConstant.ITEM);
             issueNumber = intent.getExtras().getInt(BundleConstant.ID);
@@ -137,7 +139,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         Issue currentIssue = getIssue();
         if (currentIssue != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue, true);
-            manageDisposable(RxHelper.getObserver(RestProvider.getIssueService().editIssue(login, repoId,
+            manageDisposable(RxHelper.getObserver(RestProvider.getIssueService(isEnterprise()).editIssue(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .doOnNext(issue -> {
@@ -149,8 +151,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
                             sendToView(view -> view.onSetupIssue(true));
                         }
                     })
-                    .subscribe(issue -> {/**/},
-                            throwable -> sendToView(view -> view.showErrorIssueActionMsg(currentIssue.getState() == IssueState.open))));
+                    .subscribe(issue -> {/**/}, this::onError));
         }
     }
 
@@ -160,7 +161,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         String login = currentIssue.getUser().getLogin();
         String repoId = currentIssue.getRepoId();
         int number = currentIssue.getNumber();
-        IssueService issueService = RestProvider.getIssueService();
+        IssueService issueService = RestProvider.getIssueService(isEnterprise());
         Observable<Response<Boolean>> observable = RxHelper
                 .getObserver(isLocked() ? issueService.unlockIssue(login, repoId, number) : issueService.lockIssue(login, repoId, number));
         makeRestCall(observable, booleanResponse -> {
@@ -176,7 +177,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onLoadLabels() {
         manageDisposable(
-                RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
+                RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .doOnNext(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
@@ -194,11 +195,9 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {
         issueModel.setMilestone(milestone);
         IssueRequestModel issueRequestModel = IssueRequestModel.clone(issueModel, false);
-        makeRestCall(RestProvider.getIssueService().editIssue(login, repoId, issueNumber, issueRequestModel),
+        makeRestCall(RestProvider.getIssueService(isEnterprise()).editIssue(login, repoId, issueNumber, issueRequestModel),
                 issue -> {
-                    this.issueModel = issue;
-                    issueModel.setLogin(login);
-                    issueModel.setRepoId(repoId);
+                    this.issueModel.setMilestone(issue.getMilestone());
                     manageObservable(issue.save(issueModel).toObservable());
                     sendToView(view -> updateTimeline(view, R.string.labels_added_successfully));
                 });
@@ -206,7 +205,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     @Override public void onPutLabels(@NonNull ArrayList<LabelModel> labels) {
-        makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
+        makeRestCall(RestProvider.getIssueService(isEnterprise()).putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
                         .map(LabelModel::getName).collect(Collectors.toList())),
                 labelModels -> {
@@ -223,11 +222,8 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         ArrayList<String> assignees = new ArrayList<>();
         Stream.of(users).forEach(userModel -> assignees.add(userModel.getLogin()));
         assigneesRequestModel.setAssignees(assignees);
-        makeRestCall(RestProvider.getIssueService().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+        makeRestCall(RestProvider.getIssueService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel),
                 issue -> {
-                    this.issueModel = issue;
-                    issueModel.setLogin(login);
-                    issueModel.setRepoId(repoId);
                     UsersListModel assignee = new UsersListModel();
                     assignee.addAll(users);
                     issueModel.setAssignees(assignee);
@@ -263,7 +259,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         String token = PrefGetter.getToken();
         String id = mute ? NotificationService.MUTE : NotificationService.SUBSCRIBE;
         makeRestCall(AbstractRepo.getRepo(repoId, login)
-                        .flatMapObservable(repo -> RestProvider.getNotificationService()
+                        .flatMapObservable(repo -> RestProvider.getNotificationService(isEnterprise())
                                 .subscribe(url, repo.getId(), getIssue().getId(), issue, id, token, utf)),
                 booleanResponse -> {
                     if (booleanResponse.code() == 204 || booleanResponse.code() == 200) {
@@ -275,8 +271,8 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     private void getIssueFromApi() {
-        makeRestCall(RxHelper.getObserver(Observable.zip(RestProvider.getIssueService().getIssue(login, repoId, issueNumber),
-                RestProvider.getRepoService().isCollaborator(login, repoId, Login.getUser().getLogin()),
+        makeRestCall(RxHelper.getObserver(Observable.zip(RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
+                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
                 (issue, booleanResponse) -> {
                     isCollaborator = booleanResponse.code() == 204;
                     return issue;

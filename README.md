@@ -1,13 +1,10 @@
-
-[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
-[![codecov](https://codecov.io/gh/k0shk0sh/FastHub/branch/master/graph/badge.svg)](https://codecov.io/gh/k0shk0sh/FastHub) [![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
+[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub) [![Build status](https://ci.appveyor.com/api/projects/status/2yhxx7hu6hju24bk?svg=true)](https://ci.appveyor.com/project/k0shk0sh/fasthub)
+[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub) [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=kosh20111@gmail.com)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
 # FastHub  
-
-Yet another **open-source** GitHub client app but unlike any other app, FastHub was built from scratch.
-
+Yet another **open-source** GitHub client app but unlike any other app, FastHub was built from scratch.  
 <!--
 [<img src="https://f-droid.org/badge/get-it-on.png"
       alt="Get it on F-Droid"
@@ -20,12 +17,11 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
       alt="Direct apk download" 
       height="80">](https://github.com/k0shk0sh/FastHub/releases/latest)
 
-#### FOSS
+#### Snapshots / Test builds
 
-grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintained by **_[thermatk](https://github.com/thermatk)_**
+We have configurated snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
 
-# Features
-
+# Features  
 - **App**
   - Two login types (Basic Auth), (Access Token) or via (Browser)
   - Themes mode
@@ -36,6 +32,7 @@ grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintain
   - Pinned Repos
   - Trending
 - **Repositories**
+  - Browse & Read Wiki
   - Search Repos
   - Browse and search Repos
   - See your public, private and forked Repos
@@ -77,10 +74,10 @@ grab **FastHub** from [Here](https://github.com/thermatk/FastHub-Libre) maintain
 - _**Much more...**_
   - _FastHub is actively developed. More features will come!_
 
-~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.~~
-Ads are no longer available until further notice
+~~> **FastHub** contain Ads, which are disabled by default. You could enable them if you'd like to support the development.~~  
+_Ads currently not available._
 
-# Specs / Open-source libraries:
+## Specs / Open-source libraries:
 
 - Minimum **SDK 21**, _but AppCompat is used all the way ;-)_
 - **Kotlin** all new modules starting from 2.5.3 will be written in **#Kotlin**.
@@ -97,34 +94,68 @@ Ads are no longer available until further notice
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
-- [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
+- [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
 - **Fabric** analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
 
-# Contribution
+## Contribution
 
 You love FastHub? You want new features or bug fixes?  
 Please **contribute** to the  project either by [_creating a PR_](https://github.com/k0shk0sh/FastHub/compare) or [_submitting an issue_](https://github.com/k0shk0sh/FastHub/issues/new) on GitHub.  
 Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed information.
 
-### Language Contributors
+## Language Contributors
 
-- Turkish [@kutsan](https://github.com/kutsan)
-- German [@failex234](https://github.com/failex234)
-- Chinese [@Devifish](https://github.com/Devifish)
-- Indonesian [@dikiaap](https://github.com/dikiaap)
-- Russian [@dedepete](https://github.com/dedepete)
-- Japanese [@Rintan](https://github.com/Rintan)
-- Italian [@Raffaele74](https://github.com/Raffaele74)
-- Lithuanian [@mistermantas](https://github.com/mistermantas)
+<details>
+       <summary>Thanks for those who contributed to FastHub by adding their language</summary>
+           <p>- Chinese (Simplified) [@Devifish](https://github.com/Devifish)</p>
+           <p>- Chinese (Traditional) [@maple3142](https://github.com/maple3142)</p>
+           <p>- German [@failex234](https://github.com/failex234)</p>
+           <p>- Indonesian [@dikiaap](https://github.com/dikiaap)</p>
+           <p>- Italian [@Raffaele74](https://github.com/Raffaele74)</p>
+           <p>- Japanese [@Rintan](https://github.com/Rintan)</p>
+           <p>- Lithuanian [@mistermantas](https://github.com/mistermantas)</p>
+           <p>- Russian [@dedepete](https://github.com/dedepete)</p>
+           <p>- Turkish [@kutsan](https://github.com/kutsan)</p>
+           <p>- Portuguese [@caiorrs](https://github.com/caiorrs)</p>
+           <p>- Czech [@hejsekvojtech](https://github.com/hejsekvojtech)</p>
+           <p>- Spanish [@alete89](https://github.com/alete89)</p>
+</details>
 
-# License
+## FAQ
 
-> Copyright (C) 2017 Kosh. 
-> Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html) license.
+<details>
+  <summary>Why can't I see my <b>Organizations</b> either <i>Private</i> or <i>Public</i> ones?</summary>
+  <p>Open up https://github.com/settings/applications and look for FastHub, open it then scroll to Organization access and click on Grant Button, 
+  alternatively login via <b>Access Token</b> which will ease this setup.</p>
+</details>
+
+<details>
+  <summary>I tried to login via Access Token & OTP but it does not work?</summary>
+  <p>You can't login via Access Token & OTP all together due to the lifetime of the OTP code, you'll be required to login in every few seconds.</p>
+</details>
+ 
+<details>
+  <summary>Why my Private Repo Wiki does not show up?</summary>
+  <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
+</details>
+
+<details>
+  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
+  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it, 
+  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> 
+  cases your GitHub account Oauth token will do the trick.</p>
+  
+</details>
+
+
+## License
+
+> Copyright (C) 2017 Kosh.  
+> Licensed under the [GPL-3.0](https://www.gnu.org/licenses/gpl.html) license.  
 > (See the [LICENSE](https://github.com/k0shk0sh/FastHub/blob/master/LICENSE) file for the whole license text.)
 
-# Screenshots
+## Screenshots
 
 | Mobile Light | Mobile Dark |
 |:-:|:-:|
@@ -134,12 +165,13 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 |:-:|:-:|
 | ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
 
-# FastHub Logo
+## FastHub Logo
 
-**FastHub** logo is designed by 
+**FastHub** logo is designed by **Cookicons**.  
+[Google+](https://plus.google.com/+CookiconsDesign) | [Twitter](https://twitter.com/mcookie)  
+Designer website [Cookicons](https://cookicons.co/).  
 
-**Kevin Aguilar** [Google+](https://plus.google.com/+KevinAguilarC) [Twitter](https://twitter.com/kevttob)
- 
-Designer at [221 Pixels](https://www.221pixels.com/)
-
+**OLD FastHub** logo is designed by **Kevin Aguilar**.  
+[Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
+Designer at [221 Pixels](https://www.221pixels.com/).  
 Laus Deo Semper

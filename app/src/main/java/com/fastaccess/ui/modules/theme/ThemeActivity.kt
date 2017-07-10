@@ -2,13 +2,10 @@ package com.fastaccess.ui.modules.theme
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.app.Activity
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.ViewAnimationUtils
-import butterknife.bindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
 import com.fastaccess.helper.PrefGetter
@@ -17,7 +14,9 @@ import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.theme.fragment.ThemeFragmentMvp
+import com.fastaccess.ui.widgets.CardsPagerTransformerBasic
 import com.fastaccess.ui.widgets.ViewPagerView
+import com.fastaccess.ui.widgets.bindView
 
 
 /**
@@ -95,16 +94,4 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
         onThemeChanged()
     }
 
-    inner class CardsPagerTransformerBasic(private val baseElevation: Int, private val raisingElevation: Int) : ViewPager.PageTransformer {
-        override fun transformPage(page: View?, position: Float) {
-            val absPosition = Math.abs(position)
-            if (absPosition >= 1) {
-                page?.elevation = baseElevation.toFloat()
-            } else {
-                page?.elevation = (1 - absPosition) * raisingElevation + baseElevation
-            }
-        }
-
-
-    }
 }

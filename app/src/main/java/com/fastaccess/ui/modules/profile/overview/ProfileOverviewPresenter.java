@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.profile.overview;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,8 +15,10 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
 import com.fastaccess.ui.widgets.contributions.ContributionsProvider;
+import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Observable;
 
@@ -33,7 +36,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
         if (!TextUtils.equals(login, Login.getUser().getLogin())) {
-            manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getFollowStatus(login))
+            manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getFollowStatus(login))
                     .subscribe(booleanResponse -> {
                         isSuccessResponse = true;
                         isFollowing = booleanResponse.code() == 204;
@@ -51,8 +54,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onFollowButtonClicked(@NonNull String login) {
-        manageDisposable(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService().followUser(login)
-                                                           : RestProvider.getUserService().unfollowUser(login))
+        manageDisposable(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService(isEnterprise()).followUser(login)
+                                                           : RestProvider.getUserService(isEnterprise()).unfollowUser(login))
                 .subscribe(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         isFollowing = !isFollowing;
@@ -82,14 +85,13 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (login != null) {
             loadOrgs();
 //            loadUrlBackgroundImage();
-            makeRestCall(RestProvider.getUserService().getUser(login), userModel -> {
+            makeRestCall(RestProvider.getUserService(isEnterprise()).getUser(login), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {
                     userModel.save(userModel);
                     if (userModel.getType() != null && userModel.getType().equalsIgnoreCase("user")) {
                         onCheckFollowStatus(login);
                     }
-                    loadContributions();
                 }
             });
         }
@@ -107,6 +109,23 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         sendToView(view -> view.onInitViews(userModel));
     }
 
+    @Override public void onLoadContributionWidget(@NonNull GitHubContributionsView gitHubContributionsView) {
+        if (!isEnterprise()) {
+            if (contributions == null || contributions.isEmpty()) {
+                String url = String.format(URL, login);
+                manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
+                        .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
+                        .subscribe(lists -> {
+                            contributions.clear();
+                            contributions.addAll(lists);
+                            loadContributions(contributions, gitHubContributionsView);
+                        }, Throwable::printStackTrace));
+            } else {
+                loadContributions(contributions, gitHubContributionsView);
+            }
+        }
+    }
+
     @NonNull @Override public ArrayList<User> getOrgs() {
         return userOrgs;
     }
@@ -119,21 +138,19 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         return login;
     }
 
-    private void loadContributions() {
-        String url = String.format(URL, login);
-        manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
-                .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
-                .subscribe(lists -> {
-                    contributions.clear();
-                    contributions.addAll(lists);
-                    sendToView(view -> view.onInitContributions(contributions));
-                }, Throwable::printStackTrace));
+    private void loadContributions(ArrayList<ContributionsDay> contributions, GitHubContributionsView gitHubContributionsView) {
+        List<ContributionsDay> filter = gitHubContributionsView.getLastContributions(contributions);
+        if (filter != null && contributions != null) {
+            Observable<Bitmap> bitmapObservable = Observable.just(gitHubContributionsView.drawOnCanvas(filter, contributions));
+            manageObservable(bitmapObservable
+                    .doOnNext(bitmap -> sendToView(view -> view.onInitContributions(bitmap != null))));
+        }
     }
 
     private void loadOrgs() {
         boolean isMe = login.equalsIgnoreCase(Login.getUser() != null ? Login.getUser().getLogin() : "");
-        manageDisposable(RxHelper.getObserver(isMe ? RestProvider.getOrgService().getMyOrganizations()
-                                                   : RestProvider.getOrgService().getMyOrganizations(login))
+        manageDisposable(RxHelper.getObserver(isMe ? RestProvider.getOrgService(isEnterprise()).getMyOrganizations()
+                                                   : RestProvider.getOrgService(isEnterprise()).getMyOrganizations(login))
                 .subscribe(response -> {
                     if (response != null && response.getItems() != null) {
                         userOrgs.addAll(response.getItems());
@@ -141,4 +158,5 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                     sendToView(view -> view.onInitOrgs(userOrgs));
                 }, Throwable::printStackTrace));
     }
+
 }

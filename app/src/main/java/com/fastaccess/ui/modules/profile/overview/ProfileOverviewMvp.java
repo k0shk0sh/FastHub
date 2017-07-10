@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
+import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,7 @@ public interface ProfileOverviewMvp {
 
         void invalidateFollowBtn();
 
-        void onInitContributions(@Nullable List<ContributionsDay> items);
+        void onInitContributions(boolean show);
 
         void onInitOrgs(@Nullable List<User> orgs);
 
@@ -49,6 +50,8 @@ public interface ProfileOverviewMvp {
         void onFollowButtonClicked(@NonNull String login);
 
         void onSendUserToView(@Nullable User userModel);
+
+        void onLoadContributionWidget(@NonNull GitHubContributionsView view);
 
         @NonNull ArrayList<User> getOrgs();
 

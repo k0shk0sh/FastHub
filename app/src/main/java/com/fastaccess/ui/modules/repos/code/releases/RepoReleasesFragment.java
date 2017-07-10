@@ -17,7 +17,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -33,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -51,6 +49,17 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         view.setArguments(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
+                .end());
+        return view;
+    }
+
+    public static RepoReleasesFragment newInstance(@NonNull String repoId, @NonNull String login, @Nullable String tag, long id) {
+        RepoReleasesFragment view = new RepoReleasesFragment();
+        view.setArguments(Bundler.start()
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.EXTRA_TWO, id)
+                .put(BundleConstant.EXTRA_THREE, tag)
                 .end());
         return view;
     }
@@ -90,36 +99,6 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getReleases().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
-        }
-    }
-
-    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && adapter != null) {
-            if (!PrefGetter.isReleaseHintShow()) {
-                adapter.setGuideListener((itemView, model) ->
-                        new MaterialTapTargetPrompt.Builder(getActivity())
-                                .setTarget(itemView.findViewById(R.id.download))
-                                .setPrimaryText(R.string.download)
-                                .setSecondaryText(R.string.click_here_to_download_release_hint)
-                                .setCaptureTouchEventOutsidePrompt(true)
-                                .setBackgroundColourAlpha(244)
-                                .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
-                                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                    @Override
-                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                                        ActivityHelper.hideDismissHints(RepoReleasesFragment.this.getContext());
-                                    }
-
-                                    @Override
-                                    public void onHidePromptComplete() {
-
-                                    }
-                                })
-                                .show());
-                adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
-                ActivityHelper.showDismissHints(getContext(), () -> {});
-            }
         }
     }
 
@@ -197,7 +176,6 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
     }
 
     @Override public void onItemSelected(SimpleUrlsModel item) {
-        Logger.e(item, item.getUrl());
         if (ActivityHelper.checkAndRequestReadWritePermission(getActivity())) {
             RestProvider.downloadFile(getContext(), item.getUrl());
         }

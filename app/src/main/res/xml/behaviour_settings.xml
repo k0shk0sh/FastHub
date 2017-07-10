@@ -16,7 +16,7 @@
         android:title="@string/enable_signature_box"/>
 
     <SwitchPreference
-        android:defaultValue="true"
+        android:defaultValue="false"
         android:key="sent_via"
         android:icon="@drawable/ic_edit"
         android:summary="@string/enable_signature_summary"

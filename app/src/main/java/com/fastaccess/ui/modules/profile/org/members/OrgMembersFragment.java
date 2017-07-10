@@ -33,7 +33,7 @@ public class OrgMembersFragment extends BaseFragment<OrgMembersMvp.View, OrgMemb
     private OnLoadMore<String> onLoadMore;
     private UsersAdapter adapter;
 
-    public static OrgMembersFragment newInstance(@NonNull String username) {
+    public static OrgMembersFragment newInstance(@NonNull String username, boolean isEnterprise) {
         OrgMembersFragment view = new OrgMembersFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, username).end());
         return view;

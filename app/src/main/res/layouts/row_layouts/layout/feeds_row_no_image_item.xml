@@ -41,10 +41,11 @@
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/date"
-            style="@style/TextAppearance.AppCompat.Small"
+            style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="@dimen/spacing_normal"
+            android:gravity="center|start"
             android:textColor="?android:attr/textColorTertiary"
             tools:drawableStart="@drawable/ic_notification"
             tools:text="50 minutes ago"/>

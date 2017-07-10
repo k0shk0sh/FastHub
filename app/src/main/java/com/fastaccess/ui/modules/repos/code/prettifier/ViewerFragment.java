@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.widget.AppBarLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,12 +17,14 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.prettifier.pretty.PrettifyWebView;
 
 import butterknife.BindView;
+import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
 /**
  * Created by Kosh on 28 Nov 2016, 9:27 PM
@@ -34,15 +37,23 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @BindView(R.id.readmeLoader) ProgressBar loader;
     @BindView(R.id.webView) PrettifyWebView webView;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    private AppBarLayout appBarLayout;
+    private BottomNavigation bottomNavigation;
+    private boolean scrolledTop = true;
     @State boolean isWrap = PrefGetter.isWrapCode();
 
-    public static ViewerFragment newInstance(@NonNull String url) {
-        return newInstance(url, false);
+    public static ViewerFragment newInstance(@NonNull String url, @Nullable String htmlUrl) {
+        return newInstance(url, htmlUrl, false);
     }
 
     public static ViewerFragment newInstance(@NonNull String url, boolean isRepo) {
+        return newInstance(url, null, isRepo);
+    }
+
+    public static ViewerFragment newInstance(@NonNull String url, @Nullable String htmlUrl, boolean isRepo) {
         return newInstance(Bundler.start()
                 .put(BundleConstant.ITEM, url)
+                .put(BundleConstant.EXTRA_TWO, htmlUrl)
                 .put(BundleConstant.EXTRA, isRepo)
                 .end());
     }
@@ -54,25 +65,26 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onSetImageUrl(@NonNull String url) {
-        onShowMdProgress();
         webView.loadImage(url);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onSetMdText(@NonNull String text, String baseUrl) {
         webView.setVisibility(View.VISIBLE);
+        loader.setIndeterminate(false);
         webView.setGithubContent(text, baseUrl);
         webView.setOnContentChangedListener(this);
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onSetCode(@NonNull String text) {
         webView.setVisibility(View.VISIBLE);
-        webView.setSource(text, isWrap, getPresenter().url());
+        loader.setIndeterminate(false);
+        webView.setSource(text, isWrap);
         webView.setOnContentChangedListener(this);
-        getActivity().supportInvalidateOptionsMenu();
+        getActivity().invalidateOptionsMenu();
     }
 
     @Override public void onShowError(@NonNull String msg) {
@@ -86,6 +98,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onShowMdProgress() {
+        loader.setIndeterminate(true);
         loader.setVisibility(View.VISIBLE);
         stateLayout.showProgress();
     }
@@ -101,6 +114,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void hideProgress() {
         loader.setVisibility(View.GONE);
         stateLayout.hideProgress();
+        if (!getPresenter().isImage()) stateLayout.showReload(getPresenter().downloadedStream() == null ? 0 : 1);
     }
 
     @Override public void showErrorMessage(@NonNull String msgRes) {
@@ -138,6 +152,23 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         }
     }
 
+    @Override public void onScrollChanged(boolean reachedTop, int scroll) {
+        if (getPresenter().isRepo()) {
+            if (appBarLayout != null && bottomNavigation != null) {
+                if (scroll <= (appBarLayout.getTotalScrollRange() / 2)) {
+                    scrolledTop = true;
+                    bottomNavigation.setExpanded(true, true);
+                    appBarLayout.setExpanded(true, true);
+                } else if (scroll >= appBarLayout.getTotalScrollRange() && scrolledTop) {
+                    bottomNavigation.setExpanded(false, true);
+                    appBarLayout.setExpanded(false, true);
+                    scrolledTop = false;
+                }
+                webView.setNestedScrollingEnabled(scroll <= (appBarLayout.getTotalScrollRange() * 2));
+            }
+        }
+    }
+
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
@@ -154,6 +185,15 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             }
         }
         getActivity().invalidateOptionsMenu();
+        stateLayout.setEmptyText(R.string.no_data);
+        if (savedInstanceState == null) {
+            stateLayout.showReload(0);
+        }
+        stateLayout.setOnReloadListener(view1 -> getPresenter().onHandleIntent(getArguments()));
+        if (getPresenter().isRepo()) {
+            appBarLayout = getActivity().findViewById(R.id.appbar);
+            bottomNavigation = getActivity().findViewById(R.id.bottomNavigation);
+        }
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -187,5 +227,12 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onScrollTop(int index) {
         super.onScrollTop(index);
         if (webView != null) webView.scrollTo(0, 0);
+    }
+
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!isVisibleToUser && appBarLayout != null) {
+            appBarLayout.setVisibility(View.VISIBLE);
+        }
     }
 }

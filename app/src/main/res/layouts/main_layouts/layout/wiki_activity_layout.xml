@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <include layout="@layout/appbar_elevation_dark"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/scroll_behavior">
+
+                <com.prettifier.pretty.PrettifyWebView
+                    android:id="@+id/webView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:webview_background="?android:windowBackground"/>
+
+                <ProgressBar
+                    android:id="@+id/progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_huge"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+
+                <include layout="@layout/state_layout"/>
+
+            </FrameLayout>
+
+
+        </android.support.design.widget.CoordinatorLayout>
+
+        <include layout="@layout/add_banner_layout"/>
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/wikiSidebar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:fitsSystemWindows="true"
+        app:itemBackground="@color/transparent"
+        app:itemIconTint="@color/search_tab_highlighter"
+        app:itemTextColor="@color/search_tab_highlighter"
+        app:menu="@menu/dynamic_trending_menu"/>
+
+    <include layout="@layout/nav_menu_layout"/>
+
+</android.support.v4.widget.DrawerLayout>

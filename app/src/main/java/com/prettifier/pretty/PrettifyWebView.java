@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -36,6 +35,8 @@ public class PrettifyWebView extends NestedWebView {
 
     public interface OnContentChangedListener {
         void onContentChanged(int progress);
+
+        void onScrollChanged(boolean reachedTop, int scroll);
     }
 
     public PrettifyWebView(Context context) {
@@ -100,6 +101,13 @@ public class PrettifyWebView extends NestedWebView {
         });
     }
 
+    @Override protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (onContentChangedListener != null) {
+            onContentChangedListener.onScrollChanged(t == 0, t);
+        }
+    }
+
     private boolean hitLinkResult(WebView.HitTestResult result) {
         return result.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE || result.getType() == HitTestResult.IMAGE_TYPE ||
                 result.getType() == HitTestResult.SRC_IMAGE_ANCHOR_TYPE;
@@ -109,42 +117,53 @@ public class PrettifyWebView extends NestedWebView {
         this.onContentChangedListener = onContentChangedListener;
     }
 
-    public void setSource(@NonNull String source, boolean wrap, @Nullable String url) {
-        WebSettings settings = getSettings();
-        settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
-        setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        settings.setSupportZoom(!wrap);
-        settings.setBuiltInZoomControls(!wrap);
-        if (!wrap) settings.setDisplayZoomControls(false);
+    public void setThemeSource(@NonNull String source, @Nullable String theme) {
         if (!InputHelper.isEmpty(source)) {
-            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
-            post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(true);
+            settings.setBuiltInZoomControls(true);
+            settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, theme);
+            loadCode(page);
         }
+    }
+
+    public void setSource(@NonNull String source, boolean wrap) {
+        if (!InputHelper.isEmpty(source)) {
+            WebSettings settings = getSettings();
+            settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING);
+            setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
+            settings.setSupportZoom(!wrap);
+            settings.setBuiltInZoomControls(!wrap);
+            if (!wrap) settings.setDisplayZoomControls(false);
+            String page = PrettifyHelper.generateContent(source, AppHelper.isNightMode(getResources()), wrap);
+            loadCode(page);
+        }
+    }
+
+    private void loadCode(String page) {
+        post(() -> loadDataWithBaseURL("file:///android_asset/highlight/", page, "text/html", "utf-8", null));
     }
 
     public void scrollToLine(@NonNull String url) {
-        int lineNo = getLineNo(url);
-        if (lineNo != 0) {
-            loadUrl("javascript:scrollToLineNumber('" + lineNo + "')");
+        String[] lineNo = getLineNo(url);
+        if (lineNo != null && lineNo.length > 1) {
+            loadUrl("javascript:scrollToLineNumber('" + lineNo[0] + "', '" + lineNo[1] + "')");
+        } else if (lineNo != null) {
+            loadUrl("javascript:scrollToLineNumber('" + lineNo[0] + "', '0')");
         }
     }
 
-    public static int getLineNo(@Nullable String url) {
-        int lineNo = 0;
+    public static String[] getLineNo(@Nullable String url) {
+        String lineNo[] = null;
         if (url != null) {
             try {
                 Uri uri = Uri.parse(url);
                 String lineNumber = uri.getEncodedFragment();
-                Logger.e(lineNumber);
                 if (lineNumber != null) {
-                    String[] toSplit = lineNumber.split("-");
-                    if (toSplit.length > 1) {
-                        lineNumber = toSplit[toSplit.length - 1];
-                    }
-                    Logger.e(lineNumber);
-                    lineNumber = lineNumber.replace("L", "");
-                    lineNo = Integer.valueOf(lineNumber);
-                    Logger.e(lineNo);
+                    lineNo = lineNumber.replaceAll("L", "").split("-");
                 }
             } catch (Exception ignored) {}
         }
@@ -152,7 +171,15 @@ public class PrettifyWebView extends NestedWebView {
     }
 
     public void setGithubContent(@NonNull String source, @Nullable String baseUrl) {
-        addJavascriptInterface(new MarkDownInterceptorInterface(this), "Android");
+        setGithubContent(source, baseUrl, false);
+    }
+
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling) {
+        setGithubContent(source, baseUrl, toggleNestScrolling, true);
+    }
+
+    public void setGithubContent(@NonNull String source, @Nullable String baseUrl, boolean toggleNestScrolling, boolean enableBridge) {
+        if (enableBridge) addJavascriptInterface(new MarkDownInterceptorInterface(this, toggleNestScrolling), "Android");
         String page = GithubHelper.generateContent(getContext(), source, baseUrl, AppHelper.isNightMode(getResources()));
         post(() -> loadDataWithBaseURL("file:///android_asset/md/", page, "text/html", "utf-8", null));
     }
@@ -175,7 +202,6 @@ public class PrettifyWebView extends NestedWebView {
 
     public void setEnableNestedScrolling(boolean enableNestedScrolling) {
         if (this.enableNestedScrolling != enableNestedScrolling) {
-            Logger.e(enableNestedScrolling);
             setNestedScrollingEnabled(enableNestedScrolling);
             this.enableNestedScrolling = enableNestedScrolling;
         }
@@ -183,7 +209,6 @@ public class PrettifyWebView extends NestedWebView {
 
     private void startActivity(@Nullable Uri url) {
         if (url == null) return;
-        Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerActivity.startActivity(getContext(), url.toString(), url.toString());
         } else {
@@ -216,6 +241,6 @@ public class PrettifyWebView extends NestedWebView {
             startActivity(Uri.parse(url));
             return true;
         }
-    }
 
+    }
 }

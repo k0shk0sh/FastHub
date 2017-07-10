@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 
 import com.fastaccess.App;
 import com.fastaccess.R;
-import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.viewholder.SimpleViewHolder;
@@ -44,7 +43,7 @@ public class TopicsAdapter extends BaseRecyclerAdapter<String, SimpleViewHolder<
             FontTextView topic = (FontTextView) view;
             Intent intent = new Intent(new Intent(App.getInstance().getApplicationContext(), SearchActivity.class));
             intent.putExtra("search", topic.getText().toString());
-            ActivityHelper.getActivity(view.getContext()).startActivity(intent);
+            view.getContext().startActivity(intent);
         });
         holder.bind(getItem(position));
     }

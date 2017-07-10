@@ -17,19 +17,21 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
-import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragments;
+import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -40,6 +42,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kotlin.text.StringsKt;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -83,13 +86,14 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true, false)
+            MessageDialogView.newInstance(String.format("%s/%s", getPresenter().getLogin(), getPresenter().getRepoId()),
+                    getPresenter().getCommit().getGitCommit().getMessage(), true, false)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick(R.id.fab) void onAddComment() {
         if (pager == null || pager.getAdapter() == null) return;
-        CommitCommentsFragments view = (CommitCommentsFragments) pager.getAdapter().instantiateItem(pager, 1);
+        CommitCommentsFragment view = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
         if (view != null) {
             view.onStartNewComment();
         }
@@ -161,12 +165,15 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
         HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
+        setTaskName(commit.getLogin() + "/" + commit.getRepoId() + " - Commit " + StringsKt.take(commit.getSha(), 5));
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
-        date.setText(SpannableBuilder.builder().append(ParseDateFormat.getTimeAgo(dateValue))
+        date.setText(SpannableBuilder.builder()
+                .bold(getPresenter().repoId)
                 .append(" ")
-                .bold(getPresenter().repoId));
-        avatarLayout.setUrl(avatar, login);
+                .append(" ")
+                .append(ParseDateFormat.getTimeAgo(dateValue)));
+        avatarLayout.setUrl(avatar, login, false, LinkParserHelper.isEnterprise(commit.getHtmlUrl()));
         addition.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getAdditions() : 0));
         deletion.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getDeletions() : 0));
         changes.setText(String.valueOf(commit.getFiles() != null ? commit.getFiles().size() : 0));
@@ -206,6 +213,15 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     @Override public void onFinishActivity() {
         hideProgress();
         finish();
+    }
+
+    @Override public void onAddComment(@NonNull Comment newComment) {
+        if (pager != null && pager.getAdapter() != null) {
+            CommitCommentsFragment fragment = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+            if (fragment != null) {
+                fragment.addComment(newComment);
+            }
+        }
     }
 
     @Override public void onBackPressed() {

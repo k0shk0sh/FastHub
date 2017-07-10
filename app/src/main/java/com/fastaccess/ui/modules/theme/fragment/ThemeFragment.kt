@@ -26,6 +26,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     val apply: FloatingActionButton by lazy { view!!.findViewById<FloatingActionButton>(R.id.apply) }
     val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
 
+    private val THEME = "appTheme"
     private var primaryDarkColor: Int = 0
     private var theme: Int = 0
     private var themeListener: ThemeFragmentMvp.ThemeListener? = null
@@ -46,30 +47,13 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         apply.setOnClickListener {
-            when (theme) {
-                R.style.ThemeLight -> {
-                    PrefHelper.set("appTheme", getString(R.string.light_theme_mode))
-                    themeListener?.onThemeApplied()
-                }
-                R.style.ThemeDark -> {
-                    PrefHelper.set("appTheme", getString(R.string.dark_theme_mode))
-                    themeListener?.onThemeApplied()
-                }
-                else -> if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set("appTheme", getString(R.string.amlod_theme_mode))
-                    themeListener?.onThemeApplied()
-                } else {
-                    DonateActivity.Companion.start(this, getString(R.string.amlod_theme_purchase))
-                }
-            }
+            setTheme()
         }
         if (isPremiumTheme()) {
             toolbar.title = SpannableBuilder.builder().foreground(getString(R.string.premium_theme), Color.RED)
         }
         toolbar.setNavigationOnClickListener { activity.onBackPressed() }
     }
-
-    private fun isPremiumTheme(): Boolean = theme == R.style.ThemeAmlod
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
@@ -97,8 +81,16 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (PrefGetter.isProEnabled() || PrefGetter.isAmlodEnabled()) {
-                themeListener?.onThemeApplied()
+            if (PrefGetter.isProEnabled() || PrefGetter.isMidNightBlueThemeEnabled()
+                    || PrefGetter.isAmlodEnabled() || PrefGetter.isBluishEnabled()) {
+                val productKey = data?.getStringExtra(BundleConstant.ITEM)
+                productKey?.let {
+                    when (it) {
+                        getString(R.string.amlod_theme_purchase) -> setTheme(getString(R.string.amlod_theme_mode))
+                        getString(R.string.midnight_blue_theme_purchase) -> setTheme(getString(R.string.mid_night_blue_theme_mode))
+                        getString(R.string.theme_bluish_purchase) -> setTheme(getString(R.string.bluish_theme))
+                    }
+                }
             }
         }
     }
@@ -112,4 +104,44 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
             return fragment
         }
     }
+
+    private fun setTheme() {
+        when (theme) {
+            R.style.ThemeLight -> {
+                setTheme(getString(R.string.light_theme_mode))
+            }
+            R.style.ThemeDark -> {
+                setTheme(getString(R.string.dark_theme_mode))
+            }
+            R.style.ThemeAmlod -> {
+                if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
+                    setTheme(getString(R.string.amlod_theme_mode))
+                } else {
+                    DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
+                }
+            }
+            R.style.ThemeMidNighBlue -> {
+                if (PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isProEnabled()) {
+                    setTheme(getString(R.string.mid_night_blue_theme_mode))
+                } else {
+                    DonateActivity.start(this, getString(R.string.midnight_blue_theme_purchase))
+                }
+            }
+            R.style.ThemeBluish -> {
+                if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
+                    setTheme(getString(R.string.bluish_theme))
+                } else {
+                    DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
+                }
+            }
+        }
+    }
+
+    private fun setTheme(theme: String) {
+        PrefHelper.set(THEME, theme)
+        themeListener?.onThemeApplied()
+    }
+
+    private fun isPremiumTheme(): Boolean = theme != R.style.ThemeLight && theme != R.style.ThemeDark
+
 }
