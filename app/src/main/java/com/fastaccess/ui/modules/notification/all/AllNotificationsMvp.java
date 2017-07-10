@@ -32,6 +32,8 @@ public interface AllNotificationsMvp {
         void onReadNotification(@NonNull Notification notification);
 
         void onMarkAllByRepo(@NonNull Repo repo);
+
+        void onNotifyNotificationChanged(@NonNull GroupedNotificationModel notification);
     }
 
     interface Presenter extends BaseViewHolder.OnItemClickListener<GroupedNotificationModel> {

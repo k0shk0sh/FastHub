@@ -25,6 +25,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
@@ -74,7 +75,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     }
 
-    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number, boolean showToRepoBtn) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId,
+                                      @NonNull String login, int number, boolean showToRepoBtn) {
         Intent intent = new Intent(context, IssuePagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
@@ -124,6 +126,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.e(isEnterprise());
         tabs.setVisibility(View.GONE);
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
@@ -390,7 +393,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
                     .append(parsedDate));
-            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin(), false, LinkParserHelper.isEnterprise(issueModel.getUrl()));
+            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin(), false,
+                    LinkParserHelper.isEnterprise(issueModel.getHtmlUrl()));
         }
     }
 }

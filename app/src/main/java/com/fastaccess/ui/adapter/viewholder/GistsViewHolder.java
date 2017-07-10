@@ -48,7 +48,7 @@ public class GistsViewHolder extends BaseViewHolder<Gist> {
                 String url = item.getOwner() != null ? item.getOwner().getAvatarUrl() : item.getUser() != null ? item.getUser().getAvatarUrl() : null;
                 String login = item.getOwner() != null ? item.getOwner().getLogin() : item.getUser() != null ? item.getUser().getLogin() : null;
                 avatar.setUrl(url, login, false, LinkParserHelper.isEnterprise(
-                        item.getOwner() != null ? item.getOwner().getUrl() : item.getUser() != null ? item.getUser().getUrl() : null));
+                        item.getOwner() != null ? item.getOwner().getHtmlUrl() : item.getUser() != null ? item.getUser().getHtmlUrl() : null));
             }
         }
         title.setText(item.getDisplayTitle(isFromProfile));

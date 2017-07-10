@@ -102,7 +102,6 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             if (getIntent() != null && getIntent().getExtras() != null) {
                 login = getIntent().getExtras().getString(BundleConstant.EXTRA);
                 isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
-                getPresenter().setEnterprise(getIntent().getExtras().getBoolean(BundleConstant.IS_ENTERPRISE));
                 if (!InputHelper.isEmpty(login) && isOrg) {
                     getPresenter().checkOrgMembership(login);
                 }

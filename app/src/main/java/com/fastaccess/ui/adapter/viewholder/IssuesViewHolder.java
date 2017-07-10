@@ -118,7 +118,7 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
         }
         if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin(), false,
-                    LinkParserHelper.isEnterprise(issueModel.getUser().getUrl()));
+                    LinkParserHelper.isEnterprise(issueModel.getUser().getHtmlUrl()));
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }

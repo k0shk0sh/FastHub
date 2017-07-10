@@ -175,7 +175,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         if (getPresenter().getGist() != null) {
             Intent intent = new Intent();
             Gist gistsModel = new Gist();
-            gistsModel.setUrl(getPresenter().getGist().getUrl());
+            gistsModel.setUrl(getPresenter().getGist().getHtmlUrl());
             intent.putExtras(Bundler.start().put(BundleConstant.ITEM, gistsModel).end());
             setResult(RESULT_OK, intent);
         }
@@ -207,7 +207,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                      gistsModel.getUser() != null ? gistsModel.getUser().getAvatarUrl() : "";
         String login = gistsModel.getOwner() != null ? gistsModel.getOwner().getLogin() :
                        gistsModel.getUser() != null ? gistsModel.getUser().getLogin() : "";
-        avatarLayout.setUrl(url, login, false, LinkParserHelper.isEnterprise(gistsModel.getUrl()));
+        avatarLayout.setUrl(url, login, false, LinkParserHelper.isEnterprise(gistsModel.getHtmlUrl()));
         title.setText(gistsModel.getDisplayTitle(false, true));
         setTaskName(gistsModel.getDisplayTitle(false, true).toString());
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);

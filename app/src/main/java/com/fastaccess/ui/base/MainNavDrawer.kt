@@ -8,7 +8,9 @@ import android.view.View
 import android.widget.TextView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
+import com.fastaccess.helper.ActivityHelper
 import com.fastaccess.helper.PrefGetter
+import com.fastaccess.helper.RxHelper
 import com.fastaccess.ui.adapter.LoginAdapter
 import com.fastaccess.ui.modules.about.FastHubAboutActivity
 import com.fastaccess.ui.modules.gists.GistsListActivity
@@ -22,7 +24,6 @@ import com.fastaccess.ui.modules.user.UserPagerActivity
 import com.fastaccess.ui.widgets.AvatarLayout
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-import io.reactivex.Observable
 
 /**
  * Created by Kosh on 09 Jul 2017, 3:50 PM
@@ -103,24 +104,10 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
 
     override fun onItemLongClick(position: Int, v: View?, item: Login) {}
 
-    override fun onItemClick(position: Int, v: View?, item: Login) {
-        if (item.isIsEnterprise) {
-            PrefGetter.setTokenEnterprise(item.token)
-            PrefGetter.setEnterpriseOtpCode(item.otpCode)
-        } else {
-            PrefGetter.setToken(item.token)
-            PrefGetter.setOtpCode(item.otpCode)
-        }
-        view.getPresenter().manageViewDisposable(Observable.just(Login.getUser())
+    override fun onItemClick(position: Int, v: View, item: Login) {
+        ActivityHelper.activateLinkInterceptorActivity(v.context, !item.isIsEnterprise)
+        view.getPresenter().manageViewDisposable(RxHelper.getObserver(Login.onMultipleLogin(item, item.isIsEnterprise, false))
                 .doOnSubscribe { view.showProgress(0) }
-                .flatMap { login ->
-                    login.isIsLoggedIn = false
-                    login.update(login)
-                }
-                .concatMap<Login> {
-                    item.isIsLoggedIn = true
-                    item.saveObservable(item)
-                }
                 .doFinally { view.hideProgress() }
                 .subscribe({ view.onRestartApp() }, ::println))
     }

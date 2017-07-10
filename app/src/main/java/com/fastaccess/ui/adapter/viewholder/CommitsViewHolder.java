@@ -49,7 +49,7 @@ public class CommitsViewHolder extends BaseViewHolder<Commit> {
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(date)));
         avatarLayout.setUrl(avatar, login, false, LinkParserHelper
-                .isEnterprise(commit.getAuthor() != null ? commit.getAuthor().getUrl() : commit.getGitCommit().getAuthor().getUrl()));
+                .isEnterprise(commit.getAuthor() != null ? commit.getAuthor().getUrl() : commit.getGitCommit().getAuthor().getHtmlUrl()));
         avatarLayout.setVisibility(View.VISIBLE);
         if (commit.getGitCommit() != null && commit.getGitCommit().getCommentCount() > 0) {
             commentsNo.setText(String.valueOf(commit.getGitCommit() != null ? commit.getGitCommit().getCommentCount() : 0));

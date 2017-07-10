@@ -172,7 +172,7 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
 
     private void setup(User user, String description, ReactionsModel reactionsModel) {
         avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType(),
-                LinkParserHelper.isEnterprise(user.getUrl()));
+                LinkParserHelper.isEnterprise(user.getHtmlUrl()));
         name.setText(user.getLogin());
         if (reactionsModel != null) {
             appendEmojies(reactionsModel);

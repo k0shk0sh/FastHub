@@ -33,6 +33,8 @@ import android.widget.Toast;
 
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.parser.LinksParserActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +48,8 @@ public class ActivityHelper {
 
     private static int BUTTON_ID = 32;
 
-    @Nullable public static Activity getActivity(@Nullable Context content) {
+    @Nullable
+    public static Activity getActivity(@Nullable Context content) {
         if (content == null) return null;
         else if (content instanceof Activity) return (Activity) content;
         else if (content instanceof ContextWrapper) return getActivity(((ContextWrapper) content).getBaseContext());
@@ -82,21 +85,24 @@ public class ActivityHelper {
         if (finalIntent != null) {
             try {
                 context.startActivity(finalIntent);
-            } catch (ActivityNotFoundException ignored) {}
+            } catch (ActivityNotFoundException ignored) {
+            }
         } else {
             if (!fromCustomTab) {
                 Activity activity = ActivityHelper.getActivity(context);
                 if (activity == null) {
                     try {
                         context.startActivity(i);
-                    } catch (ActivityNotFoundException ignored) {}
+                    } catch (ActivityNotFoundException ignored) {
+                    }
                     return;
                 }
                 startCustomTab(activity, url);
             } else {
                 try {
                     context.startActivity(i);
-                } catch (ActivityNotFoundException ignored) {}
+                } catch (ActivityNotFoundException ignored) {
+                }
             }
         }
     }
@@ -105,7 +111,8 @@ public class ActivityHelper {
         openChooser(context, Uri.parse(url));
     }
 
-    @SafeVarargs public static void start(@NonNull Activity activity, Class cl, Pair<View, String>... sharedElements) {
+    @SafeVarargs
+    public static void start(@NonNull Activity activity, Class cl, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(activity, cl);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
@@ -138,7 +145,8 @@ public class ActivityHelper {
         activity.startActivity(intent, options.toBundle());
     }
 
-    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent, @NonNull Pair<View, String>... sharedElements) {
+    @SafeVarargs
+    public static void start(@NonNull Activity activity, @NonNull Intent intent, @NonNull Pair<View, String>... sharedElements) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
 
@@ -159,7 +167,8 @@ public class ActivityHelper {
     }
 
     @SuppressWarnings("RestrictedApi")
-    @Nullable public static Fragment getVisibleFragment(@NonNull FragmentManager manager) {
+    @Nullable
+    public static Fragment getVisibleFragment(@NonNull FragmentManager manager) {
         List<Fragment> fragments = manager.getFragments();
         if (fragments != null && !fragments.isEmpty()) {
             for (Fragment fragment : fragments) {
@@ -233,77 +242,11 @@ public class ActivityHelper {
         return chooserIntent;
     }
 
-    public static void showDismissHints(@NonNull Context context, @NonNull Runnable runnable) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.weight = 1;
-        params.gravity = Gravity.START;
-        int margin = (int) context.getResources().getDimension(R.dimen.spacing_normal);
-        params.setMargins(margin, margin, margin, margin);
-        Button button = new Button(context);
-        button.setLayoutParams(params);
-        button.setText(context.getResources().getString(R.string.dismiss_all));
-        button.setTextColor(context.getResources().getColor(R.color.material_grey_200));
-        button.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.material_red_accent_700)));
-        button.setAllCaps(true);
-        button.setOnClickListener(v -> {
-            PrefGetter.isCommentHintShowed();
-            PrefGetter.isEditorHintShowed();
-            PrefGetter.isFileOptionHintShow();
-            PrefGetter.isHomeButoonHintShowed();
-            PrefGetter.isNavDrawerHintShowed();
-            PrefGetter.isReleaseHintShow();
-            PrefGetter.isRepoFabHintShowed();
-            PrefGetter.isRepoGuideShowed();
-            runnable.run();
-            ActivityHelper.hideDismissHints(context);
-        });
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        RelativeLayout relativeLayout = new RelativeLayout(context);
-        relativeLayout.setId(BUTTON_ID);
-        relativeLayout.setLayoutParams(
-                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        relativeLayout.setPadding(0, getNotificationBarHeight(context), 0, 0);
-
-        relativeLayout.addView(button);
-        parentView.addView(relativeLayout);
-    }
-
-    public static void hideDismissHints(@NonNull Context context) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        View button = parentView.findViewById(BUTTON_ID);
-        if (button != null)
-            parentView.removeView(button);
-    }
-
-    public static void bringDismissAllToFront(@NonNull Context context) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        View button = parentView.findViewById(BUTTON_ID);
-        if (button != null)
-            button.bringToFront();
-    }
-
-    private static int getNotificationBarHeight(@NonNull Context context) {
-        Rect rectangle = new Rect();
-        Activity activity = getActivity(context);
-        if (activity == null) return 0;
-        Window window = activity.getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-        int statusBarHeight = rectangle.top;
-        int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
-
-        return Math.abs(contentViewTop - statusBarHeight);
-    }
-
-    public static void activateActivity(Context context, final Class<? extends Activity> activity, final boolean activate) {
+    public static void activateLinkInterceptorActivity(Context context, boolean activate) {
         final PackageManager pm = context.getPackageManager();
         final int flag = activate ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
-        pm.setComponentEnabledSetting(new ComponentName(context, activity), flag, PackageManager.DONT_KILL_APP);
+        pm.setComponentEnabledSetting(new ComponentName(context, LinksParserActivity.class), flag, PackageManager.DONT_KILL_APP);
     }
+
 
 }

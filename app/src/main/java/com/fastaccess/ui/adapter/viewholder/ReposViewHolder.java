@@ -81,7 +81,7 @@ public class ReposViewHolder extends BaseViewHolder<Repo> {
             boolean isOrg = repo.getOwner() != null && repo.getOwner().isOrganizationType();
             if (avatarLayout != null) {
                 avatarLayout.setVisibility(View.VISIBLE);
-                avatarLayout.setUrl(avatar, login, isOrg, LinkParserHelper.isEnterprise(repo.getUrl()));
+                avatarLayout.setUrl(avatar, login, isOrg, LinkParserHelper.isEnterprise(repo.getHtmlUrl()));
             }
         }
         long repoSize = repo.getSize() > 0 ? (repo.getSize() * 1000) : repo.getSize();

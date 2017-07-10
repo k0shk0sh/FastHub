@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 
 import java.util.Date;
@@ -56,22 +58,10 @@ import lombok.NoArgsConstructor;
     @Nullable boolean isLoggedIn;
     @Nullable boolean isEnterprise;
     @Nullable String otpCode;
+    @Nullable String enterpriseUrl;
 
     public Observable<Login> update(Login login) {
-        Login current = getUser();
-        login.setIsEnterprise(current.isIsEnterprise());
-        login.setToken(current.getToken());
         return RxHelper.safeObservable(App.getInstance().getDataStore().update(login).toObservable());
-    }
-
-    public Observable<Login> saveObservable(Login entity) {
-        return App.getInstance().getDataStore()
-                .delete(Login.class)
-                .where(Login.LOGIN.eq(entity.getLogin()))
-                .get()
-                .single()
-                .flatMap(integer -> App.getInstance().getDataStore().insert(entity))
-                .toObservable();
     }
 
     public void save(Login entity) {
@@ -127,7 +117,44 @@ import lombok.NoArgsConstructor;
                 .value() > 0;
     }
 
-    @Override public int describeContents() { return 0; }
+    public static Observable<Boolean> onMultipleLogin(@NonNull Login userModel, boolean isEnterprise, boolean isNew) {
+        return Observable.fromPublisher(s -> {
+            Login currentUser = Login.getUser();
+            if (currentUser != null) {
+                currentUser.setIsLoggedIn(false);
+                currentUser.save(currentUser);
+            }
+            if (!isEnterprise) {
+                PrefGetter.resetEnterprise();
+            }
+            userModel.setIsLoggedIn(true);
+            if (isNew) {
+                userModel.setIsEnterprise(isEnterprise);
+                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
+                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
+                userModel.setEnterpriseUrl(isEnterprise ? PrefGetter.getEnterpriseUrl() : null);
+                userModel.save(userModel);
+            } else {
+                if (isEnterprise) {
+                    PrefGetter.setTokenEnterprise(userModel.token);
+                    PrefGetter.setEnterpriseOtpCode(userModel.otpCode);
+                    PrefGetter.setEnterpriseUrl(userModel.enterpriseUrl);
+                    Logger.e(userModel.enterpriseUrl, PrefGetter.getEnterpriseUrl());
+                } else {
+                    PrefGetter.resetEnterprise();
+                    PrefGetter.setToken(userModel.token);
+                    PrefGetter.setOtpCode(userModel.otpCode);
+                }
+                userModel.save(userModel);
+            }
+            s.onNext(true);
+            s.onComplete();
+        });
+    }
+
+    @Override public int describeContents() {
+        return 0;
+    }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
@@ -165,6 +192,7 @@ import lombok.NoArgsConstructor;
         dest.writeByte(this.isLoggedIn ? (byte) 1 : (byte) 0);
         dest.writeByte(this.isEnterprise ? (byte) 1 : (byte) 0);
         dest.writeString(this.otpCode);
+        dest.writeString(this.enterpriseUrl);
     }
 
     protected AbstractLogin(Parcel in) {
@@ -205,11 +233,18 @@ import lombok.NoArgsConstructor;
         this.isLoggedIn = in.readByte() != 0;
         this.isEnterprise = in.readByte() != 0;
         this.otpCode = in.readString();
+        this.enterpriseUrl = in.readString();
     }
 
     public static final Creator<Login> CREATOR = new Creator<Login>() {
-        @Override public Login createFromParcel(Parcel source) {return new Login(source);}
+        @Override
+        public Login createFromParcel(Parcel source) {
+            return new Login(source);
+        }
 
-        @Override public Login[] newArray(int size) {return new Login[size];}
+        @Override
+        public Login[] newArray(int size) {
+            return new Login[size];
+        }
     };
 }

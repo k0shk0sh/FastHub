@@ -17,6 +17,8 @@ import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
+import java.util.Observable;
+
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
 
@@ -31,6 +33,10 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
         manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getUser())
                 .flatMap(login -> {
                     login.setIsLoggedIn(true);
+                    login.setEnterpriseUrl(isEnterprise() ? PrefGetter.getEnterpriseUrl() : null);
+                    login.setToken(isEnterprise() ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
+                    login.setOtpCode(isEnterprise() ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
+                    login.setIsEnterprise(isEnterprise());
                     return login.update(login);
                 })
                 .subscribe(login -> {

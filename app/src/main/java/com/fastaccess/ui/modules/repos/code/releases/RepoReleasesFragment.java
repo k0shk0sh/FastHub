@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -100,37 +99,6 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
             getPresenter().onFragmentCreated(getArguments());
         } else if (getPresenter().getReleases().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
-        }
-    }
-
-    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser && adapter != null) {
-            if (!PrefGetter.isReleaseHintShow()) {
-                adapter.setGuideListener((itemView, model) ->
-                        new MaterialTapTargetPrompt.Builder(getActivity())
-                                .setTarget(itemView.findViewById(R.id.download))
-                                .setPrimaryText(R.string.download)
-                                .setSecondaryText(R.string.click_here_to_download_release_hint)
-                                .setCaptureTouchEventOutsidePrompt(true)
-                                .setBackgroundColourAlpha(244)
-                                .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
-                                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                    @Override
-                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                                        ActivityHelper.hideDismissHints(RepoReleasesFragment.this.getContext());
-                                    }
-
-                                    @Override
-                                    public void onHidePromptComplete() {
-
-                                    }
-                                })
-                                .show());
-                adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
-                ActivityHelper.showDismissHints(getContext(), () -> {
-                });
-            }
         }
     }
 

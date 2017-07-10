@@ -55,7 +55,7 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
     @Override public void bind(@NonNull Comment commentsModel) {
         if (commentsModel.getUser() != null) {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
-                    commentsModel.getUser().isOrganizationType(), LinkParserHelper.isEnterprise(commentsModel.getUser().getUrl()));
+                    commentsModel.getUser().isOrganizationType(), LinkParserHelper.isEnterprise(commentsModel.getUser().getHtmlUrl()));
         } else {
             avatar.setUrl(null, null, false, false);
         }

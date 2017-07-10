@@ -25,6 +25,7 @@ import com.fastaccess.data.service.IssueService;
 import com.fastaccess.data.service.NotificationService;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -62,6 +63,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     @Override public void onActivityCreated(@Nullable Intent intent) {
+        Logger.e(isEnterprise());
         if (intent != null && intent.getExtras() != null) {
             issueModel = intent.getExtras().getParcelable(BundleConstant.ITEM);
             issueNumber = intent.getExtras().getInt(BundleConstant.ID);

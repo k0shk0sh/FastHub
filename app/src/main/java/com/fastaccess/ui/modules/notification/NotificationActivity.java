@@ -9,12 +9,16 @@ import android.support.v4.app.Fragment;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
+import com.fastaccess.data.dao.GroupedNotificationModel;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.main.MainActivity;
+import com.fastaccess.ui.modules.notification.all.AllNotificationsFragment;
+import com.fastaccess.ui.modules.notification.callback.OnNotificationChangedListener;
+import com.fastaccess.ui.modules.notification.unread.UnreadNotificationsFragment;
 import com.fastaccess.ui.widgets.ViewPagerView;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
@@ -25,7 +29,7 @@ import butterknife.BindView;
  * Created by Kosh on 27 Feb 2017, 12:36 PM
  */
 
-public class NotificationActivity extends BaseActivity {
+public class NotificationActivity extends BaseActivity implements OnNotificationChangedListener {
 
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.notificationContainer)
@@ -79,13 +83,21 @@ public class NotificationActivity extends BaseActivity {
         super.onBackPressed();
     }
 
+    @Override public void onNotificationChanged(@NonNull GroupedNotificationModel notification, int index) {
+        if (pager != null && pager.getAdapter() != null) {
+            if (index == 0) {
+                UnreadNotificationsFragment fragment = (UnreadNotificationsFragment) pager.getAdapter().instantiateItem(pager, 0);
+                fragment.onNotifyNotificationChanged(notification);
+            } else {
+                AllNotificationsFragment fragment = (AllNotificationsFragment) pager.getAdapter().instantiateItem(pager, 1);
+                fragment.onNotifyNotificationChanged(notification);
+            }
+        }
+    }
+
     private void setupTabs() {
         pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(),
                 FragmentPagerAdapterModel.buildForNotifications(this)));
         tabs.setupWithViewPager(pager);
-    }
-
-    private TabLayout.Tab getTab(int titleId) {
-        return tabs.newTab().setText(titleId);
     }
 }

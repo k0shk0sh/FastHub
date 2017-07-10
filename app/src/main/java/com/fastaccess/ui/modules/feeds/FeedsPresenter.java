@@ -42,7 +42,6 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
     @Override public void onFragmentCreated(@NonNull Bundle argument) {
         user = argument.getString(BundleConstant.EXTRA);
         isOrg = argument.getBoolean(BundleConstant.EXTRA_TWO);
-        setEnterprise(argument.getBoolean(BundleConstant.IS_ENTERPRISE));
         if (eventsModels.isEmpty()) {
             onCallApi(1);
         }
@@ -66,11 +65,10 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
                 observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(user, page);
             } else {
                 observable = RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
-                                                         ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
+                        ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
             }
         } else {
-            observable = RestProvider.getUserService(PrefGetter.isEnterprise())
-                    .getReceivedEvents(login.getLogin(), page);
+            observable = RestProvider.getUserService(PrefGetter.isEnterprise()).getReceivedEvents(login.getLogin(), page);
         }
         makeRestCall(observable, response -> {
             lastPage = response.getLast();
@@ -159,7 +157,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
                 } else {
                     Repo repoModel = item.getRepo();
                     if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), repoModel.getHtmlUrl() != null
-                                                                                       ? repoModel.getHtmlUrl() : repoModel.getUrl());
+                            ? repoModel.getHtmlUrl() : repoModel.getUrl());
                 }
             }
         }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -139,16 +140,30 @@ public class SchemeParser {
                 Optional<Intent> intentOptional = returnNonNull(trending, userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
                         createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
+                Logger.e(isEnterprise);
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     Intent intent = intentOptional.get();
-                    if (intent.getExtras() != null && isEnterprise) {
-                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, true);
+                    if (isEnterprise) {
+                        if (intent.getExtras() != null) {
+                            Bundle bundle = intent.getExtras();
+                            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, true);
+                            intent.putExtras(bundle);
+                        } else {
+                            intent.putExtra(BundleConstant.IS_ENTERPRISE, true);
+                        }
                     }
+                    Logger.e(intent);
                     return intent;
                 } else {
                     Intent intent = getGeneralRepo(context, data);
-                    if (intent != null && intent.getExtras() != null && isEnterprise) {
-                        intent.getExtras().putBoolean(BundleConstant.IS_ENTERPRISE, true);
+                    if (isEnterprise) {
+                        if (intent != null && intent.getExtras() != null) {
+                            Bundle bundle = intent.getExtras();
+                            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, true);
+                            intent.putExtras(bundle);
+                        } else if (intent != null) {
+                            intent.putExtra(BundleConstant.IS_ENTERPRISE, true);
+                        }
                     }
                     return intent;
                 }

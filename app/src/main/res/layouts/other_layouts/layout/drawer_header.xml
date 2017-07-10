@@ -11,7 +11,7 @@
         android:id="@+id/navAvatarLayout"
         android:layout_width="@dimen/header_icon_zie"
         android:layout_height="@dimen/header_icon_zie"
-        android:layout_margin="@dimen/spacing_xs_large"/>
+        android:layout_margin="@dimen/spacing_xs_large" />
 
     <LinearLayout
         android:id="@+id/navAccHolder"
@@ -20,41 +20,51 @@
         android:layout_alignParentBottom="true"
         android:layout_gravity="center"
         android:layout_marginBottom="@dimen/spacing_normal"
-        android:orientation="vertical">
+        android:background="?selectableItemBackground"
+        android:orientation="horizontal">
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/navFullName"
-            style="@style/TextAppearance.AppCompat.Small"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="@string/app_name"/>
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <com.fastaccess.ui.widgets.FontTextView
-            android:id="@+id/navUsername"
-            style="@style/TextAppearance.AppCompat.Caption"
-            android:layout_width="match_parent"
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/navFullName"
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/app_name" />
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/navUsername"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_xs_large"
+                android:layout_marginStart="@dimen/spacing_xs_large"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="@string/app_name" />
+        </LinearLayout>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/navToggle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="@dimen/spacing_xs_large"
-            android:layout_marginStart="@dimen/spacing_xs_large"
-            android:ellipsize="marquee"
-            android:singleLine="true"
-            android:text="@string/app_name"/>
+            android:padding="@dimen/spacing_normal"
+            android:src="@drawable/ic_arrow_drop_down" />
+
     </LinearLayout>
 
-    <com.fastaccess.ui.widgets.ForegroundImageView
-        android:id="@+id/navToggle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/navAccHolder"
-        android:layout_alignEnd="@+id/navAccHolder"
-        android:padding="@dimen/spacing_normal"
-        android:src="@drawable/ic_arrow_drop_down"/>
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/donatedIcon"
@@ -66,6 +76,6 @@
         android:contentDescription="@string/success_purchase_message"
         android:src="@drawable/ic_heart_full"
         android:visibility="gone"
-        tools:visibility="visible"/>
+        tools:visibility="visible" />
 
 </RelativeLayout>

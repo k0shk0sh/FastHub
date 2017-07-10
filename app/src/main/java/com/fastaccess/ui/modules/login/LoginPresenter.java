@@ -67,7 +67,8 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @NonNull @Override public Uri getAuthorizationUrl(@Nullable String endpoint) {
+    @NonNull
+    @Override public Uri getAuthorizationUrl(@Nullable String endpoint) {
         Uri.Builder builder = new Uri.Builder();
         if (!InputHelper.isEmpty(endpoint)) {
             endpoint = LinkParserHelper.getEndpoint(endpoint);
@@ -92,25 +93,16 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
                 .build();
     }
 
-    @Override public void onHandleAuthIntent(@Nullable Intent intent, boolean extraLogin) {
+    @Override public void onHandleAuthIntent(@Nullable Intent intent) {
         if (intent != null && intent.getData() != null) {
             Uri uri = intent.getData();
             if (uri.toString().startsWith(GithubConfigHelper.getRedirectUrl())) {
                 String tokenCode = uri.getQueryParameter("code");
                 if (!InputHelper.isEmpty(tokenCode)) {
-                    makeRestCall(LoginProvider.getLoginRestService().getAccessToken(tokenCode, GithubConfigHelper.getClientId(),
-                            GithubConfigHelper.getSecret(), BuildConfig.APPLICATION_ID, GithubConfigHelper.getRedirectUrl()),
-                            modelResponse -> {
-                                if (extraLogin) {
-                                    String token = modelResponse.getToken() != null ? modelResponse.getToken() : modelResponse.getAccessToken();
-                                    if (!InputHelper.isEmpty(token)) {
-                                        PrefGetter.setToken(token);
-                                        sendToView(view -> view.onSuccessfullyLoggedIn(false));
-                                        return;
-                                    }
-                                }
-                                onTokenResponse(modelResponse);
-                            });
+                    makeRestCall(LoginProvider.getLoginRestService().getAccessToken(tokenCode,
+                            GithubConfigHelper.getClientId(), GithubConfigHelper.getSecret(),
+                            BuildConfig.APPLICATION_ID, GithubConfigHelper.getRedirectUrl()),
+                            this::onTokenResponse);
                 } else {
                     sendToView(view -> view.showMessage(R.string.error, R.string.error));
                 }
@@ -120,27 +112,15 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
 
     @Override public void onUserResponse(@Nullable Login userModel, boolean isEnterprise) {
         if (userModel != null) {
-            manageObservable(Observable.fromPublisher(s -> {
-                Login currentUser = Login.getUser();
-                if (currentUser != null) {
-                    currentUser.setIsLoggedIn(false);
-                    currentUser.save(currentUser);
-                }
-                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
-                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
-                userModel.setIsLoggedIn(true);
-                userModel.save(userModel);
-                s.onNext(userModel);
-                s.onComplete();
-            }).doOnComplete(() -> sendToView(view -> view.onSuccessfullyLoggedIn(isEnterprise))));
+            manageObservable(Login.onMultipleLogin(userModel, isEnterprise, true)
+                    .doOnComplete(() -> sendToView(view -> view.onSuccessfullyLoggedIn(isEnterprise))));
             return;
         }
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @Override public void login(@NonNull String username, @NonNull String password,
-                                @Nullable String twoFactorCode, boolean isBasicAuth,
-                                @Nullable String endpoint, boolean isEnterprise) {
+    @Override public void login(@NonNull String username, @NonNull String password, @Nullable String twoFactorCode,
+                                boolean isBasicAuth, @Nullable String endpoint, boolean isEnterprise) {
         setEnterprise(isEnterprise);
         boolean usernameIsEmpty = InputHelper.isEmpty(username);
         boolean passwordIsEmpty = InputHelper.isEmpty(password);
@@ -173,20 +153,18 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         }
     }
 
-    private void accessTokenLogin(@NonNull String password, @Nullable String endpoint, @Nullable String otp, String authToken, boolean isEnterprise) {
-        makeRestCall(LoginProvider.getLoginRestService(authToken, otp, endpoint).loginAccessToken(), login -> {
-            if (!isEnterprise) {
-                PrefGetter.setToken(password);
-            } else {
-                if (!InputHelper.isEmpty(otp)) {
-                    PrefGetter.setEnterpriseOtpCode(otp);
-                }
-                PrefGetter.setTokenEnterprise(authToken);
-                if (!InputHelper.isEmpty(endpoint)) {
-                    PrefGetter.setEnterpriseUrl(endpoint);
-                }
-            }
-            onUserResponse(login, isEnterprise);
-        });
+    private void accessTokenLogin(@NonNull String password, @Nullable String endpoint, @Nullable String otp,
+                                  @NonNull String authToken, boolean isEnterprise) {
+        makeRestCall(LoginProvider.getLoginRestService(authToken, otp, endpoint).loginAccessToken(),
+                login -> {
+                    if (!isEnterprise) {
+                        PrefGetter.setToken(password);
+                    } else {
+                        PrefGetter.setEnterpriseOtpCode(otp);
+                        PrefGetter.setTokenEnterprise(authToken);
+                        PrefGetter.setEnterpriseUrl(endpoint);
+                    }
+                    onUserResponse(login, isEnterprise);
+                });
     }
 }

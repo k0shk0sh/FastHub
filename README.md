@@ -94,7 +94,6 @@ _Ads currently not available._
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
-- [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
 - **Fabric** analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
@@ -144,7 +143,9 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 <details>
   <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
   <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it, 
-  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> cases your Oauth token will do the trick.</p>
+  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> 
+  cases your GitHub account Oauth token will do the trick.</p>
+  
 </details>
 
 

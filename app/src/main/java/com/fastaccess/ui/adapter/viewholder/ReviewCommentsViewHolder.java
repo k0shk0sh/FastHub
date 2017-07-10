@@ -100,7 +100,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
 
     @Override public void bind(@NonNull ReviewCommentModel commentModel) {
         avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser()
-                .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getUrl()));
+                .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getHtmlUrl()));
         name.setText(commentModel.getUser().getLogin());
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {

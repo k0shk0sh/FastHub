@@ -418,4 +418,10 @@ public class PrefGetter {
     public static boolean isEnterprise() {
         return !InputHelper.isEmpty(getEnterpriseUrl());
     }
+
+    public static void resetEnterprise() {
+        PrefGetter.setTokenEnterprise(null);
+        PrefGetter.setEnterpriseOtpCode(null);
+        PrefGetter.setEnterpriseUrl(null);
+    }
 }

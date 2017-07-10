@@ -47,7 +47,7 @@ public class UsersViewHolder extends BaseViewHolder<User> {
 
     public void bind(@NonNull User user, boolean isContributor) {
         avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType(),
-                LinkParserHelper.isEnterprise(user.getUrl()));
+                LinkParserHelper.isEnterprise(user.getHtmlUrl()));
         title.setText(user.getLogin());
         date.setVisibility(!isContributor ? View.GONE : View.VISIBLE);
         if (isContributor) {

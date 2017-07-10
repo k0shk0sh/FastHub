@@ -108,7 +108,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         Comment commentsModel = timelineModel.getComment();
         if (commentsModel.getUser() != null) {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
-                    false, LinkParserHelper.isEnterprise(commentsModel.getUrl()));
+                    false, LinkParserHelper.isEnterprise(commentsModel.getHtmlUrl()));
         } else {
             avatar.setUrl(null, null, false, false);
         }

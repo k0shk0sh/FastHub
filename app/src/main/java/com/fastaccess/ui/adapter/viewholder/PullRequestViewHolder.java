@@ -55,7 +55,7 @@ public class PullRequestViewHolder extends BaseViewHolder<PullRequest> {
         }
         if (withAvatar && avatarLayout != null) {
             avatarLayout.setUrl(pullRequest.getUser().getAvatarUrl(), pullRequest.getUser().getLogin(),
-                    false, LinkParserHelper.isEnterprise(pullRequest.getUrl()));
+                    false, LinkParserHelper.isEnterprise(pullRequest.getHtmlUrl()));
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }

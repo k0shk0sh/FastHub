@@ -4,15 +4,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.annimon.stream.Collectors;
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ObjectsCompat;
 import com.fastaccess.helper.PrefGetter;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -26,10 +24,9 @@ public class LinkParserHelper {
     static final String RAW_AUTHORITY = "raw.githubusercontent.com";
     static final String API_AUTHORITY = "api.github.com";
     static final String PROTOCOL_HTTPS = "https";
-    static final ArrayList<String> IGNORED_LIST = Stream.of("notifications", "settings", "blog", "explore",
-            "dashboard", "repositories", "logout", "sessions", "site", "security", "contact", "about", "logos", "login", "pricing", "")
-            .collect(Collectors.toCollection(ArrayList::new));
-
+    static final List<String> IGNORED_LIST = Arrays.asList("notifications", "settings", "blog",
+            "explore", "dashboard", "repositories", "logout", "sessions", "site", "security",
+            "contact", "about", "logos", "login", "pricing", "");
 
     @SafeVarargs static <T> Optional<T> returnNonNull(@NonNull T... t) {
         return Stream.of(t).filter(ObjectsCompat::nonNull).findFirst();
@@ -67,17 +64,10 @@ public class LinkParserHelper {
 
     public static boolean isEnterprise(@Nullable String url) {
         if (InputHelper.isEmpty(url) || !PrefGetter.isEnterprise()) return false;
-        try {
-            Uri enterpriseUri = Uri.parse(getEndpoint(PrefGetter.getEnterpriseUrl()));
-            Uri uri = Uri.parse(url);
-            if (enterpriseUri != null) {
-                boolean isEnterprise = enterpriseUri.getAuthority().equalsIgnoreCase(uri != null && uri.getAuthority() != null
-                                                                                     ? uri.getAuthority() : url);
-                Logger.e(isEnterprise, enterpriseUri.getAuthority(), uri != null ? uri.getAuthority() : "N/A");
-                return isEnterprise;
-            }
-        } catch (Exception ignored) {}
-        return false;
+        String enterpriseUrl = PrefGetter.getEnterpriseUrl().toLowerCase();
+        url = url.toLowerCase();
+        return url.equalsIgnoreCase(enterpriseUrl) || url.startsWith(enterpriseUrl) || url.startsWith(getEndpoint(enterpriseUrl))
+                || url.contains(enterpriseUrl) || enterpriseUrl.contains(url);
     }
 
     public static String stripScheme(@NonNull String url) {

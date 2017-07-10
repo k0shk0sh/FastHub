@@ -32,7 +32,7 @@ public interface LoginMvp {
 
         @NonNull Uri getAuthorizationUrl(@Nullable String endpoint);
 
-        void onHandleAuthIntent(@Nullable Intent intent, boolean extraLogin);
+        void onHandleAuthIntent(@Nullable Intent intent);
 
         void onTokenResponse(@Nullable AccessTokenModel response);
 

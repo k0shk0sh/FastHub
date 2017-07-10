@@ -134,7 +134,7 @@ public abstract class BaseFragment<V extends BaseMvp.FAView, P extends BasePrese
     @Override public void onScrollTop(int index) {}
 
     @Override public boolean isEnterprise() {
-        return callback.isEnterprise();
+        return callback != null && callback.isEnterprise();
     }
 
     protected boolean isSafe() {

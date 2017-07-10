@@ -274,7 +274,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
-        return new NotificationCompat.Builder(this)
+        return new NotificationCompat.Builder(this, title)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);

@@ -173,7 +173,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
                 .append(" ")
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(dateValue)));
-        avatarLayout.setUrl(avatar, login, false, LinkParserHelper.isEnterprise(commit.getUrl()));
+        avatarLayout.setUrl(avatar, login, false, LinkParserHelper.isEnterprise(commit.getHtmlUrl()));
         addition.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getAdditions() : 0));
         deletion.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getDeletions() : 0));
         changes.setText(String.valueOf(commit.getFiles() != null ? commit.getFiles().size() : 0));

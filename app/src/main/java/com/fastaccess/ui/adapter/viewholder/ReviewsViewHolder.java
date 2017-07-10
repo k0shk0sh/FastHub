@@ -47,7 +47,7 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
         if (review != null) {
             if (review.getUser() != null) {
                 avatarLayout.setUrl(review.getUser().getAvatarUrl(), review.getUser().getLogin(), false,
-                        LinkParserHelper.isEnterprise(review.getUser().getUrl()));
+                        LinkParserHelper.isEnterprise(review.getUser().getHtmlUrl()));
             } else {
                 avatarLayout.setUrl(null, null, false, false);
             }
