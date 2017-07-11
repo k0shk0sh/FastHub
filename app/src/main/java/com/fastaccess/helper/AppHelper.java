@@ -63,20 +63,31 @@ public class AppHelper {
     }
 
     @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {
+        String brand = (!isEmulator()) ? Build.BRAND : "Android Emulator";
+        String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
         return new StringBuilder()
-                .append("**App Version: ")
+                .append("**FastHub Version: ")
                 .append(BuildConfig.VERSION_NAME)
                 .append("**")
-                .append("\n\n")
-                .append("**OS Version: ")
+                .append("  \n")
+                .append("**Android Version: ")
+                .append(String.valueOf(Build.VERSION.RELEASE))
+                .append(" (SDK: ")
                 .append(String.valueOf(Build.VERSION.SDK_INT))
-                .append("**")
-                .append("\n\n")
-                .append("**Model: ")
+                .append(")**")
+                .append("  \n")
+                .append("**Device information:**")
+                .append("  \n")
+                .append("- ")
                 .append(Build.MANUFACTURER)
-                .append("-")
-                .append(Build.MODEL)
-                .append("**")
+                .append("  \n")
+                .append("- ")
+                .append(brand)
+                .append("  \n")
+                .append("- ")
+                .append(model)
+                .append("\n\n")
+                .append("---")
                 .append("\n\n")
                 .toString();
     }
@@ -120,15 +131,14 @@ public class AppHelper {
     }
 
     public static String getDeviceName() {
-        String manufacturer = Build.MANUFACTURER;
+        String brand = Build.BRAND;
         String model = Build.MODEL;
         if (model.startsWith(manufacturer)) {
             return InputHelper.capitalizeFirstLetter(model);
         } else if (isEmulator()){
             return "Android Emulator";
-        } else {
-            return InputHelper.capitalizeFirstLetter(manufacturer) + " " + model;
         }
+        return InputHelper.capitalizeFirstLetter(manufacturer) + " " + model;
     }
 
     private static boolean isEmulator() {
