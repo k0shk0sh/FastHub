@@ -76,7 +76,7 @@ public class AppHelper {
                 .append(String.valueOf(Build.VERSION.SDK_INT))
                 .append(")**")
                 .append("  \n")
-                .append("**Device information:**")
+                .append("**Device Information:**")
                 .append("  \n")
                 .append("- ")
                 .append(Build.MANUFACTURER)
