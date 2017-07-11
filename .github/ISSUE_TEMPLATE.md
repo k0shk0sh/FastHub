@@ -10,7 +10,7 @@
 **FastHub Version:**  
 **Android Version:**  
 **Device Information:**  
-
 - <!-- MANUFACTURER: e.g. Yota Devices Limited -->  
 - <!-- BRAND: e.g. YotaPhone -->  
 - <!-- MODEL: e.g. YD201 -->  
+---
