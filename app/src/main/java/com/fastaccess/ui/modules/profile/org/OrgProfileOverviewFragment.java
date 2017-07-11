@@ -47,7 +47,7 @@ public class OrgProfileOverviewFragment extends BaseFragment<OrgProfileOverviewM
 
     @State User userModel;
 
-    public static OrgProfileOverviewFragment newInstance(@NonNull String login, boolean isEnterprise) {
+    public static OrgProfileOverviewFragment newInstance(@NonNull String login) {
         OrgProfileOverviewFragment view = new OrgProfileOverviewFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, login).end());
         return view;

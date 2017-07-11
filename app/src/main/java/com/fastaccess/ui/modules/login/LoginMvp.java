@@ -36,10 +36,10 @@ public interface LoginMvp {
 
         void onTokenResponse(@Nullable AccessTokenModel response);
 
-        void onUserResponse(@Nullable Login response, boolean isEnterprise);
+        void onUserResponse(@Nullable Login response);
 
         void login(@NonNull String username, @NonNull String password,
                    @Nullable String twoFactorCode, boolean isBasicAuth,
-                   @Nullable String endpoint, boolean isEnterprise);
+                   @Nullable String endpoint);
     }
 }

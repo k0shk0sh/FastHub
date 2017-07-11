@@ -194,14 +194,14 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login,
-                                                                       boolean isMember, boolean isEnterprise) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
         return Stream.of(
-                new FragmentPagerAdapterModel(context.getString(R.string.feeds), isMember ? FeedsFragment.newInstance(login, true, isEnterprise) : null),
-                new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login, isEnterprise)),
-                new FragmentPagerAdapterModel(context.getString(R.string.repos), OrgReposFragment.newInstance(login, isEnterprise)),
-                new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersFragment.newInstance(login, isEnterprise)),
-                new FragmentPagerAdapterModel(context.getString(R.string.teams), isMember ? OrgTeamFragment.newInstance(login, isEnterprise) : null))
+                new FragmentPagerAdapterModel(context.getString(R.string.feeds),
+                        isMember ? FeedsFragment.newInstance(login, true) : null),
+                new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.repos), OrgReposFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.teams), isMember ? OrgTeamFragment.newInstance(login) : null))
                 .filter(fragmentPagerAdapterModel -> fragmentPagerAdapterModel.getFragment() != null)
                 .collect(Collectors.toList());
     }

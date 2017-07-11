@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.text.util.Linkify;
 import android.widget.Toast;
 
 import com.fastaccess.App;
@@ -14,8 +13,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
-import com.fastaccess.ui.modules.login.LoginActivity;
-import com.fastaccess.ui.modules.login.LoginChooserActivity;
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 
 import org.apache.tools.ant.ExitException;
 

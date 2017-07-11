@@ -11,7 +11,7 @@ import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.login.LoginActivity
-import com.fastaccess.ui.modules.login.LoginChooserActivity
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
 import com.fastaccess.ui.modules.main.donation.DonateActivity
 import com.fastaccess.ui.modules.reviews.changes.ReviewChangesActivity
 

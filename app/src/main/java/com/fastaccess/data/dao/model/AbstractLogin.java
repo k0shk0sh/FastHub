@@ -61,7 +61,8 @@ import lombok.NoArgsConstructor;
     @Nullable String enterpriseUrl;
 
     public Observable<Login> update(Login login) {
-        return RxHelper.safeObservable(App.getInstance().getDataStore().update(login).toObservable());
+        return RxHelper.safeObservable(App.getInstance().getDataStore().update(login)
+                .toObservable());
     }
 
     public void save(Login entity) {
@@ -122,7 +123,9 @@ import lombok.NoArgsConstructor;
             Login currentUser = Login.getUser();
             if (currentUser != null) {
                 currentUser.setIsLoggedIn(false);
-                currentUser.save(currentUser);
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .update(currentUser);
             }
             if (!isEnterprise) {
                 PrefGetter.resetEnterprise();
@@ -130,10 +133,21 @@ import lombok.NoArgsConstructor;
             userModel.setIsLoggedIn(true);
             if (isNew) {
                 userModel.setIsEnterprise(isEnterprise);
-                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
-                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
+                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter
+                        .getToken());
+                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() :
+                        PrefGetter.getOtpCode());
                 userModel.setEnterpriseUrl(isEnterprise ? PrefGetter.getEnterpriseUrl() : null);
-                userModel.save(userModel);
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .delete(Login.class)
+                        .where(Login.ID.eq(userModel.getId())
+                                .or(Login.LOGIN.eq(userModel.getLogin())))
+                        .get()
+                        .value();
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .insert(userModel);
             } else {
                 if (isEnterprise) {
                     PrefGetter.setTokenEnterprise(userModel.token);
@@ -145,7 +159,9 @@ import lombok.NoArgsConstructor;
                     PrefGetter.setToken(userModel.token);
                     PrefGetter.setOtpCode(userModel.otpCode);
                 }
-                userModel.save(userModel);
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .update(userModel);
             }
             s.onNext(true);
             s.onComplete();

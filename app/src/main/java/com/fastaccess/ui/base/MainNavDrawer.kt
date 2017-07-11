@@ -3,18 +3,22 @@ package com.fastaccess.ui.base
 import android.content.Intent
 import android.os.Handler
 import android.support.design.widget.NavigationView
+import android.support.transition.TransitionManager
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
+import com.fastaccess.data.dao.model.PinnedRepos
 import com.fastaccess.helper.ActivityHelper
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.ui.adapter.LoginAdapter
+import com.fastaccess.ui.adapter.PinnedReposAdapter
 import com.fastaccess.ui.modules.about.FastHubAboutActivity
 import com.fastaccess.ui.modules.gists.GistsListActivity
-import com.fastaccess.ui.modules.login.LoginChooserActivity
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.main.donation.DonationActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
@@ -31,6 +35,12 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?, val accountsNav: NavigationView?)
     : BaseViewHolder.OnItemClickListener<Login> {
 
+    var menusHolder: ViewGroup? = null
+
+    init {
+        menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)
+    }
+
     fun setupViewDrawer() {
         extraNav?.let {
             val header = it.getHeaderView(0)
@@ -38,28 +48,64 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         }
         accountsNav?.let {
             setupAccounts()
+            setupPinned()
         }
     }
 
     private fun setupAccounts() {
         val addAccount = view.findViewById<View>(R.id.addAccLayout)
         val recyclerView = view.findViewById<DynamicRecyclerView>(R.id.accLists)
+        val toggleImage = view.findViewById<View>(R.id.toggleImage)
+        val toggle = view.findViewById<View>(R.id.toggle)
+        val toggleAccountsLayout = view.findViewById<View>(R.id.toggleAccountsLayout)
         addAccount.setOnClickListener {
             val intent = Intent(view, LoginChooserActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             view.startActivity(intent)
-            view.finish()
         }
-        val adapter = LoginAdapter()
-        adapter.listener = this
-        recyclerView.adapter = adapter
+        toggle.setOnClickListener {
+            TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
+            val isVisible = recyclerView.visibility == View.VISIBLE
+            recyclerView.visibility = if (isVisible) View.GONE else View.VISIBLE
+            toggleImage.rotation = if (!isVisible) 180f else 0f
+        }
+        val adapter = LoginAdapter(true)
         view.getPresenter().manageViewDisposable(Login.getAccounts()
+                .doFinally {
+                    when (!adapter.isEmpty) {
+                        true -> {
+                            toggleAccountsLayout.visibility = View.VISIBLE
+                            adapter.listener = this
+                            recyclerView.adapter = adapter
+                        }
+                        else -> toggleAccountsLayout.visibility = View.GONE
+                    }
+                }
                 .subscribe({ adapter.addItem(it) }, ::print))
+    }
+
+    private fun setupPinned() {
+        val togglePinnedImage = view.findViewById<View>(R.id.togglePinnedImage)
+        val togglePinned = view.findViewById<View>(R.id.togglePinned)
+        val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+        val pinnedListAdapter = PinnedReposAdapter(true)
+
+        togglePinned.setOnClickListener {
+            TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
+            val isVisible = pinnedList.visibility == View.VISIBLE
+            pinnedList.visibility = if (isVisible) View.GONE else View.VISIBLE
+            togglePinnedImage.rotation = if (isVisible) 180f else 0f
+        }
+
+        view.getPresenter().manageViewDisposable(PinnedRepos.getMenuRepos()
+                .doFinally { pinnedList.adapter = pinnedListAdapter }
+                .subscribe({ pinnedListAdapter.insertItems(it) }, ::println))
     }
 
     private fun setupView(view: View) {
         val userModel = Login.getUser() ?: return
-        (view.findViewById<View>(R.id.navAvatarLayout) as AvatarLayout).setUrl(userModel.avatarUrl, userModel.login, false, PrefGetter.isEnterprise())
+        (view.findViewById<View>(R.id.navAvatarLayout) as AvatarLayout).setUrl(userModel.avatarUrl, null, false,
+                PrefGetter.isEnterprise())
         (view.findViewById<View>(R.id.navUsername) as TextView).text = userModel.login
         when (userModel.name.isNullOrEmpty()) {
             true -> view.findViewById<View>(R.id.navFullName).visibility = View.GONE

@@ -10,6 +10,7 @@ import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.requery.Column;
 import io.requery.Convert;
@@ -62,7 +63,6 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
                 .firstOrNull();
     }
 
-
     public static boolean isPinned(@NonNull String repoFullName) {
         return get(repoFullName) != null;
     }
@@ -74,6 +74,16 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
                 .observable()
                 .toList();
 
+    }
+
+    @NonNull public static Observable<List<PinnedRepos>> getMenuRepos() {
+        return App.getInstance().getDataStore().select(PinnedRepos.class)
+                .orderBy(ID.desc())
+                .limit(10)
+                .get()
+                .observable()
+                .toList()
+                .toObservable();
     }
 
     public static void delete(long id) {

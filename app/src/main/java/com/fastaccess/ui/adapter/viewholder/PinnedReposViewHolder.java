@@ -33,11 +33,11 @@ import butterknife.BindView;
 public class PinnedReposViewHolder extends BaseViewHolder<PinnedRepos> {
 
     @BindView(R.id.title) FontTextView title;
-    @BindView(R.id.date) FontTextView date;
-    @BindView(R.id.stars) FontTextView stars;
-    @BindView(R.id.forks) FontTextView forks;
-    @BindView(R.id.language) FontTextView language;
-    @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @Nullable @BindView(R.id.avatarLayout) AvatarLayout avatarLayout;
+    @Nullable @BindView(R.id.date) FontTextView date;
+    @Nullable @BindView(R.id.stars) FontTextView stars;
+    @Nullable @BindView(R.id.forks) FontTextView forks;
+    @Nullable @BindView(R.id.language) FontTextView language;
     @BindString(R.string.forked) String forked;
     @BindString(R.string.private_repo) String privateRepo;
     @BindColor(R.color.material_indigo_700) int forkColor;
@@ -47,8 +47,9 @@ public class PinnedReposViewHolder extends BaseViewHolder<PinnedRepos> {
         super(itemView, adapter);
     }
 
-    public static PinnedReposViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter) {
-        return new PinnedReposViewHolder(getView(viewGroup, R.layout.repos_row_item), adapter);
+    public static PinnedReposViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter, boolean singleLine) {
+        return new PinnedReposViewHolder(getView(viewGroup,
+                singleLine ? R.layout.repos_row_item_menu : R.layout.repos_row_item), adapter);
     }
 
     @Override public void bind(@NonNull PinnedRepos pinnedRepos) {
@@ -74,14 +75,16 @@ public class PinnedReposViewHolder extends BaseViewHolder<PinnedRepos> {
             avatarLayout.setVisibility(View.VISIBLE);
             avatarLayout.setUrl(avatar, login, isOrg, LinkParserHelper.isEnterprise(repo.getHtmlUrl()));
         }
-        NumberFormat numberFormat = NumberFormat.getNumberInstance();
-        stars.setText(numberFormat.format(repo.getStargazersCount()));
-        forks.setText(numberFormat.format(repo.getForks()));
-        date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
-        if (!InputHelper.isEmpty(repo.getLanguage())) {
-            language.setText(repo.getLanguage());
-            language.setTextColor(ColorsProvider.getColorAsColor(repo.getLanguage(), language.getContext()));
-            language.setVisibility(View.VISIBLE);
+        if (stars != null && forks != null && date != null && language != null) {
+            NumberFormat numberFormat = NumberFormat.getNumberInstance();
+            stars.setText(numberFormat.format(repo.getStargazersCount()));
+            forks.setText(numberFormat.format(repo.getForks()));
+            date.setText(ParseDateFormat.getTimeAgo(repo.getUpdatedAt()));
+            if (!InputHelper.isEmpty(repo.getLanguage())) {
+                language.setText(repo.getLanguage());
+                language.setTextColor(ColorsProvider.getColorAsColor(repo.getLanguage(), language.getContext()));
+                language.setVisibility(View.VISIBLE);
+            }
         }
     }
 }

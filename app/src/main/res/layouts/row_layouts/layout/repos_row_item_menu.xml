@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:foreground="?android:selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingTop="@dimen/spacing_normal"
+    tools:ignore="RtlSymmetry">
+
+    <com.fastaccess.ui.widgets.AvatarLayout
+        android:id="@+id/avatarLayout"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/avatar_margin"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/title"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/keyline_1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?android:textColorPrimary"
+        android:textStyle="bold"
+        tools:text="When one acquires music and afterlife, one is able to capture heaven."/>
+
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

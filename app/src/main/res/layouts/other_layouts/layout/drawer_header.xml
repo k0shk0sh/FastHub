@@ -1,25 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="172dp"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/spacing_s_large">
+    android:layout_height="120dp"
+    android:gravity="bottom"
+    android:paddingBottom="@dimen/spacing_s_large"
+    android:orientation="horizontal">
 
-    <com.fastaccess.ui.widgets.AvatarLayout
-        android:id="@+id/navAvatarLayout"
-        android:layout_width="@dimen/header_icon_zie"
-        android:layout_height="@dimen/header_icon_zie"
-        android:layout_margin="@dimen/spacing_xs_large" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center">
+
+        <com.fastaccess.ui.widgets.AvatarLayout
+            android:id="@+id/navAvatarLayout"
+            android:layout_width="@dimen/large_icon_zie"
+            android:layout_height="@dimen/large_icon_zie"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/spacing_xs_large"
+            android:layout_marginStart="@dimen/spacing_xs_large"/>
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:id="@+id/donatedIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/navAvatarLayout"
+            android:layout_alignStart="@+id/navAvatarLayout"
+            android:layout_marginStart="@dimen/spacing_large"
+            android:contentDescription="@string/success_purchase_message"
+            android:src="@drawable/ic_heart_full"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/navAccHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_gravity="center"
-        android:layout_marginBottom="@dimen/spacing_normal"
+        android:layout_gravity="bottom|center"
         android:background="?selectableItemBackground"
         android:orientation="horizontal">
 
@@ -40,7 +59,7 @@
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/navUsername"
@@ -52,7 +71,7 @@
                 android:layout_marginStart="@dimen/spacing_xs_large"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-                android:text="@string/app_name" />
+                android:text="@string/app_name"/>
         </LinearLayout>
 
         <com.fastaccess.ui.widgets.ForegroundImageView
@@ -61,21 +80,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:padding="@dimen/spacing_normal"
-            android:src="@drawable/ic_arrow_drop_down" />
+            android:src="@drawable/ic_arrow_drop_down"/>
 
     </LinearLayout>
 
 
-    <com.fastaccess.ui.widgets.ForegroundImageView
-        android:id="@+id/donatedIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/navAvatarLayout"
-        android:layout_alignStart="@+id/navAvatarLayout"
-        android:layout_marginStart="@dimen/spacing_xlarge"
-        android:contentDescription="@string/success_purchase_message"
-        android:src="@drawable/ic_heart_full"
-        android:visibility="gone"
-        tools:visibility="visible" />
-
-</RelativeLayout>
+</LinearLayout>

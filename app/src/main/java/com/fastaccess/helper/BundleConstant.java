@@ -31,6 +31,7 @@ public class BundleConstant {
     public static final String REVIEW_EXTRA = "review_extra";
     public static final int REQUEST_CODE = 2016;
     public static final int REVIEW_REQUEST_CODE = 2017;
+    public static int REFRESH_CODE = 64;
 
 
     @StringDef({

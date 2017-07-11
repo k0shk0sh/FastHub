@@ -345,7 +345,11 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     @Override protected void onNavToRepoClicked() {
-        startActivity(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(), getPresenter().getLogin(), RepoPagerMvp.ISSUES));
+        Intent intent = RepoPagerActivity.createIntent(this, getPresenter().getRepoId(), getPresenter().getLogin(), RepoPagerMvp.ISSUES);
+        Bundle bundle = intent.getExtras();
+        bundle.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise());
+        intent.putExtras(bundle);
+        startActivity(intent);
         finish();
     }
 

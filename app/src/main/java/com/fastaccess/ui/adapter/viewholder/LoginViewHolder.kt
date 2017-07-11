@@ -20,13 +20,13 @@ class LoginViewHolder private constructor(itemView: View, adapter: BaseRecyclerA
     val title: FontTextView by bindView(R.id.title)
 
     override fun bind(login: Login) {
-        avatarLayout.setUrl(login.avatarUrl, login.login, false, false)
+        avatarLayout.setUrl(login.avatarUrl, null, false, false)
         title.text = login.login
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): LoginViewHolder {
-            return LoginViewHolder(BaseViewHolder.getView(parent, R.layout.login_row_item), adapter)
+        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>, small: Boolean): LoginViewHolder {
+            return LoginViewHolder(BaseViewHolder.getView(parent, if (small) R.layout.login_row_item_menu else R.layout.login_row_item), adapter)
         }
     }
 }

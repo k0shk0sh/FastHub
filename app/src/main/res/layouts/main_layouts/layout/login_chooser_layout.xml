@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout
+    android:id="@+id/viewGroup"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -17,156 +18,221 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/spacing_s_large"
-            android:minHeight="350dp"
-            android:minWidth="250dp"
-            app:cardElevation="@dimen/spacing_normal">
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/loginForm"
+            <android.support.v7.widget.CardView
+                android:id="@+id/multiAccLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/spacing_xs_large"
+                android:layout_marginEnd="@dimen/spacing_s_large"
+                android:layout_marginStart="@dimen/spacing_s_large"
+                android:minWidth="250dp"
+                android:visibility="gone"
+                app:cardElevation="@dimen/spacing_normal">
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="?colorAccent"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/spacing_xs_large"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large"
-                    android:paddingTop="@dimen/spacing_xs_large">
+                    android:orientation="vertical">
 
-                    <com.fastaccess.ui.widgets.FontTextView
-                        android:id="@+id/mainCard"
-                        style="@style/TextAppearance.AppCompat.Title.Inverse"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/spacing_xs_large"
-                        android:text="@string/sign_in_to_github"/>
-
-                    <com.fastaccess.ui.widgets.FontTextView
-                        style="@style/TextAppearance.AppCompat.Medium"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/choose_your_login_type"
-                        android:textColor="@color/material_blue_accent_100"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/spacing_normal"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/spacing_normal"
-                    android:paddingEnd="@dimen/spacing_xs_large"
-                    android:paddingStart="@dimen/spacing_xs_large"
-                    android:paddingTop="@dimen/spacing_normal">
-
-                    <com.fastaccess.ui.widgets.FontTextView
-                        android:id="@+id/basicAuth"
-                        style="@style/TextAppearance.AppCompat.Title"
+                    <LinearLayout
+                        android:id="@+id/toggle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="?selectableItemBackground"
-                        android:gravity="center"
-                        android:padding="@dimen/spacing_xs_large"
-                        android:text="@string/basic_authentication"
-                        android:textColor="@color/material_green_700"/>
-
-                    <com.fastaccess.ui.widgets.FontTextView
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_border"
-                        android:gravity="center"
+                        android:orientation="horizontal"
                         android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingEnd="@dimen/spacing_large"
-                        android:paddingStart="@dimen/spacing_large"
-                        android:text="@string/or_character"/>
+                        android:paddingTop="@dimen/spacing_normal">
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/Base.TextAppearance.AppCompat.Subhead"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:paddingEnd="@dimen/spacing_xs_large"
+                            android:paddingStart="@dimen/spacing_xs_large"
+                            android:text="@string/choose_account"
+                            android:textColor="@color/search_tab_highlighter"/>
+
+                        <com.fastaccess.ui.widgets.ForegroundImageView
+                            android:id="@+id/toggleImage"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/spacing_normal"
+                            android:layout_marginStart="@dimen/spacing_normal"
+                            android:src="@drawable/ic_arrow_drop_down"
+                            android:tint="@color/black"/>
+                    </LinearLayout>
+
+                    <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                        android:id="@+id/recycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing_normal"
+                        android:visibility="gone"
+                        app:layoutManager="@string/linear_layout_manager"/>
+                </LinearLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/spacing_s_large"
+                android:minHeight="350dp"
+                android:minWidth="250dp"
+                app:cardElevation="@dimen/spacing_normal">
+
+                <LinearLayout
+                    android:id="@+id/loginForm"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:background="?colorAccent"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/spacing_xs_large"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
+                        android:paddingTop="@dimen/spacing_xs_large">
 
                         <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/accessToken"
-                            style="@style/TextAppearance.AppCompat.Medium"
-                            android:layout_width="0dp"
+                            android:id="@+id/mainCard"
+                            style="@style/TextAppearance.AppCompat.Title.Inverse"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="?selectableItemBackground"
+                            android:layout_gravity="center"
                             android:gravity="center"
                             android:paddingBottom="@dimen/spacing_xs_large"
-                            android:paddingTop="@dimen/spacing_xs_large"
-                            android:text="@string/access_token"
-                            android:textColor="@color/material_pink_700"/>
-
-                        <View
-                            android:layout_width="0.5dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginBottom="@dimen/spacing_normal"
-                            android:layout_marginTop="@dimen/spacing_normal"
-                            android:background="@drawable/left_border"/>
+                            android:text="@string/sign_in_to_github"/>
 
                         <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/enterprise"
                             style="@style/TextAppearance.AppCompat.Medium"
-                            android:layout_width="0dp"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="?selectableItemBackground"
                             android:gravity="center"
-                            android:paddingBottom="@dimen/spacing_xs_large"
-                            android:paddingTop="@dimen/spacing_xs_large"
-                            android:text="@string/enterprise"
-                            android:textColor="@color/material_purple_700"/>
+                            android:text="@string/choose_your_login_type"
+                            android:textColor="@color/material_blue_accent_100"/>
                     </LinearLayout>
 
-                    <com.fastaccess.ui.widgets.FontTextView
-                        style="@style/TextAppearance.AppCompat.Small"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/bottom_border"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/spacing_normal"
-                        android:paddingEnd="@dimen/spacing_large"
-                        android:paddingStart="@dimen/spacing_large"
-                        android:text="@string/or_character"/>
-
-                    <com.fastaccess.ui.widgets.FontTextView
-                        style="@style/TextAppearance.AppCompat.Small"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/spacing_normal"
                         android:gravity="center"
-                        android:text="@string/login_using_your_default_browser"/>
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/spacing_normal"
+                        android:paddingEnd="@dimen/spacing_xs_large"
+                        android:paddingStart="@dimen/spacing_xs_large"
+                        android:paddingTop="@dimen/spacing_normal">
 
-                    <com.fastaccess.ui.widgets.FontButton
-                        android:id="@+id/browserLogin"
-                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/spacing_normal"
-                        android:text="@string/open_in_browser"/>
+                        <com.fastaccess.ui.widgets.FontTextView
+                            android:id="@+id/basicAuth"
+                            style="@style/TextAppearance.AppCompat.Title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="?selectableItemBackground"
+                            android:gravity="center"
+                            android:padding="@dimen/spacing_xs_large"
+                            android:text="@string/basic_authentication"
+                            android:textColor="@color/material_green_700"/>
 
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bottom_border"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_large"
+                            android:paddingStart="@dimen/spacing_large"
+                            android:text="@string/or_character"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                android:id="@+id/accessToken"
+                                style="@style/TextAppearance.AppCompat.Medium"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?selectableItemBackground"
+                                android:gravity="center"
+                                android:paddingBottom="@dimen/spacing_xs_large"
+                                android:paddingTop="@dimen/spacing_xs_large"
+                                android:text="@string/access_token"
+                                android:textColor="@color/material_pink_700"/>
+
+                            <View
+                                android:layout_width="0.5dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/spacing_normal"
+                                android:layout_marginTop="@dimen/spacing_normal"
+                                android:background="@drawable/left_border"/>
+
+                            <com.fastaccess.ui.widgets.FontTextView
+                                android:id="@+id/enterprise"
+                                style="@style/TextAppearance.AppCompat.Medium"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:background="?selectableItemBackground"
+                                android:gravity="center"
+                                android:paddingBottom="@dimen/spacing_xs_large"
+                                android:paddingTop="@dimen/spacing_xs_large"
+                                android:text="@string/enterprise"
+                                android:textColor="@color/material_purple_700"/>
+                        </LinearLayout>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/bottom_border"
+                            android:gravity="center"
+                            android:paddingBottom="@dimen/spacing_normal"
+                            android:paddingEnd="@dimen/spacing_large"
+                            android:paddingStart="@dimen/spacing_large"
+                            android:text="@string/or_character"/>
+
+                        <com.fastaccess.ui.widgets.FontTextView
+                            style="@style/TextAppearance.AppCompat.Small"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_xs_large"
+                            android:gravity="center"
+                            android:text="@string/login_using_your_default_browser"/>
+
+                        <com.fastaccess.ui.widgets.FontButton
+                            android:id="@+id/browserLogin"
+                            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/spacing_normal"
+                            android:text="@string/open_in_browser"/>
+
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
 

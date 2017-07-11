@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.NavigationView
+    android:id="@+id/menusHolder"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
@@ -12,8 +13,6 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/extrasNav"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
@@ -28,12 +27,10 @@
 
     <android.support.design.widget.NavigationView
         android:id="@+id/accountsNav"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_marginTop="172dp"
+        android:layout_marginTop="120dp"
         android:background="?android:windowBackground"
         android:clickable="true"
         android:clipToPadding="false"
@@ -49,36 +46,139 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-            <FrameLayout
-                android:id="@+id/addAccLayout"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="?selectableItemBackground"
-                android:orientation="horizontal"
-                android:padding="@dimen/spacing_xs_large">
+                android:background="@drawable/bottom_border">
 
-                <android.support.v7.widget.AppCompatImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:src="@drawable/ic_add"/>
-
-                <com.fastaccess.ui.widgets.FontTextView
-                    style="@style/TextAppearance.AppCompat.Subhead"
+                <FrameLayout
+                    android:id="@+id/addAccLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="start|center"
-                    android:paddingStart="@dimen/spacing_xlarge"
-                    android:text="@string/add_account"
-                    android:textColor="@color/search_tab_highlighter"/>
-            </FrameLayout>
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large">
 
-            <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
-                android:id="@+id/accLists"
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:src="@drawable/ic_add"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:paddingStart="@dimen/keyline_1"
+                        android:text="@string/add_account"
+                        android:textColor="@color/search_tab_highlighter"/>
+                </FrameLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/toggleAccountsLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutManager="@string/linear_layout_manager"/>
+                android:layout_marginBottom="@dimen/spacing_normal"
+                android:background="@drawable/bottom_border"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <FrameLayout
+                    android:id="@+id/toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:src="@drawable/ic_profile"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:paddingEnd="@dimen/keyline_1"
+                        android:paddingStart="@dimen/keyline_1"
+                        android:text="@string/choose_account"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/toggleImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:src="@drawable/ic_arrow_drop_down"/>
+                </FrameLayout>
+
+                <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                    android:id="@+id/accLists"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layoutManager="@string/linear_layout_manager"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/togglePinned"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:src="@drawable/ic_pin"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:paddingEnd="@dimen/keyline_1"
+                        android:paddingStart="@dimen/keyline_1"
+                        android:text="@string/pinned"
+                        android:textColor="@color/search_tab_highlighter"/>
+
+                    <com.fastaccess.ui.widgets.ForegroundImageView
+                        android:id="@+id/togglePinnedImage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center"
+                        android:layout_marginEnd="@dimen/spacing_normal"
+                        android:layout_marginStart="@dimen/spacing_normal"
+                        android:rotation="180"
+                        android:src="@drawable/ic_arrow_drop_down"/>
+                </FrameLayout>
+
+                <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+                    android:id="@+id/pinnedList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="@string/linear_layout_manager"/>
+            </LinearLayout>
 
         </LinearLayout>
 

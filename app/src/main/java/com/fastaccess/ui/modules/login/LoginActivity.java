@@ -1,7 +1,6 @@
 package com.fastaccess.ui.modules.login;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,13 +12,11 @@ import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import com.evernote.android.state.State;
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
@@ -28,24 +25,17 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.ui.base.BaseActivity;
-import com.fastaccess.ui.modules.main.MainActivity;
-import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog;
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.widgets.FontCheckbox;
-import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 import com.miguelbcr.io.rx_billing_service.entities.ProductType;
 import com.miguelbcr.io.rx_billing_service.entities.Purchase;
-
-import java.util.Arrays;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnEditorAction;
-import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
 import io.reactivex.functions.Action;
 
@@ -272,7 +262,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
             getPresenter().login(InputHelper.toString(username),
                     InputHelper.toString(password),
                     InputHelper.toString(twoFactor),
-                    isBasicAuth, endpoint != null ? InputHelper.toString(endpoint) : null, isEnterprise());
+                    isBasicAuth, InputHelper.toString(endpoint));
         }
     }
 }

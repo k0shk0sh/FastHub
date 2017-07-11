@@ -175,7 +175,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     @Override public void onInitOrg(boolean isMember) {
         hideProgress();
         FragmentsPagerAdapter adapter = new FragmentsPagerAdapter(getSupportFragmentManager(),
-                FragmentPagerAdapterModel.buildForOrg(this, login, isMember, isEnterprise()));
+                FragmentPagerAdapterModel.buildForOrg(this, login, isMember));
         pager.setAdapter(adapter);
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
