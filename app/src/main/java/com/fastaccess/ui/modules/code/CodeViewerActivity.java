@@ -18,6 +18,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
@@ -36,14 +37,20 @@ public class CodeViewerActivity extends BaseActivity {
     @State String htmlUrl;
 
     public static void startActivity(@NonNull Context context, @NonNull String url, @NonNull String htmlUrl) {
-        if (!InputHelper.isEmpty(url)) context.startActivity(createIntent(context, url, htmlUrl));
+        if (!InputHelper.isEmpty(url)) {
+            Intent intent = ActivityHelper.editBundle(createIntent(context, url, htmlUrl), LinkParserHelper.isEnterprise(htmlUrl));
+            context.startActivity(intent);
+        }
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String url, @NonNull String htmlUrl) {
         Intent intent = new Intent(context, CodeViewerActivity.class);
+        boolean isEnterprise = LinkParserHelper.isEnterprise(htmlUrl);
+        url = LinkParserHelper.getEnterpriseGistUrl(url, isEnterprise);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TWO, htmlUrl)
                 .put(BundleConstant.EXTRA, url)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
     }
@@ -109,12 +116,14 @@ public class CodeViewerActivity extends BaseActivity {
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             Uri uri = Uri.parse(url);
-            if (uri.getHost().contains("gist.github")) {
-                if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty() && uri.getPathSegments().size() >= 1) {
-                    GistActivity.createIntent(this, uri.getPathSegments().get(1));
+            if (uri.getPathSegments() != null) {
+                if (uri.getPathSegments().indexOf("gist") != -1 || uri.toString().contains("raw/gist")) {
+                    if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty() && uri.getPathSegments().size() >= 1) {
+                        GistActivity.createIntent(this, uri.getPathSegments().get(1), isEnterprise());
+                    }
+                } else {
+                    RepoFilesActivity.startActivity(this, url, isEnterprise());
                 }
-            } else {
-                RepoFilesActivity.startActivity(this, url);
             }
             finish();
             return true;

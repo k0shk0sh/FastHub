@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.feeds;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -11,15 +12,18 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitCommitModel;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -154,7 +158,10 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
             SchemeParser.launchUri(getContext(), Uri.parse(((SimpleUrlsModel) item).getItem()));
         } else if (item instanceof GitCommitModel) {
             GitCommitModel model = (GitCommitModel) item;
-            SchemeParser.launchUri(getContext(), Uri.parse(model.getUrl()));
+            NameParser nameParser = new NameParser(model.getUrl());
+            Intent intent = CommitPagerActivity.createIntent(getContext(), nameParser.getName(),
+                    nameParser.getUsername(), model.getSha(), true, LinkParserHelper.isEnterprise(model.getUrl()));
+            getContext().startActivity(intent);
         }
     }
 

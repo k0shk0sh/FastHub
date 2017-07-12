@@ -55,7 +55,6 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
         if (getArguments().getString(BundleConstant.EXTRA) == null) {
             throw new NullPointerException("Username is null");
         }
-        getPresenter().setEnterprise(getArguments().getBoolean(BundleConstant.IS_ENTERPRISE));
         stateLayout.setEmptyText(R.string.no_gists);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
@@ -120,7 +119,7 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
     }
 
     @Override public void onStartGistView(@NonNull String gistId) {
-        startActivityForResult(GistActivity.createIntent(getContext(), gistId), BundleConstant.REQUEST_CODE);
+        startActivityForResult(GistActivity.createIntent(getContext(), gistId, isEnterprise()), BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

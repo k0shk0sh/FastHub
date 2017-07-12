@@ -26,20 +26,24 @@ public class ReleasesListActivity extends BaseActivity {
         return intent;
     }
 
-    public static Intent getIntent(@NonNull Context context, @NonNull String username, @NonNull String repoId, @NonNull String tag) {
+    public static Intent getIntent(@NonNull Context context, @NonNull String username, @NonNull String repoId,
+                                   @NonNull String tag, boolean isEnterprise) {
         Intent intent = new Intent(context, ReleasesListActivity.class);
         intent.putExtras(Bundler.start().put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, username)
                 .put(BundleConstant.EXTRA_THREE, tag)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
     }
 
-    public static Intent getIntent(@NonNull Context context, @NonNull String username, @NonNull String repoId, long id) {
+    public static Intent getIntent(@NonNull Context context, @NonNull String username, @NonNull String repoId,
+                                   long id, boolean isEnterprise) {
         Intent intent = new Intent(context, ReleasesListActivity.class);
         intent.putExtras(Bundler.start().put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, username)
                 .put(BundleConstant.EXTRA_TWO, id)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
     }

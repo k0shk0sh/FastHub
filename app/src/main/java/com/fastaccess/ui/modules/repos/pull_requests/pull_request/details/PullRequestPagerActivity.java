@@ -82,19 +82,23 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
         return createIntent(context, repoId, login, number, false);
-
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number, boolean showRepoBtn) {
+        return createIntent(context, repoId, login, number, showRepoBtn, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      int number, boolean showRepoBtn, boolean isEnterprise) {
         Intent intent = new Intent(context, PullRequestPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showRepoBtn)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
-
     }
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
@@ -384,7 +388,9 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override protected void onNavToRepoClicked() {
-        startActivity(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(), getPresenter().getLogin(), RepoPagerMvp.PULL_REQUEST));
+        Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(),
+                getPresenter().getLogin(), RepoPagerMvp.PULL_REQUEST), isEnterprise());
+        startActivity(intent);
         finish();
     }
 

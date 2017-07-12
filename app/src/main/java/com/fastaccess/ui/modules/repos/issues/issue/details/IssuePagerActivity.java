@@ -77,12 +77,20 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId,
                                       @NonNull String login, int number, boolean showToRepoBtn) {
+        return createIntent(context, repoId, login, number, showToRepoBtn, false);
+
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId,
+                                      @NonNull String login, int number, boolean showToRepoBtn,
+                                      boolean isEnterprise) {
         Intent intent = new Intent(context, IssuePagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showToRepoBtn)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
 
@@ -345,10 +353,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     @Override protected void onNavToRepoClicked() {
-        Intent intent = RepoPagerActivity.createIntent(this, getPresenter().getRepoId(), getPresenter().getLogin(), RepoPagerMvp.ISSUES);
-        Bundle bundle = intent.getExtras();
-        bundle.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise());
-        intent.putExtras(bundle);
+        Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(),
+                getPresenter().getLogin(), RepoPagerMvp.ISSUES), isEnterprise());
         startActivity(intent);
         finish();
     }

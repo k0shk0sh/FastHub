@@ -4,13 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -108,7 +107,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
     }
 
     @Override public void onItemClick(int position, View v, Repo item) {
-        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+        SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
     @Override public void onItemLongClick(int position, View v, Repo item) {}

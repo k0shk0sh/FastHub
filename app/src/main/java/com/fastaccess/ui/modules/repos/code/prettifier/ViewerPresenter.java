@@ -40,7 +40,10 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             sendToView(BaseMvp.FAView::hideProgress);
         } else {
             if (code == 406) {
-                sendToView(view -> view.openUrl(url));
+                sendToView(view -> {
+                    view.hideProgress();
+                    view.openUrl(url);
+                });
                 return;
             }
             onWorkOffline();

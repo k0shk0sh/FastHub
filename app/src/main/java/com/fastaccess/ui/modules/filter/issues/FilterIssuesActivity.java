@@ -81,13 +81,14 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     private PopupWindow popupWindow;
 
     public static void startActivity(@NonNull Activity context, @NonNull String login, @NonNull String repoId,
-                                     boolean isIssue, boolean isOpen) {
+                                     boolean isIssue, boolean isOpen, boolean isEnterprise) {
         Intent intent = new Intent(context, FilterIssuesActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, isIssue)
                 .put(BundleConstant.EXTRA_THREE, isOpen)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         View view = context.findViewById(R.id.fab);
         if (view != null) {

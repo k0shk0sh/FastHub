@@ -69,15 +69,21 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
                                       @NonNull String sha, boolean showRepoBtn) {
+        return createIntent(context, repoId, login, sha, showRepoBtn, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      @NonNull String sha, boolean showRepoBtn,
+                                      boolean isEnterprise) {
         Intent intent = new Intent(context, CommitPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, sha)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showRepoBtn)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
-
     }
 
     public static void createIntentForOffline(@NonNull Context context, @NonNull Commit commitModel) {
@@ -232,6 +238,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         NameParser nameParser = new NameParser("");
         nameParser.setName(getPresenter().getRepoId());
         nameParser.setUsername(getPresenter().getLogin());
+        nameParser.setEnterprise(isEnterprise());
         RepoPagerActivity.startRepoPager(this, nameParser);
         finish();
     }

@@ -104,4 +104,18 @@ public class LinkParserHelper {
         }
         return url;
     }
+
+    public static String getEnterpriseGistUrl(@NonNull String url, boolean isEnterprise) {
+        if (isEnterprise) {
+            Uri uri = Uri.parse(url);
+            boolean isGist = uri == null || uri.getPathSegments() == null ? url.contains("gist/") : uri.getPathSegments().get(0).equals("gist");
+            if (isGist) {
+                String enterpriseUrl = PrefGetter.getEnterpriseUrl();
+                if (!url.contains(enterpriseUrl + "/raw/")) {
+                    url = url.replace(enterpriseUrl, enterpriseUrl + "/raw");
+                }
+            }
+        }
+        return url;
+    }
 }

@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
@@ -37,10 +38,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class ActivityHelper {
 
-    private static int BUTTON_ID = 32;
-
-    @Nullable
-    public static Activity getActivity(@Nullable Context content) {
+    @Nullable public static Activity getActivity(@Nullable Context content) {
         if (content == null) return null;
         else if (content instanceof Activity) return (Activity) content;
         else if (content instanceof ContextWrapper) return getActivity(((ContextWrapper) content).getBaseContext());
@@ -106,8 +104,7 @@ public class ActivityHelper {
         openChooser(context, Uri.parse(url));
     }
 
-    @SafeVarargs
-    public static void start(@NonNull Activity activity, Class cl, Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, Class cl, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(activity, cl);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
@@ -140,8 +137,8 @@ public class ActivityHelper {
         activity.startActivity(intent, options.toBundle());
     }
 
-    @SafeVarargs
-    public static void start(@NonNull Activity activity, @NonNull Intent intent, @NonNull Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent,
+                                          @NonNull Pair<View, String>... sharedElements) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
 
@@ -162,8 +159,7 @@ public class ActivityHelper {
     }
 
     @SuppressWarnings("RestrictedApi")
-    @Nullable
-    public static Fragment getVisibleFragment(@NonNull FragmentManager manager) {
+    @Nullable public static Fragment getVisibleFragment(@NonNull FragmentManager manager) {
         List<Fragment> fragments = manager.getFragments();
         if (fragments != null && !fragments.isEmpty()) {
             for (Fragment fragment : fragments) {
@@ -243,5 +239,13 @@ public class ActivityHelper {
         pm.setComponentEnabledSetting(new ComponentName(context, LinksParserActivity.class), flag, PackageManager.DONT_KILL_APP);
     }
 
+    public static Intent editBundle(@NonNull Intent intent, boolean isEnterprise) {
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+            intent.putExtras(bundle);
+        }
+        return intent;
+    }
 
 }

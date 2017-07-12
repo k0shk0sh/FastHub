@@ -168,7 +168,6 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
             hideProgress();
             onRestartApp();
         });
-        ActivityHelper.activateLinkInterceptorActivity(this, !isEnterprise());
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {

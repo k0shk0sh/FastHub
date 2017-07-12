@@ -92,10 +92,6 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
         return false;
     }
 
-    private void onSearch() {
-        getPresenter().onSearchClicked(searchEditText, searchOptions.getSelectedItemPosition() == 0);
-    }
-
     @OnClick(value = {R.id.clear}) void onClear(View view) {
         if (view.getId() == R.id.clear) {
             searchEditText.setText("");
@@ -110,5 +106,9 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
 
     @Override public void onValidSearchQuery(@NonNull String query) {
         searchCodeFragment.onSetSearchQuery(query, false);
+    }
+
+    private void onSearch() {
+        getPresenter().onSearchClicked(searchEditText, searchOptions.getSelectedItemPosition() == 0);
     }
 }

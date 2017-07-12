@@ -13,9 +13,9 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.SearchCodeModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.SearchCodeAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -155,7 +155,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
 
     @Override public void onItemClicked(@NonNull SearchCodeModel item) {
         if (item.getUrl() != null) {
-            CodeViewerActivity.startActivity(getContext(), item.getUrl(), item.getHtmlUrl());
+            SchemeParser.launchUri(getContext(), item.getHtmlUrl());
         } else {
             showErrorMessage(getString(R.string.no_url));
         }

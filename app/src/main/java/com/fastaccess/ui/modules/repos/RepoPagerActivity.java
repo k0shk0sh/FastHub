@@ -110,7 +110,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
         if (!InputHelper.isEmpty(nameParser.getName()) && !InputHelper.isEmpty(nameParser.getUsername())) {
-            context.startActivity(createIntent(context, nameParser.getName(), nameParser.getUsername()));
+            Intent intent = new Intent(context, RepoPagerActivity.class);
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.ID, nameParser.getName())
+                    .put(BundleConstant.EXTRA_TWO, nameParser.getUsername())
+                    .put(BundleConstant.EXTRA_TYPE, RepoPagerMvp.CODE)
+                    .put(BundleConstant.IS_ENTERPRISE, nameParser.isEnterprise())
+                    .end());
+            context.startActivity(intent);
         }
     }
 
@@ -162,7 +169,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                     RepoPullRequestPagerFragment.TAG);
             if (pullRequestPagerView != null) {
                 FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), false,
-                        pullRequestPagerView.getCurrentItem() == 0);
+                        pullRequestPagerView.getCurrentItem() == 0, isEnterprise());
             }
         } else {
             fab.hide();
@@ -556,7 +563,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         if (pagerView != null) {
             isOpen = pagerView.getCurrentItem() == 0;
         }
-        FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen);
+        FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen, isEnterprise());
     }
 
     private void showHideFab() {

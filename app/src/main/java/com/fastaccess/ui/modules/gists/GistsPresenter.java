@@ -77,7 +77,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
     }
 
     @Override public void onItemClick(int position, View v, Gist item) {
-        v.getContext().startActivity(GistActivity.createIntent(v.getContext(), item.getGistId()));
+        v.getContext().startActivity(GistActivity.createIntent(v.getContext(), item.getGistId(), isEnterprise()));
     }
 
     @Override public void onItemLongClick(int position, View v, Gist item) {}

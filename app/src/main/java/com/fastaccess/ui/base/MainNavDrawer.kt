@@ -14,6 +14,7 @@ import com.fastaccess.data.dao.model.PinnedRepos
 import com.fastaccess.helper.ActivityHelper
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
+import com.fastaccess.provider.scheme.SchemeParser
 import com.fastaccess.ui.adapter.LoginAdapter
 import com.fastaccess.ui.adapter.PinnedReposAdapter
 import com.fastaccess.ui.modules.about.FastHubAboutActivity
@@ -89,6 +90,15 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         val togglePinned = view.findViewById<View>(R.id.togglePinned)
         val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
         val pinnedListAdapter = PinnedReposAdapter(true)
+        pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
+            override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
+                if (v != null && item != null) {
+                    SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl)
+                }
+            }
+
+            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
+        }
         togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
 
         togglePinned.setOnClickListener {
@@ -152,7 +162,6 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     override fun onItemLongClick(position: Int, v: View?, item: Login) {}
 
     override fun onItemClick(position: Int, v: View, item: Login) {
-        ActivityHelper.activateLinkInterceptorActivity(v.context, !item.isIsEnterprise)
         view.getPresenter().manageViewDisposable(RxHelper.getObserver(Login.onMultipleLogin(item, item.isIsEnterprise, false))
                 .doOnSubscribe { view.showProgress(0) }
                 .doFinally { view.hideProgress() }
