@@ -198,13 +198,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @OnClick(R.id.tagsIcon) void onTagsClick() {
-        if (topicsList.getAdapter().getItemCount() > 0)
+        if (topicsList.getAdapter().getItemCount() > 0) {
             TransitionManager.beginDelayedTransition(topicsList);
-        topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        }
     }
 
-    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout, R.id.wikiLayout, R.id.licenseLayout})
-    void onClick(View view) {
+    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout,
+            R.id.pinLayout, R.id.wikiLayout, R.id.licenseLayout}) void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 MessageDialogView.newInstance(getString(R.string.fork), String.format("%s %s/%s?", getString(R.string.fork), login, repoId),

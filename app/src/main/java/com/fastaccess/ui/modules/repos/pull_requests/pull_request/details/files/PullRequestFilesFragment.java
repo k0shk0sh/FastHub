@@ -17,6 +17,7 @@ import com.fastaccess.data.dao.CommitLinesModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -176,7 +177,8 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
             CommentRequestModel commentRequestModel = new CommentRequestModel();
             commentRequestModel.setBody(comment);
             commentRequestModel.setPath(path);
-            commentRequestModel.setPosition(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            commentRequestModel.setPosition(item.getPosition());
+            Logger.e(commentRequestModel.getPosition());
             if (viewCallback != null) viewCallback.onAddComment(commentRequestModel);
         }
     }

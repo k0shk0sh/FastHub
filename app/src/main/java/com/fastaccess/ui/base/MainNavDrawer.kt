@@ -67,7 +67,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
             TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
             val isVisible = recyclerView.visibility == View.VISIBLE
             recyclerView.visibility = if (isVisible) View.GONE else View.VISIBLE
-            toggleImage.rotation = if (!isVisible) 180f else 0f
+            toggleImage.rotation = if (recyclerView.visibility == View.VISIBLE) 180f else 0f
         }
         val adapter = LoginAdapter(true)
         view.getPresenter().manageViewDisposable(Login.getAccounts()
@@ -89,12 +89,13 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         val togglePinned = view.findViewById<View>(R.id.togglePinned)
         val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
         val pinnedListAdapter = PinnedReposAdapter(true)
+        togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
 
         togglePinned.setOnClickListener {
             TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
             val isVisible = pinnedList.visibility == View.VISIBLE
             pinnedList.visibility = if (isVisible) View.GONE else View.VISIBLE
-            togglePinnedImage.rotation = if (isVisible) 180f else 0f
+            togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
         }
 
         view.getPresenter().manageViewDisposable(PinnedRepos.getMenuRepos()
