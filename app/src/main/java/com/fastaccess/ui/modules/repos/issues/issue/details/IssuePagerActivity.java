@@ -197,7 +197,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             getPresenter().onLoadLabels();
             return true;
         } else if (item.getItemId() == R.id.edit) {
-            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getIssue());
+            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(),
+                    getPresenter().getIssue(), isEnterprise());
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())

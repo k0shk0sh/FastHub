@@ -169,7 +169,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         String login = getPresenter().login();
         String repoId = getPresenter().repoId();
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            CreateIssueActivity.startForResult(this, login, repoId);
+            CreateIssueActivity.startForResult(this, login, repoId, isEnterprise());
         }
     }
 

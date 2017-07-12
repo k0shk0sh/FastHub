@@ -62,10 +62,10 @@ public class AppHelper {
         return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD || themeType == PrefGetter.BLUISH;
     }
 
-    @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {
+    public static String getFastHubIssueTemplate(boolean enterprise) {
         String brand = (!isEmulator()) ? Build.BRAND : "Android Emulator";
         String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
-        return new StringBuilder()
+        StringBuilder builder = new StringBuilder()
                 .append("**FastHub Version: ")
                 .append(BuildConfig.VERSION_NAME)
                 .append("**")
@@ -80,16 +80,22 @@ public class AppHelper {
                 .append("  \n")
                 .append("- ")
                 .append(Build.MANUFACTURER)
-                .append("  \n")
-                .append("- ")
-                .append(brand)
-                .append("  \n")
-                .append("- ")
-                .append(model)
-                .append("\n\n")
+                .append("  \n");
+        if (!model.equalsIgnoreCase(brand)) {
+            builder.append("- ")
+                    .append(brand)
+                    .append("  \n")
+                    .append("- ")
+                    .append(model);
+        } else {
+            builder.append("- ").append(model);
+        }
+        builder.append("  \n")
+                .append("- Account Type:").append(" ").append(enterprise ? "Enterprise" : "GitHub");
+        builder.append("\n\n")
                 .append("---")
-                .append("\n\n")
-                .toString();
+                .append("\n\n");
+        return builder.toString();
     }
 
     public static void updateAppLanguage(@NonNull Context context) {
@@ -135,10 +141,10 @@ public class AppHelper {
         String model = Build.MODEL;
         if (model.startsWith(brand)) {
             return InputHelper.capitalizeFirstLetter(model);
-        } else if (isEmulator()){
+        } else if (isEmulator()) {
             return "Android Emulator";
         }
-        return InputHelper.capitalizeFirstLetter(brand) + " " + model;
+        return brand.equalsIgnoreCase(model) ? InputHelper.capitalizeFirstLetter(model) : InputHelper.capitalizeFirstLetter(brand) + " " + model;
     }
 
     private static boolean isEmulator() {

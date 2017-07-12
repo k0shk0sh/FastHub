@@ -94,7 +94,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             Activity activity = ActivityHelper.getActivity(v.getContext());
                             if (activity == null) return false;
                             CreateIssueActivity.startForResult(activity,
-                                    item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(), item.getPullRequest());
+                                    item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(),
+                                    item.getPullRequest(), isEnterprise());
                         } else if (item1.getItemId() == R.id.share) {
                             ActivityHelper.shareUrl(v.getContext(), item.getPullRequest().getHtmlUrl());
                         }

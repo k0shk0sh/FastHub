@@ -50,12 +50,13 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
 
     private CharSequence savedText;
 
-    public static void startForResult(@NonNull Fragment fragment, @NonNull String login, @NonNull String repoId) {
+    public static void startForResult(@NonNull Fragment fragment, @NonNull String login, @NonNull String repoId, boolean isEnterprise) {
         Intent intent = new Intent(fragment.getContext(), CreateIssueActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, login.equalsIgnoreCase("k0shk0sh") && repoId.equalsIgnoreCase("FastHub"))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         View view = fragment.getActivity() != null ? fragment.getActivity().findViewById(R.id.fab) : null;
         if (view != null) {
@@ -67,13 +68,14 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
 
 
     public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
-                                      @Nullable Issue issueModel) {
+                                      @Nullable Issue issueModel, boolean isEnterprise) {
         if (issueModel != null) {
             Intent intent = new Intent(activity, CreateIssueActivity.class);
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.ITEM, issueModel)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                     .end());
             View view = activity.findViewById(R.id.fab);
             if (view != null) {
@@ -85,13 +87,14 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     }
 
     public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
-                                      @Nullable PullRequest pullRequestModel) {
+                                      @Nullable PullRequest pullRequestModel, boolean isEnterprise) {
         if (pullRequestModel != null) {
             Intent intent = new Intent(activity, CreateIssueActivity.class);
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.ITEM, pullRequestModel)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                     .end());
             View view = activity.findViewById(R.id.fab);
             if (view != null) {
@@ -255,7 +258,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
 
     @OnTouch(R.id.description) boolean onTouch(MotionEvent event) {
         if (isFeedback && InputHelper.isEmpty(savedText)) {
-            savedText = AppHelper.getFastHubIssueTemplate();
+            savedText = AppHelper.getFastHubIssueTemplate(isEnterprise());
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             Intent intent = new Intent(this, EditorActivity.class);

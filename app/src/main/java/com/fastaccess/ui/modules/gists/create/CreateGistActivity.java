@@ -15,6 +15,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
@@ -82,7 +83,7 @@ public class CreateGistActivity extends BaseActivity<CreateGistMvp.View, CreateG
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getPresenter().setEnterprise(PrefGetter.isEnterprise());
         setTaskName(getString(R.string.create_gist));
     }
 

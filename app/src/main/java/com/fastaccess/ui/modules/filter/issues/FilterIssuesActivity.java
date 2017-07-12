@@ -310,7 +310,8 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
 
     private void onSearch() {
         if (!InputHelper.isEmpty(searchEditText)) {
-            getFilterFragment().onSearch(getRepoName() + InputHelper.toString(searchEditText), open.isSelected(), isIssue);
+            getFilterFragment().onSearch(getRepoName() + InputHelper.toString(searchEditText),
+                    open.isSelected(), isIssue, isEnterprise());
             searchEditText.setSelection(searchEditText.getEditableText().length());
         } else {
             getFilterFragment().onClear();
