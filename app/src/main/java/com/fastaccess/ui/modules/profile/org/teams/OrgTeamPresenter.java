@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.fastaccess.data.dao.TeamsModel;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.profile.org.teams.details.TeamPagerActivity;
@@ -55,7 +56,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
             sendToView(OrgTeamMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getOrgService().getOrgTeams(parameter, page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgTeams(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
@@ -71,6 +72,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
     }
 
     @Override public void onItemClick(int position, View v, TeamsModel item) {
+        Logger.e(item.getUrl());
         TeamPagerActivity.startActivity(v.getContext(), item.getId(), item.getName());
     }
 

@@ -2,7 +2,6 @@ package com.fastaccess.ui.widgets;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +12,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -36,17 +36,18 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     @BindView(R.id.avatar) ShapedImageView avatar;
     @Nullable private String login;
     private boolean isOrg;
+    private boolean isEnterprise;
     private Toast toast;
 
     @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
-        UserPagerActivity.startActivity(view.getContext(), login, isOrg);
+        UserPagerActivity.startActivity(view.getContext(), login, isOrg, isEnterprise);
     }
 
     @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return false;
         if (toast != null) toast.cancel();
-        toast = Toast.makeText(getContext(), view.getContentDescription(), Toast.LENGTH_SHORT);
+        toast = Toast.makeText(App.getInstance(), view.getContentDescription(), Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
         return true;
@@ -77,50 +78,50 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         inflate(getContext(), R.layout.avatar_layout, this);
         if (isInEditMode()) return;
         ButterKnife.bind(this);
+        setBackground();
         if (PrefGetter.isRectAvatar()) {
             avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 15);
         }
     }
 
     @Override public void onLoadingStarted(String imageUri, View view) {
-        setBackground(false);
+//        setBackground(false);
     }
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-        setBackground(true);
+        if (failReason.getCause() != null) failReason.getCause().printStackTrace();
+//        setBackground();
+        setImageOnFailed();
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-        setBackground(true);
+//        setBackground(true);
     }
 
     @Override public void onLoadingCancelled(String imageUri, View view) {}
 
-    public void setUrl(@Nullable String url, @Nullable String login) {
-        setUrl(url, login, false);
-    }
-
-    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg) {
+    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg, boolean isEnterprise) {
         this.login = login;
         this.isOrg = isOrg;
+        this.isEnterprise = isEnterprise;
         avatar.setContentDescription(login);
         if (url != null) {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
-            avatar.setImageResource(R.drawable.ic_github_dark);
+            setImageOnFailed();
         }
     }
 
-    private void setBackground(boolean clear) {
-        if (clear) {
-            setBackgroundColor(Color.TRANSPARENT);
+    private void setImageOnFailed() {
+        avatar.setImageResource(R.drawable.ic_github);
+    }
+
+    private void setBackground() {
+        if (PrefGetter.isRectAvatar()) {
+            setBackgroundResource(R.drawable.rect_shape);
         } else {
-            if (PrefGetter.isRectAvatar()) {
-                setBackgroundResource(R.drawable.rect_shape);
-            } else {
-                setBackgroundResource(R.drawable.circle_shape);
-            }
+            setBackgroundResource(R.drawable.circle_shape);
         }
     }
 }

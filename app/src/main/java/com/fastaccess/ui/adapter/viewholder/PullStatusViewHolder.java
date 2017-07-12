@@ -78,8 +78,7 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
                         builder.append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()));
                         if (!InputHelper.isEmpty(statusesModel.getTargetUrl())) {
                             builder.append(" ")
-                                    .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(),
-                                            Uri.parse(statusesModel.getTargetUrl())))
+                                    .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(), statusesModel.getTargetUrl()))
                                     .append("\n");
                         } else {
                             builder.append("\n");

@@ -66,6 +66,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
             StateSaver.restoreInstanceState(this, savedInstanceState);
             getPresenter().onRestoreInstanceState(savedInstanceState);
         }
+        getPresenter().setEnterprise(isEnterprise());
     }
 
     @SuppressLint("RestrictedApi") @Nullable @Override
@@ -150,6 +151,10 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
             }
         });
         return dialog;
+    }
+
+    @Override public boolean isEnterprise() {
+        return callback != null && callback.isEnterprise();
     }
 
 }

@@ -75,6 +75,7 @@ public class PrefGetter {
     private static final String WHATS_NEW_VERSION = "whats_new";
     private static final String ADS = "enable_ads";
     private static final String TOKEN = "token";
+    private static final String ENTERPRISE_TOKEN = "enterprise_token";
     private static final String USER_ICON_GUIDE = "user_icon_guide";
     private static final String RELEASE_GUIDE = "release_guide";
     private static final String FILE_OPTION_GUIDE = "file_option_guide";
@@ -86,6 +87,7 @@ public class PrefGetter {
     private static final String FAB_LONG_PRESS_REPO_GUIDE = "fab_long_press_repo_guide";
     private static final String WRAP_CODE = "wrap_code";
     private static final String OTP_CODE = "otp_code";
+    private static final String ENTERPRISE_OTP_CODE = "enterprise_otp_code";
     private static final String APP_LANGUAGE = "app_language";
     private static final String SENT_VIA = "sent_via";
     private static final String SENT_VIA_BOX = "sent_via_enabled";
@@ -94,20 +96,38 @@ public class PrefGetter {
     private static final String MIDNIGHTBLUE_THEME_ENABLED = "midnightblue_theme_enabled";
     private static final String BLUISH_THEME_ENABLED = "bluish_theme_enabled";
     private static final String PRO_ITEMS = "pro_items";
+    private static final String CODE_THEME = "code_theme";
+    private static final String ENTERPRISE_URL = "ENTERPRISE_URL";
 
-    public static void setToken(@NonNull String token) {
+    public static void setToken(@Nullable String token) {
         PrefHelper.set(TOKEN, token);
+    }
+
+    public static void setTokenEnterprise(@Nullable String token) {
+        PrefHelper.set(ENTERPRISE_TOKEN, token);
     }
 
     public static String getToken() {
         return PrefHelper.getString(TOKEN);
     }
 
+    public static String getEnterpriseToken() {
+        return PrefHelper.getString(ENTERPRISE_TOKEN);
+    }
+
+    public static String getEnterpriseOtpCode() {
+        return PrefHelper.getString(ENTERPRISE_OTP_CODE);
+    }
+
+    public static void setEnterpriseOtpCode(@Nullable String otp) {
+        PrefHelper.set(ENTERPRISE_OTP_CODE, otp);
+    }
+
     public static String getOtpCode() {
         return PrefHelper.getString(OTP_CODE);
     }
 
-    public static void setOtpCode(@NonNull String otp) {
+    public static void setOtpCode(@Nullable String otp) {
         PrefHelper.set(OTP_CODE, otp);
     }
 
@@ -377,5 +397,31 @@ public class PrefGetter {
 
     public static boolean hasSupported() {
         return isProEnabled() || isAmlodEnabled() || isBluishEnabled();
+    }
+
+    public static String getCodeTheme() {
+        return PrefHelper.getString(CODE_THEME);
+    }
+
+    public static void setCodeTheme(@NonNull String theme) {
+        PrefHelper.set(CODE_THEME, theme);
+    }
+
+    public static String getEnterpriseUrl() {
+        return PrefHelper.getString(ENTERPRISE_URL);
+    }
+
+    public static void setEnterpriseUrl(@Nullable String value) {
+        PrefHelper.set(ENTERPRISE_URL, value);
+    }
+
+    public static boolean isEnterprise() {
+        return !InputHelper.isEmpty(getEnterpriseUrl());
+    }
+
+    public static void resetEnterprise() {
+        PrefGetter.setTokenEnterprise(null);
+        PrefGetter.setEnterpriseOtpCode(null);
+        PrefGetter.setEnterpriseUrl(null);
     }
 }

@@ -9,14 +9,17 @@ import android.support.annotation.Nullable;
 import android.view.MenuItem;
 
 import com.annimon.stream.Objects;
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractRepo;
 import com.fastaccess.data.dao.model.Repo;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.main.MainActivity;
@@ -24,8 +27,6 @@ import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 
 import net.grandcentrix.thirtyinch.TiPresenter;
-
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 08 Apr 2017, 4:24 PM
@@ -36,13 +37,21 @@ public class RepoFilesActivity extends BaseActivity {
     @State String login;
     @State String repoId;
 
-    public static void startActivity(@NonNull Context context, @NonNull String url) {
+    public static void startActivity(@NonNull Context context, @NonNull String url, boolean isEnterprise) {
         if (!InputHelper.isEmpty(url)) {
-            context.startActivity(getIntent(context, url));
+            Intent intent = ActivityHelper.editBundle(getIntent(context, url), isEnterprise);
+            context.startActivity(intent);
         }
     }
 
     public static Intent getIntent(@NonNull Context context, @NonNull String url) {
+        boolean isEnterprise = LinkParserHelper.isEnterprise(url);
+        if (isEnterprise) {
+            url = url.replace("api/v3/", "");
+            if (url.contains("/raw")) {
+                url = url.replace("/raw", "");
+            }
+        }
         Uri uri = Uri.parse(url);
         if (uri.getPathSegments() != null && uri.getPathSegments().size() > 3) {
             String login = null;
@@ -89,6 +98,7 @@ public class RepoFilesActivity extends BaseActivity {
                         .put(BundleConstant.EXTRA, login)
                         .put(BundleConstant.EXTRA_TWO, path.toString())
                         .put(BundleConstant.EXTRA_THREE, branch)
+                        .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                         .end());
                 return intent;
             }
@@ -134,7 +144,8 @@ public class RepoFilesActivity extends BaseActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            startActivity(RepoPagerActivity.createIntent(this, repoId, login));
+            Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, repoId, login), isEnterprise());
+            startActivity(intent);
             finish();
             return true;
         }

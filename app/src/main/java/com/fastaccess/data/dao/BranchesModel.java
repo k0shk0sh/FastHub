@@ -17,11 +17,11 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class BranchesModel implements Parcelable {
 
-    private String name;
-    private Commit commit;
-    @SerializedName("protected") private boolean protectedBranch;
-    private String protectionUrl;
-    private boolean isTag;
+    public String name;
+    public Commit commit;
+    @SerializedName("protected") public boolean protectedBranch;
+    public String protectionUrl;
+    public boolean isTag;
 
     @Override public String toString() {
         return name;

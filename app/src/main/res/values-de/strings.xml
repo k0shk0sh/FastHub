@@ -378,7 +378,6 @@
     <string name="apply">Anwenden</string>
     <string name="filter">Filter</string>
     <string name="type">Typ</string>
-    <string name="Sort">Sortieren</string>
     <string name="sort_direction">Sortierungsrichtung</string>
     <string name="assignee_added">Assignee erfolgreich hinzugefügt</string>
     <string name="reviewer_added">Reviewer erfolgreich hinzugefügt</string>

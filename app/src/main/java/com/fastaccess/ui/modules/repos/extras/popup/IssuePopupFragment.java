@@ -25,6 +25,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.base.BaseMvpBottomSheetDialogFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontEditText;
@@ -132,7 +133,7 @@ public class IssuePopupFragment extends BaseMvpBottomSheetDialogFragment<IssuePo
         MarkDownProvider.setMdText(body, bodyString);
         if (user != null) {
             name.setText(user.getLogin());
-            avatarLayout.setUrl(user.getAvatarUrl(), user.getLogin());
+            avatarLayout.setUrl(user.getAvatarUrl(), user.getLogin(), false, LinkParserHelper.isEnterprise(user.getUrl()));
         }
         if (assigneeModel == null) {
             assigneeLayout.setVisibility(View.GONE);

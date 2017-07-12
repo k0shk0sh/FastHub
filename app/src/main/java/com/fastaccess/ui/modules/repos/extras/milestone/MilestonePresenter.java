@@ -24,7 +24,7 @@ public class MilestonePresenter extends BasePresenter<MilestoneMvp.View> impleme
     @Override public void onItemLongClick(int position, View v, MilestoneModel item) {}
 
     @Override public void onLoadMilestones(@NonNull String login, @NonNull String repo) {
-        makeRestCall(RestProvider.getRepoService().getMilestones(login, repo),
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getMilestones(login, repo),
                 response -> {
                     if (response == null || response.getItems() == null || response.getItems().isEmpty()) {
                         sendToView(view -> view.showMessage(R.string.error, R.string.no_milestones));

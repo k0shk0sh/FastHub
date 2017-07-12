@@ -2,7 +2,6 @@ package com.fastaccess.provider.rest.jsoup;
 
 import com.fastaccess.BuildConfig;
 import com.fastaccess.data.service.ScrapService;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
 import com.google.gson.Gson;
@@ -27,7 +26,7 @@ public class JsoupProvider {
                 client.addInterceptor(new HttpLoggingInterceptor()
                         .setLevel(HttpLoggingInterceptor.Level.BODY));
             }
-            client.addInterceptor(new AuthenticationInterceptor(PrefGetter.getToken(), PrefGetter.getOtpCode(), true));
+            client.addInterceptor(new AuthenticationInterceptor(true));
             okHttpClient = client.build();
         }
         return okHttpClient;

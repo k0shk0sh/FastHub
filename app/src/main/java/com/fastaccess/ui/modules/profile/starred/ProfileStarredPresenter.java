@@ -4,13 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -68,15 +67,15 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         }
         Observable<Pageable<Repo>> observable;
         if (starredCount == -1) {
-            observable = Observable.zip(RestProvider.getUserService().getStarred(parameter, page),
-                    RestProvider.getUserService().getStarredCount(parameter), (repoPageable, count) -> {
+            observable = Observable.zip(RestProvider.getUserService(isEnterprise()).getStarred(parameter, page),
+                    RestProvider.getUserService(isEnterprise()).getStarredCount(parameter), (repoPageable, count) -> {
                         if (count != null) {
                             starredCount = count.getLast();
                         }
                         return repoPageable;
                     });
         } else {
-            observable = RestProvider.getUserService().getStarred(parameter, page);
+            observable = RestProvider.getUserService(isEnterprise()).getStarred(parameter, page);
         }
         makeRestCall(observable, repoModelPageable -> {
             lastPage = repoModelPageable.getLast();
@@ -108,7 +107,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
     }
 
     @Override public void onItemClick(int position, View v, Repo item) {
-        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+        SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
     @Override public void onItemLongClick(int position, View v, Repo item) {}

@@ -19,7 +19,6 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
@@ -65,7 +64,7 @@ public class NotificationSchedulerJobTask extends JobService {
             login = Login.getUser();
         } catch (Exception ignored) {}
         if (login != null) {
-            RestProvider.getNotificationService()
+            RestProvider.getNotificationService(PrefGetter.isEnterprise())
                     .getNotifications(ParseDateFormat.getLastWeekDate())
                     .subscribeOn(Schedulers.io())
                     .subscribe(item -> {
@@ -106,7 +105,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 .setLifetime(Lifetime.FOREVER)
                 .setRecurring(true)
                 .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(10, duration))
+                .setTrigger(Trigger.executionWindow(duration / 2, duration))
                 .setService(NotificationSchedulerJobTask.class);
         dispatcher.mustSchedule(builder.build());
     }
@@ -135,9 +134,8 @@ public class NotificationSchedulerJobTask extends JobService {
                 .filter(notification -> notification.isUnread() && first.getId() != notification.getId())
                 .take(10)
                 .flatMap(notification -> {
-                    Logger.e(notification.getSubject().getTitle());
                     if (notification.getSubject() != null && notification.getSubject().getLatestCommentUrl() != null) {
-                        return RestProvider.getNotificationService()
+                        return RestProvider.getNotificationService(PrefGetter.isEnterprise())
                                 .getComment(notification.getSubject().getLatestCommentUrl())
                                 .subscribeOn(Schedulers.io());
                     } else {
@@ -276,7 +274,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private NotificationCompat.Builder getNotification(@NonNull String title, @NonNull String message) {
-        return new NotificationCompat.Builder(this)
+        return new NotificationCompat.Builder(this, title)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true);

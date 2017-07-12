@@ -32,7 +32,7 @@ public class CreateMilestonePresenter extends BasePresenter<CreateMilestoneMvp.V
                 if (!InputHelper.isEmpty(description)) {
                     createMilestoneModel.setDescription(description);
                 }
-                makeRestCall(RestProvider.getRepoService().createMilestone(login, repo, createMilestoneModel),
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).createMilestone(login, repo, createMilestoneModel),
                         milestoneModel -> {
                             if (milestoneModel != null) {
                                 sendToView(view -> view.onMilestoneAdded(milestoneModel));

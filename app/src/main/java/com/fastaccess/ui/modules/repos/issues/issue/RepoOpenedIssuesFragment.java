@@ -17,7 +17,6 @@ import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -115,7 +114,6 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Logger.e(requestCode, resultCode);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == BundleConstant.REQUEST_CODE) {
                 onRefresh();
@@ -171,7 +169,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         String login = getPresenter().login();
         String repoId = getPresenter().repoId();
         if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-            CreateIssueActivity.startForResult(this, login, repoId);
+            CreateIssueActivity.startForResult(this, login, repoId, isEnterprise());
         }
     }
 
@@ -181,7 +179,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
 
     @Override public void onOpenIssue(@NonNull PullsIssuesParser parser) {
         startActivityForResult(IssuePagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(),
-                parser.getNumber()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
+                parser.getNumber(), false, isEnterprise()), RepoIssuesMvp.ISSUE_REQUEST_CODE);
     }
 
     @Override public void onRefresh(boolean isLastUpdated) {

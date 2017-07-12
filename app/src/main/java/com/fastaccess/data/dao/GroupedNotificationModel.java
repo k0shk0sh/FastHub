@@ -26,8 +26,8 @@ import static com.annimon.stream.Collectors.toList;
 
 @Getter @Setter public class GroupedNotificationModel {
     public static final int HEADER = 1;
-
     public static final int ROW = 2;
+
     private int type;
     private Repo repo;
     private Notification notification;

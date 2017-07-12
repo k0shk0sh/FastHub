@@ -160,7 +160,6 @@
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/mal_title_licenses"
                 android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_license"/>
 

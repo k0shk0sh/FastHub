@@ -15,7 +15,7 @@
 
     <com.fastaccess.ui.widgets.FontTextView
         android:id="@+id/name"
-        style="@style/Base.TextAppearance.AppCompat.Body1"
+        style="@style/TextAppearance.AppCompat.Caption"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="marquee"

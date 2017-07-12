@@ -56,6 +56,7 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/clear"
                         android:padding="@dimen/spacing_micro"
+                        android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_clear"
                         android:visibility="invisible"/>

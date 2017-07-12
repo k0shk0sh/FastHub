@@ -9,6 +9,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SparseBooleanArrayParcelable;
 import com.fastaccess.data.dao.model.Comment;
@@ -28,7 +29,6 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_GIST_COMMENT_EXTRA;
 import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_GIST_COMMENT_EXTRA;
@@ -143,6 +143,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA_TYPE, EDIT_GIST_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -155,6 +156,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.ID, gistId)
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -179,6 +181,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -192,6 +195,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;

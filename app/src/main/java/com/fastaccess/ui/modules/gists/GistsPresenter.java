@@ -53,7 +53,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getGistService().getPublicGists(RestProvider.PAGE_SIZE, page),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).getPublicGists(RestProvider.PAGE_SIZE, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
@@ -77,7 +77,7 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
     }
 
     @Override public void onItemClick(int position, View v, Gist item) {
-        v.getContext().startActivity(GistActivity.createIntent(v.getContext(), item.getGistId()));
+        v.getContext().startActivity(GistActivity.createIntent(v.getContext(), item.getGistId(), isEnterprise()));
     }
 
     @Override public void onItemLongClick(int position, View v, Gist item) {}

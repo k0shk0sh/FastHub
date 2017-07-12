@@ -42,6 +42,7 @@
         <item name="android:dialogTheme">@style/DialogThemeLight</item>
         <item name="android:alertDialogTheme">@style/DialogThemeLight</item>
         <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+        <item name="android:navigationBarColor">@color/light_primary</item>
     </style>
 
     <style name="ThemeLight.Red" parent="ThemeLight.Base">
@@ -140,6 +141,13 @@
 
 
     <style name="DialogThemeLight" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleLight</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">@color/cardview_light_background</item>
+        <item name="icon_color">#212121</item>
+        <item name="comment_box_style">@style/CommentBoxLight</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundLight</item>
         <item name="colorPrimary">@color/light_primary</item>
         <item name="colorPrimaryDark">@color/light_primary_dark</item>
         <item name="colorAccent">@color/light_accent</item>

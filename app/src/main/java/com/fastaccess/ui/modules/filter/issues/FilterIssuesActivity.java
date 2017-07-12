@@ -17,6 +17,7 @@ import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.evernote.android.state.State;
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.MilestoneModel;
@@ -80,13 +81,14 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     private PopupWindow popupWindow;
 
     public static void startActivity(@NonNull Activity context, @NonNull String login, @NonNull String repoId,
-                                     boolean isIssue, boolean isOpen) {
+                                     boolean isIssue, boolean isOpen, boolean isEnterprise) {
         Intent intent = new Intent(context, FilterIssuesActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, isIssue)
                 .put(BundleConstant.EXTRA_THREE, isOpen)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         View view = context.findViewById(R.id.fab);
         if (view != null) {
@@ -170,7 +172,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     }
 
     @OnClick(R.id.author) public void onAuthorClicked() {
-        Toasty.info(this, "GitHub doesn't have this API yet!\nYou can try typing it yourself for example author:k0shk0sh",
+        Toasty.info(App.getInstance(), "GitHub doesn't have this API yet!\nYou can try typing it yourself for example author:k0shk0sh",
                 Toast.LENGTH_LONG).show();
     }
 
@@ -308,7 +310,8 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
 
     private void onSearch() {
         if (!InputHelper.isEmpty(searchEditText)) {
-            getFilterFragment().onSearch(getRepoName() + InputHelper.toString(searchEditText), open.isSelected(), isIssue);
+            getFilterFragment().onSearch(getRepoName() + InputHelper.toString(searchEditText),
+                    open.isSelected(), isIssue, isEnterprise());
             searchEditText.setSelection(searchEditText.getEditableText().length());
         } else {
             getFilterFragment().onClear();

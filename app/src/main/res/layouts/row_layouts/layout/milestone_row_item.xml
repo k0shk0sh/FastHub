@@ -37,7 +37,7 @@
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Small"
+                style="@style/TextAppearance.AppCompat.Caption"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -50,7 +50,7 @@
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/notificationTitle"
-            style="@style/TextAppearance.AppCompat.Body1"
+            style="@style/TextAppearance.AppCompat.Caption"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="?android:attr/textColorSecondary"

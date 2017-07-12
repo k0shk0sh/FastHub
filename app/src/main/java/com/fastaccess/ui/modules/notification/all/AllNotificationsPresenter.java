@@ -77,7 +77,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 
     @Override public void onWorkOffline() {
         if (notifications.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Notification.getAlltNotifications().toObservable())
+            manageDisposable(RxHelper.getObserver(Notification.getAllNotifications().toObservable())
                     .flatMap(notifications -> Observable.just(GroupedNotificationModel.construct(notifications)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models))));
         } else {
@@ -104,16 +104,16 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
 //                            return notification;
 //                        })
 //                .toList();
-        Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService().getAllNotifications()
-                .flatMap(response -> {
-                    if (response.getItems() != null) {
+        Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService(PrefGetter.isEnterprise())
+                .getAllNotifications().flatMap(response -> {
+                    if (response.getItems() != null && !response.getItems().isEmpty()) {
                         return Observable.zip(Notification.save(response.getItems()), Observable.just(GroupedNotificationModel.construct
                                 (response.getItems())), (notification, groupedNotificationModels) -> groupedNotificationModels);
-                    } else {
-                        return Observable.just(GroupedNotificationModel.construct(response.getItems()));
                     }
+                    return Observable.empty();
                 });
-        makeRestCall(observable, response -> sendToView(view -> view.onNotifyAdapter(response)));
+        makeRestCall(observable.doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)), response -> sendToView(view -> view.onNotifyAdapter
+                (response)));
     }
 
     @Override public void onMarkAllAsRead(@NonNull List<GroupedNotificationModel> data) {
@@ -122,7 +122,6 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 .filter(group -> group.getNotification() != null && group.getNotification().isUnread())
                 .map(GroupedNotificationModel::getNotification)
                 .subscribe(notification -> {
-                    Logger.e(notification.getUrl());
                     notification.setUnread(false);
                     manageObservable(notification.save(notification).toObservable());
                     sendToView(view -> view.onReadNotification(notification));
@@ -136,7 +135,6 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                 .filter(group -> group.getNotification().getRepository().getFullName().equalsIgnoreCase(repo.getFullName()))
                 .map(GroupedNotificationModel::getNotification)
                 .subscribe(notification -> {
-                    Logger.e(notification.getUrl());
                     notification.setUnread(false);
                     manageObservable(notification.save(notification).toObservable());
                     sendToView(view -> view.onReadNotification(notification));

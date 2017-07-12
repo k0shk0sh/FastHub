@@ -50,7 +50,7 @@ class SearchCodePresenter extends BasePresenter<SearchCodeMvp.View> implements S
         if (parameter == null) {
             return;
         }
-        makeRestCall(RestProvider.getSearchService().searchCode(parameter, page),
+        makeRestCall(RestProvider.getSearchService(isEnterprise()).searchCode(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> {

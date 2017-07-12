@@ -1,5 +1,7 @@
 package com.fastaccess.provider.timeline;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -8,9 +10,12 @@ import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.HapticFeedbackConstants;
 import android.view.WindowManager;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
@@ -51,6 +56,30 @@ public class HtmlHelper {
             SchemeParser.launchUri(view.getContext(), Uri.parse(url));
             return true;
         });
+        betterLinkMovementMethod.setOnLinkLongClickListener((view, url) -> {
+            view.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+            PopupMenu menu = new PopupMenu(view.getContext(), view);
+            menu.setOnMenuItemClickListener(menuItem -> {
+                switch (menuItem.getItemId()) {
+                    case R.id.copy:
+                        ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("URL", url);
+                        clipboard.setPrimaryClip(clip);
+                        return true;
+                    case R.id.open:
+                        SchemeParser.launchUri(view.getContext(), Uri.parse(url));
+                        return true;
+                    case R.id.open_new_window:
+                        SchemeParser.launchUri(view.getContext(), Uri.parse(url), false, true);
+                        return true;
+                    default:
+                        return false;
+                }
+            });
+            menu.inflate(R.menu.link_popup_menu);
+            menu.show();
+            return true;
+        });
     }
 
     private static HtmlSpanner initHtml(@NonNull TextView textView) {
@@ -81,7 +110,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("a", new LinkHandler());
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
-        WindowManager windowManager = (WindowManager) textView.getContext().getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
         Point point = new Point();
         windowManager.getDefaultDisplay().getRealSize(point);
         tableHandler.setTableWidth((int) (point.x / 1.2));
@@ -90,7 +119,7 @@ public class HtmlHelper {
         return mySpanner;
     }
 
-    @ColorInt private static int getWindowBackground(@PrefGetter.ThemeType int theme) {
+    @ColorInt public static int getWindowBackground(@PrefGetter.ThemeType int theme) {
         switch (theme) {
             case PrefGetter.AMLOD:
                 return Color.parseColor("#0B162A");

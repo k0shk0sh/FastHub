@@ -62,7 +62,7 @@ public class FilterIssuePresenter extends BasePresenter<FilterIssuesMvp.View> im
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getSearchService().searchIssues(parameter, page),
+        makeRestCall(RestProvider.getSearchService(isEnterprise()).searchIssues(parameter, page),
                 issues -> {
                     lastPage = issues.getLast();
                     if (getCurrentPage() == 1) {

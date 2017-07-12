@@ -44,7 +44,6 @@ import shortbread.Shortcut;
 @Shortcut(id = "profile", icon = R.drawable.ic_profile_shortcut, shortLabelRes = R.string.profile, backStack = {MainActivity.class}, rank = 4)
 public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPagerPresenter> implements UserPagerMvp.View {
 
-
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.tabbedPager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;
@@ -52,12 +51,8 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     @State boolean isOrg;
     @State HashSet<TabsCountStateModel> counts = new HashSet<>();
 
-    public static void startActivity(@NonNull Context context, @NonNull String login) {
-        startActivity(context, login, false);
-    }
-
-    public static void startActivity(@NonNull Context context, @NonNull String login, boolean isOrg) {
-        context.startActivity(createIntent(context, login, isOrg));
+    public static void startActivity(@NonNull Context context, @NonNull String login, boolean isOrg, boolean isEnterprise) {
+        context.startActivity(createIntent(context, login, isOrg, isEnterprise));
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String login) {
@@ -65,9 +60,14 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg) {
+        return createIntent(context, login, isOrg, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg, boolean isEnterprise) {
         Intent intent = new Intent(context, UserPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .put(BundleConstant.EXTRA_TYPE, isOrg)
                 .end());
         if (context instanceof Service || context instanceof Application) {
@@ -106,13 +106,19 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                     getPresenter().checkOrgMembership(login);
                 }
             } else {
-                login = Login.getUser().getLogin();
+                Login user = Login.getUser();
+                if (user == null) {
+                    onRequireLogin();
+                    return;
+                }
+                login = user.getLogin();
             }
         }
         if (InputHelper.isEmpty(login)) {
             finish();
             return;
         }
+        setTaskName(login);
         setTitle(login);
         if (login.equalsIgnoreCase(Login.getUser().getLogin())) {
             selectProfile();
@@ -179,6 +185,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         tabs.setTabGravity(TabLayout.GRAVITY_FILL);
         tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabs.setupWithViewPager(pager);
+        setTaskName(login);
     }
 
     @Override public void onSetBadge(int tabIndex, int count) {

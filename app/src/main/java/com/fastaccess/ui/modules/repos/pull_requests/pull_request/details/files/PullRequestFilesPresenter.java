@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
@@ -18,10 +19,12 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
-import com.fastaccess.ui.modules.repos.code.commit.viewer.FullCommitFileActivity;
 
 import java.util.ArrayList;
+
+import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:48 PM
@@ -32,7 +35,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State long number;
-    private ArrayList<CommitFileModel> files = new ArrayList<>();
+    private ArrayList<CommitFileChanges> files = new ArrayList<>();
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
@@ -69,11 +72,17 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequestFiles(login, repoId, number, page),
-                response -> {
-                    lastPage = response.getLast();
-                    sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
-                });
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestFiles(login, repoId, number, page)
+                        .flatMap(commitFileModelPageable -> {
+                            if (commitFileModelPageable != null) {
+                                lastPage = commitFileModelPageable.getLast();
+                                if (commitFileModelPageable.getItems() != null) {
+                                    return Observable.just(CommitFileChanges.construct(commitFileModelPageable.getItems()));
+                                }
+                            }
+                            return Observable.empty();
+                        }),
+                response -> sendToView(view -> view.onNotifyAdapter(response, page)));
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
@@ -85,7 +94,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
         }
     }
 
-    @NonNull @Override public ArrayList<CommitFileModel> getFiles() {
+    @NonNull @Override public ArrayList<CommitFileChanges> getFiles() {
         return files;
     }
 
@@ -93,15 +102,16 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
         sendToView(BaseMvp.FAView::hideProgress);
     }
 
-    @Override public void onItemClick(int position, View v, CommitFileModel item) {
+    @Override public void onItemClick(int position, View v, CommitFileChanges model) {
         if (v.getId() == R.id.open) {
+            CommitFileModel item = model.getCommitFileModel();
             PopupMenu popup = new PopupMenu(v.getContext(), v);
             MenuInflater inflater = popup.getMenuInflater();
             inflater.inflate(R.menu.commit_row_menu, popup.getMenu());
             popup.setOnMenuItemClickListener(item1 -> {
                 switch (item1.getItemId()) {
                     case R.id.open:
-                        FullCommitFileActivity.start(v.getContext(), item);
+                        v.getContext().startActivity(CodeViewerActivity.createIntent(v.getContext(), item.getContentsUrl(), item.getBlobUrl()));
                         break;
                     case R.id.share:
                         ActivityHelper.shareUrl(v.getContext(), item.getBlobUrl());
@@ -123,8 +133,8 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, CommitFileModel item) {
-        v.getContext().startActivity(CommitPagerActivity.createIntent(v.getContext(), repoId, login, Uri.parse(item.getContentsUrl())
-                .getQueryParameter("ref")));
+    @Override public void onItemLongClick(int position, View v, CommitFileChanges item) {
+        v.getContext().startActivity(CommitPagerActivity.createIntent(v.getContext(), repoId, login,
+                Uri.parse(item.getCommitFileModel().getContentsUrl()).getQueryParameter("ref")));
     }
 }

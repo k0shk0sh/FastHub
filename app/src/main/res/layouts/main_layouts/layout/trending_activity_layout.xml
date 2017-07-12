@@ -116,9 +116,6 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:paddingStart="@dimen/spacing_normal"
-
-                    android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:layout_weight="1"
                     android:background="@color/transparent"
                     android:completionThreshold="1"
@@ -127,6 +124,8 @@
                     android:imeOptions="actionSearch"
                     android:inputType="text"
                     android:maxLines="1"
+                    android:paddingEnd="@dimen/spacing_xs_large"
+                    android:paddingStart="@dimen/spacing_normal"
                     android:textColorHint="?android:textColorSecondary"/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
@@ -134,6 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/spacing_xs_large"
                     android:background="?selectableItemBackgroundBorderless"
                     android:contentDescription="@string/clear"
                     android:padding="@dimen/spacing_micro"

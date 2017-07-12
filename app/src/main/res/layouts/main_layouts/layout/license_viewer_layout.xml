@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?android:windowBackground"
+    android:orientation="vertical">
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/licenseName"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_xs_large"
+        tools:text="The teacher understands politics which is not atomic."/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.prettifier.pretty.PrettifyWebView
+            android:id="@+id/webView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:webview_background="?android:windowBackground"/>
+
+        <ProgressBar
+            android:id="@+id/readmeLoader"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:indeterminate="false"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:paddingStart="@dimen/spacing_xs_large"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <include layout="@layout/state_layout"/>
+    </FrameLayout>
+</LinearLayout>

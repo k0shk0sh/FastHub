@@ -11,8 +11,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.evernote.android.state.State;
-import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.PrefGetter;
@@ -25,9 +25,7 @@ import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.fastaccess.ui.modules.search.SearchActivity;
 import com.fastaccess.ui.modules.settings.SlackBottomSheetDialog;
-import com.miguelbcr.io.rx_billing_service.RxBillingService;
-import com.miguelbcr.io.rx_billing_service.entities.ProductType;
-import com.miguelbcr.io.rx_billing_service.entities.Purchase;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -70,6 +68,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
             }
         }
+        getPresenter().setEnterprise(PrefGetter.isEnterprise());
         selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
@@ -123,7 +122,11 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onUpdateDrawerMenuHeader() {
-        setupNavigationView(extraNav);
+        setupNavigationView();
+    }
+
+    @Override public void onOpenProfile() {
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
@@ -159,7 +162,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 if (attachFeeds) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.container, FeedsFragment.newInstance(), FeedsFragment.TAG)
+                            .replace(R.id.container, FeedsFragment.newInstance(null), FeedsFragment.TAG)
                             .commit();
                 }
             }
