@@ -423,7 +423,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         requestModel.setCommitId(pullRequest.getHead().getSha());
         boolean isAuthor = author != null && Login.getUser().getLogin().equalsIgnoreCase(author.getLogin());
         ReviewChangesActivity.Companion.startForResult(this, view, requestModel, getPresenter().getRepoId(),
-                getPresenter().getLogin(), pullRequest.getNumber(), isAuthor);
+                getPresenter().getLogin(), pullRequest.getNumber(), isAuthor, isEnterprise());
     }
 
     private void initTabs(@NonNull PullRequest pullRequest) {
