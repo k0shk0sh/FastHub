@@ -170,7 +170,7 @@
                         android:layout_marginEnd="@dimen/spacing_normal"
                         android:layout_marginStart="@dimen/spacing_normal"
                         android:rotation="180"
-                        android:src="@drawable/ic_arrow_drop_down"/>
+                        />
                 </FrameLayout>
 
                 <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
