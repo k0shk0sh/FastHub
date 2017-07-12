@@ -48,6 +48,9 @@ public class RepoFilesActivity extends BaseActivity {
         boolean isEnterprise = LinkParserHelper.isEnterprise(url);
         if (isEnterprise) {
             url = url.replace("api/v3/", "");
+            if (url.contains("/raw")) {
+                url = url.replace("/raw", "");
+            }
         }
         Uri uri = Uri.parse(url);
         if (uri.getPathSegments() != null && uri.getPathSegments().size() > 3) {
@@ -141,7 +144,7 @@ public class RepoFilesActivity extends BaseActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, repoId, login),isEnterprise());
+            Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, repoId, login), isEnterprise());
             startActivity(intent);
             finish();
             return true;

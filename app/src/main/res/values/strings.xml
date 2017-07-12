@@ -84,7 +84,7 @@
     <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
     <string name="review_changes" translatable="false">Review Changes</string>
     <string name="enterprise" translatable="false">Enterprise</string>
-    <string name="endpoint_hint" translatable="false">https://github.mydomain.com</string>
+    <string name="endpoint_hint" translatable="false">example.com</string>
     <string name="no_branches" translatable="false">No Branches or Tags</string>
 
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->

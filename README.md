@@ -19,7 +19,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
 
 #### Snapshots / Test builds
 
-We have configurated snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
+We have configured snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
 
 # Features  
 - **App**

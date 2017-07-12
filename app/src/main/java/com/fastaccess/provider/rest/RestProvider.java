@@ -76,10 +76,6 @@ public class RestProvider {
         return okHttpClient;
     }
 
-    private static Retrofit provideRetrofit() {
-        return provideRetrofit(false);
-    }
-
     private static Retrofit provideRetrofit(boolean enterprise) {
         return new Retrofit.Builder()
                 .baseUrl(enterprise && PrefGetter.isEnterprise() ? LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl()) : BuildConfig.REST_URL)
