@@ -32,10 +32,8 @@ import butterknife.OnClick;
 
 public class GistsListActivity extends BaseActivity {
 
-    @BindView(R.id.tabs)
-    TabLayout tabs;
-    @BindView(R.id.gistsContainer)
-    ViewPagerView pager;
+    @BindView(R.id.tabs) TabLayout tabs;
+    @BindView(R.id.gistsContainer) ViewPagerView pager;
 
     public static void startActivity(@NonNull Context context, boolean myGists) {
         Intent intent = new Intent(context, GistsListActivity.class);
