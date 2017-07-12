@@ -307,6 +307,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             login = extras.getString(BundleConstant.EXTRA_TWO);
             navType = extras.getInt(BundleConstant.EXTRA_TYPE);
         }
+        if (savedInstanceState == null) {
+            getPresenter().onUpdatePinnedEntry(repoId, login);
+        }
         getPresenter().onActivityCreate(repoId, login, navType);
         setTitle("");
         accentColor = ViewHelper.getAccentColor(this);

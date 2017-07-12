@@ -60,6 +60,10 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         super.onError(throwable);
     }
 
+    @Override public void onUpdatePinnedEntry(@NonNull String repoId, @NonNull String login) {
+        manageDisposable(PinnedRepos.updateEntry(login + "/" + repoId));
+    }
+
     @Override public void onActivityCreate(@NonNull String repoId, @NonNull String login, int navTyp) {
         this.login = login;
         this.repoId = repoId;

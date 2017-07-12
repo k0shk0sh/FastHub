@@ -10,9 +10,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
+import com.fastaccess.data.dao.model.PinnedRepos
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
+import com.fastaccess.provider.scheme.SchemeParser
 import com.fastaccess.ui.adapter.LoginAdapter
+import com.fastaccess.ui.adapter.PinnedReposAdapter
 import com.fastaccess.ui.modules.about.FastHubAboutActivity
 import com.fastaccess.ui.modules.gists.GistsListActivity
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
@@ -83,31 +86,31 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     }
 
     private fun setupPinned() {
-//        val togglePinnedImage = view.findViewById<View>(R.id.togglePinnedImage)
-//        val togglePinned = view.findViewById<View>(R.id.togglePinned)
-//        val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
-//        val pinnedListAdapter = PinnedReposAdapter(true)
-//        pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
-//            override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
-//                if (v != null && item != null) {
-//                    SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl)
-//                }
-//            }
-//
-//            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
-//        }
-//        togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
-//
-//        togglePinned.setOnClickListener {
-//            TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
-//            val isVisible = pinnedList.visibility == View.VISIBLE
-//            pinnedList.visibility = if (isVisible) View.GONE else View.VISIBLE
-//            togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
-//        }
-//
-//        view.getPresenter().manageViewDisposable(PinnedRepos.getMenuRepos()
-//                .doFinally { pinnedList.adapter = pinnedListAdapter }
-//                .subscribe({ pinnedListAdapter.insertItems(it) }, ::println))
+        val togglePinnedImage = view.findViewById<View>(R.id.togglePinnedImage)
+        val togglePinned = view.findViewById<View>(R.id.togglePinned)
+        val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+        val pinnedListAdapter = PinnedReposAdapter(true)
+        pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
+            override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
+                if (v != null && item != null) {
+                    SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl)
+                }
+            }
+
+            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
+        }
+        togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
+
+        togglePinned.setOnClickListener {
+            TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
+            val isVisible = pinnedList.visibility == View.VISIBLE
+            pinnedList.visibility = if (isVisible) View.GONE else View.VISIBLE
+            togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
+        }
+
+        view.getPresenter().manageViewDisposable(PinnedRepos.getMenuRepos()
+                .doFinally { pinnedList.adapter = pinnedListAdapter }
+                .subscribe({ pinnedListAdapter.insertItems(it) }, ::println))
     }
 
     private fun setupView(view: View) {
