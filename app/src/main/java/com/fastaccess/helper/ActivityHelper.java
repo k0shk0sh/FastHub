@@ -10,8 +10,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.ColorStateList;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -22,18 +20,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.util.Pair;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fastaccess.App;
 import com.fastaccess.R;
-import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.parser.LinksParserActivity;
 
 import java.util.ArrayList;
@@ -64,7 +55,11 @@ public class ActivityHelper {
                     .setShowTitle(true)
                     .build();
             customTabsIntent.intent.setPackage(packageNameToUse);
-            customTabsIntent.launchUrl(context, url);
+            try {
+                customTabsIntent.launchUrl(context, url);
+            } catch (ActivityNotFoundException ignored) {
+                openChooser(context, url, true);
+            }
         } else {
             openChooser(context, url, true);
         }

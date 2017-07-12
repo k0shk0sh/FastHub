@@ -208,20 +208,24 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     Toasty.error(App.getInstance(), getString(R.string.error)).show();
                 }
                 if (!InputHelper.isEmpty(json)) {
-                    Gson gson = new Gson();
-                    JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
-                    Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-                    for (Map.Entry<String, JsonElement> entry : entrySet) {
-                        if (entry.getValue().getAsJsonPrimitive().isBoolean())
-                            PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
-                        else if (entry.getValue().getAsJsonPrimitive().isNumber())
-                            PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
-                        else if (entry.getValue().getAsJsonPrimitive().isString())
-                            PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
-                        PrefHelper.set(entry.getKey(), entry.getValue());
-                        Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                    try {
+                        Gson gson = new Gson();
+                        JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
+                        Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
+                        for (Map.Entry<String, JsonElement> entry : entrySet) {
+                            if (entry.getValue().getAsJsonPrimitive().isBoolean())
+                                PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
+                            else if (entry.getValue().getAsJsonPrimitive().isNumber())
+                                PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
+                            else if (entry.getValue().getAsJsonPrimitive().isString())
+                                PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
+                            PrefHelper.set(entry.getKey(), entry.getValue());
+                            Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                        }
+                        callback.onThemeChanged();
+                    } catch (Exception ignored) {
+                        Toasty.error(App.getInstance(), getString(R.string.error), Toast.LENGTH_SHORT).show();
                     }
-                    callback.onThemeChanged();
                 }
             }
         }

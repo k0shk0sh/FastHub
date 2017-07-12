@@ -234,8 +234,11 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 .hide(toHide)
                 .add(R.id.container, toAdd, toAdd.getClass().getSimpleName())
                 .commit();
-        toHide.onHiddenChanged(true);
-        toAdd.onHiddenChanged(false);
+
+        //noinspection ConstantConditions really android?
+        if (toHide != null) toHide.onHiddenChanged(true);
+        //noinspection ConstantConditions really android?
+        if (toAdd != null) toAdd.onHiddenChanged(false);
     }
 
     @Override public void onDeleteRepo() {

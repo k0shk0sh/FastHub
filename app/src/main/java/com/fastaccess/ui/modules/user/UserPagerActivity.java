@@ -106,7 +106,12 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                     getPresenter().checkOrgMembership(login);
                 }
             } else {
-                login = Login.getUser().getLogin();
+                Login user = Login.getUser();
+                if (user == null) {
+                    onRequireLogin();
+                    return;
+                }
+                login = user.getLogin();
             }
         }
         if (InputHelper.isEmpty(login)) {

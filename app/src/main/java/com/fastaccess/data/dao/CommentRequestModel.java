@@ -17,6 +17,7 @@ import lombok.Setter;
     @SerializedName("in_reply_to") private Long inReplyTo;
     private String path;
     private int position;
+    private int line;
 
     public CommentRequestModel() {}
 
@@ -40,6 +41,7 @@ import lombok.Setter;
         dest.writeValue(this.inReplyTo);
         dest.writeString(this.path);
         dest.writeInt(this.position);
+        dest.writeInt(this.line);
     }
 
     protected CommentRequestModel(Parcel in) {
@@ -47,6 +49,7 @@ import lombok.Setter;
         this.inReplyTo = (Long) in.readValue(Long.class.getClassLoader());
         this.path = in.readString();
         this.position = in.readInt();
+        this.line = in.readInt();
     }
 
     public static final Creator<CommentRequestModel> CREATOR = new Creator<CommentRequestModel>() {

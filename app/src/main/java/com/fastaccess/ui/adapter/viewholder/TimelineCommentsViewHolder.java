@@ -115,7 +115,8 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             String body = commentsModel.getBodyHtml();
             if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
-                body = "<small color='grey'><i>Commented at <b>line(" + commentsModel.getPosition() + ")</b> in "
+                body = "<small color='grey'><i>Commented at <b>line(" +
+                        (commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()) + ")</b> in "
                         + commentsModel.getPath() + "</i></small><br/>" + body;
             }
             HtmlHelper.htmlIntoTextView(comment, body);
