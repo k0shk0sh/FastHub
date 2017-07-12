@@ -13,6 +13,7 @@ import com.fastaccess.data.dao.model.Login
 import com.fastaccess.data.dao.model.PinnedRepos
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
+import com.fastaccess.provider.scheme.SchemeParser
 import com.fastaccess.ui.adapter.LoginAdapter
 import com.fastaccess.ui.adapter.PinnedReposAdapter
 import com.fastaccess.ui.modules.about.FastHubAboutActivity
@@ -88,6 +89,15 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         val togglePinned = view.findViewById<View>(R.id.togglePinned)
         val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
         val pinnedListAdapter = PinnedReposAdapter(true)
+        pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
+            override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
+                if (v != null && item != null) {
+                    SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl)
+                }
+            }
+
+            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
+        }
 
         togglePinned.setOnClickListener {
             PinnedReposActivity.startActivity(view)
