@@ -384,6 +384,11 @@
     <string name="milestone_added">Meilenstein erfolgreich hinzugefügt</string>
     <string name="feed">Feed</string>
     <string name="premium_theme">Premiumdesign</string>
+    <string name="choose_code_theme">Farbcodepalette auswählen</string>
+    <string name="enterprise_login_warning">Bitte logge dich per OAuth ein um den ganzen Umfang der GitHub API benutzen 
+	zu können und um zufällige Logouts bezüglich Enterprise und Logintokens zu verhindern.</string>
+    <string name="add_account">Account hinzufügen</string>
+<string name="choose_account">Account auswählen</string>
 </resources>
 
 
