@@ -404,5 +404,4 @@
     <string name="feed">Noticias</string>
     <string name="premium_theme">Tema Premium </string>
     <string name="choose_code_theme">Elige el código del tema</string>
-    <string name="endpoint_hint">https://github.mydomain.com</string>
 </resources>
