@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 
@@ -23,7 +22,6 @@ public class GithubHelper {
     private static Pattern IMAGE_TAG_MATCHER = Pattern.compile("src=\"(.*?)\"");
 
     @NonNull public static String generateContent(@NonNull Context context, @NonNull String source, @Nullable String baseUrl, boolean dark) {
-        Logger.e(baseUrl);
         if (baseUrl == null) {
             return mergeContent(context, source, dark);
         } else {
@@ -59,13 +57,11 @@ public class GithubHelper {
                 continue;
             }
             String finalSrc;
-            Logger.e(src);
             if (src.startsWith("/" + owner + "/" + repoName)) {
                 finalSrc = "https://raw.githubusercontent.com/" + src;
             } else {
                 finalSrc = "https://raw.githubusercontent.com/" + builder.toString() + src;
             }
-            Logger.e(finalSrc);
             source = source.replace("src=\"" + src + "\"", "src=\"" + finalSrc
                     .replace("raw/", "master/").replaceAll("//", "/") + "\"");
         }

@@ -20,7 +20,7 @@ public enum IssueEventType {
     renamed(R.drawable.ic_edit),
     reopened(R.drawable.ic_issue_opened),
     subscribed(R.drawable.ic_subscribe),
-    unassigned(R.drawable.ic_announcement),
+    unassigned(R.drawable.ic_profile),
     unlabeled(R.drawable.ic_label),
     unlocked(R.drawable.ic_unsubscribe),
     unsubscribed(R.drawable.ic_eye_off),
@@ -33,6 +33,6 @@ public enum IssueEventType {
     IssueEventType(int iconResId) {this.iconResId = iconResId;}
 
     public int getIconResId() {
-        return iconResId;
+        return iconResId == 0 ? R.drawable.ic_label : iconResId;
     }
 }

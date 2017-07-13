@@ -72,7 +72,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequestFiles(login, repoId, number, page)
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestFiles(login, repoId, number, page)
                         .flatMap(commitFileModelPageable -> {
                             if (commitFileModelPageable != null) {
                                 lastPage = commitFileModelPageable.getLast();

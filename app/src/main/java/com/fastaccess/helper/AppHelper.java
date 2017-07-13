@@ -62,23 +62,40 @@ public class AppHelper {
         return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD || themeType == PrefGetter.BLUISH;
     }
 
-    @SuppressWarnings("StringBufferReplaceableByString") public static String getFastHubIssueTemplate() {
-        return new StringBuilder()
-                .append("**App Version: ")
+    public static String getFastHubIssueTemplate(boolean enterprise) {
+        String brand = (!isEmulator()) ? Build.BRAND : "Android Emulator";
+        String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
+        StringBuilder builder = new StringBuilder()
+                .append("**FastHub Version: ")
                 .append(BuildConfig.VERSION_NAME)
                 .append("**")
-                .append("\n\n")
-                .append("**OS Version: ")
+                .append("  \n")
+                .append("**Android Version: ")
+                .append(String.valueOf(Build.VERSION.RELEASE))
+                .append(" (SDK: ")
                 .append(String.valueOf(Build.VERSION.SDK_INT))
-                .append("**")
-                .append("\n\n")
-                .append("**Model: ")
+                .append(")**")
+                .append("  \n")
+                .append("**Device Information:**")
+                .append("  \n")
+                .append("- ")
                 .append(Build.MANUFACTURER)
-                .append("-")
-                .append(Build.MODEL)
-                .append("**")
-                .append("\n\n")
-                .toString();
+                .append("  \n");
+        if (!model.equalsIgnoreCase(brand)) {
+            builder.append("- ")
+                    .append(brand)
+                    .append("  \n")
+                    .append("- ")
+                    .append(model);
+        } else {
+            builder.append("- ").append(model);
+        }
+        builder.append("  \n")
+                .append("- Account Type:").append(" ").append(enterprise ? "Enterprise" : "GitHub");
+        builder.append("\n\n")
+                .append("---")
+                .append("\n\n");
+        return builder.toString();
     }
 
     public static void updateAppLanguage(@NonNull Context context) {
@@ -120,15 +137,14 @@ public class AppHelper {
     }
 
     public static String getDeviceName() {
-        String manufacturer = Build.MANUFACTURER;
+        String brand = Build.BRAND;
         String model = Build.MODEL;
-        if (model.startsWith(manufacturer)) {
+        if (model.startsWith(brand)) {
             return InputHelper.capitalizeFirstLetter(model);
-        } else if (isEmulator()){
+        } else if (isEmulator()) {
             return "Android Emulator";
-        } else {
-            return InputHelper.capitalizeFirstLetter(manufacturer) + " " + model;
         }
+        return brand.equalsIgnoreCase(model) ? InputHelper.capitalizeFirstLetter(model) : InputHelper.capitalizeFirstLetter(brand) + " " + model;
     }
 
     private static boolean isEmulator() {

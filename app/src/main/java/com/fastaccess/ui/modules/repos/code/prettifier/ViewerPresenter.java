@@ -40,7 +40,10 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             sendToView(BaseMvp.FAView::hideProgress);
         } else {
             if (code == 406) {
-                sendToView(view -> view.openUrl(url));
+                sendToView(view -> {
+                    view.hideProgress();
+                    view.openUrl(url);
+                });
                 return;
             }
             onWorkOffline();
@@ -105,9 +108,9 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
             return;
         }
         Observable<String> streamObservable = MarkDownProvider.isMarkdown(url)
-                                              ? RestProvider.getRepoService().getFileAsHtmlStream(url)
-                                              : RestProvider.getRepoService().getFileAsStream(url);
-        makeRestCall(isRepo ? RestProvider.getRepoService().getReadmeHtml(url)
+                                              ? RestProvider.getRepoService(isEnterprise()).getFileAsHtmlStream(url)
+                                              : RestProvider.getRepoService(isEnterprise()).getFileAsStream(url);
+        makeRestCall(isRepo ? RestProvider.getRepoService(isEnterprise()).getReadmeHtml(url)
                             : streamObservable, content -> {
             downloadedStream = content;
             ViewerFile fileModel = new ViewerFile();
@@ -132,7 +135,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         }
                     }
                     model.setContext(baseUrl.toString());
-                    makeRestCall(RestProvider.getRepoService().convertReadmeToHtml(model), string -> {
+                    makeRestCall(RestProvider.getRepoService(isEnterprise()).convertReadmeToHtml(model), string -> {
                         isMarkdown = true;
                         downloadedStream = string;
                         fileModel.setMarkdown(true);

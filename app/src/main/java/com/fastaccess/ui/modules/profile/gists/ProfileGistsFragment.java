@@ -11,6 +11,7 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Gist;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
@@ -39,7 +40,10 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
 
     public static ProfileGistsFragment newInstance(@NonNull String login) {
         ProfileGistsFragment view = new ProfileGistsFragment();
-        view.setArguments(Bundler.start().put(BundleConstant.EXTRA, login).end());
+        view.setArguments(Bundler.start()
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.IS_ENTERPRISE, Login.getUser().getLogin().equalsIgnoreCase(login))
+                .end());
         return view;
     }
 
@@ -115,7 +119,7 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
     }
 
     @Override public void onStartGistView(@NonNull String gistId) {
-        startActivityForResult(GistActivity.createIntent(getContext(), gistId), BundleConstant.REQUEST_CODE);
+        startActivityForResult(GistActivity.createIntent(getContext(), gistId, isEnterprise()), BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

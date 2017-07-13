@@ -1,4 +1,4 @@
-package com.fastaccess.data.dao.model;
+package com.fastaccess.data.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;

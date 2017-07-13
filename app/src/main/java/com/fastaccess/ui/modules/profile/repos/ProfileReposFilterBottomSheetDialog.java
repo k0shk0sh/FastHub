@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.model.FilterOptionsModel;
+import com.fastaccess.data.dao.FilterOptionsModel;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
 import com.fastaccess.ui.modules.profile.org.repos.OrgReposFragment;
 

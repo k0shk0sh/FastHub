@@ -19,7 +19,7 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
 
 #### Snapshots / Test builds
 
-We have configurated snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
+We have configured snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
 
 # Features  
 - **App**
@@ -94,7 +94,6 @@ _Ads currently not available._
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
-- [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
 - **Fabric** analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
@@ -138,8 +137,17 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
  
 <details>
   <summary>Why my Private Repo Wiki does not show up?</summary>
-  <p>It's due to FastHub scraping GitHub Wiki page & transform it to something Android does.</p>
+  <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
 </details>
+
+<details>
+  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
+  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it, 
+  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> 
+  cases your GitHub account Oauth token will do the trick.</p>
+  
+</details>
+
 
 ## License
 
@@ -159,7 +167,11 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 ## FastHub Logo
 
-**FastHub** logo is designed by **Kevin Aguilar**.  
+**FastHub** logo is designed by **Cookicons**.  
+[Google+](https://plus.google.com/+CookiconsDesign) | [Twitter](https://twitter.com/mcookie)  
+Designer website [Cookicons](https://cookicons.co/).  
+
+**OLD FastHub** logo is designed by **Kevin Aguilar**.  
 [Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
 Designer at [221 Pixels](https://www.221pixels.com/).  
 Laus Deo Semper

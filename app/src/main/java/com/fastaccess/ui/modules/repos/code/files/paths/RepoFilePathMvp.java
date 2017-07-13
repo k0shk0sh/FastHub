@@ -4,9 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.repos.extras.branches.BranchesMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
 
 interface RepoFilePathMvp {
 
-    interface View extends BaseMvp.FAView {
+    interface View extends BaseMvp.FAView, BranchesMvp.BranchSelectionListener {
         void onNotifyAdapter(@Nullable List<RepoFile> items, int page);
 
         void onItemClicked(@NonNull RepoFile model, int position);
@@ -32,8 +32,6 @@ interface RepoFilePathMvp {
         boolean canPressBack();
 
         void onBackPressed();
-
-        void setBranchesData(@NonNull List<BranchesModel> branches, boolean firstTime);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -48,8 +46,6 @@ interface RepoFilePathMvp {
         @Nullable String getPath();
 
         @NonNull ArrayList<RepoFile> getPaths();
-
-        @NonNull ArrayList<BranchesModel> getBranches();
 
         String getDefaultBranch();
     }

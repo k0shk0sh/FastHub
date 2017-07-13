@@ -1,6 +1,5 @@
 <resources>
-    <!-- DO NOT COPY! START COPYING FROM LINE BELOW -->
-
+    <!-- DO NOT COPY!  -->
 
     <string name="app_name" translatable="false">FastHub</string>
     <string name="app_name_full" translatable="false">FastHub for Android</string>
@@ -85,9 +84,10 @@
     <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
     <string name="review_changes" translatable="false">Review Changes</string>
     <string name="enterprise" translatable="false">Enterprise</string>
-    <string name="endpoint_hint" translatable="false">https://github.mydomain.com</string>
+    <string name="endpoint_hint" translatable="false">example.com</string>
+    <string name="no_branches" translatable="false">No Branches or Tags</string>
 
-    <!-- END OF DO NOT COPY -->
+    <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
@@ -207,6 +207,7 @@
     <string name="notifications">Notifications</string>
     <string name="unread_notification">You have unread notifications</string>
     <string name="open">Open</string>
+    <string name="open_new_window">Open in new window</string>
     <string name="notification_type">Notification type</string>
     <string name="labels">Labels</string>
     <string name="no_labels">No labels</string>
@@ -387,6 +388,7 @@
     <string name="no_members">No members</string>
     <string name="no_teams">No teams</string>
     <string name="no_orgs">No Organizations</string>
+    <string name="no_orgs_dialog_title">Don\'t see your Organisations\?</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="animations">Animations</string>
     <string name="dialog_animation_summary">Enable popups animations</string>
@@ -496,4 +498,9 @@
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
     <string name="choose_code_theme">Choose Code color palette</string>
+    <string name="enterprise_login_warning">Please do (OAuth) login to your GitHub account in order to access everything from GitHub API
+        otherwise you\'ll end be kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to GitHub
+        API is coming from your Enterprise Account.</string>
+    <string name="add_account">Add Account</string>
+    <string name="choose_account">Choose Account</string>
 </resources>

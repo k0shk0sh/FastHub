@@ -4,13 +4,16 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.style.BackgroundColorSpan;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.IssueEventType;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -32,7 +35,6 @@ public class TimelineProvider {
             String from = context.getString(R.string.from);
             String thisString = context.getString(R.string.this_value);
             String in = context.getString(R.string.in_value);
-            String commit = context.getString(R.string.commit);
             if (event == IssueEventType.labeled || event == IssueEventType.unlabeled) {
                 if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
                     spannableBuilder.bold(issueEventModel.getAssigner().getLogin());
@@ -64,14 +66,30 @@ public class TimelineProvider {
                                 .append(" ")
                                 .append(thisString);
                     }
+                    if (issueEventModel.getCommitId() != null) {
+                        spannableBuilder
+                                .append(" ")
+                                .append(in)
+                                .append(" ")
+                                .url(substring(issueEventModel.getCommitId()));
+
+                    }
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ");
                     if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
-                        spannableBuilder.append("self-assigned this");
+                        spannableBuilder
+                                .append(event == IssueEventType.assigned ? "self-assigned this" : "removed their assignment");
                     } else {
-                        spannableBuilder.bold(issueEventModel.getAssignee().getLogin());
+                        spannableBuilder
+                                .append(event == IssueEventType.assigned ? "assigned" : "unassigned");
+                        spannableBuilder
+                                .append(" ")
+                                .bold(issueEventModel.getAssignee().getLogin());
                     }
+                } else if (event == IssueEventType.head_ref_deleted || event == IssueEventType.head_ref_restored) {
+                    spannableBuilder.append(" ").append(event.name().replaceAll("_", " "),
+                            new BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())));
                 } else {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
                 }
@@ -93,22 +111,20 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.referenced || event == IssueEventType.merged) {
                     spannableBuilder
                             .append(" ")
-                            .append(commit)
+                            .append("commit")
                             .append(" ")
                             .url(substring(issueEventModel.getCommitId()));
                 } else if (event == IssueEventType.review_requested) {
                     spannableBuilder
                             .append(" ")
                             .append(from)
-                            .append(" ")
-                            .bold(issueEventModel.getRequestedReviewer().getLogin());
-                } else if (event == IssueEventType.closed) {
-                    if (issueEventModel.getCommitId() != null) {
-                        spannableBuilder
-                                .append(" ")
-                                .append(in)
-                                .append(" ")
-                                .url(substring(issueEventModel.getCommitId()));
+                            .append(" ");
+                    if (issueEventModel.getRequestedTeam() != null) {
+                        String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
+                                      ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
+                        spannableBuilder.bold(name).append(" ").append("team");
+                    } else if (issueEventModel.getRequestedReviewer() != null) {
+                        spannableBuilder.append(issueEventModel.getRequestedReviewer().getLogin());
                     }
                 }
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));

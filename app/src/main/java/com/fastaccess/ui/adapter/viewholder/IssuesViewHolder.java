@@ -11,6 +11,7 @@ import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -116,7 +117,8 @@ public class IssuesViewHolder extends BaseViewHolder<Issue> {
             issueState.setVisibility(View.GONE);
         }
         if (withAvatar && avatarLayout != null) {
-            avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin());
+            avatarLayout.setUrl(issueModel.getUser().getAvatarUrl(), issueModel.getUser().getLogin(), false,
+                    LinkParserHelper.isEnterprise(issueModel.getUser().getHtmlUrl()));
             avatarLayout.setVisibility(View.VISIBLE);
         }
     }

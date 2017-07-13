@@ -16,6 +16,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
@@ -106,12 +107,19 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @Override public void bind(@NonNull TimelineModel timelineModel) {
         Comment commentsModel = timelineModel.getComment();
         if (commentsModel.getUser() != null) {
-            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
+            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
+                    false, LinkParserHelper.isEnterprise(commentsModel.getHtmlUrl()));
         } else {
-            avatar.setUrl(null, null);
+            avatar.setUrl(null, null, false, false);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());
+            String body = commentsModel.getBodyHtml();
+            if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
+                body = "<small color='grey'><i>Commented at <b>line(" +
+                        (commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()) + ")</b> in "
+                        + commentsModel.getPath() + "</i></small><br/>" + body;
+            }
+            HtmlHelper.htmlIntoTextView(comment, body);
         } else {
             comment.setText("");
         }

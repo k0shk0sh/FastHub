@@ -14,6 +14,38 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="0.6"
+        android:background="@drawable/left_border"
+        android:orientation="horizontal">
+
+        <com.fastaccess.ui.widgets.ForegroundImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:contentDescription="@string/switch_branch"
+            android:padding="@dimen/spacing_micro"
+            android:src="@drawable/ic_branch"/>
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/branches"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableEnd="@drawable/ic_arrow_drop_down"
+            android:gravity="start|center"
+            android:maxLines="1"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_micro"
+            android:paddingTop="@dimen/spacing_normal"
+            tools:ignore="NestedWeights"
+            tools:text="Escargot combines greatly with minced sausages."/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
         android:orientation="horizontal">
@@ -60,42 +92,6 @@
             android:contentDescription="@string/download"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_search"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.6"
-        android:background="@drawable/left_border"
-        android:orientation="horizontal">
-
-        <com.fastaccess.ui.widgets.ForegroundImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/switch_branch"
-            android:padding="@dimen/spacing_micro"
-            android:src="@drawable/ic_branch"/>
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/branches"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:spinnerMode="dialog"
-            app:backgroundTint="?colorAccent"
-            tools:entries="@array/notification_types"
-            tools:ignore="NestedWeights"/>
-
-        <ProgressBar
-            android:id="@+id/branchesProgress"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-
 
     </LinearLayout>
 

@@ -24,6 +24,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
@@ -41,6 +42,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kotlin.text.StringsKt;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -67,15 +69,21 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
                                       @NonNull String sha, boolean showRepoBtn) {
+        return createIntent(context, repoId, login, sha, showRepoBtn, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      @NonNull String sha, boolean showRepoBtn,
+                                      boolean isEnterprise) {
         Intent intent = new Intent(context, CommitPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, sha)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showRepoBtn)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
-
     }
 
     public static void createIntentForOffline(@NonNull Context context, @NonNull Commit commitModel) {
@@ -163,6 +171,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
         HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
+        setTaskName(commit.getLogin() + "/" + commit.getRepoId() + " - Commit " + StringsKt.take(commit.getSha(), 5));
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
         date.setText(SpannableBuilder.builder()
@@ -170,7 +179,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
                 .append(" ")
                 .append(" ")
                 .append(ParseDateFormat.getTimeAgo(dateValue)));
-        avatarLayout.setUrl(avatar, login);
+        avatarLayout.setUrl(avatar, login, false, LinkParserHelper.isEnterprise(commit.getHtmlUrl()));
         addition.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getAdditions() : 0));
         deletion.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getDeletions() : 0));
         changes.setText(String.valueOf(commit.getFiles() != null ? commit.getFiles().size() : 0));
@@ -229,6 +238,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         NameParser nameParser = new NameParser("");
         nameParser.setName(getPresenter().getRepoId());
         nameParser.setUsername(getPresenter().getLogin());
+        nameParser.setEnterprise(isEnterprise());
         RepoPagerActivity.startRepoPager(this, nameParser);
         finish();
     }

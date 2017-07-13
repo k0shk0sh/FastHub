@@ -15,6 +15,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.base.BaseActivity;
@@ -41,7 +42,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     @OnClick(R.id.fab) void onFilter() {}
 
     @NonNull @Override public MainPresenter providePresenter() {
-        return new MainPresenter(false);
+        return new MainPresenter();
     }
 
     @Override protected int layout() {
@@ -67,10 +68,11 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
             }
         }
+        getPresenter().setEnterprise(PrefGetter.isEnterprise());
         selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
-        onInit(savedInstanceState, false);
+        onInit(savedInstanceState);
         fab.setImageResource(R.drawable.ic_filter);
         onNewIntent(getIntent());
     }
@@ -119,12 +121,12 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         getPresenter().onModuleChanged(getSupportFragmentManager(), navType);
     }
 
-    @Override public void onUpdateDrawerMenuHeader(boolean isEnterprise) {
-        setupNavigationView(extraNav);
+    @Override public void onUpdateDrawerMenuHeader() {
+        setupNavigationView();
     }
 
     @Override public void onOpenProfile() {
-        UserPagerActivity.startActivity(this, Login.getUser().getLogin());
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
@@ -133,7 +135,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     @Shortcut(id = "myPulls", icon = R.drawable.ic_pull_requests_shortcut, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
     public void myPulls() {}//do nothing
 
-    private void onInit(@Nullable Bundle savedInstanceState, boolean isEnterprise) {
+    private void onInit(@Nullable Bundle savedInstanceState) {
         if (isLoggedIn()) {
             if (savedInstanceState == null) {
                 boolean attachFeeds = true;
@@ -142,7 +144,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                         navType = MainMvp.PULL_REQUESTS;
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.container, MyPullsPagerFragment.newInstance(isEnterprise), MyPullsPagerFragment.TAG)
+                                .replace(R.id.container, MyPullsPagerFragment.newInstance(), MyPullsPagerFragment.TAG)
                                 .commit();
                         bottomNavigation.setSelectedIndex(2, true);
                         attachFeeds = false;
@@ -150,7 +152,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                         navType = MainMvp.ISSUES;
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.container, MyIssuesPagerFragment.newInstance(isEnterprise), MyIssuesPagerFragment.TAG)
+                                .replace(R.id.container, MyIssuesPagerFragment.newInstance(), MyIssuesPagerFragment.TAG)
                                 .commit();
                         bottomNavigation.setSelectedIndex(1, true);
                         attachFeeds = false;
@@ -160,7 +162,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 if (attachFeeds) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.container, FeedsFragment.newInstance(isEnterprise), FeedsFragment.TAG)
+                            .replace(R.id.container, FeedsFragment.newInstance(null), FeedsFragment.TAG)
                             .commit();
                 }
             }

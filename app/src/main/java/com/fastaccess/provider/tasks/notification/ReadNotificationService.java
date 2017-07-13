@@ -106,7 +106,7 @@ public class ReadNotificationService extends IntentService {
     }
 
     private void unSubscribeFromThread(long id) {
-        RestProvider.getNotificationService()
+        RestProvider.getNotificationService(PrefGetter.isEnterprise())
                 .unSubscribe(id)
                 .doOnSubscribe(disposable -> notify(id, getNotification().build()))
                 .subscribeOn(Schedulers.io())
@@ -138,7 +138,7 @@ public class ReadNotificationService extends IntentService {
         com.fastaccess.data.dao.model.Notification.markAsRead(id)
                 .onErrorComplete()
                 .subscribe();
-        RestProvider.getNotificationService()
+        RestProvider.getNotificationService(PrefGetter.isEnterprise())
                 .markAsRead(String.valueOf(id))
                 .doOnSubscribe(disposable -> notify(id, getNotification().build()))
                 .subscribeOn(Schedulers.io())

@@ -56,7 +56,7 @@ class CreateGistPresenter extends BasePresenter<CreateGistMvp.View> implements C
     }
 
     @Override public void onSubmit(@NonNull CreateGistModel model) {
-        makeRestCall(RestProvider.getGistService().createGist(model),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).createGist(model),
                 gistsModel -> sendToView(view -> view.onSuccessSubmission(gistsModel)));
     }
 }

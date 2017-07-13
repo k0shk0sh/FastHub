@@ -36,7 +36,7 @@ public interface MainMvp {
 
         void onNavigationChanged(@NavigationType int navType);
 
-        void onUpdateDrawerMenuHeader(boolean isEnterprise);
+        void onUpdateDrawerMenuHeader();
 
         void onOpenProfile();
     }

@@ -45,7 +45,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnItemClick;
 import butterknife.OnTextChanged;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 import static android.view.View.GONE;
 
@@ -174,30 +173,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (savedInstanceState == null) {
             onCreate();
         }
-        if (!PrefGetter.isEditorHintShowed()) {
-            new MaterialTapTargetPrompt.Builder(this)
-                    .setTarget(viewCode)
-                    .setPrimaryText(R.string.view_code)
-                    .setSecondaryText(R.string.click_to_toggle_highlighting)
-                    .setCaptureTouchEventOutsidePrompt(true)
-                    .setBackgroundColourAlpha(244)
-                    .setBackgroundColour(ViewHelper.getAccentColor(EditorActivity.this))
-                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                        @Override
-                        public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                            ActivityHelper.hideDismissHints(EditorActivity.this);
-                        }
-
-                        @Override
-                        public void onHidePromptComplete() {
-
-                        }
-                    })
-                    .show();
-            ActivityHelper.showDismissHints(this, () -> {
-            });
-        }
-
+        if (!PrefGetter.isEditorHintShowed()) {}
         if (editText.getText().toString().contains(sentFromFastHub)) {
             editText.setText(editText.getText().toString().replace(sentFromFastHub, ""));
             sentVia.setChecked(true);

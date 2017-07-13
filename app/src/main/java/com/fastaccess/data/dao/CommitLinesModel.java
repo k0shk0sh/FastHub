@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,24 +34,7 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
     public int leftLineNo;
     public int rightLineNo;
     public boolean noNewLine;
-
-    @Override public int describeContents() { return 0; }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.text);
-        dest.writeInt(this.color);
-    }
-
-    protected CommitLinesModel(Parcel in) {
-        this.text = in.readString();
-        this.color = in.readInt();
-    }
-
-    public static final Parcelable.Creator<CommitLinesModel> CREATOR = new Parcelable.Creator<CommitLinesModel>() {
-        @Override public CommitLinesModel createFromParcel(Parcel source) {return new CommitLinesModel(source);}
-
-        @Override public CommitLinesModel[] newArray(int size) {return new CommitLinesModel[size];}
-    };
+    public int position;
 
     @NonNull public static List<CommitLinesModel> getLines(@Nullable String text) {
         ArrayList<CommitLinesModel> models = new ArrayList<>();
@@ -61,11 +43,13 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
             if (split.length > 1) {
                 int leftLineNo = -1;
                 int rightLineNo = -1;
+                int position = 0;
                 for (String token : split) {
                     char firstChar = token.charAt(0);
                     boolean addLeft = false;
                     boolean addRight = false;
                     int color = TRANSPARENT;
+                    position++;
                     if (token.startsWith("@@")) {
                         color = PATCH;
                         Matcher matcher = HUNK_TITLE.matcher(token.trim());
@@ -95,12 +79,37 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
                     if (index != -1) {
                         token = token.replace("\\ No newline at end of file", "");
                     }
-                    Logger.e(leftLineNo, rightLineNo);
                     models.add(new CommitLinesModel(token, color, token.startsWith("@@") || !addLeft ? -1 : leftLineNo,
-                            token.startsWith("@@") || !addRight ? -1 : rightLineNo, index != -1));
+                            token.startsWith("@@") || !addRight ? -1 : rightLineNo, index != -1, position));
                 }
             }
         }
         return models;
     }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.text);
+        dest.writeInt(this.color);
+        dest.writeInt(this.leftLineNo);
+        dest.writeInt(this.rightLineNo);
+        dest.writeByte(this.noNewLine ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.position);
+    }
+
+    protected CommitLinesModel(Parcel in) {
+        this.text = in.readString();
+        this.color = in.readInt();
+        this.leftLineNo = in.readInt();
+        this.rightLineNo = in.readInt();
+        this.noNewLine = in.readByte() != 0;
+        this.position = in.readInt();
+    }
+
+    public static final Creator<CommitLinesModel> CREATOR = new Creator<CommitLinesModel>() {
+        @Override public CommitLinesModel createFromParcel(Parcel source) {return new CommitLinesModel(source);}
+
+        @Override public CommitLinesModel[] newArray(int size) {return new CommitLinesModel[size];}
+    };
 }

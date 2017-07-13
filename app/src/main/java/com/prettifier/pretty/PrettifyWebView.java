@@ -19,7 +19,6 @@ import android.webkit.WebViewClient;
 import com.fastaccess.R;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -203,7 +202,6 @@ public class PrettifyWebView extends NestedWebView {
 
     public void setEnableNestedScrolling(boolean enableNestedScrolling) {
         if (this.enableNestedScrolling != enableNestedScrolling) {
-            Logger.e(enableNestedScrolling);
             setNestedScrollingEnabled(enableNestedScrolling);
             this.enableNestedScrolling = enableNestedScrolling;
         }
@@ -211,7 +209,6 @@ public class PrettifyWebView extends NestedWebView {
 
     private void startActivity(@Nullable Uri url) {
         if (url == null) return;
-        Logger.e(url);
         if (MarkDownProvider.isImage(url.toString())) {
             CodeViewerActivity.startActivity(getContext(), url.toString(), url.toString());
         } else {

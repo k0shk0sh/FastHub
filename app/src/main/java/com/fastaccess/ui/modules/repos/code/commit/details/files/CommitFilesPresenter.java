@@ -100,9 +100,10 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
             CommentRequestModel commentRequestModel = new CommentRequestModel();
             commentRequestModel.setBody(comment);
             commentRequestModel.setPath(path);
-            commentRequestModel.setPosition(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            commentRequestModel.setPosition(item.getPosition());
+            commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
             NameParser nameParser = new NameParser(blob);
-            makeRestCall(RestProvider.getRepoService().postCommitComment(nameParser.getUsername(),
+            makeRestCall(RestProvider.getRepoService(isEnterprise()).postCommitComment(nameParser.getUsername(),
                     nameParser.getName(), sha, commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
         }
     }

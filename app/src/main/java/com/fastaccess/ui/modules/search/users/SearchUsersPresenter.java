@@ -50,7 +50,7 @@ class SearchUsersPresenter extends BasePresenter<SearchUsersMvp.View> implements
         if (parameter == null) {
             return;
         }
-        makeRestCall(RestProvider.getSearchService().searchUsers(parameter, page),
+        makeRestCall(RestProvider.getSearchService(isEnterprise()).searchUsers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> {

@@ -30,8 +30,8 @@ import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
@@ -82,19 +82,23 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
         return createIntent(context, repoId, login, number, false);
-
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number, boolean showRepoBtn) {
+        return createIntent(context, repoId, login, number, showRepoBtn, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      int number, boolean showRepoBtn, boolean isEnterprise) {
         Intent intent = new Intent(context, PullRequestPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showRepoBtn)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
-
     }
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
@@ -203,7 +207,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             getPresenter().onLoadLabels();
             return true;
         } else if (item.getItemId() == R.id.edit) {
-            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), pullRequest);
+            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), pullRequest, isEnterprise());
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())
@@ -273,8 +277,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         }
         invalidateOptionsMenu();
         PullRequest pullRequest = getPresenter().getPullRequest();
+        setTaskName(pullRequest.getRepoId() + " - " + pullRequest.getTitle());
         updateViews(pullRequest);
-        Logger.e(pullRequest.getBodyHtml());
         if (update) {
             PullRequestTimelineFragment issueDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
             if (issueDetailsView != null && getPresenter().getPullRequest() != null) {
@@ -330,7 +334,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override public void onSelectedLabels(@NonNull ArrayList<LabelModel> labels) {
-        Logger.e(labels, labels.size());
         getPresenter().onPutLabels(labels);
     }
 
@@ -385,7 +388,9 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override protected void onNavToRepoClicked() {
-        startActivity(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(), getPresenter().getLogin(), RepoPagerMvp.PULL_REQUEST));
+        Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(),
+                getPresenter().getLogin(), RepoPagerMvp.PULL_REQUEST), isEnterprise());
+        startActivity(intent);
         finish();
     }
 
@@ -418,7 +423,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         requestModel.setCommitId(pullRequest.getHead().getSha());
         boolean isAuthor = author != null && Login.getUser().getLogin().equalsIgnoreCase(author.getLogin());
         ReviewChangesActivity.Companion.startForResult(this, view, requestModel, getPresenter().getRepoId(),
-                getPresenter().getLogin(), pullRequest.getNumber(), isAuthor);
+                getPresenter().getLogin(), pullRequest.getNumber(), isAuthor, isEnterprise());
     }
 
     private void initTabs(@NonNull PullRequest pullRequest) {
@@ -461,7 +466,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         User userModel = pullRequest.getUser();
         if (userModel != null) {
             title.setText(SpannableBuilder.builder().append(userModel.getLogin()).append("/").append(pullRequest.getTitle()));
-            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin(), false,
+                    LinkParserHelper.isEnterprise(pullRequest.getUrl()));
         } else {
             title.setText(SpannableBuilder.builder().append(pullRequest.getTitle()));
         }

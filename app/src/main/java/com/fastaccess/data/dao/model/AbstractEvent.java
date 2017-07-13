@@ -17,11 +17,13 @@ import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
+import io.requery.Nullable;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 /**
@@ -36,15 +38,36 @@ import lombok.NoArgsConstructor;
     @Convert(RepoConverter.class) Repo repo;
     @Convert(PayloadConverter.class) PayloadModel payload;
     @SerializedName("public") boolean publicEvent;
+    @Nullable String login;
 
-    @NonNull public static Single<Iterable<Event>> save(@NonNull List<Event> events) {
-        ReactiveEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-        return RxHelper.getSingle(
+    @NonNull public static Disposable save(@android.support.annotation.Nullable List<Event> events) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                Login login = Login.getUser();
+                if (login == null) {
+                    s.onNext("");
+                    s.onComplete();
+                    return;
+                }
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
                 dataSource.delete(Event.class)
+                        .where(Event.LOGIN.isNull()
+                                .or(Event.LOGIN.eq(login.getLogin())))
                         .get()
-                        .single()
-                        .flatMap(i -> dataSource.insert(events))
-        );
+                        .value();
+                if (events != null && !events.isEmpty()) {
+                    for (Event event : events) {
+                        dataSource.delete(Event.class).where(Event.ID.eq(event.getId())).get().value();
+                        event.setLogin(login.getLogin());
+                        dataSource.insert(event);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     @NonNull public static Single<List<Event>> getEvents() {

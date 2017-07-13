@@ -25,7 +25,7 @@ import io.reactivex.Observable;
 
 public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificationMvp.View> implements UnreadNotificationMvp.Presenter {
     private ArrayList<GroupedNotificationModel> notifications = new ArrayList<>();
-
+    
     @Override public void onItemClick(int position, View v, GroupedNotificationModel model) {
         if (getView() == null) return;
         Notification item = model.getNotification();
@@ -77,7 +77,7 @@ public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificati
     }
 
     @Override public void onCallApi() {
-        Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService()
+        Observable<List<GroupedNotificationModel>> observable = RestProvider.getNotificationService(PrefGetter.isEnterprise())
                 .getNotifications(ParseDateFormat.getLastWeekDate()).flatMap(response -> {
                     if (response.getItems() != null) manageObservable(Notification.save(response.getItems()));
                     return Observable.just(GroupedNotificationModel.onlyNotifications(response.getItems()));

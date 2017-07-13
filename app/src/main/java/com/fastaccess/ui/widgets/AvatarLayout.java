@@ -36,11 +36,12 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     @BindView(R.id.avatar) ShapedImageView avatar;
     @Nullable private String login;
     private boolean isOrg;
+    private boolean isEnterprise;
     private Toast toast;
 
     @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
-        UserPagerActivity.startActivity(view.getContext(), login, isOrg);
+        UserPagerActivity.startActivity(view.getContext(), login, isOrg, isEnterprise);
     }
 
     @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
@@ -77,7 +78,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         inflate(getContext(), R.layout.avatar_layout, this);
         if (isInEditMode()) return;
         ButterKnife.bind(this);
-        setBackground(false);
+        setBackground();
         if (PrefGetter.isRectAvatar()) {
             avatar.setShape(ShapedImageView.SHAPE_MODE_ROUND_RECT, 15);
         }
@@ -88,7 +89,9 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     }
 
     @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-//        setBackground(false);
+        if (failReason.getCause() != null) failReason.getCause().printStackTrace();
+//        setBackground();
+        setImageOnFailed();
     }
 
     @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
@@ -97,32 +100,24 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
     @Override public void onLoadingCancelled(String imageUri, View view) {}
 
-    public void setUrl(@Nullable String url, @Nullable String login) {
-        setUrl(url, login, false);
-    }
-
-    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg) {
+    public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg, boolean isEnterprise) {
         this.login = login;
         this.isOrg = isOrg;
+        this.isEnterprise = isEnterprise;
         avatar.setContentDescription(login);
         if (url != null) {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
             ImageLoader.getInstance().displayImage(null, avatar);
-            avatar.setImageResource(R.drawable.ic_incognito_avatar);
+            setImageOnFailed();
         }
     }
 
-    private void setBackground(boolean clear) {
-//        if (clear) {
-//            setBackgroundColor(Color.TRANSPARENT);
-//        } else {
-//            if (PrefGetter.isRectAvatar()) {
-//                setBackgroundResource(R.drawable.rect_shape);
-//            } else {
-//                setBackgroundResource(R.drawable.circle_shape);
-//            }
-//        }
+    private void setImageOnFailed() {
+        avatar.setImageResource(R.drawable.ic_github);
+    }
+
+    private void setBackground() {
         if (PrefGetter.isRectAvatar()) {
             setBackgroundResource(R.drawable.rect_shape);
         } else {

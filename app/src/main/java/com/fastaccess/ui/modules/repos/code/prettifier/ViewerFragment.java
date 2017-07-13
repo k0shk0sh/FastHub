@@ -155,7 +155,6 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onScrollChanged(boolean reachedTop, int scroll) {
         if (getPresenter().isRepo()) {
             if (appBarLayout != null && bottomNavigation != null) {
-                Logger.e(scroll, appBarLayout.getTotalScrollRange());
                 if (scroll <= (appBarLayout.getTotalScrollRange() / 2)) {
                     scrolledTop = true;
                     bottomNavigation.setExpanded(true, true);

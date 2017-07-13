@@ -15,6 +15,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
@@ -82,6 +83,8 @@ public class CreateGistActivity extends BaseActivity<CreateGistMvp.View, CreateG
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getPresenter().setEnterprise(PrefGetter.isEnterprise());
+        setTaskName(getString(R.string.create_gist));
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -113,6 +116,7 @@ public class CreateGistActivity extends BaseActivity<CreateGistMvp.View, CreateG
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, InputHelper.toString(savedText))
                     .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                     .end());
             ActivityHelper.startReveal(this, intent, fileContent, BundleConstant.REQUEST_CODE);
             return true;

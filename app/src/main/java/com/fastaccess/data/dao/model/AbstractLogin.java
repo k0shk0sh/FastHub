@@ -2,8 +2,10 @@ package com.fastaccess.data.dao.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 
@@ -54,26 +56,19 @@ import lombok.NoArgsConstructor;
     String token;
     int contributions;
     @Nullable boolean isLoggedIn;
+    @Nullable boolean isEnterprise;
+    @Nullable String otpCode;
+    @Nullable String enterpriseUrl;
 
     public Observable<Login> update(Login login) {
-        login.setToken(PrefGetter.getToken());
-        login.setIsLoggedIn(true);
-        return RxHelper.safeObservable(App.getInstance().getDataStore().update(login).toObservable());
+        return RxHelper.safeObservable(App.getInstance().getDataStore().update(login)
+                .toObservable());
     }
 
     public void save(Login entity) {
-//        Login login = getUser();
-//        if (login != null) {
-//            if (!login.getLogin().equalsIgnoreCase(entity.getLogin())) {
-//                App.getInstance().getDataStore().delete(login).toBlocking().value();
-//            } else {
-//                login.setIsLoggedIn(false);
-//                App.getInstance().getDataStore().update(login).toBlocking().value();
-//            }
-//        }
-//        entity.setIsLoggedIn(true); TODO for multiple logins
         App.getInstance().getDataStore()
                 .delete(Login.class)
+                .where(Login.LOGIN.eq(entity.getLogin()))
                 .get()
                 .single()
                 .flatMap(integer -> App.getInstance().getDataStore().insert(entity))
@@ -84,12 +79,98 @@ import lombok.NoArgsConstructor;
         return App.getInstance().getDataStore()
                 .select(Login.class)
                 .where(Login.LOGIN.notNull()
+                        .and(Login.TOKEN.notNull())
+                        .and(Login.IS_LOGGED_IN.eq(true)))
+                .get()
+                .firstOrNull();
+    }
+
+    public static Login getUser(@NonNull String login) {
+        return App.getInstance().getDataStore()
+                .select(Login.class)
+                .where(Login.LOGIN.eq(login)
                         .and(Login.TOKEN.notNull()))
                 .get()
                 .firstOrNull();
     }
 
-    @Override public int describeContents() { return 0; }
+    public static Observable<Login> getAccounts() {
+        return App.getInstance().getDataStore()
+                .select(Login.class)
+                .where(Login.IS_LOGGED_IN.eq(false))
+                .orderBy(Login.LOGIN.desc())
+                .get()
+                .observable();
+    }
+
+    public static void logout() {
+        if (getUser() == null) return;
+        Login login = getUser();
+        login.setIsLoggedIn(false);
+        App.getInstance().getDataStore().update(login).blockingGet();
+    }
+
+    public static boolean hasNormalLogin() {
+        return App.getInstance().getDataStore()
+                .count(Login.class)
+                .where(Login.IS_ENTERPRISE.eq(false))
+                .get()
+                .value() > 0;
+    }
+
+    public static Observable<Boolean> onMultipleLogin(@NonNull Login userModel, boolean isEnterprise, boolean isNew) {
+        return Observable.fromPublisher(s -> {
+            Login currentUser = Login.getUser();
+            if (currentUser != null) {
+                currentUser.setIsLoggedIn(false);
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .update(currentUser);
+            }
+            if (!isEnterprise) {
+                PrefGetter.resetEnterprise();
+            }
+            userModel.setIsLoggedIn(true);
+            if (isNew) {
+                userModel.setIsEnterprise(isEnterprise);
+                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter
+                        .getToken());
+                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() :
+                        PrefGetter.getOtpCode());
+                userModel.setEnterpriseUrl(isEnterprise ? PrefGetter.getEnterpriseUrl() : null);
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .delete(Login.class)
+                        .where(Login.ID.eq(userModel.getId())
+                                .or(Login.LOGIN.eq(userModel.getLogin())))
+                        .get()
+                        .value();
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .insert(userModel);
+            } else {
+                if (isEnterprise) {
+                    PrefGetter.setTokenEnterprise(userModel.token);
+                    PrefGetter.setEnterpriseOtpCode(userModel.otpCode);
+                    PrefGetter.setEnterpriseUrl(userModel.enterpriseUrl);
+                    Logger.e(userModel.enterpriseUrl, PrefGetter.getEnterpriseUrl());
+                } else {
+                    PrefGetter.resetEnterprise();
+                    PrefGetter.setToken(userModel.token);
+                    PrefGetter.setOtpCode(userModel.otpCode);
+                }
+                App.getInstance().getDataStore()
+                        .toBlocking()
+                        .update(userModel);
+            }
+            s.onNext(true);
+            s.onComplete();
+        });
+    }
+
+    @Override public int describeContents() {
+        return 0;
+    }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
@@ -125,6 +206,9 @@ import lombok.NoArgsConstructor;
         dest.writeString(this.token);
         dest.writeInt(this.contributions);
         dest.writeByte(this.isLoggedIn ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.isEnterprise ? (byte) 1 : (byte) 0);
+        dest.writeString(this.otpCode);
+        dest.writeString(this.enterpriseUrl);
     }
 
     protected AbstractLogin(Parcel in) {
@@ -163,11 +247,20 @@ import lombok.NoArgsConstructor;
         this.token = in.readString();
         this.contributions = in.readInt();
         this.isLoggedIn = in.readByte() != 0;
+        this.isEnterprise = in.readByte() != 0;
+        this.otpCode = in.readString();
+        this.enterpriseUrl = in.readString();
     }
 
     public static final Creator<Login> CREATOR = new Creator<Login>() {
-        @Override public Login createFromParcel(Parcel source) {return new Login(source);}
+        @Override
+        public Login createFromParcel(Parcel source) {
+            return new Login(source);
+        }
 
-        @Override public Login[] newArray(int size) {return new Login[size];}
+        @Override
+        public Login[] newArray(int size) {
+            return new Login[size];
+        }
     };
 }

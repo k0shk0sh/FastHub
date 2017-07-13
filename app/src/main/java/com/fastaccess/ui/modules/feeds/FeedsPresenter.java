@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.feeds;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,6 +9,7 @@ import android.view.View;
 
 import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.Pageable;
 import com.fastaccess.data.dao.PayloadModel;
 import com.fastaccess.data.dao.SimpleUrlsModel;
@@ -16,10 +18,16 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.repos.RepoPagerActivity;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.code.releases.ReleasesListActivity;
 
 import java.util.ArrayList;
 
@@ -40,7 +48,6 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
     @Override public void onFragmentCreated(@NonNull Bundle argument) {
         user = argument.getString(BundleConstant.EXTRA);
         isOrg = argument.getBoolean(BundleConstant.EXTRA_TWO);
-        setEnterprise(argument.getBoolean(BundleConstant.IS_ENTERPRISE));
         if (eventsModels.isEmpty()) {
             onCallApi(1);
         }
@@ -56,22 +63,23 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
             return;
         }
         setCurrentPage(page);
-        if (Login.getUser() == null) return;// I can't understand how this could possibly be reached lol.
-        Observable<Pageable<Event>> observable = null;
+        Login login = Login.getUser();
+        if (login == null) return;// I can't understand how this could possibly be reached lol.
+        Observable<Pageable<Event>> observable;
         if (user != null) {
             if (isOrg) {
-                RestProvider.getOrgService().getReceivedEvents(user, page);
+                observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(user, page);
             } else {
-                observable = RestProvider.getUserService().getUserEvents(user, page);
+                observable = RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
+                                                         ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
             }
         } else {
-            observable = RestProvider.getUserService().getReceivedEvents(Login.getUser().getLogin(), page);
+            observable = RestProvider.getUserService(PrefGetter.isEnterprise()).getReceivedEvents(login.getLogin(), page);
         }
-        if (observable == null) return;
         makeRestCall(observable, response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageObservable(Event.save(response.getItems()).toObservable());
+                manageDisposable(Event.save(response.getItems()));
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
@@ -111,7 +119,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
     }
 
     @Override public void onWorkOffline() {
-        if (eventsModels.isEmpty()) {
+        if (eventsModels.isEmpty() && InputHelper.isEmpty(user)) {
             manageDisposable(RxHelper.getObserver(Event.getEvents().toObservable())
                     .subscribe(modelList -> {
                         if (modelList != null) {
@@ -125,15 +133,21 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
 
     @Override public void onItemClick(int position, View v, Event item) {
         if (item.getType() == EventsType.ForkEvent) {
-            SchemeParser.launchUri(v.getContext(), item.getPayload().getForkee().getHtmlUrl());
+            NameParser parser = new NameParser(item.getPayload().getForkee().getHtmlUrl());
+            RepoPagerActivity.startRepoPager(v.getContext(), parser);
         } else {
             PayloadModel payloadModel = item.getPayload();
             if (payloadModel != null) {
-                if (payloadModel.getHead() != null && payloadModel.getCommits() != null) {
-                    if (payloadModel.getCommits().size() > 1) {
+                if (payloadModel.getHead() != null) {
+                    if (payloadModel.getCommits() != null && payloadModel.getCommits().size() > 1) {
                         sendToView(view -> view.onOpenCommitChooser(payloadModel.getCommits()));
-                    } else if (payloadModel.getSize() == 1) {
-                        SchemeParser.launchUri(v.getContext(), payloadModel.getCommits().get(0).getUrl());
+                    } else {
+                        Repo repoModel = item.getRepo();
+                        NameParser nameParser = new NameParser(repoModel.getUrl());
+                        Intent intent = CommitPagerActivity.createIntent(v.getContext(), nameParser.getName(),
+                                nameParser.getUsername(), payloadModel.getHead(), true,
+                                LinkParserHelper.isEnterprise(repoModel.getUrl()));
+                        v.getContext().startActivity(intent);
                     }
                 } else if (payloadModel.getIssue() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(payloadModel.getIssue().getHtmlUrl()), true);
@@ -142,19 +156,19 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
                 } else if (payloadModel.getComment() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(payloadModel.getComment().getHtmlUrl()), true);
                 } else if (item.getType() == EventsType.ReleaseEvent && payloadModel.getRelease() != null) {
-                    SchemeParser.launchUri(v.getContext(), payloadModel.getRelease().getHtmlUrl());
+                    NameParser nameParser = new NameParser(payloadModel.getRelease().getHtmlUrl());
+                    v.getContext().startActivity(ReleasesListActivity.getIntent(v.getContext(), nameParser.getUsername(), nameParser.getName(),
+                            payloadModel.getRelease().getId(), LinkParserHelper.isEnterprise(payloadModel.getRelease().getHtmlUrl())));
+
                 } else if (item.getType() == EventsType.CreateEvent && "tag".equalsIgnoreCase(payloadModel.getRefType())) {
                     Repo repoModel = item.getRepo();
-                    Uri uri = Uri.parse(repoModel.getUrl())
-                            .buildUpon()
-                            .appendPath("releases")
-                            .appendPath("tag")
-                            .appendPath(payloadModel.getRef())
-                            .build();
-                    SchemeParser.launchUri(v.getContext(), uri);
+                    NameParser nameParser = new NameParser(repoModel.getUrl());
+                    v.getContext().startActivity(ReleasesListActivity.getIntent(v.getContext(), nameParser.getUsername(), nameParser.getName(),
+                            payloadModel.getRef(), LinkParserHelper.isEnterprise(repoModel.getUrl())));
                 } else {
                     Repo repoModel = item.getRepo();
-                    if (item.getRepo() != null) SchemeParser.launchUri(v.getContext(), Uri.parse(repoModel.getName()), true);
+                    NameParser parser = new NameParser(repoModel.getUrl());
+                    RepoPagerActivity.startRepoPager(v.getContext(), parser);
                 }
             }
         }

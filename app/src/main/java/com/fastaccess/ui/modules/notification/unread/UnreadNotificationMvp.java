@@ -28,6 +28,8 @@ public interface UnreadNotificationMvp {
         void onReadNotification(@NonNull Notification notification);
 
         void onClick(@NonNull String url);
+
+        void onNotifyNotificationChanged(@NonNull GroupedNotificationModel notification);
     }
 
     interface Presenter extends BaseViewHolder.OnItemClickListener<GroupedNotificationModel> {

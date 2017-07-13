@@ -8,6 +8,7 @@ import com.fastaccess.data.service.LoginRestService;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.converters.GithubResponseConverter;
 import com.fastaccess.provider.rest.interceptors.AuthenticationInterceptor;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -44,7 +45,7 @@ public class LoginProvider {
 
     private static Retrofit provideRetrofit(@Nullable String authToken, @Nullable String otp, @Nullable String enterpriseUrl) {
         return new Retrofit.Builder()
-                .baseUrl(InputHelper.isEmpty(enterpriseUrl) ? BuildConfig.REST_URL : RestProvider.getEndpoint(enterpriseUrl))
+                .baseUrl(InputHelper.isEmpty(enterpriseUrl) ? BuildConfig.REST_URL : LinkParserHelper.getEndpoint(enterpriseUrl))
                 .client(provideOkHttpClient(authToken, otp))
                 .addConverterFactory(new GithubResponseConverter(gson))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())

@@ -54,7 +54,7 @@ class OrgMembersPresenter extends BasePresenter<OrgMembersMvp.View> implements O
             sendToView(OrgMembersMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getOrgService().getOrgMembers(parameter, page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgMembers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));

@@ -143,7 +143,7 @@ import lombok.Setter;
         String login = commitModel.getLogin();
         String repoId = commitModel.getRepoId();
         String sha = commitModel.getSha();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.commits), CommitFilesFragment.newInstance(commitModel.getSha(),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), CommitFilesFragment.newInstance(commitModel.getSha(),
                 commitModel.getFiles())),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), CommitCommentsFragment.newInstance(login, repoId, sha)))
                 .collect(Collectors.toList());
@@ -170,7 +170,7 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context, boolean isEnterprise) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyIssues(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyIssuesFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
@@ -182,7 +182,7 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context, boolean isEnterprise) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForMyPulls(@NonNull Context context) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.created),
                         MyPullRequestFragment.newInstance(IssueState.open, MyIssuesType.CREATED)),
                 new FragmentPagerAdapterModel(context.getString(R.string.assigned),
@@ -196,7 +196,8 @@ import lombok.Setter;
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
         return Stream.of(
-                new FragmentPagerAdapterModel(context.getString(R.string.feeds), isMember ? FeedsFragment.newInstance(login, true) : null),
+                new FragmentPagerAdapterModel(context.getString(R.string.feeds),
+                        isMember ? FeedsFragment.newInstance(login, true) : null),
                 new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.repos), OrgReposFragment.newInstance(login)),
                 new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersFragment.newInstance(login)),

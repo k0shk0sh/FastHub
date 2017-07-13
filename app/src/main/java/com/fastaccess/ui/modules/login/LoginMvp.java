@@ -25,7 +25,7 @@ public interface LoginMvp {
 
         void onEmptyEndpoint(boolean isEmpty);
 
-        void onSuccessfullyLoggedIn();
+        void onSuccessfullyLoggedIn(boolean extraLogin);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -40,6 +40,6 @@ public interface LoginMvp {
 
         void login(@NonNull String username, @NonNull String password,
                    @Nullable String twoFactorCode, boolean isBasicAuth,
-                   @Nullable String endpoint, boolean isEnterprise);
+                   @Nullable String endpoint);
     }
 }

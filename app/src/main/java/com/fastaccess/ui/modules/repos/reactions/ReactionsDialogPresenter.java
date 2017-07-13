@@ -78,19 +78,19 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
         Observable<Pageable<ReactionsModel>> observable = null;
         switch (reactionTypeMode) {
             case ReactionsProvider.COMMENT:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getIssueCommentReaction(login, repoId, id, reactionType.getContent(), page);
                 break;
             case ReactionsProvider.COMMIT:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getCommitReaction(login, repoId, id, reactionType.getContent(), page);
                 break;
             case ReactionsProvider.HEADER:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getIssueReaction(login, repoId, id, reactionType.getContent(), page);
                 break;
             case ReactionsProvider.REVIEW_COMMENT:
-                observable = RestProvider.getReactionsService()
+                observable = RestProvider.getReactionsService(isEnterprise())
                         .getPullRequestReactions(login, repoId, id, reactionType.getContent(), page);
                 break;
         }

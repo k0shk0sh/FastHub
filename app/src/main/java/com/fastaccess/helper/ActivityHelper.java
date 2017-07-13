@@ -3,15 +3,15 @@ package com.fastaccess.helper;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.ColorStateList;
-import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
@@ -21,17 +21,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.util.Pair;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.ui.modules.parser.LinksParserActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,8 +37,6 @@ import es.dmoral.toasty.Toasty;
  * Created by Kosh on 12/12/15 10:51 PM
  */
 public class ActivityHelper {
-
-    private static int BUTTON_ID = 32;
 
     @Nullable public static Activity getActivity(@Nullable Context content) {
         if (content == null) return null;
@@ -60,7 +53,11 @@ public class ActivityHelper {
                     .setShowTitle(true)
                     .build();
             customTabsIntent.intent.setPackage(packageNameToUse);
-            customTabsIntent.launchUrl(context, url);
+            try {
+                customTabsIntent.launchUrl(context, url);
+            } catch (ActivityNotFoundException ignored) {
+                openChooser(context, url, true);
+            }
         } else {
             openChooser(context, url, true);
         }
@@ -81,21 +78,24 @@ public class ActivityHelper {
         if (finalIntent != null) {
             try {
                 context.startActivity(finalIntent);
-            } catch (ActivityNotFoundException ignored) {}
+            } catch (ActivityNotFoundException ignored) {
+            }
         } else {
             if (!fromCustomTab) {
                 Activity activity = ActivityHelper.getActivity(context);
                 if (activity == null) {
                     try {
                         context.startActivity(i);
-                    } catch (ActivityNotFoundException ignored) {}
+                    } catch (ActivityNotFoundException ignored) {
+                    }
                     return;
                 }
                 startCustomTab(activity, url);
             } else {
                 try {
                     context.startActivity(i);
-                } catch (ActivityNotFoundException ignored) {}
+                } catch (ActivityNotFoundException ignored) {
+                }
             }
         }
     }
@@ -137,7 +137,8 @@ public class ActivityHelper {
         activity.startActivity(intent, options.toBundle());
     }
 
-    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent, @NonNull Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent,
+                                          @NonNull Pair<View, String>... sharedElements) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
 
@@ -232,71 +233,19 @@ public class ActivityHelper {
         return chooserIntent;
     }
 
-    public static void showDismissHints(@NonNull Context context, @NonNull Runnable runnable) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        params.weight = 1;
-        params.gravity = Gravity.START;
-        int margin = (int) context.getResources().getDimension(R.dimen.spacing_normal);
-        params.setMargins(margin, margin, margin, margin);
-        Button button = new Button(context);
-        button.setLayoutParams(params);
-        button.setText(context.getResources().getString(R.string.dismiss_all));
-        button.setTextColor(context.getResources().getColor(R.color.material_grey_200));
-        button.setBackgroundTintList(ColorStateList.valueOf(context.getResources().getColor(R.color.material_red_accent_700)));
-        button.setAllCaps(true);
-        button.setOnClickListener(v -> {
-            PrefGetter.isCommentHintShowed();
-            PrefGetter.isEditorHintShowed();
-            PrefGetter.isFileOptionHintShow();
-            PrefGetter.isHomeButoonHintShowed();
-            PrefGetter.isNavDrawerHintShowed();
-            PrefGetter.isReleaseHintShow();
-            PrefGetter.isRepoFabHintShowed();
-            PrefGetter.isRepoGuideShowed();
-            runnable.run();
-            ActivityHelper.hideDismissHints(context);
-        });
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        RelativeLayout relativeLayout = new RelativeLayout(context);
-        relativeLayout.setId(BUTTON_ID);
-        relativeLayout.setLayoutParams(
-                new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        relativeLayout.setPadding(0, getNotificationBarHeight(context), 0, 0);
-
-        relativeLayout.addView(button);
-        parentView.addView(relativeLayout);
+    public static void activateLinkInterceptorActivity(Context context, boolean activate) {
+        final PackageManager pm = context.getPackageManager();
+        final int flag = activate ? PackageManager.COMPONENT_ENABLED_STATE_ENABLED : PackageManager.COMPONENT_ENABLED_STATE_DISABLED;
+        pm.setComponentEnabledSetting(new ComponentName(context, LinksParserActivity.class), flag, PackageManager.DONT_KILL_APP);
     }
 
-    public static void hideDismissHints(@NonNull Context context) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        View button = parentView.findViewById(BUTTON_ID);
-        if (button != null)
-            parentView.removeView(button);
-    }
-
-    public static void bringDismissAllToFront(@NonNull Context context) {
-        Activity activity = getActivity(context);
-        if (activity == null) return;
-        ViewGroup parentView = (ViewGroup) activity.getWindow().getDecorView();
-        View button = parentView.findViewById(BUTTON_ID);
-        if (button != null)
-            button.bringToFront();
-    }
-
-    private static int getNotificationBarHeight(@NonNull Context context) {
-        Rect rectangle = new Rect();
-        Activity activity = getActivity(context);
-        if (activity == null) return 0;
-        Window window = activity.getWindow();
-        window.getDecorView().getWindowVisibleDisplayFrame(rectangle);
-        int statusBarHeight = rectangle.top;
-        int contentViewTop = window.findViewById(Window.ID_ANDROID_CONTENT).getTop();
-
-        return Math.abs(contentViewTop - statusBarHeight);
+    public static Intent editBundle(@NonNull Intent intent, boolean isEnterprise) {
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+            intent.putExtras(bundle);
+        }
+        return intent;
     }
 
 }

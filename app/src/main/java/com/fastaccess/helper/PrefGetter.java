@@ -100,13 +100,11 @@ public class PrefGetter {
     private static final String ENTERPRISE_URL = "ENTERPRISE_URL";
 
     public static void setToken(@Nullable String token) {
-        if (!InputHelper.isEmpty(token)) PrefHelper.set(TOKEN, token);
-        else PrefHelper.clearKey(TOKEN);
+        PrefHelper.set(TOKEN, token);
     }
 
     public static void setTokenEnterprise(@Nullable String token) {
-        if (!InputHelper.isEmpty(token)) PrefHelper.set(ENTERPRISE_TOKEN, token);
-        else PrefHelper.clearKey(ENTERPRISE_TOKEN);
+        PrefHelper.set(ENTERPRISE_TOKEN, token);
     }
 
     public static String getToken() {
@@ -121,7 +119,7 @@ public class PrefGetter {
         return PrefHelper.getString(ENTERPRISE_OTP_CODE);
     }
 
-    public static void setEnterpriseOtpCode(@NonNull String otp) {
+    public static void setEnterpriseOtpCode(@Nullable String otp) {
         PrefHelper.set(ENTERPRISE_OTP_CODE, otp);
     }
 
@@ -129,7 +127,7 @@ public class PrefGetter {
         return PrefHelper.getString(OTP_CODE);
     }
 
-    public static void setOtpCode(@NonNull String otp) {
+    public static void setOtpCode(@Nullable String otp) {
         PrefHelper.set(OTP_CODE, otp);
     }
 
@@ -414,14 +412,16 @@ public class PrefGetter {
     }
 
     public static void setEnterpriseUrl(@Nullable String value) {
-        if (InputHelper.isEmpty(value)) {
-            PrefHelper.clearKey(ENTERPRISE_URL);
-        } else {
-            PrefHelper.set(ENTERPRISE_URL, value);
-        }
+        PrefHelper.set(ENTERPRISE_URL, value);
     }
 
     public static boolean isEnterprise() {
         return !InputHelper.isEmpty(getEnterpriseUrl());
+    }
+
+    public static void resetEnterprise() {
+        PrefGetter.setTokenEnterprise(null);
+        PrefGetter.setEnterpriseOtpCode(null);
+        PrefGetter.setEnterpriseUrl(null);
     }
 }

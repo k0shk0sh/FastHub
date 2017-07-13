@@ -25,8 +25,10 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
@@ -73,13 +75,22 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     }
 
-    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number, boolean showToRepoBtn) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId,
+                                      @NonNull String login, int number, boolean showToRepoBtn) {
+        return createIntent(context, repoId, login, number, showToRepoBtn, false);
+
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId,
+                                      @NonNull String login, int number, boolean showToRepoBtn,
+                                      boolean isEnterprise) {
         Intent intent = new Intent(context, IssuePagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, number)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showToRepoBtn)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
 
@@ -123,6 +134,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Logger.e(isEnterprise());
         tabs.setVisibility(View.GONE);
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
@@ -185,7 +197,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
             getPresenter().onLoadLabels();
             return true;
         } else if (item.getItemId() == R.id.edit) {
-            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(), getPresenter().getIssue());
+            CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(),
+                    getPresenter().getIssue(), isEnterprise());
             return true;
         } else if (item.getItemId() == R.id.milestone) {
             MilestoneDialogFragment.newInstance(getPresenter().getLogin(), getPresenter().getRepoId())
@@ -242,6 +255,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         }
         onUpdateMenu();
         Issue issueModel = getPresenter().getIssue();
+        setTaskName(issueModel.getRepoId() + " - " + issueModel.getTitle());
         setTitle(String.format("#%s", issueModel.getNumber()));
         if (getSupportActionBar() != null) {
             getSupportActionBar().setSubtitle(issueModel.getRepoId());
@@ -340,7 +354,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     }
 
     @Override protected void onNavToRepoClicked() {
-        startActivity(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(), getPresenter().getLogin(), RepoPagerMvp.ISSUES));
+        Intent intent = ActivityHelper.editBundle(RepoPagerActivity.createIntent(this, getPresenter().getRepoId(),
+                getPresenter().getLogin(), RepoPagerMvp.ISSUES), isEnterprise());
+        startActivity(intent);
         finish();
     }
 
@@ -388,7 +404,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .append(getString(issueModel.getState().getStatus()))
                     .append(" ").append(getString(R.string.by)).append(" ").append(username).append(" ")
                     .append(parsedDate));
-            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin());
+            avatarLayout.setUrl(userModel.getAvatarUrl(), userModel.getLogin(), false,
+                    LinkParserHelper.isEnterprise(issueModel.getHtmlUrl()));
         }
     }
 }

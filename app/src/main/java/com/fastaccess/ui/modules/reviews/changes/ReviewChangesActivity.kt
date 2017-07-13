@@ -137,13 +137,14 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
          * val number = bundle.getLong(BundleConstant.ID)
          */
         fun startForResult(activity: Activity, view: View, reviewChanges: ReviewRequestModel, repoId: String, owner: String, number: Long,
-                           isAuthor: Boolean) {
+                           isAuthor: Boolean, isEnterprise: Boolean) {
             val bundle = Bundler.start()
                     .put(BundleConstant.EXTRA, reviewChanges)
                     .put(BundleConstant.EXTRA_TWO, repoId)
                     .put(BundleConstant.EXTRA_THREE, owner)
                     .put(BundleConstant.EXTRA_FOUR, isAuthor)
                     .put(BundleConstant.ID, number)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                     .end()
             val intent = Intent(activity, ReviewChangesActivity::class.java)
             intent.putExtras(bundle)

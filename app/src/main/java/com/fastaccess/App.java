@@ -7,6 +7,7 @@ import android.support.v7.preference.PreferenceManager;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.fastaccess.data.dao.model.Models;
+import com.fastaccess.data.dao.model.PinnedRepos;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
@@ -45,13 +46,7 @@ public class App extends Application {
     }
 
     private void init() {
-        Fabric fabric = new Fabric.Builder(this)
-                .kits(new Crashlytics.Builder()
-                        .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
-                        .build())
-                .debuggable(BuildConfig.DEBUG)
-                .build();
-        Fabric.with(fabric);
+        initFabric();
         RxBillingService.register(this);
         deleteDatabase("database.db");
         getDataStore();//init requery before anything.
@@ -62,6 +57,19 @@ public class App extends Application {
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();
+        if (BuildConfig.VERSION_CODE != 320) {
+            PinnedRepos.migrateToVersion4();
+        }
+    }
+
+    private void initFabric() {
+        Fabric fabric = new Fabric.Builder(this)
+                .kits(new Crashlytics.Builder()
+                        .core(new CrashlyticsCore.Builder().disabled(BuildConfig.DEBUG).build())
+                        .build())
+                .debuggable(BuildConfig.DEBUG)
+                .build();
+        Fabric.with(fabric);
     }
 
     private void setupPreference() {
@@ -76,7 +84,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 9);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 10);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

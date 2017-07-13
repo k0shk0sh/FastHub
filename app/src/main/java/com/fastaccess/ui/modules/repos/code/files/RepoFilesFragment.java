@@ -18,7 +18,6 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
@@ -33,7 +32,6 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 18 Feb 2017, 2:10 AM
@@ -124,38 +122,6 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         adapter = new RepoFilesAdapter(getPresenter().getFiles());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-    }
-
-    @Override public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Logger.e(hidden);
-        if (!hidden && adapter != null && isSafe()) {
-            if (!PrefGetter.isFileOptionHintShow()) {
-                ActivityHelper.showDismissHints(getContext(), () -> {
-                });
-                adapter.setGuideListener((itemView, model) ->
-                        new MaterialTapTargetPrompt.Builder(getActivity())
-                                .setTarget(itemView.findViewById(R.id.menu))
-                                .setPrimaryText(R.string.options)
-                                .setSecondaryText(R.string.click_file_option_hint)
-                                .setCaptureTouchEventOutsidePrompt(true)
-                                .setBackgroundColourAlpha(244)
-                                .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
-                                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                    @Override
-                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                                        ActivityHelper.hideDismissHints(RepoFilesFragment.this.getContext());
-                                    }
-
-                                    @Override
-                                    public void onHidePromptComplete() {
-
-                                    }
-                                })
-                                .show());
-                adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
-            }
-        }
     }
 
     @Override public void showProgress(@StringRes int resId) {

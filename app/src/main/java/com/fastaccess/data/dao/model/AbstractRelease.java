@@ -17,9 +17,12 @@ import java.util.List;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
+import io.requery.Persistable;
 import io.requery.Table;
 import lombok.NoArgsConstructor;
 
@@ -54,23 +57,29 @@ public abstract class AbstractRelease implements Parcelable {
     @Convert(UserConverter.class) User author;
     @Convert(ReleasesAssetsConverter.class) ReleasesAssetsListModel assets;
 
-    public Single<Release> save(Release entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
-    }
-
-    public static Observable<Release> save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
-        return RxHelper.safeObservable(App.getInstance().getDataStore().delete(Release.class)
-                .where(REPO_ID.eq(login))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(releasesModel -> {
-                    releasesModel.setRepoId(repoId);
-                    releasesModel.setLogin(login);
-                    return releasesModel.save(releasesModel).toObservable();
-                }));
-
+    public static Disposable save(@NonNull List<Release> models, @NonNull String repoId, @NonNull String login) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(Release.class)
+                        .where(Release.REPO_ID.equal(repoId)
+                                .and(Release.LOGIN.equal(login)))
+                        .get()
+                        .value();
+                if (!models.isEmpty()) {
+                    for (Release releasesModel : models) {
+                        dataSource.delete(Release.class).where(Release.ID.eq(releasesModel.getId())).get().value();
+                        releasesModel.setRepoId(repoId);
+                        releasesModel.setLogin(login);
+                        dataSource.insert(releasesModel);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     public static Completable delete(@NonNull String repoId, @NonNull String login) {

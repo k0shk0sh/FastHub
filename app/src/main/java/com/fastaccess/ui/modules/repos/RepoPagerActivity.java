@@ -25,6 +25,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.LicenseModel;
 import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.AbstractPinnedRepos;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
@@ -37,6 +38,7 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -49,6 +51,7 @@ import com.fastaccess.ui.modules.repos.extras.misc.RepoMiscMVp;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
 import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
+import com.fastaccess.ui.modules.user.UserPagerActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -62,7 +65,6 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 09 Dec 2016, 4:17 PM
@@ -108,7 +110,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
         if (!InputHelper.isEmpty(nameParser.getName()) && !InputHelper.isEmpty(nameParser.getUsername())) {
-            context.startActivity(createIntent(context, nameParser.getName(), nameParser.getUsername()));
+            Intent intent = new Intent(context, RepoPagerActivity.class);
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.ID, nameParser.getName())
+                    .put(BundleConstant.EXTRA_TWO, nameParser.getUsername())
+                    .put(BundleConstant.EXTRA_TYPE, RepoPagerMvp.CODE)
+                    .put(BundleConstant.IS_ENTERPRISE, nameParser.isEnterprise())
+                    .end());
+            context.startActivity(intent);
         }
     }
 
@@ -160,7 +169,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                     RepoPullRequestPagerFragment.TAG);
             if (pullRequestPagerView != null) {
                 FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), false,
-                        pullRequestPagerView.getCurrentItem() == 0);
+                        pullRequestPagerView.getCurrentItem() == 0, isEnterprise());
             }
         } else {
             fab.hide();
@@ -196,13 +205,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @OnClick(R.id.tagsIcon) void onTagsClick() {
-        if (topicsList.getAdapter().getItemCount() > 0)
+        if (topicsList.getAdapter().getItemCount() > 0) {
             TransitionManager.beginDelayedTransition(topicsList);
-        topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        }
     }
 
-    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout, R.id.wikiLayout, R.id.licenseLayout})
-    void onClick(View view) {
+    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout,
+            R.id.pinLayout, R.id.wikiLayout, R.id.licenseLayout}) void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 MessageDialogView.newInstance(getString(R.string.fork), String.format("%s %s/%s?", getString(R.string.fork), login, repoId),
@@ -212,14 +222,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             case R.id.starRepoLayout:
                 if (!InputHelper.isEmpty(getPresenter().login()) && !InputHelper.isEmpty(getPresenter().repoId())) {
                     GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
-                            getPresenter().isStarred() ? GithubActionService.UNSTAR_REPO : GithubActionService.STAR_REPO);
+                            getPresenter().isStarred() ? GithubActionService.UNSTAR_REPO : GithubActionService.STAR_REPO, isEnterprise());
                     getPresenter().onStar();
                 }
                 break;
             case R.id.watchRepoLayout:
                 if (!InputHelper.isEmpty(getPresenter().login()) && !InputHelper.isEmpty(getPresenter().repoId())) {
                     GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
-                            getPresenter().isWatched() ? GithubActionService.UNWATCH_REPO : GithubActionService.WATCH_REPO);
+                            getPresenter().isWatched() ? GithubActionService.UNWATCH_REPO : GithubActionService.WATCH_REPO, isEnterprise());
                     getPresenter().onWatch();
                 }
                 break;
@@ -231,10 +241,12 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                 ActivityHelper.startReveal(this, WikiActivity.Companion.getWiki(this, repoId, login), wikiLayout);
                 break;
             case R.id.licenseLayout:
-                LicenseModel licenseModel = getPresenter().getRepo().getLicense();
-                String license = !InputHelper.isEmpty(licenseModel.getSpdxId()) ? licenseModel.getSpdxId() : licenseModel.getName();
-                RepoLicenseBottomSheet.Companion.newInstance(getPresenter().login(), getPresenter().repoId(), license)
-                        .show(getSupportFragmentManager(), "RepoLicenseBottomSheet");
+                if (getPresenter().getRepo() != null) {
+                    LicenseModel licenseModel = getPresenter().getRepo().getLicense();
+                    String license = !InputHelper.isEmpty(licenseModel.getSpdxId()) ? licenseModel.getSpdxId() : licenseModel.getName();
+                    RepoLicenseBottomSheet.Companion.newInstance(getPresenter().login(), getPresenter().repoId(), license)
+                            .show(getSupportFragmentManager(), "RepoLicenseBottomSheet");
+                }
                 break;
         }
     }
@@ -295,6 +307,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             login = extras.getString(BundleConstant.EXTRA_TWO);
             navType = extras.getInt(BundleConstant.EXTRA_TYPE);
         }
+        if (savedInstanceState == null) {
+            getPresenter().onUpdatePinnedEntry(repoId, login);
+        }
         getPresenter().onActivityCreate(repoId, login, navType);
         setTitle("");
         accentColor = ViewHelper.getAccentColor(this);
@@ -333,6 +348,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         if (getPresenter().getRepo() == null) {
             return;
         }
+        setTaskName(getPresenter().getRepo().getFullName());
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
         if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
@@ -354,9 +370,11 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         starRepo.setText(numberFormat.format(repoModel.getStargazersCount()));
         watchRepo.setText(numberFormat.format(repoModel.getSubsCount()));
         if (repoModel.getOwner() != null) {
-            avatarLayout.setUrl(repoModel.getOwner().getAvatarUrl(), repoModel.getOwner().getLogin(), repoModel.getOwner().isOrganizationType());
+            avatarLayout.setUrl(repoModel.getOwner().getAvatarUrl(), repoModel.getOwner().getLogin(),
+                    repoModel.getOwner().isOrganizationType(), LinkParserHelper.isEnterprise(repoModel.getHtmlUrl()));
         } else if (repoModel.getOrganization() != null) {
-            avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin(), true);
+            avatarLayout.setUrl(repoModel.getOrganization().getAvatarUrl(), repoModel.getOrganization().getLogin(), true,
+                    LinkParserHelper.isEnterprise(repoModel.getHtmlUrl()));
         }
         long repoSize = repoModel.getSize() > 0 ? (repoModel.getSize() * 1000) : repoModel.getSize();
         date.setText(SpannableBuilder.builder()
@@ -374,81 +392,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             license.setText(!InputHelper.isEmpty(licenseModel.getSpdxId()) ? licenseModel.getSpdxId() : licenseModel.getName());
         }
         supportInvalidateOptionsMenu();
-        if (!PrefGetter.isRepoGuideShowed()) {// the mother of nesting. #dontjudgeme.
-            final boolean[] dismissed = {false};
-            new MaterialTapTargetPrompt.Builder(this)
-                    .setTarget(watchRepoLayout)
-                    .setPrimaryText(R.string.watch)
-                    .setSecondaryText(R.string.watch_hint)
-                    .setCaptureTouchEventOutsidePrompt(true)
-                    .setBackgroundColourAlpha(244)
-                    .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
-                    .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                        @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
-
-                        @Override public void onHidePromptComplete() {
-                            if (!dismissed[0])
-                                new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
-                                        .setTarget(starRepoLayout)
-                                        .setPrimaryText(R.string.star)
-                                        .setSecondaryText(R.string.star_hint)
-                                        .setCaptureTouchEventOutsidePrompt(true)
-                                        .setBackgroundColourAlpha(244)
-                                        .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
-                                        .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                            @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {}
-
-                                            @Override public void onHidePromptComplete() {
-                                                if (!dismissed[0])
-                                                    new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
-                                                            .setTarget(forkRepoLayout)
-                                                            .setPrimaryText(R.string.fork)
-                                                            .setSecondaryText(R.string.fork_repo_hint)
-                                                            .setCaptureTouchEventOutsidePrompt(true)
-                                                            .setBackgroundColourAlpha(244)
-                                                            .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
-                                                            .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                                                @Override public void onHidePrompt(MotionEvent event, boolean tappedTarget) {
-                                                                    if (!dismissed[0])
-                                                                        new MaterialTapTargetPrompt.Builder(RepoPagerActivity.this)
-                                                                                .setTarget(pinLayout)
-                                                                                .setPrimaryText(R.string.pin)
-                                                                                .setSecondaryText(R.string.pin_repo_hint)
-                                                                                .setCaptureTouchEventOutsidePrompt(true)
-                                                                                .setBackgroundColourAlpha(244)
-                                                                                .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity
-                                                                                        .this))
-                                                                                .setOnHidePromptListener(new MaterialTapTargetPrompt
-                                                                                        .OnHidePromptListener() {
-                                                                                    @Override
-                                                                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                                                                                        ActivityHelper.hideDismissHints(RepoPagerActivity.this);
-                                                                                    }
-
-                                                                                    @Override
-                                                                                    public void onHidePromptComplete() {
-
-                                                                                    }
-                                                                                })
-                                                                                .show();
-                                                                    ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
-                                                                }
-
-                                                                @Override public void onHidePromptComplete() {
-
-                                                                }
-                                                            })
-                                                            .show();
-                                                ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
-                                            }
-                                        }).show();
-                            ActivityHelper.bringDismissAllToFront(RepoPagerActivity.this);
-                        }
-                    }).show();
-            ActivityHelper.showDismissHints(this, () -> {
-                dismissed[0] = true;
-            });
-        }
+        if (!PrefGetter.isRepoGuideShowed()) {}
         onRepoWatched(getPresenter().isWatched());
         onRepoStarred(getPresenter().isStarred());
         onRepoForked(getPresenter().isForked());
@@ -520,6 +464,10 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         bottomNavigation.setSelectedIndex(this.navType, true);
     }
 
+    @Override public void openUserProfile() {
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.repo_menu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -573,7 +521,8 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             boolean fork = bundle.getBoolean(BundleConstant.EXTRA);
             if (fork) {
                 if (getPresenter().login() != null && getPresenter().repoId() != null && !getPresenter().isForked()) {
-                    GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(), GithubActionService.FORK_REPO);
+                    GithubActionService.startForRepo(this, getPresenter().login(), getPresenter().repoId(),
+                            GithubActionService.FORK_REPO, isEnterprise());
                     getPresenter().onFork();
                 }
             }
@@ -617,23 +566,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         if (pagerView != null) {
             isOpen = pagerView.getCurrentItem() == 0;
         }
-        FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen);
+        FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen, isEnterprise());
     }
 
     private void showHideFab() {
         if (navType == RepoPagerMvp.ISSUES) {
             fab.setImageResource(R.drawable.ic_menu);
             fab.show();
-            if (!PrefGetter.isRepoFabHintShowed()) {
-                new MaterialTapTargetPrompt.Builder(this)
-                        .setTarget(fab)
-                        .setPrimaryText(R.string.create_issue)
-                        .setSecondaryText(R.string.long_press_repo_fab_hint)
-                        .setCaptureTouchEventOutsidePrompt(true)
-                        .setBackgroundColourAlpha(244)
-                        .setBackgroundColour(ViewHelper.getAccentColor(RepoPagerActivity.this))
-                        .show();
-            }
+            if (!PrefGetter.isRepoFabHintShowed()) {}
         } else if (navType == RepoPagerMvp.PULL_REQUEST) {
             fab.setImageResource(R.drawable.ic_search);
             fab.show();
