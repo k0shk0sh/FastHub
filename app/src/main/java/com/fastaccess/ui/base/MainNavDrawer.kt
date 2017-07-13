@@ -36,9 +36,23 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     : BaseViewHolder.OnItemClickListener<Login> {
 
     var menusHolder: ViewGroup? = null
+    val togglePinned = view.findViewById<View>(R.id.togglePinned)
+    val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+    val pinnedListAdapter = PinnedReposAdapter(true)
 
     init {
         menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)
+        pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
+            override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
+                if (v != null && item != null) {
+                    SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl)
+                }
+            }
+
+            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
+        }
+        pinnedList?.adapter = pinnedListAdapter
+        togglePinned?.setOnClickListener { PinnedReposActivity.startActivity(view) }
     }
 
     fun setupViewDrawer() {
@@ -86,26 +100,10 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     }
 
     private fun setupPinned() {
-        val togglePinned = view.findViewById<View>(R.id.togglePinned)
-        val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
-        val pinnedListAdapter = PinnedReposAdapter(true)
-        pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
-            override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
-                if (v != null && item != null) {
-                    SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl)
-                }
-            }
-
-            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
+        if (extraNav != null) {
+            view.getPresenter().manageViewDisposable(PinnedRepos.getMenuRepos()
+                    .subscribe({ pinnedListAdapter.insertItems(it) }, ::println))
         }
-
-        togglePinned.setOnClickListener {
-            PinnedReposActivity.startActivity(view)
-        }
-
-        view.getPresenter().manageViewDisposable(PinnedRepos.getMenuRepos()
-                .doFinally { pinnedList.adapter = pinnedListAdapter }
-                .subscribe({ pinnedListAdapter.insertItems(it) }, ::println))
     }
 
     private fun setupView(view: View) {
@@ -120,8 +118,10 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         view.findViewById<View>(R.id.donatedIcon).visibility = if (PrefGetter.hasSupported()) View.VISIBLE else View.GONE
         view.findViewById<View>(R.id.navAccHolder).setOnClickListener {
             if (extraNav != null && accountsNav != null) {
+                TransitionManager.beginDelayedTransition(menusHolder ?: extraNav)
                 accountsNav.visibility = if (accountsNav.visibility == View.VISIBLE) View.GONE else View.VISIBLE
                 view.findViewById<View>(R.id.navToggle).rotation = if (accountsNav.visibility == View.VISIBLE) 180f else 0f
+                setupPinned()
             }
         }
     }
@@ -143,7 +143,6 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
                     }
                     item.itemId == R.id.profile -> view.startActivity(UserPagerActivity.createIntent(view, Login.getUser().login, false
                             , PrefGetter.isEnterprise()))
-                    item.itemId == R.id.logout -> view.onLogoutPressed()
                     item.itemId == R.id.settings -> view.onOpenSettings()
                     item.itemId == R.id.about -> view.startActivity(Intent(view, FastHubAboutActivity::class.java))
                     item.itemId == R.id.orgs -> view.onOpenOrgsDialog()

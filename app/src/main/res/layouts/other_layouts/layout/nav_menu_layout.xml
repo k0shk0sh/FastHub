@@ -46,6 +46,39 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bottom_border">
+
+                <FrameLayout
+                    android:id="@+id/logout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?selectableItemBackground"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/spacing_xs_large"
+                    android:paddingTop="@dimen/spacing_xs_large">
+
+                    <android.support.v7.widget.AppCompatImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:layout_marginStart="@dimen/spacing_xs_large"
+                        android:src="@drawable/ic_logout"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        style="@style/TextAppearance.AppCompat.Subhead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center"
+                        android:paddingStart="@dimen/keyline_1"
+                        android:text="@string/logout"
+                        android:textColor="@color/search_tab_highlighter"/>
+                </FrameLayout>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -119,8 +152,8 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center"
                         android:layout_marginEnd="@dimen/spacing_normal"
-                        android:rotation="180"
                         android:layout_marginStart="@dimen/spacing_normal"
+                        android:rotation="180"
                         android:src="@drawable/ic_arrow_drop_down"/>
                 </FrameLayout>
 
@@ -162,15 +195,6 @@
                         android:text="@string/pinned"
                         android:textColor="@color/search_tab_highlighter"/>
 
-                    <com.fastaccess.ui.widgets.ForegroundImageView
-                        android:id="@+id/togglePinnedImage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center"
-                        android:layout_marginEnd="@dimen/spacing_normal"
-                        android:layout_marginStart="@dimen/spacing_normal"
-                        android:rotation="180"
-                        />
                 </FrameLayout>
 
                 <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView

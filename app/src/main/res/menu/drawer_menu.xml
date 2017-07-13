@@ -64,10 +64,6 @@
             android:id="@+id/about"
             android:icon="@drawable/ic_info"
             android:title="@string/about"/>
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/ic_logout"
-            android:title="@string/logout"/>
     </group>
 
 </menu>

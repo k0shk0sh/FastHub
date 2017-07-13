@@ -16,14 +16,15 @@ import android.widget.Toast;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SettingsModel;
+import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -32,11 +33,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import es.dmoral.toasty.Toasty;
 
@@ -53,7 +54,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     private BaseMvp.FAView callback;
     private String appColor;
-    private String app_lauguage;
+    private String appLanguage;
 
     private Preference signatureVia;
     private Preference notificationTime;
@@ -66,7 +67,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         this.callback = (BaseMvp.FAView) context;
         this.settingsCallback = (SettingsCallback) context;
         appColor = PrefHelper.getString("appColor");
-        app_lauguage = PrefHelper.getString("app_language");
+        appLanguage = PrefHelper.getString("app_language");
     }
 
     @Override public void onDetach() {
@@ -130,7 +131,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             callback.onThemeChanged();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("app_language")) {
-            if (newValue.toString().equalsIgnoreCase(app_lauguage))
+            if (newValue.toString().equalsIgnoreCase(appLanguage))
                 return true;
             callback.onThemeChanged();
             return true;
@@ -210,17 +211,12 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 if (!InputHelper.isEmpty(json)) {
                     try {
                         Gson gson = new Gson();
-                        JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
-                        Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-                        for (Map.Entry<String, JsonElement> entry : entrySet) {
-                            if (entry.getValue().getAsJsonPrimitive().isBoolean())
-                                PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
-                            else if (entry.getValue().getAsJsonPrimitive().isNumber())
-                                PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
-                            else if (entry.getValue().getAsJsonPrimitive().isString())
-                                PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
-                            PrefHelper.set(entry.getKey(), entry.getValue());
-                            Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                        Type typeOfHashMap = new TypeToken<Map<String, ?>>() {}.getType();
+                        Map<String, ?> savedPref = gson.fromJson(json.toString(), typeOfHashMap);
+                        if (savedPref != null && !savedPref.isEmpty()) {
+                            for (Map.Entry<String, ?> stringEntry : savedPref.entrySet()) {
+                                PrefHelper.set(stringEntry.getKey(), stringEntry.getKey());
+                            }
                         }
                         callback.onThemeChanged();
                     } catch (Exception ignored) {
@@ -240,50 +236,44 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private void addBackup() {
         addPreferencesFromResource(R.xml.backup_settings);
         findPreference("backup").setOnPreferenceClickListener((Preference preference) -> {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Map<String, ?> settings_ = PrefHelper.getAll();
-                settings_.remove("token");
-                String json = new Gson().toJson(settings_);
-                String path =
-                        Environment.getExternalStorageDirectory() + File.separator + "FastHub";
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Map<String, ?> preferences = PrefHelper.getAll();
+                preferences.remove("token");
+                String json = new Gson().toJson(preferences);
+                String path = FileHelper.PATH;
                 File folder = new File(path);
-                folder.mkdirs();
+                boolean mkDirs = folder.mkdirs();
                 File backup = new File(folder, "backup.json");
-
                 try {
-                    backup.createNewFile();
-                    FileOutputStream outputStream = new FileOutputStream(backup);
-                    OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream);
-                    myOutWriter.append(json);
-
-                    myOutWriter.close();
-
-                    outputStream.flush();
-                    outputStream.close();
+                    boolean isCreated = backup.createNewFile();
+                    try (FileOutputStream outputStream = new FileOutputStream(backup)) {
+                        try (OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream)) {
+                            myOutWriter.append(json);
+                        }
+                    }
                 } catch (IOException e) {
                     Log.e(getTag(), "Couldn't backup: " + e.toString());
                 }
-
                 PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
             } else {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             }
-
             return true;
         });
-        if (PrefHelper.getString("backed_up") != null)
-            findPreference("backup").setSummary(getString(R.string.backup_summary, PrefHelper.getString("backed_up")));
-        else
+        if (PrefHelper.getString("backed_up") != null) {
+            findPreference("backup").setSummary(SpannableBuilder.builder()
+                    .append(getString(R.string.backup_summary, PrefHelper.getString("backed_up")))
+                    .append("\n")
+                    .append(FileHelper.PATH));
+        } else {
             findPreference("backup").setSummary("");
+        }
         findPreference("restore").setOnPreferenceClickListener(preference -> {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 showFileChooser();
             } else {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             }
-
             return true;
         });
     }

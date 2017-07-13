@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.converters.RepoConverter;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 
 import java.util.List;
@@ -18,10 +19,13 @@ import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
+import io.requery.Persistable;
+import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.PinnedRepos.ENTRY_COUNT;
 import static com.fastaccess.data.dao.model.PinnedRepos.ID;
+import static com.fastaccess.data.dao.model.PinnedRepos.LOGIN;
 import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
 
 /**
@@ -32,7 +36,8 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     @Key @Generated long id;
     @Column(unique = true) String repoFullName;
     @Convert(RepoConverter.class) Repo pinnedRepo;
-    int entryCount;
+    @io.requery.Nullable int entryCount;
+    @io.requery.Nullable String login;
 
     public static Single<PinnedRepos> update(@NonNull PinnedRepos entity) {
         return RxHelper.getSingle(App.getInstance().getDataStore().update(entity));
@@ -43,8 +48,9 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
         if (pinnedRepos == null) {
             PinnedRepos pinned = new PinnedRepos();
             pinned.setRepoFullName(repo.getFullName());
+            pinned.setLogin(Login.getUser().getLogin());
             pinned.setPinnedRepo(repo);
-            App.getInstance().getDataStore().insert(pinned).blockingGet();
+            App.getInstance().getDataStore().toBlocking().insert(pinned);
             return true;
         } else {
             delete(pinnedRepos.getId());
@@ -61,7 +67,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
 
     @Nullable public static PinnedRepos get(@NonNull String repoFullName) {
         return App.getInstance().getDataStore().select(PinnedRepos.class)
-                .where(REPO_FULL_NAME.eq(repoFullName))
+                .where(REPO_FULL_NAME.eq(repoFullName).and(LOGIN.eq(Login.getUser().getLogin())))
                 .get()
                 .firstOrNull();
     }
@@ -70,8 +76,8 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
         return get(repoFullName) != null;
     }
 
-    public static Disposable updateEntry(@NonNull String repoFullName) {
-        return Observable.fromPublisher(e -> {
+    @NonNull public static Disposable updateEntry(@NonNull String repoFullName) {
+        return RxHelper.getObserver(Observable.fromPublisher(e -> {
             PinnedRepos pinned = get(repoFullName);
             if (pinned != null) {
                 pinned.setEntryCount(pinned.getEntryCount() + 1);
@@ -79,12 +85,13 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
                 e.onNext("");
             }
             e.onComplete();
-        }).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
+        })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
     @NonNull public static Single<List<PinnedRepos>> getMyPinnedRepos() {
         return App.getInstance().getDataStore().select(PinnedRepos.class)
-                .orderBy(ID.desc(), ENTRY_COUNT.desc())
+                .where(LOGIN.eq(Login.getUser().getLogin()))
+                .orderBy(ENTRY_COUNT.desc(), ID.desc())
                 .get()
                 .observable()
                 .toList();
@@ -93,12 +100,36 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
 
     @NonNull public static Observable<List<PinnedRepos>> getMenuRepos() {
         return App.getInstance().getDataStore().select(PinnedRepos.class)
-                .orderBy(ID.desc(), ENTRY_COUNT.desc())
+                .where(LOGIN.eq(Login.getUser().getLogin()))
+                .orderBy(ENTRY_COUNT.desc(), ID.desc())
                 .limit(10)
                 .get()
                 .observable()
                 .toList()
                 .toObservable();
+    }
+
+    public static void migrateToVersion4() {
+        RxHelper.getObserver(Observable.fromPublisher(e -> {
+            Login login = Login.getUser();
+            if (login == null) {
+                e.onComplete();
+                return;
+            }
+            ReactiveEntityStore<Persistable> reactiveEntityStore = App.getInstance().getDataStore();
+            List<PinnedRepos> pinnedRepos = reactiveEntityStore.toBlocking().select(PinnedRepos.class)
+                    .where(LOGIN.isNull())
+                    .get()
+                    .toList();
+            if (pinnedRepos != null) {
+                for (PinnedRepos pinnedRepo : pinnedRepos) {
+                    pinnedRepo.setRepoFullName(login.getLogin());
+                    reactiveEntityStore.toBlocking().update(pinnedRepo);
+                }
+            }
+            Logger.e("Hello");
+            e.onComplete();
+        })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
     public static void delete(long id) {

@@ -66,8 +66,7 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @NonNull
-    @Override public Uri getAuthorizationUrl(@Nullable String endpoint) {
+    @NonNull @Override public Uri getAuthorizationUrl(@Nullable String endpoint) {
         Uri.Builder builder = new Uri.Builder();
         if (!InputHelper.isEmpty(endpoint)) {
             endpoint = LinkParserHelper.getEndpoint(endpoint);

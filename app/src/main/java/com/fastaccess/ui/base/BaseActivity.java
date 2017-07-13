@@ -16,6 +16,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +54,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
 
 
@@ -297,6 +300,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public boolean isEnterprise() {
         return getPresenter() != null && getPresenter().isEnterprise();
+    }
+
+    @Optional @OnClick(R.id.logout) void onLogoutClicked() {
+        if (drawer != null) {
+            drawer.closeDrawer(Gravity.START);
+        }
+        onLogoutPressed();
     }
 
     protected void setTaskName(@Nullable String name) {

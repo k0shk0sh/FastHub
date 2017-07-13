@@ -69,7 +69,7 @@ public class UILProvider {
     }
 
     private static class GithubAuthDownloader extends BaseImageDownloader {
-        public GithubAuthDownloader(Context context) {super(context);}
+        GithubAuthDownloader(Context context) {super(context);}
 
         @SuppressWarnings("unchecked") @Override protected HttpURLConnection createConnection(String url, Object extra) throws IOException {
             HttpURLConnection conn = super.createConnection(url, extra);

@@ -3,7 +3,6 @@ package com.fastaccess.provider.rest.interceptors;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 
@@ -37,7 +36,6 @@ public class AuthenticationInterceptor implements Interceptor {
         boolean isEnterprise = LinkParserHelper.isEnterprise(original.url().host());
         String authToken = InputHelper.isEmpty(token) ? isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken() : token;
         String otpCode = InputHelper.isEmpty(otp) ? isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode() : otp;
-        Logger.e(isEnterprise);
         if (!InputHelper.isEmpty(authToken)) {
             builder.header("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
         }
