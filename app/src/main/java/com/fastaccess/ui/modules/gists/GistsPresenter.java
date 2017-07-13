@@ -56,9 +56,6 @@ class GistsPresenter extends BasePresenter<GistsMvp.View> implements GistsMvp.Pr
         makeRestCall(RestProvider.getGistService(isEnterprise()).getPublicGists(RestProvider.PAGE_SIZE, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
-                    if (getCurrentPage() == 1) {
-                        manageObservable(Gist.save(listResponse.getItems()));
-                    }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
     }

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.model.FilterOptionsModel;
+import com.fastaccess.data.dao.FilterOptionsModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
@@ -78,7 +78,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
+                        manageDisposable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });

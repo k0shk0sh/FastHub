@@ -73,7 +73,7 @@ class RepoPullRequestPresenter extends BasePresenter<RepoPullRequestMvp.View> im
         makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequests(login, repoId, parameter.name(), page), response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageObservable(PullRequest.save(response.getItems(), login, repoId));
+                manageDisposable(PullRequest.save(response.getItems(), login, repoId));
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });

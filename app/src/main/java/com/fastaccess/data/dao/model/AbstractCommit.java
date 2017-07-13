@@ -22,6 +22,8 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
@@ -30,9 +32,9 @@ import io.requery.Key;
 import io.requery.Nullable;
 import io.requery.Persistable;
 import io.requery.Table;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
+import static com.fastaccess.data.dao.model.Commit.ID;
 import static com.fastaccess.data.dao.model.Commit.LOGIN;
 import static com.fastaccess.data.dao.model.Commit.PULL_REQUEST_NUMBER;
 import static com.fastaccess.data.dao.model.Commit.REPO_ID;
@@ -63,38 +65,55 @@ public abstract class AbstractCommit implements Parcelable {
         return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
     }
 
-    public static Observable<Commit> save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Commit.class)
-                .where(REPO_ID.eq(repoId)
-                        .and(LOGIN.eq(login)))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(commitModel -> {
-                    commitModel.setRepoId(repoId);
-                    commitModel.setLogin(login);
-                    return commitModel.save(commitModel).toObservable();
-                }));
+    public static Disposable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(Commit.class)
+                        .where(REPO_ID.eq(repoId).and(LOGIN.eq(login)))
+                        .get()
+                        .value();
+                if (!models.isEmpty()) {
+                    for (Commit commitModel : models) {
+                        dataSource.delete(Commit.class).where(ID.eq(commitModel.getId())).get().value();
+                        commitModel.setRepoId(repoId);
+                        commitModel.setLogin(login);
+                        dataSource.insert(commitModel);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
-    public static Observable<Commit> save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Commit.class)
-                .where(REPO_ID.eq(repoId)
-                        .and(LOGIN.eq(login))
-                        .and(PULL_REQUEST_NUMBER.eq(number)))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(commitModel -> {
-                    commitModel.setRepoId(repoId);
-                    commitModel.setLogin(login);
-                    commitModel.setPullRequestNumber(number);
-                    return commitModel.save(commitModel).toObservable();
-                }));
+    public static Disposable save(@NonNull List<Commit> models, @NonNull String repoId, @NonNull String login, long number) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(Commit.class)
+                        .where(REPO_ID.eq(repoId)
+                                .and(LOGIN.eq(login))
+                                .and(PULL_REQUEST_NUMBER.eq(number)))
+                        .get()
+                        .value();
+                if (!models.isEmpty()) {
+                    for (Commit commitModel : models) {
+                        dataSource.delete(Commit.class).where(ID.eq(commitModel.getId())).get().value();
+                        commitModel.setRepoId(repoId);
+                        commitModel.setLogin(login);
+                        commitModel.setPullRequestNumber(number);
+                        dataSource.insert(commitModel);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     public static Single<List<Commit>> getCommits(@NonNull String repoId, @NonNull String login) {

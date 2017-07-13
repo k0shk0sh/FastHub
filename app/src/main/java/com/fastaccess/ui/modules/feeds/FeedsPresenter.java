@@ -79,7 +79,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         makeRestCall(observable, response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageObservable(Event.save(response.getItems()).toObservable());
+                manageDisposable(Event.save(response.getItems()));
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });

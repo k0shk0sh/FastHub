@@ -83,7 +83,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                             .filter(issue -> issue.getPullRequest() == null)
                             .toList();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Issue.save(filtered, repoId, login));
+                        manageDisposable(Issue.save(filtered, repoId, login));
                     }
                     sendToView(view -> view.onNotifyAdapter(filtered, page));
                 });

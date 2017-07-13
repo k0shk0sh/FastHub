@@ -64,7 +64,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Comment.saveForGist(listResponse.getItems(), parameter));
+                        manageDisposable(Comment.saveForGist(listResponse.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });

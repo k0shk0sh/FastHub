@@ -21,14 +21,14 @@ import com.fastaccess.helper.RxHelper;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
 import io.requery.Transient;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.IssueEvent.CREATED_AT;
@@ -62,27 +62,32 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     String login;
     @Transient List<LabelModel> labels;
 
-    public Single save(IssueEvent entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
-    }
-
-    public static Observable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
+    public static Disposable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
                                   @NonNull String login, @NonNull String issueId) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(IssueEvent.class)
-                .where(LOGIN.equal(login)
-                        .and(REPO_ID.equal(repoId))
-                        .and(ISSUE_ID.equal(issueId)))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(issueEventModel -> {
-                    issueEventModel.setIssueId(issueId);
-                    issueEventModel.setLogin(login);
-                    issueEventModel.setRepoId(repoId);
-                    return issueEventModel.save(issueEventModel).toObservable();
-                }));
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(IssueEvent.class)
+                        .where(LOGIN.equal(login)
+                                .and(REPO_ID.equal(repoId))
+                                .and(ISSUE_ID.equal(issueId)))
+                        .get()
+                        .value();
+                if (!models.isEmpty()) {
+                    for (IssueEvent issueEventModel : models) {
+                        dataSource.delete(IssueEvent.class).where(IssueEvent.ID.eq(issueEventModel.getId())).get().value();
+                        issueEventModel.setIssueId(issueId);
+                        issueEventModel.setLogin(login);
+                        issueEventModel.setRepoId(repoId);
+                        dataSource.insert(issueEventModel);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     public static Single<List<IssueEvent>> get(@NonNull String repoId, @NonNull String login,

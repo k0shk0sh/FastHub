@@ -65,7 +65,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Commit.save(response.getItems(), repoId, login, number));
+                        manageDisposable(Commit.save(response.getItems(), repoId, login, number));
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });

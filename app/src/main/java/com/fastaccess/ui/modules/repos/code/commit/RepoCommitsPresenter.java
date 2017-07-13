@@ -68,7 +68,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     if (response != null && response.getItems() != null) {
                         lastPage = response.getLast();
                         if (getCurrentPage() == 1) {
-                            manageObservable(Commit.save(response.getItems(), repoId, login));
+                            manageDisposable(Commit.save(response.getItems(), repoId, login));
                         }
                     }
                     sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));

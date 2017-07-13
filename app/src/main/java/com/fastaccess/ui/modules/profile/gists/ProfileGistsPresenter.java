@@ -65,7 +65,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
-                    manageObservable(Gist.save(Stream.of(listResponse.getItems()).toList()));
+                    manageDisposable(Gist.save(Stream.of(listResponse.getItems()).toList(), parameter));
                 });
     }
 

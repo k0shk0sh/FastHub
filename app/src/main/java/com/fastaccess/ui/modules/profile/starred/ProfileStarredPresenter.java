@@ -80,7 +80,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         makeRestCall(observable, repoModelPageable -> {
             lastPage = repoModelPageable.getLast();
             if (getCurrentPage() == 1) {
-                manageObservable(Repo.saveStarred(repoModelPageable.getItems(), parameter));
+                manageDisposable(Repo.saveStarred(repoModelPageable.getItems(), parameter));
             }
             sendToView(view -> {
                 view.onUpdateCount(starredCount);

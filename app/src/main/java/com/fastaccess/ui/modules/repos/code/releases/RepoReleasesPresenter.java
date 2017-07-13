@@ -123,7 +123,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
     private void onResponse(Pageable<Release> response) {
         lastPage = response.getLast();
         if (getCurrentPage() == 1) {
-            manageObservable(Release.save(response.getItems(), repoId, login));
+            manageDisposable(Release.save(response.getItems(), repoId, login));
         }
         sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
     }
