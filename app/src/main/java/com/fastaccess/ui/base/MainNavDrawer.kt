@@ -86,7 +86,6 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     }
 
     private fun setupPinned() {
-        val togglePinnedImage = view.findViewById<View>(R.id.togglePinnedImage)
         val togglePinned = view.findViewById<View>(R.id.togglePinned)
         val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
         val pinnedListAdapter = PinnedReposAdapter(true)
@@ -99,13 +98,9 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
 
             override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
         }
-        togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
 
         togglePinned.setOnClickListener {
-            TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
-            val isVisible = pinnedList.visibility == View.VISIBLE
-            pinnedList.visibility = if (isVisible) View.GONE else View.VISIBLE
-            togglePinnedImage.rotation = if (pinnedList.visibility == View.VISIBLE) 180f else 0f
+            PinnedReposActivity.startActivity(view)
         }
 
         view.getPresenter().manageViewDisposable(PinnedRepos.getMenuRepos()
