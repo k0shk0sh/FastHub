@@ -405,5 +405,4 @@
     <string name="feed">Feed</string>
     <string name="premium_theme">Tema Premium</string>
     <string name="choose_code_theme">Escolha o Código do tema</string>
-    <string name="endpoint_hint">https://github.mydomain.com</string>
 </resources>
