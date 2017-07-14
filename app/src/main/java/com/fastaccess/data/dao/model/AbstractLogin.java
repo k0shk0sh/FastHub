@@ -104,10 +104,11 @@ import lombok.NoArgsConstructor;
     }
 
     public static void logout() {
-        if (getUser() == null) return;
         Login login = getUser();
-        login.setIsLoggedIn(false);
-        App.getInstance().getDataStore().update(login).blockingGet();
+        if (login == null) return;
+        App.getInstance().getDataStore().toBlocking().delete(PinnedRepos.class)
+                .where(PinnedRepos.LOGIN.eq(login.getLogin())).get().value();
+        App.getInstance().getDataStore().toBlocking().delete(login);
     }
 
     public static boolean hasNormalLogin() {
@@ -136,7 +137,7 @@ import lombok.NoArgsConstructor;
                 userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter
                         .getToken());
                 userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() :
-                        PrefGetter.getOtpCode());
+                                     PrefGetter.getOtpCode());
                 userModel.setEnterpriseUrl(isEnterprise ? PrefGetter.getEnterpriseUrl() : null);
                 App.getInstance().getDataStore()
                         .toBlocking()

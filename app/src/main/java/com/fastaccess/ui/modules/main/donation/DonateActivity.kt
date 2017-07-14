@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.main.donation
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -27,25 +28,15 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
 
     private var subscription: Disposable? = null
 
-    override fun layout(): Int {
-        return 0
-    }
+    override fun layout(): Int = 0
 
-    override fun isTransparent(): Boolean {
-        return false
-    }
+    override fun isTransparent(): Boolean = true
 
-    override fun canBack(): Boolean {
-        return false
-    }
+    override fun canBack(): Boolean = false
 
-    override fun isSecured(): Boolean {
-        return false
-    }
+    override fun isSecured(): Boolean = true
 
-    override fun providePresenter(): BasePresenter<BaseMvp.FAView> {
-        return BasePresenter()
-    }
+    override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,11 +44,11 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
         val productKey: String = bundle.getString(BundleConstant.EXTRA)
         subscription = RxHelper.getSingle<Purchase>(RxBillingService.getInstance(this, BuildConfig.DEBUG)
                 .purchase(ProductType.IN_APP, productKey, "inapp:com.fastaccess.github:" + productKey))
-                .subscribe { _, throwable ->
+                .subscribe({ p: Purchase?, throwable: Throwable? ->
                     if (throwable == null) {
                         Answers.getInstance().logPurchase(PurchaseEvent().putItemName(productKey))
                         showMessage(R.string.success, R.string.success_purchase_message)
-                        enableProduct(productKey)
+                        enableProduct(productKey, applicationContext)
                         val intent = Intent()
                         intent.putExtra(BundleConstant.ITEM, productKey)
                         setResult(Activity.RESULT_OK, intent)
@@ -65,7 +56,7 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                         if (throwable is RxBillingServiceException) {
                             val code = throwable.code
                             if (code == RxBillingServiceError.ITEM_ALREADY_OWNED) {
-                                enableProduct(productKey)
+                                enableProduct(productKey, applicationContext)
                                 val intent = Intent()
                                 intent.putExtra(BundleConstant.ITEM, productKey)
                                 setResult(Activity.RESULT_OK, intent)
@@ -78,22 +69,11 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                         throwable.printStackTrace()
                     }
                     finish()
-                }
-    }
-
-    private fun enableProduct(productKey: String) {
-        when (productKey) {
-            getString(R.string.donation_product_1), getString(R.string.amlod_theme_purchase) -> PrefGetter.enableAmlodTheme()
-            getString(R.string.midnight_blue_theme_purchase) -> PrefGetter.enableMidNightBlueTheme()
-            getString(R.string.theme_bluish_purchase) -> PrefGetter.enableBluishTheme()
-            else -> PrefGetter.setProItems()
-        }
+                })
     }
 
     override fun onDestroy() {
-        if (subscription != null && !subscription?.isDisposed!!) {
-            subscription?.dispose()
-        }
+        subscription?.let { if (!it.isDisposed) it.dispose() }
         super.onDestroy()
     }
 
@@ -112,6 +92,22 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                     .put(BundleConstant.EXTRA, product)
                     .end())
             context.startActivityForResult(intent, BundleConstant.REQUEST_CODE)
+        }
+
+        fun enableProduct(productKey: String, context: Context) {
+            when (productKey) {
+                context.getString(R.string.donation_product_1), context.getString(R.string.amlod_theme_purchase) -> PrefGetter.enableAmlodTheme()
+                context.getString(R.string.midnight_blue_theme_purchase) -> PrefGetter.enableMidNightBlueTheme()
+                context.getString(R.string.theme_bluish_purchase) -> PrefGetter.enableBluishTheme()
+                context.getString(R.string.donation_product_2), context.getString(R.string.fasthub_pro_purchase) -> PrefGetter.setProItems()
+                context.getString(R.string.fasthub_enterprise_purchase) -> PrefGetter.setEnterpriseItem()
+                context.getString(R.string.donation_product_3), context.getString(R.string.donation_product_4),
+                context.getString(R.string.fasthub_all_features_purchase) -> {
+                    PrefGetter.setProItems()
+                    PrefGetter.setEnterpriseItem()
+                }
+                else -> Logger.e(productKey)
+            }
         }
     }
 }

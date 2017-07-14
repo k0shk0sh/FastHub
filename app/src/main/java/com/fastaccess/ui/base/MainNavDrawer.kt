@@ -20,7 +20,7 @@ import com.fastaccess.ui.modules.about.FastHubAboutActivity
 import com.fastaccess.ui.modules.gists.GistsListActivity
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
 import com.fastaccess.ui.modules.main.MainActivity
-import com.fastaccess.ui.modules.main.donation.DonationActivity
+import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity
 import com.fastaccess.ui.modules.trending.TrendingActivity
@@ -74,9 +74,13 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         val toggleAccountsLayout = view.findViewById<View>(R.id.toggleAccountsLayout)
         toggleImage.rotation = if (toggleAccountsLayout.visibility == View.VISIBLE) 180f else 0f
         addAccount.setOnClickListener {
-            val intent = Intent(view, LoginChooserActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            view.startActivity(intent)
+            if (PrefGetter.isProEnabled() || PrefGetter.isEnterpriseEnabled()) {
+                val intent = Intent(view, LoginChooserActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                view.startActivity(intent)
+            } else {
+                view.startActivity(Intent(view, PremiumActivity::class.java))
+            }
         }
         toggle.setOnClickListener {
             TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
@@ -132,7 +136,6 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
             if (!view.isFinishing()) {
                 when {
                     item.itemId == R.id.navToRepo -> view.onNavToRepoClicked()
-                    item.itemId == R.id.supportDev -> view.startActivity(Intent(view, DonationActivity::class.java))
                     item.itemId == R.id.gists -> GistsListActivity.startActivity(view, false)
                     item.itemId == R.id.pinnedMenu -> PinnedReposActivity.startActivity(view)
                     item.itemId == R.id.mainView -> {

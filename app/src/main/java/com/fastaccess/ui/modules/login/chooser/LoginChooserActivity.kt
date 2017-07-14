@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.login.chooser
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.CoordinatorLayout
 import android.support.transition.TransitionManager
@@ -10,12 +11,16 @@ import butterknife.OnClick
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
-import com.fastaccess.helper.PrefHelper
+import com.fastaccess.helper.Bundler
+import com.fastaccess.helper.PrefGetter
 import com.fastaccess.ui.adapter.LoginAdapter
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.login.LoginActivity
+import com.fastaccess.ui.modules.main.donation.CheckPurchaseActivity
+import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog
 import com.fastaccess.ui.widgets.bindView
+import com.fastaccess.ui.widgets.dialog.MessageDialogView
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 import io.reactivex.functions.Action
 import java.util.*
@@ -43,11 +48,15 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            startActivity(Intent(this, CheckPurchaseActivity::class.java))
+        }
         adapter.listener = this
         recycler.adapter = adapter
-        if (Arrays.asList(*resources.getStringArray(R.array.languages_array_values)).contains(Locale.getDefault().language)) {
-            val language = PrefHelper.getString("app_language")
-            PrefHelper.set("app_language", Locale.getDefault().language)
+        val languages = resources.getStringArray(R.array.languages_array_values)
+        if (Locale.getDefault().language in languages) {
+            val language = PrefGetter.getAppLanguage()
+            PrefGetter.setAppLangauge(Locale.getDefault().language)
             if (!BuildConfig.DEBUG) language_selector.visibility = View.GONE
             if (Locale.getDefault().language != language) recreate()
         }
@@ -62,10 +71,17 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
     }
 
     @OnClick(R.id.enterprise) internal fun onEnterpriseClicked() {
-        if (Login.hasNormalLogin())
-            LoginActivity.start(this, true, true)
-        else
-            showMessage(R.string.error, R.string.enterprise_login_warning)
+        if (Login.hasNormalLogin()) {
+            if (PrefGetter.isAllFeaturesUnlocked() || PrefGetter.isEnterpriseEnabled()) {
+                LoginActivity.start(this, true, true)
+            } else {
+                startActivity(Intent(this, PremiumActivity::class.java))
+            }
+        } else {
+            MessageDialogView.newInstance(getString(R.string.warning), getString(R.string.enterprise_login_warning),
+                    false, Bundler.start().put("hide_buttons", true).end())
+                    .show(supportFragmentManager, MessageDialogView.TAG)
+        }
     }
 
     @OnClick(R.id.browserLogin) internal fun onOpenBrowser() {
@@ -121,4 +137,5 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
         languageBottomSheetDialog.onAttach(this as Context)
         languageBottomSheetDialog.show(supportFragmentManager, "LanguageBottomSheetDialog")
     }
+
 }

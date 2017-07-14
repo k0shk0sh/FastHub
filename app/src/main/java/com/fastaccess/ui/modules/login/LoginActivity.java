@@ -24,9 +24,9 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
-import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
+import com.fastaccess.ui.modules.main.donation.DonateActivity;
 import com.fastaccess.ui.widgets.FontCheckbox;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 import com.miguelbcr.io.rx_billing_service.entities.ProductType;
@@ -239,13 +239,8 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
                         if (purchases != null && !purchases.isEmpty()) {
                             for (Purchase purchase : purchases) {
                                 String sku = purchase.sku();
-                                if (sku != null) {
-                                    if (sku.equalsIgnoreCase(getString(R.string
-                                            .donation_product_1))) {
-                                        PrefGetter.enableAmlodTheme();
-                                    } else {
-                                        PrefGetter.setProItems();
-                                    }
+                                if (!InputHelper.isEmpty(sku)) {
+                                    DonateActivity.Companion.enableProduct(sku, App.getInstance());
                                 }
                             }
                         }

@@ -95,9 +95,10 @@ public class PrefGetter {
     private static final String AMLOD_THEME_ENABLED = "amlod_theme_enabled";
     private static final String MIDNIGHTBLUE_THEME_ENABLED = "midnightblue_theme_enabled";
     private static final String BLUISH_THEME_ENABLED = "bluish_theme_enabled";
-    private static final String PRO_ITEMS = "pro_items";
+    private static final String PRO_ITEMS = "fasth_pro_items";
+    private static final String ENTERPRISE_ITEM = "enterprise_item";
     private static final String CODE_THEME = "code_theme";
-    private static final String ENTERPRISE_URL = "ENTERPRISE_URL";
+    private static final String ENTERPRISE_URL = "enterprise_url";
 
     public static void setToken(@Nullable String token) {
         PrefHelper.set(TOKEN, token);
@@ -333,9 +334,13 @@ public class PrefGetter {
         return BLUE;
     }
 
-    @NonNull static String getAppLanguage() {
+    @NonNull public static String getAppLanguage() {
         String appLanguage = PrefHelper.getString(APP_LANGUAGE);
         return appLanguage == null ? "en" : appLanguage;
+    }
+
+    public static void setAppLangauge(@Nullable String language) {
+        PrefHelper.set(APP_LANGUAGE, language == null ? "en" : language);
     }
 
     public static void setProfileBackgroundUrl(@Nullable String url) {
@@ -389,6 +394,20 @@ public class PrefGetter {
     public static void setProItems() {
         PrefHelper.set(PRO_ITEMS, true);
         enableAmlodTheme();
+        enableBluishTheme();
+        enableMidNightBlueTheme();
+    }
+
+    public static void setEnterpriseItem() {
+        PrefHelper.set(ENTERPRISE_ITEM, true);
+    }
+
+    public static boolean isEnterpriseEnabled() {
+        return PrefHelper.getBoolean(ENTERPRISE_ITEM);
+    }
+
+    public static boolean isAllFeaturesUnlocked() {
+        return isProEnabled() && isEnterprise();
     }
 
     public static boolean isProEnabled() {

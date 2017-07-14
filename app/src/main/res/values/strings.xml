@@ -86,7 +86,23 @@
     <string name="enterprise" translatable="false">Enterprise</string>
     <string name="endpoint_hint" translatable="false">example.com</string>
     <string name="no_branches" translatable="false">No Branches or Tags</string>
+    <string name="pro_features" translatable="false">PRO Features</string>
 
+    <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
+        • All PRO Themes\n
+        • PR Reviews & On-line code comments (PRs & Commits)\n
+        • PR Merge methods (Rebase & Squash)\n
+        • Login to unlimited accounts\n
+        • New upcoming PRO features
+    ]]></string>
+    <string name="enterprise_pro_description" translatable="false"><![CDATA[
+            • Login to unlimited number of Enterprise  & GitHub accounts\n
+            • Access GitHub contents along side your Enterprise Account
+    ]]></string>
+    <string name="purchase" translatable="false">Purchase</string>
+    <string name="get_all" translatable="false">Purchase All (7.00USD)</string>
+    <string name="fasthub_premium_features" translatable="false">FastHub Premium Features</string>
+    <string name="enterprise_url" translatable="false">Enterprise URL</string>
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
@@ -344,7 +360,8 @@
     <string name="pin">Pin</string>
     <string name="pinned">Pinned</string>
     <string name="unpin">Unpin</string>
-    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.</string>
+    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.\nP.S: The more you access a Repo the more on top
+    it will be.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_feeds">No feeds</string>
@@ -498,9 +515,12 @@
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
     <string name="choose_code_theme">Choose Code color palette</string>
-    <string name="enterprise_login_warning">Please do (OAuth) login to your GitHub account in order to access everything from GitHub API
-        otherwise you\'ll end be kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to GitHub
-        API is coming from your Enterprise Account.</string>
+    <string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
+        otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
+        GitHub API is coming from your Enterprise Account.</string>
     <string name="add_account">Add Account</string>
     <string name="choose_account">Choose Account</string>
+    <string name="unlock">Unlock</string>
+    <string name="not_match">Not match</string>
+    <string name="warning">Warning</string>
 </resources>

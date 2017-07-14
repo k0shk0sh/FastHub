@@ -5,10 +5,11 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.view.View;
 
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
-import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
@@ -41,7 +42,7 @@ public class DonationActivity extends BaseActivity {
     }
 
     @Override protected boolean isSecured() {
-        return false;
+        return true;
     }
 
     @Override protected void onCreate(Bundle savedInstanceState) {
@@ -81,16 +82,11 @@ public class DonationActivity extends BaseActivity {
                     if (purchases != null && !purchases.isEmpty()) {
                         for (Purchase purchase : purchases) {
                             String sku = purchase.sku();
-                            if (sku != null) {
-                                if (sku.equalsIgnoreCase(getString(R.string.donation_product_1))) {
-                                    PrefGetter.enableAmlodTheme();
-                                } else {
-                                    PrefGetter.setProItems();
-                                }
+                            if (!InputHelper.isEmpty(sku)) {
+                                DonateActivity.Companion.enableProduct(sku, App.getInstance());
                             }
                         }
                     }
                 }));
     }
-
 }

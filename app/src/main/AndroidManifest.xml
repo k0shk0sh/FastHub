@@ -213,6 +213,17 @@
         </activity>
 
         <activity
+            android:name=".ui.modules.main.premium.PremiumActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity
+            android:name=".ui.modules.main.donation.CheckPurchaseActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:theme="@style/ThemeTranslucent"/>
+
+        <activity
             android:name=".ui.modules.parser.LinksParserActivity"
             android:configChanges="keyboard|orientation|screenSize"
             android:noHistory="true"

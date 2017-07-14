@@ -81,15 +81,12 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (PrefGetter.isProEnabled() || PrefGetter.isMidNightBlueThemeEnabled()
-                    || PrefGetter.isAmlodEnabled() || PrefGetter.isBluishEnabled()) {
-                val productKey = data?.getStringExtra(BundleConstant.ITEM)
-                productKey?.let {
-                    when (it) {
-                        getString(R.string.amlod_theme_purchase) -> setTheme(getString(R.string.amlod_theme_mode))
-                        getString(R.string.midnight_blue_theme_purchase) -> setTheme(getString(R.string.mid_night_blue_theme_mode))
-                        getString(R.string.theme_bluish_purchase) -> setTheme(getString(R.string.bluish_theme))
-                    }
+            val productKey = data?.getStringExtra(BundleConstant.ITEM)
+            productKey?.let {
+                when (it) {
+                    getString(R.string.amlod_theme_purchase) -> setTheme(getString(R.string.amlod_theme_mode))
+                    getString(R.string.midnight_blue_theme_purchase) -> setTheme(getString(R.string.mid_night_blue_theme_mode))
+                    getString(R.string.theme_bluish_purchase) -> setTheme(getString(R.string.bluish_theme))
                 }
             }
         }
