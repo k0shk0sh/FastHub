@@ -54,7 +54,10 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
                         val stars = it.select(".f6 > a[href*=/stargazers]").text()
                         val forks = it.select(".f6 > a[href*=/network]").text()
                         val todayStars = it.select(".f6 > span.float-right").text()
-                        val language = it.select(".f6 .mr-3 > span[itemprop=programmingLanguage]").text()
+                        var language = it.select(".f6 .mr-3 > span[itemprop=programmingLanguage]").text()
+                        if (language.isNullOrBlank()) {
+                            language = it.select(".f6 span[itemprop=programmingLanguage]").text()
+                        }
                         Logger.e(title, description, stars, forks, todayStars, language)
                         s.onNext(TrendingModel(title, description, language, stars, forks, todayStars))
                     }

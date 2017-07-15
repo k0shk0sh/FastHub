@@ -3,29 +3,33 @@ package com.fastaccess.ui.modules.main.premium
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.support.transition.TransitionManager
+import android.view.View
 import android.widget.EditText
+import android.widget.FrameLayout
 import butterknife.OnClick
 import butterknife.OnEditorAction
+import com.fastaccess.BuildConfig
 import com.fastaccess.R
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.ui.base.BaseActivity
-import com.fastaccess.ui.base.mvp.BaseMvp
-import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.main.donation.DonateActivity
 import com.fastaccess.ui.widgets.bindView
 
 /**
  * Created by kosh on 13/07/2017.
  */
-class PremiumActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
+class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), PremiumMvp.View {
 
     val editText: EditText by bindView(R.id.editText)
+    val progressLayout: View by bindView(R.id.progressLayout)
+    val viewGroup: FrameLayout by bindView(R.id.viewGroup)
 
     override fun layout(): Int = R.layout.pro_features_layout
 
     override fun isTransparent(): Boolean = true
 
-    override fun providePresenter(): BasePresenter<BaseMvp.FAView> = BasePresenter()
+    override fun providePresenter(): PremiumPresenter = PremiumPresenter()
 
     override fun canBack(): Boolean = false
 
@@ -44,18 +48,14 @@ class PremiumActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAVie
     }
 
     @OnClick(R.id.unlock) fun onUnlock() {
+        if (BuildConfig.DEBUG) {
+            onSuccessfullyActivated()
+            return
+        }
         val isEmpty = editText.text.isNullOrBlank()
         editText.error = if (isEmpty) getString(R.string.required_field) else null
         if (!isEmpty) {
-            val enterpriseUrls = resources.getStringArray(R.array.whitelist_endpoints)
-            val contains = editText.text.toString() in enterpriseUrls
-            if (contains) {
-                PrefGetter.setEnterpriseItem()
-                PrefGetter.setProItems()
-                successResult()
-            } else {
-                showMessage(R.string.error, R.string.not_match)
-            }
+            presenter.onCheckPromoCode(editText.text.toString())
         }
     }
 
@@ -64,9 +64,39 @@ class PremiumActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAVie
         return true
     }
 
+    @OnClick(R.id.close) fun onClose(): Unit = finish()
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            successResult()
+        }
+    }
+
     private fun successResult() {
         setResult(Activity.RESULT_OK)
         finish()
+    }
+
+    override fun onSuccessfullyActivated() {
+        PrefGetter.setProItems()
+        PrefGetter.setEnterpriseItem()
+        showMessage(R.string.success, R.string.success)
+        successResult()
+    }
+
+    override fun onNoMatch() {
+        showErrorMessage(getString(R.string.not_match))
+    }
+
+    override fun showProgress(resId: Int) {
+        TransitionManager.beginDelayedTransition(viewGroup)
+        progressLayout.visibility = View.VISIBLE
+    }
+
+    override fun hideProgress() {
+        TransitionManager.beginDelayedTransition(viewGroup)
+        progressLayout.visibility = View.GONE
     }
 
     companion object {

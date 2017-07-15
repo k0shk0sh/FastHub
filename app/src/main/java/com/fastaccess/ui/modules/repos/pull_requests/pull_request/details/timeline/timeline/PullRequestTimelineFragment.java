@@ -92,7 +92,14 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
             throw new NullPointerException("PullRequest went missing!!!");
         }
         boolean isMerged = getPresenter().isMerged(getPullRequest());
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this, isMerged, getPresenter());
+        if (issueCallback != null && issueCallback.getData() != null) {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+                    this, true, this, isMerged, getPresenter(), issueCallback.getData().getLogin(),
+                    issueCallback.getData().getRepoId());
+        } else {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+                    this, true, this, isMerged, getPresenter(), "", "");
+        }
         recycler.setVerticalScrollBarEnabled(false);
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);

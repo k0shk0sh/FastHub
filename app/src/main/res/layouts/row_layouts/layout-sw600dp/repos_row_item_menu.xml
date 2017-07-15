@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.fastaccess.ui.widgets.FontTextView
     android:id="@+id/title"
-    style="@style/TextAppearance.AppCompat.Small"
+    style="@style/TextAppearance.AppCompat.Medium"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

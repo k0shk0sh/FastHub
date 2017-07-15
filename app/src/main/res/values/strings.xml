@@ -87,7 +87,6 @@
     <string name="endpoint_hint" translatable="false">example.com</string>
     <string name="no_branches" translatable="false">No Branches or Tags</string>
     <string name="pro_features" translatable="false">PRO Features</string>
-
     <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
         • All PRO Themes\n
         • PR Reviews & On-line code comments (PRs & Commits)\n
@@ -102,9 +101,8 @@
     <string name="purchase" translatable="false">Purchase</string>
     <string name="get_all" translatable="false">Purchase All (7.00USD)</string>
     <string name="fasthub_premium_features" translatable="false">FastHub Premium Features</string>
-    <string name="enterprise_url" translatable="false">Enterprise URL</string>
+    <string name="secret_code" translatable="false">Promo Code</string>
     <string name="branches" translatable="false">Branches</string>
-
     <string name="github_enterprise_reply" translatable="false">
         <![CDATA[ <small><i>Reply from GitHub support regards OAuth login for Enterprise:</i></small>
                 <p></p>
@@ -118,6 +116,9 @@
                 </blockquote>
         ]]>
     </string>
+    <string name="purchase_all" translatable="false">Purchase All for ($ 7.99)</string>
+    <string name="unlock" translatable="false">Unlock</string>
+    <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
@@ -535,7 +536,8 @@
         GitHub API is coming from your Enterprise Account.</string>
     <string name="add_account">Add Account</string>
     <string name="choose_account">Choose Account</string>
-    <string name="unlock">Unlock</string>
     <string name="not_match">Not match</string>
     <string name="warning">Warning</string>
+    <string name="owner">Owner</string>
+    <string name="original_poster">Original Poster</string>
 </resources>

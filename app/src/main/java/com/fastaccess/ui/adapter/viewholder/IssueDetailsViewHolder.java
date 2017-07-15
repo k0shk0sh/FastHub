@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -53,16 +54,22 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.toggleHolder) View toggleHolder;
     @BindView(R.id.emojiesList) View emojiesList;
     @BindView(R.id.reactionsText) TextView reactionsText;
+    @BindView(R.id.owner) TextView owner;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
     private ViewGroup viewGroup;
+    private String repoOwner;
+    private String poster;
 
     private IssueDetailsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                   @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                   @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                   String repoOwner, String poster) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
         this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
@@ -83,9 +90,10 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     public static IssueDetailsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                                     @NonNull String repoOwner, @NonNull String poster) {
         return new IssueDetailsViewHolder(getView(viewGroup, R.layout.issue_detail_header_row_item), viewGroup,
-                adapter, onToggleView, reactionsCallback);
+                adapter, onToggleView, reactionsCallback, repoOwner, poster);
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {
@@ -171,9 +179,16 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     private void setup(User user, String description, ReactionsModel reactionsModel) {
-        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType(),
-                LinkParserHelper.isEnterprise(user.getHtmlUrl()));
+        avatar.setUrl(user.getAvatarUrl(), user.getLogin(), user.isOrganizationType(), LinkParserHelper.isEnterprise(user.getHtmlUrl()));
         name.setText(user.getLogin());
+        boolean isOwner = TextUtils.equals(repoOwner, user.getLogin());
+        if (isOwner) {
+            owner.setVisibility(View.VISIBLE);
+            owner.setText(R.string.owner);
+        } else {
+            owner.setText(null);
+            owner.setVisibility(View.GONE);
+        }
         if (reactionsModel != null) {
             appendEmojies(reactionsModel);
         }

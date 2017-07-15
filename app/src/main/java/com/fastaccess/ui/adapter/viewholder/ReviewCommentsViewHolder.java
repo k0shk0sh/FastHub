@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
 import android.support.v7.widget.AppCompatImageView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -50,9 +51,12 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     @BindView(R.id.commentMenu) ImageView commentMenu;
     @BindView(R.id.commentOptions) RelativeLayout commentOptions;
     @BindView(R.id.reactionsText) FontTextView reactionsText;
+    @BindView(R.id.owner) FontTextView owner;
     private OnToggleView onToggleView;
     private ReactionsCallback reactionsCallback;
     private ViewGroup viewGroup;
+    private String repoOwner;
+    private String poster;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
@@ -68,11 +72,14 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     private ReviewCommentsViewHolder(@NonNull View itemView, ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
-                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                     @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                     String repoOwner, String poster) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
         this.viewGroup = viewGroup;
         this.reactionsCallback = reactionsCallback;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         toggle.setOnClickListener(this);
@@ -93,15 +100,32 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
     }
 
     public static ReviewCommentsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,
-                                                       @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback) {
+                                                       @NonNull OnToggleView onToggleView, @NonNull ReactionsCallback reactionsCallback,
+                                                       String repoOwner, String poster) {
         return new ReviewCommentsViewHolder(getView(viewGroup, R.layout.review_comments_row_item),
-                viewGroup, adapter, onToggleView, reactionsCallback);
+                viewGroup, adapter, onToggleView, reactionsCallback, repoOwner, poster);
     }
 
     @Override public void bind(@NonNull ReviewCommentModel commentModel) {
-        avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser()
-                .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getHtmlUrl()));
-        name.setText(commentModel.getUser().getLogin());
+        if (commentModel.getUser() != null) {
+            avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser()
+                    .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getHtmlUrl()));
+            name.setText(commentModel.getUser().getLogin());
+            boolean isRepoOwner = TextUtils.equals(commentModel.getUser().getLogin(), repoOwner);
+            if (isRepoOwner) {
+                owner.setVisibility(View.VISIBLE);
+                owner.setText(R.string.owner);
+            } else {
+                boolean isPoster = TextUtils.equals(commentModel.getUser().getLogin(), poster);
+                if (isPoster) {
+                    owner.setVisibility(View.VISIBLE);
+                    owner.setText(R.string.original_poster);
+                } else {
+                    owner.setText(null);
+                    owner.setVisibility(View.GONE);
+                }
+            }
+        }
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {
             HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml());

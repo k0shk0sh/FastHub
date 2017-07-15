@@ -26,6 +26,7 @@ import com.fastaccess.ui.modules.pinned.PinnedReposActivity
 import com.fastaccess.ui.modules.trending.TrendingActivity
 import com.fastaccess.ui.modules.user.UserPagerActivity
 import com.fastaccess.ui.widgets.AvatarLayout
+import com.fastaccess.ui.widgets.FontTextView
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 
@@ -36,23 +37,28 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     : BaseViewHolder.OnItemClickListener<Login> {
 
     var menusHolder: ViewGroup? = null
-    val togglePinned = view.findViewById<View>(R.id.togglePinned)
-    val pinnedList = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+    val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
+    val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
     val pinnedListAdapter = PinnedReposAdapter(true)
+    val userModel: Login? = Login.getUser()
 
     init {
         menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)
         pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
             override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
                 if (v != null && item != null) {
-                    SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl)
+                    view.closeDrawer()
+                    Handler().postDelayed({ SchemeParser.launchUri(v.context, item.pinnedRepo.htmlUrl) }, 250)
                 }
             }
 
             override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
         }
         pinnedList?.adapter = pinnedListAdapter
-        togglePinned?.setOnClickListener { PinnedReposActivity.startActivity(view) }
+        togglePinned?.setOnClickListener {
+            view.closeDrawer()
+            Handler().postDelayed({ PinnedReposActivity.startActivity(view) }, 250)
+        }
     }
 
     fun setupViewDrawer() {
@@ -63,6 +69,20 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         accountsNav?.let {
             setupAccounts()
             setupPinned()
+            setupItems()
+        }
+    }
+
+    private fun setupItems() {
+        userModel?.let {
+            view.findViewById<View>(R.id.repos).setOnClickListener {
+                view.closeDrawer()
+                Handler().postDelayed({ UserPagerActivity.startActivity(view, userModel.login, false, PrefGetter.isEnterprise(), 2) }, 250)
+            }
+            view.findViewById<View>(R.id.starred).setOnClickListener {
+                view.closeDrawer()
+                Handler().postDelayed({ UserPagerActivity.startActivity(view, userModel.login, false, PrefGetter.isEnterprise(), 3) }, 250)
+            }
         }
     }
 
@@ -74,13 +94,16 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         val toggleAccountsLayout = view.findViewById<View>(R.id.toggleAccountsLayout)
         toggleImage.rotation = if (toggleAccountsLayout.visibility == View.VISIBLE) 180f else 0f
         addAccount.setOnClickListener {
-            if (PrefGetter.isProEnabled() || PrefGetter.isEnterpriseEnabled()) {
-                val intent = Intent(view, LoginChooserActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                view.startActivity(intent)
-            } else {
-                view.startActivity(Intent(view, PremiumActivity::class.java))
-            }
+            view.closeDrawer()
+            Handler().postDelayed({
+                if (PrefGetter.isProEnabled() || PrefGetter.isEnterpriseEnabled()) {
+                    val intent = Intent(view, LoginChooserActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    view.startActivity(intent)
+                } else {
+                    view.startActivity(Intent(view, PremiumActivity::class.java))
+                }
+            }, 250)
         }
         toggle.setOnClickListener {
             TransitionManager.beginDelayedTransition(menusHolder ?: extraNav!!)
@@ -111,21 +134,26 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     }
 
     private fun setupView(view: View) {
-        val userModel = Login.getUser() ?: return
-        (view.findViewById<View>(R.id.navAvatarLayout) as AvatarLayout).setUrl(userModel.avatarUrl, null, false,
-                PrefGetter.isEnterprise())
-        (view.findViewById<View>(R.id.navUsername) as TextView).text = userModel.login
-        when (userModel.name.isNullOrEmpty()) {
-            true -> view.findViewById<View>(R.id.navFullName).visibility = View.GONE
-            else -> (view.findViewById<View>(R.id.navFullName) as TextView).text = userModel.name
-        }
-        view.findViewById<View>(R.id.donatedIcon).visibility = if (PrefGetter.hasSupported()) View.VISIBLE else View.GONE
-        view.findViewById<View>(R.id.navAccHolder).setOnClickListener {
-            if (extraNav != null && accountsNav != null) {
-                TransitionManager.beginDelayedTransition(menusHolder ?: extraNav)
-                accountsNav.visibility = if (accountsNav.visibility == View.VISIBLE) View.GONE else View.VISIBLE
-                view.findViewById<View>(R.id.navToggle).rotation = if (accountsNav.visibility == View.VISIBLE) 180f else 0f
-                setupPinned()
+        userModel?.let {
+            (view.findViewById<View>(R.id.navAvatarLayout) as AvatarLayout).setUrl(it.avatarUrl, null, false,
+                    PrefGetter.isEnterprise())
+            (view.findViewById<View>(R.id.navUsername) as TextView).text = it.login
+            val navFullName = view.findViewById<FontTextView>(R.id.navFullName)
+            when (it.name.isNullOrBlank()) {
+                true -> navFullName.visibility = View.GONE
+                else -> {
+                    navFullName.visibility = View.VISIBLE
+                    navFullName.text = it.name
+                }
+            }
+            view.findViewById<View>(R.id.donatedIcon).visibility = if (PrefGetter.hasSupported()) View.VISIBLE else View.GONE
+            view.findViewById<View>(R.id.navAccHolder).setOnClickListener {
+                if (extraNav != null && accountsNav != null) {
+                    TransitionManager.beginDelayedTransition(menusHolder ?: extraNav)
+                    accountsNav.visibility = if (accountsNav.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+                    view.findViewById<View>(R.id.navToggle).rotation = if (accountsNav.visibility == View.VISIBLE) 180f else 0f
+                    setupPinned()
+                }
             }
         }
     }
@@ -144,8 +172,9 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
                         view.startActivity(intent)
                         view.finish()
                     }
-                    item.itemId == R.id.profile -> view.startActivity(UserPagerActivity.createIntent(view, Login.getUser().login, false
-                            , PrefGetter.isEnterprise(), 0))
+                    item.itemId == R.id.profile -> userModel?.let {
+                        UserPagerActivity.startActivity(view, it.login, false, PrefGetter.isEnterprise(), 0)
+                    }
                     item.itemId == R.id.settings -> view.onOpenSettings()
                     item.itemId == R.id.about -> view.startActivity(Intent(view, FastHubAboutActivity::class.java))
                     item.itemId == R.id.orgs -> view.onOpenOrgsDialog()

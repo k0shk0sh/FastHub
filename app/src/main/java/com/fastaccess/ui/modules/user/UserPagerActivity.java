@@ -4,12 +4,15 @@ import android.app.Application;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.annimon.stream.Stream;
@@ -18,10 +21,12 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
@@ -72,7 +77,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .put(BundleConstant.EXTRA_TYPE, isOrg)
-                .put(BundleConstant.EXTRA_TYPE, index)
+                .put(BundleConstant.EXTRA_TWO, index)
                 .end());
         if (context instanceof Service || context instanceof Application) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -106,7 +111,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             if (getIntent() != null && getIntent().getExtras() != null) {
                 login = getIntent().getExtras().getString(BundleConstant.EXTRA);
                 isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
-                index = getIntent().getExtras().getInt(BundleConstant.EXTRA_TYPE, -1);
+                index = getIntent().getExtras().getInt(BundleConstant.EXTRA_TWO, -1);
                 if (!InputHelper.isEmpty(login) && isOrg) {
                     getPresenter().checkOrgMembership(login);
                 }
@@ -198,6 +203,13 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         setTaskName(login);
     }
 
+    @Override public void onCheckType(boolean isOrg) {
+        if (!this.isOrg == isOrg) {
+            startActivity(this, login, isOrg, isEnterprise(), index);
+            finish();
+        }
+    }
+
     @Override public void onSetBadge(int tabIndex, int count) {
         TabsCountStateModel model = new TabsCountStateModel();
         model.setTabIndex(tabIndex);
@@ -222,6 +234,22 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             ProfileReposFragment fragment = ((ProfileReposFragment) pager.getAdapter().instantiateItem(pager, 2));
             fragment.onRepoFilterClicked();
         }
+    }
+
+    @Override public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.share && !InputHelper.isEmpty(login)) {
+            ActivityHelper.shareUrl(this, new Uri.Builder().scheme("https")
+                    .authority(LinkParserHelper.HOST_DEFAULT)
+                    .appendPath(login)
+                    .toString());
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void hideShowFab(int position) {

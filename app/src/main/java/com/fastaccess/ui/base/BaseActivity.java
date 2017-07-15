@@ -16,7 +16,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -225,16 +224,14 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (drawer != null) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
+        closeDrawer();
         mainNavDrawer.onMainNavItemClick(item);
         return false;
     }
 
     @Override public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer();
         } else {
             boolean clickTwiceToExit = !PrefGetter.isTwiceBackButtonDisabled();
             superOnBackPressed(clickTwiceToExit);
@@ -303,9 +300,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Optional @OnClick(R.id.logout) void onLogoutClicked() {
-        if (drawer != null) {
-            drawer.closeDrawer(Gravity.START);
-        }
+        closeDrawer();
         onLogoutPressed();
     }
 
@@ -433,6 +428,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         mainNavDrawer.setupViewDrawer();
     }
 
+    protected void closeDrawer() {
+        if (drawer != null) drawer.closeDrawer(GravityCompat.START);
+    }
+
     private void setupDrawer() {
         if (drawer != null && !(this instanceof MainActivity)) {
             if (!PrefGetter.isNavDrawerHintShowed()) {
@@ -444,7 +443,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                                 super.onDrawerOpened(drawerView);
                                 drawerView.postDelayed(() -> {
                                     if (drawer != null) {
-                                        drawer.closeDrawer(GravityCompat.START);
+                                        closeDrawer();
                                         drawer.removeDrawerListener(this);
                                     }
                                 }, 1000);

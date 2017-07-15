@@ -12,6 +12,9 @@ public interface ProfilePagerMvp {
         void onNavigateToFollowers();
 
         void onNavigateToFollowing();
+
+        void onCheckType(boolean isOrg);
+
     }
 
     interface Presenter extends BaseMvp.FAPresenter {}

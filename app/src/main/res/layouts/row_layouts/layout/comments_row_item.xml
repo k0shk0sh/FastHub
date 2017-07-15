@@ -29,29 +29,55 @@
                 android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/name"
-                style="@style/TextAppearance.AppCompat.Medium"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/spacing_normal"
                 android:layout_weight="1"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:textColor="?android:textColorPrimary"
-                tools:text="When one acquires"/>
+                android:orientation="vertical">
 
-            <com.fastaccess.ui.widgets.FontTextView
-                android:id="@+id/date"
-                style="@style/TextAppearance.AppCompat.Caption"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/spacing_normal"
-                android:maxLines="1"
-                android:textColor="?android:attr/textColorSecondary"
-                tools:text="50 minutes"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/name"
+                        style="@style/TextAppearance.AppCompat.Small"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textColor="?android:textColorPrimary"
+                        tools:text="When one acquires"/>
+
+                    <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/date"
+                        style="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:maxLines="1"
+                        android:textColor="?android:attr/textColorSecondary"
+                        tools:text="50 minutes"/>
+
+                </LinearLayout>
+
+                <com.fastaccess.ui.widgets.FontTextView
+                    android:id="@+id/owner"
+                    style="@style/TextAppearance.AppCompat.Small"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:maxLines="1"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:visibility="gone"
+                    tools:text="@string/owner"
+                    tools:visibility="visible"/>
+            </LinearLayout>
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:id="@+id/toggle"
