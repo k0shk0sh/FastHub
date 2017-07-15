@@ -134,10 +134,8 @@ import lombok.NoArgsConstructor;
             userModel.setIsLoggedIn(true);
             if (isNew) {
                 userModel.setIsEnterprise(isEnterprise);
-                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter
-                        .getToken());
-                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() :
-                                     PrefGetter.getOtpCode());
+                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
+                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
                 userModel.setEnterpriseUrl(isEnterprise ? PrefGetter.getEnterpriseUrl() : null);
                 App.getInstance().getDataStore()
                         .toBlocking()

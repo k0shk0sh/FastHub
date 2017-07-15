@@ -145,7 +145,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
                         view.finish()
                     }
                     item.itemId == R.id.profile -> view.startActivity(UserPagerActivity.createIntent(view, Login.getUser().login, false
-                            , PrefGetter.isEnterprise()))
+                            , PrefGetter.isEnterprise(), 0))
                     item.itemId == R.id.settings -> view.onOpenSettings()
                     item.itemId == R.id.about -> view.startActivity(Intent(view, FastHubAboutActivity::class.java))
                     item.itemId == R.id.orgs -> view.onOpenOrgsDialog()

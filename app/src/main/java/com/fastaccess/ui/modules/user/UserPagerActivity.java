@@ -47,12 +47,14 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.tabbedPager) ViewPagerView pager;
     @BindView(R.id.fab) FloatingActionButton fab;
+    @State int index;
     @State String login;
     @State boolean isOrg;
     @State HashSet<TabsCountStateModel> counts = new HashSet<>();
 
-    public static void startActivity(@NonNull Context context, @NonNull String login, boolean isOrg, boolean isEnterprise) {
-        context.startActivity(createIntent(context, login, isOrg, isEnterprise));
+    public static void startActivity(@NonNull Context context, @NonNull String login, boolean isOrg,
+                                     boolean isEnterprise, int index) {
+        context.startActivity(createIntent(context, login, isOrg, isEnterprise, index));
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String login) {
@@ -60,15 +62,17 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
     }
 
     public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg) {
-        return createIntent(context, login, isOrg, false);
+        return createIntent(context, login, isOrg, false, -1);
     }
 
-    public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg, boolean isEnterprise) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String login, boolean isOrg,
+                                      boolean isEnterprise, int index) {
         Intent intent = new Intent(context, UserPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .put(BundleConstant.EXTRA_TYPE, isOrg)
+                .put(BundleConstant.EXTRA_TYPE, index)
                 .end());
         if (context instanceof Service || context instanceof Application) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -102,6 +106,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             if (getIntent() != null && getIntent().getExtras() != null) {
                 login = getIntent().getExtras().getString(BundleConstant.EXTRA);
                 isOrg = getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TYPE);
+                index = getIntent().getExtras().getInt(BundleConstant.EXTRA_TYPE, -1);
                 if (!InputHelper.isEmpty(login) && isOrg) {
                     getPresenter().checkOrgMembership(login);
                 }
@@ -130,6 +135,11 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
             tabs.setTabGravity(TabLayout.GRAVITY_FILL);
             tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
             tabs.setupWithViewPager(pager);
+            if (savedInstanceState == null) {
+                if (index != -1) {
+                    pager.setCurrentItem(index);
+                }
+            }
         } else {
             if (getPresenter().getIsMember() == -1) {
                 getPresenter().checkOrgMembership(login);

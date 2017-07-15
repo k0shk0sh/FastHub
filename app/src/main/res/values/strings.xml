@@ -103,6 +103,8 @@
     <string name="get_all" translatable="false">Purchase All (7.00USD)</string>
     <string name="fasthub_premium_features" translatable="false">FastHub Premium Features</string>
     <string name="enterprise_url" translatable="false">Enterprise URL</string>
+    <string name="branches" translatable="false">Branches</string>
+
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>

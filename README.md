@@ -23,7 +23,9 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
 
 # Features  
 - **App**
-  - Two login types (Basic Auth), (Access Token) or via (Browser)
+  - Three login types (Basic Auth), (Access Token) or via (OAuth)
+  - Multiple Accounts
+  - Enterprise Accounts
   - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
@@ -31,6 +33,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Search users/orgs, repos, issues/prs & code.
   - Pinned Repos
   - Trending
+  - Wiki
 - **Repositories**
   - Browse & Read Wiki
   - Search Repos
@@ -52,7 +55,8 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
-  - PRs reviews(reply, react with emojies, delete & edit comment)
+  - PRs reviews (reply, react with emojies, delete & edit comment)
+  - PRs request review changes/approve & comment.
   - PRs statuses
 - **Commits and Gists**
   - Search Code/Gists
@@ -61,13 +65,14 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Manage Commit/Gist comments
   - Create/Delete Gists
   - React to Commit comments with reactions
+  - Comment on line number in Files/Code changes.
 - **Orgs**
     - Overview
     - Feeds
     - Teams & Teams repos
     - Repos
 - **Users**
-  - Follow/unfollow users
+  - Follow/Unfollow users
   - View user feeds
   - Contribution graph.
   - Search Users, Repos, Issues,Pull Requests and Code

@@ -156,7 +156,7 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
         refresh.setOnRefreshListener(this);
         adapter = new IssuesAdapter(getPresenter().getIssues(), true, false, true);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();

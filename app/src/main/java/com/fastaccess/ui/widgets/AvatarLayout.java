@@ -41,7 +41,7 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
 
     @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
-        UserPagerActivity.startActivity(view.getContext(), login, isOrg, isEnterprise);
+        UserPagerActivity.startActivity(view.getContext(), login, isOrg, isEnterprise, -1);
     }
 
     @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
@@ -108,6 +108,10 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         if (url != null) {
             ImageLoader.getInstance().displayImage(url, avatar, this);
         } else {
+            avatar.setOnClickListener(null);
+            if (InputHelper.isEmpty(login)) {
+                avatar.setOnLongClickListener(null);
+            }
             ImageLoader.getInstance().displayImage(null, avatar);
             setImageOnFailed();
         }

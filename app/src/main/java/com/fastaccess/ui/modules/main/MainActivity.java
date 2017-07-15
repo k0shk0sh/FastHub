@@ -128,7 +128,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onOpenProfile() {
-        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise(), -1);
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")

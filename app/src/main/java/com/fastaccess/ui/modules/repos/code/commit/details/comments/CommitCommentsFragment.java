@@ -72,7 +72,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         stateLayout.setOnReloadListener(this);
         adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true, this);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();

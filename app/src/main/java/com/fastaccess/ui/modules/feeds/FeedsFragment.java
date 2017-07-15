@@ -72,7 +72,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new FeedsAdapter(getPresenter().getEvents(), isProfile());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter()
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter()
                 .getPreviousTotal());
         recycler.setAdapter(adapter);
         if (isProfile()) {

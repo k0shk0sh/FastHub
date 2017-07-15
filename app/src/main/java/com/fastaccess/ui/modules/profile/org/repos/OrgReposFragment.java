@@ -66,7 +66,7 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new ReposAdapter(getPresenter().getRepos(), false);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.annimon.stream.Collectors;
@@ -17,8 +16,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.ReleasesAdapter;
@@ -92,7 +89,7 @@ public class RepoReleasesFragment extends BaseFragment<RepoReleasesMvp.View, Rep
         recycler.addDivider();
         adapter = new ReleasesAdapter(getPresenter().getReleases());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {

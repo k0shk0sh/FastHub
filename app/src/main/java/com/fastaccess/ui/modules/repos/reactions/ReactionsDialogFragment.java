@@ -68,7 +68,7 @@ public class ReactionsDialogFragment extends BaseDialogFragment<ReactionsDialogM
         refresh.setOnRefreshListener(() -> getPresenter().onCallApi(1, null));
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new UsersAdapter(getPresenter().getUsers());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
