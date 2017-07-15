@@ -11,6 +11,7 @@ import com.fastaccess.ui.modules.repos.RepoPagerActivity
 import io.reactivex.Observable
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.jsoup.select.Elements
 
 /**
  * Created by Kosh on 30 May 2017, 11:04 PM
@@ -46,20 +47,25 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
             val document: Document = Jsoup.parse(response, "")
             val repoList = document.select(".repo-list")
             if (repoList.isNotEmpty()) {
-                val list = repoList.select("li")
-                if (list.isNotEmpty()) {
-                    list.onEach {
-                        val title = it.select(".d-inline-block > h3 > a").text()
-                        val description = it.select(".py-1 > p").text()
-                        val stars = it.select(".f6 > a[href*=/stargazers]").text()
-                        val forks = it.select(".f6 > a[href*=/network]").text()
-                        val todayStars = it.select(".f6 > span.float-right").text()
-                        var language = it.select(".f6 .mr-3 > span[itemprop=programmingLanguage]").text()
-                        if (language.isNullOrBlank()) {
-                            language = it.select(".f6 span[itemprop=programmingLanguage]").text()
+                val list: Elements? = repoList.select("li")
+                list?.let {
+                    if (list.isNotEmpty()) {
+                        it.onEach {
+                            val title = it.select(".d-inline-block > h3 > a").text()
+                            val description = it.select(".py-1 > p").text()
+                            val stars = it.select(".f6 > a[href*=/stargazers]").text()
+                            val forks = it.select(".f6 > a[href*=/network]").text()
+                            var todayStars = it.select(".f6 > span.float-right").text()
+                            if (todayStars.isNullOrBlank()) {
+                                todayStars = it.select(".f6 > span.float-sm-right").text()
+                            }
+                            var language = it.select(".f6 .mr-3 > span[itemprop=programmingLanguage]").text()
+                            if (language.isNullOrBlank()) {
+                                language = it.select(".f6 span[itemprop=programmingLanguage]").text()
+                            }
+                            Logger.e(title, description, stars, forks, todayStars, language)
+                            s.onNext(TrendingModel(title, description, language, stars, forks, todayStars))
                         }
-                        Logger.e(title, description, stars, forks, todayStars, language)
-                        s.onNext(TrendingModel(title, description, language, stars, forks, todayStars))
                     }
                 }
             }

@@ -111,23 +111,27 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
 
     public static void migrateToVersion4() {
         RxHelper.getObserver(Observable.fromPublisher(e -> {
-            Login login = Login.getUser();
-            if (login == null) {
-                e.onComplete();
-                return;
-            }
-            ReactiveEntityStore<Persistable> reactiveEntityStore = App.getInstance().getDataStore();
-            List<PinnedRepos> pinnedRepos = reactiveEntityStore.toBlocking().select(PinnedRepos.class)
-                    .where(LOGIN.isNull())
-                    .get()
-                    .toList();
-            if (pinnedRepos != null) {
-                for (PinnedRepos pinnedRepo : pinnedRepos) {
-                    pinnedRepo.setRepoFullName(login.getLogin());
-                    reactiveEntityStore.toBlocking().update(pinnedRepo);
+            try {
+                Login login = Login.getUser();
+                if (login == null) {
+                    e.onComplete();
+                    return;
                 }
+                ReactiveEntityStore<Persistable> reactiveEntityStore = App.getInstance().getDataStore();
+                List<PinnedRepos> pinnedRepos = reactiveEntityStore.toBlocking().select(PinnedRepos.class)
+                        .where(LOGIN.isNull())
+                        .get()
+                        .toList();
+                if (pinnedRepos != null) {
+                    for (PinnedRepos pinnedRepo : pinnedRepos) {
+                        pinnedRepo.setRepoFullName(login.getLogin());
+                        reactiveEntityStore.toBlocking().update(pinnedRepo);
+                    }
+                }
+                Logger.e("Hello");
+            } catch (Exception ignored) {
+                e.onError(ignored);
             }
-            Logger.e("Hello");
             e.onComplete();
         })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
