@@ -12,7 +12,7 @@ class AuthenticationInterceptor : Interceptor {
     private var token: String? = null
     private var otp: String? = null
 
-    constructor(token: String, otp: String) {
+    constructor(token: String? = null, otp: String? = null) {
         this.token = token
         this.otp = otp
     }
@@ -21,8 +21,7 @@ class AuthenticationInterceptor : Interceptor {
         this.isScrapping = isScrapping
     }
 
-    @Throws(IOException::class)
-    override fun intercept(chain: Interceptor.Chain): Response {
+    @Throws(IOException::class) override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()
         val builder = original.newBuilder()
         val isEnterprise = LinkParserHelper.isEnterprise(original.url().host())

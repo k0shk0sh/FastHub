@@ -105,6 +105,19 @@
     <string name="enterprise_url" translatable="false">Enterprise URL</string>
     <string name="branches" translatable="false">Branches</string>
 
+    <string name="github_enterprise_reply" translatable="false">
+        <![CDATA[ <small><i>Reply from GitHub support regards OAuth login for Enterprise:</i></small>
+                <p></p>
+                <blockquote>
+                <h4>Hi Kosh,</h4>
+                <p>A GitHub Enterprise appliance is entirely separate from GitHub.com, and will not have your OAuth application configured.
+                You will need to setup your OAuth application again for <b>FastHub</b> on the GitHub Enterprise appliance, which will provide you
+                with new client_id and client_secret credentials. <b>This will have to be completed for each new GitHub Enterprise appliance
+                your application communicates with</b>. GitHub Enterprise comes preconfigured with the GitHub Desktop OAuth application set up,
+                this is how GitHub Desktop is able to complete the authentication successfully for GitHub Enterprise appliances.</p>
+                </blockquote>
+        ]]>
+    </string>
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>

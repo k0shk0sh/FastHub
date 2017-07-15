@@ -2,7 +2,6 @@ package com.fastaccess.ui.modules.login;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,6 +27,7 @@ import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.donation.DonateActivity;
 import com.fastaccess.ui.widgets.FontCheckbox;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 import com.miguelbcr.io.rx_billing_service.entities.ProductType;
 import com.miguelbcr.io.rx_billing_service.entities.Purchase;
@@ -84,14 +84,13 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
     }
 
     @OnClick(R.id.browserLogin) void onOpenBrowser() {
-        if (isEnterprise() && InputHelper.isEmpty(endpoint)) {
-            endpoint.setError(getString(R.string.required_field));
+        if (isEnterprise()) {
+            MessageDialogView.newInstance(getString(R.string.warning), getString(R.string.github_enterprise_reply),
+                    true, Bundler.start().put("hide_buttons", true).end())
+                    .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return;
         }
-        endpoint.setError(null);
-        Uri uri = getPresenter().getAuthorizationUrl(endpoint != null ? InputHelper.toString
-                (endpoint) : null);
-        ActivityHelper.startCustomTab(this, uri);
+        ActivityHelper.startCustomTab(this, getPresenter().getAuthorizationUrl());
     }
 
     @OnClick(R.id.login) public void onClick() {

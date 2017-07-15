@@ -79,7 +79,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         makeRestCall(observable, response -> {
             lastPage = response.getLast();
             if (getCurrentPage() == 1) {
-                manageDisposable(Event.save(response.getItems()));
+                manageDisposable(Event.save(response.getItems(), user));
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
@@ -120,7 +120,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
 
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty() && InputHelper.isEmpty(user)) {
-            manageDisposable(RxHelper.getObserver(Event.getEvents().toObservable())
+            manageDisposable(RxHelper.getObserver(Event.getEvents(Login.getUser().getLogin()).toObservable())
                     .subscribe(modelList -> {
                         if (modelList != null) {
                             sendToView(view -> view.onNotifyAdapter(modelList, 1));

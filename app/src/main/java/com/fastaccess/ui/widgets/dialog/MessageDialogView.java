@@ -79,11 +79,11 @@ public class MessageDialogView extends BaseBottomSheetDialog {
                 prettifyWebView.setVisibility(View.VISIBLE);
                 prettifyWebView.setGithubContent(msg, null, false, false);
                 prettifyWebView.setNestedScrollingEnabled(false);
-                return;
             }
+        } else {
+            message.setText(msg);
         }
         if (bundle != null) initButton(bundle);
-        message.setText(msg);
     }
 
     private void initButton(@NonNull Bundle bundle) {

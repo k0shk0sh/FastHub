@@ -3,6 +3,7 @@ package com.fastaccess.data.dao.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 
 import com.fastaccess.App;
 import com.fastaccess.data.dao.PayloadModel;
@@ -40,7 +41,8 @@ import lombok.NoArgsConstructor;
     @SerializedName("public") boolean publicEvent;
     @Nullable String login;
 
-    @NonNull public static Disposable save(@android.support.annotation.Nullable List<Event> events) {
+    @NonNull
+    public static Disposable save(@android.support.annotation.Nullable List<Event> events, @android.support.annotation.Nullable String user) {
         return RxHelper.getSingle(Single.fromPublisher(s -> {
             try {
                 Login login = Login.getUser();
@@ -55,7 +57,7 @@ import lombok.NoArgsConstructor;
                                 .or(Event.LOGIN.eq(login.getLogin())))
                         .get()
                         .value();
-                if (events != null && !events.isEmpty()) {
+                if (events != null && !events.isEmpty() && TextUtils.equals(login.getLogin(), user)) {
                     for (Event event : events) {
                         dataSource.delete(Event.class).where(Event.ID.eq(event.getId())).get().value();
                         event.setLogin(login.getLogin());
@@ -70,10 +72,11 @@ import lombok.NoArgsConstructor;
         })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
-    @NonNull public static Single<List<Event>> getEvents() {
+    @NonNull public static Single<List<Event>> getEvents(@NonNull String login) {
         return RxHelper.getSingle(
                 App.getInstance().getDataStore()
                         .select(Event.class)
+                        .where(Event.LOGIN.eq(login))
                         .orderBy(Event.CREATED_AT.desc())
                         .get()
                         .observable()

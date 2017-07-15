@@ -1,6 +1,8 @@
 package com.fastaccess.ui.modules.main.premium
 
 import android.app.Activity
+import android.content.Context
+import android.content.Intent
 import android.widget.EditText
 import butterknife.OnClick
 import butterknife.OnEditorAction
@@ -65,5 +67,11 @@ class PremiumActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAVie
     private fun successResult() {
         setResult(Activity.RESULT_OK)
         finish()
+    }
+
+    companion object {
+        fun startActivity(context: Context) {
+            context.startActivity(Intent(context, PremiumActivity::class.java))
+        }
     }
 }
