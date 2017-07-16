@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 
@@ -114,7 +113,8 @@ import lombok.NoArgsConstructor;
     public static boolean hasNormalLogin() {
         return App.getInstance().getDataStore()
                 .count(Login.class)
-                .where(Login.IS_ENTERPRISE.eq(false))
+                .where(Login.IS_ENTERPRISE.eq(false)
+                        .or(Login.IS_ENTERPRISE.isNull()))
                 .get()
                 .value() > 0;
     }
@@ -152,7 +152,6 @@ import lombok.NoArgsConstructor;
                     PrefGetter.setTokenEnterprise(userModel.token);
                     PrefGetter.setEnterpriseOtpCode(userModel.otpCode);
                     PrefGetter.setEnterpriseUrl(userModel.enterpriseUrl);
-                    Logger.e(userModel.enterpriseUrl, PrefGetter.getEnterpriseUrl());
                 } else {
                     PrefGetter.resetEnterprise();
                     PrefGetter.setToken(userModel.token);

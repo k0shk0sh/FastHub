@@ -17,7 +17,6 @@ import com.fastaccess.data.dao.CommitLinesModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
@@ -151,7 +150,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
 
     @Override public void onToggle(long position, boolean isCollapsed) {
         if (adapter.getItem((int) position).getCommitFileModel().getPatch() == null) {
-            ActivityHelper.openChooser(getContext(), adapter.getItem((int) position).getCommitFileModel().getBlobUrl());
+            ActivityHelper.startCustomTab(getActivity(), adapter.getItem((int) position).getCommitFileModel().getBlobUrl());
         }
         toggleMap.put(position, isCollapsed);
     }
@@ -183,8 +182,12 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
             CommentRequestModel commentRequestModel = new CommentRequestModel();
             commentRequestModel.setBody(comment);
             commentRequestModel.setPath(path);
-            commentRequestModel.setPosition(item.getPosition());
-            Logger.e(commentRequestModel.getPosition());
+            if (item.getRightLineNo() > 0 && item.getLeftLineNo() > 0) {
+                commentRequestModel.setPosition(item.getPosition());
+            } else {
+                commentRequestModel.setPosition(item.getPosition());
+//                commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            }
             if (viewCallback != null) viewCallback.onAddComment(commentRequestModel);
         }
     }

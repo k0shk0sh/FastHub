@@ -71,8 +71,9 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
             sendToView(ProfileReposMvp.View::hideProgress);
             return;
         }
-        filterOptions.setIsPersonalProfile(TextUtils.equals(currentLoggedIn, username));
-        makeRestCall(TextUtils.equals(currentLoggedIn, username)
+        boolean isProfile = TextUtils.equals(currentLoggedIn, username);
+        filterOptions.setIsPersonalProfile(isProfile);
+        makeRestCall(isProfile
                      ? RestProvider.getUserService(isEnterprise()).getRepos(filterOptions.getQueryMap(), page)
                      : RestProvider.getUserService(isEnterprise()).getRepos(parameter, filterOptions.getQueryMap(), page),
                 repoModelPageable -> {

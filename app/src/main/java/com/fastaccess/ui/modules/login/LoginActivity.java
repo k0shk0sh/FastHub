@@ -175,6 +175,7 @@ public class LoginActivity extends BaseActivity<LoginMvp.View, LoginPresenter> i
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getExtras() != null) {
                 isBasicAuth = getIntent().getExtras().getBoolean(BundleConstant.YES_NO_EXTRA);
+                password.setHint(isBasicAuth ? getString(R.string.password) : getString(R.string.access_token));
                 if (getIntent().getExtras().getBoolean(BundleConstant.EXTRA_TWO)) {
                     onOpenBrowser();
                 }

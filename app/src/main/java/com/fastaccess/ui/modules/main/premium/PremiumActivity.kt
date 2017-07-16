@@ -9,9 +9,13 @@ import android.widget.EditText
 import android.widget.FrameLayout
 import butterknife.OnClick
 import butterknife.OnEditorAction
+import com.crashlytics.android.answers.Answers
+import com.crashlytics.android.answers.PurchaseEvent
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
+import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.PrefGetter
+import com.fastaccess.helper.ViewHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.donation.DonateActivity
 import com.fastaccess.ui.widgets.bindView
@@ -79,6 +83,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     override fun onSuccessfullyActivated() {
+        Answers.getInstance().logPurchase(PurchaseEvent().putItemName(InputHelper.toString(editText)).putSuccess(true))
         PrefGetter.setProItems()
         PrefGetter.setEnterpriseItem()
         showMessage(R.string.success, R.string.success)
@@ -90,6 +95,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     override fun showProgress(resId: Int) {
+        ViewHelper.hideKeyboard(editText)
         TransitionManager.beginDelayedTransition(viewGroup)
         progressLayout.visibility = View.VISIBLE
     }

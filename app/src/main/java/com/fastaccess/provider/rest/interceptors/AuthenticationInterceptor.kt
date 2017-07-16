@@ -35,7 +35,6 @@ class AuthenticationInterceptor : Interceptor {
         }
         if (!isScrapping) builder.addHeader("User-Agent", "FastHub")
         val request = builder.build()
-        Logger.e(request.headers())
         return chain.proceed(request)
     }
 }

@@ -14,13 +14,13 @@ import java.util.List;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Generated;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.PinnedRepos.ENTRY_COUNT;
@@ -90,7 +90,8 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
 
     @NonNull public static Single<List<PinnedRepos>> getMyPinnedRepos() {
         return App.getInstance().getDataStore().select(PinnedRepos.class)
-                .where(LOGIN.eq(Login.getUser().getLogin()))
+                .where(LOGIN.eq(Login.getUser().getLogin())
+                        .or(LOGIN.isNull()))
                 .orderBy(ENTRY_COUNT.desc(), ID.desc())
                 .get()
                 .observable()
@@ -117,15 +118,15 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
                     e.onComplete();
                     return;
                 }
-                ReactiveEntityStore<Persistable> reactiveEntityStore = App.getInstance().getDataStore();
-                List<PinnedRepos> pinnedRepos = reactiveEntityStore.toBlocking().select(PinnedRepos.class)
+                BlockingEntityStore<Persistable> reactiveEntityStore = App.getInstance().getDataStore().toBlocking();
+                List<PinnedRepos> pinnedRepos = reactiveEntityStore.select(PinnedRepos.class)
                         .where(LOGIN.isNull())
                         .get()
                         .toList();
                 if (pinnedRepos != null) {
                     for (PinnedRepos pinnedRepo : pinnedRepos) {
                         pinnedRepo.setRepoFullName(login.getLogin());
-                        reactiveEntityStore.toBlocking().update(pinnedRepo);
+                        reactiveEntityStore.update(pinnedRepo);
                     }
                 }
                 Logger.e("Hello");

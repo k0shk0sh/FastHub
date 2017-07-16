@@ -120,20 +120,9 @@ public class CodeViewerActivity extends BaseActivity {
                 finish();
                 return true;
             }
-            String gistId = null;
-            if (uri.toString().contains("raw/gist")) {
-                if (uri.getPathSegments().size() > 5) {
-                    gistId = uri.getPathSegments().get(5);
-                }
-            } else if (uri.getPathSegments() != null) {
-                if (uri.getPathSegments().contains("gist")) {
-                    if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty() && uri.getPathSegments().size() >= 1) {
-                        gistId = uri.getPathSegments().get(1);
-                    }
-                }
-            }
+            String gistId = LinkParserHelper.getGistId(uri);
             if (!InputHelper.isEmpty(gistId)) {
-                GistActivity.createIntent(this, gistId, isEnterprise());
+                startActivity(GistActivity.createIntent(this, gistId, isEnterprise()));
             } else {
                 RepoFilesActivity.startActivity(this, url, isEnterprise());
             }

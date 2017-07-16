@@ -46,7 +46,7 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                 .purchase(ProductType.IN_APP, productKey, "inapp:com.fastaccess.github:" + productKey))
                 .subscribe({ p: Purchase?, throwable: Throwable? ->
                     if (throwable == null) {
-                        Answers.getInstance().logPurchase(PurchaseEvent().putItemName(productKey))
+                        Answers.getInstance().logPurchase(PurchaseEvent().putItemName(productKey).putSuccess(true))
                         showMessage(R.string.success, R.string.success_purchase_message)
                         enableProduct(productKey, applicationContext)
                         val intent = Intent()

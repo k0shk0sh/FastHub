@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <!-- DO NOT COPY!  -->
 
     <string name="app_name" translatable="false">FastHub</string>
@@ -90,7 +91,7 @@
     <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
         • All PRO Themes\n
         • PR Reviews & On-line code comments (PRs & Commits)\n
-        • PR Merge methods (Rebase & Squash)\n
+        • Support to other Merge methods (Rebase & Squash)\n
         • Login to unlimited accounts\n
         • New upcoming PRO features
     ]]></string>
@@ -540,4 +541,5 @@
     <string name="warning">Warning</string>
     <string name="owner">Owner</string>
     <string name="original_poster">Original Poster</string>
+    <string name="cancel_reviews">Cancel Reviews</string>
 </resources>
