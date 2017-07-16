@@ -7,7 +7,6 @@ import android.support.v7.preference.PreferenceManager;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.fastaccess.data.dao.model.Models;
-import com.fastaccess.data.dao.model.PinnedRepos;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
@@ -57,9 +56,6 @@ public class App extends Application {
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();
-        if (BuildConfig.VERSION_CODE != 320) {
-            PinnedRepos.migrateToVersion4();
-        }
     }
 
     private void initFabric() {
@@ -84,7 +80,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 10);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 11);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

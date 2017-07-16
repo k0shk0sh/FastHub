@@ -23,7 +23,7 @@ import lombok.NoArgsConstructor;
 
 @Entity @NoArgsConstructor public abstract class AbstractLogin implements Parcelable {
     @Key long id;
-    @Column(unique = true) String login;
+    @Column String login;
     String avatarUrl;
     String gravatarId;
     String url;
@@ -140,8 +140,7 @@ import lombok.NoArgsConstructor;
                 App.getInstance().getDataStore()
                         .toBlocking()
                         .delete(Login.class)
-                        .where(Login.ID.eq(userModel.getId())
-                                .or(Login.LOGIN.eq(userModel.getLogin())))
+                        .where(Login.ID.eq(userModel.getId()))
                         .get()
                         .value();
                 App.getInstance().getDataStore()

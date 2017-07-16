@@ -34,7 +34,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
 
 @Entity @NoArgsConstructor public abstract class AbstractPinnedRepos implements Parcelable {
     @Key @Generated long id;
-    @Column(unique = true) String repoFullName;
+    @Column(unique = false) String repoFullName;
     @Convert(RepoConverter.class) Repo pinnedRepo;
     @io.requery.Nullable int entryCount;
     @io.requery.Nullable String login;
@@ -50,8 +50,11 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
             pinned.setRepoFullName(repo.getFullName());
             pinned.setLogin(Login.getUser().getLogin());
             pinned.setPinnedRepo(repo);
-            App.getInstance().getDataStore().toBlocking().insert(pinned);
-            return true;
+            try {
+                App.getInstance().getDataStore().toBlocking().insert(pinned);
+                return true;
+            } catch (Exception ignored) {}
+            return false;
         } else {
             delete(pinnedRepos.getId());
             return false;
@@ -66,8 +69,9 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     }
 
     @Nullable public static PinnedRepos get(@NonNull String repoFullName) {
-        return App.getInstance().getDataStore().select(PinnedRepos.class)
-                .where(REPO_FULL_NAME.eq(repoFullName).and(LOGIN.eq(Login.getUser().getLogin())))
+        return App.getInstance().getDataStore().toBlocking().select(PinnedRepos.class)
+                .where(REPO_FULL_NAME.eq(repoFullName).and(LOGIN.eq(Login.getUser().getLogin()))
+                        .or(REPO_FULL_NAME.eq(repoFullName)))
                 .get()
                 .firstOrNull();
     }

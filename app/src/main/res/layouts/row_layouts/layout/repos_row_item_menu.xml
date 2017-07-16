@@ -10,6 +10,7 @@
     android:background="?selectableItemBackground"
     android:ellipsize="end"
     android:maxLines="1"
+    android:minHeight="48dp"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/keyline_1"
