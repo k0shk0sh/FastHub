@@ -162,13 +162,10 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 ## Screenshots
 
-| Mobile Light | Mobile Dark |
+| Screens | Screens |
 |:-:|:-:|
-| ![Main Screen Light](/.github/assets/mobile_light.png?raw=true) | ![Main Screen Dark](/.github/assets/mobile_night.png?raw=true) |
-
-| Tablet Light | Tablet Dark |
-|:-:|:-:|
-| ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
+| ![First](/.github/assets/first.png?raw=true) | ![Sec](/.github/assets/sec.png?raw=true) |
+| ![Third](/.github/assets/third.png?raw=true) | ![Fourth](/.github/assets/fourth.png?raw=true) |
 
 ## FastHub Logo
 
