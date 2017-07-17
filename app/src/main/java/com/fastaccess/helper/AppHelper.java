@@ -77,8 +77,9 @@ public class AppHelper {
         if (!model.equalsIgnoreCase(brand)) {
             builder.append("- BRAND: ").append(brand);
         }
-        builder.append("- MODEL: ").append(model).append("  \n")
-               .append("\n\n").append("---").append("\n\n");
+        builder.append("  \n")
+               .append("- MODEL: ").append(model).append("  \n")
+               .append("\n").append("---").append("\n\n");
         return builder.toString();
     }
 
