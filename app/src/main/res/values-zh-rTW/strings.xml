@@ -358,7 +358,7 @@
     <string name="reply">回覆</string>
     <string name="failed_selecting_image">載入圖片失敗</string>
     <string name="want_to_merge">想要合併</string>
-    <string name="watchers">觀看者</string>
+    <string name="watchers">關注者</string>
     <string name="reviewers">審核者</string>
     <string name="no_reviewers">沒有審核者</string>
     <string name="sent_from_fasthub">使用 %2$s%3$s 從我的 %1$s 發送</string>
