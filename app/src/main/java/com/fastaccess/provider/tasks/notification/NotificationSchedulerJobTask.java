@@ -93,36 +93,40 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
-        if (cancel) dispatcher.cancel(JOB_ID);
-        if (duration == -1) {
-            dispatcher.cancel(JOB_ID);
-            return;
+        if (AppHelper.isGoogleAvailable(context)) {
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            if (cancel) dispatcher.cancel(JOB_ID);
+            if (duration == -1) {
+                dispatcher.cancel(JOB_ID);
+                return;
+            }
+            duration = duration <= 0 ? THIRTY_MINUTES : duration;
+            Job.Builder builder = dispatcher
+                    .newJobBuilder()
+                    .setTag(JOB_ID)
+                    .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                    .setLifetime(Lifetime.FOREVER)
+                    .setRecurring(true)
+                    .setConstraints(Constraint.ON_ANY_NETWORK)
+                    .setTrigger(Trigger.executionWindow(duration / 2, duration))
+                    .setService(NotificationSchedulerJobTask.class);
+            dispatcher.mustSchedule(builder.build());
         }
-        duration = duration <= 0 ? THIRTY_MINUTES : duration;
-        Job.Builder builder = dispatcher
-                .newJobBuilder()
-                .setTag(JOB_ID)
-                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-                .setLifetime(Lifetime.FOREVER)
-                .setRecurring(true)
-                .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(duration / 2, duration))
-                .setService(NotificationSchedulerJobTask.class);
-        dispatcher.mustSchedule(builder.build());
     }
 
     public static void scheduleOneTimeJob(@NonNull Context context) {
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
-        Job.Builder builder = dispatcher
-                .newJobBuilder()
-                .setTag(SINGLE_JOB_ID)
-                .setReplaceCurrent(true)
-                .setRecurring(false)
-                .setTrigger(Trigger.executionWindow(30, 60))
-                .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setService(NotificationSchedulerJobTask.class);
-        dispatcher.mustSchedule(builder.build());
+        if (AppHelper.isGoogleAvailable(context)) {
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            Job.Builder builder = dispatcher
+                    .newJobBuilder()
+                    .setTag(SINGLE_JOB_ID)
+                    .setReplaceCurrent(true)
+                    .setRecurring(false)
+                    .setTrigger(Trigger.executionWindow(30, 60))
+                    .setConstraints(Constraint.ON_ANY_NETWORK)
+                    .setService(NotificationSchedulerJobTask.class);
+            dispatcher.mustSchedule(builder.build());
+        }
     }
 
     private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {

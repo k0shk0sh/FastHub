@@ -46,7 +46,7 @@ import shortbread.Shortcut;
  * Created by Kosh on 03 Dec 2016, 8:00 AM
  */
 
-@Shortcut(id = "profile", icon = R.drawable.ic_profile_shortcut, shortLabelRes = R.string.profile, backStack = {MainActivity.class}, rank = 4)
+@Shortcut(id = "profile", icon = R.drawable.ic_shortcut_profile, shortLabelRes = R.string.profile, backStack = {MainActivity.class}, rank = 4)
 public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPagerPresenter> implements UserPagerMvp.View {
 
     @BindView(R.id.tabs) TabLayout tabs;
