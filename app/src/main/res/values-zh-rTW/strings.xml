@@ -1,3 +1,25 @@
+<!--
+正體中文翻譯準則 zh-TW Translation Conduct
+1. 保留字不翻譯成中文。
+2. 為保持句子通順，可微調句子結構與語意，切勿硬翻。
+3. 英文單字前後若非標點符號，請空半形空格。
+4. 普通英文單字請保持首字母大寫。
+5. 標點符號請用全形。
+6. 強調用的引號請使用「」。
+
+保留字 Preserve word list：
+Issue
+Commit
+Pull Request
+Merge
+Fork
+Gist
+GitHub
+FastHub
+Readme
+APP
+-->
+
 <resources>
     <string name="in_progress">載入中，請稍後</string>
     <string name="action">動作</string>
@@ -7,19 +29,19 @@
     <string name="ok">確定</string>
     <string name="no_data">沒有資料</string>
     <string name="search">搜尋</string>
-    <string name="please_login">請登入以繼續使用FastHub</string>
-    <string name="sign_in_to_github">登入你的GitHub帳號以使用FastHub</string>
+    <string name="please_login">請登入以繼續使用 FastHub</string>
+    <string name="sign_in_to_github">登入你的 GitHub 帳號以使用 FastHub</string>
     <string name="failed_login">登入失敗</string>
     <string name="sign_in">登入</string>
     <string name="share">分享</string>
     <string name="reload">重新整理</string>
-    <string name="feeds">訊息源</string>
+    <string name="feeds">動態</string>
     <string name="profile">個人檔案</string>
     <string name="error">錯誤</string>
     <string name="press_again_to_exit">再點一次以離開</string>
     <string name="opened">開啟中</string>
     <string name="closed">已關閉</string>
-    <string name="repo_chooser">選擇Repo</string>
+    <string name="repo_chooser">選擇 Repo</string>
     <string name="followers">跟隨者</string>
     <string name="following">跟隨中</string>
     <string name="overview">概要</string>
@@ -30,7 +52,7 @@
     <string name="archive_file_detected_error">檢測到檔案，請下載以檢視</string>
     <string name="minimum_three_chars">最少字元數(3)</string>
     <string name="no_file_found">沒有檔案</string>
-    <string name="no_readme_found">沒有Readme</string>
+    <string name="no_readme_found">沒有 Readme</string>
     <string name="downloading">下載中…</string>
     <string name="downloading_file">下載檔案中…</string>
     <string name="released">發布於</string>
@@ -40,19 +62,19 @@
     <string name="contributors">貢獻者</string>
     <string name="contributions">貢獻</string>
     <string name="by">由</string>
-    <string name="close_issue">關閉Issue</string>
-    <string name="re_open_issue">重開Issue</string>
-    <string name="re_open">重開</string>
+    <string name="close_issue">關閉 Issue</string>
+    <string name="re_open_issue">重新開啟 Issue</string>
+    <string name="re_open">重新開啟</string>
     <string name="close">關閉</string>
-    <string name="success_re_opened">成功重開</string>
-    <string name="lock_issue_details">鎖定代表著:\n&#183;其他使用者無法新增評論到此Issue。\n&#183;你和其他有此Repo權限的協作者仍然能留下其他人能看到的評論。\n&#183;你未來還是能解鎖此Issue。\n</string>
-    <string name="unlock_issue_details">解鎖代表著:\n&#183;每個人都能在此Issue下新增評論。\n&#183;你未來還是能鎖定此Issue。\n</string>
+    <string name="success_re_opened">成功重新開啟</string>
+    <string name="lock_issue_details">鎖定代表著：\n&#183;其他使用者無法新增評論到此 Issue。\n&#183;你和其他有此 Repo 權限的協作者，仍能發表公開的評論。\n&#183;你未來還是能解鎖此 Issue。\n</string>
+    <string name="unlock_issue_details">解鎖代表著:\n&#183;每個人都能在此 Issue 下新增評論。\n&#183;你未來還是能鎖定此 Issue。\n</string>
     <string name="lock_issue">鎖定</string>
     <string name="unlock_issue">解鎖</string>
-    <string name="error_closing_issue">關閉Issue時發生錯誤，請重試。</string>
-    <string name="error_re_opening_issue">重開Issue時發生錯誤，請重試。</string>
-    <string name="success_closed">Issue已關閉</string>
-    <string name="no_description_provided"><p>沒有介紹</p></string>
+    <string name="error_closing_issue">關閉 Issue 時發生錯誤，請重試。</string>
+    <string name="error_re_opening_issue">重開 Issue 時發生錯誤，請重試。</string>
+    <string name="success_closed">Issue 已關閉</string>
+    <string name="no_description_provided"><p>沒有說明</p></string>
     <string name="header_one">標題一</string>
     <string name="header_two">標題二</string>
     <string name="header_three">標題三</string>
@@ -69,14 +91,14 @@
     <string name="addition">新增</string>
     <string name="changes">變化</string>
     <string name="status">狀態</string>
-    <string name="confirm_message">確定?</string>
+    <string name="confirm_message">確定？</string>
     <string name="success">成功</string>
     <string name="to">到</string>
     <string name="error_deleting_comment">刪除評論時發生錯誤</string>
     <string name="delete">刪除</string>
     <string name="comments">評論</string>
     <string name="comment">評論</string>
-    <string name="success_merge">合併成功</string>
+    <string name="success_merge">Merge 成功</string>
     <string name="file_menu">檔案選單</string>
     <string name="files">檔案</string>
     <string name="download">下載</string>
@@ -85,11 +107,11 @@
     <string name="code_viewer">程式碼檢視器</string>
     <string name="open_in_browser">在瀏覽器中打開</string>
     <string name="big_file">大檔案</string>
-    <string name="big_file_description">此檔案過大以開啟。\n點擊"確定"以下載。</string>
+    <string name="big_file_description">此檔案過大無法直接開啟。\n點擊"確定"以下載。</string>
     <string name="viewer">觀眾</string>
     <string name="submit">提交</string>
     <string name="type_here">在此輸入</string>
-    <string name="description">介紹</string>
+    <string name="description">說明</string>
     <string name="file_name">檔名</string>
     <string name="file_name_hint">檔名(含副檔名)</string>
     <string name="create_secret_gist">私人Gist</string>
@@ -168,30 +190,30 @@
     <string name="committed">已提交</string>
     <string name="downloaded">已下載</string>
     <string name="followed">已跟隨</string>
-    <string name="commented_on_issue">評論Issue</string>
+    <string name="commented_on_issue">評論 Issue</string>
     <string name="member">成員</string>
-    <string name="pr_comment_review">Pull Request評論</string>
-    <string name="pushed">Pushed到</string>
+    <string name="pr_comment_review">Pull Request 評論</string>
+    <string name="pushed">Push 到</string>
     <string name="team_event">小組</string>
     <string name="deleted">已刪除</string>
     <string name="unknown">未知</string>
-    <string name="commented_on_commit">評論commit</string>
+    <string name="commented_on_commit">評論 Commit</string>
     <string name="switch_branch">切換分支</string>
     <string name="assignees">受理者</string>
     <string name="edit">編輯</string>
     <string name="edited">\u2022 已編輯</string>
-    <string name="update_issue">更新Issue</string>
-    <string name="update_pull_request">更新Pull Request</string>
+    <string name="update_issue">更新 Issue</string>
+    <string name="update_pull_request">更新 Pull Request</string>
     <string name="no_milestones">沒有里程碑</string>
     <string name="add">新增</string>
     <string name="done">完成</string>
     <string name="home">首頁</string>
-    <string name="create_milestone">創建里程碑</string>
-    <string name="error_creating_milestone">創建里程碑時發生錯誤</string>
+    <string name="create_milestone">建立里程碑</string>
+    <string name="error_creating_milestone">建立里程碑時發生錯誤</string>
     <string name="due_on">截止於</string>
     <string name="no_assignees">沒有受理者</string>
     <string name="this_value">這個</string>
-    <string name="commits_reflected">Commits已被切換到選擇的分支</string>
+    <string name="commits_reflected">Commit 已被切換到選擇的分支</string>
     <string name="general_settings">一般</string>
     <string name="background_job_summary">更改檢查通知頻率</string>
     <string name="background_job_title">檢查通知間隔</string>
@@ -200,8 +222,8 @@
     <string name="customization">個人化</string>
     <string name="recycler_view_animation_summary">開啟列表動畫</string>
     <string name="recycler_view_animation_title">動畫</string>
-    <string name="back_button_summary">關閉退出APP的Toast</string>
-    <string name="back_button_title">按返回以退出</string>
+    <string name="back_button_summary">關閉返回鍵的確認提示，直接退出。</string>
+    <string name="back_button_title">按返回直接退出 APP</string>
     <string name="restore">還原</string>
     <string name="backup">備份</string>
     <string name="backed_up">成功備份!</string>
@@ -213,25 +235,25 @@
     <string name="private_repo">私人</string>
     <string name="rect_avatar_summary">用圓角矩形代替圓形頭像</string>
     <string name="rect_avatar_title">頭像</string>
-    <string name="rate_app">為此APP評分</string>
+    <string name="rate_app">為此 APP 評分</string>
     <string name="author">作者</string>
-    <string name="fork_github">在Github上Fork此專案</string>
-    <string name="send_email">寄送email</string>
-    <string name="question_concerning_fasthub">關於FastHub的問題</string>
+    <string name="fork_github">在 Github 上 Fork 此專案</string>
+    <string name="send_email">寄送 Email</string>
+    <string name="question_concerning_fasthub">關於 FastHub 的問題</string>
     <string name="feedback">回報</string>
-    <string name="report_issue">回報Issue</string>
+    <string name="report_issue">回報 Issue</string>
     <string name="report_issue_here">有困擾嗎?在此回報</string>
     <string name="about">關於</string>
     <string name="notification_settings">通知</string>
     <string name="turn_off">關閉</string>
     <string name="unauthorized_user">未驗證的使用者</string>
     <string name="two_factors_otp_error">必須兩步驟驗證</string>
-    <string name="no_issue">沒有Issue</string>
+    <string name="no_issue">沒有 Issue</string>
     <string name="copy">複製</string>
     <string name="success_copied">已複製</string>
-    <string name="commit_message">Commit訊息</string>
+    <string name="commit_message">Commit 訊息</string>
     <string name="network_error">在連接伺服器時發生錯誤</string>
-    <string name="unexpected_error">請求API時發生未預期的錯誤</string>
+    <string name="unexpected_error">請求 API 時發生未預期的錯誤</string>
     <string name="request_error">連接伺服器失敗，請重試</string>
     <string name="marking_as_read">標記通知為已讀</string>
     <string name="forking_gist">Forking gist</string>
@@ -245,37 +267,37 @@
     <string name="theme_color_title">主題色調</string>
     <string name="website">網站</string>
     <string name="support_development">支援開發</string>
-    <string name="success_purchase_message">非常感謝!</string>
+    <string name="success_purchase_message">非常感謝！</string>
     <string name="change_theme_warning">如果主題沒有正常運作，請手動強制關閉並重開。</string>
     <string name="pin">釘選</string>
     <string name="pinned">已釘選</string>
     <string name="unpin">取消釘選</string>
-    <string name="empty_pinned_repos">沒有已釘選的Repo</string>
+    <string name="empty_pinned_repos">沒有已釘選的 Repo</string>
     <string name="yes">是</string>
     <string name="no">否</string>
     <string name="no_feeds">沒有動態</string>
-    <string name="no_gists">沒有gists</string>
+    <string name="no_gists">沒有 Gist</string>
     <string name="no_comments">沒有評論</string>
     <string name="no_notifications">沒有通知</string>
     <string name="no_followers">沒有跟隨者</string>
     <string name="no_followings">沒有跟隨中</string>
-    <string name="no_repos">沒有Repo</string>
-    <string name="no_starred_repos">沒有已收藏的Repo</string>
-    <string name="no_commits">沒有commits</string>
+    <string name="no_repos">沒有 Repo</string>
+    <string name="no_starred_repos">沒有已收藏的 Repo</string>
+    <string name="no_commits">沒有 Commit</string>
     <string name="no_contributors">沒有貢獻者</string>
     <string name="no_releases">沒有releases</string>
-    <string name="no_closed_issues">沒有關閉的Issues</string>
-    <string name="no_opened_issues">沒有開啟的Issues</string>
+    <string name="no_closed_issues">沒有關閉的 Issue</string>
+    <string name="no_opened_issues">沒有開啟的 Issue</string>
     <string name="no_events">沒有事件</string>
-    <string name="no_open_pull_requests">沒有開啟的pull requests</string>
-    <string name="no_closed_pull_request">沒有關閉的pull requests</string>
+    <string name="no_open_pull_requests">沒有開啟的 Pull Request</string>
+    <string name="no_closed_pull_request">沒有關閉的 Pull Request</string>
     <string name="no_search_results">沒有搜尋結果</string>
-    <string name="read_write_permission_explanation">請同意權限請求以讓FastHub能夠儲存檔案</string>
-    <string name="public_gists">公開Gists</string>
+    <string name="read_write_permission_explanation">請同意權限請求以讓 FastHub 能夠儲存檔案</string>
+    <string name="public_gists">公開 Gist</string>
     <string name="enable_ads">開啟廣告</string>
-    <string name="no_issues">沒有Issues</string>
+    <string name="no_issues">沒有 Issue</string>
     <string name="no_unread_notifications">沒有未讀通知</string>
-    <string name="my_gists">我的Gists</string>
+    <string name="my_gists">我的 Gist</string>
     <string name="changelog">更新日誌</string>
     <string name="notifications_hint">點擊通知列表或滑動來忽略</string>
     <string name="home_long_click_hint">長按以從任何地方前往主畫面</string>
@@ -309,11 +331,11 @@
     <string name="least_commented">最少評論</string>
     <string name="recently_updated">最近更新</string>
     <string name="least_recent_updated">最久沒更新</string>
-    <string name="up_to_date">已經是最新版!</string>
+    <string name="up_to_date">已經是最新版！</string>
     <string name="new_version">有新版本</string>
     <string name="empty_search_error">搜尋欄不得為空</string>
-    <string name="long_press_repo_fab_hint">長按以新增Issue</string>
-    <string name="commit_can_be_merged">這個pull request可被合併</string>
+    <string name="long_press_repo_fab_hint">長按以新增 Issue</string>
+    <string name="commit_can_be_merged">這個 Pull Request 可被 Merge</string>
     <string name="reviewed">已審核</string>
     <string name="dismissed_review">駁回</string>
     <string name="approved_these_changes">接受更改</string>
@@ -322,12 +344,12 @@
     <string name="wrap_content">摺疊內容</string>
     <string name="wrap_code_summary">在程式碼檢視器中預設摺疊程式碼</string>
     <string name="wrap_code_title">摺疊程式碼</string>
-    <string name="open_source_libs">開源libraries</string>
+    <string name="open_source_libs">開源 Libraries</string>
     <string name="enable_notification_sound_summary">開啟收到通知音效</string>
     <string name="enable_notification_sound_title">開啟通知音效</string>
     <string name="enable_notification_title">開啟通知</string>
-    <string name="login_with_personal_token">用個人token來登入</string>
-    <string name="personal_token">個人Token</string>
+    <string name="login_with_personal_token">用個人 Token 來登入</string>
+    <string name="personal_token">個人 Token</string>
     <string name="basic_login">透過基本驗證登入</string>
     <string name="no_orgs_description">如果你是某個組織的成員卻找不到組織，請點擊下面的連結。\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: 你可以用Access Token登入，這會授權FastHub查看組織列表的權限。</string>
     <string name="insert">插入</string>
@@ -337,7 +359,7 @@
     <string name="support_with_5_00">捐獻 $5.00</string>
     <string name="support_with_10_00">捐獻 $10.00</string>
     <string name="support_with_20_00">捐獻 $20.00</string>
-    <string name="app_language">APP語言</string>
+    <string name="app_language">APP 語言</string>
     <string name="language">語言</string>
     <string name="choose_language_title">選擇語言</string>
     <string name="choose_language_summary">選擇您喜歡的語言</string>
@@ -345,23 +367,23 @@
     <string name="from">從</string>
     <string name="in_value">在</string>
     <string name="subscribe">訂閱</string>
-    <string name="repo_issues_is_disabled">這個Repo的Issue已被停用</string>
+    <string name="repo_issues_is_disabled">這個 Repo 的 Issue 已被停用</string>
     <string name="access_token">Access Token</string>
     <string name="basic_authentication">基本驗證</string>
     <string name="choose_your_login_type">選擇登入方式</string>
     <string name="files_only">在檔案中</string>
     <string name="paths_only">在路徑中</string>
     <string name="review_requests">審核請求</string>
-    <string name="join_slack">加入Slack</string>
-    <string name="join_slack_message">您想加入FastHub的Slack群組嗎?</string>
+    <string name="join_slack">加入 Slack</string>
+    <string name="join_slack_message">您想加入 FastHub 的 Slack 群組嗎?</string>
     <string name="successfully_invited">成功邀請</string>
     <string name="reply">回覆</string>
     <string name="failed_selecting_image">載入圖片失敗</string>
-    <string name="want_to_merge">想要合併</string>
+    <string name="want_to_merge">想要 Merge</string>
     <string name="watchers">關注者</string>
     <string name="reviewers">審核者</string>
     <string name="no_reviewers">沒有審核者</string>
-    <string name="sent_from_fasthub">使用 %2$s%3$s 從我的 %1$s 發送</string>
+    <string name="sent_from_fasthub">從我的 %1$s，使用 %2$s%3$s 發送。</string>
     <string name="enable_signature">開啟簽名</string>
     <string name="enable_signature_summary">開啟傳送通過簽名</string>
     <string name="enable_signature_box">開啟簽名欄</string>
@@ -369,29 +391,36 @@
     <string name="tags">標籤</string>
     <string name="add_comment">新增</string>
     <string name="banners">介紹橫幅</string>
-    <string name="banners_info">透過 FastHub 2.5.0, 您可以在個人資料頁面快速的表達您的橫幅。\n\n任何使用FastHub的人都能看到，而且您也能看到他人的! 如果您想要自己創建橫幅
-        ，讓他的解析度為 1280x384 或等比例，否則可能會被裁減。\n\n您可以在任何時候更改橫幅, 透過創建一個 gist 叫做 "header.fst" 包含著圖片的直接連結。\n\n或是也可以用內建的圖片選擇器。
+    <string name="banners_info">透過 FastHub 2.5.0, 您可以在個人資料頁面快速的表達您的橫幅。\n\n任何使用 FastHub 的人都能看到，而且您也能看到他人的! 如果您想要自己創建橫幅
+        ，讓他的解析度為 1280x384 或等比例，否則可能會被裁減。\n\n您可以在任何時候更改橫幅, 透過創建一個 gist 叫做「header.fst」包含著圖片的直接連結。\n\n或是也可以用內建的圖片選擇器。
     </string>
     <string name="edit_banner">選擇橫幅</string>
     <string name="image_error">載入圖片錯誤，請重試。</string>
     <string name="trending">趨勢</string>
-    <string name="not_really_working">因為GitHub的限制沒辦法透過表情符號來排序</string>
+    <string name="not_really_working">因為 GitHub 的限制，無法使用表情符號來排序。</string>
     <string name="scroll_up">往上滑</string>
     <string name="scroll_down">往下滑</string>
     <string name="participated">已參與</string>
     <string name="todo_checked">待辦事項已勾選</string>
     <string name="todo_unchecked">待辦事項未勾選</string>
-    <string name="divider">分割線</string>
+    <string name="divider">分隔線</string>
     <string name="no_user_found">找不到使用者</string>
     <string name="no_trending">沒有趨勢</string>
     <string name="reset">重置</string>
-    <string name="apply">應用</string>
+    <string name="apply">套用</string>
     <string name="filter">過濾器</string>
     <string name="type">類型</string>
-    <string name="sort_direction">排序位置</string>
+    <string name="sort_direction">排序方向</string>
     <string name="assignee_added">成功添加受理者</string>
     <string name="reviewer_added">成功添加審核者</string>
     <string name="milestone_added">成功添加里程碑</string>
     <string name="feed">動態</string>
     <string name="premium_theme">高級主題</string>
+    <string name="choose_code_theme">選擇程式碼配色</string>
+    <string name="add_account">新增帳戶</string>
+    <string name="choose_account">選擇帳戶</string>
+    <string name="warning">警告</string>
+    <string name="owner">擁有者</string>
+    <string name="colored_navbar_summary">取消導覽列在主題中的顏色</string>
+    <string name="colored_navbar_title">取消導覽列的顏色</string>
 </resources>
