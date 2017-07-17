@@ -19,7 +19,6 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
@@ -55,10 +54,12 @@ public class NotificationSchedulerJobTask extends JobService {
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
 
     @Override public boolean onStartJob(JobParameters job) {
-        if (PrefGetter.getNotificationTaskDuration() == -1) {
-            scheduleJob(this, -1, false);
-            finishJob(job);
-            return true;
+        if (!SINGLE_JOB_ID.equalsIgnoreCase(job.getTag())) {
+            if (PrefGetter.getNotificationTaskDuration() == -1) {
+                scheduleJob(this, -1, false);
+                finishJob(job);
+                return true;
+            }
         }
         Login login = null;
         try {
@@ -79,7 +80,6 @@ public class NotificationSchedulerJobTask extends JobService {
         } else {
             finishJob(job);
         }
-        Logger.e("Hello World");
         return true;
     }
 
@@ -118,7 +118,9 @@ public class NotificationSchedulerJobTask extends JobService {
                 .newJobBuilder()
                 .setTag(SINGLE_JOB_ID)
                 .setReplaceCurrent(true)
-                .setTrigger(Trigger.executionWindow(0, 60))
+                .setRecurring(false)
+                .setTrigger(Trigger.executionWindow(30, 60))
+                .setConstraints(Constraint.ON_ANY_NETWORK)
                 .setService(NotificationSchedulerJobTask.class);
         dispatcher.mustSchedule(builder.build());
     }

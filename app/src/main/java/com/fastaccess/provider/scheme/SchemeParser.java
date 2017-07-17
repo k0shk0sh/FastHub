@@ -147,7 +147,6 @@ public class SchemeParser {
                 Optional<Intent> intentOptional = returnNonNull(trending, userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
                         createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
-                Logger.e(isEnterprise);
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     Intent intent = intentOptional.get();
                     if (isEnterprise) {
@@ -159,7 +158,6 @@ public class SchemeParser {
                             intent.putExtra(BundleConstant.IS_ENTERPRISE, true);
                         }
                     }
-                    Logger.e(intent);
                     return intent;
                 } else {
                     Intent intent = getGeneralRepo(context, data);
