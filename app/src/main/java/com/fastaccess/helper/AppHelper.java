@@ -90,6 +90,10 @@ public class AppHelper {
         } else {
             builder.append("- ").append(model);
         }
+        if (!isInstalledFromPlaySore(App.getInstance())) {
+            builder.append("\n")
+                    .append("- Installer: Unknown");
+        }
         builder.append("  \n")
                 .append("- Account Type:").append(" ").append(enterprise ? "Enterprise" : "GitHub");
         builder.append("\n\n")
@@ -107,13 +111,7 @@ public class AppHelper {
     }
 
     private static void updateResources(Context context, String language) {
-        Locale locale;
-        String[] split = language.split("-");
-        if (split.length > 1) {
-            locale = new Locale(split[0], split[1]);
-        } else {
-            locale = new Locale(language);
-        }
+        Locale locale = getLocale(language);
         Locale.setDefault(locale);
         Configuration configuration = context.getResources().getConfiguration();
         configuration.setLocale(locale);
@@ -122,18 +120,29 @@ public class AppHelper {
 
     @SuppressWarnings("deprecation")
     private static void updateResourcesLegacy(Context context, String language) {
-        Locale locale;
+        Locale locale = getLocale(language);
+        Locale.setDefault(locale);
+        Resources resources = context.getResources();
+        Configuration configuration = resources.getConfiguration();
+        configuration.locale = locale;
+        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+    }
+
+    @NonNull private static Locale getLocale(String language) {
+        Locale locale = null;
+        if (language.equalsIgnoreCase("zh-rCN")) {
+            locale = Locale.SIMPLIFIED_CHINESE;
+        } else if (language.equalsIgnoreCase("zh-rTW")) {
+            locale = Locale.TRADITIONAL_CHINESE;
+        }
+        if (locale != null) return locale;
         String[] split = language.split("-");
         if (split.length > 1) {
             locale = new Locale(split[0], split[1]);
         } else {
             locale = new Locale(language);
         }
-        Locale.setDefault(locale);
-        Resources resources = context.getResources();
-        Configuration configuration = resources.getConfiguration();
-        configuration.locale = locale;
-        resources.updateConfiguration(configuration, resources.getDisplayMetrics());
+        return locale;
     }
 
     public static String getDeviceName() {
@@ -156,5 +165,10 @@ public class AppHelper {
                 || Build.MANUFACTURER.contains("Genymotion")
                 || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
                 || "google_sdk".equals(Build.PRODUCT);
+    }
+
+    private static boolean isInstalledFromPlaySore(@NonNull Context context) {
+        final String ipn = context.getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID);
+        return !InputHelper.isEmpty(ipn);
     }
 }

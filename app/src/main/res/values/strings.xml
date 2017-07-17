@@ -542,4 +542,6 @@
     <string name="owner">Owner</string>
     <string name="original_poster">Original Poster</string>
     <string name="cancel_reviews">Cancel Reviews</string>
+    <string name="colored_navbar_summary">Disable tinting the navigation bar in themes</string>
+    <string name="colored_navbar_title">Disable Navbar tinting</string>
 </resources>

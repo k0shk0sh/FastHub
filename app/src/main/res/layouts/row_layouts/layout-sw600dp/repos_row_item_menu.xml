@@ -10,10 +10,9 @@
     android:background="?selectableItemBackground"
     android:ellipsize="end"
     android:maxLines="1"
-    android:minHeight="48dp"
-    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingBottom="@dimen/spacing_xs_large"
     android:paddingEnd="@dimen/spacing_xs_large"
     android:paddingStart="@dimen/keyline_1"
-    android:paddingTop="@dimen/spacing_normal"
+    android:paddingTop="@dimen/spacing_xs_large"
     android:textColor="@color/search_tab_highlighter"
     tools:text="When one acquires music and afterlife, one is able to capture heaven."/>

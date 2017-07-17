@@ -65,7 +65,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null) {
-            startActivity(new Intent(this, CheckPurchaseActivity.class));
             if (getIntent() != null && getIntent().getBooleanExtra(SlackBottomSheetDialog.TAG, false)) {
                 new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
             }

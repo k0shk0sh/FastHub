@@ -44,7 +44,6 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleBluish</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuBluish</item>
-        <item name="android:navigationBarColor">@color/bluish_primary</item>
     </style>
 
     <style name="PopupMenuBluish" parent="Widget.AppCompat.PopupMenu">

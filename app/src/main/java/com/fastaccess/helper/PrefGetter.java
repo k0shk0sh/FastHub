@@ -438,6 +438,10 @@ public class PrefGetter {
         return !InputHelper.isEmpty(getEnterpriseUrl());
     }
 
+    public static boolean isNavBarTintingDisabled() {
+        return PrefHelper.getBoolean("navigation_color");
+    }
+
     public static void resetEnterprise() {
         PrefGetter.setTokenEnterprise(null);
         PrefGetter.setEnterpriseOtpCode(null);

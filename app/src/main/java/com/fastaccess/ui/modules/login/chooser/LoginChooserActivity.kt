@@ -48,9 +48,6 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if (savedInstanceState == null) {
-            startActivity(Intent(this, CheckPurchaseActivity::class.java))
-        }
         adapter.listener = this
         recycler.adapter = adapter
         val languages = resources.getStringArray(R.array.languages_array_values)

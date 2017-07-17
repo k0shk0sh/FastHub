@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.fastaccess"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools">
+<manifest
+    package="com.fastaccess"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -26,14 +27,18 @@
         tools:replace="android:allowBackup"
         tools:targetApi="n">
         <activity
-            android:name=".ui.modules.main.MainActivity"
-            android:launchMode="singleTask">
+            android:name=".ui.modules.main.donation.CheckPurchaseActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.modules.main.MainActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".ui.modules.login.LoginActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -217,11 +222,6 @@
             android:configChanges="keyboard|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"/>
-
-        <activity
-            android:name=".ui.modules.main.donation.CheckPurchaseActivity"
-            android:configChanges="keyboard|orientation|screenSize"
-            android:theme="@style/ThemeTranslucent"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

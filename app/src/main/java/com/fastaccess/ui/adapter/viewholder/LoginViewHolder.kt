@@ -26,7 +26,8 @@ class LoginViewHolder private constructor(itemView: View, adapter: BaseRecyclerA
     override fun bind(login: Login) {
         avatarLayout?.setUrl(login.avatarUrl, null, false, false)
         title.text = if (login.isIsEnterprise) {
-            "${login.login} ${Uri.parse(login.enterpriseUrl).authority}"
+            val uri: String? = Uri.parse(login.enterpriseUrl).authority
+            "${login.login} ${if (uri.isNullOrBlank()) login.enterpriseUrl else uri}"
         } else {
             login.login
         }
