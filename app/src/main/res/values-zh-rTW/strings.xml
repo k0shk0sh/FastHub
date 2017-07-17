@@ -391,7 +391,7 @@
     <string name="sort_direction">排序位置</string>
     <string name="assignee_added">成功添加受理者</string>
     <string name="reviewer_added">成功添加審核者</string>
-    <string name="milestone_added">成功添加里程者</string>
+    <string name="milestone_added">成功添加里程碑</string>
     <string name="feed">動態</string>
     <string name="premium_theme">高級主題</string>
 </resources>
