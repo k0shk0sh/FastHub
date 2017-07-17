@@ -213,7 +213,7 @@
     <string name="private_repo">私人</string>
     <string name="rect_avatar_summary">用圓角矩形代替圓形頭像</string>
     <string name="rect_avatar_title">頭像</string>
-    <string name="rate_app">評分此app</string>
+    <string name="rate_app">評分此APP</string>
     <string name="author">作者</string>
     <string name="fork_github">在Github上Fork此專案</string>
     <string name="send_email">寄送email</string>
