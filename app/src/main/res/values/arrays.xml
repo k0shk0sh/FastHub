@@ -116,18 +116,18 @@
 
     <string-array name="languages_array" translatable="false">
         <item>English</item>
-        <item>Germany</item>
-        <item>Turkey</item>
-        <item>Chinese(Simplified)</item>
-        <item>Chinese(Traditional)</item>
+        <item>Deutsch</item>
+        <item>Türk dili</item>
+        <item>简体中文</item>
+        <item>正體中文</item>
         <item>Indonesia</item>
-        <item>Russia</item>
-        <item>Italy</item>
-        <item>Japan</item>
-        <item>Lithuania</item>
-        <item>Brazil(Portuguese)</item>
-        <item>Czech Republic</item>
-        <item>Spain</item>
+        <item>русский</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>Lietuvos</item>
+        <item>Brasil (Português)</item>
+        <item>český</item>
+        <item>Idioma español</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
