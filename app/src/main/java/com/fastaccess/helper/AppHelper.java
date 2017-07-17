@@ -68,39 +68,17 @@ public class AppHelper {
         String brand = (!isEmulator()) ? Build.BRAND : "Android Emulator";
         String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
         StringBuilder builder = new StringBuilder()
-                .append("**FastHub Version: ")
-                .append(BuildConfig.VERSION_NAME)
-                .append("**")
-                .append("  \n")
-                .append("**Android Version: ")
-                .append(String.valueOf(Build.VERSION.RELEASE))
-                .append(" (SDK: ")
-                .append(String.valueOf(Build.VERSION.SDK_INT))
-                .append(")**")
-                .append("  \n")
-                .append("**Device Information:**")
-                .append("  \n")
-                .append("- ")
-                .append(Build.MANUFACTURER)
-                .append("  \n");
+                .append("**FastHub Version: ").append(BuildConfig.VERSION_NAME).append(enterprise ? " Enterprise**" : "**").append("  \n")
+                .append("**APK Source: " + (!isInstalledFromPlaySore(App.getInstance()) ? "Unknown" : "Google Play") + "**").append("  \n")
+                .append("**Android Version: ").append(String.valueOf(Build.VERSION.RELEASE)).append(" (SDK: ")
+                    .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
+                .append("**Device Information:**").append("  \n")
+                .append("- " + (!model.equalsIgnoreCase(brand) ? "MANUFACTURER" : "MANUFACTURER&BRAND") + ": ").append(Build.MANUFACTURER).append("  \n");
         if (!model.equalsIgnoreCase(brand)) {
-            builder.append("- ")
-                    .append(brand)
-                    .append("  \n")
-                    .append("- ")
-                    .append(model);
-        } else {
-            builder.append("- ").append(model);
+            builder.append("- BRAND: ").append(brand);
         }
-        if (!isInstalledFromPlaySore(App.getInstance())) {
-            builder.append("\n")
-                    .append("- Installer: Unknown");
-        }
-        builder.append("  \n")
-                .append("- Account Type:").append(" ").append(enterprise ? "Enterprise" : "GitHub");
-        builder.append("\n\n")
-                .append("---")
-                .append("\n\n");
+        builder.append("- MODEL: ").append(model).append("  \n")
+               .append("\n\n").append("---").append("\n\n");
         return builder.toString();
     }
 
