@@ -162,9 +162,12 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 ## Screenshots
 
-| Screens | Screens |
+| Feeds | Drawer |
 |:-:|:-:|
 | ![First](/.github/assets/first.png?raw=true) | ![Sec](/.github/assets/sec.png?raw=true) |
+
+| Repo | Profile |
+|:-:|:-:|
 | ![Third](/.github/assets/third.png?raw=true) | ![Fourth](/.github/assets/fourth.png?raw=true) |
 
 ## FastHub Logo
