@@ -6,21 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.annimon.stream.Collectors;
 import com.annimon.stream.Objects;
-import com.annimon.stream.Stream;
-import com.fastaccess.data.dao.BranchesModel;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.RxHelper;
-import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import io.reactivex.Observable;
 
 /**
  * Created by Kosh on 15 Feb 2017, 10:10 PM
@@ -32,7 +25,6 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
     @com.evernote.android.state.State String path;
     @com.evernote.android.state.State String defaultBranch;
     private ArrayList<RepoFile> paths = new ArrayList<>();
-    private ArrayList<BranchesModel> branches = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, RepoFile item) {
         if (!item.getPath().equalsIgnoreCase(path)) if (getView() != null) getView().onItemClicked(item, position);
@@ -76,40 +68,6 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
                 }
             }
             sendToView(RepoFilePathMvp.View::onSendData);
-            if (branches.isEmpty()) {
-                Observable<List<BranchesModel>> observable = RxHelper.getObserver(Observable.zip(
-                        RestProvider.getRepoService().getBranches(login, repoId),
-                        RestProvider.getRepoService().getTags(login, repoId),
-                        (branchPageable, tags) -> {
-                            ArrayList<BranchesModel> branchesModels = new ArrayList<>();
-                            if (branchPageable.getItems() != null) {
-                                branchesModels.addAll(Stream.of(branchPageable.getItems())
-                                        .map(branchesModel -> {
-                                            branchesModel.setTag(false);
-                                            return branchesModel;
-                                        }).collect(Collectors.toList()));
-                            }
-                            if (tags != null) {
-                                branchesModels.addAll(Stream.of(tags.getItems())
-                                        .map(branchesModel -> {
-                                            branchesModel.setTag(true);
-                                            return branchesModel;
-                                        }).collect(Collectors.toList()));
-
-                            }
-                            return branchesModels;
-                        }));
-                manageDisposable(observable
-                        .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
-                        .doOnNext(branchesModels -> {
-                            branches.clear();
-                            branches.addAll(branchesModels);
-                            sendToView(view -> view.setBranchesData(branches, true));
-                        })
-                        .subscribe(branchesModels -> {/**/}, throwable -> {
-                            sendToView(view -> view.setBranchesData(branches, true));
-                        }));
-            }
         } else {
             throw new NullPointerException("Bundle is null");
         }
@@ -129,10 +87,6 @@ class RepoFilePathPresenter extends BasePresenter<RepoFilePathMvp.View> implemen
 
     @NonNull @Override public ArrayList<RepoFile> getPaths() {
         return paths;
-    }
-
-    @NonNull @Override public ArrayList<BranchesModel> getBranches() {
-        return branches;
     }
 
     @Override public String getDefaultBranch() {

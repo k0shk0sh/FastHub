@@ -72,7 +72,8 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
         adapter.notifyDataSetChanged();
     }
 
-    @Override public void onSearch(@NonNull String query, boolean isOpen, boolean isIssue) {
+    @Override public void onSearch(@NonNull String query, boolean isOpen, boolean isIssue, boolean isEnterprise) {
+        getPresenter().setEnterprise(isEnterprise);
         this.query = query;
         this.issueState = isOpen ? IssueState.open : IssueState.closed;
         this.isIssue = isIssue;
@@ -155,7 +156,7 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
         refresh.setOnRefreshListener(this);
         adapter = new IssuesAdapter(getPresenter().getIssues(), true, false, true);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addKeyLineDivider();

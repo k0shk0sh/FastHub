@@ -12,7 +12,6 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -27,7 +26,6 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
             if (intent != null && intent.getExtras() != null) {
                 CharSequence charSequence = intent.getExtras().getCharSequence(BundleConstant.EXTRA);
                 if (!InputHelper.isEmpty(charSequence)) {
-                    Logger.e(charSequence);
                     sendToView(view -> view.onSetCode(charSequence));
                 }
             }
@@ -46,7 +44,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                 CreateIssueModel createIssue = new CreateIssueModel();
                 createIssue.setBody(InputHelper.toString(description));
                 createIssue.setTitle(title);
-                makeRestCall(RestProvider.getIssueService().createIssue(login, repo, createIssue),
+                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssue(login, repo, createIssue),
                         issueModel -> {
                             if (issueModel != null) {
                                 sendToView(view -> view.onSuccessSubmission(issueModel));
@@ -60,10 +58,9 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                     issue.setTitle(title);
                     int number = issue.getNumber();
                     IssueRequestModel requestModel = IssueRequestModel.clone(issue, false);
-                    makeRestCall(RestProvider.getIssueService().editIssue(login, repo, number, requestModel),
+                    makeRestCall(RestProvider.getIssueService(isEnterprise()).editIssue(login, repo, number, requestModel),
                             issueModel -> {
                                 if (issueModel != null) {
-                                    Logger.e(issueModel.getBodyHtml());
                                     sendToView(view -> view.onSuccessSubmission(issueModel));
                                 } else {
                                     sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
@@ -75,8 +72,8 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                     pullRequestModel.setBody(InputHelper.toString(description));
                     pullRequestModel.setTitle(title);
                     IssueRequestModel requestModel = IssueRequestModel.clone(pullRequestModel, false);
-                    makeRestCall(RestProvider.getPullRequestService().editPullRequest(login, repo, number, requestModel)
-                            .flatMap(pullRequest1 -> RestProvider.getIssueService().getIssue(login, repo, number),
+                    makeRestCall(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(login, repo, number, requestModel)
+                            .flatMap(pullRequest1 -> RestProvider.getIssueService(isEnterprise()).getIssue(login, repo, number),
                                     (pullRequest1, issueReaction) -> {//hack to get reactions from issue api
                                         if (issueReaction != null) {
                                             pullRequest1.setReactions(issueReaction.getReactions());

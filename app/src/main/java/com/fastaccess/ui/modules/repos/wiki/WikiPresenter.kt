@@ -25,15 +25,17 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
             val bundle = intent.extras
             repoId = bundle.getString(BundleConstant.ID)
             login = bundle.getString(BundleConstant.EXTRA)
+            val page = bundle.getString(BundleConstant.EXTRA_TWO)
             if (!repoId.isNullOrEmpty() && !login.isNullOrEmpty()) {
-                onSidebarClicked(WikiSideBarModel("Home", "$login/$repoId/wiki"))
+                onSidebarClicked(WikiSideBarModel("Home", "$login/$repoId/wiki" +
+                        if (!page.isNullOrEmpty()) "/$page" else ""))
             }
         }
     }
 
     override fun onSidebarClicked(sidebar: WikiSideBarModel) {
-        manageViewDisposable(RxHelper.getObserver(JsoupProvider.getWiki().getWiki(sidebar.link))
-                .flatMap { s -> RxHelper.getObserver(getWikiContent(s)) }
+        manageViewDisposable(RxHelper.getObservable(JsoupProvider.getWiki().getWiki(sidebar.link))
+                .flatMap { s -> RxHelper.getObservable(getWikiContent(s)) }
                 .doOnSubscribe { sendToView { it.showProgress(0) } }
                 .subscribe({ response -> sendToView { view -> view.onLoadContent(response) } },
                         { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) }))

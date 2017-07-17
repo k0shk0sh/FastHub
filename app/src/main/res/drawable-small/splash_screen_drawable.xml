@@ -1,0 +1,16 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+
+        <shape>
+            <solid android:color="?colorPrimary"/>
+        </shape>
+    </item>
+
+    <item
+        android:left="@dimen/keyline_1"
+        android:right="@dimen/keyline_1">
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/web_hi_res_512"/>
+    </item>
+</layer-list>

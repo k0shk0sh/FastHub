@@ -94,7 +94,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             Activity activity = ActivityHelper.getActivity(v.getContext());
                             if (activity == null) return false;
                             CreateIssueActivity.startForResult(activity,
-                                    item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(), item.getPullRequest());
+                                    item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(),
+                                    item.getPullRequest(), isEnterprise());
                         } else if (item1.getItemId() == R.id.share) {
                             ActivityHelper.shareUrl(v.getContext(), item.getPullRequest().getHtmlUrl());
                         }
@@ -157,7 +158,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
             boolean isReviewComment = bundle.getBoolean(BundleConstant.YES_NO_EXTRA);
             if (commId != 0 && !isReviewComment) {
-                makeRestCall(RestProvider.getIssueService().deleteIssueComment(login, repoId, commId),
+                makeRestCall(RestProvider.getIssueService(isEnterprise()).deleteIssueComment(login, repoId, commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
@@ -170,7 +171,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             } else {
                 int groupPosition = bundle.getInt(BundleConstant.EXTRA_TWO);
                 int commentPosition = bundle.getInt(BundleConstant.EXTRA_THREE);
-                makeRestCall(RestProvider.getReviewService().deleteComment(login, repoId, commId),
+                makeRestCall(RestProvider.getReviewService(isEnterprise()).deleteComment(login, repoId, commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 view.onRemoveReviewComment(groupPosition, commentPosition);
@@ -187,7 +188,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         PullRequest pullRequest = getView().getPullRequest();
         String login = pullRequest.getLogin();
         String repoId = pullRequest.getRepoId();
-        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType);
+        Observable observable = getReactionsProvider().onHandleReaction(vId, idOrNumber, login, repoId, reactionType, isEnterprise());
         if (observable != null) //noinspection unchecked
             manageObservable(observable);
     }
@@ -291,23 +292,25 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             return;
         }
         setCurrentPage(page);
-        loadEverything(login, repoId, number, parameter.getHead().getSha(), parameter.isMergeable(), page);
+        if (parameter.getHead() != null) {
+            loadEverything(login, repoId, number, parameter.getHead().getSha(), parameter.isMergeable(), page);
+        }
     }
 
     private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable, int page) {
         Observable<List<TimelineModel>> observable;
         if (page > 1) {
-            observable = RestProvider.getIssueService().getIssueComments(login, repoId, number, page)
+            observable = RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page)
                     .map(comments -> {
                         lastPage = comments != null ? comments.getLast() : 0;
                         return TimelineModel.construct(comments != null ? comments.getItems() : null);
                     });
         } else {
-            observable = Observable.zip(RestProvider.getIssueService().getTimeline(login, repoId, number),
-                    RestProvider.getIssueService().getIssueComments(login, repoId, number, page),
-                    RestProvider.getPullRequestService().getPullStatus(login, repoId, sha),
-                    RestProvider.getReviewService().getReviews(login, repoId, number),
-                    RestProvider.getReviewService().getPrReviewComments(login, repoId, number),
+            observable = Observable.zip(RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number),
+                    RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page),
+                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha),
+                    RestProvider.getReviewService(isEnterprise()).getReviews(login, repoId, number),
+                    RestProvider.getReviewService(isEnterprise()).getPrReviewComments(login, repoId, number),
                     (issueEventPageable, commentPageable, statuses, reviews, reviewComments) -> {
                         if (statuses != null) {
                             statuses.setMergable(isMergeable);

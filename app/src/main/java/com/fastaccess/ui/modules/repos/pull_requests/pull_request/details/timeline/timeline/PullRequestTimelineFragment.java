@@ -92,7 +92,14 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
             throw new NullPointerException("PullRequest went missing!!!");
         }
         boolean isMerged = getPresenter().isMerged(getPullRequest());
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this, isMerged, getPresenter());
+        if (issueCallback != null && issueCallback.getData() != null) {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+                    this, true, this, isMerged, getPresenter(), issueCallback.getData().getLogin(),
+                    issueCallback.getData().getRepoId());
+        } else {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+                    this, true, this, isMerged, getPresenter(), "", "");
+        }
         recycler.setVerticalScrollBarEnabled(false);
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
@@ -104,7 +111,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             onSetHeader(TimelineModel.constructHeader(getPullRequest()));
@@ -182,6 +189,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_ISSUE_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -204,6 +212,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.REVIEW_EXTRA, model)
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_REVIEW_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REVIEW_REQUEST_CODE);
@@ -224,6 +233,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -249,6 +259,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .put("message", message)
                 .end());
         View view = getFromView();
@@ -268,6 +279,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.REVIEW_EXTRA, model)
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_REVIEW_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .put("message", message)
                 .end());
         View view = getFromView();

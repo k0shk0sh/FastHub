@@ -22,7 +22,7 @@ public interface FilterIssuesMvp {
 
         void onClear();
 
-        void onSearch(@NonNull String query, boolean isOpen, boolean isIssue);
+        void onSearch(@NonNull String query, boolean isOpen, boolean isIssue, boolean isEnterprise);
 
         void onNotifyAdapter(@Nullable List<Issue> items, int page);
 

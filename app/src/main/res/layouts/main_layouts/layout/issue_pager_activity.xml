@@ -2,6 +2,7 @@
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
@@ -50,8 +51,8 @@
                         android:id="@+id/forkGist"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing_micro"
                         android:layout_gravity="center|end"
+                        android:layout_marginEnd="@dimen/spacing_micro"
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/fork"
                         android:padding="@dimen/spacing_micro"
@@ -74,6 +75,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_behavior="@string/scroll_behavior"/>
+
+
+            <include layout="@layout/review_changes_bottom_layout"/>
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab"

@@ -122,3 +122,7 @@
 -dontwarn kotlin.reflect.jvm.internal.impl.types.DescriptorSubstitutor
 -dontwarn kotlin.reflect.jvm.internal.impl.types.TypeConstructor
 -keeppackagenames org.jsoup.nodes
+-keep class com.github.b3er.** { *; }
+-keep class com.memoizrlabs.** { *; }
+-dontwarn com.github.b3er.**
+-dontwarn com.memoizrlabs.**

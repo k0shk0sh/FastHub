@@ -17,6 +17,13 @@
 
     <SwitchPreference
         android:defaultValue="false"
+        android:key="navigation_color"
+        android:icon="@drawable/ic_minus"
+        android:summary="@string/colored_navbar_summary"
+        android:title="@string/colored_navbar_title"/>
+
+    <SwitchPreference
+        android:defaultValue="false"
         android:key="rect_avatar"
         android:icon="@drawable/ic_crop_square"
         android:summary="@string/rect_avatar_summary"

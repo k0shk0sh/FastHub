@@ -10,7 +10,6 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ViewHelper;
 
 class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
@@ -47,7 +46,6 @@ class BottomPaddingDecoration extends RecyclerView.ItemDecoration {
             if ((dataSize - position) <= grid.getSpanCount()) {
                 outRect.set(0, 0, 0, bottomPadding);
             } else {
-                Logger.e("Here");
                 outRect.set(0, 0, 0, 0);
             }
         } else if (parent.getLayoutManager() instanceof GridLayoutManager) {

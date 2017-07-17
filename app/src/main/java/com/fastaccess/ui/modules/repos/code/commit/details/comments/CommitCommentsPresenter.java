@@ -64,7 +64,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getRepoService().getCommitComments(login, repoId, sha, page)
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommitComments(login, repoId, sha, page)
                 .flatMap(listResponse -> {
                     lastPage = listResponse.getLast();
                     return Observable.just(TimelineModel.construct(listResponse.getItems()));
@@ -86,7 +86,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         if (bundle != null) {
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
             if (commId != 0) {
-                makeRestCall(RestProvider.getRepoService().deleteComment(login, repoId, commId)
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).deleteComment(login, repoId, commId)
                         , booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
@@ -102,7 +102,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
 
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Comment.getCommitComments(repoId(), login(), sha).toObservable())
+            manageDisposable(RxHelper.getObservable(Comment.getCommitComments(repoId(), login(), sha).toObservable())
                     .flatMap(comments -> Observable.just(TimelineModel.construct(comments)))
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
@@ -177,7 +177,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     }
 
     private void onHandleReaction(int viewId, long id) {
-        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, ReactionsProvider.COMMIT);
+        Observable observable = getReactionsProvider().onHandleReaction(viewId, id, login, repoId, ReactionsProvider.COMMIT, isEnterprise());
         if (observable != null) manageObservable(observable);
     }
 }

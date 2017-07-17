@@ -59,11 +59,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_normal"
                 android:background="?selectableItemBackgroundBorderless"
                 android:padding="@dimen/spacing_micro"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_download"
-                tools:src="@drawable/ic_notification"/>
+                android:src="@drawable/ic_download"/>
         </LinearLayout>
     </LinearLayout>
 

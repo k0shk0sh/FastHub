@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.notification.unread;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,6 +19,7 @@ import com.fastaccess.provider.tasks.notification.ReadNotificationService;
 import com.fastaccess.ui.adapter.NotificationsAdapter;
 import com.fastaccess.ui.adapter.viewholder.NotificationsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.notification.callback.OnNotificationChangedListener;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -36,6 +38,19 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private NotificationsAdapter adapter;
+    private OnNotificationChangedListener onNotificationChangedListener;
+
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnNotificationChangedListener) {
+            onNotificationChangedListener = (OnNotificationChangedListener) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        onNotificationChangedListener = null;
+        super.onDetach();
+    }
 
     @Override public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,18 +69,30 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
 
     @Override public void onRemove(int position) {
         hideProgress();
+        GroupedNotificationModel model = adapter.getItem(position);
+        if (model != null) {
+            if (onNotificationChangedListener != null) onNotificationChangedListener.onNotificationChanged(model, 1);
+        }
         adapter.removeItem(position);
         invalidateMenu();
     }
 
     @Override public void onReadNotification(@NonNull Notification notification) {
-        adapter.removeItem(new GroupedNotificationModel(notification));
+        GroupedNotificationModel model = new GroupedNotificationModel(notification);
+        if (onNotificationChangedListener != null) onNotificationChangedListener.onNotificationChanged(model, 1);
+        adapter.removeItem(model);
         ReadNotificationService.start(getContext(), notification.getId());
         invalidateMenu();
     }
 
     @Override public void onClick(@NonNull String url) {
         SchemeParser.launchUri(getContext(), Uri.parse(url), true);
+    }
+
+    @Override public void onNotifyNotificationChanged(@NonNull GroupedNotificationModel notification) {
+        if (adapter != null) {
+            adapter.removeItem(notification);
+        }
     }
 
     @Override protected int fragmentLayout() {

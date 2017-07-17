@@ -11,6 +11,7 @@ import com.annimon.stream.Collectors;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.AssigneesRequestModel;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.IssueRequestModel;
 import com.fastaccess.data.dao.LabelListModel;
 import com.fastaccess.data.dao.LabelModel;
@@ -46,6 +47,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State boolean isCollaborator;
     @com.evernote.android.state.State boolean showToRepoBtn;
+    @com.evernote.android.state.State ArrayList<CommentRequestModel> reviewComments = new ArrayList<>();
 
     @Nullable @Override public PullRequest getPullRequest() {
         return pullRequest;
@@ -131,10 +133,10 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onLockUnlockConversations() {
         PullRequest currentPullRequest = getPullRequest();
         if (currentPullRequest == null) return;
-        IssueService service = RestProvider.getIssueService();
+        IssueService service = RestProvider.getIssueService(isEnterprise());
         Observable<Response<Boolean>> observable = RxHelper
-                .getObserver(isLocked() ? service.unlockIssue(login, repoId, issueNumber) :
-                             service.lockIssue(login, repoId, issueNumber));
+                .getObservable(isLocked() ? service.unlockIssue(login, repoId, issueNumber) :
+                               service.lockIssue(login, repoId, issueNumber));
         makeRestCall(observable, booleanResponse -> {
             int code = booleanResponse.code();
             if (code == 204) {
@@ -147,7 +149,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onOpenCloseIssue() {
         if (getPullRequest() != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(getPullRequest(), true);
-            manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService().editPullRequest(login, repoId,
+            manageDisposable(RxHelper.getObservable(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .subscribe(issue -> {
@@ -168,7 +170,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onLoadLabels() {
         manageDisposable(
-                RxHelper.getObserver(RestProvider.getRepoService().getLabels(login, repoId))
+                RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .subscribe(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
@@ -181,7 +183,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     @Override public void onPutLabels(@NonNull ArrayList<LabelModel> labels) {
-        makeRestCall(RestProvider.getIssueService().putLabels(login, repoId, issueNumber,
+        makeRestCall(RestProvider.getIssueService(isEnterprise()).putLabels(login, repoId, issueNumber,
                 Stream.of(labels).filter(value -> value != null && value.getName() != null)
                         .map(LabelModel::getName).collect(Collectors.toList())),
                 labelModels -> {
@@ -196,11 +198,9 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {
         pullRequest.setMilestone(milestone);
         IssueRequestModel issueRequestModel = IssueRequestModel.clone(pullRequest, false);
-        makeRestCall(RestProvider.getPullRequestService().editIssue(login, repoId, issueNumber, issueRequestModel),
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).editIssue(login, repoId, issueNumber, issueRequestModel),
                 pr -> {
-                    this.pullRequest = pr;
-                    pullRequest.setLogin(login);
-                    pullRequest.setRepoId(repoId);
+                    this.pullRequest.setMilestone(pr.getMilestone());
                     manageObservable(pr.save(pullRequest).toObservable());
                     sendToView(view -> updateTimeline(view, R.string.labels_added_successfully));
                 });
@@ -214,42 +214,41 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
                 .collect(Collectors.toCollection(ArrayList::new));
         if (isAssignees) {
             assigneesRequestModel.setAssignees(assignees);
-            makeRestCall(RestProvider.getPullRequestService().putAssignees(login, repoId, issueNumber, assigneesRequestModel),
+            makeRestCall(RestProvider.getPullRequestService(isEnterprise()).putAssignees(login, repoId, issueNumber, assigneesRequestModel),
                     pullRequestResponse -> {
-                        this.pullRequest = pullRequestResponse;
-                        pullRequest.setLogin(login);
-                        pullRequest.setRepoId(repoId);
-                        UsersListModel assignee = new UsersListModel();
-                        assignee.addAll(users);
-                        pullRequest.setAssignees(assignee);
+                        UsersListModel usersListModel = new UsersListModel();
+                        usersListModel.addAll(users);
+                        this.pullRequest.setAssignees(usersListModel);
                         manageObservable(pullRequest.save(pullRequest).toObservable());
                         sendToView(view -> updateTimeline(view, R.string.assignee_added));
                     }
             );
         } else {
             assigneesRequestModel.setReviewers(assignees);
-            makeRestCall(RestProvider.getPullRequestService().putReviewers(login, repoId, issueNumber, assigneesRequestModel),
+            makeRestCall(RestProvider.getPullRequestService(isEnterprise()).putReviewers(login, repoId, issueNumber, assigneesRequestModel),
                     pullRequestResponse -> sendToView(view -> updateTimeline(view, R.string.reviewer_added))
             );
         }
     }
 
-    @Override public void onMerge(@NonNull String msg) {
+    @Override public void onMerge(@NonNull String msg, @NonNull String mergeMethod) {
         if (isMergeable() && (isCollaborator() || isRepoOwner())) {//double the checking
             if (getPullRequest() == null || getPullRequest().getHead() == null || getPullRequest().getHead().getSha() == null) return;
             MergeRequestModel mergeRequestModel = new MergeRequestModel();
             mergeRequestModel.setSha(getPullRequest().getHead().getSha());
             mergeRequestModel.setCommitMessage(msg);
-            manageDisposable(
-                    RxHelper.getObserver(RestProvider.getPullRequestService().mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
-                            .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
-                            .subscribe(mergeResponseModel -> {
-                                if (mergeResponseModel.isMerged()) {
-                                    sendToView(view -> updateTimeline(view, R.string.success_merge));
-                                } else {
-                                    sendToView(view -> view.showErrorMessage(mergeResponseModel.getMessage()));
-                                }
-                            }, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage())))
+            mergeRequestModel.setMergeMethod(mergeMethod.toLowerCase());
+            manageDisposable(RxHelper.getObservable(RestProvider.getPullRequestService(isEnterprise())
+                    .mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
+                    .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
+                    .subscribe(mergeResponseModel -> {
+                        if (mergeResponseModel.isMerged()) {
+                            pullRequest.setMerged(true);
+                            sendToView(view -> updateTimeline(view, R.string.success_merge));
+                        } else {
+                            sendToView(view -> view.showErrorMessage(mergeResponseModel.getMessage()));
+                        }
+                    }, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage())))
             );
         }
     }
@@ -280,11 +279,28 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         callApi();
     }
 
+    @NonNull @Override public ArrayList<CommentRequestModel> getCommitComment() {
+        return reviewComments;
+    }
+
+    @Override public void onAddComment(@NonNull CommentRequestModel comment) {
+        int index = reviewComments.indexOf(comment);
+        if (index != -1) {
+            reviewComments.set(index, comment);
+        } else {
+            reviewComments.add(comment);
+        }
+    }
+
+    @Override public boolean hasReviewComments() {
+        return reviewComments.size() > 0;
+    }
+
     private void callApi() {
-        makeRestCall(RxHelper.getObserver(Observable.zip(RestProvider.getPullRequestService()
+        makeRestCall(RxHelper.getObservable(Observable.zip(RestProvider.getPullRequestService(isEnterprise())
                         .getPullRequest(login, repoId, issueNumber),
-                RestProvider.getRepoService().isCollaborator(login, repoId, Login.getUser().getLogin()),
-                RestProvider.getIssueService().getIssue(login, repoId, issueNumber),
+                RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
+                RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
                 (pullRequestModel, booleanResponse, issue) -> {
                     this.pullRequest = pullRequestModel;
                     if (issue != null) {

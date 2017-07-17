@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_micro"
+    android:paddingTop="@dimen/spacing_micro">
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/leftLinNo"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:fontFamily="monospace"
+        android:text="?android:textColorSecondary"
+        tools:text="1"/>
+
+    <View
+        android:layout_width="@dimen/spacing_normal"
+        android:layout_height="wrap_content"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/rightLinNo"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:fontFamily="monospace"
+        android:text="?android:textColorSecondary"
+        tools:text="1"/>
+
+    <android.support.v7.widget.AppCompatTextView
+        android:id="@+id/textView"
+        style="@style/TextAppearance.AppCompat.Caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/spacing_micro"
+        android:fontFamily="monospace"
+        android:textColor="?android:textColorPrimary"
+        tools:text="Per guest prepare a handfull teaspoons of soy sauce with squeezed sausages for dessert."/>
+</LinearLayout>

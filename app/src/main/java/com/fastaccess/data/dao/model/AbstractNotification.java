@@ -13,15 +13,14 @@ import com.fastaccess.helper.RxHelper;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Completable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Nullable;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 /**
@@ -39,36 +38,57 @@ import lombok.NoArgsConstructor;
     Date lastReadAt;
     @Nullable boolean isSubscribed;
 
-    public Single<Notification> save(Notification entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
-    }
-
-    public static Completable markAsRead(long id) {
-        return Completable.fromCallable(() -> {
-            Notification notification = App.getInstance().getDataStore()
-                    .select(Notification.class)
-                    .where(Notification.ID.eq(id))
-                    .get()
-                    .firstOrNull();
-            if (notification != null) {
-                notification.setUnread(false);
-                return notification.save(notification);
+    public Disposable save(Notification entity) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataStore = App.getInstance().getDataStore().toBlocking();
+                dataStore.delete(Notification.class).where(Notification.ID.eq(entity.getId())).get().value();
+                dataStore.insert(entity);
+                s.onNext(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                s.onError(e);
             }
-            return "";
-        });
+            s.onComplete();
+        })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
-    public static Observable<Notification> save(@android.support.annotation.Nullable List<Notification> models) {
-        if (models == null) {
-            return Observable.empty();
+    public static Disposable markAsRead(long id) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataStore = App.getInstance().getDataStore().toBlocking();
+                Notification current = dataStore.select(Notification.class).where(Notification.ID.eq(id)).get().firstOrNull();
+                if (current != null) {
+                    current.setUnread(false);
+                    dataStore.update(current);
+                }
+                s.onNext(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
+    }
+
+    @android.support.annotation.Nullable public static Disposable save(@android.support.annotation.Nullable List<Notification> models) {
+        if (models == null || models.isEmpty()) {
+            return null;
         }
-        ReactiveEntityStore<Persistable> dataSource = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(dataSource.delete(Notification.class)
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models)))
-                .flatMap(notification -> notification.save(notification).toObservable());
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataStore = App.getInstance().getDataStore().toBlocking();
+                for (Notification entity : models) {
+                    dataStore.delete(Notification.class).where(Notification.ID.eq(entity.getId())).get().value();
+                    dataStore.insert(entity);
+                }
+                s.onNext(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
     public static Single<List<Notification>> getUnreadNotifications() {
@@ -82,7 +102,7 @@ import lombok.NoArgsConstructor;
                 .toList();
     }
 
-    public static Single<List<Notification>> getAlltNotifications() {
+    public static Single<List<Notification>> getAllNotifications() {
         return App.getInstance()
                 .getDataStore()
                 .select(Notification.class)
@@ -97,6 +117,7 @@ import lombok.NoArgsConstructor;
                 .getDataStore()
                 .count(Notification.class)
                 .where(Notification.UNREAD.equal(true))
+                .limit(1)
                 .get()
                 .value() > 0;
     }

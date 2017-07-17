@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.ProgressBar
 import com.evernote.android.state.State
 import com.fastaccess.R
+import com.fastaccess.data.dao.NameParser
 import com.fastaccess.data.dao.wiki.WikiContentModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
@@ -79,10 +80,12 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
         }
 
         toolbar?.subtitle = presenter.login + "/" + presenter.repoId
+        setTaskName("${presenter.login}/${presenter.repoId} - Wiki - $selectedTitle")
     }
 
     private fun onSidebarClicked(item: MenuItem) {
         this.selectedTitle = item.title.toString()
+        setTaskName("${presenter.login}/${presenter.repoId} - Wiki - $selectedTitle")
         closeDrawerLayout()
         wiki.sidebar.first { it.title?.toLowerCase() == item.title.toString().toLowerCase() }
                 .let { presenter.onSidebarClicked(it) }
@@ -106,7 +109,11 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
             }
             android.R.id.home -> {
                 if (!presenter.login.isNullOrEmpty() && !presenter.repoId.isNullOrEmpty()) {
-                    startActivity(RepoPagerActivity.createIntent(this, presenter.repoId!!, presenter.login!!))
+                    val nameParse = NameParser("")
+                    nameParse.name = presenter.repoId!!
+                    nameParse.username = presenter.login!!
+                    nameParse.isEnterprise = isEnterprise
+                    RepoPagerActivity.startRepoPager(this, nameParse)
                 }
                 finish()
                 return true
@@ -142,10 +149,15 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
 
     companion object {
         fun getWiki(context: Context, repoId: String?, username: String?): Intent {
+            return getWiki(context, repoId, username, null)
+        }
+
+        fun getWiki(context: Context, repoId: String?, username: String?, page: String?): Intent {
             val intent = Intent(context, WikiActivity::class.java)
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.EXTRA, username)
+                    .put(BundleConstant.EXTRA_TWO, page)
                     .end())
             return intent
         }

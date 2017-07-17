@@ -7,16 +7,15 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
-import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
-import com.fastaccess.ui.modules.user.UserPagerActivity;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -25,16 +24,24 @@ import static com.fastaccess.helper.AppHelper.getFragmentByTag;
  * Created by Kosh on 09 Nov 2016, 7:53 PM
  */
 
-class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
-
+public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Presenter {
 
     MainPresenter() {
-        manageDisposable(RxHelper.getObserver(RestProvider.getUserService().getUser())
-                .flatMap(login -> login.update(login))
+        setEnterprise(PrefGetter.isEnterprise());
+        manageDisposable(RxHelper.getObservable(RestProvider.getUserService(isEnterprise()).getUser())
+                .flatMap(login -> {
+                    Login current = Login.getUser();
+                    current.setLogin(login.getLogin());
+                    current.setName(login.getName());
+                    current.setAvatarUrl(login.getAvatarUrl());
+                    current.setEmail(login.getEmail());
+                    current.setBio(login.getBio());
+                    current.setBlog(login.getBlog());
+                    current.setCompany(current.getCompany());
+                    return login.update(current);
+                })
                 .subscribe(login -> {
-                    if (login != null) {
-                        sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
-                    }
+                    sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
                 }, Throwable::printStackTrace/*fail silently*/));
     }
 
@@ -43,25 +50,31 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
     }
 
     @SuppressWarnings("ConstantConditions")
-    @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType int type) {
+    @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType
+            int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
-        FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
-        MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag(fragmentManager, MyPullsPagerFragment.TAG);
-        MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag(fragmentManager, MyIssuesPagerFragment.TAG);
+        FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment
+                .TAG);
+        MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag
+                (fragmentManager, MyPullsPagerFragment.TAG);
+        MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag
+                (fragmentManager, MyIssuesPagerFragment.TAG);
         switch (type) {
             case MainMvp.PROFILE:
-                UserPagerActivity.startActivity(App.getInstance().getApplicationContext(), Login.getUser().getLogin());
+                sendToView(MainMvp.View::onOpenProfile);
                 break;
             case MainMvp.FEEDS:
                 if (homeView == null) {
-                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(null),
+                            currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, homeView, currentVisible);
                 }
                 break;
             case MainMvp.PULL_REQUESTS:
                 if (pullRequestView == null) {
-                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(), currentVisible);
+                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(
+                    ), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestView, currentVisible);
                 }
@@ -76,7 +89,8 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         }
     }
 
-    @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow, @NonNull Fragment toHide) {
+    @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow,
+                                             @NonNull Fragment toHide) {
         toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()
@@ -86,7 +100,8 @@ class MainPresenter extends BasePresenter<MainMvp.View> implements MainMvp.Prese
         toShow.onHiddenChanged(false);
     }
 
-    @Override public void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide) {
+    @Override public void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd,
+                                       @NonNull Fragment toHide) {
         toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()

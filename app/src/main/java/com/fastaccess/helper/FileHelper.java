@@ -3,17 +3,22 @@ package com.fastaccess.helper;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import java.io.File;
+
 /**
  * Created by kosh20111 on 10/7/2015. CopyRights @
  */
 public class FileHelper {
-    public static final long ONE_MB = 1048576L;
 
+    public static final String PATH = Environment.getExternalStorageDirectory() + File.separator + "FastHub";
+
+    public static final long ONE_MB = 1048576L;
 
     @Nullable public static String getPath(@NonNull Context context, @NonNull Uri uri) {
         String filePath = null;

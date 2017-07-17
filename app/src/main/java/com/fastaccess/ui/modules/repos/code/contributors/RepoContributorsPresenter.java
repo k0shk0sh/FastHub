@@ -8,7 +8,6 @@ import android.view.View;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -54,13 +53,10 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
             sendToView(RepoContributorsMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getRepoService().getContributors(login, repoId, page),
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getContributors(login, repoId, page),
                 response -> {
                     if (response != null) {
                         lastPage = response.getLast();
-                        if (getCurrentPage() == 1) {
-                            manageObservable(User.saveUserContributorList(response.getItems(), repoId));
-                        }
                     }
                     sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
                 });
@@ -80,12 +76,7 @@ class RepoContributorsPresenter extends BasePresenter<RepoContributorsMvp.View> 
     }
 
     @Override public void onWorkOffline() {
-        if (users.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(User.getUserContributorList(repoId).toObservable())
-                    .subscribe(userModels -> sendToView(view -> view.onNotifyAdapter(userModels, 1))));
-        } else {
-            sendToView(BaseMvp.FAView::hideProgress);
-        }
+        sendToView(BaseMvp.FAView::hideProgress);
     }
 
     @NonNull @Override public ArrayList<User> getUsers() {

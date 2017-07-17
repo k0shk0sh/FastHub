@@ -127,7 +127,7 @@
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/following"
-                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            style="@style/Base.TextAppearance.AppCompat.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentStart="true"
@@ -155,7 +155,7 @@
 
                         <com.fastaccess.ui.widgets.FontTextView
                             android:id="@+id/followers"
-                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            style="@style/Base.TextAppearance.AppCompat.Small"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"

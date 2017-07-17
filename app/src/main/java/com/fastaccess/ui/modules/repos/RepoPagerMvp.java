@@ -67,9 +67,13 @@ public interface RepoPagerMvp {
         boolean hasUserInteractedWithView();
 
         void disableIssueTab();
+
+        void openUserProfile();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BottomNavigation.OnMenuItemSelectionListener {
+
+        void onUpdatePinnedEntry(@NonNull String repoId, @NonNull String login);
 
         void onActivityCreate(@NonNull String repoId, @NonNull String login, @RepoPagerMvp.RepoNavigationType int navTyp);
 

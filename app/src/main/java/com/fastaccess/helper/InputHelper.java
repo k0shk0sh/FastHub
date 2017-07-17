@@ -61,13 +61,18 @@ public class InputHelper {
     }
 
     public static long toLong(@NonNull TextView textView) {
-        if (!isEmpty(textView)) {
+        return toLong(toString(textView));
+    }
+
+    public static long toLong(@NonNull String text) {
+        if (!isEmpty(text)) {
             try {
-                return Long.valueOf(toString(textView).replace(".", "").replaceAll(",", ""));
+                return Long.valueOf(text.replace(".", "").replaceAll(",", ""));
             } catch (NumberFormatException ignored) {}
         }
         return 0;
     }
+
 
     public static int getSafeIntId(long id) {
         return id > Integer.MAX_VALUE ? (int) (id - Integer.MAX_VALUE) : (int) id;

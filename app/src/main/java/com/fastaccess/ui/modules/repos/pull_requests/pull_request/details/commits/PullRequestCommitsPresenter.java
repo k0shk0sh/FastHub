@@ -61,11 +61,11 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequestCommits(login, repoId, number, page),
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestCommits(login, repoId, number, page),
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Commit.save(response.getItems(), repoId, login, number));
+                        manageDisposable(Commit.save(response.getItems(), repoId, login, number));
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });

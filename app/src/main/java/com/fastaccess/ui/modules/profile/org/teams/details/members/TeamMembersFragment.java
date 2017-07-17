@@ -64,7 +64,7 @@ public class TeamMembersFragment extends BaseFragment<TeamMembersMvp.View, TeamM
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new UsersAdapter(getPresenter().getFollowers());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

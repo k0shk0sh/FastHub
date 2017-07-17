@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,14 +8,21 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
+import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitFileModel;
+import com.fastaccess.data.dao.CommitLinesModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
+import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
@@ -23,7 +31,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -35,8 +42,10 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
-    private OnLoadMore onLoadMore;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
+
+    private PullRequestFilesMvp.PatchCallback viewCallback;
+    private OnLoadMore onLoadMore;
     private CommitFilesAdapter adapter;
 
     public static PullRequestFilesFragment newInstance(@NonNull String repoId, @NonNull String login, long number) {
@@ -49,7 +58,21 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         return view;
     }
 
-    @Override public void onNotifyAdapter(@Nullable List<CommitFileModel> items, int page) {
+    @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof PullRequestFilesMvp.PatchCallback) {
+            viewCallback = (PullRequestFilesMvp.PatchCallback) getParentFragment();
+        } else if (context instanceof PullRequestFilesMvp.PatchCallback) {
+            viewCallback = (PullRequestFilesMvp.PatchCallback) context;
+        }
+    }
+
+    @Override public void onDetach() {
+        viewCallback = null;
+        super.onDetach();
+    }
+
+    @Override public void onNotifyAdapter(@Nullable List<CommitFileChanges> items, int page) {
         hideProgress();
         if (items == null || items.isEmpty()) {
             adapter.clear();
@@ -63,7 +86,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -74,9 +97,9 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        adapter = new CommitFilesAdapter(getPresenter().getFiles(), this);
+        adapter = new CommitFilesAdapter(getPresenter().getFiles(), this, this);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
@@ -126,8 +149,8 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onToggle(long position, boolean isCollapsed) {
-        if (adapter.getItem((int) position).getPatch() == null) {
-            ActivityHelper.openChooser(getContext(), adapter.getItem((int) position).getBlobUrl());
+        if (adapter.getItem((int) position).getCommitFileModel().getPatch() == null) {
+            ActivityHelper.startCustomTab(getActivity(), adapter.getItem((int) position).getCommitFileModel().getBlobUrl());
         }
         toggleMap.put(position, isCollapsed);
     }
@@ -142,9 +165,35 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         if (recycler != null) recycler.scrollToPosition(0);
     }
 
+    @Override public void onPatchClicked(int groupPosition, int childPosition, View v, CommitFileModel commit, CommitLinesModel item) {
+        if (item.getText().startsWith("@@")) return;
+        if (PrefGetter.isProEnabled()) {
+            AddReviewDialogFragment.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getFilename()).end())
+                    .show(getChildFragmentManager(), "AddReviewDialogFragment");
+        } else {
+            PremiumActivity.Companion.startActivity(getContext());
+        }
+    }
+
+    @Override public void onCommentAdded(@NonNull String comment, @NonNull CommitLinesModel item, Bundle bundle) {
+        if (bundle != null) {
+            String path = bundle.getString(BundleConstant.ITEM);
+            if (path == null) return;
+            CommentRequestModel commentRequestModel = new CommentRequestModel();
+            commentRequestModel.setBody(comment);
+            commentRequestModel.setPath(path);
+            if (item.getRightLineNo() > 0 && item.getLeftLineNo() > 0) {
+                commentRequestModel.setPosition(item.getPosition());
+            } else {
+                commentRequestModel.setPosition(item.getPosition());
+//                commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            }
+            if (viewCallback != null) viewCallback.onAddComment(commentRequestModel);
+        }
+    }
+
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
     }
-
 }

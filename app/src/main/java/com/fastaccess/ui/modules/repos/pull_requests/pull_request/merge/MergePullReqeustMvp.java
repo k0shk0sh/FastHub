@@ -11,7 +11,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 public interface MergePullReqeustMvp {
 
     interface MergeCallback {
-        void onMerge(@NonNull String msg);
+        void onMerge(@NonNull String msg, @NonNull String mergeMethod);
     }
 
     interface View extends BaseMvp.FAView {

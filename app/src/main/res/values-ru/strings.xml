@@ -8,7 +8,7 @@
     <string name="no_data">Доступные данные отсутствуют</string>
     <string name="search">Поиск</string>
     <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
-    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получить всё самое лучшее от FastHub</string>
+    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы начать пользоваться FastHub</string>
     <string name="failed_login">Не удалось войти</string>
     <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
@@ -131,6 +131,7 @@
     <string name="notifications">Уведомления</string>
     <string name="unread_notification">У вас есть новые уведомления</string>
     <string name="open">Открыть</string>
+    <string name="open_new_window">Открыть в новом окне</string>
     <string name="notification_type">Тип уведомления</string>
     <string name="labels">Метки</string>
     <string name="no_labels">Метки отсутствуют</string>
@@ -256,7 +257,7 @@
     <string name="or_character">ИЛИ</string>
     <string name="mark_notification_title">Отключить статус о прочтении</string>
     <string name="mark_notification_summary">Отключить маркировку как прочтённое до клика на уведомление.</string>
-    <string name="theme_title">Выбрать тему</string>
+    <string name="theme_title">Выбрать тему оформления</string>
     <string name="theme_summary">Выбрать тему по умолчанию</string>
     <string name="theme_color_summary">Выберите цвет акцента темы</string>
     <string name="theme_color_title">Цвет акцента темы</string>
@@ -311,6 +312,7 @@
     <string name="no_members">Участники отсутствуют</string>
     <string name="no_teams">Команды отсутствуют</string>
     <string name="no_orgs">Организации отсутствуют</string>
+    <string name="no_orgs_dialog_title">Не видите свои организации?</string>
     <string name="mark_as_read">Прочитано</string>
     <string name="animations">Анимации</string>
     <string name="dialog_animation_summary">Включить всплывающие анимации</string>
@@ -400,5 +402,11 @@
     <string name="reviewer_added">Рецензент успешно добавлен</string>
     <string name="milestone_added">Цель успешно добавлена</string>
     <string name="feed">Обновления</string>
-    <string name="premium_theme">Премиальная тема оформления</string>
+    <string name="premium_theme">Премиальная тема</string>
+    <string name="choose_code_theme">Выбрать цвет. палитру кода</string>
+    <string name="enterprise_login_warning">Пожалуйста, выполните вход в свою учётную запись GitHub используя метод (OAuth), чтобы не возникали проблемы в работе с API GitHub.
+        В противном случае авторизация будет сбрасываться каждый раз, когда вы будете выходить за рамки GitHub Enterprise.
+        Это случается из-за того, что токен, передаваемый серверам GitHub, имеет доступ только к вашему аккаунту Enterprise.</string>
+    <string name="add_account">Добавить уч. запись</string>
+    <string name="choose_account">Выбрать уч. запись</string>
 </resources>

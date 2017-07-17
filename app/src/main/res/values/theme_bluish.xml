@@ -8,7 +8,7 @@
     <color name="bluish_accent">#448AFF</color>
 
     <color name="bluishWindowBackground">@color/bluish_background</color>
-    <color name="bluishDivider">#80949494</color>
+    <color name="bluishDivider">#802A456B</color>
 
     <style name="ThemeBluish" parent="ThemeBluish.Base"/>
 
@@ -147,6 +147,13 @@
     </style>
 
     <style name="DialogThemeBluish" parent="Theme.AppCompat.Dialog.Alert">
+        <item name="android:toolbarStyle">@style/ToolbarStyleBluish</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="card_background">#182A44</item>
+        <item name="comment_box_style">@style/CommentBoxDarkBluish</item>
+        <item name="icon_color">#eee</item>
+        <item name="timeLineBackground">@style/TimeLineBackgroundBluish</item>
         <item name="colorPrimary">@color/bluish_primary</item>
         <item name="colorPrimaryDark">@color/bluish_primary_dark</item>
         <item name="colorAccent">@color/bluish_accent</item>

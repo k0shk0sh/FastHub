@@ -1,18 +1,24 @@
 package com.fastaccess.provider.scheme;
 
 import android.app.Activity;
+import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import com.annimon.stream.Optional;
+import com.annimon.stream.Stream;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
@@ -46,6 +52,10 @@ import static com.fastaccess.provider.scheme.LinkParserHelper.returnNonNull;
 
 public class SchemeParser {
 
+    public static void launchUri(@NonNull Context context, @NonNull String url) {
+        launchUri(context, Uri.parse(url), false);
+    }
+
     public static void launchUri(@NonNull Context context, @NonNull Uri data) {
         launchUri(context, data, false);
     }
@@ -54,11 +64,16 @@ public class SchemeParser {
         launchUri(context, data, showRepoBtn, false);
     }
 
-    public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn, boolean isService) {
+    public static void launchUri(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn, boolean newDocument) {
         Logger.e(data);
         Intent intent = convert(context, data, showRepoBtn);
         if (intent != null) {
-            if (isService) intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (newDocument) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            }
+            if (context instanceof Service || context instanceof Application) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            }
             context.startActivity(intent);
         } else {
             Activity activity = ActivityHelper.getActivity(context);
@@ -97,21 +112,25 @@ public class SchemeParser {
     }
 
     @Nullable private static Intent getIntentForURI(@NonNull Context context, @NonNull Uri data, boolean showRepoBtn) {
-        if (HOST_GISTS.equals(data.getHost())) {
-            if (!InputHelper.isEmpty(MimeTypeMap.getFileExtensionFromUrl(data.toString()))) {
-                return CodeViewerActivity.createIntent(context, data.toString(), data.toString());
+        String authority = data.getAuthority();
+        boolean isEnterprise = PrefGetter.isEnterprise() && LinkParserHelper.isEnterprise(authority == null ? data.toString() : authority);
+        if (HOST_GISTS.equals(data.getHost()) || "gist".equalsIgnoreCase(data.getPathSegments().get(0))) {
+            String extension = MimeTypeMap.getFileExtensionFromUrl(data.toString());
+            if (!InputHelper.isEmpty(extension) && !MarkDownProvider.isArchive(data.getLastPathSegment())) {
+                String url = data.toString();
+                return CodeViewerActivity.createIntent(context, url, url);
             }
             String gist = getGistId(data);
             if (gist != null) {
-                return GistActivity.createIntent(context, gist);
+                return GistActivity.createIntent(context, gist, isEnterprise);
             }
         } else if (HOST_GISTS_RAW.equalsIgnoreCase(data.getHost())) {
             return getGistFile(context, data);
         } else {
             if (MarkDownProvider.isArchive(data.toString())) return null;
-            String authority = data.getAuthority();
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
-                    TextUtils.equals(authority, API_AUTHORITY)) {
+                    TextUtils.equals(authority, API_AUTHORITY) || isEnterprise) {
+                Logger.e(data);
                 Intent trending = getTrending(context, data);
                 Intent userIntent = getUser(context, data);
                 Intent repoIssues = getRepoIssueIntent(context, data);
@@ -119,7 +138,7 @@ public class SchemeParser {
                 Intent createIssueIntent = getCreateIssueIntent(context, data);
                 Intent pullRequestIntent = getPullRequestIntent(context, data, showRepoBtn);
                 Intent issueIntent = getIssueIntent(context, data, showRepoBtn);
-                Intent releasesIntent = getReleases(context, data);
+                Intent releasesIntent = getReleases(context, data, isEnterprise);
                 Intent repoIntent = getRepo(context, data);
                 Intent repoWikiIntent = getWiki(context, data);
                 Intent commit = getCommit(context, data, showRepoBtn);
@@ -129,9 +148,29 @@ public class SchemeParser {
                         createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
-                    return intentOptional.get();
+                    Intent intent = intentOptional.get();
+                    if (isEnterprise) {
+                        if (intent.getExtras() != null) {
+                            Bundle bundle = intent.getExtras();
+                            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, true);
+                            intent.putExtras(bundle);
+                        } else {
+                            intent.putExtra(BundleConstant.IS_ENTERPRISE, true);
+                        }
+                    }
+                    return intent;
                 } else {
-                    return getGeneralRepo(context, data);
+                    Intent intent = getGeneralRepo(context, data);
+                    if (isEnterprise) {
+                        if (intent != null && intent.getExtras() != null) {
+                            Bundle bundle = intent.getExtras();
+                            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, true);
+                            intent.putExtras(bundle);
+                        } else if (intent != null) {
+                            intent.putExtra(BundleConstant.IS_ENTERPRISE, true);
+                        }
+                    }
+                    return intent;
                 }
             }
         }
@@ -213,7 +252,8 @@ public class SchemeParser {
         if ("wiki".equalsIgnoreCase(segments.get(2))) {
             String owner = segments.get(0);
             String repoName = segments.get(1);
-            return WikiActivity.Companion.getWiki(context, repoName, owner);
+            return WikiActivity.Companion.getWiki(context, repoName, owner,
+                    "wiki".equalsIgnoreCase(uri.getLastPathSegment()) ? null : uri.getLastPathSegment());
         }
         return null;
     }
@@ -223,7 +263,9 @@ public class SchemeParser {
      */
     @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
         //TODO parse deeper links to their associate views. meantime fallback to repoPage
-        if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY)) {
+        boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
+                .equalsIgnoreCase(uri.getAuthority());
+        if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY) || isEnterprise) {
             List<String> segments = uri.getPathSegments();
             if (segments == null || segments.isEmpty()) return null;
             if (segments.size() == 1) {
@@ -233,6 +275,8 @@ public class SchemeParser {
                     String owner = segments.get(1);
                     String repoName = segments.get(2);
                     return RepoPagerActivity.createIntent(context, repoName, owner);
+                } else if ("orgs".equalsIgnoreCase(segments.get(0))) {
+                    return null;
                 } else {
                     String owner = segments.get(0);
                     String repoName = segments.get(1);
@@ -244,7 +288,9 @@ public class SchemeParser {
     }
 
     @Nullable private static Intent getCommits(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
-        List<String> segments = uri.getPathSegments();
+        List<String> segments = Stream.of(uri.getPathSegments())
+                .filter(value -> !value.equalsIgnoreCase("api") || !value.equalsIgnoreCase("v3"))
+                .toList();
         if (segments == null || segments.isEmpty() || segments.size() < 3) return null;
         String login = null;
         String repoId = null;
@@ -265,8 +311,10 @@ public class SchemeParser {
     }
 
     @Nullable private static Intent getCommit(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
-        List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 3 || !"commit".equals(segments.get(2))) return null;
+        List<String> segments = Stream.of(uri.getPathSegments())
+                .filter(value -> !value.equalsIgnoreCase("api") || !value.equalsIgnoreCase("v3"))
+                .toList();
+        if (segments.size() < 3 || !"commit".equals(segments.get(2))) return null;
         String login = segments.get(0);
         String repoId = segments.get(1);
         String sha = segments.get(3);
@@ -288,7 +336,11 @@ public class SchemeParser {
         if (segments != null && !segments.isEmpty() && segments.size() == 1) {
             return UserPagerActivity.createIntent(context, segments.get(0));
         } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {
-            return UserPagerActivity.createIntent(context, segments.get(1), true);
+            if ("invitation".equalsIgnoreCase(uri.getLastPathSegment())) {
+                return null;
+            } else {
+                return UserPagerActivity.createIntent(context, segments.get(1), true);
+            }
         }
         return null;
     }
@@ -333,12 +385,32 @@ public class SchemeParser {
         return null;
     }
 
-    @Nullable private static Intent getReleases(@NonNull Context context, @NonNull Uri uri) {
+    @Nullable private static Intent getReleases(@NonNull Context context, @NonNull Uri uri, boolean isEnterprise) {
         List<String> segments = uri.getPathSegments();
         if (segments != null && segments.size() > 2) {
             if (uri.getPathSegments().get(2).equals("releases")) {
                 String owner = segments.get(0);
                 String repo = segments.get(1);
+                String tag = uri.getLastPathSegment();
+                if (tag != null && !repo.equalsIgnoreCase(tag)) {
+                    if (TextUtils.isDigitsOnly(tag)) {
+                        return ReleasesListActivity.getIntent(context, owner, repo, InputHelper.toLong(tag), isEnterprise);
+                    } else {
+                        return ReleasesListActivity.getIntent(context, owner, repo, tag, isEnterprise);
+                    }
+                }
+                return ReleasesListActivity.getIntent(context, owner, repo);
+            } else if (segments.size() > 3 && segments.get(3).equalsIgnoreCase("releases")) {
+                String owner = segments.get(1);
+                String repo = segments.get(2);
+                String tag = uri.getLastPathSegment();
+                if (tag != null && !repo.equalsIgnoreCase(tag)) {
+                    if (TextUtils.isDigitsOnly(tag)) {
+                        return ReleasesListActivity.getIntent(context, owner, repo, InputHelper.toLong(tag), isEnterprise);
+                    } else {
+                        return ReleasesListActivity.getIntent(context, owner, repo, tag, isEnterprise);
+                    }
+                }
                 return ReleasesListActivity.getIntent(context, owner, repo);
             }
             return null;

@@ -42,9 +42,9 @@
                         android:background="@color/transparent"
                         android:completionThreshold="1"
                         android:dropDownAnchor="@id/tabs"
+                        android:inputType="text"
                         android:hint="@string/search"
                         android:imeOptions="actionSearch"
-                        android:inputType="text"
                         android:maxLines="1"
                         android:textColorHint="?android:textColorSecondary"/>
 
@@ -56,6 +56,7 @@
                         android:background="?selectableItemBackgroundBorderless"
                         android:contentDescription="@string/clear"
                         android:padding="@dimen/spacing_micro"
+                        android:layout_marginEnd="@dimen/spacing_xs_large"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_clear"
                         android:visibility="invisible"/>

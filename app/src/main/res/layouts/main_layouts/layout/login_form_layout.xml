@@ -63,6 +63,7 @@
                         android:id="@+id/username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
                         android:hint="@string/username">
 
                         <android.support.design.widget.TextInputEditText
@@ -73,11 +74,21 @@
                             android:maxLines="1"/>
                     </android.support.design.widget.TextInputLayout>
 
+                    <com.fastaccess.ui.widgets.FontCheckbox
+                        android:id="@+id/accessTokenCheckbox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
+                        android:text="@string/access_token"
+                        android:visibility="gone"
+                        tools:visibility="visible"/>
+
                     <android.support.design.widget.TextInputLayout
                         android:id="@+id/password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
                         android:hint="@string/password"
                         app:passwordToggleEnabled="true"
                         app:passwordToggleTint="?colorAccent">
@@ -95,7 +106,7 @@
                         android:id="@+id/twoFactor"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_xs_large"
+                        android:layout_marginBottom="@dimen/spacing_xs_large"
                         android:hint="@string/twoFactor"
                         android:visibility="gone"
                         tools:visibility="visible">
@@ -104,6 +115,23 @@
                             android:id="@+id/twoFactorEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:imeOptions="actionSend"
+                            android:inputType="number"
+                            android:maxLines="1"/>
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/endpoint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:id="@+id/endpointEditText"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/endpoint_hint"
                             android:imeOptions="actionSend"
                             android:inputType="text"
                             android:maxLines="1"/>

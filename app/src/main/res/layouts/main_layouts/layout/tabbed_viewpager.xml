@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/parentLayout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/parentLayout"
     android:orientation="vertical">
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?colorPrimary"
         android:clipToPadding="false"
         android:elevation="@dimen/spacing_micro"
         android:paddingStart="@dimen/keyline_1"
         app:tabGravity="center"
-        android:background="?colorPrimary"
         app:tabSelectedTextColor="?colorAccent"
         app:tabTextColor="?android:textColorTertiary"
         tools:ignore="RtlSymmetry"/>
