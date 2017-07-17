@@ -18,7 +18,7 @@ install:
         Write-Host "PR detected. Installing C# Script Engine and doing translations check:"
         cinst cs-script
         cscs
-        cscs -ac:2 -nl C:\F\.github\check_translations.cs
+        cscs -ac:2 -nl $env:APPVEYOR_BUILD_FOLDER\.github\check_translations.cs
       }
       Write-Host "Installing Android packages:"
       $pkgs = '"platform-tools"', '"extras;android;m2repository"', '"extras;google;m2repository"', '"build-tools;26.0.0"', '"platforms;android-25"'
@@ -31,7 +31,7 @@ build_script:
   - cmd: gradlew clean assembleDebug --stacktrace
 
 after_build:
-  - ps: Rename-Item -Path "C:\F\app\build\outputs\apk\debug\app-debug.apk" -NewName "fasthub-debug-$env:APPVEYOR_BUILD_VERSION.apk"
+  - ps: Rename-Item -Path "$env:APPVEYOR_BUILD_FOLDER\app\build\outputs\apk\debug\app-debug.apk" -NewName "fasthub-debug-$env:APPVEYOR_BUILD_VERSION.apk"
 
 test: off
 
