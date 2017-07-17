@@ -17,6 +17,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.Locale;
 
@@ -170,5 +172,9 @@ public class AppHelper {
     private static boolean isInstalledFromPlaySore(@NonNull Context context) {
         final String ipn = context.getPackageManager().getInstallerPackageName(BuildConfig.APPLICATION_ID);
         return !InputHelper.isEmpty(ipn);
+    }
+
+    public static boolean isGoogleAvailable(@NonNull Context context) {
+        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
     }
 }

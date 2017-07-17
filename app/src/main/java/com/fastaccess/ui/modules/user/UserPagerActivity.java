@@ -107,6 +107,11 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Login currentUser = Login.getUser();
+        if (currentUser == null) {
+            onRequireLogin();
+            return;
+        }
         if (savedInstanceState == null) {
             if (getIntent() != null && getIntent().getExtras() != null) {
                 login = getIntent().getExtras().getString(BundleConstant.EXTRA);
@@ -130,7 +135,7 @@ public class UserPagerActivity extends BaseActivity<UserPagerMvp.View, UserPager
         }
         setTaskName(login);
         setTitle(login);
-        if (login.equalsIgnoreCase(Login.getUser().getLogin())) {
+        if (login.equalsIgnoreCase(currentUser.getLogin())) {
             selectProfile();
         }
         if (!isOrg) {

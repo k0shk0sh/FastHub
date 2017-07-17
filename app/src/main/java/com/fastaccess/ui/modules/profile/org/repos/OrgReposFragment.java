@@ -26,14 +26,14 @@ import butterknife.BindView;
  * Created by Kosh on 03 Dec 2016, 3:56 PM
  */
 
-public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPresenter> implements OrgReposMvp.View, ProfileReposFilterBottomSheetDialog.ProfileReposFilterChangeListener {
+public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPresenter> implements OrgReposMvp.View,
+        ProfileReposFilterBottomSheetDialog.ProfileReposFilterChangeListener {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
-    private ProfileReposFilterBottomSheetDialog dialog;
 
     public static OrgReposFragment newInstance(@NonNull String username) {
         OrgReposFragment view = new OrgReposFragment();
@@ -75,7 +75,6 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
-        dialog = new ProfileReposFilterBottomSheetDialog();
     }
 
     @NonNull @Override public OrgReposPresenter providePresenter() {
@@ -84,7 +83,7 @@ public class OrgReposFragment extends BaseFragment<OrgReposMvp.View, OrgReposPre
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }
@@ -125,34 +124,29 @@ refresh.setRefreshing(true);
         if (recycler != null) recycler.scrollToPosition(0);
     }
 
-    private void showReload() {
-        hideProgress();
-        stateLayout.showReload(adapter.getItemCount());
+    @Override public void onRepoFilterClicked() {
+        ProfileReposFilterBottomSheetDialog.newInstance(getPresenter().getFilterOptions())
+                .show(getChildFragmentManager(), "ProfileReposFilterBottomSheetDialog");
     }
 
-    @Override
-    public void onRepoFilterClicked() {
-        dialog.setCurrentFilterOptions(getPresenter().getFilterOptions());
-        dialog.show(getChildFragmentManager(), "OrgReposFragment");
-    }
-
-    @Override
-    public void onFilterApply() {
+    @Override public void onFilterApply() {
         getPresenter().onFilterApply(getArguments().getString(BundleConstant.EXTRA));
     }
 
-    @Override
-    public void onTypeSelected(String selectedType) {
+    @Override public void onTypeSelected(String selectedType) {
         getPresenter().onTypeSelected(selectedType);
     }
 
-    @Override
-    public void onSortOptionSelected(String selectedSortOption) {
+    @Override public void onSortOptionSelected(String selectedSortOption) {
         //Not supported for org profile
     }
 
-    @Override
-    public void onSortDirectionSelected(String selectedSortDirection) {
+    @Override public void onSortDirectionSelected(String selectedSortDirection) {
         //Not supported for org profile
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

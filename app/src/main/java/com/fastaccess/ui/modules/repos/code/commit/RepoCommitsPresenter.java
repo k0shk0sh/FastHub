@@ -93,7 +93,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
 
     @Override public void onWorkOffline() {
         if (commits.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Commit.getCommits(repoId, login).toObservable())
+            manageDisposable(RxHelper.getObservable(Commit.getCommits(repoId, login).toObservable())
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
@@ -119,7 +119,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
     @Override public void onItemLongClick(int position, View v, Commit item) {}
 
     private void getCommitCount(@NonNull String branch) {
-        manageDisposable(RxHelper.safeObservable(RxHelper.getObserver(RestProvider.getRepoService(isEnterprise())
+        manageDisposable(RxHelper.safeObservable(RxHelper.getObservable(RestProvider.getRepoService(isEnterprise())
                 .getCommitCounts(login, repoId, branch)))
                 .subscribe(response -> {
                     if (response != null) {

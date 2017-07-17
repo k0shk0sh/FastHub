@@ -34,8 +34,8 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
     }
 
     override fun onSidebarClicked(sidebar: WikiSideBarModel) {
-        manageViewDisposable(RxHelper.getObserver(JsoupProvider.getWiki().getWiki(sidebar.link))
-                .flatMap { s -> RxHelper.getObserver(getWikiContent(s)) }
+        manageViewDisposable(RxHelper.getObservable(JsoupProvider.getWiki().getWiki(sidebar.link))
+                .flatMap { s -> RxHelper.getObservable(getWikiContent(s)) }
                 .doOnSubscribe { sendToView { it.showProgress(0) } }
                 .subscribe({ response -> sendToView { view -> view.onLoadContent(response) } },
                         { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) }))

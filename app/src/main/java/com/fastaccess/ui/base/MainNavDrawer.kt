@@ -188,7 +188,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     override fun onItemLongClick(position: Int, v: View?, item: Login) {}
 
     override fun onItemClick(position: Int, v: View, item: Login) {
-        view.getPresenter().manageViewDisposable(RxHelper.getObserver(Login.onMultipleLogin(item, item.isIsEnterprise, false))
+        view.getPresenter().manageViewDisposable(RxHelper.getObservable(Login.onMultipleLogin(item, item.isIsEnterprise, false))
                 .doOnSubscribe { view.showProgress(0) }
                 .doFinally { view.hideProgress() }
                 .subscribe({ view.onRestartApp() }, ::println))

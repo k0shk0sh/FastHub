@@ -91,7 +91,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObservable(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileReposMvp.View::hideProgress);

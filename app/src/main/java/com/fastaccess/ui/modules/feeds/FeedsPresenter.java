@@ -120,7 +120,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
 
     @Override public void onWorkOffline() {
         if (eventsModels.isEmpty() && InputHelper.isEmpty(user)) {
-            manageDisposable(RxHelper.getObserver(Event.getEvents(Login.getUser().getLogin()).toObservable())
+            manageDisposable(RxHelper.getObservable(Event.getEvents(Login.getUser().getLogin()).toObservable())
                     .subscribe(modelList -> {
                         if (modelList != null) {
                             sendToView(view -> view.onNotifyAdapter(modelList, 1));

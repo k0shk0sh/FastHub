@@ -33,9 +33,9 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
     }
 
     override fun onCallApi(lang: String, since: String) {
-        manageViewDisposable(RxHelper.getObserver(JsoupProvider.getTrendingService().getTrending(
+        manageViewDisposable(RxHelper.getObservable(JsoupProvider.getTrendingService().getTrending(
                 (if (!InputHelper.isEmpty(lang)) lang.replace(" ".toRegex(), "-") else "").toLowerCase(), since))
-                .flatMap { s -> RxHelper.getObserver(getTrendingObservable(s)) }
+                .flatMap { s -> RxHelper.getObservable(getTrendingObservable(s)) }
                 .doOnSubscribe { sendToView { it.showProgress(0) } }
                 .subscribe({ response -> sendToView { view -> view.onNotifyAdapter(response) } },
                         { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) }))

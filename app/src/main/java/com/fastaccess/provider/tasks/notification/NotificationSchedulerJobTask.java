@@ -19,9 +19,9 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.firebase.jobdispatcher.Constraint;
@@ -49,6 +49,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NotificationSchedulerJobTask extends JobService {
     private final static String JOB_ID = "fasthub_notification";
+    private final static String SINGLE_JOB_ID = "single_fasthub_notification";
 
     private final static int THIRTY_MINUTES = 30 * 60;
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
@@ -78,6 +79,7 @@ public class NotificationSchedulerJobTask extends JobService {
         } else {
             finishJob(job);
         }
+        Logger.e("Hello World");
         return true;
     }
 
@@ -110,9 +112,20 @@ public class NotificationSchedulerJobTask extends JobService {
         dispatcher.mustSchedule(builder.build());
     }
 
+    public static void scheduleOneTimeJob(@NonNull Context context) {
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+        Job.Builder builder = dispatcher
+                .newJobBuilder()
+                .setTag(SINGLE_JOB_ID)
+                .setReplaceCurrent(true)
+                .setTrigger(Trigger.executionWindow(0, 60))
+                .setService(NotificationSchedulerJobTask.class);
+        dispatcher.mustSchedule(builder.build());
+    }
+
     private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {
         if (notificationThreadModels != null) {
-            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe(notification -> {/**/}, Throwable::printStackTrace);
+            Notification.save(notificationThreadModels);
             onNotifyUser(notificationThreadModels, job);
         }
     }

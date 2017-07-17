@@ -90,7 +90,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageDisposable(RxHelper.getObserver(RestProvider.getIssueService(isEnterprise())
+        manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise())
                 .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, false), 1))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));

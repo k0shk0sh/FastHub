@@ -30,7 +30,7 @@ public class SlackInvitationService extends IntentService {
             body.setEmail(login.getEmail());
             body.setFirst_name(login.getName());
             body.setLast_name(login.getLogin());
-            RxHelper.getObserver(RestProvider.getSlackService()
+            RxHelper.getObservable(RestProvider.getSlackService()
                     .invite(body))
                     .subscribe(response -> {
                         if (response != null) {

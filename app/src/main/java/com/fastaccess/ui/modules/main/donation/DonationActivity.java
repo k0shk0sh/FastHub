@@ -9,6 +9,7 @@ import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -77,7 +78,11 @@ public class DonationActivity extends BaseActivity {
     }
 
     private void onProceed(@NonNull String productKey) {
-        DonateActivity.Companion.start(this, productKey);
+        if (AppHelper.isGoogleAvailable(this)) {
+            DonateActivity.Companion.start(this, productKey);
+        } else {
+            showErrorMessage(getString(R.string.common_google_play_services_unsupported_text));
+        }
     }
 
     protected void checkPurchase() {

@@ -13,6 +13,7 @@ import com.crashlytics.android.answers.Answers
 import com.crashlytics.android.answers.PurchaseEvent
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
+import com.fastaccess.helper.AppHelper
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.ViewHelper
@@ -40,18 +41,22 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     override fun isSecured(): Boolean = true
 
     @OnClick(R.id.buyAll) fun onBuyAll() {
+        if (!isGoogleSupported()) return
         DonateActivity.Companion.start(this, getString(R.string.fasthub_all_features_purchase))
     }
 
     @OnClick(R.id.buyPro) fun onBuyPro() {
+        if (!isGoogleSupported()) return
         DonateActivity.Companion.start(this, getString(R.string.fasthub_pro_purchase))
     }
 
     @OnClick(R.id.buyEnterprise) fun onBuyEnterprise() {
+        if (!isGoogleSupported()) return
         DonateActivity.Companion.start(this, getString(R.string.fasthub_enterprise_purchase))
     }
 
     @OnClick(R.id.unlock) fun onUnlock() {
+        if (!isGoogleSupported()) return
         if (BuildConfig.DEBUG) {
             onSuccessfullyActivated()
             return
@@ -103,6 +108,14 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     override fun hideProgress() {
         TransitionManager.beginDelayedTransition(viewGroup)
         progressLayout.visibility = View.GONE
+    }
+
+    private fun isGoogleSupported(): Boolean {
+        if (AppHelper.isGoogleAvailable(this)) {
+            return true
+        }
+        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text))
+        return false
     }
 
     companion object {

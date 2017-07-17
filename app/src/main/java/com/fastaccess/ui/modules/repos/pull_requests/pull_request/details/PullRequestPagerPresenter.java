@@ -135,8 +135,8 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
         if (currentPullRequest == null) return;
         IssueService service = RestProvider.getIssueService(isEnterprise());
         Observable<Response<Boolean>> observable = RxHelper
-                .getObserver(isLocked() ? service.unlockIssue(login, repoId, issueNumber) :
-                             service.lockIssue(login, repoId, issueNumber));
+                .getObservable(isLocked() ? service.unlockIssue(login, repoId, issueNumber) :
+                               service.lockIssue(login, repoId, issueNumber));
         makeRestCall(observable, booleanResponse -> {
             int code = booleanResponse.code();
             if (code == 204) {
@@ -149,7 +149,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onOpenCloseIssue() {
         if (getPullRequest() != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(getPullRequest(), true);
-            manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(login, repoId,
+            manageDisposable(RxHelper.getObservable(RestProvider.getPullRequestService(isEnterprise()).editPullRequest(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .subscribe(issue -> {
@@ -170,7 +170,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
 
     @Override public void onLoadLabels() {
         manageDisposable(
-                RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
+                RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .subscribe(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
@@ -238,7 +238,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
             mergeRequestModel.setSha(getPullRequest().getHead().getSha());
             mergeRequestModel.setCommitMessage(msg);
             mergeRequestModel.setMergeMethod(mergeMethod.toLowerCase());
-            manageDisposable(RxHelper.getObserver(RestProvider.getPullRequestService(isEnterprise())
+            manageDisposable(RxHelper.getObservable(RestProvider.getPullRequestService(isEnterprise())
                     .mergePullRequest(login, repoId, issueNumber, mergeRequestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .subscribe(mergeResponseModel -> {
@@ -297,7 +297,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     }
 
     private void callApi() {
-        makeRestCall(RxHelper.getObserver(Observable.zip(RestProvider.getPullRequestService(isEnterprise())
+        makeRestCall(RxHelper.getObservable(Observable.zip(RestProvider.getPullRequestService(isEnterprise())
                         .getPullRequest(login, repoId, issueNumber),
                 RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
                 RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),

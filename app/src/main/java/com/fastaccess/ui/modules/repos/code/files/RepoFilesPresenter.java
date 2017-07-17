@@ -50,7 +50,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if ((repoId == null || login == null) || !files.isEmpty()) return;
-        manageDisposable(RxHelper.getObserver(RepoFile.getFiles(login, repoId).toObservable())
+        manageDisposable(RxHelper.getObservable(RepoFile.getFiles(login, repoId).toObservable())
                 .flatMap(response -> {
                     if (response != null) {
                         return Observable.fromIterable(response)

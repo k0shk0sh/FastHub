@@ -95,7 +95,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Comment.getGistComments(gistId).toObservable())
+            manageDisposable(RxHelper.getObservable(Comment.getGistComments(gistId).toObservable())
                     .subscribe(localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

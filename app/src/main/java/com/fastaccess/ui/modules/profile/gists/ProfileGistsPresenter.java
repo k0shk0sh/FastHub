@@ -75,7 +75,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (gistsModels.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Gist.getMyGists(login).toObservable()).subscribe(gistsModels1 ->
+            manageDisposable(RxHelper.getObservable(Gist.getMyGists(login).toObservable()).subscribe(gistsModels1 ->
                     sendToView(view -> view.onNotifyAdapter(gistsModels1, 1))));
         } else {
             sendToView(ProfileGistsMvp.View::hideProgress);

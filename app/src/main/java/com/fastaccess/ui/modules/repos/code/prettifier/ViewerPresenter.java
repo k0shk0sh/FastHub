@@ -78,7 +78,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
 
     @Override public void onWorkOffline() {
         if (downloadedStream == null) {
-            manageDisposable(RxHelper.getObserver(ViewerFile.get(url))
+            manageDisposable(RxHelper.getObservable(ViewerFile.get(url))
                     .subscribe(fileModel -> {
                         if (fileModel != null) {
                             isImage = MarkDownProvider.isImage(fileModel.getFullUrl());

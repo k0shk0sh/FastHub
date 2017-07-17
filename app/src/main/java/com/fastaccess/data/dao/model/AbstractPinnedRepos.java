@@ -81,7 +81,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     }
 
     @NonNull public static Disposable updateEntry(@NonNull String repoFullName) {
-        return RxHelper.getObserver(Observable.fromPublisher(e -> {
+        return RxHelper.getObservable(Observable.fromPublisher(e -> {
             PinnedRepos pinned = get(repoFullName);
             if (pinned != null) {
                 pinned.setEntryCount(pinned.getEntryCount() + 1);
@@ -115,7 +115,7 @@ import static com.fastaccess.data.dao.model.PinnedRepos.REPO_FULL_NAME;
     }
 
     public static void migrateToVersion4() {
-        RxHelper.getObserver(Observable.fromPublisher(e -> {
+        RxHelper.getObservable(Observable.fromPublisher(e -> {
             try {
                 Login login = Login.getUser();
                 if (login == null) {

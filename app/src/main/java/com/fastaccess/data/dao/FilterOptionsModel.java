@@ -36,27 +36,6 @@ public class FilterOptionsModel implements Parcelable {
     public FilterOptionsModel() {
     }
 
-    protected FilterOptionsModel(Parcel in) {
-        type = in.readString();
-        sort = in.readString();
-        sortDirection = in.readString();
-        typesListForPersonalProfile = in.createStringArrayList();
-        sortOptionsList = in.createStringArrayList();
-        sortDirectionList = in.createStringArrayList();
-    }
-
-    public static final Creator<FilterOptionsModel> CREATOR = new Creator<FilterOptionsModel>() {
-        @Override
-        public FilterOptionsModel createFromParcel(Parcel in) {
-            return new FilterOptionsModel(in);
-        }
-
-        @Override
-        public FilterOptionsModel[] newArray(int size) {
-            return new FilterOptionsModel[size];
-        }
-    };
-
     public void setType(String type) {
         this.type = type;
     }
@@ -135,21 +114,6 @@ public class FilterOptionsModel implements Parcelable {
         return sortDirectionList;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(type);
-        dest.writeString(sort);
-        dest.writeString(sortDirection);
-        dest.writeStringList(typesListForPersonalProfile);
-        dest.writeStringList(sortOptionsList);
-        dest.writeStringList(sortDirectionList);
-    }
-
     public void setIsPersonalProfile(boolean isPersonalProfile) {
         this.isPersonalProfile = isPersonalProfile;
     }
@@ -161,4 +125,50 @@ public class FilterOptionsModel implements Parcelable {
     public boolean isOrg() {
         return isOrg;
     }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.type);
+        dest.writeString(this.sort);
+        dest.writeString(this.sortDirection);
+        dest.writeInt(this.queryMap.size());
+        for (Map.Entry<String, String> entry : this.queryMap.entrySet()) {
+            dest.writeString(entry.getKey());
+            dest.writeString(entry.getValue());
+        }
+        dest.writeByte(this.isPersonalProfile ? (byte) 1 : (byte) 0);
+        dest.writeStringList(this.typesListForPersonalProfile);
+        dest.writeStringList(this.typesListForExternalProfile);
+        dest.writeStringList(this.typesListForOrganizationProfile);
+        dest.writeStringList(this.sortOptionsList);
+        dest.writeStringList(this.sortDirectionList);
+        dest.writeByte(this.isOrg ? (byte) 1 : (byte) 0);
+    }
+
+    protected FilterOptionsModel(Parcel in) {
+        this.type = in.readString();
+        this.sort = in.readString();
+        this.sortDirection = in.readString();
+        int queryMapSize = in.readInt();
+        this.queryMap = new HashMap<String, String>(queryMapSize);
+        for (int i = 0; i < queryMapSize; i++) {
+            String key = in.readString();
+            String value = in.readString();
+            this.queryMap.put(key, value);
+        }
+        this.isPersonalProfile = in.readByte() != 0;
+        this.typesListForPersonalProfile = in.createStringArrayList();
+        this.typesListForExternalProfile = in.createStringArrayList();
+        this.typesListForOrganizationProfile = in.createStringArrayList();
+        this.sortOptionsList = in.createStringArrayList();
+        this.sortDirectionList = in.createStringArrayList();
+        this.isOrg = in.readByte() != 0;
+    }
+
+    public static final Creator<FilterOptionsModel> CREATOR = new Creator<FilterOptionsModel>() {
+        @Override public FilterOptionsModel createFromParcel(Parcel source) {return new FilterOptionsModel(source);}
+
+        @Override public FilterOptionsModel[] newArray(int size) {return new FilterOptionsModel[size];}
+    };
 }

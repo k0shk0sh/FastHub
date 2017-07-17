@@ -15,7 +15,7 @@ import io.reactivex.Observable
 class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter {
     override fun onCheckPromoCode(promo: String) {
         val ref = FirebaseDatabase.getInstance().reference
-        manageDisposable(RxHelper.getObserver(ref.child("promoCodes")
+        manageDisposable(RxHelper.getObservable(ref.child("promoCodes")
                 .data()
                 .toObservable())
                 .doOnSubscribe { sendToView { it.showProgress(0) } }

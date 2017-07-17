@@ -28,7 +28,7 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
 
     MainPresenter() {
         setEnterprise(PrefGetter.isEnterprise());
-        manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getUser())
+        manageDisposable(RxHelper.getObservable(RestProvider.getUserService(isEnterprise()).getUser())
                 .flatMap(login -> {
                     Login current = Login.getUser();
                     current.setLogin(login.getLogin());
