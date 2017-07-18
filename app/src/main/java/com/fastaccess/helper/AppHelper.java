@@ -75,11 +75,10 @@ public class AppHelper {
                 .append("**Device Information:**").append("  \n")
                 .append("- " + (!model.equalsIgnoreCase(brand) ? "MANUFACTURER" : "MANUFACTURER&BRAND") + ": ").append(Build.MANUFACTURER).append("  \n");
         if (!model.equalsIgnoreCase(brand)) {
-            builder.append("- BRAND: ").append(brand);
+            builder.append("- BRAND: ").append(brand).append("  \n");
         }
-        builder.append("  \n")
-               .append("- MODEL: ").append(model).append("  \n")
-               .append("\n").append("---").append("\n\n");
+        builder.append("- MODEL: ").append(model).append("  \n")
+               .append("---").append("\n\n");
         return builder.toString();
     }
 
