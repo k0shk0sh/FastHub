@@ -19,7 +19,7 @@ import shortbread.Shortcut;
  * Created by Kosh on 25 Mar 2017, 11:14 PM
  */
 
-@Shortcut(id = "pinned", icon = R.drawable.ic_shortcut_pinned, shortLabelRes = R.string.pinned, backStack = {MainActivity.class}, rank = 5)
+@Shortcut(id = "pinned", icon = R.drawable.ic_app_shortcut_pinned, shortLabelRes = R.string.pinned, backStack = {MainActivity.class}, rank = 5)
 public class PinnedReposActivity extends BaseActivity {
 
     public static void startActivity(@NonNull Context context) {
