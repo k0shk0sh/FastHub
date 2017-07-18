@@ -20,11 +20,7 @@
 -keep class butterknife.*
 -keepclasseswithmembernames class * { @butterknife.* <methods>; }
 -keepclasseswithmembernames class * { @butterknife.* <fields>; }
--dontwarn retrofit.**
 -keep class retrofit.** { *; }
--dontwarn sun.misc.Unsafe
--dontwarn com.octo.android.robospice.retrofit.RetrofitJackson**
--dontwarn retrofit.appengine.UrlFetchClient
 -keepattributes Signature
 -keepattributes Exceptions
 -keepclasseswithmembers class * {
@@ -37,19 +33,6 @@
 -keep class retrofit.** { *; }
 -keep class com.squareup.okhttp.** { *; }
 -keep interface com.squareup.okhttp.** { *; }
--dontwarn java.beans.**
--dontwarn javax.**
--dontwarn lombok.**
--dontwarn java.lang.invoke.*
--dontwarn rx.**
--dontwarn com.squareup.okhttp.**
--dontwarn okio.**
--dontwarn org.apache.**
--dontwarn android.net.http.AndroidHttpClient
--dontwarn retrofit.**
--dontwarn retrofit2.adapter.rxjava.CompletableHelper$**
--dontwarn retrofit2.Platform$Java8
--dontwarn sun.misc.**
 -keepclassmembers class rx.internal.util.unsafe.*ArrayQueue*Field* {
    long producerIndex;
    long consumerIndex;
@@ -66,7 +49,6 @@
  public static **[] values();
  public static ** valueOf(java.lang.String);
 }
--dontwarn icepick.**
 -keep class **$$Icepick { *; }
 -keepclasseswithmembernames class * {
     @icepick.* <fields>;
@@ -76,6 +58,22 @@
 -keepclassmembers class com.prettifier.pretty.callback.MarkDownInterceptorInterface {
    public *;
 }
+-keepclassmembers enum io.requery.** {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+-keep class .R
+-keep class **.R$* {
+    <fields>;
+}
+-keep class net.nightwhistler.** { *; }
+-keep class org.htmlcleaner.** { *; }
+-keeppackagenames org.jsoup.nodes
+-keep class com.github.b3er.** { *; }
+-keep class com.memoizrlabs.** { *; }
+
+-dontwarn com.github.b3er.**
+-dontwarn com.memoizrlabs.**
 -dontwarn java.lang.FunctionalInterface
 -dontwarn java.util.**
 -dontwarn java.time.**
@@ -93,17 +91,6 @@
 -dontwarn io.requery.query.**
 -dontwarn io.requery.android.sqlcipher.**
 -dontwarn io.requery.android.sqlitex.**
--keepclassmembers enum io.requery.** {
-    public static **[] values();
-    public static ** valueOf(java.lang.String);
-}
--keep class .R
--keep class **.R$* {
-    <fields>;
-}
-
--keep class net.nightwhistler.** { *; }
--keep class org.htmlcleaner.** { *; }
 -dontwarn org.jaxen.**
 -dontwarn org.jdom.**
 -dontwarn com.google.android.gms.**
@@ -121,8 +108,21 @@
 -dontwarn kotlin.reflect.jvm.internal.impl.types.DescriptorSubstitutor
 -dontwarn kotlin.reflect.jvm.internal.impl.types.DescriptorSubstitutor
 -dontwarn kotlin.reflect.jvm.internal.impl.types.TypeConstructor
--keeppackagenames org.jsoup.nodes
--keep class com.github.b3er.** { *; }
--keep class com.memoizrlabs.** { *; }
--dontwarn com.github.b3er.**
--dontwarn com.memoizrlabs.**
+-dontwarn java.beans.**
+-dontwarn javax.**
+-dontwarn lombok.**
+-dontwarn java.lang.invoke.*
+-dontwarn rx.**
+-dontwarn com.squareup.okhttp.**
+-dontwarn okio.**
+-dontwarn org.apache.**
+-dontwarn android.net.http.AndroidHttpClient
+-dontwarn retrofit.**
+-dontwarn retrofit2.adapter.rxjava.CompletableHelper$**
+-dontwarn retrofit2.Platform$Java8
+-dontwarn sun.misc.**
+-dontwarn sun.misc.Unsafe
+-dontwarn com.octo.android.robospice.retrofit.RetrofitJackson**
+-dontwarn retrofit.appengine.UrlFetchClient
+-dontwarn icepick.**
+-dontwarn retrofit.**

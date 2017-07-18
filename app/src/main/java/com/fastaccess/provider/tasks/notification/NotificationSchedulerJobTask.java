@@ -77,8 +77,6 @@ public class NotificationSchedulerJobTask extends JobService {
                             finishJob(job);
                         }
                     }, throwable -> jobFinished(job, true));
-        } else {
-            finishJob(job);
         }
         return true;
     }
@@ -189,7 +187,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void finishJob(JobParameters job) {
-        jobFinished(job, false);
+//        jobFinished(job, false);
     }
 
     private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, String iconUrl) {
