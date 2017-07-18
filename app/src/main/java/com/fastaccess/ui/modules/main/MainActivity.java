@@ -32,7 +32,7 @@ import butterknife.OnClick;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
 
-@Shortcut(id = "feeds", icon = R.drawable.ic_shortcut_github, shortLabelRes = R.string.feeds, rank = 1)
+@Shortcut(id = "feeds", icon = R.drawable.ic_app_shortcut_github, shortLabelRes = R.string.feeds, rank = 1)
 public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
     @State @MainMvp.NavigationType int navType = MainMvp.FEEDS;
@@ -129,10 +129,10 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
         UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise(), -1);
     }
 
-    @Shortcut(id = "myIssues", icon = R.drawable.ic_shortcut_issue, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
+    @Shortcut(id = "myIssues", icon = R.drawable.ic_app_shortcut_issues, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
     public void myIssues() {}//do nothing
 
-    @Shortcut(id = "myPulls", icon = R.drawable.ic_shortcut_pull_request, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
+    @Shortcut(id = "myPulls", icon = R.drawable.ic_app_shortcut_pull_requests, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
     public void myPulls() {}//do nothing
 
     private void onInit(@Nullable Bundle savedInstanceState) {
