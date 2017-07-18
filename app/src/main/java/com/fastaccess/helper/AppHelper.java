@@ -69,7 +69,7 @@ public class AppHelper {
         String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
         StringBuilder builder = new StringBuilder()
                 .append("**FastHub Version: ").append(BuildConfig.VERSION_NAME).append(enterprise ? " Enterprise**" : "**").append("  \n")
-                .append("**APK Source: " + (!isInstalledFromPlaySore(App.getInstance()) ? "Unknown" : "Google Play") + "**").append("  \n")
+                .append(!isInstalledFromPlaySore(App.getInstance()) ? "**APK Source: Unknown**  \n" : "")
                 .append("**Android Version: ").append(String.valueOf(Build.VERSION.RELEASE)).append(" (SDK: ")
                     .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
                 .append("**Device Information:**").append("  \n")
