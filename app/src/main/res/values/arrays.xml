@@ -117,7 +117,7 @@
     <string-array name="languages_array" translatable="false">
         <item>English</item>
         <item>Deutsch</item>
-        <item>Türk dili</item>
+        <item>Türk</item>
         <item>简体中文</item>
         <item>正體中文</item>
         <item>Bahasa Indonesia</item>
@@ -125,9 +125,9 @@
         <item>Italiano</item>
         <item>日本語</item>
         <item>Lietuvos</item>
-        <item>Brasil (Português)</item>
-        <item>český</item>
-        <item>Idioma español</item>
+        <item>Português (Brasil)</item>
+        <item>Český</item>
+        <item>Español</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
