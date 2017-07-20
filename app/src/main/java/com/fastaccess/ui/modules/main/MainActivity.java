@@ -87,9 +87,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        if (isLoggedIn() && Notification.hasUnreadNotifications()) {
-            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -106,6 +103,13 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        if (isLoggedIn() && Notification.hasUnreadNotifications()) {
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
@@ -127,6 +131,10 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public void onOpenProfile() {
         UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise(), -1);
+    }
+
+    @Override public void onInvalidateNotification() {
+        invalidateOptionsMenu();
     }
 
     @Shortcut(id = "myIssues", icon = R.drawable.ic_app_shortcut_issues, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")

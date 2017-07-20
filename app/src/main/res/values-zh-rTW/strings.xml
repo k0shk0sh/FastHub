@@ -35,7 +35,6 @@ APP
     <string name="sign_in">登入</string>
     <string name="share">分享</string>
     <string name="reload">重新整理</string>
-    <string name="feeds">動態</string>
     <string name="profile">個人檔案</string>
     <string name="error">錯誤</string>
     <string name="press_again_to_exit">再點一次以離開</string>

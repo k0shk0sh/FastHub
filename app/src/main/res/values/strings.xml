@@ -120,6 +120,8 @@
     <string name="purchase_all" translatable="false">Purchase All for ($ 7.99)</string>
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
+    <string name="feeds" translatable="false">Feeds</string>
+
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
@@ -136,7 +138,6 @@
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
     <string name="reload">Reload</string>
-    <string name="feeds">Feeds</string>
     <string name="profile">Profile</string>
     <string name="error">Error</string>
     <string name="press_again_to_exit">Press once again to exit</string>

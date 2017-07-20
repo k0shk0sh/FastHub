@@ -70,15 +70,17 @@ public class AppHelper {
         StringBuilder builder = new StringBuilder()
                 .append("**FastHub Version: ").append(BuildConfig.VERSION_NAME).append(enterprise ? " Enterprise**" : "**").append("  \n")
                 .append(!isInstalledFromPlaySore(App.getInstance()) ? "**APK Source: Unknown**  \n" : "")
-                .append("**Android Version: ").append(String.valueOf(Build.VERSION.RELEASE)).append(" (SDK: ")
-                    .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
+                .append("**Android Version: ").append(String.valueOf(Build.VERSION.RELEASE))
+                .append(" (SDK: ")
+                .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
                 .append("**Device Information:**").append("  \n")
-                .append("- " + (!model.equalsIgnoreCase(brand) ? "MANUFACTURER" : "MANUFACTURER&BRAND") + ": ").append(Build.MANUFACTURER).append("  \n");
+                .append("- " + (!model.equalsIgnoreCase(brand) ? "MANUFACTURER" : "MANUFACTURER&BRAND") + ": ")
+                .append(Build.MANUFACTURER).append("\n");
         if (!model.equalsIgnoreCase(brand)) {
             builder.append("- BRAND: ").append(brand).append("  \n");
         }
         builder.append("- MODEL: ").append(model).append("  \n")
-               .append("---").append("\n\n");
+                .append("---").append("\n\n");
         return builder.toString();
     }
 
@@ -136,7 +138,7 @@ public class AppHelper {
         return brand.equalsIgnoreCase(model) ? InputHelper.capitalizeFirstLetter(model) : InputHelper.capitalizeFirstLetter(brand) + " " + model;
     }
 
-    private static boolean isEmulator() {
+    public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
