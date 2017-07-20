@@ -56,7 +56,24 @@ public class TimelineProvider {
                 if (user != null) {
                     spannableBuilder.bold(user.getLogin());
                 }
-                if (event == IssueEventType.closed || event == IssueEventType.reopened) {
+                if (event == IssueEventType.review_requested || event == IssueEventType.review_dismissed) {
+                    spannableBuilder
+                            .append(" ")
+                            .append(event == IssueEventType.review_requested ? "Requested a review" : "dismissed the review")
+                            .append(" ")
+                            .append(from)
+                            .append(" ");
+                    if (issueEventModel.getRequestedTeam() != null) {
+                        String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
+                                      ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
+                        spannableBuilder
+                                .bold(name)
+                                .append(" ")
+                                .append("team");
+                    } else if (issueEventModel.getRequestedReviewer() != null) {
+                        spannableBuilder.bold(issueEventModel.getRequestedReviewer().getLogin());
+                    }
+                } else if (event == IssueEventType.closed || event == IssueEventType.reopened) {
                     if (isMerged) {
                         spannableBuilder.append(" ").append(IssueEventType.merged.name());
                     } else {
@@ -114,18 +131,6 @@ public class TimelineProvider {
                             .append("commit")
                             .append(" ")
                             .url(substring(issueEventModel.getCommitId()));
-                } else if (event == IssueEventType.review_requested) {
-                    spannableBuilder
-                            .append(" ")
-                            .append(from)
-                            .append(" ");
-                    if (issueEventModel.getRequestedTeam() != null) {
-                        String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
-                                      ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
-                        spannableBuilder.bold(name).append(" ").append("team");
-                    } else if (issueEventModel.getRequestedReviewer() != null) {
-                        spannableBuilder.append(issueEventModel.getRequestedReviewer().getLogin());
-                    }
                 }
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
             }

@@ -97,6 +97,8 @@ public class MyPullRequestsPresenter extends BasePresenter<MyPullRequestsMvp.Vie
                 return RepoQueryProvider.getMentioned(login, parameter, true);
             case REVIEW:
                 return RepoQueryProvider.getReviewRequests(login, parameter);
+            case DISMISSED:
+                return RepoQueryProvider.getReviewDismissed(login, parameter);
         }
         return RepoQueryProvider.getMyIssuesPullRequestQuery(login, parameter, false);
     }

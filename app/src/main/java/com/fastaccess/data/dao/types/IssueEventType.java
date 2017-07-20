@@ -25,6 +25,7 @@ public enum IssueEventType {
     unlocked(R.drawable.ic_unsubscribe),
     unsubscribed(R.drawable.ic_eye_off),
     review_requested(R.drawable.ic_eye),
+    review_dismissed(R.drawable.ic_eye_off),
     review_request_removed(R.drawable.ic_eye_off),
     @SerializedName("cross-referenced")crossReferenced(R.drawable.ic_format_quote);
 
