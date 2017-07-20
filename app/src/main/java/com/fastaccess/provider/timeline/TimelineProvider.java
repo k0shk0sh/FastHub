@@ -104,6 +104,11 @@ public class TimelineProvider {
                                 .append(" ")
                                 .bold(issueEventModel.getAssignee().getLogin());
                     }
+                }  else if (event == IssueEventType.locked || event == IssueEventType.unlocked) {
+                        spannableBuilder
+                                .append(" ")
+                                .append(event == IssueEventType.locked ? "locked and limited conversation to collaborators" : "unlocked this " +
+                                        "conversation");
                 } else if (event == IssueEventType.head_ref_deleted || event == IssueEventType.head_ref_restored) {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "),
                             new BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())));
