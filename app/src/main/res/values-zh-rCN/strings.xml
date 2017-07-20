@@ -29,7 +29,7 @@
     <string name="archive_file_detected_error">检测到存档文件，请下载文件查看其内容。</string>
     <string name="minimum_three_chars">最少字数（3）</string>
     <string name="no_file_found">未找到文件</string>
-    <string name="no_readme_found">没有Readme</string>
+    <string name="no_readme_found">没有简介</string>
     <string name="downloading">下载中…</string>
     <string name="downloading_file">下载文件中…</string>
     <string name="released">发布于</string>
@@ -37,18 +37,18 @@
     <string name="no_body">没有内容</string>
     <string name="contributors">贡献者</string>
     <string name="by">由</string>
-    <string name="close_issue">关闭 Issue</string>
-    <string name="re_open_issue">重新打开 Issue</string>
+    <string name="close_issue">关闭缺陷跟踪</string>
+    <string name="re_open_issue">重新打开缺陷跟踪</string>
     <string name="re_open">重新打开</string>
     <string name="close">关闭</string>
     <string name="success_re_opened">已重新打开</string>
-    <string name="lock_issue_details">锁定意味着：\n&#183;其他用户无法为此 Issue 添加新评论。\n&#183;您和其他有权访问此仓库的协作者仍然可以留下所有人能看到的评论。\n&#183;您可以随时解锁此Issue 。</string>
-    <string name="unlock_issue_details">解锁意味着：\n&#183;每个人都可以再次对这个 Issue 发表评论。\n&#183;您可以随时再次锁定此 Issue 。\n</string>
+    <string name="lock_issue_details">锁定意味着：\n&#183;其他用户无法为此缺陷跟踪添加新评论。\n&#183;您和其他有权访问此仓库的协作者仍然可以留下所有人能看到的评论。\n&#183;您可以随时解锁此缺陷跟踪 。</string>
+    <string name="unlock_issue_details">解锁意味着：\n&#183;每个人都可以再次对这个缺陷跟踪发表评论。\n&#183;您可以随时再次锁定此缺陷跟踪。\n</string>
     <string name="lock_issue">锁定</string>
     <string name="unlock_issue">解锁</string>
-    <string name="error_closing_issue">关闭 Issue 出错，请稍后再试。</string>
-    <string name="error_re_opening_issue">重新打开 Issue 出错, 请稍后再试。</string>
-    <string name="success_closed">已关闭 Issues </string>
+    <string name="error_closing_issue">关闭缺陷跟踪出错，请稍后再试。</string>
+    <string name="error_re_opening_issue">重新打开缺陷跟踪出错, 请稍后再试。</string>
+    <string name="success_closed">已关闭缺陷跟踪 </string>
     <string name="no_description_provided"><p>没有提供描述</p></string>
     <string name="header_one">一级标题</string>
     <string name="header_two">二级标题</string>
@@ -104,9 +104,9 @@
     <string name="title">标题</string>
     <string name="milestone">里程碑</string>
     <string name="assign_myself">分配给自己</string>
-    <string name="submit_issue">提交 Issue</string>
-    <string name="error_creating_issue">创建 Issue 出错</string>
-    <string name="create_issue">创建 Issue</string>
+    <string name="submit_issue">提交缺陷跟踪</string>
+    <string name="error_creating_issue">创建缺陷跟踪出错</string>
+    <string name="create_issue">创建缺陷跟踪</string>
     <string name="error_highlighting_editor">请取消选择以继续编辑。</string>
     <string name="notifications">通知</string>
     <string name="unread_notification">你有未读的通知</string>
@@ -138,7 +138,7 @@
     <string name="no_url">找不到URL</string>
     <string name="last_updated">最后更新</string>
     <string name="preview">预览</string>
-    <string name="view_code">预览</string><!-- The default value right ? -->
+    <string name="view_code">预览</string>
     <string name="click_to_toggle_highlighting">预览Markdown文本显示效果\n\n左右滑动Markdown编辑器图标以获取更多选项。</string>
     <string name="creation_date">创建日期</string>
     <string name="creation_date_hint">文件创建时间</string><!-- The default value right ? -->
@@ -158,7 +158,7 @@
     <string name="committed">已提交</string>
     <string name="downloaded">已下载</string>
     <string name="followed">已关注</string>
-    <string name="commented_on_issue">Issue 的评论</string>
+    <string name="commented_on_issue">缺陷跟踪 的评论</string>
     <string name="member">成员</string>
     <string name="pr_comment_review">拉取请求 的评论</string>
     <string name="pushed">推送给</string>
@@ -169,7 +169,7 @@
     <string name="switch_branch">切换分支</string>
     <string name="assignees">受理人</string>
     <string name="edit">修改</string>
-    <string name="update_issue">更新 Issue</string>
+    <string name="update_issue">更新缺陷跟踪</string>
     <string name="update_pull_request">更新拉取请求</string>
     <string name="no_milestones">没有里程碑</string>
     <string name="add">添加</string>
@@ -179,7 +179,7 @@
     <string name="error_creating_milestone">创建里程碑出错</string>
     <string name="due_on">截止于</string>
     <string name="no_assignees">没有受理人</string>
-    <string name="this_value">这个</string>
+    <string name="this_value">此</string>
     <string name="commits_reflected">提交记录已切换到所选分支</string>
     <string name="general_settings">一般</string>
     <string name="background_job_summary">更改FastHub检查通知的频率</string>
@@ -207,7 +207,7 @@
     <string name="turn_off">关掉</string>
     <string name="unauthorized_user">未登录</string>
     <string name="two_factors_otp_error">需要两个认证因素</string>
-    <string name="no_issue">没有 Issues</string>
+    <string name="no_issue">没有缺陷跟踪</string>
     <string name="copy">复制</string>
     <string name="success_copied">已复制</string>
     <string name="commit_message">提交说明</string>
@@ -243,8 +243,8 @@
     <string name="no_commits">没有提交记录</string>
     <string name="no_contributors">没有贡献者</string>
     <string name="no_releases">没有发布版本</string>
-    <string name="no_closed_issues">没有关闭的 Issues</string>
-    <string name="no_opened_issues">没有打开的 Issues</string>
+    <string name="no_closed_issues">没有关闭的缺陷跟踪</string>
+    <string name="no_opened_issues">没有打开的缺陷跟踪</string>
     <string name="no_events">没有事件</string>
     <string name="no_open_pull_requests">没有打开的拉取请求</string>
     <string name="no_closed_pull_request">没有关闭的拉取请求</string>
@@ -252,7 +252,7 @@
     <string name="read_write_permission_explanation">请接受权限请求，以便 FastHub 将文件存储在设备上</string>
     <string name="public_gists">公共代码片段</string>
     <string name="enable_ads">开启广告</string>
-    <string name="no_issues">没有 Issues</string>
+    <string name="no_issues">没有缺陷跟踪</string>
     <string name="no_unread_notifications">没有未读的通知。</string>
     <string name="my_gists">我的代码片段</string>
     <string name="changelog">更新日志</string>
@@ -289,7 +289,7 @@
     <string name="recently_updated">最近更新</string>
     <string name="least_recent_updated">最早更新</string>
     <string name="empty_search_error">搜索内容不能为空</string>
-    <string name="long_press_repo_fab_hint">长按创建 Issue</string>
+    <string name="long_press_repo_fab_hint">长按创建缺陷跟踪</string>
     <string name="commit_can_be_merged">该拉取请求可以合并</string>
     <string name="reviewed">审核</string>
     <string name="dismissed_review">驳回</string>
@@ -340,11 +340,11 @@
     <string name="enable_signature_summary">始终签名后发送</string>
     <string name="failed_selecting_image">无法加载图像。</string>
     <string name="feed">动态</string>
-    <string name="files_only">在文件中</string>
+    <string name="files_only">文件</string>
     <string name="filter">过滤器</string>
-    <string name="from">来自</string>
+    <string name="from">从</string>
     <string name="image_error">加载图片时出错，请重试。</string>
-    <string name="in_value">在</string>
+    <string name="in_value">于</string>
     <string name="join_slack">加入 Slack</string>
     <string name="join_slack_message">你想加入 FastHub Slack 群组吗？</string>
     <string name="language">语言</string>
@@ -357,11 +357,11 @@
     <string name="now">现在</string>
     <string name="one_hour">1 小时</string>
     <string name="participated">已加入</string>
-    <string name="paths_only">在路径中</string>
+    <string name="paths_only">路径</string>
     <string name="permission_failed">未授予许可。</string>
     <string name="premium_theme">付费主题</string>
     <string name="reply">回复</string>
-    <string name="repo_issues_is_disabled">这个仓库没有 Issues 标签</string>
+    <string name="repo_issues_is_disabled">这个仓库关闭了缺陷跟踪</string>
     <string name="reset">重置</string>
     <string name="restore">恢复</string>
     <string name="review_requests">审核请求</string>
@@ -393,36 +393,21 @@
     <string name="choose_code_theme">选择代码主题</string>
     <string name="gist" translatable="false">代码片段</string>
     <string name="gists" translatable="false">代码片段</string>
-    <string name="green_theme_mode" translatable="false">绿</string>
-    <string name="amber_theme_mode" translatable="false">琥珀色</string>
-    <string name="blue_theme_mode" translatable="false">蓝色</string>
     <string name="bluish_theme" translatable="false">蓝色主题</string>
-    <string name="deep_orange_theme_mode" translatable="false">深橙色</string>
-    <string name="deep_purple_theme_mode" translatable="false">深紫色</string>
-    <string name="dark_theme_mode" translatable="false">暗色主题</string>
     <string name="daily" translatable="false">每天</string>
-    <string name="cyan_theme_mode" translatable="false">青色</string>
     <string name="download_as_tar" translatable="false">源代码 (tar.gz)</string>
     <string name="download_as_zip" translatable="false">源代码 (zip)</string>
     <string name="feeds">动态</string>
     <string name="fork_repo_hint" translatable="false">派生此仓库</string>
-    <string name="amlod_theme_mode" translatable="false">琥珀色主题</string>
     <string name="fork" translatable="false">派生</string>
     <string name="forked" translatable="false">派生</string>
     <string name="forking" translatable="false">派生中 %s</string>
     <string name="forks" translatable="false">派生</string>
-    <string name="indigo_theme_mode" translatable="false">靛青色</string>
-    <string name="light_blue_theme_mode" translatable="false">浅蓝色</string>
-    <string name="light_green_theme_mode" translatable="false">浅绿色</string>
     <string name="light_theme_mode" translatable="false">亮色主题</string>
-    <string name="lime_theme_mode" translatable="false">青柠色</string>
     <string name="merge" translatable="false">合并</string>
     <string name="merged" translatable="false">已合并</string>
-    <string name="mid_night_blue_theme_mode" translatable="false">午夜蓝</string>
     <string name="monthly" translatable="false">每月</string>
-    <string name="orange_theme_mode" translatable="false">橘色</string>
     <string name="organization_event" translatable="false">组织</string>
-    <string name="pink_theme_mode" translatable="false">粉红色</string>
     <string name="posting_reaction" translatable="false">提交反映 %s</string>
     <string name="pr_review_event" translatable="false">拉取请求</string>
     <string name="project_event" translatable="false">项目</string>
@@ -430,9 +415,7 @@
     <string name="pull_request" translatable="false">拉取请求</string>
     <string name="pull_request_reviews" translatable="false">拉取请求审核</string>
     <string name="pull_requests" translatable="false">拉取请求</string>
-    <string name="purple_theme_mode" translatable="false">紫色</string>
     <string name="rebase" translatable="false">变基</string>
-    <string name="red_theme_mode" translatable="false">红色</string>
     <string name="repo" translatable="false">仓库</string>
     <string name="repo_event" translatable="false">仓库</string>
     <string name="repos" translatable="false">仓库</string>
@@ -442,11 +425,40 @@
     <string name="starred" translatable="false">收藏</string>
     <string name="starring" translatable="false">收藏中 %s</string>
     <string name="stars" translatable="false">收藏</string>
-    <string name="teal_theme_mode" translatable="false">水鸭青</string>
     <string name="un_starring" translatable="false">取消收藏中 %a</string>
     <string name="un_watching" translatable="false">取消关注中 %s</string>
     <string name="watching" translatable="false">关注中 %s</string>
     <string name="weekly" translatable="false">每周</string>
-    <string name="yellow_theme_mode" translatable="false">黄色</string>
     <string name="logo_designer" translatable="false">Logo 设计师 (%s)</string>
+    <string name="code" translatable="false">代码</string>
+    <string name="issues" translatable="false">缺陷跟踪</string>
+    <string name="add_account">添加账户</string>
+    <string name="choose_account">选择账户</string>
+    <string name="colored_navbar_summary">禁止主题着色导航栏</string>
+    <string name="colored_navbar_title">导航栏不跟随主题颜色</string>
+    <string name="no_orgs_dialog_title">找不到您的组织？</string>
+    <string name="not_match">不匹配</string>
+    <string name="open_new_window">在新窗口中打开</string>
+    <string name="original_poster">作者</string>
+    <string name="owner">所有者</string>
+    <string name="warning">警告</string>
+    <string name="readme" translatable="false">简介</string>
+    <string name="commits" translatable="false">提交历史</string>
+    <string name="unlock" translatable="false">解锁</string>
+    <string name="unlock_everything" translatable="false">解锁全部</string>
+    <string name="secret_code" translatable="false">激活码</string>
+    <string name="purchase_all" translatable="false">全部购买（$ 7.99）</string>
+    <string name="purchase" translatable="false">购买</string>
+    <string name="pro_features" translatable="false">高级功能</string>
+    <string name="no_branches" translatable="false">没有分支或标签</string>
+    <string name="issue" translatable="false">缺陷跟踪</string>
+    <string name="get_all" translatable="false">全部购买（7.00USD）</string>
+    <string name="fasthub_premium_features" translatable="false">FastHub付费功能</string>
+    <string name="enterprise" translatable="false">企业</string>
+    <string name="commit" translatable="false">提交</string>
+    <string name="cancel_reviews">取消审核</string>
+    <string name="pro_features_list" translatable="false"><![CDATA[获取FastHub的高级功能，其中包括：\n•所有高级主题\n•评论合并请求和提交记录\n•支持其他合并方法（变基＆压缩）\n•登录无限帐户\n•即将推出的高级功能]]></string>
+    <string name="enterprise_pro_description" translatable="false"><![CDATA[•登录无限数量的企业或普通GitHub帐户\n•使用企业帐户访问GitHub内容]]></string>
+    <string name="endpoint_hint" translatable="false">网域</string>
+    <string name="branches" translatable="false">分支</string>
 </resources>
