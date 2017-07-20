@@ -17,7 +17,7 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
  * Created by Kosh on 09 Nov 2016, 7:51 PM
  */
 
-interface MainMvp {
+public interface MainMvp {
 
     int FEEDS = 0;
     int ISSUES = 1;
@@ -37,6 +37,10 @@ interface MainMvp {
         void onNavigationChanged(@NavigationType int navType);
 
         void onUpdateDrawerMenuHeader();
+
+        void onOpenProfile();
+
+        void onInvalidateNotification();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

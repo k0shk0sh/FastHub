@@ -24,12 +24,13 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.Issue.ID;
@@ -70,23 +71,36 @@ import static com.fastaccess.data.dao.model.Issue.UPDATED_AT;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single<Issue> save(Issue entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
+        return RxHelper.getSingle(App.getInstance().getDataStore()
+                .delete(Issue.class)
+                .where(Issue.ID.eq(entity.getId()))
+                .get()
+                .single()
+                .flatMap(observer -> App.getInstance().getDataStore().insert(entity)));
     }
 
-    public static Observable<Issue> save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(
-                singleEntityStore.delete(Issue.class)
+    public static Disposable save(@NonNull List<Issue> models, @NonNull String repoId, @NonNull String login) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(Issue.class)
                         .where(REPO_ID.equal(repoId).and(LOGIN.equal(login)))
                         .get()
-                        .single()
-                        .toObservable()
-                        .flatMap(integer -> Observable.fromIterable(models))
-                        .flatMap(issueModel -> {
-                            issueModel.setRepoId(repoId);
-                            issueModel.setLogin(login);
-                            return issueModel.save(issueModel).toObservable();
-                        }));
+                        .value();
+                if (!models.isEmpty()) {
+                    for (Issue issueModel : models) {
+                        dataSource.delete(Issue.class).where(Issue.ID.eq(issueModel.getId())).get().value();
+                        issueModel.setRepoId(repoId);
+                        issueModel.setLogin(login);
+                        dataSource.insert(issueModel);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     public static Single<List<Issue>> getIssues(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {

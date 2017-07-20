@@ -28,7 +28,8 @@ public class ReactionService extends IntentService {
     private NotificationManager notificationManager;
 
     public static void start(@NonNull Context context, @NonNull String login, @NonNull String repo,
-                             long commentId, ReactionTypes reactionType, boolean isCommit, boolean isDelete) {
+                             long commentId, ReactionTypes reactionType, boolean isCommit, boolean isDelete,
+                             boolean isEnterprise) {
         Intent intent = new Intent(context, ReactionService.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, isCommit)
@@ -37,6 +38,7 @@ public class ReactionService extends IntentService {
                 .put(BundleConstant.EXTRA_FOUR, isDelete)
                 .put(BundleConstant.ID, commentId)
                 .put(BundleConstant.EXTRA_TYPE, reactionType)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         context.startService(intent);
     }
@@ -53,35 +55,36 @@ public class ReactionService extends IntentService {
             String login = bundle.getString(BundleConstant.EXTRA_TWO);
             String repo = bundle.getString(BundleConstant.EXTRA_THREE);
             long commentId = bundle.getLong(BundleConstant.ID);
+            boolean isEnterprise = bundle.getBoolean(BundleConstant.IS_ENTERPRISE);
             if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repo) || reactionType == null) {
                 stopSelf();
                 return;
             }
             if (isCommit) {
-                postCommit(reactionType, login, repo, commentId);
+                postCommit(reactionType, login, repo, commentId, isEnterprise);
             } else {
-                post(reactionType, login, repo, commentId);
+                post(reactionType, login, repo, commentId, isEnterprise);
             }
         }
     }
 
-    private void post(@NonNull ReactionTypes reactionType, @NonNull String login, @NonNull String repo, long commentId) {
-        RxHelper.safeObservable(RestProvider.getReactionsService()
+    private void post(@NonNull ReactionTypes reactionType, @NonNull String login, @NonNull String repo, long commentId, boolean isEnterprise) {
+        RxHelper.safeObservable(RestProvider.getReactionsService(isEnterprise)
                 .postIssueCommentReaction(new PostReactionModel(reactionType.getContent()), login, repo, commentId))
-                .doOnSubscribe(disposable -> showNotificatin(getNotification(reactionType), (int) commentId))
-                .subscribe(response -> hideNotificat((int) commentId), throwable -> hideNotificat((int) commentId));
+                .doOnSubscribe(disposable -> showNotification(getNotification(reactionType), (int) commentId))
+                .subscribe(response -> hideNotification((int) commentId), throwable -> hideNotification((int) commentId));
     }
 
-    private void postCommit(@NonNull ReactionTypes reactionType, @NonNull String login, @NonNull String repo, long commentId) {
-        RxHelper.safeObservable(RestProvider.getReactionsService()
+    private void postCommit(@NonNull ReactionTypes reactionType, @NonNull String login, @NonNull String repo, long commentId, boolean isEnterprise) {
+        RxHelper.safeObservable(RestProvider.getReactionsService(isEnterprise)
                 .postCommitReaction(new PostReactionModel(reactionType.getContent()), login, repo, commentId))
-                .doOnSubscribe(disposable -> showNotificatin(getNotification(reactionType), (int) commentId))
-                .subscribe(response -> hideNotificat((int) commentId), throwable -> hideNotificat((int) commentId));
+                .doOnSubscribe(disposable -> showNotification(getNotification(reactionType), (int) commentId))
+                .subscribe(response -> hideNotification((int) commentId), throwable -> hideNotification((int) commentId));
     }
 
     public NotificationCompat.Builder getNotification(@NonNull ReactionTypes reactionTypes) {
         if (notification == null) {
-            notification = new NotificationCompat.Builder(this)
+            notification = new NotificationCompat.Builder(this, "reaction")
                     .setSmallIcon(R.drawable.ic_sync)
                     .setProgress(0, 100, true);
         }
@@ -96,11 +99,11 @@ public class ReactionService extends IntentService {
         return notificationManager;
     }
 
-    private void showNotificatin(@NonNull NotificationCompat.Builder builder, int id) {
+    private void showNotification(@NonNull NotificationCompat.Builder builder, int id) {
         getNotificationManager().notify(id, builder.build());
     }
 
-    private void hideNotificat(int id) {
+    private void hideNotification(int id) {
         getNotificationManager().cancel(id);
     }
 }

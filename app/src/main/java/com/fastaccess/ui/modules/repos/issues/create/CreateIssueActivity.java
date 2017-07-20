@@ -8,10 +8,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.evernote.android.state.State;
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
@@ -20,10 +22,12 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.modules.editor.EditorActivity;
 import com.fastaccess.ui.widgets.FontTextView;
+import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,7 +42,6 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     @BindView(R.id.title) TextInputLayout title;
     @BindView(R.id.description) FontTextView description;
     @BindView(R.id.submit) View submit;
-
     @State String repoId;
     @State String login;
     @State Issue issue;
@@ -47,12 +50,13 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
 
     private CharSequence savedText;
 
-    public static void startForResult(@NonNull Fragment fragment, @NonNull String login, @NonNull String repoId) {
+    public static void startForResult(@NonNull Fragment fragment, @NonNull String login, @NonNull String repoId, boolean isEnterprise) {
         Intent intent = new Intent(fragment.getContext(), CreateIssueActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, login.equalsIgnoreCase("k0shk0sh") && repoId.equalsIgnoreCase("FastHub"))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         View view = fragment.getActivity() != null ? fragment.getActivity().findViewById(R.id.fab) : null;
         if (view != null) {
@@ -64,13 +68,14 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
 
 
     public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
-                                      @Nullable Issue issueModel) {
+                                      @Nullable Issue issueModel, boolean isEnterprise) {
         if (issueModel != null) {
             Intent intent = new Intent(activity, CreateIssueActivity.class);
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.ITEM, issueModel)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                     .end());
             View view = activity.findViewById(R.id.fab);
             if (view != null) {
@@ -82,13 +87,14 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     }
 
     public static void startForResult(@NonNull Activity activity, @NonNull String login, @NonNull String repoId,
-                                      @Nullable PullRequest pullRequestModel) {
+                                      @Nullable PullRequest pullRequestModel, boolean isEnterprise) {
         if (pullRequestModel != null) {
             Intent intent = new Intent(activity, CreateIssueActivity.class);
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, login)
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.ITEM, pullRequestModel)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                     .end());
             View view = activity.findViewById(R.id.fab);
             if (view != null) {
@@ -214,7 +220,16 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
             }
         }
         if (isFeedback) setTitle(R.string.submit_feedback);
+        if (BuildConfig.DEBUG && isFeedback) {
+            new AlertDialog.Builder(this)
+                    .setTitle("You are currently using a debug build")
+                    .setMessage("If you have found a bug, please report it on slack." + "\n" +
+                            "Feature requests can be submitted here." + "\n" + "Happy Testing")
+                    .setPositiveButton(android.R.string.ok, null)
+                    .show();
+        }
         if (toolbar != null) toolbar.setSubtitle(login + "/" + repoId);
+        setTaskName(login + "/" + repoId + " - " + (isFeedback ? getString(R.string.submit_feedback) : getString(R.string.create_issue)));
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -223,15 +238,34 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
         getPresenter().onActivityForResult(resultCode, requestCode, data);
     }
 
+    @Override public void onBackPressed() {
+        if (InputHelper.isEmpty(title)) {
+            super.onBackPressed();
+        } else {
+            ViewHelper.hideKeyboard(title);
+            MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
+                    Bundler.start().put("primary_extra", getString(R.string.discard)).put("secondary_extra", getString(R.string.cancel))
+                            .put(BundleConstant.EXTRA, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
+        }
+    }
+
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
+        super.onMessageDialogActionClicked(isOk, bundle);
+        if (isOk && bundle != null) {
+            finish();
+        }
+    }
+
     @OnTouch(R.id.description) boolean onTouch(MotionEvent event) {
         if (isFeedback && InputHelper.isEmpty(savedText)) {
-            savedText = AppHelper.getFastHubIssueTemplate();
+            savedText = AppHelper.getFastHubIssueTemplate(isEnterprise());
         }
         if (event.getAction() == MotionEvent.ACTION_UP) {
             Intent intent = new Intent(this, EditorActivity.class);
             intent.putExtras(Bundler.start()
                     .put(BundleConstant.EXTRA, InputHelper.toString(savedText))
                     .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                     .end());
             ActivityHelper.startReveal(this, intent, submit, BundleConstant.REQUEST_CODE);
             return true;

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.FontTextView
+    android:id="@+id/title"
+    style="@style/TextAppearance.AppCompat.Medium"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
+    android:background="?selectableItemBackground"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:paddingBottom="@dimen/spacing_xs_large"
+    android:paddingEnd="@dimen/spacing_xs_large"
+    android:paddingStart="@dimen/keyline_1"
+    android:paddingTop="@dimen/spacing_xs_large"
+    android:textColor="@color/search_tab_highlighter"
+    tools:text="When one acquires music and afterlife, one is able to capture heaven."/>

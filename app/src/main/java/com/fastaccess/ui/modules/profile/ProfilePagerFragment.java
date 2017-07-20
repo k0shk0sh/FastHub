@@ -64,4 +64,6 @@ public class ProfilePagerFragment extends BaseFragment<ProfilePagerMvp.View, Pro
     @Override public void onNavigateToFollowing() {
         pager.setCurrentItem(5);
     }
+
+    @Override public void onCheckType(boolean isOrg) {}
 }

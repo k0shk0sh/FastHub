@@ -6,6 +6,7 @@ import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.fastaccess.R;
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 
 import org.junit.Rule;
 import org.junit.Test;

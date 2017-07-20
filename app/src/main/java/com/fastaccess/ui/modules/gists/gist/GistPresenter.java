@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -37,13 +36,12 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
         }
         Bundle bundle = intent.getExtras();
         gistId = bundle.getString(BundleConstant.EXTRA);
-        Logger.e(gistId);
         if (gist != null) {
             checkStarring(gist.getGistId());
             sendToView(GistMvp.View::onSetupDetails);
         } else if (gistId != null) {
             checkStarring(gistId);
-            makeRestCall(RestProvider.getGistService().getGist(gistId), gistsModel -> {
+            makeRestCall(RestProvider.getGistService(isEnterprise()).getGist(gistId), gistsModel -> {
                 this.gist = gistsModel;
                 sendToView(GistMvp.View::onSetupDetails);
             });
@@ -54,7 +52,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onDeleteGist() {
         if (getGist() == null) return;
-        manageDisposable(RxHelper.getObserver(RestProvider.getGistService().deleteGist(getGist().getGistId()))
+        manageDisposable(RxHelper.getObservable(RestProvider.getGistService(isEnterprise()).deleteGist(getGist().getGistId()))
                 .doOnSubscribe(disposable -> onSubscribed())
                 .doOnNext(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
@@ -92,7 +90,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
     }
 
     @Override public void checkStarring(@NonNull String gistId) {
-        makeRestCall(RestProvider.getGistService().checkGistStar(gistId),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).checkGistStar(gistId),
                 booleanResponse -> {
                     isGistStarred = booleanResponse.code() == 204;
                     sendToView(view -> view.onGistStarred(isGistStarred));
@@ -101,7 +99,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (gist == null) {
-            manageDisposable(RxHelper.getObserver(Gist.getGist(gistId))
+            manageDisposable(RxHelper.getObservable(Gist.getGist(gistId))
                     .subscribe(gistsModel -> {
                         this.gist = gistsModel;
                         sendToView(GistMvp.View::onSetupDetails);

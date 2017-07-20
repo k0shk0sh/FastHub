@@ -25,14 +25,14 @@ import butterknife.BindView;
  * Created by Kosh on 03 Dec 2016, 3:56 PM
  */
 
-public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, ProfileReposPresenter> implements ProfileReposMvp.View, ProfileReposFilterBottomSheetDialog.ProfileReposFilterChangeListener {
+public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, ProfileReposPresenter> implements ProfileReposMvp.View,
+        ProfileReposFilterBottomSheetDialog.ProfileReposFilterChangeListener {
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
-    private ProfileReposFilterBottomSheetDialog dialog;
 
     public static ProfileReposFragment newInstance(@NonNull String username) {
         ProfileReposFragment view = new ProfileReposFragment();
@@ -65,7 +65,7 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new ReposAdapter(getPresenter().getRepos(), false);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
@@ -74,7 +74,6 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         if (getPresenter().getRepos().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
-        dialog = new ProfileReposFilterBottomSheetDialog();
     }
 
     @NonNull @Override public ProfileReposPresenter providePresenter() {
@@ -110,10 +109,9 @@ public class ProfileReposFragment extends BaseFragment<ProfileReposMvp.View, Pro
         return onLoadMore;
     }
 
-    @Override
-    public void onRepoFilterClicked() {
-        dialog.setCurrentFilterOptions(getPresenter().getFilterOptions());
-        dialog.show(getChildFragmentManager(), "ProfileReposFilterBottomSheetDialog");
+    @Override public void onRepoFilterClicked() {
+        ProfileReposFilterBottomSheetDialog.newInstance(getPresenter().getFilterOptions())
+                .show(getChildFragmentManager(), "ProfileReposFilterBottomSheetDialog");
     }
 
     @Override public void onRefresh() {

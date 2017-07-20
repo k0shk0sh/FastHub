@@ -1,5 +1,7 @@
-<resources>
-    <!-- DO NOT COPY -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
+    <!-- DO NOT COPY!  -->
+
     <string name="app_name" translatable="false">FastHub</string>
     <string name="app_name_full" translatable="false">FastHub for Android</string>
     <string name="linear_layout_manager" translatable="false">com.fastaccess.ui.widgets.recyclerview.layout_manager.LinearManager</string>
@@ -54,6 +56,7 @@
     <string name="dark_theme_mode" translatable="false">Dark Theme</string>
     <string name="amlod_theme_mode" translatable="false">Amlod Theme</string>
     <string name="mid_night_blue_theme_mode" translatable="false">Mid Night Blue</string>
+    <string name="bluish_theme" translatable="false">Bluish Theme</string>
     <string name="red_theme_mode" translatable="false">Red</string>
     <string name="pink_theme_mode" translatable="false">Pink</string>
     <string name="purple_theme_mode" translatable="false">Purple</string>
@@ -77,7 +80,50 @@
     <string name="daily" translatable="false">Daily</string>
     <string name="weekly" translatable="false">Weekly</string>
     <string name="monthly" translatable="false">Monthly</string>
-    <!-- END OF DO NOT COPY -->
+    <string name="squash" translatable="false">Squash</string>
+    <string name="rebase" translatable="false">Rebase</string>
+    <string name="pull_request_reviews" translatable="false">Pull Request Reviews</string>
+    <string name="review_changes" translatable="false">Review Changes</string>
+    <string name="enterprise" translatable="false">Enterprise</string>
+    <string name="endpoint_hint" translatable="false">example.com</string>
+    <string name="no_branches" translatable="false">No Branches or Tags</string>
+    <string name="pro_features" translatable="false">PRO Features</string>
+    <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
+        • All PRO Themes\n
+        • PR Reviews & On-line code comments (PRs & Commits)\n
+        • Support to other Merge methods (Rebase & Squash)\n
+        • Login to unlimited accounts\n
+        • New upcoming PRO features
+    ]]></string>
+    <string name="enterprise_pro_description" translatable="false"><![CDATA[
+            • Login to unlimited number of Enterprise  & GitHub accounts\n
+            • Access GitHub contents along side your Enterprise Account
+    ]]></string>
+    <string name="purchase" translatable="false">Purchase</string>
+    <string name="get_all" translatable="false">Purchase All (7.00USD)</string>
+    <string name="fasthub_premium_features" translatable="false">FastHub Premium Features</string>
+    <string name="secret_code" translatable="false">Promo Code</string>
+    <string name="branches" translatable="false">Branches</string>
+    <string name="github_enterprise_reply" translatable="false">
+        <![CDATA[ <small><i>Reply from GitHub support regards OAuth login for Enterprise:</i></small>
+                <p></p>
+                <blockquote>
+                <h4>Hi Kosh,</h4>
+                <p>A GitHub Enterprise appliance is entirely separate from GitHub.com, and will not have your OAuth application configured.
+                You will need to setup your OAuth application again for <b>FastHub</b> on the GitHub Enterprise appliance, which will provide you
+                with new client_id and client_secret credentials. <b>This will have to be completed for each new GitHub Enterprise appliance
+                your application communicates with</b>. GitHub Enterprise comes preconfigured with the GitHub Desktop OAuth application set up,
+                this is how GitHub Desktop is able to complete the authentication successfully for GitHub Enterprise appliances.</p>
+                </blockquote>
+        ]]>
+    </string>
+    <string name="purchase_all" translatable="false">Purchase All for ($ 7.99)</string>
+    <string name="unlock" translatable="false">Unlock</string>
+    <string name="unlock_everything" translatable="false">Unlock Everything</string>
+    <string name="feeds" translatable="false">Feeds</string>
+
+    <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
+
     <string name="in_progress">Loading, please wait…</string>
     <string name="action">Action</string>
     <string name="settings">Settings</string>
@@ -87,12 +133,11 @@
     <string name="no_data">No data available</string>
     <string name="search">Search</string>
     <string name="please_login">Please sign in to continue using FastHub</string>
-    <string name="sign_in_to_github">Sign in to your GitHub account to get the best out of FastHub</string>
+    <string name="sign_in_to_github">Sign in using your GitHub account to use FastHub</string>
     <string name="failed_login">Failed to sign in</string>
     <string name="sign_in">Sign in</string>
     <string name="share">Share</string>
     <string name="reload">Reload</string>
-    <string name="feeds">Feeds</string>
     <string name="profile">Profile</string>
     <string name="error">Error</string>
     <string name="press_again_to_exit">Press once again to exit</string>
@@ -167,7 +212,7 @@
     <string name="code_viewer">Code viewer</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="big_file">Large file</string>
-    <string name="big_file_description">The file is too big to open.\nPress "OK" to download it instead.</string>
+    <string name="big_file_description">The file is too big to open.\nPress "Yes" to download it instead.</string>
     <string name="viewer">Viewer</string>
     <string name="submit">Submit</string>
     <string name="type_here">Type here</string>
@@ -196,6 +241,7 @@
     <string name="notifications">Notifications</string>
     <string name="unread_notification">You have unread notifications</string>
     <string name="open">Open</string>
+    <string name="open_new_window">Open in new window</string>
     <string name="notification_type">Notification type</string>
     <string name="labels">Labels</string>
     <string name="no_labels">No labels</string>
@@ -291,7 +337,7 @@
     <string name="permission_failed">Permission Not Granted.</string>
     <string name="backup_summary">Last update: %s</string>
     <string name="now">Now</string>
-    <string name="unsaved_data_warning">Any unsaved changes will be discarded</string>
+    <string name="unsaved_data_warning">Discard unsaved changes?</string>
     <string name="private_repo">Private</string>
     <string name="rect_avatar_summary">Use rounded rectangle avatars instead of circular avatars</string>
     <string name="rect_avatar_title">Avatar Appearance</string>
@@ -309,7 +355,7 @@
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
     <string name="no_issue">No issue</string>
-    <string name="copy">Copy</string>
+    <string name="copy">Copy URL</string>
     <string name="success_copied">Copied</string>
     <string name="commit_message">Commit message</string>
     <string name="network_error">Error occurred while communicating to the server</string>
@@ -332,7 +378,8 @@
     <string name="pin">Pin</string>
     <string name="pinned">Pinned</string>
     <string name="unpin">Unpin</string>
-    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here</string>
+    <string name="empty_pinned_repos">No pinned repositories yet, pin some to see them here.\nP.S: The more you access a Repo the more on top
+    it will be.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="no_feeds">No feeds</string>
@@ -376,15 +423,16 @@
     <string name="no_members">No members</string>
     <string name="no_teams">No teams</string>
     <string name="no_orgs">No Organizations</string>
+    <string name="no_orgs_dialog_title">Can\'t find your Organisations\?</string>
     <string name="mark_as_read">Mark as read</string>
     <string name="animations">Animations</string>
     <string name="dialog_animation_summary">Enable popups animations</string>
     <string name="dialog_animation_title">Popup animation</string>
     <string name="milestones">Milestones</string>
     <string name="assignee">Assignee</string>
-    <string name="checks_failed">Some checks failed</string>
+    <string name="checks_failed">Some checks have failed</string>
     <string name="checks_pending">All checks are pending</string>
-    <string name="checks_passed">All checks are passed</string>
+    <string name="checks_passed">All checks have passed</string>
     <string name="sort">Sort</string>
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
@@ -409,12 +457,13 @@
     <string name="enable_notification_sound_summary">Enable notification sound once a notification is received.</string>
     <string name="enable_notification_sound_title">Enable Notification Sound</string>
     <string name="enable_notification_title">Enable Notifications</string>
-    <string name="login_with_personal_token">Login with personal token</string>
+    <string name="login_with_personal_token">Login with a personal token</string>
     <string name="personal_token">Personal Token</string>
     <string name="basic_login">Login via basic auth</string>
     <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
         below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: You could use Access token to login which will
-        grant FastHub access to see list your organizations.</string>
+        grant FastHub access to list your organizations.\nYou could also open up https://github.com/settings/applications and look for
+        FastHub, open it then scroll to Organization access and click on Grant Button.</string>
     <string name="insert">Insert</string>
     <string name="select">Select</string>
     <string name="select_picture">Select Picture</string>
@@ -430,7 +479,7 @@
     <string name="from">from</string>
     <string name="in_value">in</string>
     <string name="subscribe">Subscribe</string>
-    <string name="repo_issues_is_disabled">The repo has no issues tab</string>
+    <string name="repo_issues_is_disabled">Issues have been disabled in this repo</string>
     <string name="access_token">Access Token</string>
     <string name="basic_authentication">Basic Authentication</string>
     <string name="choose_your_login_type">Choose your login type</string>
@@ -483,4 +532,17 @@
     <string name="milestone_added">Milestone added successfully</string>
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
+    <string name="choose_code_theme">Choose Code color palette</string>
+    <string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
+        otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
+        GitHub API is coming from your Enterprise Account.</string>
+    <string name="add_account">Add Account</string>
+    <string name="choose_account">Choose Account</string>
+    <string name="not_match">Not match</string>
+    <string name="warning">Warning</string>
+    <string name="owner">Owner</string>
+    <string name="original_poster">Original Poster</string>
+    <string name="cancel_reviews">Cancel Reviews</string>
+    <string name="colored_navbar_summary">Disable tinting the navigation bar in themes</string>
+    <string name="colored_navbar_title">Disable Navbar tinting</string>
 </resources>

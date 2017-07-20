@@ -17,19 +17,22 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.NameParser;
+import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
-import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragments;
+import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -40,6 +43,7 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import kotlin.text.StringsKt;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:23 AM
@@ -66,15 +70,21 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
                                       @NonNull String sha, boolean showRepoBtn) {
+        return createIntent(context, repoId, login, sha, showRepoBtn, false);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      @NonNull String sha, boolean showRepoBtn,
+                                      boolean isEnterprise) {
         Intent intent = new Intent(context, CommitPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, sha)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, repoId)
                 .put(BundleConstant.EXTRA_THREE, showRepoBtn)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
-
     }
 
     public static void createIntentForOffline(@NonNull Context context, @NonNull Commit commitModel) {
@@ -83,13 +93,14 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
         if (getPresenter().getCommit() != null && !InputHelper.isEmpty(getPresenter().getCommit().getGitCommit().getMessage()))
-            MessageDialogView.newInstance(getString(R.string.details), getPresenter().getCommit().getGitCommit().getMessage(), true, false)
+            MessageDialogView.newInstance(String.format("%s/%s", getPresenter().getLogin(), getPresenter().getRepoId()),
+                    getPresenter().getCommit().getGitCommit().getMessage(), true, false)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @OnClick(R.id.fab) void onAddComment() {
         if (pager == null || pager.getAdapter() == null) return;
-        CommitCommentsFragments view = (CommitCommentsFragments) pager.getAdapter().instantiateItem(pager, 1);
+        CommitCommentsFragment view = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
         if (view != null) {
             view.onStartNewComment();
         }
@@ -129,6 +140,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
         menu.findItem(R.id.browser).setVisible(true);
+        menu.findItem(R.id.copyUrl).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -141,6 +153,9 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
             return true;
         } else if (item.getItemId() == R.id.browser) {
             if (getPresenter().getCommit() != null) ActivityHelper.startCustomTab(this, getPresenter().getCommit().getHtmlUrl());
+            return true;
+        } else if (item.getItemId() == R.id.copyUrl) {
+            if (getPresenter().getCommit() != null) AppHelper.copyToClipboard(this, getPresenter().getCommit().getHtmlUrl());
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -161,12 +176,15 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
         HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
+        setTaskName(commit.getLogin() + "/" + commit.getRepoId() + " - Commit " + StringsKt.take(commit.getSha(), 5));
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);
-        date.setText(SpannableBuilder.builder().append(ParseDateFormat.getTimeAgo(dateValue))
+        date.setText(SpannableBuilder.builder()
+                .bold(getPresenter().repoId)
                 .append(" ")
-                .bold(getPresenter().repoId));
-        avatarLayout.setUrl(avatar, login);
+                .append(" ")
+                .append(ParseDateFormat.getTimeAgo(dateValue)));
+        avatarLayout.setUrl(avatar, login, false, LinkParserHelper.isEnterprise(commit.getHtmlUrl()));
         addition.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getAdditions() : 0));
         deletion.setText(String.valueOf(commit.getStats() != null ? commit.getStats().getDeletions() : 0));
         changes.setText(String.valueOf(commit.getFiles() != null ? commit.getFiles().size() : 0));
@@ -182,7 +200,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         TabLayout.Tab tabOne = tabs.getTabAt(0);
         TabLayout.Tab tabTwo = tabs.getTabAt(1);
         if (tabOne != null && commit.getFiles() != null) {
-            tabOne.setText(getString(R.string.commits) + " (" + commit.getFiles().size() + ")");
+            tabOne.setText(getString(R.string.files) + " (" + commit.getFiles().size() + ")");
         }
         if (tabTwo != null && commit.getGitCommit() != null && commit.getGitCommit().getCommentCount() > 0) {
             tabTwo.setText(getString(R.string.comments) + " (" + commit.getGitCommit().getCommentCount() + ")");
@@ -208,6 +226,15 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         finish();
     }
 
+    @Override public void onAddComment(@NonNull Comment newComment) {
+        if (pager != null && pager.getAdapter() != null) {
+            CommitCommentsFragment fragment = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+            if (fragment != null) {
+                fragment.addComment(newComment);
+            }
+        }
+    }
+
     @Override public void onBackPressed() {
         super.onBackPressed();
     }
@@ -216,6 +243,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         NameParser nameParser = new NameParser("");
         nameParser.setName(getPresenter().getRepoId());
         nameParser.setUsername(getPresenter().getLogin());
+        nameParser.setEnterprise(isEnterprise());
         RepoPagerActivity.startRepoPager(this, nameParser);
         finish();
     }

@@ -5,7 +5,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.MenuInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupMenu;
 
@@ -18,14 +17,12 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
-import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -33,7 +30,6 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
 import butterknife.BindView;
-import uk.co.samuelwall.materialtaptargetprompt.MaterialTapTargetPrompt;
 
 /**
  * Created by Kosh on 18 Feb 2017, 2:10 AM
@@ -59,16 +55,21 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                 getParent().onAppendPath(model);
             }
         } else {
-            String url = InputHelper.isEmpty(model.getDownloadUrl()) ? model.getUrl() : model.getDownloadUrl();
-            if (InputHelper.isEmpty(url)) return;
-            if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(url)) {
-                MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description), false, true,
-                        Bundler.start().put(BundleConstant.EXTRA, model.getDownloadUrl())
-                                .put(BundleConstant.YES_NO_EXTRA, true)
-                                .end())
-                        .show(getChildFragmentManager(), "MessageDialogView");
+            if (model.getSize() == 0 && InputHelper.isEmpty(model.getDownloadUrl()) && !InputHelper.isEmpty(model.getGitUrl())) {
+                RepoFilesActivity.startActivity(getContext(), model.getGitUrl().replace("trees/", ""), isEnterprise());
             } else {
-                CodeViewerActivity.startActivity(getContext(), url, model.getHtmlUrl());
+                String url = InputHelper.isEmpty(model.getDownloadUrl()) ? model.getUrl() : model.getDownloadUrl();
+                if (InputHelper.isEmpty(url)) return;
+                if (model.getSize() > FileHelper.ONE_MB && !MarkDownProvider.isImage(url)) {
+                    MessageDialogView.newInstance(getString(R.string.big_file), getString(R.string.big_file_description),
+                            false, true, Bundler.start()
+                                    .put(BundleConstant.EXTRA, model.getDownloadUrl())
+                                    .put(BundleConstant.YES_NO_EXTRA, true)
+                                    .end())
+                            .show(getChildFragmentManager(), "MessageDialogView");
+                } else {
+                    CodeViewerActivity.startActivity(getContext(), url, model.getHtmlUrl());
+                }
             }
         }
     }
@@ -123,38 +124,6 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         adapter = new RepoFilesAdapter(getPresenter().getFiles());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-    }
-
-    @Override public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Logger.e(hidden);
-        if (!hidden && adapter != null && isSafe()) {
-            if (!PrefGetter.isFileOptionHintShow()) {
-                ActivityHelper.showDismissHints(getContext(), () -> {
-                });
-                adapter.setGuideListener((itemView, model) ->
-                        new MaterialTapTargetPrompt.Builder(getActivity())
-                                .setTarget(itemView.findViewById(R.id.menu))
-                                .setPrimaryText(R.string.options)
-                                .setSecondaryText(R.string.click_file_option_hint)
-                                .setCaptureTouchEventOutsidePrompt(true)
-                                .setBackgroundColourAlpha(244)
-                                .setBackgroundColour(ViewHelper.getAccentColor(getContext()))
-                                .setOnHidePromptListener(new MaterialTapTargetPrompt.OnHidePromptListener() {
-                                    @Override
-                                    public void onHidePrompt(MotionEvent motionEvent, boolean b) {
-                                        ActivityHelper.hideDismissHints(RepoFilesFragment.this.getContext());
-                                    }
-
-                                    @Override
-                                    public void onHidePromptComplete() {
-
-                                    }
-                                })
-                                .show());
-                adapter.notifyDataSetChanged();// call it notify the adapter to show the guide immediately.
-            }
-        }
     }
 
     @Override public void showProgress(@StringRes int resId) {

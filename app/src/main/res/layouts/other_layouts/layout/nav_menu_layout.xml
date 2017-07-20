@@ -1,16 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.NavigationView
-    android:id="@+id/extrasNav"
+    android:id="@+id/menusHolder"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:clickable="true"
     android:fitsSystemWindows="true"
     app:itemBackground="@color/transparent"
-    android:focusable="true"
-    app:headerLayout="@layout/drawer_header"
     app:itemIconTint="@color/search_tab_highlighter"
-    app:itemTextColor="@color/search_tab_highlighter"
-    app:menu="@menu/drawer_menu"/>
+    app:itemTextColor="@color/search_tab_highlighter">
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/extrasNav"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:clickable="true"
+        android:fitsSystemWindows="true"
+        android:focusable="true"
+        app:headerLayout="@layout/drawer_header"
+        app:itemBackground="@color/transparent"
+        app:itemIconTint="@color/search_tab_highlighter"
+        app:itemTextColor="@color/search_tab_highlighter"
+        app:menu="@menu/drawer_menu"/>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/accountsNav"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:layout_marginTop="120dp"
+        android:background="?android:windowBackground"
+        android:clickable="true"
+        android:clipToPadding="false"
+        android:fitsSystemWindows="true"
+        android:focusable="true"
+        android:visibility="gone"
+        app:itemBackground="@color/transparent"
+        app:itemIconTint="@color/search_tab_highlighter"
+        app:itemTextColor="@color/search_tab_highlighter">
+
+        <include layout="@layout/accounts_menu_layout"/>
+
+    </android.support.design.widget.NavigationView>
+
+</android.support.design.widget.NavigationView>

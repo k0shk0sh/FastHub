@@ -44,7 +44,6 @@ public class EmojiManager {
                         EMOJIS_BY_ALIAS.put(alias, emoji);
                     }
                 }
-
                 EMOJI_TRIE = new EmojiTrie(emojis);
                 stream.close();
             } catch (IOException e) {

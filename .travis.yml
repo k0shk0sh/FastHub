@@ -3,16 +3,13 @@ android:
    components:
    - tools
    - tools
-   - platform-tools
-   - extra-android-m2repository
-   - extra-google-m2repository
 
 jdk: oraclejdk8
 
 sudo: required
 
 before_script:
-  - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "build-tools;26.0.0-rc2" "platforms;android-25" --channel=2
+  - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "extras;android;m2repository" "extras;google;m2repository" "build-tools;26.0.0" "platforms;android-26"
 
 script:
   - ./gradlew clean assembleDebug --stacktrace

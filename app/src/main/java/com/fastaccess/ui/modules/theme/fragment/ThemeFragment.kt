@@ -23,9 +23,10 @@ import com.fastaccess.ui.widgets.SpannableBuilder
 
 class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter>(), ThemeFragmentMvp.View {
 
-    val apply: FloatingActionButton by lazy { view!!.findViewById(R.id.apply) as FloatingActionButton }
-    val toolbar: Toolbar by lazy { view!!.findViewById(R.id.toolbar) as Toolbar }
+    val apply: FloatingActionButton by lazy { view!!.findViewById<FloatingActionButton>(R.id.apply) }
+    val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
 
+    private val THEME = "appTheme"
     private var primaryDarkColor: Int = 0
     private var theme: Int = 0
     private var themeListener: ThemeFragmentMvp.ThemeListener? = null
@@ -80,8 +81,13 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (PrefGetter.isProEnabled() || PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isAmlodEnabled()) {
-                themeListener?.onThemeApplied()
+            val productKey = data?.getStringExtra(BundleConstant.ITEM)
+            productKey?.let {
+                when (it) {
+                    getString(R.string.amlod_theme_purchase) -> setTheme(getString(R.string.amlod_theme_mode))
+                    getString(R.string.midnight_blue_theme_purchase) -> setTheme(getString(R.string.mid_night_blue_theme_mode))
+                    getString(R.string.theme_bluish_purchase) -> setTheme(getString(R.string.bluish_theme))
+                }
             }
         }
     }
@@ -97,34 +103,53 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     }
 
     private fun setTheme() {
+        if (!isGoogleSupported()) return
         when (theme) {
             R.style.ThemeLight -> {
-                PrefHelper.set("appTheme", getString(R.string.light_theme_mode))
-                themeListener?.onThemeApplied()
+                setTheme(getString(R.string.light_theme_mode))
             }
             R.style.ThemeDark -> {
-                PrefHelper.set("appTheme", getString(R.string.dark_theme_mode))
-                themeListener?.onThemeApplied()
+                setTheme(getString(R.string.dark_theme_mode))
             }
             R.style.ThemeAmlod -> {
+                if (!isGoogleSupported()) return
                 if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set("appTheme", getString(R.string.amlod_theme_mode))
-                    themeListener?.onThemeApplied()
+                    setTheme(getString(R.string.amlod_theme_mode))
                 } else {
                     DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
                 }
             }
             R.style.ThemeMidNighBlue -> {
-                if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    PrefHelper.set("appTheme", getString(R.string.mid_night_blue_theme_mode))
-                    themeListener?.onThemeApplied()
+                if (!isGoogleSupported()) return
+                if (PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isProEnabled()) {
+                    setTheme(getString(R.string.mid_night_blue_theme_mode))
                 } else {
                     DonateActivity.start(this, getString(R.string.midnight_blue_theme_purchase))
+                }
+            }
+            R.style.ThemeBluish -> {
+                if (!isGoogleSupported()) return
+                if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
+                    setTheme(getString(R.string.bluish_theme))
+                } else {
+                    DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
                 }
             }
         }
     }
 
-    private fun isPremiumTheme(): Boolean = theme == R.style.ThemeAmlod || theme == R.style.ThemeMidNighBlue
+    private fun setTheme(theme: String) {
+        PrefHelper.set(THEME, theme)
+        themeListener?.onThemeApplied()
+    }
 
+    private fun isPremiumTheme(): Boolean = theme != R.style.ThemeLight && theme != R.style.ThemeDark
+
+    private fun isGoogleSupported(): Boolean {
+        if (AppHelper.isGoogleAvailable(context)) {
+            return true
+        }
+        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text))
+        return false
+    }
 }

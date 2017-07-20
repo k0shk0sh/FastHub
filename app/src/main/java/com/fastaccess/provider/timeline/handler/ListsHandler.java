@@ -54,7 +54,7 @@ import lombok.NoArgsConstructor;
             }
         }
         if ("ol".equals(getParentName(node))) {
-            builder.append("").append(String.valueOf(getMyIndex(node))).append(". ");
+            builder.append(String.valueOf(getMyIndex(node))).append(". ");
         } else if ("ul".equals(getParentName(node))) {
             if (todoItem != null) {
                 if (checked == null || unchecked == null) {
@@ -62,10 +62,10 @@ import lombok.NoArgsConstructor;
                 } else {
                     builder.append(SpannableBuilder.builder()
                             .append(todoItem.isChecked ? checked : unchecked))
-                            .append("   ");
+                            .append(" ");
                 }
             } else {
-                builder.append("\u2022  ");
+                builder.append("\u2022 ");
             }
         }
     }

@@ -51,6 +51,7 @@ public class ListDialogView<O extends Parcelable> extends BaseDialogFragment imp
         title.setText(titleText);
         if (objects != null) {
             SimpleListAdapter<O> adapter = new SimpleListAdapter<>(objects, this);
+            recycler.addDivider(true);
             recycler.setAdapter(adapter);
         } else {
             dismiss();

@@ -45,4 +45,12 @@ public class UILProvider {
                 .bitmapConfig(Bitmap.Config.RGB_565)
                 .build();
     }
+
+    public static void destoryUIL(@NonNull Context context) {
+        if (ImageLoader.getInstance().isInited()) {
+            ImageLoader.getInstance().destroy();
+            initUIL(context);
+        }
+    }
+
 }

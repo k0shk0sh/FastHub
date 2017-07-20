@@ -2,7 +2,6 @@ package com.fastaccess.ui.modules.repos.extras.popup;
 
 import android.support.annotation.NonNull;
 
-import com.fastaccess.R;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -16,7 +15,7 @@ public class IssuePopupPresenter extends BasePresenter<IssuePopupMvp.View> imple
     @Override public void onSubmit(@NonNull String login, @NonNull String repoId, int issueNumber, @NonNull String text) {
         CommentRequestModel requestModel = new CommentRequestModel();
         requestModel.setBody(text);
-        makeRestCall(RestProvider.getIssueService().createIssueComment(login, repoId, issueNumber, requestModel),
+        makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(login, repoId, issueNumber, requestModel),
                 comment -> sendToView(view -> view.onSuccessfullySubmitted()));
     }
 

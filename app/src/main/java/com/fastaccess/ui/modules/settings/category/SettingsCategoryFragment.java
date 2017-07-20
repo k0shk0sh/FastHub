@@ -13,16 +13,18 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SettingsModel;
+import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -31,11 +33,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 
 import es.dmoral.toasty.Toasty;
 
@@ -52,7 +54,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     private BaseMvp.FAView callback;
     private String appColor;
-    private String app_lauguage;
+    private String appLanguage;
 
     private Preference signatureVia;
     private Preference notificationTime;
@@ -65,7 +67,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         this.callback = (BaseMvp.FAView) context;
         this.settingsCallback = (SettingsCallback) context;
         appColor = PrefHelper.getString("appColor");
-        app_lauguage = PrefHelper.getString("app_language");
+        appLanguage = PrefHelper.getString("app_language");
     }
 
     @Override public void onDetach() {
@@ -89,13 +91,11 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             case SettingsModel.CUSTOMIZATION:
                 addCustomization();
                 break;
-            case SettingsModel.LANGUAGE:
-                throw new RuntimeException("how is it possible language?");
             case SettingsModel.NOTIFICATION:
                 addNotifications();
                 break;
-            case SettingsModel.THEME:
-                throw new RuntimeException("how is it possible theme?");
+            default:
+                Toast.makeText(App.getInstance(), "You reached the impossible :'(", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -105,17 +105,17 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 getPreferenceScreen().addPreference(notificationTime);
                 getPreferenceScreen().addPreference(notificationRead);
                 getPreferenceScreen().addPreference(notificationSound);
-                NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
+                NotificationSchedulerJobTask.scheduleJob(App.getInstance(),
                         PrefGetter.getNotificationTaskDuration(), true);
             } else {
                 getPreferenceScreen().removePreference(notificationTime);
                 getPreferenceScreen().removePreference(notificationRead);
                 getPreferenceScreen().removePreference(notificationSound);
-                NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(), -1, true);
+                NotificationSchedulerJobTask.scheduleJob(App.getInstance(), -1, true);
             }
             return true;
         } else if (preference.getKey().equalsIgnoreCase("notificationTime")) {
-            NotificationSchedulerJobTask.scheduleJob(getActivity().getApplicationContext(),
+            NotificationSchedulerJobTask.scheduleJob(App.getInstance(),
                     PrefGetter.notificationDurationMillis((String) newValue), true);
             return true;
         } else if (preference.getKey().equalsIgnoreCase("recylerViewAnimation")) {
@@ -127,11 +127,11 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         } else if (preference.getKey().equalsIgnoreCase("appColor")) {
             if (newValue.toString().equalsIgnoreCase(appColor))
                 return true;
-            Toasty.warning(getContext(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
+            Toasty.warning(App.getInstance(), getString(R.string.change_theme_warning), Toast.LENGTH_LONG).show();
             callback.onThemeChanged();
             return true;
         } else if (preference.getKey().equalsIgnoreCase("app_language")) {
-            if (newValue.toString().equalsIgnoreCase(app_lauguage))
+            if (newValue.toString().equalsIgnoreCase(appLanguage))
                 return true;
             callback.onThemeChanged();
             return true;
@@ -175,15 +175,15 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                     }
                     PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
                     findPreference("backup").setSummary(getString(R.string.backup_summary, getString(R.string.now)));
-                    Toasty.success(getContext(), getString(R.string.backed_up)).show();
+                    Toasty.success(App.getInstance(), getString(R.string.backed_up)).show();
                 } else {
-                    Toasty.error(getContext(), getString(R.string.permission_failed)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.permission_failed)).show();
                 }
             } else if (permissions[0].equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     showFileChooser();
                 } else {
-                    Toasty.error(getContext(), getString(R.string.permission_failed)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.permission_failed)).show();
                 }
             }
         }
@@ -206,23 +206,22 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                         }
                     }
                 } catch (IOException e) {
-                    Toasty.error(getContext(), getString(R.string.error)).show();
+                    Toasty.error(App.getInstance(), getString(R.string.error)).show();
                 }
                 if (!InputHelper.isEmpty(json)) {
-                    Gson gson = new Gson();
-                    JsonObject jsonObject = gson.fromJson(json.toString(), JsonObject.class);
-                    Set<Map.Entry<String, JsonElement>> entrySet = jsonObject.entrySet();
-                    for (Map.Entry<String, JsonElement> entry : entrySet) {
-                        if (entry.getValue().getAsJsonPrimitive().isBoolean())
-                            PrefHelper.set(entry.getKey(), entry.getValue().getAsBoolean());
-                        else if (entry.getValue().getAsJsonPrimitive().isNumber())
-                            PrefHelper.set(entry.getKey(), entry.getValue().getAsNumber().intValue());
-                        else if (entry.getValue().getAsJsonPrimitive().isString())
-                            PrefHelper.set(entry.getKey(), entry.getValue().getAsString());
-                        PrefHelper.set(entry.getKey(), entry.getValue());
-                        Log.d(getTag(), entry.getKey() + ": " + entry.getValue());
+                    try {
+                        Gson gson = new Gson();
+                        Type typeOfHashMap = new TypeToken<Map<String, ?>>() {}.getType();
+                        Map<String, ?> savedPref = gson.fromJson(json.toString(), typeOfHashMap);
+                        if (savedPref != null && !savedPref.isEmpty()) {
+                            for (Map.Entry<String, ?> stringEntry : savedPref.entrySet()) {
+                                PrefHelper.set(stringEntry.getKey(), stringEntry.getKey());
+                            }
+                        }
+                        callback.onThemeChanged();
+                    } catch (Exception ignored) {
+                        Toasty.error(App.getInstance(), getString(R.string.error), Toast.LENGTH_SHORT).show();
                     }
-                    callback.onThemeChanged();
                 }
             }
         }
@@ -237,50 +236,44 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private void addBackup() {
         addPreferencesFromResource(R.xml.backup_settings);
         findPreference("backup").setOnPreferenceClickListener((Preference preference) -> {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                Map<String, ?> settings_ = PrefHelper.getAll();
-                settings_.remove("token");
-                String json = new Gson().toJson(settings_);
-                String path =
-                        Environment.getExternalStorageDirectory() + File.separator + "FastHub";
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                Map<String, ?> preferences = PrefHelper.getAll();
+                preferences.remove("token");
+                String json = new Gson().toJson(preferences);
+                String path = FileHelper.PATH;
                 File folder = new File(path);
-                folder.mkdirs();
+                boolean mkDirs = folder.mkdirs();
                 File backup = new File(folder, "backup.json");
-
                 try {
-                    backup.createNewFile();
-                    FileOutputStream outputStream = new FileOutputStream(backup);
-                    OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream);
-                    myOutWriter.append(json);
-
-                    myOutWriter.close();
-
-                    outputStream.flush();
-                    outputStream.close();
+                    boolean isCreated = backup.createNewFile();
+                    try (FileOutputStream outputStream = new FileOutputStream(backup)) {
+                        try (OutputStreamWriter myOutWriter = new OutputStreamWriter(outputStream)) {
+                            myOutWriter.append(json);
+                        }
+                    }
                 } catch (IOException e) {
                     Log.e(getTag(), "Couldn't backup: " + e.toString());
                 }
-
                 PrefHelper.set("backed_up", new SimpleDateFormat("MM/dd", Locale.ENGLISH).format(new Date()));
             } else {
                 requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             }
-
             return true;
         });
-        if (PrefHelper.getString("backed_up") != null)
-            findPreference("backup").setSummary(getString(R.string.backup_summary, PrefHelper.getString("backed_up")));
-        else
+        if (PrefHelper.getString("backed_up") != null) {
+            findPreference("backup").setSummary(SpannableBuilder.builder()
+                    .append(getString(R.string.backup_summary, PrefHelper.getString("backed_up")))
+                    .append("\n")
+                    .append(FileHelper.PATH));
+        } else {
             findPreference("backup").setSummary("");
+        }
         findPreference("restore").setOnPreferenceClickListener(preference -> {
-            if (ContextCompat.checkSelfPermission(getActivity(),
-                    Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 showFileChooser();
             } else {
                 requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
             }
-
             return true;
         });
     }

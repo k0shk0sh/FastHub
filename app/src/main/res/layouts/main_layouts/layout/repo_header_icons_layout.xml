@@ -9,7 +9,7 @@
     android:orientation="horizontal"
     android:paddingBottom="@dimen/spacing_normal"
     android:paddingTop="@dimen/spacing_normal"
-    tools:showIn="@layout/header_title_with_toolbar">
+    tools:showIn="@layout/repo_pager_activity">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -29,7 +29,7 @@
                 android:id="@+id/watchRepoImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_eye"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:text="100,000"/>
+                tools:text="180"/>
 
         </LinearLayout>
 
@@ -55,7 +55,7 @@
                 android:id="@+id/starRepoImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_star"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:text="100,000"/>
+                tools:text="1648"/>
 
         </LinearLayout>
 
@@ -80,7 +80,7 @@
                 android:id="@+id/forkRepoImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_fork"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -89,7 +89,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:text="100,000"/>
+                tools:text="197"/>
 
         </LinearLayout>
 
@@ -101,13 +101,12 @@
             android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
             android:orientation="vertical"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:visibility="gone">
 
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_book"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -134,11 +133,12 @@
                 android:id="@+id/pinImage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_pin"/>
 
             <com.fastaccess.ui.widgets.FontTextView
                 android:id="@+id/pinText"
+                tools:text="@string/pin"
                 style="@style/TextAppearance.AppCompat.Small"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -152,6 +152,7 @@
             android:layout_height="wrap_content"
             android:background="?selectableItemBackgroundBorderless"
             android:gravity="center"
+            android:layout_marginStart="@dimen/spacing_normal"
             android:orientation="vertical"
             android:visibility="gone"
             tools:visibility="visible">
@@ -159,8 +160,7 @@
             <com.fastaccess.ui.widgets.ForegroundImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/mal_title_licenses"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_license"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -171,7 +171,7 @@
                 android:gravity="center"
                 android:maxLength="6"
                 android:maxLines="1"
-                tools:text="Apache"/>
+                tools:text="GPL-3."/>
 
         </LinearLayout>
     </LinearLayout>

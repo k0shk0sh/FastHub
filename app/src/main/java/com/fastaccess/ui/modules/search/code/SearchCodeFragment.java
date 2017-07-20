@@ -8,13 +8,14 @@ import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SearchCodeModel;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.SearchCodeAdapter;
 import com.fastaccess.ui.base.BaseFragment;
-import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -22,7 +23,6 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import java.util.List;
 
 import butterknife.BindView;
-import com.evernote.android.state.State;
 
 /**
  * Created by Kosh on 03 Dec 2016, 3:56 PM
@@ -79,7 +79,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         stateLayout.setEmptyText(R.string.no_search_results);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
@@ -126,7 +126,6 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
         getLoadMore().reset();
         adapter.clear();
         adapter.showRepoName(showRepoName);
-        recycler.scrollToPosition(0);
         if (!InputHelper.isEmpty(query)) {
             recycler.removeOnScrollListener(getLoadMore());
             recycler.addOnScrollListener(getLoadMore());
@@ -156,7 +155,7 @@ public class SearchCodeFragment extends BaseFragment<SearchCodeMvp.View, SearchC
 
     @Override public void onItemClicked(@NonNull SearchCodeModel item) {
         if (item.getUrl() != null) {
-            CodeViewerActivity.startActivity(getContext(), item.getUrl(), item.getHtmlUrl());
+            SchemeParser.launchUri(getContext(), item.getHtmlUrl());
         } else {
             showErrorMessage(getString(R.string.no_url));
         }

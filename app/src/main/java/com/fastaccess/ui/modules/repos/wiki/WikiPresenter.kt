@@ -4,6 +4,7 @@ import android.content.Intent
 import com.fastaccess.data.dao.wiki.WikiContentModel
 import com.fastaccess.data.dao.wiki.WikiSideBarModel
 import com.fastaccess.helper.BundleConstant
+import com.fastaccess.helper.Logger
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.rest.jsoup.JsoupProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -24,15 +25,17 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
             val bundle = intent.extras
             repoId = bundle.getString(BundleConstant.ID)
             login = bundle.getString(BundleConstant.EXTRA)
+            val page = bundle.getString(BundleConstant.EXTRA_TWO)
             if (!repoId.isNullOrEmpty() && !login.isNullOrEmpty()) {
-                onSidebarClicked(WikiSideBarModel("Home", "$login/$repoId/wiki"))
+                onSidebarClicked(WikiSideBarModel("Home", "$login/$repoId/wiki" +
+                        if (!page.isNullOrEmpty()) "/$page" else ""))
             }
         }
     }
 
     override fun onSidebarClicked(sidebar: WikiSideBarModel) {
-        manageViewDisposable(RxHelper.getObserver(JsoupProvider.getWiki().getWiki(sidebar.link))
-                .flatMap { s -> RxHelper.getObserver(getWikiContent(s)) }
+        manageViewDisposable(RxHelper.getObservable(JsoupProvider.getWiki().getWiki(sidebar.link))
+                .flatMap { s -> RxHelper.getObservable(getWikiContent(s)) }
                 .doOnSubscribe { sendToView { it.showProgress(0) } }
                 .subscribe({ response -> sendToView { view -> view.onLoadContent(response) } },
                         { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) }))
@@ -51,8 +54,14 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                 if (bottomRightBar.isNotEmpty()) {
                     bottomRightBar.remove()
                 }
+                val headerHtml = wikiWrapper.select(".gh-header .gh-header-meta")
+                val revision = headerHtml.select("a.history")
+                if (revision.isNotEmpty()) {
+                    revision.remove()
+                }
+                val header = "<div class='gh-header-meta'>${headerHtml.html()}</div>"
                 val wikiContent = wikiWrapper.select(".wiki-content")
-                val content = wikiContent.select(".markdown-body").html()
+                val content = header + wikiContent.select(".markdown-body").html()
                 val rightBarList = wikiContent.select(".wiki-pages").select("li")
                 val sidebarList = arrayListOf<WikiSideBarModel>()
                 if (rightBarList.isNotEmpty()) {
@@ -62,7 +71,10 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                         sidebarList.add(WikiSideBarModel(sidebarTitle, sidebarLink))
                     }
                 }
+                Logger.d(header)
                 s.onNext(WikiContentModel(content, "", sidebarList))
+            } else {
+                s.onNext(WikiContentModel("<h2 align='center'>No Wiki</h4>", "", arrayListOf()))
             }
             s.onComplete()
         }

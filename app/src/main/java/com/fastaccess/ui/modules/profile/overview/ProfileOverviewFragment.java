@@ -151,6 +151,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
         progress.setVisibility(GONE);
         if (userModel == null) return;
+        if (profileCallback != null) profileCallback.onCheckType(userModel.isOrganizationType());
         if (getView() != null) {
             if (this.userModel == null) {
                 TransitionManager.beginDelayedTransition((ViewGroup) getView(),
@@ -189,7 +190,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         } else {
             description.setVisibility(GONE);
         }
-        avatarLayout.setUrl(userModel.getAvatarUrl(), null);
+        avatarLayout.setUrl(userModel.getAvatarUrl(), null, false, false);
         avatarLayout.findViewById(R.id.avatar).setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 ActivityHelper.startCustomTab(getActivity(), userModel.getAvatarUrl());
@@ -238,6 +239,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onInitContributions(boolean show) {
+        if (contributionView == null) return;
         if (show) {
             contributionView.onResponse();
         }

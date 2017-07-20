@@ -116,30 +116,34 @@
 
     <string-array name="languages_array" translatable="false">
         <item>English</item>
-        <item>German</item>
-        <item>Turkish</item>
-        <item>Chinese</item>
-        <item>Traditional Chinese</item>
+        <item>Deutsch</item>
+        <item>Türk</item>
+        <item>简体中文</item>
+        <item>正體中文</item>
         <item>Bahasa Indonesia</item>
-        <item>Russian</item>
-        <item>Italian</item>
-        <item>Japanese</item>
-        <item>Lithuanian</item>
-        <item>Brazilian Portuguese</item>
+        <item>Русский</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>Lietuvos</item>
+        <item>Português (Brasil)</item>
+        <item>Český</item>
+        <item>Español</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
         <item>en</item>
         <item>de</item>
         <item>tr</item>
-        <item>zh</item>
+        <item>zh-rCN</item>
         <item>zh-rTW</item>
         <item>in</item>
         <item>ru</item>
         <item>it</item>
         <item>ja</item>
         <item>lt</item>
-        <item>br</item>
+        <item>pt-rBR</item>
+        <item>cs</item>
+        <item>es</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">
@@ -152,6 +156,18 @@
         <item>Daily</item>
         <item>Weekly</item>
         <item>Monthly</item>
+    </string-array>
+
+    <string-array name="merge_method" translatable="false">
+        <item>@string/merge</item>
+        <item>@string/squash</item>
+        <item>@string/rebase</item>
+    </string-array>
+
+    <string-array name="review_methods" translatable="false">
+        <item>APPROVE</item>
+        <item>REQUEST CHANGES</item>
+        <item>COMMENT</item>
     </string-array>
 
     <!-- EmojiCompat Downloadable Fonts Arrays -->

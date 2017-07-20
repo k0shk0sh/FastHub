@@ -54,7 +54,7 @@ class TeamMembersPresenter extends BasePresenter<TeamMembersMvp.View> implements
             sendToView(TeamMembersMvp.View::hideProgress);
             return;
         }
-        makeRestCall(RestProvider.getOrgService().getTeamMembers(parameter, page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getTeamMembers(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));

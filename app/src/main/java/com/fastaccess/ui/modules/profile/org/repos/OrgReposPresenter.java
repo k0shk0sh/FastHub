@@ -4,13 +4,12 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.model.FilterOptionsModel;
+import com.fastaccess.data.dao.FilterOptionsModel;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -24,7 +23,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private FilterOptionsModel filterOptions = new FilterOptionsModel();
+    @com.evernote.android.state.State FilterOptionsModel filterOptions = new FilterOptionsModel();
 
     @Override public int getCurrentPage() {
         return page;
@@ -65,11 +64,11 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
             return;
         }
         filterOptions.setOrg(true);
-        makeRestCall(RestProvider.getOrgService().getOrgRepos(parameter, filterOptions.getQueryMap(), page),
+        makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgRepos(parameter, filterOptions.getQueryMap(), page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
+                        manageDisposable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
@@ -81,30 +80,28 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObservable(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(OrgReposMvp.View::hideProgress);
         }
     }
 
-    public FilterOptionsModel getFilterOptions() {
-        return filterOptions;
-    }
-
-    @Override
-    public void onFilterApply(String org) {
+    @Override public void onFilterApply(String org) {
         onCallApi(1, org);
     }
 
-    @Override
-    public void onTypeSelected(String selectedType) {
+    @Override public void onTypeSelected(String selectedType) {
         filterOptions.setType(selectedType);
     }
 
     @Override public void onItemClick(int position, View v, Repo item) {
-        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+        SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
     @Override public void onItemLongClick(int position, View v, Repo item) {}
+
+    @NonNull FilterOptionsModel getFilterOptions() {
+        return filterOptions;
+    }
 }

@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.SlackInvitePostModel;
 import com.fastaccess.data.dao.model.Login;
@@ -29,14 +30,14 @@ public class SlackInvitationService extends IntentService {
             body.setEmail(login.getEmail());
             body.setFirst_name(login.getName());
             body.setLast_name(login.getLogin());
-            RxHelper.getObserver(RestProvider.getSlackService()
+            RxHelper.getObservable(RestProvider.getSlackService()
                     .invite(body))
                     .subscribe(response -> {
                         if (response != null) {
                             if (response.isOk()) {
-                                Toasty.success(getApplicationContext(), getString(R.string.successfully_invited)).show();
+                                Toasty.success(App.getInstance(), getString(R.string.successfully_invited)).show();
                             } else {
-                                Toasty.info(getApplicationContext(), response.getError().replaceAll("_", " ")).show();
+                                Toasty.info(App.getInstance(), response.getError().replaceAll("_", " ")).show();
                             }
                         }
                     }, Throwable::printStackTrace);
