@@ -40,12 +40,6 @@ public class RepoQueryProvider {
                 "+is:" + issueState.name();
     }
 
-    @NonNull public static String getReviewDismissed(@NonNull String username, @NonNull IssueState issueState) {
-        return "type:pr" +
-                "+" + "review_dismissed:" + username +
-                "+is:" + issueState.name();
-    }
-
     public static String getParticipated(@NonNull String username, @NonNull IssueState issueState, boolean isPr) {
         return "type:" + (isPr ? "pr" : "issue") +
                 "+" + "involves:" + username +
