@@ -13,7 +13,7 @@ import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
 import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp.ReviewCommentCallback;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -30,27 +30,31 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     private final boolean showEmojies;
     private final ReactionsCallback reactionsCallback;
     private final boolean isMerged;
-    private final PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback;
+    private final ReviewCommentCallback reviewCommentCallback;
+    private final String repoOwner;
+    private final String poster;
 
     public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
                                      ReactionsCallback reactionsCallback, boolean isMerged,
-                                     PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback) {
+                                     ReviewCommentCallback reviewCommentCallback, String repoOwner, String poster) {
         super(data);
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
         this.reactionsCallback = reactionsCallback;
         this.isMerged = isMerged;
         this.reviewCommentCallback = reviewCommentCallback;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
     }
 
     public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
-                                     ReactionsCallback reactionsCallback) {
-        this(data, onToggleView, showEmojies, reactionsCallback, false, null);
+                                     ReactionsCallback reactionsCallback, String repoOwner, String poster) {
+        this(data, onToggleView, showEmojies, reactionsCallback, false, null, repoOwner, poster);
     }
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
         if (viewType == TimelineModel.HEADER) {
-            return IssueDetailsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback);
+            return IssueDetailsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, repoOwner, poster);
         } else if (viewType == TimelineModel.EVENT) {
             return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
         } else if (viewType == TimelineModel.STATUS) {
@@ -58,9 +62,11 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         } else if (viewType == TimelineModel.REVIEW) {
             return ReviewsViewHolder.newInstance(parent, this);
         } else if (viewType == TimelineModel.GROUPED_REVIEW) {
-            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, reviewCommentCallback);
+            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
+                    reviewCommentCallback, repoOwner, poster);
         }
-        return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies, reactionsCallback);
+        return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies,
+                reactionsCallback, repoOwner, poster);
     }
 
     @Override protected void onBindView(BaseViewHolder holder, int position) {

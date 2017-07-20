@@ -116,16 +116,18 @@
 
     <string-array name="languages_array" translatable="false">
         <item>English</item>
-        <item>German</item>
-        <item>Turkish</item>
-        <item>Simplified Chinese</item>
-        <item>Traditional Chinese</item>
+        <item>Deutsch</item>
+        <item>Türk</item>
+        <item>简体中文</item>
+        <item>正體中文</item>
         <item>Bahasa Indonesia</item>
-        <item>Russian</item>
-        <item>Italian</item>
-        <item>Japanese</item>
-        <item>Lithuanian</item>
-        <item>Brazilian Portuguese</item>
+        <item>Русский</item>
+        <item>Italiano</item>
+        <item>日本語</item>
+        <item>Lietuvos</item>
+        <item>Português (Brasil)</item>
+        <item>Český</item>
+        <item>Español</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -140,6 +142,8 @@
         <item>ja</item>
         <item>lt</item>
         <item>pt-rBR</item>
+        <item>cs</item>
+        <item>es</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">

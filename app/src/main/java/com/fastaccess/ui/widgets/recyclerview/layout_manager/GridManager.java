@@ -5,8 +5,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
-import com.fastaccess.helper.Logger;
-
 /**
  * Created by Kosh on 17 May 2016, 10:02 PM
  */
@@ -41,7 +39,6 @@ public class GridManager extends GridLayoutManager {
             if (spanCount < 1) {
                 spanCount = 1;
             }
-            Logger.e(spanCount);
             this.setSpanCount(spanCount);
         }
     }

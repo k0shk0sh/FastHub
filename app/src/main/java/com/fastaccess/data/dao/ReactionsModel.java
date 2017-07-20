@@ -18,7 +18,7 @@ import lombok.Setter;
     private long id;
     private String url;
     private int total_count;
-    @SerializedName("+1") private int plusOne; // FIXME check this code
+    @SerializedName("+1") private int plusOne;
     @SerializedName("-1") private int minusOne;
     private int laugh;
     private int hooray;

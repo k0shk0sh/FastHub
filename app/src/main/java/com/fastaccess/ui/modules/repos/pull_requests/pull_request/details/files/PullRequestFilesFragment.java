@@ -17,9 +17,11 @@ import com.fastaccess.data.dao.CommitLinesModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -84,7 +86,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.small_grid_refresh_list;
+        return R.layout.micro_grid_refresh_list;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new CommitFilesAdapter(getPresenter().getFiles(), this, this);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
@@ -148,7 +150,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
 
     @Override public void onToggle(long position, boolean isCollapsed) {
         if (adapter.getItem((int) position).getCommitFileModel().getPatch() == null) {
-            ActivityHelper.openChooser(getContext(), adapter.getItem((int) position).getCommitFileModel().getBlobUrl());
+            ActivityHelper.startCustomTab(getActivity(), adapter.getItem((int) position).getCommitFileModel().getBlobUrl());
         }
         toggleMap.put(position, isCollapsed);
     }
@@ -164,8 +166,13 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onPatchClicked(int groupPosition, int childPosition, View v, CommitFileModel commit, CommitLinesModel item) {
-        AddReviewDialogFragment.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getFilename()).end())
-                .show(getChildFragmentManager(), "AddReviewDialogFragment");
+        if (item.getText().startsWith("@@")) return;
+        if (PrefGetter.isProEnabled()) {
+            AddReviewDialogFragment.Companion.newInstance(item, Bundler.start().put(BundleConstant.ITEM, commit.getFilename()).end())
+                    .show(getChildFragmentManager(), "AddReviewDialogFragment");
+        } else {
+            PremiumActivity.Companion.startActivity(getContext());
+        }
     }
 
     @Override public void onCommentAdded(@NonNull String comment, @NonNull CommitLinesModel item, Bundle bundle) {
@@ -175,7 +182,12 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
             CommentRequestModel commentRequestModel = new CommentRequestModel();
             commentRequestModel.setBody(comment);
             commentRequestModel.setPath(path);
-            commentRequestModel.setPosition(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            if (item.getRightLineNo() > 0 && item.getLeftLineNo() > 0) {
+                commentRequestModel.setPosition(item.getPosition());
+            } else {
+                commentRequestModel.setPosition(item.getPosition());
+//                commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            }
             if (viewCallback != null) viewCallback.onAddComment(commentRequestModel);
         }
     }

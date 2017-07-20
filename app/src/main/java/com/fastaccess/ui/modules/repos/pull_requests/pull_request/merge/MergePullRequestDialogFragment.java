@@ -12,10 +12,13 @@ import com.fastaccess.R;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseDialogFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnItemSelected;
 
 /**
  * Created by Kosh on 18 Mar 2017, 12:13 PM
@@ -76,5 +79,14 @@ public class MergePullRequestDialogFragment extends BaseDialogFragment<MergePull
             mergeCallback.onMerge(InputHelper.toString(title), mergeMethod.getSelectedItem().toString().toLowerCase());
         }
         dismiss();
+    }
+
+    @OnItemSelected(R.id.mergeMethod) void onItemSelect(int position) {
+        if (position > 0) {
+            if (!PrefGetter.isProEnabled()) {
+                mergeMethod.setSelection(0);
+                PremiumActivity.Companion.startActivity(getContext());
+            }
+        }
     }
 }

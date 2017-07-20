@@ -13,7 +13,6 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.
 import com.fastaccess.ui.modules.reviews.callback.ReviewCommentListener;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,13 +26,13 @@ interface CommitFilesMvp {
         void onNotifyAdapter(@Nullable List<CommitFileChanges> items);
 
         void onCommentAdded(@NonNull Comment newComment);
+
+        void clearAdapter();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<CommitFileChanges> {
 
         void onFragmentCreated(@Nullable Bundle bundle);
-
-        @NonNull ArrayList<CommitFileChanges> getFiles();
 
         void onSubmitComment(@NonNull String comment, @NonNull CommitLinesModel item, @Nullable Bundle bundle);
     }

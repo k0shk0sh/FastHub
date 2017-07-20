@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.data.dao.CommitFileChanges;
+import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -72,11 +72,13 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getPullRequestService().getPullRequestFiles(login, repoId, number, page)
+        makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestFiles(login, repoId, number, page)
                         .flatMap(commitFileModelPageable -> {
-                            if (commitFileModelPageable != null && commitFileModelPageable.getItems() != null) {
+                            if (commitFileModelPageable != null) {
                                 lastPage = commitFileModelPageable.getLast();
-                                return Observable.just(CommitFileChanges.construct(commitFileModelPageable.getItems()));
+                                if (commitFileModelPageable.getItems() != null) {
+                                    return Observable.just(CommitFileChanges.construct(commitFileModelPageable.getItems()));
+                                }
                             }
                             return Observable.empty();
                         }),

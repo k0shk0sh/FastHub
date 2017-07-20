@@ -31,10 +31,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="end"
-        android:clipToPadding="false"
-        android:paddingBottom="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/spacing_xs_large"
+        android:layout_marginEnd="@dimen/spacing_micro"
+        android:layout_marginTop="?actionBarSize"
         android:visibility="gone"
         tools:visibility="visible"/>
-
 
 </FrameLayout>

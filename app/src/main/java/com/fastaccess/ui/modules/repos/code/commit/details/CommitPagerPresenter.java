@@ -52,14 +52,14 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
                 sendToView(CommitPagerMvp.View::onSetup);
                 return;
             } else if (!InputHelper.isEmpty(sha) && !InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                makeRestCall(RestProvider.getRepoService()
+                makeRestCall(RestProvider.getRepoService(isEnterprise())
                         .getCommit(login, repoId, sha)
                         .flatMap(commit -> {
                             if (commit.getGitCommit() != null && commit.getGitCommit().getMessage() != null) {
                                 MarkdownModel markdownModel = new MarkdownModel();
                                 markdownModel.setContext(login + "/" + repoId);
                                 markdownModel.setText(commit.getGitCommit().getMessage());
-                                return RestProvider.getRepoService().convertReadmeToHtml(markdownModel);
+                                return RestProvider.getRepoService(isEnterprise()).convertReadmeToHtml(markdownModel);
                             }
                             return Observable.just(commit);
                         }, (commit, u) -> {
@@ -81,7 +81,7 @@ class CommitPagerPresenter extends BasePresenter<CommitPagerMvp.View> implements
     }
 
     @Override public void onWorkOffline(@NonNull String sha, @NonNull String repoId, @NonNull String login) {
-        manageDisposable(RxHelper.getObserver(Commit.getCommit(sha, repoId, login))
+        manageDisposable(RxHelper.getObservable(Commit.getCommit(sha, repoId, login))
                 .subscribe(commit -> {
                     commitModel = commit;
                     sendToView(CommitPagerMvp.View::onSetup);

@@ -70,9 +70,10 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true, this);
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true,
+                this, getArguments().getString(BundleConstant.EXTRA), null);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();
@@ -148,6 +149,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -176,6 +178,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
                 .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
@@ -191,6 +194,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .put("message", message)
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;

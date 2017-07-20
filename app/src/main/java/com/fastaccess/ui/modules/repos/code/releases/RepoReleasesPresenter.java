@@ -60,10 +60,10 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
             return;
         }
         if (repoId == null || login == null) return;
-        makeRestCall(RestProvider.getRepoService().getReleases(login, repoId, page),
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getReleases(login, repoId, page),
                 response -> {
                     if (response.getItems() == null || response.getItems().isEmpty()) {
-                        makeRestCall(RestProvider.getRepoService().getTagReleases(login, repoId, page), this::onResponse);
+                        makeRestCall(RestProvider.getRepoService(isEnterprise()).getTagReleases(login, repoId, page), this::onResponse);
                         return;
                     }
                     onResponse(response);
@@ -77,14 +77,14 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
         String tag = bundle.getString(BundleConstant.EXTRA_THREE);
         long id = bundle.getLong(BundleConstant.EXTRA_TWO, -1);
         if (!InputHelper.isEmpty(tag)) {
-            manageObservable(RestProvider.getRepoService().getTagRelease(login, repoId, tag)
+            manageObservable(RestProvider.getRepoService(isEnterprise()).getTagRelease(login, repoId, tag)
                     .doOnNext(release -> {
                         if (release != null) {
                             sendToView(view -> view.onShowDetails(release));
                         }
                     }));
         } else if (id > 0) {
-            manageObservable(RestProvider.getRepoService().getRelease(login, repoId, id)
+            manageObservable(RestProvider.getRepoService(isEnterprise()).getRelease(login, repoId, id)
                     .doOnNext(release -> {
                         if (release != null) {
                             sendToView(view -> view.onShowDetails(release));
@@ -123,7 +123,7 @@ class RepoReleasesPresenter extends BasePresenter<RepoReleasesMvp.View> implemen
     private void onResponse(Pageable<Release> response) {
         lastPage = response.getLast();
         if (getCurrentPage() == 1) {
-            manageObservable(Release.save(response.getItems(), repoId, login));
+            manageDisposable(Release.save(response.getItems(), repoId, login));
         }
         sendToView(view -> view.onNotifyAdapter(response.getItems(), getCurrentPage()));
     }

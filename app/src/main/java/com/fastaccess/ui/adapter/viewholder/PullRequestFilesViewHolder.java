@@ -2,16 +2,13 @@ package com.fastaccess.ui.adapter.viewholder;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.transition.ChangeBounds;
-import android.support.transition.TransitionManager;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.data.dao.CommitLinesModel;
-import com.fastaccess.data.dao.CommitFileChanges;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.adapter.CommitLinesAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesMvp;
@@ -98,9 +95,6 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
     }
 
     private void onToggle(boolean expanded, boolean animate, int position) {
-        if (animate) {
-            TransitionManager.beginDelayedTransition(viewGroup, new ChangeBounds());
-        }
         if (!expanded) {
             patch.swapAdapter(null, true);
             patch.setVisibility(View.GONE);
@@ -112,6 +106,9 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
                 if (model.getLinesModel() != null && !model.getLinesModel().isEmpty()) {
                     patch.setAdapter(new CommitLinesAdapter(model.getLinesModel(), this));
                     patch.setVisibility(View.VISIBLE);
+                } else {
+                    patch.swapAdapter(null, true);
+                    patch.setVisibility(View.GONE);
                 }
             }
             name.setMaxLines(5);
@@ -120,7 +117,6 @@ public class PullRequestFilesViewHolder extends BaseViewHolder<CommitFileChanges
     }
 
     @Override public void onItemClick(int position, View v, CommitLinesModel item) {
-        Logger.e(item.getText());
         if (onPatchClickListener != null && adapter != null) {
             int groupPosition = getAdapterPosition();
             CommitFileChanges commitFileChanges = (CommitFileChanges) adapter.getItem(groupPosition);

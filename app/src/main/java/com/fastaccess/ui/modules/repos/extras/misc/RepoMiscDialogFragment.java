@@ -91,7 +91,7 @@ public class RepoMiscDialogFragment extends BaseDialogFragment<RepoMiscMVp.View,
         stateLayout.setOnReloadListener(v -> getPresenter().onCallApi(1, null));
         refresh.setOnRefreshListener(() -> getPresenter().onCallApi(1, null));
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new UsersAdapter(getPresenter().getList());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

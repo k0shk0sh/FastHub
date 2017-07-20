@@ -77,9 +77,9 @@
 
     <item
         android:id="@+id/reviewChanges"
-        android:icon="@drawable/ic_pull_requests"
+        android:icon="@drawable/ic_lightblub"
         android:title="@string/review_changes"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 
     <item
         android:id="@+id/share"

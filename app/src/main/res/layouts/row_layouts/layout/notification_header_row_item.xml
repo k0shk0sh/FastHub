@@ -10,7 +10,7 @@
 
     <com.fastaccess.ui.widgets.FontTextView
         android:id="@+id/headerTitle"
-        style="@style/TextAppearance.AppCompat.Title"
+        style="@style/TextAppearance.AppCompat.Subhead"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="?colorAccent"

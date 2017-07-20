@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub) [![Build status](https://ci.appveyor.com/api/projects/status/2yhxx7hu6hju24bk?svg=true)](https://ci.appveyor.com/project/k0shk0sh/fasthub)
-[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub) [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=kosh20111@gmail.com)
+[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
@@ -19,11 +19,13 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
 
 #### Snapshots / Test builds
 
-We have configurated snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
+We have configured snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
 
 # Features  
 - **App**
-  - Two login types (Basic Auth), (Access Token) or via (Browser)
+  - Three login types (Basic Auth), (Access Token) or via (OAuth)
+  - Multiple Accounts
+  - Enterprise Accounts
   - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
@@ -31,6 +33,7 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
   - Search users/orgs, repos, issues/prs & code.
   - Pinned Repos
   - Trending
+  - Wiki
 - **Repositories**
   - Browse & Read Wiki
   - Search Repos
@@ -52,7 +55,8 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
-  - PRs reviews(reply, react with emojies, delete & edit comment)
+  - PRs reviews (reply, react with emojies, delete & edit comment)
+  - PRs request review changes/approve & comment.
   - PRs statuses
 - **Commits and Gists**
   - Search Code/Gists
@@ -61,13 +65,14 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
   - Manage Commit/Gist comments
   - Create/Delete Gists
   - React to Commit comments with reactions
+  - Comment on line number in Files/Code changes.
 - **Orgs**
     - Overview
     - Feeds
     - Teams & Teams repos
     - Repos
 - **Users**
-  - Follow/unfollow users
+  - Follow/Unfollow users
   - View user feeds
   - Contribution graph.
   - Search Users, Repos, Issues,Pull Requests and Code
@@ -94,7 +99,6 @@ _Ads currently not available._
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
-- [**MaterialTapTargetPrompt**](https://github.com/sjwall/MaterialTapTargetPrompt) for displaying tips throughout the app
 - [**Material-About-Library**](https://github.com/daniel-stoneuk/material-about-library) for the about screen
 - **Fabric** analytics & crash reporting.
 - **Android Support Libraries**, the almighty ;-)
@@ -119,6 +123,8 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
            <p>- Russian [@dedepete](https://github.com/dedepete)</p>
            <p>- Turkish [@kutsan](https://github.com/kutsan)</p>
            <p>- Portuguese [@caiorrs](https://github.com/caiorrs)</p>
+           <p>- Czech [@hejsekvojtech](https://github.com/hejsekvojtech)</p>
+           <p>- Spanish [@alete89](https://github.com/alete89)</p>
 </details>
 
 ## FAQ
@@ -136,8 +142,17 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
  
 <details>
   <summary>Why my Private Repo Wiki does not show up?</summary>
-  <p>It's due to FastHub scraping GitHub Wiki page & transform it to something Android does.</p>
+  <p>It's due to FastHub scraping GitHub Wiki page & Private Repos require session token that FastHub doesn't have.</p>
 </details>
+
+<details>
+  <summary>I login with Enterprise account but can't interact with anything other than my Enterprise GitHub</summary>
+  <p>Well, logically, you can't access anything else other than your Enterprise, but FastHub made that possible but can't do much about it, 
+  in most cases since your login credential doesn't exists in GitHub server. But in <b>few</b> 
+  cases your GitHub account Oauth token will do the trick.</p>
+  
+</details>
+
 
 ## License
 
@@ -147,17 +162,21 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 ## Screenshots
 
-| Mobile Light | Mobile Dark |
+| Feeds | Drawer |
 |:-:|:-:|
-| ![Main Screen Light](/.github/assets/mobile_light.png?raw=true) | ![Main Screen Dark](/.github/assets/mobile_night.png?raw=true) |
+| ![First](/.github/assets/first.png?raw=true) | ![Sec](/.github/assets/sec.png?raw=true) |
 
-| Tablet Light | Tablet Dark |
+| Repo | Profile |
 |:-:|:-:|
-| ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
+| ![Third](/.github/assets/third.png?raw=true) | ![Fourth](/.github/assets/fourth.png?raw=true) |
 
 ## FastHub Logo
 
-**FastHub** logo is designed by **Kevin Aguilar**.  
+**FastHub** logo is designed by **Cookicons**.  
+[Google+](https://plus.google.com/+CookiconsDesign) | [Twitter](https://twitter.com/mcookie)  
+Designer website [Cookicons](https://cookicons.co/).  
+
+**OLD FastHub** logo is designed by **Kevin Aguilar**.  
 [Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
 Designer at [221 Pixels](https://www.221pixels.com/).  
 Laus Deo Semper

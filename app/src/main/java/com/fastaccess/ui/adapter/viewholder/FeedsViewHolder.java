@@ -22,6 +22,7 @@ import com.fastaccess.data.dao.model.User;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.markdown.MarkDownProvider;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
@@ -130,8 +131,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         spannableBuilder.bold(eventsModel.getPayload().getAction().replaceAll("_", ""))
                 .append(" ")
                 .append(eventsModel.getPayload().getInvitation() != null ? eventsModel.getPayload().getInvitation().getLogin() + " " : "")
-                .bold("in")
-                .append(" ")
                 .append(eventsModel.getPayload().getOrganization().getLogin());
     }
 
@@ -140,8 +139,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .append(!isColumn ? "project" : "column")
                 .append(" ")
-                .bold("in")
-                .append(" ")
                 .append(eventsModel.getRepo().getName());
     }
 
@@ -149,8 +146,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         spannableBuilder.bold(eventsModel.getPayload().getAction())
                 .append(" ")
                 .append(eventsModel.getPayload().getBlockedUser().getLogin())
-                .append(" ")
-                .bold("in")
                 .append(" ")
                 .append(eventsModel.getPayload().getOrganization().getLogin());
     }
@@ -168,8 +163,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         spannableBuilder.bold("released")
                 .append(" ")
                 .append(release.getName())
-                .append(" ")
-                .bold("at")
                 .append(" ")
                 .append(eventsModel.getRepo().getName());
     }
@@ -269,11 +262,12 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
         if ("synchronize".equals(action)) {
             action = "updated";
         }
+        if (eventsModel.getPayload().getPullRequest().isMerged()) {
+            action = "merged";
+        }
         spannableBuilder.bold(action)
                 .append(" ")
                 .bold("pull request")
-                .append(" ")
-                .bold("in")
                 .append(" ")
                 .append(eventsModel.getRepo().getName())
                 .bold("#")
@@ -319,8 +313,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .bold("issue")
                 .append(" ")
-                .bold("in")
-                .append(" ")
                 .append(eventsModel.getRepo().getName())
                 .bold("#")
                 .bold(String.valueOf(issue.getNumber()));
@@ -341,8 +333,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .bold("on")
                 .append(" ")
                 .bold(issue.getPullRequest() != null ? "pull request" : "issue")
-                .append(" ")
-                .bold("in")
                 .append(" ")
                 .append(eventsModel.getRepo().getName())
                 .bold("#")
@@ -369,8 +359,7 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
             spannableBuilder.bold(resources.getString(R.string.gollum))
                     .append(" ");
         }
-        spannableBuilder.bold("in")
-                .append(" ")
+        spannableBuilder
                 .append(eventsModel.getRepo().getName());
 
     }
@@ -445,8 +434,6 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
                 .append(" ")
                 .bold("commit")
                 .append(" ")
-                .bold("in")
-                .append(" ")
                 .append(eventsModel.getRepo().getName())
                 .url(commitId != null ? "@" + commitId : "");
         if (comment != null && comment.getBody() != null) {
@@ -467,9 +454,11 @@ public class FeedsViewHolder extends BaseViewHolder<Event> {
     private void appendAvatar(@NonNull Event eventsModel) {
         if (avatar != null) {
             if (eventsModel.getActor() != null) {
-                avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(), eventsModel.getActor().isOrganizationType());
+                avatar.setUrl(eventsModel.getActor().getAvatarUrl(), eventsModel.getActor().getLogin(),
+                        eventsModel.getActor().isOrganizationType(),
+                        LinkParserHelper.isEnterprise(eventsModel.getActor().getHtmlUrl()));
             } else {
-                avatar.setUrl(null, null);
+                avatar.setUrl(null, null, false, false);
             }
         }
     }

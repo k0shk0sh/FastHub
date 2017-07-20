@@ -20,10 +20,9 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
-
-import java.util.ArrayList;
 
 import io.reactivex.Observable;
 
@@ -33,7 +32,6 @@ import io.reactivex.Observable;
 
 class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements CommitFilesMvp.Presenter {
     @com.evernote.android.state.State String sha;
-    private ArrayList<CommitFileChanges> files = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, CommitFileChanges model) {
         if (v.getId() == R.id.open) {
@@ -76,18 +74,15 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
                 if (commitFiles != null) {
                     manageObservable(Observable.just(commitFiles)
                             .map(CommitFileChanges::construct)
-                            .doFinally(() -> CommitFilesSingleton.getInstance().clear())
-                            .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges))));
+                            .doOnSubscribe(disposable -> sendToView(CommitFilesMvp.View::clearAdapter))
+                            .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges)))
+                            .doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)));
                 }
 
             }
         } else {
             throw new NullPointerException("Bundle is null");
         }
-    }
-
-    @NonNull @Override public ArrayList<CommitFileChanges> getFiles() {
-        return files;
     }
 
     @Override public void onSubmitComment(@NonNull String comment, @NonNull CommitLinesModel item, @Nullable Bundle bundle) {
@@ -98,10 +93,16 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
             CommentRequestModel commentRequestModel = new CommentRequestModel();
             commentRequestModel.setBody(comment);
             commentRequestModel.setPath(path);
-            commentRequestModel.setPosition(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
+            commentRequestModel.setPosition(item.getPosition());
+            commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
             NameParser nameParser = new NameParser(blob);
-            makeRestCall(RestProvider.getRepoService().postCommitComment(nameParser.getUsername(),
+            makeRestCall(RestProvider.getRepoService(isEnterprise()).postCommitComment(nameParser.getUsername(),
                     nameParser.getName(), sha, commentRequestModel), newComment -> sendToView(view -> view.onCommentAdded(newComment)));
         }
+    }
+
+    @Override protected void onDestroy() {
+        CommitFilesSingleton.getInstance().clear();
+        super.onDestroy();
     }
 }

@@ -150,10 +150,12 @@ public interface RepoService {
 
 
     @NonNull @GET("repos/{owner}/{repo}/branches")
-    Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+    Observable<Pageable<BranchesModel>> getBranches(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                                    @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/tags")
-    Observable<Pageable<BranchesModel>> getTags(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
+    Observable<Pageable<BranchesModel>> getTags(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo,
+                                                @Query("page") int page);
 
     @NonNull @GET("repos/{owner}/{repo}/milestones")
     Observable<Pageable<MilestoneModel>> getMilestones(@Path("owner") String owner, @Path("repo") String repo);
@@ -176,4 +178,7 @@ public interface RepoService {
 
     @NonNull @GET("/repos/{owner}/{repo}/forks")
     Observable<Pageable<Repo>> getForks(@Path("owner") String owner, @Path("repo") String repo, @Query("page") int page);
+
+    @NonNull @GET("repos/{owner}/{repo}/license") @Headers("Accept: application/vnd.github.html")
+    Observable<String> getLicense(@Path("owner") String owner, @Path("repo") String repo);
 }

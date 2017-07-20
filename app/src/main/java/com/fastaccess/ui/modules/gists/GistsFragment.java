@@ -49,7 +49,7 @@ public class GistsFragment extends BaseFragment<GistsMvp.View, GistsPresenter> i
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new GistsAdapter(getPresenter().getGists());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());

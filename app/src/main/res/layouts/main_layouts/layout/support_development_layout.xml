@@ -155,5 +155,24 @@
             </LinearLayout>
 
         </android.support.v4.widget.NestedScrollView>
+
     </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="?colorPrimary">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/premium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:drawableEnd="@drawable/ic_arrow_right"
+            android:gravity="center"
+            android:padding="@dimen/spacing_xs_large"
+            android:text="@string/fasthub_premium_features"/>
+
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

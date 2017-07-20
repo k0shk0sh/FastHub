@@ -60,11 +60,11 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
             return;
         }
         setCurrentPage(page);
-        makeRestCall(RestProvider.getGistService().getGistComments(parameter, page),
+        makeRestCall(RestProvider.getGistService(isEnterprise()).getGistComments(parameter, page),
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Comment.saveForGist(listResponse.getItems(), parameter));
+                        manageDisposable(Comment.saveForGist(listResponse.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
@@ -79,7 +79,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
             long commId = bundle.getLong(BundleConstant.EXTRA, 0);
             String gistId = bundle.getString(BundleConstant.ID);
             if (commId != 0 && gistId != null) {
-                makeRestCall(RestProvider.getGistService().deleteGistComment(gistId, commId),
+                makeRestCall(RestProvider.getGistService(isEnterprise()).deleteGistComment(gistId, commId),
                         booleanResponse -> sendToView(view -> {
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
@@ -95,7 +95,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Comment.getGistComments(gistId).toObservable())
+            manageDisposable(RxHelper.getObservable(Comment.getGistComments(gistId).toObservable())
                     .subscribe(localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

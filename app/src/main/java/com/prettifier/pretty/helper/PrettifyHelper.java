@@ -8,15 +8,16 @@ import android.support.annotation.NonNull;
 
 public class PrettifyHelper {
 
-    @NonNull private static String getHtmlContent(@NonNull String css, @NonNull String text, @NonNull String wrapStyle, boolean isDark) {
+    @NonNull private static String getHtmlContent(@NonNull String css, @NonNull String text, @NonNull boolean wrap, boolean isDark) {
         return "<!DOCTYPE html>\n" +
                 "<html>\n" +
                 "<head>\n" +
                 "    <meta charset=\"utf-8\">\n" +
                 "    <link rel=\"stylesheet\" href=\"./styles/" + css + "\">\n" +
-                "<meta name=\"viewport\" content=\"width=device-width, height=device-height, initial-scale=.5,user-scalable=yes\"/>\n" +
+                "" + (!wrap ? "<meta name=\"viewport\" content=\"width=device-width, height=device-height, " +
+                "initial-scale=.5,user-scalable=yes\"/>\n" : "") + "" +
                 LINE_NO_CSS + "\n" +
-                "    " + wrapStyle + "\n" +
+                "    " + (wrap ? WRAPPED_STYLE : "") + "\n" +
                 "<script src=\"./js/prettify.js\"></script>\n" +
                 "<script src=\"./js/prettify_line_number.js\"></script>\n" +
                 "</head>\n" +
@@ -31,9 +32,9 @@ public class PrettifyHelper {
     @NonNull private static final String WRAPPED_STYLE =
             "<style>\n " +
                     "td.hljs-ln-code {\n" +
-                    "    word-wrap: break-word;\n" +
-                    "    word-break: break-all;\n" +
-                    "    white-space: pre-wrap;\n" +
+                    "    word-wrap: break-word !important;\n" +
+                    "    word-break: break-all  !important;\n" +
+                    "    white-space: pre-wrap  !important;\n" +
                     "}" +
                     "img {\n" +
                     "    max-width: 100% !important;\n" +
@@ -70,11 +71,11 @@ public class PrettifyHelper {
             "</style>";
 
     @NonNull public static String generateContent(@NonNull String source, String theme) {
-        return getHtmlContent(theme, getFormattedSource(source), "", false);
+        return getHtmlContent(theme, getFormattedSource(source), false, false);
     }
 
     @NonNull public static String generateContent(@NonNull String source, boolean isDark, boolean wrap) {
-        return getHtmlContent(getStyle(isDark), getFormattedSource(source), wrap ? WRAPPED_STYLE : "", isDark);
+        return getHtmlContent(getStyle(isDark), getFormattedSource(source), wrap, isDark);
     }
 
     @NonNull private static String getFormattedSource(@NonNull String source) {

@@ -6,8 +6,11 @@
    
    Public Slack channel: https://rebrand.ly/fasthub
 -->
----
 
- - FastHub Version: 
- - Android Version: 
- - Phone Model: 
+**FastHub Version:**  <!-- Don't forget to mention "Enterprise" here if needed. -->  <>
+**Android Version:**  
+**Device Information:**  
+- MANUFACTURER: <!-- e.g. Yota Devices Limited -->  
+- BRAND: <!-- e.g. YotaPhone -->  
+- MODEL: <!-- e.g. YD201 -->  
+---

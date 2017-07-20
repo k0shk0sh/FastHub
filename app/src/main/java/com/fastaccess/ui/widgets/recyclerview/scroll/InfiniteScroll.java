@@ -1,85 +1,93 @@
 package com.fastaccess.ui.widgets.recyclerview.scroll;
 
-import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 /**
  * Created by Kosh on 8/2/2015. copyrights are reserved @
  */
-@SuppressWarnings("FieldCanBeLocal") public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
-    private int previousTotal = 0;
+public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
+    private int visibleThreshold = 3;
+    private int currentPage = 0;
+    private int previousTotalItemCount = 0;
     private boolean loading = true;
-    private int visibleThreshold = 2;
-    private int firstVisibleItem;
-    private int visibleItemCount;
-    private int totalItemCount;
-    private int current_page = 0;
-    private RecyclerViewPositionHelper mRecyclerViewHelper;
-    private static final int HIDE_THRESHOLD = 20;
-    private int scrolledDistance = 0;
-    private boolean controlsVisible = true;
+    private int startingPageIndex = 0;
+    private RecyclerView.LayoutManager mLayoutManager;
 
     public InfiniteScroll() {}
 
-    @Override public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-        super.onScrollStateChanged(recyclerView, newState);
-        mRecyclerViewHelper = RecyclerViewPositionHelper.createHelper(recyclerView);
-        visibleItemCount = recyclerView.getChildCount();
-        totalItemCount = mRecyclerViewHelper.getItemCount();
-        firstVisibleItem = mRecyclerViewHelper.findFirstVisibleItemPosition();
-        if (loading) {
-            if (totalItemCount > previousTotal) {
-                loading = false;
-                previousTotal = totalItemCount;
+    public InfiniteScroll(RecyclerView.LayoutManager layoutManager) {
+        initLayoutManager(layoutManager);
+    }
+
+    private void initLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        this.mLayoutManager = layoutManager;
+        if (layoutManager instanceof GridLayoutManager) {
+            visibleThreshold = visibleThreshold * ((GridLayoutManager) layoutManager).getSpanCount();
+        } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+            visibleThreshold = visibleThreshold * ((StaggeredGridLayoutManager) layoutManager).getSpanCount();
+        }
+    }
+
+    private int getLastVisibleItem(int[] lastVisibleItemPositions) {
+        int maxSize = 0;
+        for (int i = 0; i < lastVisibleItemPositions.length; i++) {
+            if (i == 0) {
+                maxSize = lastVisibleItemPositions[i];
+            } else if (lastVisibleItemPositions[i] > maxSize) {
+                maxSize = lastVisibleItemPositions[i];
             }
         }
-        if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-            current_page++;
-            onLoadMore(current_page, previousTotal);
-            loading = true;
-        }
-        if (firstVisibleItem + visibleItemCount >= totalItemCount) {
-            onScrollToLast(recyclerView);
-        }
+        return maxSize;
     }
 
     @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        super.onScrolled(recyclerView, dx, dy);
-        if (scrolledDistance > HIDE_THRESHOLD && controlsVisible) {
-            onHide(recyclerView);
-            controlsVisible = false;
-            scrolledDistance = 0;
-        } else if (scrolledDistance < -HIDE_THRESHOLD && !controlsVisible) {
-            onShow(recyclerView);
-            controlsVisible = true;
-            scrolledDistance = 0;
+        if (mLayoutManager == null) {
+            initLayoutManager(recyclerView.getLayoutManager());
         }
-        if ((controlsVisible && dy > 0) || (!controlsVisible && dy < 0)) {
-            scrolledDistance += dy;
+        int lastVisibleItemPosition = 0;
+        int totalItemCount = mLayoutManager.getItemCount();
+        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
+            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
+            lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
+        } else if (mLayoutManager instanceof GridLayoutManager) {
+            lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        } else if (mLayoutManager instanceof LinearLayoutManager) {
+            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        }
+        if (totalItemCount < previousTotalItemCount) {
+            this.currentPage = this.startingPageIndex;
+            this.previousTotalItemCount = totalItemCount;
+            if (totalItemCount == 0) {
+                this.loading = true;
+            }
+        }
+        if (loading && (totalItemCount > previousTotalItemCount)) {
+            loading = false;
+            previousTotalItemCount = totalItemCount;
+        }
+        if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
+            currentPage++;
+            onLoadMore(currentPage, totalItemCount);
+            loading = true;
         }
     }
-
-    @SuppressWarnings("WeakerAccess") protected void onScrollToLast(RecyclerView recyclerView) {}
-
-    @SuppressWarnings("WeakerAccess") protected void onShow(RecyclerView recyclerView) {}
-
-    @SuppressWarnings("WeakerAccess") protected void onHide(RecyclerView recyclerView) {
-
-    }
-
-    protected void onLoadMore(int page, int previousTotal) {}
 
     public void reset() {
-        this.previousTotal = 0;
+        this.currentPage = this.startingPageIndex;
+        this.previousTotalItemCount = 0;
         this.loading = true;
-        this.current_page = 0;
     }
 
-    public void setCurrent_page(int page, int previousTotal) {
-        this.current_page = page;
-        this.previousTotal = previousTotal;
+    public void initialize(int page, int previousTotal) {
+        this.currentPage = page;
+        this.previousTotalItemCount = previousTotal;
         this.loading = true;
-
     }
+
+    public abstract void onLoadMore(int page, int totalItemsCount);
+
 }
 

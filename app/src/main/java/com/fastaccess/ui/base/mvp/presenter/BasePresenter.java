@@ -29,6 +29,8 @@ import retrofit2.HttpException;
  */
 
 public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> implements BaseMvp.FAPresenter {
+    @com.evernote.android.state.State boolean enterprise;
+
     private boolean apiCalled;
     private final RxTiPresenterDisposableHandler subscriptionHandler = new RxTiPresenterDisposableHandler(this);
 
@@ -48,7 +50,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @Override public <T> void manageObservable(@Nullable Observable<T> observable) {
         if (observable != null) {
-            manageDisposable(RxHelper.getObserver(observable).subscribe(t -> {/**/}, Throwable::printStackTrace));
+            manageDisposable(RxHelper.getObservable(observable).subscribe(t -> {/**/}, Throwable::printStackTrace));
         }
     }
 
@@ -87,7 +89,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext) {
         manageDisposable(
-                RxHelper.getObserver(observable)
+                RxHelper.getObservable(observable)
                         .doOnSubscribe(disposable -> onSubscribed())
                         .subscribe(onNext, this::onError, () -> apiCalled = true)
         );
@@ -103,5 +105,13 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
             resId = R.string.unexpected_error;
         }
         return resId;
+    }
+
+    public boolean isEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(boolean enterprise) {
+        this.enterprise = enterprise;
     }
 }

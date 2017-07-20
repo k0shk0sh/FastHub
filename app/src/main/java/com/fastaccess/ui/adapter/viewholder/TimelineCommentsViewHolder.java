@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.transition.ChangeBounds;
 import android.support.transition.TransitionManager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
@@ -16,6 +17,7 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
@@ -52,10 +54,13 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.commentOptions) RelativeLayout commentOptions;
     @BindView(R.id.comment) FontTextView comment;
     @BindView(R.id.reactionsText) FontTextView reactionsText;
+    @BindView(R.id.owner) FontTextView owner;
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
     private ViewGroup viewGroup;
+    private String repoOwner;
+    private String poster;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
@@ -71,12 +76,15 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     private TimelineCommentsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
-                                       @NonNull OnToggleView onToggleView, boolean showEmojies, @NonNull ReactionsCallback reactionsCallback) {
+                                       @NonNull OnToggleView onToggleView, boolean showEmojies, @NonNull ReactionsCallback reactionsCallback,
+                                       String repoOwner, String poster) {
         super(itemView, adapter);
         this.viewGroup = viewGroup;
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
         this.reactionsCallback = reactionsCallback;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
@@ -98,24 +106,46 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
 
     public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
                                                          @NonNull OnToggleView onToggleView, boolean showEmojies,
-                                                         @NonNull ReactionsCallback reactionsCallback) {
+                                                         @NonNull ReactionsCallback reactionsCallback, String repoOwner, String poster) {
         return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), viewGroup, adapter,
-                onToggleView, showEmojies, reactionsCallback);
+                onToggleView, showEmojies, reactionsCallback, repoOwner, poster);
     }
 
     @Override public void bind(@NonNull TimelineModel timelineModel) {
         Comment commentsModel = timelineModel.getComment();
         if (commentsModel.getUser() != null) {
-            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin());
+            avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
+                    false, LinkParserHelper.isEnterprise(commentsModel.getHtmlUrl()));
+            name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
+            boolean isRepoOwner = TextUtils.equals(commentsModel.getUser().getLogin(), repoOwner);
+            if (isRepoOwner) {
+                owner.setVisibility(View.VISIBLE);
+                owner.setText(R.string.owner);
+            } else {
+                boolean isPoster = TextUtils.equals(commentsModel.getUser().getLogin(), poster);
+                if (isPoster) {
+                    owner.setVisibility(View.VISIBLE);
+                    owner.setText(R.string.original_poster);
+                } else {
+                    owner.setText(null);
+                    owner.setVisibility(View.GONE);
+                }
+            }
         } else {
-            avatar.setUrl(null, null);
+            avatar.setUrl(null, null, false, false);
+            name.setText(null);
         }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentsModel.getBodyHtml());
+            String body = commentsModel.getBodyHtml();
+            if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
+                body = "<small color='grey'><i>Commented at <b>line(" +
+                        (commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()) + ")</b> in "
+                        + commentsModel.getPath() + "</i></small><br/>" + body;
+            }
+            HtmlHelper.htmlIntoTextView(comment, body);
         } else {
             comment.setText("");
         }
-        name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
         if (commentsModel.getCreatedAt().before(commentsModel.getUpdatedAt())) {
             date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(commentsModel.getCreatedAt()), itemView
                     .getResources().getString(R.string.edited)));

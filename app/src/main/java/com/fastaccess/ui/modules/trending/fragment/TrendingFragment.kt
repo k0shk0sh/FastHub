@@ -17,9 +17,9 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 
 class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragmentPresenter>(), TrendingFragmentMvp.View {
 
-    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById(R.id.recycler) as DynamicRecyclerView }
-    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById(R.id.refresh) as SwipeRefreshLayout }
-    val stateLayout: StateLayout by lazy { view!!.findViewById(R.id.stateLayout) as StateLayout }
+    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
+    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
+    val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
     val adapter by lazy { TrendingAdapter(presenter.getTendingList()) }
 
     @State var lang: String = ""

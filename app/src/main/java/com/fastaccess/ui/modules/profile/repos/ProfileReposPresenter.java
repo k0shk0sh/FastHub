@@ -5,14 +5,13 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.NameParser;
-import com.fastaccess.data.dao.model.FilterOptionsModel;
+import com.fastaccess.data.dao.FilterOptionsModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 
 import java.util.ArrayList;
 
@@ -72,14 +71,15 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
             sendToView(ProfileReposMvp.View::hideProgress);
             return;
         }
-        filterOptions.setIsPersonalProfile(TextUtils.equals(currentLoggedIn, username));
-        makeRestCall(TextUtils.equals(currentLoggedIn, username)
-                     ? RestProvider.getUserService().getRepos(filterOptions.getQueryMap(), page)
-                     : RestProvider.getUserService().getRepos(parameter, filterOptions.getQueryMap(), page),
+        boolean isProfile = TextUtils.equals(currentLoggedIn, username);
+        filterOptions.setIsPersonalProfile(isProfile);
+        makeRestCall(isProfile
+                     ? RestProvider.getUserService(isEnterprise()).getRepos(filterOptions.getQueryMap(), page)
+                     : RestProvider.getUserService(isEnterprise()).getRepos(parameter, filterOptions.getQueryMap(), page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
+                        manageDisposable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
@@ -91,7 +91,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObservable(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileReposMvp.View::hideProgress);
@@ -99,32 +99,28 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
     }
 
     @Override public void onItemClick(int position, View v, Repo item) {
-        RepoPagerActivity.startRepoPager(v.getContext(), new NameParser(item.getHtmlUrl()));
+        SchemeParser.launchUri(v.getContext(), item.getHtmlUrl());
     }
 
     @Override public void onItemLongClick(int position, View v, Repo item) {}
 
-    public FilterOptionsModel getFilterOptions() {
-        return filterOptions;
-    }
-
-    @Override
-    public void onFilterApply() {
+    @Override public void onFilterApply() {
         onCallApi(1, username);
     }
 
-    @Override
-    public void onTypeSelected(String selectedType) {
+    @Override public void onTypeSelected(String selectedType) {
         filterOptions.setType(selectedType);
     }
 
-    @Override
-    public void onSortOptionSelected(String selectedSortOption) {
+    @Override public void onSortOptionSelected(String selectedSortOption) {
         filterOptions.setSort(selectedSortOption);
     }
 
-    @Override
-    public void onSortDirectionSelected(String selectedSortDirection) {
+    @Override public void onSortDirectionSelected(String selectedSortDirection) {
         filterOptions.setSortDirection(selectedSortDirection);
+    }
+
+    FilterOptionsModel getFilterOptions() {
+        return filterOptions;
     }
 }

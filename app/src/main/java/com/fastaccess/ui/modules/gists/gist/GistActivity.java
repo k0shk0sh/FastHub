@@ -23,6 +23,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -57,9 +58,12 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     private int accentColor;
     private int iconColor;
 
-    public static Intent createIntent(@NonNull Context context, @NonNull String gistId) {
+    public static Intent createIntent(@NonNull Context context, @NonNull String gistId, boolean isEnterprise) {
         Intent intent = new Intent(context, GistActivity.class);
-        intent.putExtras(Bundler.start().put(BundleConstant.EXTRA, gistId).end());
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, gistId)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .end());
         return intent;
     }
 
@@ -86,12 +90,12 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         switch (view.getId()) {
             case R.id.startGist:
                 GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                        getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST);
+                        getPresenter().isStarred() ? GithubActionService.UNSTAR_GIST : GithubActionService.STAR_GIST, isEnterprise());
                 getPresenter().onStarGist();
                 break;
             case R.id.forkGist:
                 GithubActionService.startForGist(this, getPresenter().getGist().getGistId(),
-                        GithubActionService.FORK_GIST);
+                        GithubActionService.FORK_GIST, isEnterprise());
                 getPresenter().onForkGist();
                 break;
             case R.id.browser:
@@ -174,7 +178,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         if (getPresenter().getGist() != null) {
             Intent intent = new Intent();
             Gist gistsModel = new Gist();
-            gistsModel.setUrl(getPresenter().getGist().getUrl());
+            gistsModel.setUrl(getPresenter().getGist().getHtmlUrl());
             intent.putExtras(Bundler.start().put(BundleConstant.ITEM, gistsModel).end());
             setResult(RESULT_OK, intent);
         }
@@ -206,8 +210,9 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                      gistsModel.getUser() != null ? gistsModel.getUser().getAvatarUrl() : "";
         String login = gistsModel.getOwner() != null ? gistsModel.getOwner().getLogin() :
                        gistsModel.getUser() != null ? gistsModel.getUser().getLogin() : "";
-        avatarLayout.setUrl(url, login);
+        avatarLayout.setUrl(url, login, false, LinkParserHelper.isEnterprise(gistsModel.getHtmlUrl()));
         title.setText(gistsModel.getDisplayTitle(false, true));
+        setTaskName(gistsModel.getDisplayTitle(false, true).toString());
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
         if (gistsModel.getCreatedAt().before(gistsModel.getUpdatedAt())) {
             date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()), getString(R.string.edited)));

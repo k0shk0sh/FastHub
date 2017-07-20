@@ -8,7 +8,7 @@
     <color name="bluish_accent">#448AFF</color>
 
     <color name="bluishWindowBackground">@color/bluish_background</color>
-    <color name="bluishDivider">#80949494</color>
+    <color name="bluishDivider">#802A456B</color>
 
     <style name="ThemeBluish" parent="ThemeBluish.Base"/>
 
