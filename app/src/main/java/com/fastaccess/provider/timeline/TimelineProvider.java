@@ -56,13 +56,20 @@ public class TimelineProvider {
                 if (user != null) {
                     spannableBuilder.bold(user.getLogin());
                 }
-                if (event == IssueEventType.review_requested || event == IssueEventType.review_dismissed) {
+                if (event == IssueEventType.review_requested || (event == IssueEventType.review_dismissed || event == IssueEventType
+                        .review_request_removed)) {
                     spannableBuilder
-                            .append(" ")
-                            .append(event == IssueEventType.review_requested ? "Requested a review" : "dismissed the review")
-                            .append(" ")
-                            .append(from)
                             .append(" ");
+                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getRequestedReviewer().getLogin())) {
+                        spannableBuilder
+                                .append(event == IssueEventType.review_requested ? "self-requested a review" : "removed their request for review");
+                    } else {
+                        spannableBuilder
+                                .append(event == IssueEventType.review_requested ? "Requested a review" : "dismissed the review")
+                                .append(" ")
+                                .append(from)
+                                .append(" ");
+                    }
                     if (issueEventModel.getRequestedTeam() != null) {
                         String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
                                       ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
@@ -70,7 +77,8 @@ public class TimelineProvider {
                                 .bold(name)
                                 .append(" ")
                                 .append("team");
-                    } else if (issueEventModel.getRequestedReviewer() != null) {
+                    } else if (issueEventModel.getRequestedReviewer() != null && user != null && !user.getLogin().equalsIgnoreCase(issueEventModel
+                            .getRequestedReviewer().getLogin())) {
                         spannableBuilder.bold(issueEventModel.getRequestedReviewer().getLogin());
                     }
                 } else if (event == IssueEventType.closed || event == IssueEventType.reopened) {
@@ -104,11 +112,11 @@ public class TimelineProvider {
                                 .append(" ")
                                 .bold(issueEventModel.getAssignee().getLogin());
                     }
-                }  else if (event == IssueEventType.locked || event == IssueEventType.unlocked) {
-                        spannableBuilder
-                                .append(" ")
-                                .append(event == IssueEventType.locked ? "locked and limited conversation to collaborators" : "unlocked this " +
-                                        "conversation");
+                } else if (event == IssueEventType.locked || event == IssueEventType.unlocked) {
+                    spannableBuilder
+                            .append(" ")
+                            .append(event == IssueEventType.locked ? "locked and limited conversation to collaborators" : "unlocked this " +
+                                    "conversation");
                 } else if (event == IssueEventType.head_ref_deleted || event == IssueEventType.head_ref_restored) {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "),
                             new BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())));
