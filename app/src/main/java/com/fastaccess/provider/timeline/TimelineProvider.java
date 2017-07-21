@@ -56,31 +56,10 @@ public class TimelineProvider {
                 if (user != null) {
                     spannableBuilder.bold(user.getLogin());
                 }
-                if (event == IssueEventType.review_requested || (event == IssueEventType.review_dismissed || event == IssueEventType
-                        .review_request_removed)) {
-                    spannableBuilder
-                            .append(" ");
-                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getRequestedReviewer().getLogin())) {
-                        spannableBuilder
-                                .append(event == IssueEventType.review_requested ? "self-requested a review" : "removed their request for review");
-                    } else {
-                        spannableBuilder
-                                .append(event == IssueEventType.review_requested ? "Requested a review" : "dismissed the review")
-                                .append(" ")
-                                .append(from)
-                                .append(" ");
-                    }
-                    if (issueEventModel.getRequestedTeam() != null) {
-                        String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
-                                      ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
-                        spannableBuilder
-                                .bold(name)
-                                .append(" ")
-                                .append("team");
-                    } else if (issueEventModel.getRequestedReviewer() != null && user != null && !user.getLogin().equalsIgnoreCase(issueEventModel
-                            .getRequestedReviewer().getLogin())) {
-                        spannableBuilder.bold(issueEventModel.getRequestedReviewer().getLogin());
-                    }
+
+                if ((event == IssueEventType.review_requested || (event == IssueEventType.review_dismissed ||
+                        event == IssueEventType.review_request_removed)) && user != null) {
+                    appendReviews(issueEventModel, event, spannableBuilder, from, user);
                 } else if (event == IssueEventType.closed || event == IssueEventType.reopened) {
                     if (isMerged) {
                         spannableBuilder.append(" ").append(IssueEventType.merged.name());
@@ -149,6 +128,34 @@ public class TimelineProvider {
             }
         }
         return spannableBuilder;
+    }
+
+    private static void appendReviews(@NonNull IssueEvent issueEventModel, @NonNull IssueEventType event,
+                                      @NonNull SpannableBuilder spannableBuilder, @NonNull String from, @NonNull User user) {
+        spannableBuilder.append(" ");
+        User reviewer = issueEventModel.getRequestedReviewer() != null
+                        ? issueEventModel.getRequestedReviewer() : issueEventModel.getIssue() != null ? issueEventModel.getIssue().getUser() : null;
+        if (reviewer != null && user.getLogin().equalsIgnoreCase(reviewer.getLogin())) {
+            spannableBuilder
+                    .append(event == IssueEventType.review_requested
+                            ? "self-requested a review" : "removed their request for review");
+        } else {
+            spannableBuilder
+                    .append(event == IssueEventType.review_requested ? "Requested a review" : "dismissed the review")
+                    .append(" ")
+                    .append(reviewer != null && !reviewer.getLogin().equalsIgnoreCase(user.getLogin()) ? from : " ")
+                    .append(reviewer != null && !reviewer.getLogin().equalsIgnoreCase(user.getLogin()) ? " " : "");
+        }
+        if (issueEventModel.getRequestedTeam() != null) {
+            String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
+                          ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
+            spannableBuilder
+                    .bold(name)
+                    .append(" ")
+                    .append("team");
+        } else if (reviewer != null && !user.getLogin().equalsIgnoreCase(reviewer.getLogin())) {
+            spannableBuilder.bold(issueEventModel.getRequestedReviewer().getLogin());
+        }
     }
 
     public static void appendLabels(@NonNull LabelModel labelModel, @NonNull SpannableBuilder spannableBuilder) {

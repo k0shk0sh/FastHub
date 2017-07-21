@@ -10,5 +10,4 @@ public enum MyIssuesType {
     MENTIONED,
     REVIEW,
     PARTICIPATED,
-    DISMISSED
 }
