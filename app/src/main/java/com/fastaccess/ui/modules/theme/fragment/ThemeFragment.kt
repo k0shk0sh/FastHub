@@ -81,15 +81,12 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (PrefGetter.isProEnabled() || PrefGetter.isMidNightBlueThemeEnabled()
-                    || PrefGetter.isAmlodEnabled() || PrefGetter.isBluishEnabled()) {
-                val productKey = data?.getStringExtra(BundleConstant.ITEM)
-                productKey?.let {
-                    when (it) {
-                        getString(R.string.amlod_theme_purchase) -> setTheme(getString(R.string.amlod_theme_mode))
-                        getString(R.string.midnight_blue_theme_purchase) -> setTheme(getString(R.string.mid_night_blue_theme_mode))
-                        getString(R.string.theme_bluish_purchase) -> setTheme(getString(R.string.bluish_theme))
-                    }
+            val productKey = data?.getStringExtra(BundleConstant.ITEM)
+            productKey?.let {
+                when (it) {
+                    getString(R.string.amlod_theme_purchase) -> setTheme(getString(R.string.amlod_theme_mode))
+                    getString(R.string.midnight_blue_theme_purchase) -> setTheme(getString(R.string.mid_night_blue_theme_mode))
+                    getString(R.string.theme_bluish_purchase) -> setTheme(getString(R.string.bluish_theme))
                 }
             }
         }
@@ -106,6 +103,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     }
 
     private fun setTheme() {
+        if (!isGoogleSupported()) return
         when (theme) {
             R.style.ThemeLight -> {
                 setTheme(getString(R.string.light_theme_mode))
@@ -114,6 +112,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
                 setTheme(getString(R.string.dark_theme_mode))
             }
             R.style.ThemeAmlod -> {
+                if (!isGoogleSupported()) return
                 if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
                     setTheme(getString(R.string.amlod_theme_mode))
                 } else {
@@ -121,6 +120,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
                 }
             }
             R.style.ThemeMidNighBlue -> {
+                if (!isGoogleSupported()) return
                 if (PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isProEnabled()) {
                     setTheme(getString(R.string.mid_night_blue_theme_mode))
                 } else {
@@ -128,6 +128,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
                 }
             }
             R.style.ThemeBluish -> {
+                if (!isGoogleSupported()) return
                 if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
                     setTheme(getString(R.string.bluish_theme))
                 } else {
@@ -144,4 +145,11 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
 
     private fun isPremiumTheme(): Boolean = theme != R.style.ThemeLight && theme != R.style.ThemeDark
 
+    private fun isGoogleSupported(): Boolean {
+        if (AppHelper.isGoogleAvailable(context)) {
+            return true
+        }
+        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text))
+        return false
+    }
 }

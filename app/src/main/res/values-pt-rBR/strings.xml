@@ -13,7 +13,6 @@
     <string name="sign_in">Entrar</string>
     <string name="share">Compartilhar</string>
     <string name="reload">Recarregar</string>
-    <string name="feeds">Feeds</string>
     <string name="profile">Perfil</string>
     <string name="error">Erro</string>
     <string name="press_again_to_exit">Toque novamente para sair</string>
@@ -404,6 +403,17 @@
     <string name="milestone_added">Milestone adicionado com sucesso</string>
     <string name="feed">Feed</string>
     <string name="premium_theme">Tema Premium</string>
-    <string name="choose_code_theme">Escolha o Código do tema</string>
-    <string name="endpoint_hint">https://github.mydomain.com</string>
+    <string name="choose_code_theme">Escolha a paleta de cores</string>
+    <string name="enterprise_login_warning">Por favor entre com a sua conta do GitHub para acessar tudo da API do GitHub
+        do contrário você acabará tendo acesso recusado toda vez que você tentar acessar qualquer coisa que não a sua conta Enterprise GitHub devido ao token ser transmitido para
+        a API do GitHub vindo da sua conta Enterprise.</string>
+    <string name="add_account">Adicionar Conta</string>
+    <string name="choose_account">Escolher Conta</string>
+    <string name="not_match">Não corresponde</string>
+    <string name="warning">Aviso</string>
+    <string name="owner">Proprietário</string>
+    <string name="original_poster">Original Poster</string>
+    <string name="cancel_reviews">Cancelar Reviews</string>
+    <string name="colored_navbar_summary">Desabilitar a coloração da barra de navegação nos temas</string>
+<string name="colored_navbar_title">Desabilitar a coloração da barra de navegação</string>
 </resources>

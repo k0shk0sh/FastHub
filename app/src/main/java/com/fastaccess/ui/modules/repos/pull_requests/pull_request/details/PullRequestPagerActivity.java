@@ -30,11 +30,13 @@ import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
@@ -75,7 +77,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @BindView(R.id.fab) FloatingActionButton fab;
     @BindView(R.id.detailsIcon) View detailsIcon;
     @BindView(R.id.reviewsCount) FontTextView reviewsCount;
-    @BindView(R.id.submitReviews) FontTextView submitReviews;
     @BindView(R.id.prReviewHolder) CardView prReviewHolder;
     @State boolean isClosed;
     @State boolean isOpened;
@@ -116,8 +117,17 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         }
     }
 
-    @OnClick(R.id.submitReviews) public void onSubmitReviews(View view) {
+    @OnClick(R.id.submitReviews) void onSubmitReviews(View view) {
         addPrReview(view);
+    }
+
+    @OnClick(R.id.cancelReview) void onCancelReviews(View view) {
+        MessageDialogView.newInstance(getString(R.string.cancel_reviews), getString(R.string.confirm_message),
+                false, Bundler.start()
+                        .put(BundleConstant.YES_NO_EXTRA, true)
+                        .put(BundleConstant.EXTRA_TYPE, true)
+                        .end())
+                .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
     @Override protected int layout() {
@@ -165,9 +175,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                     getPresenter().onRefresh();
                 }
             } else if (requestCode == BundleConstant.REVIEW_REQUEST_CODE) {
-                onUpdateTimeline();
-                getPresenter().getCommitComment().clear();
-                AnimHelper.mimicFabVisibility(false, prReviewHolder, null);
+                hideAndClearReviews();
+                pager.setCurrentItem(0);
             }
         }
     }
@@ -230,7 +239,12 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
             ActivityHelper.startCustomTab(this, pullRequest.getHtmlUrl());
             return true;
         } else if (item.getItemId() == R.id.reviewChanges) {
-            addPrReview(item.getActionView() == null ? title : item.getActionView());
+            if (PrefGetter.isProEnabled()) {
+                addPrReview(item.getActionView() == null ? title : item.getActionView());
+            } else {
+                PremiumActivity.Companion.startActivity(this);
+            }
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -309,6 +323,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         }
         initTabs(pullRequest);
         hideShowFab();
+        AnimHelper.mimicFabVisibility(getPresenter().hasReviewComments(), prReviewHolder, null);
+        reviewsCount.setText(String.format("%s", getPresenter().getCommitComment().size()));
     }
 
     @Override public void onScrollTop(int index) {
@@ -322,6 +338,12 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
         super.onMessageDialogActionClicked(isOk, bundle);
         if (isOk) {
+            if (bundle != null) {
+                if (bundle.getBoolean(BundleConstant.EXTRA_TYPE)) {
+                    hideAndClearReviews();
+                    return;
+                }
+            }
             getPresenter().onHandleConfirmDialog(bundle);
         }
     }
@@ -413,6 +435,12 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         return getPresenter().getPullRequest();
     }
 
+    protected void hideAndClearReviews() {
+        onUpdateTimeline();
+        getPresenter().getCommitComment().clear();
+        AnimHelper.mimicFabVisibility(false, prReviewHolder, null);
+    }
+
     private void addPrReview(@NonNull View view) {
         PullRequest pullRequest = getPresenter().getPullRequest();
         if (pullRequest == null) return;
@@ -423,7 +451,8 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         requestModel.setCommitId(pullRequest.getHead().getSha());
         boolean isAuthor = author != null && Login.getUser().getLogin().equalsIgnoreCase(author.getLogin());
         ReviewChangesActivity.Companion.startForResult(this, view, requestModel, getPresenter().getRepoId(),
-                getPresenter().getLogin(), pullRequest.getNumber(), isAuthor, isEnterprise());
+                getPresenter().getLogin(), pullRequest.getNumber(), isAuthor, isEnterprise(), pullRequest.isMerged()
+                        || pullRequest.getState() == IssueState.closed);
     }
 
     private void initTabs(@NonNull PullRequest pullRequest) {

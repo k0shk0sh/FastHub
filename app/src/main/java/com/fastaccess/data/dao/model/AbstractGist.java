@@ -22,13 +22,17 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
+
+import static com.fastaccess.data.dao.model.Gist.ID;
+import static com.fastaccess.data.dao.model.Gist.OWNER_NAME;
 
 /**
  * Created by Kosh on 16 Mar 2017, 7:32 PM
@@ -55,34 +59,39 @@ import lombok.NoArgsConstructor;
     @Column(name = "user_column") @Convert(UserConverter.class) User user;
     @Convert(UserConverter.class) User owner;
 
-    public Single<Gist> save(Gist entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
-    }
-
-    public static Observable<Gist> save(@NonNull List<Gist> gists) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
-                .where(Gist.OWNER_NAME.isNull())
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(gists))
-                .flatMap(gist -> gist.save(gist).toObservable()));
-    }
-
-    public static Observable<Gist> save(@NonNull List<Gist> gists, @NonNull String ownerName) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Gist.class)
-                .where(Gist.OWNER_NAME.equal(ownerName))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(gists))
-                .map(gist -> {
-                    gist.setOwnerName(ownerName);
-                    return gist;
-                })
-                .flatMap(gist -> gist.save(gist).toObservable()));
+    public static Disposable save(@NonNull List<Gist> models, @NonNull String ownerName) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                Login login = Login.getUser();
+                if (login != null) {
+                    if (login.getLogin().equalsIgnoreCase(ownerName)) {
+                        BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                        dataSource.delete(Gist.class)
+                                .where(Gist.OWNER_NAME.equal(ownerName))
+                                .get()
+                                .value();
+                        if (!models.isEmpty()) {
+                            for (Gist gistModel : models) {
+                                dataSource.delete(Gist.class).where(ID.eq(gistModel.getId())).get().value();
+                                gistModel.setOwnerName(ownerName);
+                                dataSource.insert(gistModel);
+                            }
+                        }
+                    } else {
+                        App.getInstance().getDataStore().toBlocking()
+                                .delete(Gist.class)
+                                .where(Gist.OWNER_NAME.notEqual(ownerName)
+                                        .or(OWNER_NAME.isNull()))
+                                .get()
+                                .value();
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     @NonNull public static Single<List<Gist>> getMyGists(@NonNull String ownerName) {

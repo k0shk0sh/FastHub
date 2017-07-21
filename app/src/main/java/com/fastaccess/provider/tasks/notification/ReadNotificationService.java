@@ -135,9 +135,7 @@ public class ReadNotificationService extends IntentService {
     }
 
     private void markSingleAsRead(long id) {
-        com.fastaccess.data.dao.model.Notification.markAsRead(id)
-                .onErrorComplete()
-                .subscribe();
+        com.fastaccess.data.dao.model.Notification.markAsRead(id);
         RestProvider.getNotificationService(PrefGetter.isEnterprise())
                 .markAsRead(String.valueOf(id))
                 .doOnSubscribe(disposable -> notify(id, getNotification().build()))

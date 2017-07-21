@@ -83,14 +83,14 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                             .filter(issue -> issue.getPullRequest() == null)
                             .toList();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Issue.save(filtered, repoId, login));
+                        manageDisposable(Issue.save(filtered, repoId, login));
                     }
                     sendToView(view -> view.onNotifyAdapter(filtered, page));
                 });
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {
-        manageDisposable(RxHelper.getObserver(RestProvider.getIssueService(isEnterprise())
+        manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise())
                 .getIssuesWithCount(RepoQueryProvider.getIssuesPullRequestQuery(login, repoId, issueState, false), 1))
                 .subscribe(pullRequestPageable -> sendToView(view -> view.onUpdateCount(pullRequestPageable.getTotalCount())),
                         Throwable::printStackTrace));

@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CommitLinesModel;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -25,7 +24,8 @@ import butterknife.BindView;
 public class CommitLinesViewHolder extends BaseViewHolder<CommitLinesModel> {
 
     @BindView(R.id.textView) AppCompatTextView textView;
-    @BindView(R.id.lineNo) AppCompatTextView lineNo;
+    @BindView(R.id.leftLinNo) AppCompatTextView leftLinNo;
+    @BindView(R.id.rightLinNo) AppCompatTextView rightLinNo;
     private final int patchAdditionColor;
     private final int patchDeletionColor;
     private final int patchRefColor;
@@ -42,10 +42,8 @@ public class CommitLinesViewHolder extends BaseViewHolder<CommitLinesModel> {
     }
 
     @Override public void bind(@NonNull CommitLinesModel item) {
-        lineNo.setText(SpannableBuilder.builder()
-                .append(item.getLeftLineNo() >= 0 ? item.getLeftLineNo() + "." : "")
-                .append(item.getRightLineNo() >= 0 ? item.getRightLineNo() + "." : ""));
-        lineNo.setVisibility(InputHelper.isEmpty(lineNo) ? View.GONE : View.VISIBLE);
+        leftLinNo.setText(item.getLeftLineNo() > 0 ? String.valueOf(item.getLeftLineNo()) : "  ");
+        rightLinNo.setText(item.getRightLineNo() > 0 ? String.valueOf(item.getRightLineNo()) : "  ");
         switch (item.getColor()) {
             case CommitLinesModel.ADDITION:
                 textView.setBackgroundColor(patchAdditionColor);
@@ -54,6 +52,8 @@ public class CommitLinesViewHolder extends BaseViewHolder<CommitLinesModel> {
                 textView.setBackgroundColor(patchDeletionColor);
                 break;
             case CommitLinesModel.PATCH:
+                leftLinNo.setVisibility(View.GONE);
+                rightLinNo.setVisibility(View.GONE);
                 textView.setBackgroundColor(patchRefColor);
                 break;
             default:

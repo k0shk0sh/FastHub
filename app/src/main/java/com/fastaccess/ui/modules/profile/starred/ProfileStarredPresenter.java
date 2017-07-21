@@ -80,7 +80,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         makeRestCall(observable, repoModelPageable -> {
             lastPage = repoModelPageable.getLast();
             if (getCurrentPage() == 1) {
-                manageObservable(Repo.saveStarred(repoModelPageable.getItems(), parameter));
+                manageDisposable(Repo.saveStarred(repoModelPageable.getItems(), parameter));
             }
             sendToView(view -> {
                 view.onUpdateCount(starredCount);
@@ -95,7 +95,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Repo.getStarred(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObservable(Repo.getStarred(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> {
                         starredCount = -1;
                         view.onUpdateCount(repoModels != null ? repoModels.size() : 0);

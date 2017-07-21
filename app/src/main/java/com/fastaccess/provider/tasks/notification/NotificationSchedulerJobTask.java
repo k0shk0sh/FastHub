@@ -21,7 +21,6 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.firebase.jobdispatcher.Constraint;
@@ -49,15 +48,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NotificationSchedulerJobTask extends JobService {
     private final static String JOB_ID = "fasthub_notification";
+    private final static String SINGLE_JOB_ID = "single_fasthub_notification";
 
     private final static int THIRTY_MINUTES = 30 * 60;
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
 
     @Override public boolean onStartJob(JobParameters job) {
-        if (PrefGetter.getNotificationTaskDuration() == -1) {
-            scheduleJob(this, -1, false);
-            finishJob(job);
-            return true;
+        if (!SINGLE_JOB_ID.equalsIgnoreCase(job.getTag())) {
+            if (PrefGetter.getNotificationTaskDuration() == -1) {
+                scheduleJob(this, -1, false);
+                finishJob(job);
+                return true;
+            }
         }
         Login login = null;
         try {
@@ -75,8 +77,6 @@ public class NotificationSchedulerJobTask extends JobService {
                             finishJob(job);
                         }
                     }, throwable -> jobFinished(job, true));
-        } else {
-            finishJob(job);
         }
         return true;
     }
@@ -91,28 +91,45 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
-        if (cancel) dispatcher.cancel(JOB_ID);
-        if (duration == -1) {
-            dispatcher.cancel(JOB_ID);
-            return;
+        if (AppHelper.isGoogleAvailable(context)) {
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            if (cancel) dispatcher.cancel(JOB_ID);
+            if (duration == -1) {
+                dispatcher.cancel(JOB_ID);
+                return;
+            }
+            duration = duration <= 0 ? THIRTY_MINUTES : duration;
+            Job.Builder builder = dispatcher
+                    .newJobBuilder()
+                    .setTag(JOB_ID)
+                    .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                    .setLifetime(Lifetime.FOREVER)
+                    .setRecurring(true)
+                    .setConstraints(Constraint.ON_ANY_NETWORK)
+                    .setTrigger(Trigger.executionWindow(duration / 2, duration))
+                    .setService(NotificationSchedulerJobTask.class);
+            dispatcher.mustSchedule(builder.build());
         }
-        duration = duration <= 0 ? THIRTY_MINUTES : duration;
-        Job.Builder builder = dispatcher
-                .newJobBuilder()
-                .setTag(JOB_ID)
-                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-                .setLifetime(Lifetime.FOREVER)
-                .setRecurring(true)
-                .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(duration / 2, duration))
-                .setService(NotificationSchedulerJobTask.class);
-        dispatcher.mustSchedule(builder.build());
+    }
+
+    public static void scheduleOneTimeJob(@NonNull Context context) {
+        if (AppHelper.isGoogleAvailable(context)) {
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            Job.Builder builder = dispatcher
+                    .newJobBuilder()
+                    .setTag(SINGLE_JOB_ID)
+                    .setReplaceCurrent(true)
+                    .setRecurring(false)
+                    .setTrigger(Trigger.executionWindow(30, 60))
+                    .setConstraints(Constraint.ON_ANY_NETWORK)
+                    .setService(NotificationSchedulerJobTask.class);
+            dispatcher.mustSchedule(builder.build());
+        }
     }
 
     private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {
         if (notificationThreadModels != null) {
-            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe(notification -> {/**/}, Throwable::printStackTrace);
+            Notification.save(notificationThreadModels);
             onNotifyUser(notificationThreadModels, job);
         }
     }
@@ -170,7 +187,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void finishJob(JobParameters job) {
-        jobFinished(job, false);
+//        jobFinished(job, false);
     }
 
     private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, String iconUrl) {

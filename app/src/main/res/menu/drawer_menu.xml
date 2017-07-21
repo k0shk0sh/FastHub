@@ -53,10 +53,6 @@
         android:id="@+id/group_three"
         android:checkableBehavior="none">
         <item
-            android:id="@+id/supportDev"
-            android:icon="@drawable/ic_heart"
-            android:title="@string/support_development"/>
-        <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/settings"/>
@@ -64,10 +60,6 @@
             android:id="@+id/about"
             android:icon="@drawable/ic_info"
             android:title="@string/about"/>
-        <item
-            android:id="@+id/logout"
-            android:icon="@drawable/ic_logout"
-            android:title="@string/logout"/>
     </group>
 
 </menu>

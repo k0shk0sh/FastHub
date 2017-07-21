@@ -52,7 +52,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onDeleteGist() {
         if (getGist() == null) return;
-        manageDisposable(RxHelper.getObserver(RestProvider.getGistService(isEnterprise()).deleteGist(getGist().getGistId()))
+        manageDisposable(RxHelper.getObservable(RestProvider.getGistService(isEnterprise()).deleteGist(getGist().getGistId()))
                 .doOnSubscribe(disposable -> onSubscribed())
                 .doOnNext(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
@@ -99,7 +99,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (gist == null) {
-            manageDisposable(RxHelper.getObserver(Gist.getGist(gistId))
+            manageDisposable(RxHelper.getObservable(Gist.getGist(gistId))
                     .subscribe(gistsModel -> {
                         this.gist = gistsModel;
                         sendToView(GistMvp.View::onSetupDetails);

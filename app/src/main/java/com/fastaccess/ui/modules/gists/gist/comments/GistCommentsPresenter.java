@@ -64,7 +64,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                 listResponse -> {
                     lastPage = listResponse.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Comment.saveForGist(listResponse.getItems(), parameter));
+                        manageDisposable(Comment.saveForGist(listResponse.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
@@ -95,7 +95,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String gistId) {
         if (comments.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Comment.getGistComments(gistId).toObservable())
+            manageDisposable(RxHelper.getObservable(Comment.getGistComments(gistId).toObservable())
                     .subscribe(localComments -> sendToView(view -> view.onNotifyAdapter(localComments, 1))));
         } else {
             sendToView(BaseMvp.FAView::hideProgress);

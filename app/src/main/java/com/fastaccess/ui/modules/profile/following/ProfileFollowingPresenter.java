@@ -64,7 +64,7 @@ class ProfileFollowingPresenter extends BasePresenter<ProfileFollowingMvp.View> 
                 response -> {
                     lastPage = response.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(User.saveUserFollowingList(response.getItems(), parameter));
+                        manageDisposable(User.saveUserFollowingList(response.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });

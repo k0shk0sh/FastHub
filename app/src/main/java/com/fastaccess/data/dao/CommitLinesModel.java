@@ -49,7 +49,6 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
                     boolean addLeft = false;
                     boolean addRight = false;
                     int color = TRANSPARENT;
-                    position++;
                     if (token.startsWith("@@")) {
                         color = PATCH;
                         Matcher matcher = HUNK_TITLE.matcher(token.trim());
@@ -60,16 +59,19 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
                             } catch (NumberFormatException e) {e.printStackTrace();}
                         }
                     } else if (firstChar == '+') {
+                        position++;
                         color = ADDITION;
                         ++rightLineNo;
                         addRight = true;
                         addLeft = false;
                     } else if (firstChar == '-') {
+                        position++;
                         color = DELETION;
                         ++leftLineNo;
                         addRight = false;
                         addLeft = true;
                     } else {
+                        position++;
                         addLeft = true;
                         addRight = true;
                         ++rightLineNo;

@@ -3,6 +3,7 @@ package com.fastaccess.ui.adapter.viewholder
 import android.view.View
 import com.fastaccess.R
 import com.fastaccess.data.dao.TrendingModel
+import com.fastaccess.helper.Logger
 import com.fastaccess.provider.colors.ColorsProvider
 import com.fastaccess.provider.emoji.EmojiParser
 import com.fastaccess.ui.widgets.FontTextView
@@ -26,24 +27,27 @@ open class TrendingViewHolder(itemView: View, adapter: BaseRecyclerAdapter<Trend
 
     override fun bind(t: TrendingModel) {
         title.text = t.title
-        if (!t.description.isNullOrEmpty()) {
+        if (t.description.isNullOrBlank()) {
+            description.visibility = View.GONE
+        } else {
             val descriptionValue: String = EmojiParser.parseToUnicode(t.description)
             description.text = descriptionValue
             description.visibility = View.VISIBLE
-        } else {
-            description.visibility = View.GONE
         }
         todayStars.text = t.todayStars
         stars.text = t.stars
         fork.text = t.forks
-        lang.text = t.language
-        if (!t.language.isNullOrEmpty()) {
+        if (t.language.isNullOrBlank()) {
+            lang.visibility = View.GONE
+            lang.text = null
+        } else {
             val color = ColorsProvider.getColorAsColor(t.language!!, itemView.context)
+            Logger.e(color, t.language)
             lang.tintDrawables(color)
             lang.setTextColor(color)
+            lang.text = t.language
+            lang.visibility = View.VISIBLE
         }
-        todayStars.visibility = if (t.todayStars.isNullOrEmpty()) View.GONE else View.VISIBLE
-        lang.visibility = if (t.language.isNullOrEmpty()) View.GONE else View.VISIBLE
     }
 
 }

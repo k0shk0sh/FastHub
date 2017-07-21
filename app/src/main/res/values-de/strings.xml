@@ -12,7 +12,6 @@
     <string name="sign_in">Anmelden</string>
     <string name="share">Teilen</string>
     <string name="reload">Neu laden</string>
-    <string name="feeds">Feeds</string>
     <string name="profile">Profil</string>
     <string name="error">Fehler</string>
     <string name="press_again_to_exit">Nochmal drücken zum beenden</string>
@@ -192,7 +191,7 @@
     <string name="background_job_summary">Wähle wie regelmäßig FastHub nach neuen Benachrichtigungen sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
-    <string name="behavior">Verhalten &amp; Aussehen</string>
+    <string name="behavior">Verhalten :\&#38; Aussehen</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
     <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub ausversehen verlässt</string>

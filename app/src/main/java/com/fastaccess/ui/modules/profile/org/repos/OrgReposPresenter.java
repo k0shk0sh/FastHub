@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 
-import com.fastaccess.data.dao.model.FilterOptionsModel;
+import com.fastaccess.data.dao.FilterOptionsModel;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -23,7 +23,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
-    private FilterOptionsModel filterOptions = new FilterOptionsModel();
+    @com.evernote.android.state.State FilterOptionsModel filterOptions = new FilterOptionsModel();
 
     @Override public int getCurrentPage() {
         return page;
@@ -68,7 +68,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
+                        manageDisposable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
@@ -80,7 +80,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObservable(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(OrgReposMvp.View::hideProgress);
@@ -101,7 +101,7 @@ class OrgReposPresenter extends BasePresenter<OrgReposMvp.View> implements OrgRe
 
     @Override public void onItemLongClick(int position, View v, Repo item) {}
 
-    FilterOptionsModel getFilterOptions() {
+    @NonNull FilterOptionsModel getFilterOptions() {
         return filterOptions;
     }
 }

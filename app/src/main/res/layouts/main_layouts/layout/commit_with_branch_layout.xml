@@ -28,12 +28,13 @@
 
         <com.fastaccess.ui.widgets.FontTextView
             android:id="@+id/branches"
-            style="@style/TextAppearance.AppCompat.Caption"
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
             android:drawableEnd="@drawable/ic_arrow_drop_down"
             android:gravity="start|center"
+            android:maxLines="1"
             android:paddingBottom="@dimen/spacing_normal"
             android:paddingEnd="@dimen/spacing_normal"
             android:paddingTop="@dimen/spacing_normal"

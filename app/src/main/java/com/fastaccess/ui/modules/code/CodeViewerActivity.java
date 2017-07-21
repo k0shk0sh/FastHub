@@ -116,14 +116,15 @@ public class CodeViewerActivity extends BaseActivity {
             return true;
         } else if (item.getItemId() == android.R.id.home) {
             Uri uri = Uri.parse(url);
-            if (uri.getPathSegments() != null) {
-                if (uri.getPathSegments().indexOf("gist") != -1 || uri.toString().contains("raw/gist")) {
-                    if (uri.getPathSegments() != null && !uri.getPathSegments().isEmpty() && uri.getPathSegments().size() >= 1) {
-                        GistActivity.createIntent(this, uri.getPathSegments().get(1), isEnterprise());
-                    }
-                } else {
-                    RepoFilesActivity.startActivity(this, url, isEnterprise());
-                }
+            if (uri == null) {
+                finish();
+                return true;
+            }
+            String gistId = LinkParserHelper.getGistId(uri);
+            if (!InputHelper.isEmpty(gistId)) {
+                startActivity(GistActivity.createIntent(this, gistId, isEnterprise()));
+            } else {
+                RepoFilesActivity.startActivity(this, url, isEnterprise());
             }
             finish();
             return true;

@@ -5,7 +5,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.fastaccess.App;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 
@@ -24,7 +23,7 @@ import lombok.NoArgsConstructor;
 
 @Entity @NoArgsConstructor public abstract class AbstractLogin implements Parcelable {
     @Key long id;
-    @Column(unique = true) String login;
+    @Column String login;
     String avatarUrl;
     String gravatarId;
     String url;
@@ -104,16 +103,18 @@ import lombok.NoArgsConstructor;
     }
 
     public static void logout() {
-        if (getUser() == null) return;
         Login login = getUser();
-        login.setIsLoggedIn(false);
-        App.getInstance().getDataStore().update(login).blockingGet();
+        if (login == null) return;
+        App.getInstance().getDataStore().toBlocking().delete(PinnedRepos.class)
+                .where(PinnedRepos.LOGIN.eq(login.getLogin())).get().value();
+        App.getInstance().getDataStore().toBlocking().delete(login);
     }
 
     public static boolean hasNormalLogin() {
         return App.getInstance().getDataStore()
                 .count(Login.class)
-                .where(Login.IS_ENTERPRISE.eq(false))
+                .where(Login.IS_ENTERPRISE.eq(false)
+                        .or(Login.IS_ENTERPRISE.isNull()))
                 .get()
                 .value() > 0;
     }
@@ -133,16 +134,13 @@ import lombok.NoArgsConstructor;
             userModel.setIsLoggedIn(true);
             if (isNew) {
                 userModel.setIsEnterprise(isEnterprise);
-                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter
-                        .getToken());
-                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() :
-                        PrefGetter.getOtpCode());
+                userModel.setToken(isEnterprise ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
+                userModel.setOtpCode(isEnterprise ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
                 userModel.setEnterpriseUrl(isEnterprise ? PrefGetter.getEnterpriseUrl() : null);
                 App.getInstance().getDataStore()
                         .toBlocking()
                         .delete(Login.class)
-                        .where(Login.ID.eq(userModel.getId())
-                                .or(Login.LOGIN.eq(userModel.getLogin())))
+                        .where(Login.ID.eq(userModel.getId()))
                         .get()
                         .value();
                 App.getInstance().getDataStore()
@@ -153,7 +151,6 @@ import lombok.NoArgsConstructor;
                     PrefGetter.setTokenEnterprise(userModel.token);
                     PrefGetter.setEnterpriseOtpCode(userModel.otpCode);
                     PrefGetter.setEnterpriseUrl(userModel.enterpriseUrl);
-                    Logger.e(userModel.enterpriseUrl, PrefGetter.getEnterpriseUrl());
                 } else {
                     PrefGetter.resetEnterprise();
                     PrefGetter.setToken(userModel.token);

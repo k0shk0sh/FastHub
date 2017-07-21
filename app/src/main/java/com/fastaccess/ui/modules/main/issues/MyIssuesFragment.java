@@ -130,7 +130,7 @@ public class MyIssuesFragment extends BaseFragment<MyIssuesMvp.View, MyIssuesPre
         refresh.setOnRefreshListener(this);
         adapter = new IssuesAdapter(getPresenter().getIssues(), false, true);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addDivider();
         recycler.addOnScrollListener(getLoadMore());

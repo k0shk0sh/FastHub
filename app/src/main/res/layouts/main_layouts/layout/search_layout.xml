@@ -42,9 +42,9 @@
                         android:background="@color/transparent"
                         android:completionThreshold="1"
                         android:dropDownAnchor="@id/tabs"
+                        android:inputType="text"
                         android:hint="@string/search"
                         android:imeOptions="actionSearch"
-                        android:inputType="text"
                         android:maxLines="1"
                         android:textColorHint="?android:textColorSecondary"/>
 

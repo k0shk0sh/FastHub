@@ -6,13 +6,11 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v7.widget.TooltipCompat;
 import android.util.AttributeSet;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
@@ -24,7 +22,6 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import butterknife.OnLongClick;
 import cn.gavinliu.android.lib.shapedimageview.ShapedImageView;
 
 /**
@@ -37,20 +34,10 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
     @Nullable private String login;
     private boolean isOrg;
     private boolean isEnterprise;
-    private Toast toast;
 
     @OnClick(R.id.avatar) void onClick(@NonNull View view) {
         if (InputHelper.isEmpty(login)) return;
-        UserPagerActivity.startActivity(view.getContext(), login, isOrg, isEnterprise);
-    }
-
-    @OnLongClick(R.id.avatar) boolean onLongClick(@NonNull View view) {
-        if (InputHelper.isEmpty(login)) return false;
-        if (toast != null) toast.cancel();
-        toast = Toast.makeText(App.getInstance(), view.getContentDescription(), Toast.LENGTH_SHORT);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-        return true;
+        UserPagerActivity.startActivity(view.getContext(), login, isOrg, isEnterprise, -1);
     }
 
     public AvatarLayout(@NonNull Context context) {
@@ -107,7 +94,14 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         avatar.setContentDescription(login);
         if (url != null) {
             ImageLoader.getInstance().displayImage(url, avatar, this);
+            if (login != null) {
+                TooltipCompat.setTooltipText(avatar, login);
+            }
         } else {
+            avatar.setOnClickListener(null);
+            if (login != null) {
+                avatar.setOnLongClickListener(null);
+            }
             ImageLoader.getInstance().displayImage(null, avatar);
             setImageOnFailed();
         }

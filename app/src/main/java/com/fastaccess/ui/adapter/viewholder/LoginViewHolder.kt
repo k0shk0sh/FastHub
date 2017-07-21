@@ -1,11 +1,14 @@
 package com.fastaccess.ui.adapter.viewholder
 
+import android.annotation.SuppressLint
+import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
 import com.fastaccess.ui.widgets.AvatarLayout
 import com.fastaccess.ui.widgets.FontTextView
+import com.fastaccess.ui.widgets.bindOptionalView
 import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
@@ -16,12 +19,18 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
 class LoginViewHolder private constructor(itemView: View, adapter: BaseRecyclerAdapter<*, *, *>?) :
         BaseViewHolder<Login>(itemView, adapter) {
-    val avatarLayout: AvatarLayout by bindView(R.id.avatarLayout)
+    val avatarLayout: AvatarLayout? by bindOptionalView(R.id.avatarLayout)
     val title: FontTextView by bindView(R.id.title)
 
+    @SuppressLint("SetTextI18n")
     override fun bind(login: Login) {
-        avatarLayout.setUrl(login.avatarUrl, null, false, false)
-        title.text = login.login
+        avatarLayout?.setUrl(login.avatarUrl, null, false, false)
+        title.text = if (login.isIsEnterprise) {
+            val uri: String? = Uri.parse(login.enterpriseUrl).authority
+            "${login.login} ${if (uri.isNullOrBlank()) login.enterpriseUrl else uri}"
+        } else {
+            login.login
+        }
     }
 
     companion object {

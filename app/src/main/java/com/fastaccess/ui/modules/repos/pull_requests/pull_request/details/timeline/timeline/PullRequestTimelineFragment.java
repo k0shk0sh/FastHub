@@ -92,7 +92,14 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
             throw new NullPointerException("PullRequest went missing!!!");
         }
         boolean isMerged = getPresenter().isMerged(getPullRequest());
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this, isMerged, getPresenter());
+        if (issueCallback != null && issueCallback.getData() != null) {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+                    this, true, this, isMerged, getPresenter(), issueCallback.getData().getLogin(),
+                    issueCallback.getData().getRepoId());
+        } else {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+                    this, true, this, isMerged, getPresenter(), "", "");
+        }
         recycler.setVerticalScrollBarEnabled(false);
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
@@ -104,7 +111,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             onSetHeader(TimelineModel.constructHeader(getPullRequest()));

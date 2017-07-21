@@ -71,7 +71,7 @@ public class PullRequestCommitsFragment extends BaseFragment<PullRequestCommitsM
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new CommitsAdapter(getPresenter().getCommits());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());

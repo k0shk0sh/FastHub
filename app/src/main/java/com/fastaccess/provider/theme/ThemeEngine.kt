@@ -29,6 +29,13 @@ object ThemeEngine {
         val themeColor = PrefGetter.getThemeColor(activity)
         activity.setTheme(getTheme(themeMode, themeColor))
         setTaskDescription(activity)
+        applyNavBarColor(activity)
+    }
+
+    private fun applyNavBarColor(activity: Activity) {
+        if (!PrefGetter.isNavBarTintingDisabled() && PrefGetter.getThemeType() != PrefGetter.LIGHT) {
+            activity.window.navigationBarColor = ViewHelper.getPrimaryColor(activity)
+        }
     }
 
     fun applyForAbout(activity: MaterialAboutActivity) {
@@ -49,7 +56,6 @@ object ThemeEngine {
         activity.setTheme(getDialogTheme(themeMode, themeColor))
         setTaskDescription(activity)
     }
-
 
     @StyleRes fun getTheme(themeMode: Int, themeColor: Int): Int {
         Logger.e(themeMode, themeColor)
@@ -249,7 +255,7 @@ object ThemeEngine {
 
     private fun setTaskDescription(activity: Activity) {
         activity.setTaskDescription(ActivityManager.TaskDescription(activity.getString(R.string.app_name),
-                BitmapFactory.decodeResource(activity.getResources(), R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(activity)))
+                BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(activity)))
     }
 
     private fun hasTheme(activity: BaseActivity<*, *>) = (activity is LoginChooserActivity || activity is LoginActivity ||

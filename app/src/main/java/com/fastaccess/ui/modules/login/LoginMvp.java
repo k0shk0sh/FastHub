@@ -30,7 +30,7 @@ public interface LoginMvp {
 
     interface Presenter extends BaseMvp.FAPresenter {
 
-        @NonNull Uri getAuthorizationUrl(@Nullable String endpoint);
+        @NonNull Uri getAuthorizationUrl();
 
         void onHandleAuthIntent(@Nullable Intent intent);
 

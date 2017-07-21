@@ -91,7 +91,7 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
 
     @Override public void onNotifyNotificationChanged(@NonNull GroupedNotificationModel notification) {
         if (adapter != null) {
-            adapter.swapItem(notification);
+            adapter.removeItem(notification);
         }
     }
 

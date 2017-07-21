@@ -151,6 +151,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
         progress.setVisibility(GONE);
         if (userModel == null) return;
+        if (profileCallback != null) profileCallback.onCheckType(userModel.isOrganizationType());
         if (getView() != null) {
             if (this.userModel == null) {
                 TransitionManager.beginDelayedTransition((ViewGroup) getView(),

@@ -5,7 +5,7 @@ import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.fastaccess.data.dao.model.FilterOptionsModel;
+import com.fastaccess.data.dao.FilterOptionsModel;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.helper.RxHelper;
@@ -71,14 +71,15 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
             sendToView(ProfileReposMvp.View::hideProgress);
             return;
         }
-        filterOptions.setIsPersonalProfile(TextUtils.equals(currentLoggedIn, username));
-        makeRestCall(TextUtils.equals(currentLoggedIn, username)
+        boolean isProfile = TextUtils.equals(currentLoggedIn, username);
+        filterOptions.setIsPersonalProfile(isProfile);
+        makeRestCall(isProfile
                      ? RestProvider.getUserService(isEnterprise()).getRepos(filterOptions.getQueryMap(), page)
                      : RestProvider.getUserService(isEnterprise()).getRepos(parameter, filterOptions.getQueryMap(), page),
                 repoModelPageable -> {
                     lastPage = repoModelPageable.getLast();
                     if (getCurrentPage() == 1) {
-                        manageObservable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
+                        manageDisposable(Repo.saveMyRepos(repoModelPageable.getItems(), parameter));
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
@@ -90,7 +91,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
 
     @Override public void onWorkOffline(@NonNull String login) {
         if (repos.isEmpty()) {
-            manageDisposable(RxHelper.getObserver(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
+            manageDisposable(RxHelper.getObservable(Repo.getMyRepos(login).toObservable()).subscribe(repoModels ->
                     sendToView(view -> view.onNotifyAdapter(repoModels, 1))));
         } else {
             sendToView(ProfileReposMvp.View::hideProgress);

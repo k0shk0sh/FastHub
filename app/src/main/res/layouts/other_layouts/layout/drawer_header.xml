@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:id="@+id/navAccHolder"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="120dp"
+    android:background="?selectableItemBackground"
     android:gravity="bottom"
-    android:paddingBottom="@dimen/spacing_s_large"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:paddingBottom="@dimen/spacing_s_large">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -35,11 +37,9 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/navAccHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:background="?selectableItemBackground"
         android:orientation="horizontal">
 
         <LinearLayout

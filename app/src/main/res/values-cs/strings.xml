@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name_full">FastHub pro Android</string>
     <string name="in_progress">Načítám, vyčkejte prosím…</string>
     <string name="action">Akce</string>
     <string name="settings">Nastavení</string>
@@ -14,28 +13,19 @@
     <string name="sign_in">Přihlásit</string>
     <string name="share">Sdílet</string>
     <string name="reload">Načíst znovu</string>
-    <string name="feeds">Novinky</string>
-    <string name="gists">Gisty</string>
     <string name="profile">Profil</string>
     <string name="error">Chyba</string>
     <string name="press_again_to_exit">Stiskněte znovu pro ukončení</string>
     <string name="opened">Otevřeno</string>
     <string name="closed">Uzavřeno</string>
     <string name="repo_chooser">Zvolit repo</string>
-    <string name="commits">Příspěvky</string>
     <string name="followers">Sledující</string>
     <string name="following">Sleduješ</string>
     <string name="overview">Přehled</string>
-    <string name="repos">Repozitáře</string>
-    <string name="starred">Oblíbené</string>
     <string name="follow">Sledovat</string>
     <string name="unfollow">Zrušit sledování</string>
     <string name="user">Uživatel</string>
-    <string name="code">Kód</string>
-    <string name="issues">Problémy</string>
-    <string name="pull_requests">Požadavky</string>
     <string name="details">Detaily</string>
-    <string name="repo">Repozitář</string>
     <string name="archive_file_detected_error">Archivovaný soubor byl nalezen, prosím stáhněte tento soubor pro zobrazení jeho obsahu.</string>
     <string name="minimum_three_chars">Minimum znaků (3)</string>
     <string name="no_file_found">Žádný soubor nenalezen</string>
@@ -46,11 +36,8 @@
     <string name="drafted">Navrženo</string>
     <string name="releases">Vydání</string>
     <string name="no_body">Zádné tělo</string>
-    <string name="download_as_zip">Zdrojový kód (zip)</string>
-    <string name="download_as_tar">Zdrojový kód (tar.gz)</string>
     <string name="contributors">Přispěvatelé</string>
     <string name="contributions">Příspěvky</string>
-    <string name="merged">Sloučeno</string>
     <string name="by">podle</string>
     <string name="close_issue">Uzavřít problém</string>
     <string name="re_open_issue">Znovu otevřít problém</string>
@@ -89,10 +76,6 @@
     <string name="delete">Vymazat</string>
     <string name="comments">Komentáře</string>
     <string name="comment">Komentovat</string>
-    <string name="issue">Problém</string>
-    <string name="merge">Sloučit</string>
-    <string name="pull_request">Požadavek</string>
-    <string name="commit">Přispět</string>
     <string name="success_merge">Úspěšně sloučeno</string>
     <string name="file_menu">Nabídka Souborů</string>
     <string name="files">Soubory</string>
@@ -186,7 +169,6 @@
     <string name="downloaded">Staženo</string>
     <string name="followed">Sledováno</string>
     <string name="commented_on_issue">Komentovat problém</string>
-    <string name="created_issue">Problém</string>
     <string name="member">Člen</string>
     <string name="pr_comment_review">Komentář k požadavku</string>
     <string name="pushed">Pushed to</string>
@@ -194,11 +176,6 @@
     <string name="deleted">Smazáno</string>
     <string name="unknown">Neznámé</string>
     <string name="commented_on_commit">Komentoval/a příspěvek</string>
-    <string name="organization_event">Organizace</string>
-    <string name="card_event">Karta</string>
-    <string name="project_event">Projekt</string>
-    <string name="pr_review_event">Požadavek</string>
-    <string name="repo_event">Repozitář</string>
     <string name="switch_branch">Přepnout větev</string>
     <string name="assignees">Asociace</string>
     <string name="edit">Upravit</string>
@@ -262,29 +239,10 @@
     <string name="or_character">NEBO</string>
     <string name="mark_notification_title">Zakázat stav čtení oznámení</string>
     <string name="mark_notification_summary">Zakázat označení jako přečtené po kliknutí na oznámení.</string>
-    <string name="light_theme_mode">Světlé téma</string>
-    <string name="dark_theme_mode">Tmavé téma</string>
-    <string name="red_theme_mode">Červená</string>
-    <string name="pink_theme_mode">Růžová</string>
-    <string name="purple_theme_mode">Fialová</string>
-    <string name="deep_purple_theme_mode">Tmavě fialová</string>
-    <string name="indigo_theme_mode">Tmavě modrá</string>
-    <string name="blue_theme_mode">Modrá</string>
-    <string name="light_blue_theme_mode">Světle modrá</string>
-    <string name="cyan_theme_mode">Tyrkysová</string>
-    <string name="teal_theme_mode">Tmavě zelená</string>
-    <string name="green_theme_mode">Zelená</string>
-    <string name="light_green_theme_mode">Světle zelená</string>
-    <string name="lime_theme_mode">Limetková</string>
-    <string name="yellow_theme_mode">Žlutá</string>
-    <string name="amber_theme_mode">Jantarová</string>
-    <string name="orange_theme_mode">Oranžová</string>
-    <string name="deep_orange_theme_mode">Tmavě oranžová</string>
     <string name="theme_title">Zvolte téma</string>
     <string name="theme_summary">Zvolte výchozí téma</string>
     <string name="theme_color_summary">Zvolte barvu zvýraznění motivu</string>
     <string name="theme_color_title">Barva zvýraznění motivu</string>
-    <string name="logo_designer" formatted="true">Návrhář loga (%s)</string>
     <string name="website">Webová stránka</string>
     <string name="support_development">Podpořit vývoj</string>
     <string name="success_purchase_message">Děkujeme, jste opravdu úžasný!</string>
@@ -321,7 +279,6 @@
     <string name="my_gists">Moje Gisty</string>
     <string name="changelog">Seznam změn</string>
     <string name="notifications_hint">Klepnutím otevřete seznam oznámení nebo přetáhněte pro zamítnutí</string>
-    <string name="posting_reaction" formatted="true">Reakce na přidání %s</string>
     <string name="home_long_click_hint">Dlouhým stisknutím se můžete navigovat na hlavní obrazovku odkudkoli</string>
     <string name="created">Vytvořeno</string>
     <string name="assigned">Přiřazeno</string>
@@ -434,9 +391,6 @@
     <string name="divider">Oddělovač</string>
     <string name="no_user_found">Nebyl nalezen žádný uživatel</string>
     <string name="no_trending">Žádné trendy</string>
-    <string name="daily">Denně</string>
-    <string name="weekly">Týdně</string>
-    <string name="monthly">Měsíčně</string>
     <string name="reset">Restartovat</string>
     <string name="apply">Aplikovat</string>
     <string name="filter">Filtrovat</string>

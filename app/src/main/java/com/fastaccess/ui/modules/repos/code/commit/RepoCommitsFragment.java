@@ -17,7 +17,7 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
-import com.fastaccess.ui.modules.repos.extras.branches.BranchesDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerFragment;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -51,8 +51,8 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     }
 
     @OnClick(R.id.branches) void onBranchesClicked() {
-        BranchesDialogFragment.Companion.newInstance(getPresenter().login, getPresenter().repoId)
-                .show(getChildFragmentManager(), "BranchesDialogFragment");
+        BranchesPagerFragment.Companion.newInstance(getPresenter().login, getPresenter().repoId)
+                .show(getChildFragmentManager(), "BranchesFragment");
     }
 
     @Override public void onAttach(Context context) {
@@ -97,7 +97,7 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
         recycler.addKeyLineDivider();
         adapter = new CommitsAdapter(getPresenter().getCommits());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {

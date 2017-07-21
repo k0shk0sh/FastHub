@@ -7,8 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -16,6 +19,8 @@ import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
+
+import io.reactivex.Observable;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -28,7 +33,7 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
 
     MainPresenter() {
         setEnterprise(PrefGetter.isEnterprise());
-        manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getUser())
+        manageDisposable(RxHelper.getObservable(RestProvider.getUserService(isEnterprise()).getUser())
                 .flatMap(login -> {
                     Login current = Login.getUser();
                     current.setLogin(login.getLogin());
@@ -40,9 +45,18 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                     current.setCompany(current.getCompany());
                     return login.update(current);
                 })
-                .subscribe(login -> {
-                    sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
-                }, Throwable::printStackTrace/*fail silently*/));
+                .flatMap(login -> RestProvider.getNotificationService(isEnterprise()).getNotifications(ParseDateFormat.getLastWeekDate()))
+                .flatMap(notificationPageable -> {
+                    if (notificationPageable != null && notificationPageable.getItems() == null && !notificationPageable.getItems().isEmpty()) {
+                        manageDisposable(Notification.save(notificationPageable.getItems()));
+                        return Observable.just(Stream.of(notificationPageable.getItems()).anyMatch(Notification::isUnread));
+                    }
+                    return Observable.empty();
+                })
+                .subscribe(unread -> sendToView(view -> {
+                    view.onInvalidateNotification();
+                    view.onUpdateDrawerMenuHeader();
+                }), Throwable::printStackTrace/*fail silently*/));
     }
 
     @Override public boolean canBackPress(@NonNull DrawerLayout drawerLayout) {

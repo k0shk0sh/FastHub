@@ -15,7 +15,6 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.LoginProvider;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.Arrays;
@@ -66,23 +65,10 @@ public class LoginPresenter extends BasePresenter<LoginMvp.View> implements Logi
         sendToView(view -> view.showMessage(R.string.error, R.string.failed_login));
     }
 
-    @NonNull
-    @Override public Uri getAuthorizationUrl(@Nullable String endpoint) {
-        Uri.Builder builder = new Uri.Builder();
-        if (!InputHelper.isEmpty(endpoint)) {
-            endpoint = LinkParserHelper.getEndpoint(endpoint);
-            Uri uri = Uri.parse(endpoint);
-            if (uri.getScheme() != null && uri.getAuthority() != null) {
-                builder.scheme(uri.getScheme())
-                        .authority(uri.getAuthority());
-            } else {
-                throw new IllegalArgumentException("Uri is invalid: " + endpoint);
-            }
-        } else {
-            builder.scheme("https")
-                    .authority("github.com");
-        }
-        return builder.appendPath("login")
+    @NonNull @Override public Uri getAuthorizationUrl() {
+       return new Uri.Builder().scheme("https")
+                .authority("github.com")
+                .appendPath("login")
                 .appendPath("oauth")
                 .appendPath("authorize")
                 .appendQueryParameter("client_id", GithubConfigHelper.getClientId())

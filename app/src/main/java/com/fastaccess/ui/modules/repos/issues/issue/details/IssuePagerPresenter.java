@@ -84,7 +84,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onWorkOffline(long issueNumber, @NonNull String repoId, @NonNull String login) {
         if (issueModel == null) {
-            manageDisposable(RxHelper.getObserver(Issue.getIssueByNumber((int) issueNumber, repoId, login))
+            manageDisposable(RxHelper.getObservable(Issue.getIssueByNumber((int) issueNumber, repoId, login))
                     .subscribe(issueModel1 -> {
                         if (issueModel1 != null) {
                             issueModel = issueModel1;
@@ -139,7 +139,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         Issue currentIssue = getIssue();
         if (currentIssue != null) {
             IssueRequestModel requestModel = IssueRequestModel.clone(currentIssue, true);
-            manageDisposable(RxHelper.getObserver(RestProvider.getIssueService(isEnterprise()).editIssue(login, repoId,
+            manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise()).editIssue(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
                     .doOnNext(issue -> {
@@ -163,7 +163,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
         int number = currentIssue.getNumber();
         IssueService issueService = RestProvider.getIssueService(isEnterprise());
         Observable<Response<Boolean>> observable = RxHelper
-                .getObserver(isLocked() ? issueService.unlockIssue(login, repoId, number) : issueService.lockIssue(login, repoId, number));
+                .getObservable(isLocked() ? issueService.unlockIssue(login, repoId, number) : issueService.lockIssue(login, repoId, number));
         makeRestCall(observable, booleanResponse -> {
             int code = booleanResponse.code();
             if (code == 204) {
@@ -177,7 +177,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     @Override public void onLoadLabels() {
         manageDisposable(
-                RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
+                RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
                         .doOnSubscribe(disposable -> onSubscribed())
                         .doOnNext(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
@@ -271,7 +271,7 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
     }
 
     private void getIssueFromApi() {
-        makeRestCall(RxHelper.getObserver(Observable.zip(RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
+        makeRestCall(RxHelper.getObservable(Observable.zip(RestProvider.getIssueService(isEnterprise()).getIssue(login, repoId, issueNumber),
                 RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId, Login.getUser().getLogin()),
                 (issue, booleanResponse) -> {
                     isCollaborator = booleanResponse.code() == 204;

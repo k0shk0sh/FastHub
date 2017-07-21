@@ -13,7 +13,6 @@
     <string name="sign_in">Iniciar sesión</string>
     <string name="share">Compartir</string>
     <string name="reload">Recargar</string>
-    <string name="feeds">Noticias</string>
     <string name="profile">Perfil</string>
     <string name="error">Error</string>
     <string name="press_again_to_exit">Presione una vez más para salir</string>
@@ -404,5 +403,4 @@
     <string name="feed">Noticias</string>
     <string name="premium_theme">Tema Premium </string>
     <string name="choose_code_theme">Elige el código del tema</string>
-    <string name="endpoint_hint">https://github.mydomain.com</string>
 </resources>

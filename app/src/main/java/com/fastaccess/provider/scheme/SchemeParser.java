@@ -1,6 +1,8 @@
 package com.fastaccess.provider.scheme;
 
 import android.app.Activity;
+import android.app.Application;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -68,6 +70,9 @@ public class SchemeParser {
         if (intent != null) {
             if (newDocument) {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_MULTIPLE_TASK);
+            }
+            if (context instanceof Service || context instanceof Application) {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             context.startActivity(intent);
         } else {
@@ -142,7 +147,6 @@ public class SchemeParser {
                 Optional<Intent> intentOptional = returnNonNull(trending, userIntent, repoIssues, repoPulls, pullRequestIntent, commit, commits,
                         createIssueIntent, issueIntent, releasesIntent, repoIntent, repoWikiIntent, blob);
                 Optional<Intent> empty = Optional.empty();
-                Logger.e(isEnterprise);
                 if (intentOptional != null && intentOptional.isPresent() && intentOptional != empty) {
                     Intent intent = intentOptional.get();
                     if (isEnterprise) {
@@ -154,7 +158,6 @@ public class SchemeParser {
                             intent.putExtra(BundleConstant.IS_ENTERPRISE, true);
                         }
                     }
-                    Logger.e(intent);
                     return intent;
                 } else {
                     Intent intent = getGeneralRepo(context, data);
