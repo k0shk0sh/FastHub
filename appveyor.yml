@@ -16,7 +16,7 @@ install:
       Write-Output "" > ~\.android\repositories.cfg
       if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
         Write-Host "PR detected. Installing C# Script Engine and doing translations check:"
-        cinst cs-script
+        cinst cs-script --version 3.26.2.0
         cscs
         cscs -ac:2 -nl $env:APPVEYOR_BUILD_FOLDER\.github\check_translations.cs
       }
