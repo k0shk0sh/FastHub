@@ -14,7 +14,7 @@ class NotificationSoundPresenter : BasePresenter<NotificationSoundMvp.View>(), N
         manageObservable(Observable.fromPublisher<NotificationSoundModel> { s ->
             val sounds = FileHelper.getNotificationSounds(App.getInstance(), default)
             sounds.filterNotNull()
-                    .sortedBy { it.isSelected }
+                    .sortedBy { !it.isSelected }
                     .onEach { s.onNext(it) }
             s.onComplete()
         }.doOnNext({ t -> sendToView { it.onAddSound(t) } })
