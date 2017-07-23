@@ -171,7 +171,7 @@ class PullRequestPagerPresenter extends BasePresenter<PullRequestPagerMvp.View> 
     @Override public void onLoadLabels() {
         manageDisposable(
                 RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
-                        .doOnSubscribe(disposable -> onSubscribed())
+                        .doOnSubscribe(disposable -> onSubscribed(false))
                         .subscribe(response -> {
                             if (response.getItems() != null && !response.getItems().isEmpty()) {
                                 sendToView(view -> view.onLabelsRetrieved(response.getItems()));

@@ -24,6 +24,8 @@ public interface CreateIssueMvp {
         void onSuccessSubmission(Issue issueModel);
 
         void onSuccessSubmission(PullRequest issueModel);
+
+        void onShowUpdate();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -31,5 +33,7 @@ public interface CreateIssueMvp {
 
         void onSubmit(@NonNull String title, @NonNull CharSequence description, @NonNull String login,
                       @NonNull String repo, @Nullable Issue issueModel, @Nullable PullRequest pullRequestModel);
+
+        void onCheckAppVersion();
     }
 }

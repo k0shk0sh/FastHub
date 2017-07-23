@@ -276,6 +276,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
                 .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
+                .setSound(PrefGetter.getNotificationSound())
                 .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))

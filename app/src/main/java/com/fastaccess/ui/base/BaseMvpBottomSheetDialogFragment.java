@@ -85,6 +85,10 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
         callback.showProgress(resId);
     }
 
+    @Override public void showBlockingProgress(int resId) {
+        callback.showBlockingProgress(resId);
+    }
+
     @Override public void hideProgress() {
         callback.hideProgress();
     }

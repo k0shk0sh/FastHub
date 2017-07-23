@@ -154,6 +154,7 @@ public class AppHelper {
     }
 
     public static boolean isGoogleAvailable(@NonNull Context context) {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+        return status != ConnectionResult.SERVICE_DISABLED && status == ConnectionResult.SUCCESS;
     }
 }

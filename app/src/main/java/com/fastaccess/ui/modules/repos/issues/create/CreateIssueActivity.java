@@ -12,7 +12,9 @@ import android.support.v7.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.danielstone.materialaboutlibrary.ConvenienceBuilder;
 import com.evernote.android.state.State;
+import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Issue;
@@ -32,6 +34,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTouch;
+import es.dmoral.toasty.Toasty;
 
 /**
  * Created by Kosh on 19 Feb 2017, 12:33 PM
@@ -48,6 +51,7 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
     @State PullRequest pullRequest;
     @State boolean isFeedback;
 
+    private AlertDialog alertDialog;
     private CharSequence savedText;
 
     public static void startForResult(@NonNull Fragment fragment, @NonNull String login, @NonNull String repoId, boolean isEnterprise) {
@@ -166,6 +170,13 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
         showMessage(R.string.success, R.string.successfully_submitted);
     }
 
+    @Override public void onShowUpdate() {
+        hideProgress();
+        Toasty.error(App.getInstance(), getString(R.string.new_version)).show();
+        ConvenienceBuilder.createRateOnClickAction(this).onClick();
+        finish();
+    }
+
     @NonNull @Override public CreateIssuePresenter providePresenter() {
         return new CreateIssuePresenter();
     }
@@ -219,9 +230,12 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                 }
             }
         }
-        if (isFeedback) setTitle(R.string.submit_feedback);
+        if (isFeedback || ("k0shk0sh".equalsIgnoreCase(login) && repoId.equalsIgnoreCase("FastHub"))) {
+            setTitle(R.string.submit_feedback);
+            getPresenter().onCheckAppVersion();
+        }
         if (BuildConfig.DEBUG && isFeedback) {
-            new AlertDialog.Builder(this)
+            alertDialog = new AlertDialog.Builder(this)
                     .setTitle("You are currently using a debug build")
                     .setMessage("If you have found a bug, please report it on slack." + "\n" +
                             "Feature requests can be submitted here." + "\n" + "Happy Testing")
@@ -247,6 +261,13 @@ public class CreateIssueActivity extends BaseActivity<CreateIssueMvp.View, Creat
                     Bundler.start().put("primary_extra", getString(R.string.discard)).put("secondary_extra", getString(R.string.cancel))
                             .put(BundleConstant.EXTRA, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
         }
+    }
+
+    @Override protected void onDestroy() {
+        if (alertDialog != null && alertDialog.isShowing()) {
+            alertDialog.dismiss();
+        }
+        super.onDestroy();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {

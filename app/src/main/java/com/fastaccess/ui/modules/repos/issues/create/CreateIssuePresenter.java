@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.CreateIssueModel;
 import com.fastaccess.data.dao.IssueRequestModel;
@@ -13,6 +14,7 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 /**
@@ -51,7 +53,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                             } else {
                                 sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
                             }
-                        });
+                        }, false);
             } else {
                 if (issue != null) {
                     issue.setBody(InputHelper.toString(description));
@@ -65,7 +67,7 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                                 } else {
                                     sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
                                 }
-                            });
+                            }, false);
                 }
                 if (pullRequestModel != null) {
                     int number = pullRequestModel.getNumber();
@@ -85,9 +87,22 @@ public class CreateIssuePresenter extends BasePresenter<CreateIssueMvp.View> imp
                         } else {
                             sendToView(view -> view.showMessage(R.string.error, R.string.error_creating_issue));
                         }
-                    });
+                    }, false);
                 }
             }
         }
+    }
+
+    @Override public void onCheckAppVersion() {
+        makeRestCall(RestProvider.getRepoService(false).getLatestRelease("k0shk0sh", "FastHub"),
+                release -> {
+                    if (release != null) {
+                        if (!BuildConfig.VERSION_NAME.contains(release.getTagName())) {
+                            sendToView(CreateIssueMvp.View::onShowUpdate);
+                        } else {
+                            sendToView(BaseMvp.FAView::hideProgress);
+                        }
+                    }
+                }, false);
     }
 }

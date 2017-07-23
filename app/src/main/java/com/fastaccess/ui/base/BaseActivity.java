@@ -184,19 +184,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        String msg = getString(R.string.in_progress);
-        if (resId != 0) {
-            msg = getString(resId);
-        }
-        if (!isProgressShowing && !isFinishing()) {
-            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
-                    ProgressDialogFragment.TAG);
-            if (fragment == null) {
-                isProgressShowing = true;
-                fragment = ProgressDialogFragment.newInstance(msg, true);
-                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
-            }
-        }
+        showProgress(resId, true);
+    }
+
+    @Override public void showBlockingProgress(int resId) {
+        showProgress(resId, false);
     }
 
     @Override public void hideProgress() {
@@ -500,5 +492,21 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finishAndRemoveTask();
+    }
+
+    private void showProgress(int resId, boolean cancelable) {
+        String msg = getString(R.string.in_progress);
+        if (resId != 0) {
+            msg = getString(resId);
+        }
+        if (!isProgressShowing && !isFinishing()) {
+            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                    ProgressDialogFragment.TAG);
+            if (fragment == null) {
+                isProgressShowing = true;
+                fragment = ProgressDialogFragment.newInstance(msg, cancelable);
+                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
+            }
+        }
     }
 }
