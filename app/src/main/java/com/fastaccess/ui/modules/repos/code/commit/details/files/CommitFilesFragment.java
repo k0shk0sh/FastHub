@@ -91,7 +91,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override public void hideProgress() {
-        refresh.setRefreshing(false);
+        if (refresh != null) refresh.setRefreshing(false);
     }
 
     @Override protected int fragmentLayout() {

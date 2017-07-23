@@ -69,6 +69,7 @@ class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<Notificati
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        title.text = getString(R.string.sound_chooser_title)
         okButton.visibility = View.VISIBLE
         presenter.loadSounds(arguments?.getString(BundleConstant.EXTRA))
         okButton.setOnClickListener {
