@@ -545,4 +545,8 @@
     <string name="cancel_reviews">Cancel Reviews</string>
     <string name="colored_navbar_summary">Disable tinting the navigation bar in themes</string>
     <string name="colored_navbar_title">Disable Navbar tinting</string>
+    <string name="sound_chooser_summary">Choose custom notification sound</string>
+    <string name="sound_chooser_title">Choose Notification Sound</string>
+    <string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
+    <string name="disable_auto_gif_title">Disable Playing GIF</string>
 </resources>

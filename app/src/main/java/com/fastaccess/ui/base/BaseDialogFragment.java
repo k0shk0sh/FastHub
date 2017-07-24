@@ -106,6 +106,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
         callback.showProgress(resId);
     }
 
+    @Override public void showBlockingProgress(int resId) {
+        callback.showBlockingProgress(resId);
+    }
+
     @Override public void hideProgress() {
         callback.hideProgress();
     }

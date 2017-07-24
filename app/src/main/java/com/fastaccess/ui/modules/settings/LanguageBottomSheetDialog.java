@@ -16,7 +16,6 @@ import com.fastaccess.data.dao.AppLanguageModel;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseBottomSheetDialog;
-import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontTextView;
 
 import java.util.List;
@@ -37,8 +36,6 @@ public class LanguageBottomSheetDialog extends BaseBottomSheetDialog {
 
     @BindView(R.id.title) FontTextView title;
     @BindView(R.id.picker) RadioGroup radioGroup;
-    @BindView(R.id.cancel) FontButton cancel;
-    @BindView(R.id.ok) FontButton ok;
     private LanguageDialogListener listener;
 
     @Override public void onAttach(Context context) {
@@ -60,8 +57,6 @@ public class LanguageBottomSheetDialog extends BaseBottomSheetDialog {
     @Override public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         String language = PrefGetter.getAppLanguage();
-        ok.setVisibility(View.GONE);
-        cancel.setVisibility(View.GONE);
         String[] values = getResources().getStringArray(R.array.languages_array_values);
         List<AppLanguageModel> languageModels = Stream.of(getResources().getStringArray(R.array.languages_array))
                 .mapIndexed((index, s) -> new AppLanguageModel(values[index], s))

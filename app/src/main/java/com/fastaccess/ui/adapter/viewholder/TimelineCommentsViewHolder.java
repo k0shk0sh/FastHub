@@ -20,6 +20,7 @@ import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
+import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
@@ -278,6 +279,13 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         commentOptions.setVisibility(!expanded ? View.GONE : View.VISIBLE);
         if (!InputHelper.isEmpty(reactionsText)) {
             reactionsText.setVisibility(!expanded ? View.VISIBLE : View.GONE);
+        }
+    }
+
+    @Override protected void onViewIsDetaching() {
+        DrawableGetter drawableGetter = (DrawableGetter) comment.getTag(R.id.drawable_callback);
+        if (drawableGetter != null) {
+            drawableGetter.clear(drawableGetter);
         }
     }
 }

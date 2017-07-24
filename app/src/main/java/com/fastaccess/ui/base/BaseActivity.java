@@ -45,7 +45,6 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -184,19 +183,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        String msg = getString(R.string.in_progress);
-        if (resId != 0) {
-            msg = getString(resId);
-        }
-        if (!isProgressShowing && !isFinishing()) {
-            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
-                    ProgressDialogFragment.TAG);
-            if (fragment == null) {
-                isProgressShowing = true;
-                fragment = ProgressDialogFragment.newInstance(msg, true);
-                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
-            }
-        }
+        showProgress(resId, true);
+    }
+
+    @Override public void showBlockingProgress(int resId) {
+        showProgress(resId, false);
     }
 
     @Override public void hideProgress() {
@@ -210,8 +201,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        ImageLoader.getInstance().clearDiskCache();
-        ImageLoader.getInstance().clearMemoryCache();
         PrefGetter.setToken(null);
         PrefGetter.setEnterpriseUrl(null);
         PrefGetter.setOtpCode(null);
@@ -500,5 +489,21 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finishAndRemoveTask();
+    }
+
+    private void showProgress(int resId, boolean cancelable) {
+        String msg = getString(R.string.in_progress);
+        if (resId != 0) {
+            msg = getString(resId);
+        }
+        if (!isProgressShowing && !isFinishing()) {
+            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                    ProgressDialogFragment.TAG);
+            if (fragment == null) {
+                isProgressShowing = true;
+                fragment = ProgressDialogFragment.newInstance(msg, cancelable);
+                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
+            }
+        }
     }
 }

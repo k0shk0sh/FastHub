@@ -68,8 +68,14 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         return apiCalled;
     }
 
-    @Override public void onSubscribed() {
-        sendToView(v -> v.showProgress(R.string.in_progress));
+    @Override public void onSubscribed(boolean cancelable) {
+        sendToView(v -> {
+            if (cancelable) {
+                v.showProgress(R.string.in_progress);
+            } else {
+                v.showBlockingProgress(R.string.in_progress);
+            }
+        });
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
@@ -88,9 +94,13 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext) {
+        makeRestCall(observable, onNext, true);
+    }
+
+    @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext, boolean cancelable) {
         manageDisposable(
                 RxHelper.getObservable(observable)
-                        .doOnSubscribe(disposable -> onSubscribed())
+                        .doOnSubscribe(disposable -> onSubscribed(cancelable))
                         .subscribe(onNext, this::onError, () -> apiCalled = true)
         );
     }

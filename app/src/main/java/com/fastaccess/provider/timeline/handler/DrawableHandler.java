@@ -5,6 +5,8 @@ import android.text.style.ImageSpan;
 import android.widget.TextView;
 
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
 
@@ -28,6 +30,8 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
     @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
         String src = node.getAttributeByName("src");
+        boolean isGif = "gif".equalsIgnoreCase(node.getAttributeByName("alt"));
+        Logger.e(isGif);
         if (!InputHelper.isEmpty(src)) {
             builder.append("￼");
             if (isNull()) return;

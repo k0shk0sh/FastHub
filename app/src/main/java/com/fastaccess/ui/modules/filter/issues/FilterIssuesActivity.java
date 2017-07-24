@@ -149,7 +149,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
                 searchEditText.setText(text);
                 onSearch();
             } else {
-                searchEditText.setText(String.format("%s %s", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
+                searchEditText.setText(String.format("%s %s ", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
                 onSearch();
             }
         }
@@ -165,7 +165,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
                 searchEditText.setText(text);
                 onSearch();
             } else {
-                searchEditText.setText(String.format("%s %s", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
+                searchEditText.setText(String.format("%s %s ", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
                 onSearch();
             }
         }

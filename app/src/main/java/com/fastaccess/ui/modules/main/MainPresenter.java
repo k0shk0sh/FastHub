@@ -45,7 +45,8 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                     current.setCompany(current.getCompany());
                     return login.update(current);
                 })
-                .flatMap(login -> RestProvider.getNotificationService(isEnterprise()).getNotifications(ParseDateFormat.getLastWeekDate()))
+                .flatMap(login -> RxHelper.getObservable(RestProvider.getNotificationService(isEnterprise())
+                        .getNotifications(ParseDateFormat.getLastWeekDate())))
                 .flatMap(notificationPageable -> {
                     if (notificationPageable != null && notificationPageable.getItems() == null && !notificationPageable.getItems().isEmpty()) {
                         manageDisposable(Notification.save(notificationPageable.getItems()));

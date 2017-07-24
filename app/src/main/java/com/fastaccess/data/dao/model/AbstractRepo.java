@@ -130,7 +130,6 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
                 .flatMap(observer -> App.getInstance().getDataStore().insert(entity)));
     }
 
-
     public static Maybe<Repo> getRepo(@NonNull String name, @NonNull String login) {
         return App.getInstance().getDataStore()
                 .select(Repo.class)

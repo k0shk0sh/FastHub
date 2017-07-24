@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -22,6 +24,8 @@ import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.settings.sound.NotificationSoundBottomSheet;
+import com.fastaccess.ui.modules.settings.sound.NotificationSoundMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,7 +47,8 @@ import es.dmoral.toasty.Toasty;
 
 import static android.app.Activity.RESULT_OK;
 
-public class SettingsCategoryFragment extends PreferenceFragmentCompat implements Preference.OnPreferenceChangeListener {
+public class SettingsCategoryFragment extends PreferenceFragmentCompat implements
+        Preference.OnPreferenceChangeListener, NotificationSoundMvp.NotificationSoundListener {
 
     public interface SettingsCallback {
         @SettingsModel.SettingsType int getSettingsType();
@@ -51,6 +56,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     private static int PERMISSION_REQUEST_CODE = 128;
     private static int RESTORE_REQUEST_CODE = 256;
+    private static int SOUND_REQUEST_CODE = 257;
 
     private BaseMvp.FAView callback;
     private String appColor;
@@ -191,40 +197,19 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == RESTORE_REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
-                StringBuilder json = new StringBuilder();
-                try {
-                    try (InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData())) {
-                        if (inputStream != null) {
-                            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
-                                String line;
-                                while ((line = reader.readLine()) != null) {
-                                    json.append(line);
-                                }
-                            }
-                        }
-                    }
-                } catch (IOException e) {
-                    Toasty.error(App.getInstance(), getString(R.string.error)).show();
-                }
-                if (!InputHelper.isEmpty(json)) {
-                    try {
-                        Gson gson = new Gson();
-                        Type typeOfHashMap = new TypeToken<Map<String, ?>>() {}.getType();
-                        Map<String, ?> savedPref = gson.fromJson(json.toString(), typeOfHashMap);
-                        if (savedPref != null && !savedPref.isEmpty()) {
-                            for (Map.Entry<String, ?> stringEntry : savedPref.entrySet()) {
-                                PrefHelper.set(stringEntry.getKey(), stringEntry.getKey());
-                            }
-                        }
-                        callback.onThemeChanged();
-                    } catch (Exception ignored) {
-                        Toasty.error(App.getInstance(), getString(R.string.error), Toast.LENGTH_SHORT).show();
-                    }
-                }
+        if (resultCode == RESULT_OK) {
+            if (requestCode == RESTORE_REQUEST_CODE) {
+                restoreData(data);
+            } else if (requestCode == SOUND_REQUEST_CODE) {
+                Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+                findPreference("notification_sound_path").setDefaultValue(ringtone.toString());
             }
         }
+    }
+
+    @Override public void onSoundSelected(Uri uri) {
+        PrefGetter.setNotificationSound(uri);
+        findPreference("notification_sound_path").setSummary(FileHelper.getRingtoneName(getContext(), uri));
     }
 
     private void showFileChooser() {
@@ -302,6 +287,12 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         notificationTime = findPreference("notificationTime");
         notificationRead = findPreference("markNotificationAsRead");
         notificationSound = findPreference("notificationSound");
+        findPreference("notification_sound_path").setSummary(FileHelper.getRingtoneName(getContext(), PrefGetter.getNotificationSound()));
+        findPreference("notification_sound_path").setOnPreferenceClickListener(preference -> {
+            NotificationSoundBottomSheet.Companion.newInstance(FileHelper.getRingtoneName(getContext(), PrefGetter.getNotificationSound()))
+                    .show(getChildFragmentManager(), "NotificationSoundBottomSheet");
+            return true;
+        });
         findPreference("notificationTime").setOnPreferenceChangeListener(this);
         findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
         if (!PrefHelper.getBoolean("notificationEnabled")) {
@@ -311,4 +302,36 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         }
     }
 
+    private void restoreData(Intent data) {
+        StringBuilder json = new StringBuilder();
+        try {
+            try (InputStream inputStream = getContext().getContentResolver().openInputStream(data.getData())) {
+                if (inputStream != null) {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            json.append(line);
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            Toasty.error(App.getInstance(), getString(R.string.error)).show();
+        }
+        if (!InputHelper.isEmpty(json)) {
+            try {
+                Gson gson = new Gson();
+                Type typeOfHashMap = new TypeToken<Map<String, ?>>() {}.getType();
+                Map<String, ?> savedPref = gson.fromJson(json.toString(), typeOfHashMap);
+                if (savedPref != null && !savedPref.isEmpty()) {
+                    for (Map.Entry<String, ?> stringEntry : savedPref.entrySet()) {
+                        PrefHelper.set(stringEntry.getKey(), stringEntry.getKey());
+                    }
+                }
+                callback.onThemeChanged();
+            } catch (Exception ignored) {
+                Toasty.error(App.getInstance(), getString(R.string.error), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
