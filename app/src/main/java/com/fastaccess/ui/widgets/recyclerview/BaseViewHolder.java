@@ -58,4 +58,6 @@ public abstract class BaseViewHolder<T> extends RecyclerView.ViewHolder implemen
 
     public abstract void bind(@NonNull T t);
 
+    protected void onViewIsDetaching() {}
+
 }

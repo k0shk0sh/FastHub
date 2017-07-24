@@ -93,6 +93,5 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     @Override public int getItemViewType(int position) {
         return getData().get(position).getType();
     }
-
 }
 

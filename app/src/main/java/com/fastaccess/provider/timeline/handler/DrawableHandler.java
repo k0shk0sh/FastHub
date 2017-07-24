@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
 

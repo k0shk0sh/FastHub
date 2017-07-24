@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -186,7 +185,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void finishJob(JobParameters job) {
-//        jobFinished(job, false);
+        jobFinished(job, false);
     }
 
     private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, String iconUrl) {
@@ -197,10 +196,6 @@ public class NotificationSchedulerJobTask extends JobService {
                     .into(new SimpleTarget<Bitmap>() {
                         @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                             withoutComments(resource, thread, context, accentColor);
-                        }
-
-                        @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                            withoutComments(null, thread, context, accentColor);
                         }
                     });
         }
@@ -227,9 +222,6 @@ public class NotificationSchedulerJobTask extends JobService {
             Glide.with(context).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
                 @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
                     withComments(resource, comment, context, thread, accentColor);
-                }
-                @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                    withoutComments(null, thread, context, accentColor);
                 }
             });
         } else {
