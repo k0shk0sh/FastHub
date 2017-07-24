@@ -128,6 +128,7 @@
         <item>Português (Brasil)</item>
         <item>Český</item>
         <item>Español</item>
+        <item>Български</item>
     </string-array>
 
     <string-array name="languages_array_values" translatable="false">
@@ -144,6 +145,7 @@
         <item>pt-rBR</item>
         <item>cs</item>
         <item>es</item>
+        <item>bg</item>
     </string-array>
 
     <string-array name="files_search_options" translatable="false">
