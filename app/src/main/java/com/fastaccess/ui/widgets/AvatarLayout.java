@@ -1,23 +1,22 @@
 package com.fastaccess.ui.widgets;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.TooltipCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.fastaccess.R;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,7 +27,7 @@ import cn.gavinliu.android.lib.shapedimageview.ShapedImageView;
  * Created by Kosh on 14 Nov 2016, 7:59 PM
  */
 
-public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
+public class AvatarLayout extends FrameLayout {
 
     @BindView(R.id.avatar) ShapedImageView avatar;
     @Nullable private String login;
@@ -71,29 +70,12 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
         }
     }
 
-    @Override public void onLoadingStarted(String imageUri, View view) {
-//        setBackground(false);
-    }
-
-    @Override public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-        if (failReason.getCause() != null) failReason.getCause().printStackTrace();
-//        setBackground();
-        setImageOnFailed();
-    }
-
-    @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-//        setBackground(true);
-    }
-
-    @Override public void onLoadingCancelled(String imageUri, View view) {}
-
     public void setUrl(@Nullable String url, @Nullable String login, boolean isOrg, boolean isEnterprise) {
         this.login = login;
         this.isOrg = isOrg;
         this.isEnterprise = isEnterprise;
         avatar.setContentDescription(login);
         if (url != null) {
-            ImageLoader.getInstance().displayImage(url, avatar, this);
             if (login != null) {
                 TooltipCompat.setTooltipText(avatar, login);
             }
@@ -102,14 +84,15 @@ public class AvatarLayout extends FrameLayout implements ImageLoadingListener {
             if (login != null) {
                 avatar.setOnLongClickListener(null);
             }
-            ImageLoader.getInstance().displayImage(null, avatar);
-            setImageOnFailed();
         }
+        Glide.with(getContext())
+                .load(url)
+                .fallback(ContextCompat.getDrawable(getContext(), R.drawable.ic_github))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .dontAnimate()
+                .into(avatar);
     }
 
-    private void setImageOnFailed() {
-        avatar.setImageResource(R.drawable.ic_github);
-    }
 
     private void setBackground() {
         if (PrefGetter.isRectAvatar()) {

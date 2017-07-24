@@ -95,7 +95,7 @@ _Ads currently not available._
 - [**Android State**](https://github.com/evernote/android-state) for saving instance states
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs 
-- [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images
+- [**Glide**](https://github.com/bumptech/glide) for loading images
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars

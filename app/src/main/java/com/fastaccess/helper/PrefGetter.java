@@ -102,6 +102,7 @@ public class PrefGetter {
     private static final String CODE_THEME = "code_theme";
     private static final String ENTERPRISE_URL = "enterprise_url";
     private static final String NOTIFICATION_SOUND_PATH = "notification_sound_path";
+    private static final String DISABLE_AUTO_PLAY_GIF = "disable_auto_play_gif";
 
     public static void setToken(@Nullable String token) {
         PrefHelper.set(TOKEN, token);
@@ -458,5 +459,9 @@ public class PrefGetter {
 
     public static void setNotificationSound(@NonNull Uri uri) {
         PrefHelper.set(NOTIFICATION_SOUND_PATH, uri.toString());
+    }
+
+    public static boolean isGistDisabled() {
+        return PrefHelper.getBoolean(DISABLE_AUTO_PLAY_GIF);
     }
 }

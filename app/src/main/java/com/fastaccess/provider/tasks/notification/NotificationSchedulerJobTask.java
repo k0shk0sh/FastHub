@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 
 import com.annimon.stream.Stream;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
@@ -32,10 +35,6 @@ import com.firebase.jobdispatcher.JobService;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -194,22 +193,16 @@ public class NotificationSchedulerJobTask extends JobService {
         if (!InputHelper.isEmpty(iconUrl)) {
             withoutComments(null, thread, context, accentColor);
         } else {
-            ImageLoader.getInstance().loadImage(iconUrl, new ImageSize(50, 50), new ImageLoadingListener() {
-                @Override public void onLoadingStarted(String s, View view) {}
+            Glide.with(context).load(iconUrl).asBitmap()
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            withoutComments(resource, thread, context, accentColor);
+                        }
 
-                @Override public void onLoadingFailed(String s, View view, FailReason failReason) {
-                    withoutComments(null, thread, context, accentColor);
-                }
-
-                @Override public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                    withoutComments(bitmap, thread, context, accentColor);
-                }
-
-                @Override public void onLoadingCancelled(String s, View view) {
-                    withoutComments(null, thread, context, accentColor);
-
-                }
-            });
+                        @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                            withoutComments(null, thread, context, accentColor);
+                        }
+                    });
         }
     }
 
@@ -231,19 +224,12 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private void getNotificationWithComment(Context context, int accentColor, Notification thread, Comment comment, String url) {
         if (!InputHelper.isEmpty(url)) {
-            ImageLoader.getInstance().loadImage(url, new ImageSize(50, 50), new ImageLoadingListener() {
-                @Override public void onLoadingStarted(String s, View view) {}
-
-                @Override public void onLoadingFailed(String s, View view, FailReason failReason) {
-                    withComments(null, comment, context, thread, accentColor);
+            Glide.with(context).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    withComments(resource, comment, context, thread, accentColor);
                 }
-
-                @Override public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                    withComments(bitmap, comment, context, thread, accentColor);
-                }
-
-                @Override public void onLoadingCancelled(String s, View view) {
-                    withComments(null, comment, context, thread, accentColor);
+                @Override public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                    withoutComments(null, thread, context, accentColor);
                 }
             });
         } else {

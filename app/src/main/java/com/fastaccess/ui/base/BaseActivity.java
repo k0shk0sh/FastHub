@@ -45,7 +45,6 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -202,8 +201,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        ImageLoader.getInstance().clearDiskCache();
-        ImageLoader.getInstance().clearMemoryCache();
         PrefGetter.setToken(null);
         PrefGetter.setEnterpriseUrl(null);
         PrefGetter.setOtpCode(null);
