@@ -12,8 +12,8 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
-import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.timeline.GenericEvent;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -22,6 +22,7 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
+import com.fastaccess.provider.timeline.TimelineConverter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
@@ -77,7 +78,7 @@ import lombok.Getter;
                     onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
                 }
             } else if (item.getType() == TimelineModel.EVENT) {
-                IssueEvent issueEventModel = item.getEvent();
+                GenericEvent issueEventModel = item.getGenericEvent();
                 if (issueEventModel.getCommitUrl() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
                 }
@@ -215,22 +216,15 @@ import lombok.Getter;
         String login = parameter.getLogin();
         String repoId = parameter.getRepoId();
         int number = parameter.getNumber();
-        Observable<List<TimelineModel>> observable;
-        if (page > 1) {
-            observable = RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page)
-                    .map(comments -> {
-                        lastPage = comments != null ? comments.getLast() : 0;
-                        return TimelineModel.construct(comments != null ? comments.getItems() : null);
-                    });
-        } else {
-            observable = Observable.zip(RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number),
-                    RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page),
-                    (issueEventPageable, commentPageable) -> {
-                        lastPage = commentPageable != null ? commentPageable.getLast() : 0;
-                        return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,
-                                issueEventPageable != null ? issueEventPageable.getItems() : null);
-                    });
-        }
-        makeRestCall(observable, models -> sendToView(view -> view.onNotifyAdapter(models, page)));
+        Observable<List<TimelineModel>> observable = RestProvider.getIssueService(isEnterprise())
+                .getTimeline(login, repoId, number, page)
+                .flatMap(response -> {
+                    if (response != null) {
+                        lastPage = response.getLast();
+                    }
+                    return TimelineConverter.convert(response != null ? response.getItems() : null);
+                }).toList()
+                .toObservable();
+        makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));
     }
 }

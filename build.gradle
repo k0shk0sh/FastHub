@@ -5,8 +5,7 @@ buildscript {
         butterKnifeVersion = '8.5.1'
         state_version = '1.1.0'
         lombokVersion = '1.12.6'
-        supportVersion = "26.0.0-beta2"
-//        supportVersion = "25.4.0"
+        supportVersion = "26.0.0"
         gms = "11.0.2"
         thirtyinchVersion = '0.8.0'
         retrofit = '2.3.0'
@@ -24,10 +23,10 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha7'
+        classpath 'com.android.tools.build:gradle:3.0.0-alpha8'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
-        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.1'
+        classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
         classpath 'io.fabric.tools:gradle:1.22.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }

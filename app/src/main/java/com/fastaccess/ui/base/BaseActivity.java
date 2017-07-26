@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.evernote.android.state.State;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
@@ -70,7 +71,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
     @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
-    @Nullable @BindView(R.id.adView) AdView adView;
 
     @State Bundle presenterStateBundle = new Bundle();
 
@@ -113,7 +113,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             getPresenter().onRestoreInstanceState(presenterStateBundle);
         }
         setupToolbarAndStatusBar(toolbar);
-        showHideAds();
         if (savedInstanceState == null) {
             if (getIntent() != null) {
                 if (getIntent().getExtras() != null) {
@@ -201,10 +200,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
+        Glide glide = Glide.get(this);
+        glide.clearDiskCache();
+        glide.clearMemory();
         PrefGetter.setToken(null);
-        PrefGetter.setEnterpriseUrl(null);
         PrefGetter.setOtpCode(null);
-        PrefGetter.setEnterpriseOtpCode(null);
+        PrefGetter.resetEnterprise();
         Login.logout();
         Intent intent = new Intent(this, LoginChooserActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -263,27 +264,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onScrollTop(int index) {}
 
-    @Override protected void onPause() {
-        if (adView != null && adView.isShown()) {
-            adView.pause();
-        }
-        super.onPause();
-    }
-
-    @Override protected void onResume() {
-        super.onResume();
-        if (adView != null && adView.isShown()) {
-            adView.resume();
-        }
-    }
-
-    @Override protected void onDestroy() {
-        if (adView != null && adView.isShown()) {
-            adView.destroy();
-        }
-        super.onDestroy();
-    }
-
     @Override public boolean isEnterprise() {
         return getPresenter() != null && getPresenter().isEnterprise();
     }
@@ -295,23 +275,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     protected void setTaskName(@Nullable String name) {
         setTaskDescription(new ActivityManager.TaskDescription(name, null, ViewHelper.getPrimaryDarkColor(this)));
-    }
-
-    protected void showHideAds() {
-        if (adView != null) {
-            boolean isAdsEnabled = PrefGetter.isAdsEnabled();
-            if (isAdsEnabled) {
-                adView.setVisibility(View.VISIBLE);
-                MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(getString(R.string.test_device_id))
-                        .build();
-                adView.loadAd(adRequest);
-            } else {
-                adView.destroy();
-                adView.setVisibility(View.GONE);
-            }
-        }
     }
 
     protected void selectHome(boolean hideRepo) {

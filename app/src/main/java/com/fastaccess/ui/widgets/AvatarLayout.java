@@ -75,15 +75,11 @@ public class AvatarLayout extends FrameLayout {
         this.isOrg = isOrg;
         this.isEnterprise = isEnterprise;
         avatar.setContentDescription(login);
-        if (url != null) {
-            if (login != null) {
-                TooltipCompat.setTooltipText(avatar, login);
-            }
+        if (login != null) {
+            TooltipCompat.setTooltipText(avatar, login);
         } else {
             avatar.setOnClickListener(null);
-            if (login != null) {
-                avatar.setOnLongClickListener(null);
-            }
+            avatar.setOnLongClickListener(null);
         }
         Glide.with(getContext())
                 .load(url)
@@ -92,8 +88,7 @@ public class AvatarLayout extends FrameLayout {
                 .dontAnimate()
                 .into(avatar);
     }
-
-
+    
     private void setBackground() {
         if (PrefGetter.isRectAvatar()) {
             setBackgroundResource(R.drawable.rect_shape);

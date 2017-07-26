@@ -101,7 +101,10 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         manageDisposable(
                 RxHelper.getObservable(observable)
                         .doOnSubscribe(disposable -> onSubscribed(cancelable))
-                        .subscribe(onNext, this::onError, () -> apiCalled = true)
+                        .subscribe(onNext, this::onError, () -> {
+                            apiCalled = true;
+                            sendToView(BaseMvp.FAView::hideProgress);
+                        })
         );
     }
 

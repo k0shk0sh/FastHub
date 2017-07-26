@@ -69,6 +69,8 @@ public interface PullRequestTimelineMvp {
         @Nullable PullRequest getPullRequest();
 
         void onUpdateHeader();
+
+        void onAddStatus(@NonNull TimelineModel timelineModel);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,

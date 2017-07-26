@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.GroupedReviewModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.helper.ViewHelper;
-import com.fastaccess.ui.adapter.ReviewCommentsAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp;
@@ -94,20 +92,20 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     }
 
     @Override public void bind(@NonNull TimelineModel model) {
-        GroupedReviewModel groupedReviewModel = model.getGroupedReview();
-        this.pathText = groupedReviewModel.getDiffText();
-        name.setText(groupedReviewModel.getPath());
-        stateImage.setImageResource(R.drawable.ic_eye);
-        if (groupedReviewModel.getComments() == null || groupedReviewModel.getComments().isEmpty()) {
-            nestedRecyclerView.setVisibility(View.GONE);
-            nestedRecyclerView.setAdapter(null);
-        } else {
-            nestedRecyclerView.setVisibility(View.VISIBLE);
-            nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this,
-                    onToggleView, reactionsCallback, repoOwner, poster));
-            nestedRecyclerView.addDivider();
-        }
-        onToggle(onToggleView.isCollapsed(getId()), false);
+//        GroupedReviewModel groupedReviewModel = model.getGroupedReview();
+//        this.pathText = groupedReviewModel.getDiffText();
+//        name.setText(groupedReviewModel.getPath());
+//        stateImage.setImageResource(R.drawable.ic_eye);
+//        if (groupedReviewModel.getComments() == null || groupedReviewModel.getComments().isEmpty()) {
+//            nestedRecyclerView.setVisibility(View.GONE);
+//            nestedRecyclerView.setAdapter(null);
+//        } else {
+//            nestedRecyclerView.setVisibility(View.VISIBLE);
+//            nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this,
+//                    onToggleView, reactionsCallback, repoOwner, poster));
+//            nestedRecyclerView.addDivider();
+//        }
+//        onToggle(onToggleView.isCollapsed(getId()), false);
     }
 
 

@@ -17,6 +17,7 @@ import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
+import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -65,10 +66,12 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommitComments(login, repoId, sha, page)
-                .flatMap(listResponse -> {
-                    lastPage = listResponse.getLast();
-                    return Observable.just(TimelineModel.construct(listResponse.getItems()));
-                }), listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
+                        .flatMap(listResponse -> {
+                            lastPage = listResponse.getLast();
+                            return TimelineModel.construct(listResponse.getItems());
+                        })
+                        .doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)),
+                listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
     }
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {
@@ -103,7 +106,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     @Override public void onWorkOffline() {
         if (comments.isEmpty()) {
             manageDisposable(RxHelper.getObservable(Comment.getCommitComments(repoId(), login(), sha).toObservable())
-                    .flatMap(comments -> Observable.just(TimelineModel.construct(comments)))
+                    .flatMap(TimelineModel::construct)
                     .subscribe(models -> sendToView(view -> view.onNotifyAdapter(models, 1))));
         } else {
             sendToView(CommitCommentsMvp.View::hideProgress);

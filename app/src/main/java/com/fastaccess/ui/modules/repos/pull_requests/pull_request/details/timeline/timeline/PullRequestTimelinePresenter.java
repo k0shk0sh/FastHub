@@ -1,7 +1,5 @@
 package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline;
 
-import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,11 +8,10 @@ import android.widget.PopupMenu;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
-import com.fastaccess.data.dao.GroupedReviewModel;
+import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
-import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.types.ReactionTypes;
@@ -22,12 +19,11 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
-import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
+import com.fastaccess.provider.timeline.TimelineConverter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
-import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,99 +42,99 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private int lastPage = Integer.MAX_VALUE;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
-        if (getView() != null && getView().getPullRequest() != null) {
-            if (item.getType() == TimelineModel.COMMENT) {
-                PullRequest pullRequest = getView().getPullRequest();
-                if (v.getId() == R.id.commentMenu) {
-                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                    popupMenu.inflate(R.menu.comments_menu);
-                    String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, pullRequest.getLogin(), item.getComment().getUser().getLogin());
-                    popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
-                    popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
-                    popupMenu.setOnMenuItemClickListener(item1 -> {
-                        if (getView() == null) return false;
-                        if (item1.getItemId() == R.id.delete) {
-                            getView().onShowDeleteMsg(item.getComment().getId());
-                        } else if (item1.getItemId() == R.id.reply) {
-                            getView().onReply(item.getComment().getUser(), item.getComment().getBody());
-                        } else if (item1.getItemId() == R.id.edit) {
-                            getView().onEditComment(item.getComment());
-                        } else if (item1.getItemId() == R.id.share) {
-                            ActivityHelper.shareUrl(v.getContext(), item.getComment().getHtmlUrl());
-                        }
-                        return true;
-                    });
-                    popupMenu.show();
-                } else {
-                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
-                }
-            } else if (item.getType() == TimelineModel.EVENT) {
-                IssueEvent issueEventModel = item.getEvent();
-                if (issueEventModel.getCommitUrl() != null) {
-                    SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
-                }
-            } else if (item.getType() == TimelineModel.HEADER) {
-                if (v.getId() == R.id.commentMenu) {
-                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
-                    popupMenu.inflate(R.menu.comments_menu);
-                    String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, item.getPullRequest().getLogin(),
-                            item.getPullRequest().getUser().getLogin());
-                    popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
-                    popupMenu.setOnMenuItemClickListener(item1 -> {
-                        if (getView() == null) return false;
-                        if (item1.getItemId() == R.id.reply) {
-                            getView().onReply(item.getPullRequest().getUser(), item.getPullRequest().getBody());
-                        } else if (item1.getItemId() == R.id.edit) {
-                            Activity activity = ActivityHelper.getActivity(v.getContext());
-                            if (activity == null) return false;
-                            CreateIssueActivity.startForResult(activity,
-                                    item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(),
-                                    item.getPullRequest(), isEnterprise());
-                        } else if (item1.getItemId() == R.id.share) {
-                            ActivityHelper.shareUrl(v.getContext(), item.getPullRequest().getHtmlUrl());
-                        }
-                        return true;
-                    });
-                    popupMenu.show();
-                } else {
-                    onHandleReaction(v.getId(), item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
-                }
-            } else if (item.getType() == TimelineModel.GROUPED_REVIEW) {
-                GroupedReviewModel reviewModel = item.getGroupedReview();
-                if (v.getId() == R.id.addCommentPreview) {
-                    EditReviewCommentModel model = new EditReviewCommentModel();
-                    model.setCommentPosition(-1);
-                    model.setGroupPosition(position);
-                    model.setInReplyTo(reviewModel.getId());
-                    getView().onReplyOrCreateReview(null, null, position, -1, model);
-                }
-            }
-        }
+//        if (getView() != null && getView().getPullRequest() != null) {
+//            if (item.getType() == TimelineModel.COMMENT) {
+//                PullRequest pullRequest = getView().getPullRequest();
+//                if (v.getId() == R.id.commentMenu) {
+//                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+//                    popupMenu.inflate(R.menu.comments_menu);
+//                    String username = Login.getUser().getLogin();
+//                    boolean isOwner = CommentsHelper.isOwner(username, pullRequest.getLogin(), item.getComment().getUser().getLogin());
+//                    popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
+//                    popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
+//                    popupMenu.setOnMenuItemClickListener(item1 -> {
+//                        if (getView() == null) return false;
+//                        if (item1.getItemId() == R.id.delete) {
+//                            getView().onShowDeleteMsg(item.getComment().getId());
+//                        } else if (item1.getItemId() == R.id.reply) {
+//                            getView().onReply(item.getComment().getUser(), item.getComment().getBody());
+//                        } else if (item1.getItemId() == R.id.edit) {
+//                            getView().onEditComment(item.getComment());
+//                        } else if (item1.getItemId() == R.id.share) {
+//                            ActivityHelper.shareUrl(v.getContext(), item.getComment().getHtmlUrl());
+//                        }
+//                        return true;
+//                    });
+//                    popupMenu.show();
+//                } else {
+//                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
+//                }
+//            } else if (item.getType() == TimelineModel.EVENT) {
+//                IssueEvent issueEventModel = item.getEvent();
+//                if (issueEventModel.getCommitUrl() != null) {
+//                    SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
+//                }
+//            } else if (item.getType() == TimelineModel.HEADER) {
+//                if (v.getId() == R.id.commentMenu) {
+//                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
+//                    popupMenu.inflate(R.menu.comments_menu);
+//                    String username = Login.getUser().getLogin();
+//                    boolean isOwner = CommentsHelper.isOwner(username, item.getPullRequest().getLogin(),
+//                            item.getPullRequest().getUser().getLogin());
+//                    popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
+//                    popupMenu.setOnMenuItemClickListener(item1 -> {
+//                        if (getView() == null) return false;
+//                        if (item1.getItemId() == R.id.reply) {
+//                            getView().onReply(item.getPullRequest().getUser(), item.getPullRequest().getBody());
+//                        } else if (item1.getItemId() == R.id.edit) {
+//                            Activity activity = ActivityHelper.getActivity(v.getContext());
+//                            if (activity == null) return false;
+//                            CreateIssueActivity.startForResult(activity,
+//                                    item.getPullRequest().getLogin(), item.getPullRequest().getRepoId(),
+//                                    item.getPullRequest(), isEnterprise());
+//                        } else if (item1.getItemId() == R.id.share) {
+//                            ActivityHelper.shareUrl(v.getContext(), item.getPullRequest().getHtmlUrl());
+//                        }
+//                        return true;
+//                    });
+//                    popupMenu.show();
+//                } else {
+//                    onHandleReaction(v.getId(), item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
+//                }
+//            } else if (item.getType() == TimelineModel.GROUPED_REVIEW) {
+//                GroupedReviewModel reviewModel = item.getGroupedReview();
+//                if (v.getId() == R.id.addCommentPreview) {
+//                    EditReviewCommentModel model = new EditReviewCommentModel();
+//                    model.setCommentPosition(-1);
+//                    model.setGroupPosition(position);
+//                    model.setInReplyTo(reviewModel.getId());
+//                    getView().onReplyOrCreateReview(null, null, position, -1, model);
+//                }
+//            }
+//        }
     }
 
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
-        if (getView() == null || getView().getPullRequest() == null) return;
-        if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
-            PullRequest pullRequest = getView().getPullRequest();
-            String login = pullRequest.getLogin();
-            String repoId = pullRequest.getRepoId();
-            if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                ReactionTypes type = ReactionTypes.get(v.getId());
-                if (type != null) {
-                    if (item.getType() == TimelineModel.HEADER) {
-                        getView().showReactionsPopup(type, login, repoId, item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
-                    } else {
-                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), ReactionsProvider.COMMENT);
-                    }
-                } else {
-                    onItemClick(position, v, item);
-                }
-            }
-        } else {
-            onItemClick(position, v, item);
-        }
+//        if (getView() == null || getView().getPullRequest() == null) return;
+//        if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
+//            PullRequest pullRequest = getView().getPullRequest();
+//            String login = pullRequest.getLogin();
+//            String repoId = pullRequest.getRepoId();
+//            if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
+//                ReactionTypes type = ReactionTypes.get(v.getId());
+//                if (type != null) {
+//                    if (item.getType() == TimelineModel.HEADER) {
+//                        getView().showReactionsPopup(type, login, repoId, item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
+//                    } else {
+//                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), ReactionsProvider.COMMENT);
+//                    }
+//                } else {
+//                    onItemClick(position, v, item);
+//                }
+//            }
+//        } else {
+//            onItemClick(position, v, item);
+//        }
     }
 
     @NonNull @Override public ArrayList<TimelineModel> getEvents() {
@@ -298,28 +294,23 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable, int page) {
-        Observable<List<TimelineModel>> observable;
-        if (page > 1) {
-            observable = RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page)
-                    .map(comments -> {
-                        lastPage = comments != null ? comments.getLast() : 0;
-                        return TimelineModel.construct(comments != null ? comments.getItems() : null);
-                    });
-        } else {
-            observable = Observable.zip(RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number),
-                    RestProvider.getIssueService(isEnterprise()).getIssueComments(login, repoId, number, page),
-                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha),
-                    RestProvider.getReviewService(isEnterprise()).getReviews(login, repoId, number),
-                    RestProvider.getReviewService(isEnterprise()).getPrReviewComments(login, repoId, number),
-                    (issueEventPageable, commentPageable, statuses, reviews, reviewComments) -> {
+        Observable<List<TimelineModel>> timeline = RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number, page)
+                .flatMap(response -> {
+                    lastPage = response != null ? response.getLast() : 0;
+                    return TimelineConverter.convert(response != null ? response.getItems() : null);
+                })
+                .toList()
+                .toObservable();
+        if (page == 1) {
+            Observable<PullRequestStatusModel> status = RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
+                    .map(statuses -> {
                         if (statuses != null) {
                             statuses.setMergable(isMergeable);
                         }
-                        lastPage = commentPageable != null ? commentPageable.getLast() : 0;
-                        return TimelineModel.construct(commentPageable != null ? commentPageable.getItems() : null,
-                                issueEventPageable.getItems(), statuses, reviews.getItems(), reviewComments.getItems());
+                        return statuses;
                     });
+            makeRestCall(status.map(TimelineModel::new), timelineModel -> sendToView(view -> view.onAddStatus(timelineModel)));
         }
-        makeRestCall(observable, models -> sendToView(view -> view.onNotifyAdapter(models, page)));
+        makeRestCall(timeline, timelineModels -> sendToView(view -> view.onNotifyAdapter(timelineModels, page)));
     }
 }

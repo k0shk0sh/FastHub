@@ -305,16 +305,16 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @Override public void onRemoveReviewComment(int groupPosition, int commentPosition) {
         hideProgress();
         TimelineModel timelineModel = adapter.getItem(groupPosition);
-        if (timelineModel != null && timelineModel.getGroupedReview() != null) {
-            if (timelineModel.getGroupedReview().getComments() != null) {
-                timelineModel.getGroupedReview().getComments().remove(commentPosition);
-                if (timelineModel.getGroupedReview().getComments().isEmpty()) {
-                    adapter.removeItem(groupPosition);
-                } else {
-                    adapter.notifyItemChanged(groupPosition);
-                }
-            }
-        }
+//        if (timelineModel != null && timelineModel.getGroupedReview() != null) {
+//            if (timelineModel.getGroupedReview().getComments() != null) {
+//                timelineModel.getGroupedReview().getComments().remove(commentPosition);
+//                if (timelineModel.getGroupedReview().getComments().isEmpty()) {
+//                    adapter.removeItem(groupPosition);
+//                } else {
+//                    adapter.notifyItemChanged(groupPosition);
+//                }
+//            }
+//        }
     }
 
     @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
@@ -334,6 +334,10 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @Override public void onUpdateHeader() {
         if (getPullRequest() == null) return;
         onSetHeader(TimelineModel.constructHeader(getPullRequest()));
+    }
+
+    @Override public void onAddStatus(@NonNull TimelineModel timelineModel) {
+        adapter.addItem(timelineModel, 1);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -372,21 +376,21 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                         return;
                     }
                     TimelineModel timelineModel = adapter.getItem(commentModel.getGroupPosition());
-                    if (isNew) {
-                        if (timelineModel.getGroupedReview() != null && timelineModel.getGroupedReview().getComments() != null) {
-                            timelineModel.getGroupedReview().getComments().add(commentModel.getCommentModel());
-                            adapter.notifyItemChanged(commentModel.getGroupPosition());
-                        } else {
-                            onRefresh();
-                        }
-                    } else {
-                        if (timelineModel.getGroupedReview() != null && timelineModel.getGroupedReview().getComments() != null) {
-                            timelineModel.getGroupedReview().getComments().set(commentModel.getCommentPosition(), commentModel.getCommentModel());
-                            adapter.notifyItemChanged(commentModel.getGroupPosition());
-                        } else {
-                            onRefresh();
-                        }
-                    }
+//                    if (isNew) {
+//                        if (timelineModel.getGroupedReview() != null && timelineModel.getGroupedReview().getComments() != null) {
+//                            timelineModel.getGroupedReview().getComments().add(commentModel.getCommentModel());
+//                            adapter.notifyItemChanged(commentModel.getGroupPosition());
+//                        } else {
+//                            onRefresh();
+//                        }
+//                    } else {
+//                        if (timelineModel.getGroupedReview() != null && timelineModel.getGroupedReview().getComments() != null) {
+//                            timelineModel.getGroupedReview().getComments().set(commentModel.getCommentPosition(), commentModel.getCommentModel());
+//                            adapter.notifyItemChanged(commentModel.getGroupPosition());
+//                        } else {
+//                            onRefresh();
+//                        }
+//                    }
                 }
             } else {
                 onRefresh(); // bundle size is too large? refresh the api

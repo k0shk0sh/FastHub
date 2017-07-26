@@ -7,11 +7,10 @@ import android.view.ViewGroup;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
-import com.fastaccess.ui.adapter.viewholder.GroupedReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
-import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
+import com.fastaccess.ui.adapter.viewholder.ReviewCommentsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp.ReviewCommentCallback;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -59,12 +58,14 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
         } else if (viewType == TimelineModel.STATUS) {
             return PullStatusViewHolder.newInstance(parent);
-        } else if (viewType == TimelineModel.REVIEW) {
-            return ReviewsViewHolder.newInstance(parent, this);
-        } else if (viewType == TimelineModel.GROUPED_REVIEW) {
-            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
-                    reviewCommentCallback, repoOwner, poster);
+        } else if (viewType == TimelineModel.LINE_COMMENT) {
+            return ReviewCommentsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, repoOwner, poster);
+//            return ReviewsViewHolder.newInstance(parent, this);
         }
+//        else if (viewType == TimelineModel.GROUPED_REVIEW) {
+//            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
+//                    reviewCommentCallback, repoOwner, poster);
+//        }
         return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies,
                 reactionsCallback, repoOwner, poster);
     }
@@ -77,11 +78,15 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             ((IssueTimelineViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.COMMENT) {
             ((TimelineCommentsViewHolder) holder).bind(model);
-        } else if (model.getType() == TimelineModel.REVIEW) {
-            ((ReviewsViewHolder) holder).bind(model);
-        } else if (model.getType() == TimelineModel.GROUPED_REVIEW) {
-            ((GroupedReviewsViewHolder) holder).bind(model);
-        } else {
+        } else if (model.getType() == TimelineModel.LINE_COMMENT) {
+            ((ReviewCommentsViewHolder) holder).bind(model.getReviewComment());
+        }
+//        else if (model.getType() == TimelineModel.REVIEW) {
+//            ((ReviewsViewHolder) holder).bind(model);
+//        } else if (model.getType() == TimelineModel.GROUPED_REVIEW) {
+//            ((GroupedReviewsViewHolder) holder).bind(model);
+//        }
+        else {
             if (model.getStatus() != null) ((PullStatusViewHolder) holder).bind(model.getStatus());
         }
         if (model.getType() != TimelineModel.COMMENT) {

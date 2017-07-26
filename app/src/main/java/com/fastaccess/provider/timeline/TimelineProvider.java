@@ -8,14 +8,14 @@ import android.text.style.BackgroundColorSpan;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelModel;
-import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.data.dao.timeline.GenericEvent;
+import com.fastaccess.data.dao.timeline.SourceModel;
 import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
-import com.fastaccess.ui.widgets.LabelSpan;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.zzhoujay.markdown.style.CodeSpan;
 
@@ -27,9 +27,14 @@ import java.util.Date;
 
 public class TimelineProvider {
 
-    @NonNull public static SpannableBuilder getStyledEvents(@NonNull IssueEvent issueEventModel, @NonNull Context context, boolean isMerged) {
+    @NonNull public static SpannableBuilder getStyledEvents(@NonNull GenericEvent issueEventModel,
+                                                            @NonNull Context context, boolean isMerged) {
         IssueEventType event = issueEventModel.getEvent();
         SpannableBuilder spannableBuilder = SpannableBuilder.builder();
+        Date date = issueEventModel.getCreatedAt() != null
+                    ? issueEventModel.getCreatedAt()
+                    : issueEventModel.getAuthor() != null
+                      ? issueEventModel.getAuthor().getDate() : null;
         if (event != null) {
             String to = context.getString(R.string.to);
             String from = context.getString(R.string.from);
@@ -46,20 +51,25 @@ public class TimelineProvider {
                 int color = Color.parseColor("#" + labelModel.getColor());
                 spannableBuilder.append(" ").append(" " + labelModel.getName() + " ", new CodeSpan(color, ViewHelper.generateTextColor(color), 5));
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
+            } else if (event == IssueEventType.committed) {
+                spannableBuilder.append(issueEventModel.getMessage().replaceAll("\n", " "))
+                        .append(" ")
+                        .url(substring(issueEventModel.getSha()));
             } else {
                 User user = null;
                 if (issueEventModel.getAssignee() != null && issueEventModel.getAssigner() != null) {
                     user = issueEventModel.getAssigner();
                 } else if (issueEventModel.getActor() != null) {
                     user = issueEventModel.getActor();
+                } else if (issueEventModel.getAuthor() != null) {
+                    user = issueEventModel.getAuthor();
                 }
                 if (user != null) {
                     spannableBuilder.bold(user.getLogin());
                 }
-
                 if ((event == IssueEventType.review_requested || (event == IssueEventType.review_dismissed ||
                         event == IssueEventType.review_request_removed)) && user != null) {
-                    appendReviews(issueEventModel, event, spannableBuilder, from, user);
+                    appendReviews(issueEventModel, event, spannableBuilder, from, issueEventModel.getReviewRequester());
                 } else if (event == IssueEventType.closed || event == IssueEventType.reopened) {
                     if (isMerged) {
                         spannableBuilder.append(" ").append(IssueEventType.merged.name());
@@ -76,7 +86,6 @@ public class TimelineProvider {
                                 .append(in)
                                 .append(" ")
                                 .url(substring(issueEventModel.getCommitId()));
-
                     }
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
@@ -123,18 +132,38 @@ public class TimelineProvider {
                             .append("commit")
                             .append(" ")
                             .url(substring(issueEventModel.getCommitId()));
+                } else if (event == IssueEventType.cross_referenced) {
+                    SourceModel sourceModel = issueEventModel.getSource();
+                    if (sourceModel != null) {
+                        SpannableBuilder title = SpannableBuilder.builder();
+                        if (sourceModel.getIssue() != null) {
+                            title.url("#" + sourceModel.getIssue().getNumber());
+                        } else if (sourceModel.getPullRequest() != null) {
+                            title.url("#" + sourceModel.getPullRequest().getNumber());
+                        } else if (sourceModel.getCommit() != null) {
+                            title.url(substring(sourceModel.getCommit().getSha()));
+                        }
+                        if (!InputHelper.isEmpty(title)) {
+                            spannableBuilder.append(" ")
+                                    .append(thisString)
+                                    .append(" in ")
+                                    .append(sourceModel.getType())
+                                    .append(" ")
+                                    .append(title);
+                        }
+                    }
                 }
-                spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
+                spannableBuilder.append(" ").append(getDate(date));
             }
         }
         return spannableBuilder;
     }
 
-    private static void appendReviews(@NonNull IssueEvent issueEventModel, @NonNull IssueEventType event,
-                                      @NonNull SpannableBuilder spannableBuilder, @NonNull String from, @NonNull User user) {
+    private static void appendReviews(@NonNull GenericEvent issueEventModel, @NonNull IssueEventType event,
+                                      @NonNull SpannableBuilder spannableBuilder, @NonNull String from,
+                                      @NonNull User user) {
         spannableBuilder.append(" ");
-        User reviewer = issueEventModel.getRequestedReviewer() != null
-                        ? issueEventModel.getRequestedReviewer() : issueEventModel.getIssue() != null ? issueEventModel.getIssue().getUser() : null;
+        User reviewer = issueEventModel.getRequestedReviewer();
         if (reviewer != null && user.getLogin().equalsIgnoreCase(reviewer.getLogin())) {
             spannableBuilder
                     .append(event == IssueEventType.review_requested
@@ -156,11 +185,6 @@ public class TimelineProvider {
         } else if (reviewer != null && !user.getLogin().equalsIgnoreCase(reviewer.getLogin())) {
             spannableBuilder.bold(issueEventModel.getRequestedReviewer().getLogin());
         }
-    }
-
-    public static void appendLabels(@NonNull LabelModel labelModel, @NonNull SpannableBuilder spannableBuilder) {
-        int color = Color.parseColor("#" + labelModel.getColor());
-        spannableBuilder.append(" ").append(" " + labelModel.getName() + " ", new LabelSpan(color));
     }
 
     @NonNull private static CharSequence getDate(@Nullable Date date) {
