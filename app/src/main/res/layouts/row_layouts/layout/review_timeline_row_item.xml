@@ -7,9 +7,7 @@
     android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/layout_margin"
     android:layout_marginStart="@dimen/layout_margin"
-    android:layout_marginTop="@dimen/spacing_normal"
-    android:clipChildren="false"
-    android:foreground="?selectableItemBackground">
+    android:layout_marginTop="@dimen/spacing_normal">
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/stateImage"

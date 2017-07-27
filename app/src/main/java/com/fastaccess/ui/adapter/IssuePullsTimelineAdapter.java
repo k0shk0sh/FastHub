@@ -11,6 +11,7 @@ import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
 import com.fastaccess.ui.adapter.viewholder.ReviewCommentsViewHolder;
+import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp.ReviewCommentCallback;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
@@ -61,6 +62,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         } else if (viewType == TimelineModel.LINE_COMMENT) {
             return ReviewCommentsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, repoOwner, poster);
 //            return ReviewsViewHolder.newInstance(parent, this);
+        } else if (viewType == TimelineModel.REVIEW) {
+            return ReviewsViewHolder.newInstance(parent, this);
         }
 //        else if (viewType == TimelineModel.GROUPED_REVIEW) {
 //            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
@@ -80,10 +83,10 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
             ((TimelineCommentsViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.LINE_COMMENT) {
             ((ReviewCommentsViewHolder) holder).bind(model.getReviewComment());
+        } else if (model.getType() == TimelineModel.REVIEW) {
+            ((ReviewsViewHolder) holder).bind(model);
         }
-//        else if (model.getType() == TimelineModel.REVIEW) {
-//            ((ReviewsViewHolder) holder).bind(model);
-//        } else if (model.getType() == TimelineModel.GROUPED_REVIEW) {
+// else if (model.getType() == TimelineModel.GROUPED_REVIEW) {
 //            ((GroupedReviewsViewHolder) holder).bind(model);
 //        }
         else {

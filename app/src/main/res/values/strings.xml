@@ -549,4 +549,5 @@
     <string name="sound_chooser_title">Choose Notification Sound</string>
     <string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
     <string name="disable_auto_gif_title">Disable Playing GIF</string>
+    <string name="request_changes">requested changes</string>
 </resources>

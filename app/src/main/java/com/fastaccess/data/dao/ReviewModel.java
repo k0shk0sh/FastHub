@@ -4,8 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fastaccess.data.dao.model.User;
-import com.fastaccess.data.dao.types.ReviewStateType;
-import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 import java.util.List;
@@ -21,8 +19,8 @@ import lombok.Setter;
 
     private long id;
     private User user;
-    @SerializedName("body_html") private String body;
-    private ReviewStateType state;
+    private String bodyHtml;
+    private String state;
     private Date submittedAt;
     private String commitId;
     private String diffText;
@@ -36,8 +34,8 @@ import lombok.Setter;
     @Override public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.id);
         dest.writeParcelable(this.user, flags);
-        dest.writeString(this.body);
-        dest.writeInt(this.state == null ? -1 : this.state.ordinal());
+        dest.writeString(this.bodyHtml);
+        dest.writeString(this.state);
         dest.writeLong(this.submittedAt != null ? this.submittedAt.getTime() : -1);
         dest.writeString(this.commitId);
         dest.writeString(this.diffText);
@@ -48,9 +46,8 @@ import lombok.Setter;
     protected ReviewModel(Parcel in) {
         this.id = in.readLong();
         this.user = in.readParcelable(User.class.getClassLoader());
-        this.body = in.readString();
-        int tmpState = in.readInt();
-        this.state = tmpState == -1 ? null : ReviewStateType.values()[tmpState];
+        this.bodyHtml = in.readString();
+        this.state = in.readString();
         long tmpSubmittedAt = in.readLong();
         this.submittedAt = tmpSubmittedAt == -1 ? null : new Date(tmpSubmittedAt);
         this.commitId = in.readString();
@@ -64,4 +61,15 @@ import lombok.Setter;
 
         @Override public ReviewModel[] newArray(int size) {return new ReviewModel[size];}
     };
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReviewModel that = (ReviewModel) o;
+        return id == that.id;
+    }
+
+    @Override public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

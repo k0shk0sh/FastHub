@@ -6,11 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.TimelineModel;
+import com.fastaccess.data.dao.types.ReviewStateType;
+import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.provider.scheme.LinkParserHelper;
+import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
+import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
@@ -38,31 +45,32 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
     }
 
     @Override public void bind(@NonNull TimelineModel model) {
-//        ReviewModel review = model.getReview();
-//        if (review != null) {
-//            if (review.getUser() != null) {
-//                avatarLayout.setUrl(review.getUser().getAvatarUrl(), review.getUser().getLogin(), false,
-//                        LinkParserHelper.isEnterprise(review.getUser().getHtmlUrl()));
-//            } else {
-//                avatarLayout.setUrl(null, null, false, false);
-//            }
-//            if (review.getState() != null) {
-//                stateImage.setImageResource(review.getState().getDrawableRes());
-//            }
-//            if (review.getUser() != null) {
-//                stateText.setText(SpannableBuilder.builder().append(review.getUser().getLogin())
-//                        .append(" ")
-//                        .append(review.getState() != null ? stateText.getResources().getString(review.getState().getStringRes()) : "")
-//                        .append(" ")
-//                        .append(ParseDateFormat.getTimeAgo(review.getSubmittedAt())));
-//            }
-//            if (!InputHelper.isEmpty(review.getBody())) {
-//                body.setVisibility(View.VISIBLE);
-//                HtmlHelper.htmlIntoTextView(body, review.getBody());
-//            } else {
-//                body.setVisibility(View.GONE);
-//            }
-//        }
+        ReviewModel review = model.getReview();
+        if (review != null) {
+            if (review.getUser() != null) {
+                avatarLayout.setUrl(review.getUser().getAvatarUrl(), review.getUser().getLogin(), false,
+                        LinkParserHelper.isEnterprise(review.getUser().getHtmlUrl()));
+            } else {
+                avatarLayout.setUrl(null, null, false, false);
+            }
+            ReviewStateType stateType = ReviewStateType.getType(review.getState());
+            if (stateType != null) {
+                stateImage.setImageResource(stateType.getDrawableRes());
+            }
+            if (review.getUser() != null && stateType != null) {
+                stateText.setText(SpannableBuilder.builder().append(review.getUser().getLogin())
+                        .append(" ")
+                        .append(stateText.getResources().getString(stateType.getStringRes()))
+                        .append(" ")
+                        .append(ParseDateFormat.getTimeAgo(review.getSubmittedAt())));
+            }
+            if (!InputHelper.isEmpty(review.getBodyHtml())) {
+                body.setVisibility(View.VISIBLE);
+                HtmlHelper.htmlIntoTextView(body, review.getBodyHtml());
+            } else {
+                body.setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override protected void onViewIsDetaching() {

@@ -86,4 +86,17 @@ import lombok.Setter;
 
         @Override public ReviewCommentModel[] newArray(int size) {return new ReviewCommentModel[size];}
     };
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReviewCommentModel that = (ReviewCommentModel) o;
+
+        return id == that.id;
+    }
+
+    @Override public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 }

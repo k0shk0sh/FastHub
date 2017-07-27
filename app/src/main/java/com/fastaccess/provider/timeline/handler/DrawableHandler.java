@@ -40,5 +40,4 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
             appendNewLine(builder);
         }
     }
-
 }

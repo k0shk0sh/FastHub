@@ -8,7 +8,6 @@ import android.widget.PopupMenu;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
-import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -57,7 +56,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 //                        if (item1.getItemId() == R.id.delete) {
 //                            getView().onShowDeleteMsg(item.getComment().getId());
 //                        } else if (item1.getItemId() == R.id.reply) {
-//                            getView().onReply(item.getComment().getUser(), item.getComment().getBody());
+//                            getView().onReply(item.getComment().getUser(), item.getComment().getBodyHtml());
 //                        } else if (item1.getItemId() == R.id.edit) {
 //                            getView().onEditComment(item.getComment());
 //                        } else if (item1.getItemId() == R.id.share) {
@@ -85,7 +84,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 //                    popupMenu.setOnMenuItemClickListener(item1 -> {
 //                        if (getView() == null) return false;
 //                        if (item1.getItemId() == R.id.reply) {
-//                            getView().onReply(item.getPullRequest().getUser(), item.getPullRequest().getBody());
+//                            getView().onReply(item.getPullRequest().getUser(), item.getPullRequest().getBodyHtml());
 //                        } else if (item1.getItemId() == R.id.edit) {
 //                            Activity activity = ActivityHelper.getActivity(v.getContext());
 //                            if (activity == null) return false;
@@ -293,15 +292,11 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
     }
 
-    private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable, int page) {
-        Observable<PullRequestStatusModel> status = RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
-                .map(statuses -> {
-                    if (statuses != null) {
-                        statuses.setMergable(isMergeable);
-                    }
-                    return statuses;
-                });
-        Observable<List<TimelineModel>> timeline = RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number, page)
+    private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
+                                @NonNull String sha, boolean isMergeable, int page) {
+
+        Observable<List<TimelineModel>> timeline = RestProvider.getIssueService(isEnterprise())
+                .getTimeline(login, repoId, number, page)
                 .flatMap(response -> {
                     lastPage = response != null ? response.getLast() : 0;
                     return TimelineConverter.convert(response != null ? response.getItems() : null);
@@ -310,10 +305,20 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 .toObservable()
                 .doOnComplete(() -> {
                     if (page == 1) {
-                        manageObservable(status.map(TimelineModel::new)
-                                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
+                        loadStatus(login, repoId, sha, isMergeable);
                     }
                 });
         makeRestCall(timeline, timelineModels -> sendToView(view -> view.onNotifyAdapter(timelineModels, page)));
+    }
+
+    private void loadStatus(@NonNull String login, @NonNull String repoId, @NonNull String sha, boolean isMergeable) {
+        manageObservable(RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
+                .map(statuses -> {
+                    if (statuses != null) {
+                        statuses.setMergable(isMergeable);
+                    }
+                    return statuses;
+                }).map(TimelineModel::new)
+                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
     }
 }

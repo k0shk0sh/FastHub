@@ -14,6 +14,7 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.timeline.GenericEvent;
+import com.fastaccess.data.dao.timeline.SourceModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -81,6 +82,19 @@ import lombok.Getter;
                 GenericEvent issueEventModel = item.getGenericEvent();
                 if (issueEventModel.getCommitUrl() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
+                } else {
+                    SourceModel sourceModel = issueEventModel.getSource();
+                    if (sourceModel != null) {
+                        if (sourceModel.getCommit() != null) {
+                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getCommit().getUrl()));
+                        } else if (sourceModel.getIssue() != null) {
+                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getIssue().getUrl()));
+                        } else if (sourceModel.getPullRequest() != null) {
+                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getPullRequest().getUrl()));
+                        } else if (sourceModel.getRepository() != null) {
+                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getRepository().getUrl()));
+                        }
+                    }
                 }
             } else if (item.getType() == TimelineModel.HEADER) {
                 if (v.getId() == R.id.commentMenu) {

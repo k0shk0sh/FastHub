@@ -28,6 +28,7 @@ import lombok.Setter;
     public static final int EVENT = 2;
     public static final int COMMENT = 3;
     public static final int STATUS = 4;
+    public static final int REVIEW = 5;
 
     private IssueEventType event;
     private Comment comment;
@@ -36,6 +37,7 @@ import lombok.Setter;
     private PullRequestStatusModel status;
     private Issue issue;
     private PullRequest pullRequest;
+    private ReviewModel review;
 
     public TimelineModel(Issue issue) {
         this.issue = issue;
@@ -54,6 +56,11 @@ import lombok.Setter;
         this.status = statusModel;
     }
 
+    public TimelineModel(ReviewCommentModel reviewCommentModel) {
+        this.reviewComment = reviewCommentModel;
+        this.event = IssueEventType.line_commented;
+    }
+
     public int getType() {
         if (getEvent() != null) {
             switch (getEvent()) {
@@ -61,6 +68,8 @@ import lombok.Setter;
                     return COMMENT;
                 case line_commented:
                     return LINE_COMMENT;
+                case reviewed:
+                    return REVIEW;
                 default:
                     return EVENT;
             }
@@ -70,35 +79,6 @@ import lombok.Setter;
             return EVENT;
         }
     }
-
-    @Override public int describeContents() { return 0; }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.event == null ? -1 : this.event.ordinal());
-        dest.writeParcelable(this.comment, flags);
-        dest.writeParcelable(this.genericEvent, flags);
-        dest.writeParcelable(this.reviewComment, flags);
-        dest.writeParcelable(this.status, flags);
-        dest.writeParcelable(this.issue, flags);
-        dest.writeParcelable(this.pullRequest, flags);
-    }
-
-    protected TimelineModel(Parcel in) {
-        int tmpEvent = in.readInt();
-        this.event = tmpEvent == -1 ? null : IssueEventType.values()[tmpEvent];
-        this.comment = in.readParcelable(Comment.class.getClassLoader());
-        this.genericEvent = in.readParcelable(GenericEvent.class.getClassLoader());
-        this.reviewComment = in.readParcelable(ReviewCommentModel.class.getClassLoader());
-        this.status = in.readParcelable(PullRequestStatusModel.class.getClassLoader());
-        this.issue = in.readParcelable(Issue.class.getClassLoader());
-        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
-    }
-
-    public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {
-        @Override public TimelineModel createFromParcel(Parcel source) {return new TimelineModel(source);}
-
-        @Override public TimelineModel[] newArray(int size) {return new TimelineModel[size];}
-    };
 
     public static TimelineModel constructHeader(Issue issue) {
         return new TimelineModel(issue);
@@ -128,11 +108,47 @@ import lombok.Setter;
             return comment.equals(that.comment);
         } else if (reviewComment != null) {
             return reviewComment.equals(that.reviewComment);
+        } else if (review != null) {
+            return review.equals(that.review);
         }
         return false;
     }
 
     @Override public int hashCode() {
-        return comment != null ? comment.hashCode() : reviewComment != null ? reviewComment.hashCode() : -1;
+        if (comment != null) return comment.hashCode();
+        else if (reviewComment != null) return reviewComment.hashCode();
+        else if (review != null) return review.hashCode();
+        else return -1;
     }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.event == null ? -1 : this.event.ordinal());
+        dest.writeParcelable(this.comment, flags);
+        dest.writeParcelable(this.genericEvent, flags);
+        dest.writeParcelable(this.reviewComment, flags);
+        dest.writeParcelable(this.status, flags);
+        dest.writeParcelable(this.issue, flags);
+        dest.writeParcelable(this.pullRequest, flags);
+        dest.writeParcelable(this.review, flags);
+    }
+
+    protected TimelineModel(Parcel in) {
+        int tmpEvent = in.readInt();
+        this.event = tmpEvent == -1 ? null : IssueEventType.values()[tmpEvent];
+        this.comment = in.readParcelable(Comment.class.getClassLoader());
+        this.genericEvent = in.readParcelable(GenericEvent.class.getClassLoader());
+        this.reviewComment = in.readParcelable(ReviewCommentModel.class.getClassLoader());
+        this.status = in.readParcelable(PullRequestStatusModel.class.getClassLoader());
+        this.issue = in.readParcelable(Issue.class.getClassLoader());
+        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
+        this.review = in.readParcelable(ReviewModel.class.getClassLoader());
+    }
+
+    public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {
+        @Override public TimelineModel createFromParcel(Parcel source) {return new TimelineModel(source);}
+
+        @Override public TimelineModel[] newArray(int size) {return new TimelineModel[size];}
+    };
 }

@@ -34,7 +34,7 @@ class GlideDrawableTarget extends SimpleTarget<GlideDrawable> {
                 width = (float) resource.getIntrinsicWidth() * multiplier;
                 height = (float) resource.getIntrinsicHeight() * multiplier;
             }
-            Rect rect = new Rect(0, 0, (int) Math.round(width / 1.5), (int) Math.round(height / 1.5));
+            Rect rect = new Rect(0, 0, (int) Math.round(width / 1.3), (int) Math.round(height / 1.3));
             resource.setBounds(rect);
             urlDrawable.setBounds(rect);
             urlDrawable.setDrawable(resource);

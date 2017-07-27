@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.ReviewCommentModel;
+import com.fastaccess.data.dao.ReviewModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.timeline.GenericEvent;
@@ -38,6 +39,8 @@ public class TimelineConverter {
                                 timeline.setComment(getComment(jsonObject, gson));
                             } else if (type == IssueEventType.line_commented) {
                                 timeline.setReviewComment(getReviewComment(jsonObject, gson));
+                            } else if (type == IssueEventType.reviewed) {
+                                timeline.setReview(getReview(jsonObject, gson));
                             } else {
                                 timeline.setGenericEvent(getGenericEvent(jsonObject, gson));
                             }
@@ -48,6 +51,10 @@ public class TimelineConverter {
                     return timeline;
                 })
                 .filter(timeline -> timeline != null && filterEvents(timeline.getEvent()));
+    }
+
+    private static ReviewModel getReview(@NonNull JsonObject object, @NonNull Gson gson) {
+        return gson.fromJson(object, ReviewModel.class);
     }
 
     private static GenericEvent getGenericEvent(@NonNull JsonObject object, @NonNull Gson gson) {

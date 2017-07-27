@@ -66,7 +66,7 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
             stateText.setText("");
             stateImage.setImageResource(R.drawable.ic_label);
         }
-        itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()));
+        itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()) || issueEventModel.getSource() != null);
     }
 
     @Override protected void onViewIsDetaching() {
