@@ -113,7 +113,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
         }
         val adapter = LoginAdapter(true)
         view.getPresenter().manageViewDisposable(Login.getAccounts()
-                .doFinally {
+                .doOnComplete {
                     when (!adapter.isEmpty) {
                         true -> {
                             toggleAccountsLayout.visibility = View.VISIBLE
@@ -190,7 +190,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?,
     override fun onItemClick(position: Int, v: View, item: Login) {
         view.getPresenter().manageViewDisposable(RxHelper.getObservable(Login.onMultipleLogin(item, item.isIsEnterprise, false))
                 .doOnSubscribe { view.showProgress(0) }
-                .doFinally { view.hideProgress() }
+                .doOnComplete { view.hideProgress() }
                 .subscribe({ view.onRestartApp() }, ::println))
     }
 }

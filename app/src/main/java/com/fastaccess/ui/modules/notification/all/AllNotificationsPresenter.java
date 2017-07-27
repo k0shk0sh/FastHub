@@ -111,7 +111,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                     }
                     return Observable.empty();
                 });
-        makeRestCall(observable.doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)), response -> sendToView(view -> view.onNotifyAdapter
+        makeRestCall(observable.doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)), response -> sendToView(view -> view.onNotifyAdapter
                 (response)));
     }
 

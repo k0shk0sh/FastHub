@@ -16,7 +16,6 @@ import com.fastaccess.helper.PrefGetter
 import com.fastaccess.ui.adapter.LoginAdapter
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.login.LoginActivity
-import com.fastaccess.ui.modules.main.donation.CheckPurchaseActivity
 import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog
 import com.fastaccess.ui.widgets.bindView
@@ -123,7 +122,7 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
     override fun onItemClick(position: Int, v: View, item: Login) {
         presenter.manageViewDisposable(Login.onMultipleLogin(item, item.isIsEnterprise, false)
                 .doOnSubscribe { showProgress(0) }
-                .doFinally { this.hideProgress() }
+                .doOnComplete { this.hideProgress() }
                 .subscribe({ onRestartApp() }, ::println))
     }
 

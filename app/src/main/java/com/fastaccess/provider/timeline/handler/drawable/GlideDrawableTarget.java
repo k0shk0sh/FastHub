@@ -11,11 +11,11 @@ import com.fastaccess.R;
 
 import java.lang.ref.WeakReference;
 
-class GifBitmapTarget extends SimpleTarget<GlideDrawable> {
+class GlideDrawableTarget extends SimpleTarget<GlideDrawable> {
     private final UrlDrawable urlDrawable;
     private final WeakReference<TextView> container;
 
-    GifBitmapTarget(UrlDrawable urlDrawable, WeakReference<TextView> container) {
+    GlideDrawableTarget(UrlDrawable urlDrawable, WeakReference<TextView> container) {
         this.urlDrawable = urlDrawable;
         this.container = container;
     }
@@ -34,7 +34,7 @@ class GifBitmapTarget extends SimpleTarget<GlideDrawable> {
                 width = (float) resource.getIntrinsicWidth() * multiplier;
                 height = (float) resource.getIntrinsicHeight() * multiplier;
             }
-            Rect rect = new Rect(0, 0, Math.round(width), Math.round(height));
+            Rect rect = new Rect(0, 0, (int) Math.round(width / 1.5), (int) Math.round(height / 1.5));
             resource.setBounds(rect);
             urlDrawable.setBounds(rect);
             urlDrawable.setDrawable(resource);

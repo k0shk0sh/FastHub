@@ -142,6 +142,8 @@ public class TimelineProvider {
                             title.url("#" + sourceModel.getPullRequest().getNumber());
                         } else if (sourceModel.getCommit() != null) {
                             title.url(substring(sourceModel.getCommit().getSha()));
+                        } else if (sourceModel.getRepository() != null) {
+                            title.url(sourceModel.getRepository().getName());
                         }
                         if (!InputHelper.isEmpty(title)) {
                             spannableBuilder.append(" ")

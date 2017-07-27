@@ -70,7 +70,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                             lastPage = listResponse.getLast();
                             return TimelineModel.construct(listResponse.getItems());
                         })
-                        .doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)),
+                        .doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)),
                 listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
     }
 

@@ -76,7 +76,7 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
                             .map(CommitFileChanges::construct)
                             .doOnSubscribe(disposable -> sendToView(CommitFilesMvp.View::clearAdapter))
                             .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges)))
-                            .doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)));
+                            .doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)));
                 }
 
             }

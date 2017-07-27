@@ -20,7 +20,7 @@ import java.util.Set;
 
 public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
     private WeakReference<TextView> container;
-    private final Set<GifBitmapTarget> cachedTargets;
+    private final Set<GlideDrawableTarget> cachedTargets;
 
     public DrawableGetter(TextView tv) {
         tv.setTag(R.id.drawable_callback, this);
@@ -35,7 +35,7 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
             final GenericRequestBuilder load = Glide.with(context)
                     .load(url)
                     .dontAnimate();
-            final GifBitmapTarget target = new GifBitmapTarget(urlDrawable, container);
+            final GlideDrawableTarget target = new GlideDrawableTarget(urlDrawable, container);
             load.into(target);
             cachedTargets.add(target);
         }
@@ -54,7 +54,7 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
 
     public void clear(@NonNull DrawableGetter drawableGetter) {
         if (drawableGetter.cachedTargets != null) {
-            for (GifBitmapTarget target : drawableGetter.cachedTargets) {
+            for (GlideDrawableTarget target : drawableGetter.cachedTargets) {
                 Glide.clear(target);
             }
         }

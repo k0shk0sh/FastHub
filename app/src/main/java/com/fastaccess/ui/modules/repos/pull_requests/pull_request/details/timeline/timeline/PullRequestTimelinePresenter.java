@@ -294,23 +294,26 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     private void loadEverything(String login, String repoId, int number, @NonNull String sha, boolean isMergeable, int page) {
+        Observable<PullRequestStatusModel> status = RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
+                .map(statuses -> {
+                    if (statuses != null) {
+                        statuses.setMergable(isMergeable);
+                    }
+                    return statuses;
+                });
         Observable<List<TimelineModel>> timeline = RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number, page)
                 .flatMap(response -> {
                     lastPage = response != null ? response.getLast() : 0;
                     return TimelineConverter.convert(response != null ? response.getItems() : null);
                 })
                 .toList()
-                .toObservable();
-        if (page == 1) {
-            Observable<PullRequestStatusModel> status = RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
-                    .map(statuses -> {
-                        if (statuses != null) {
-                            statuses.setMergable(isMergeable);
-                        }
-                        return statuses;
-                    });
-            makeRestCall(status.map(TimelineModel::new), timelineModel -> sendToView(view -> view.onAddStatus(timelineModel)));
-        }
+                .toObservable()
+                .doOnComplete(() -> {
+                    if (page == 1) {
+                        manageObservable(status.map(TimelineModel::new)
+                                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
+                    }
+                });
         makeRestCall(timeline, timelineModels -> sendToView(view -> view.onNotifyAdapter(timelineModels, page)));
     }
 }
