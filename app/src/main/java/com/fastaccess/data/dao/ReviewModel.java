@@ -17,15 +17,15 @@ import lombok.Setter;
 
 @Getter @Setter public class ReviewModel implements Parcelable {
 
-    private long id;
-    private User user;
-    private String bodyHtml;
-    private String state;
-    private Date submittedAt;
-    private String commitId;
-    private String diffText;
-    private List<ReviewCommentModel> comments;
-    private ReactionsModel reactions;
+    long id;
+    User user;
+    String bodyHtml;
+    String state;
+    Date submittedAt;
+    String commitId;
+    String diffText;
+    List<ReviewCommentModel> comments;
+    ReactionsModel reactions;
 
     public ReviewModel() {}
 

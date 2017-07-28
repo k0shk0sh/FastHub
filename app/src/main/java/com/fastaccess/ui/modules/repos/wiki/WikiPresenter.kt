@@ -59,6 +59,7 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
                 if (revision.isNotEmpty()) {
                     revision.remove()
                 }
+                wikiWrapper.select(".js-wiki-more-pages-link").remove()
                 val header = "<div class='gh-header-meta'>${headerHtml.html()}</div>"
                 val wikiContent = wikiWrapper.select(".wiki-content")
                 val content = header + wikiContent.select(".markdown-body").html()

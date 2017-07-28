@@ -25,31 +25,31 @@ import lombok.Setter;
 
 @NoArgsConstructor @Getter @Setter public class GenericEvent implements Parcelable {
 
-    private long id;
-    private String url;
-    private String commitId;
-    private String commitUrl;
-    private String message;
-    private String sha;
-    private String htmlUrl;
-    private Date createdAt;
-    private User actor;
-    private User requestedReviewer;
-    private User reviewRequester;
-    private User assigner;
-    private User assignee;
-    private User author;
-    private User committer;
-    private LabelModel label;
-    private TeamsModel requestedTeam;
-    private MilestoneModel milestone;
-    private RenameModel rename;
-    private SourceModel source;
-    private Issue issue;
-    private PullRequest pullRequest;
-    private ParentsModel tree;
-    private List<ParentsModel> parents;
-    private IssueEventType event;
+    long id;
+    String url;
+    String commitId;
+    String commitUrl;
+    String message;
+    String sha;
+    String htmlUrl;
+    Date createdAt;
+    User actor;
+    User requestedReviewer;
+    User reviewRequester;
+    User assigner;
+    User assignee;
+    User author;
+    User committer;
+    LabelModel label;
+    TeamsModel requestedTeam;
+    MilestoneModel milestone;
+    RenameModel rename;
+    SourceModel source;
+    Issue issue;
+    PullRequest pullRequest;
+    ParentsModel tree;
+    List<ParentsModel> parents;
+    IssueEventType event;
 
     @Override public int describeContents() { return 0; }
 

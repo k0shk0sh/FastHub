@@ -17,23 +17,23 @@ import lombok.Setter;
 
 @Getter @Setter public class ReviewCommentModel extends Timeline implements Parcelable {
 
-    private long id;
-    private String url;
-    private long pullRequestReviewId;
-    private String diffHunk;
-    private String path;
-    private int position;
-    private int originalPosition;
-    private String commitId;
-    private String originalCommitId;
-    private User user;
-    private String bodyHtml;
-    private String body;
-    private Date createdAt;
-    private Date updatedAt;
-    private String htmlUrl;
-    private String pullRequestUrl;
-    private ReactionsModel reactions;
+    long id;
+    String url;
+    long pullRequestReviewId;
+    String diffHunk;
+    String path;
+    int position;
+    int originalPosition;
+    String commitId;
+    String originalCommitId;
+    User user;
+    String bodyHtml;
+    String body;
+    Date createdAt;
+    Date updatedAt;
+    String htmlUrl;
+    String pullRequestUrl;
+    ReactionsModel reactions;
 
     public ReviewCommentModel() {}
 

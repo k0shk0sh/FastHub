@@ -14,7 +14,6 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ import lombok.Setter;
  * Created by Kosh on 30 Mar 2017, 9:03 PM
  */
 
-@Getter @Setter @NoArgsConstructor public class TimelineModel implements Parcelable {
+@Getter @Setter public class TimelineModel implements Parcelable {
     public static final int HEADER = 0;
     public static final int LINE_COMMENT = 1;
     public static final int EVENT = 2;
@@ -30,14 +29,14 @@ import lombok.Setter;
     public static final int STATUS = 4;
     public static final int REVIEW = 5;
 
-    private IssueEventType event;
-    private Comment comment;
-    private GenericEvent genericEvent;
-    private ReviewCommentModel reviewComment;
-    private PullRequestStatusModel status;
-    private Issue issue;
-    private PullRequest pullRequest;
-    private ReviewModel review;
+    public IssueEventType event;
+    public Comment comment;
+    public GenericEvent genericEvent;
+    public ReviewCommentModel reviewComment;
+    public PullRequestStatusModel status;
+    public Issue issue;
+    public PullRequest pullRequest;
+    public ReviewModel review;
 
     public TimelineModel(Issue issue) {
         this.issue = issue;
@@ -60,6 +59,8 @@ import lombok.Setter;
         this.reviewComment = reviewCommentModel;
         this.event = IssueEventType.line_commented;
     }
+
+    public TimelineModel() {}
 
     public int getType() {
         if (getEvent() != null) {

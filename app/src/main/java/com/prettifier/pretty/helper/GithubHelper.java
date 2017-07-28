@@ -9,27 +9,29 @@ import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by Kosh on 25 Dec 2016, 9:12 PM
  */
 
 public class GithubHelper {
-    private static Pattern LINK_TAG_MATCHER = Pattern.compile("href=\"(.*?)\"");
-    private static Pattern IMAGE_TAG_MATCHER = Pattern.compile("src=\"(.*?)\"");
 
-    @NonNull public static String generateContent(@NonNull Context context, @NonNull String source, @Nullable String baseUrl, boolean dark) {
+    @NonNull public static String generateContent(@NonNull Context context, @NonNull String source,
+                                                  @Nullable String baseUrl, boolean dark, boolean isWiki) {
         if (baseUrl == null) {
             return mergeContent(context, source, dark);
         } else {
-            return mergeContent(context, validateImageBaseUrl(source, baseUrl), dark);
+            return mergeContent(context, parseReadme(source, baseUrl, isWiki), dark);
         }
     }
 
-    @NonNull private static String validateImageBaseUrl(@NonNull String source, @NonNull String baseUrl) {
+    @NonNull private static String parseReadme(@NonNull String source, @NonNull String baseUrl, boolean isWiki) {
         NameParser nameParser = new NameParser(baseUrl);
         String owner = nameParser.getUsername();
         String repoName = nameParser.getName();
@@ -50,29 +52,48 @@ public class GithubHelper {
                 builder.append(path).append("/");
             }
         }
-        Matcher matcher = IMAGE_TAG_MATCHER.matcher(source);
-        while (matcher.find()) {
-            String src = matcher.group(1).trim();
-            if (src.startsWith("http://") || src.startsWith("https://")) {
-                continue;
-            }
-            String finalSrc;
-            if (src.startsWith("/" + owner + "/" + repoName)) {
-                finalSrc = "https://raw.githubusercontent.com/" + src;
-            } else {
-                finalSrc = "https://raw.githubusercontent.com/" + builder.toString() + src;
-            }
-            source = source.replace("src=\"" + src + "\"", "src=\"" + finalSrc
-                    .replace("raw/", "master/").replaceAll("//", "/") + "\"");
-        }
-        return validateLinks(source, baseUrl);
+        String baseLinkUrl = !isWiki ? getLinkBaseUrl(baseUrl) : baseUrl;
+        return getParsedHtml(source, owner, repoName, !isWiki ? builder.toString() : baseUrl, baseLinkUrl, isWiki);
     }
 
-    @NonNull private static String validateLinks(@NonNull String source, @NonNull String baseUrl) {
+    @NonNull private static String getParsedHtml(@NonNull String source, String owner, String repoName,
+                                                 String builder, String baseLinkUrl, boolean isWiki) {
+        Document document = Jsoup.parse(source
+                .replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">"), "");
+        Elements imageElements = document.getElementsByTag("img");
+        if (imageElements != null && !imageElements.isEmpty()) {
+            for (Element element : imageElements) {
+                String src = element.attr("src");
+                if (src != null && !(src.startsWith("http://") || src.startsWith("https://"))) {
+                    String finalSrc;
+                    if (src.startsWith("/" + owner + "/" + repoName)) {
+                        finalSrc = "https://raw.githubusercontent.com/" + src;
+                    } else {
+                        finalSrc = "https://raw.githubusercontent.com/" + builder + src;
+                    }
+                    element.attr("src", finalSrc);
+                }
+            }
+        }
+        Elements linkElements = document.getElementsByTag("a");
+        if (linkElements != null && !linkElements.isEmpty()) {
+            for (Element element : linkElements) {
+                String href = element.attr("href");
+                if (href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
+                    continue;
+                }
+                element.attr("href", baseLinkUrl + (isWiki && href.startsWith("wiki")
+                                                    ? href.replaceFirst("wiki", "") : href));
+            }
+        }
+        return document.html();
+    }
+
+    @NonNull private static String getLinkBaseUrl(@NonNull String baseUrl) {
         NameParser nameParser = new NameParser(baseUrl);
         String owner = nameParser.getUsername();
         String repoName = nameParser.getName();
-        Matcher matcher = LINK_TAG_MATCHER.matcher(source);
         Uri uri = Uri.parse(baseUrl);
         ArrayList<String> paths = new ArrayList<>(uri.getPathSegments());
         StringBuilder builder = new StringBuilder();
@@ -88,15 +109,7 @@ public class GithubHelper {
                 builder.append(path).append("/");
             }
         }
-        while (matcher.find()) {
-            String href = matcher.group(1).trim();
-            if (href.startsWith("#") || href.startsWith("http://") || href.startsWith("https://") || href.startsWith("mailto:")) {
-                continue;
-            }
-            String link = builder.toString() + "" + href;
-            source = source.replace("href=\"" + href + "\"", "href=\"" + link + "\"");
-        }
-        return source;
+        return builder.toString();
     }
 
     @NonNull private static String mergeContent(@NonNull Context context, @NonNull String source, boolean dark) {

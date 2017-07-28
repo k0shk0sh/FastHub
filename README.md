@@ -176,7 +176,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 [Google+](https://plus.google.com/+CookiconsDesign) | [Twitter](https://twitter.com/mcookie)  
 Designer website [Cookicons](https://cookicons.co/).  
 
-**OLD FastHub** logo is designed by **Kevin Aguilar**.  
+**OLD FastHub** logo was designed by **Kevin Aguilar**.  
 [Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
 Designer at [221 Pixels](https://www.221pixels.com/).  
 Laus Deo Semper

@@ -18,14 +18,14 @@ import lombok.Setter;
 
 @Getter @Setter public class PullRequestStatusModel extends Timeline implements Parcelable {
 
-    private StatusStateType state;
-    private String sha;
-    private int totalCount;
-    private List<StatusesModel> statuses;
-    private String commitUrl;
-    private String url;
-    private boolean mergable;
-    private Date createdAt;
+    StatusStateType state;
+    String sha;
+    int totalCount;
+    List<StatusesModel> statuses;
+    String commitUrl;
+    String url;
+    boolean mergable;
+    Date createdAt;
 
     public PullRequestStatusModel() {}
 

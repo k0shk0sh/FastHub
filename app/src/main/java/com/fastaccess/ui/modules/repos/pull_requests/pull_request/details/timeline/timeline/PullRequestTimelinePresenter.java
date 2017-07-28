@@ -299,7 +299,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 .getTimeline(login, repoId, number, page)
                 .flatMap(response -> {
                     lastPage = response != null ? response.getLast() : 0;
-                    return TimelineConverter.convert(response != null ? response.getItems() : null);
+                    return TimelineConverter.INSTANCE.convert(response != null ? response.getItems() : null);
                 })
                 .toList()
                 .toObservable()

@@ -236,7 +236,7 @@ import lombok.Getter;
                     if (response != null) {
                         lastPage = response.getLast();
                     }
-                    return TimelineConverter.convert(response != null ? response.getItems() : null);
+                    return TimelineConverter.INSTANCE.convert(response != null ? response.getItems() : null);
                 }).toList()
                 .toObservable();
         makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));

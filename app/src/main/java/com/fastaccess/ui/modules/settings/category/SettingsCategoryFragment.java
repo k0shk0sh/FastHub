@@ -147,9 +147,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             else
                 getPreferenceScreen().addPreference(signatureVia);
             return true;
-        } else if (preference.getKey().equalsIgnoreCase("enable_ads")) {
-            callback.onThemeChanged();
-            return true;
         }
         return false;
     }
@@ -274,7 +271,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private void addBehaviour() {
         addPreferencesFromResource(R.xml.behaviour_settings);
         findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
-        findPreference("enable_ads").setOnPreferenceChangeListener(this);
         signatureVia = findPreference("sent_via");
         if (PrefHelper.getBoolean("sent_via_enabled")) {
             signatureVia.setDefaultValue(false);
