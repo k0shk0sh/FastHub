@@ -89,6 +89,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
+        commentMenu.setOnLongClickListener(this);
         toggleHolder.setOnClickListener(this);
         toggle.setOnClickListener(this);
         laugh.setOnClickListener(this);

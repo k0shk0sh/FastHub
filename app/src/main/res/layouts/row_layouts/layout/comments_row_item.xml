@@ -85,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="@string/options"
+                android:contentDescription="@string/reactions"
                 android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_add_emoji"/>
 

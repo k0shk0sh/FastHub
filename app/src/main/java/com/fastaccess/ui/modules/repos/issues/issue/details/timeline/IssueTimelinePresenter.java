@@ -128,20 +128,25 @@ import lombok.Getter;
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
         if (getView() == null) return;
         if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
-            if (getView().getIssue() == null) return;
-            Issue issue = getView().getIssue();
-            String login = issue.getLogin();
-            String repoId = issue.getRepoId();
-            if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
-                ReactionTypes type = ReactionTypes.get(v.getId());
-                if (type != null) {
-                    if (item.getType() == TimelineModel.HEADER) {
-                        getView().showReactionsPopup(type, login, repoId, item.getIssue().getNumber(), true);
+            if (v.getId() == R.id.commentMenu && item.getType() == TimelineModel.COMMENT) {
+                Comment comment = item.getComment();
+                if (getView() != null) getView().onReply(comment.getUser(), comment.getBody());
+            } else {
+                if (getView().getIssue() == null) return;
+                Issue issue = getView().getIssue();
+                String login = issue.getLogin();
+                String repoId = issue.getRepoId();
+                if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
+                    ReactionTypes type = ReactionTypes.get(v.getId());
+                    if (type != null) {
+                        if (item.getType() == TimelineModel.HEADER) {
+                            getView().showReactionsPopup(type, login, repoId, item.getIssue().getNumber(), true);
+                        } else {
+                            getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), false);
+                        }
                     } else {
-                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), false);
+                        onItemClick(position, v, item);
                     }
-                } else {
-                    onItemClick(position, v, item);
                 }
             }
         } else {

@@ -126,10 +126,14 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
     }
 
     @Override public void onItemLongClick(int position, View v, Comment item) {
-        if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), Login.getUser().getLogin())) {
-            if (getView() != null) getView().onShowDeleteMsg(item.getId());
+        if (v.getId() == R.id.toggle) {
+            if (getView() != null) getView().onReply(item.getUser(), item.getBody());
         } else {
-            onItemClick(position, v, item);
+            if (item.getUser() != null && TextUtils.equals(item.getUser().getLogin(), Login.getUser().getLogin())) {
+                if (getView() != null) getView().onShowDeleteMsg(item.getId());
+            } else {
+                onItemClick(position, v, item);
+            }
         }
     }
 }

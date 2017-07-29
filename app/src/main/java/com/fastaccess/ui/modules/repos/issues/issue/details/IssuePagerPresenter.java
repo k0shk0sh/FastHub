@@ -142,16 +142,15 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
             manageDisposable(RxHelper.getObservable(RestProvider.getIssueService(isEnterprise()).editIssue(login, repoId,
                     issueNumber, requestModel))
                     .doOnSubscribe(disposable -> sendToView(view -> view.showProgress(0)))
-                    .doOnNext(issue -> {
+                    .subscribe(issue -> {
                         if (issue != null) {
                             sendToView(view -> view.showSuccessIssueActionMsg(currentIssue.getState() == IssueState.open));
                             issue.setRepoId(issueModel.getRepoId());
                             issue.setLogin(issueModel.getLogin());
                             issueModel = issue;
-                            sendToView(view -> view.onSetupIssue(true));
+                            sendToView(view -> view.onSetupIssue(false));
                         }
-                    })
-                    .subscribe(issue -> {/**/}, this::onError));
+                    }, this::onError));
         }
     }
 

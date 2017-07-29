@@ -114,6 +114,12 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     @Override public void onItemLongClick(int position, View v, TimelineModel item) {
+        if (v.getId() == R.id.commentMenu && item.getType() == TimelineModel.COMMENT) {
+            Comment comment = item.getComment();
+            if (getView() != null) getView().onReply(comment.getUser(), comment.getBody());
+        } else {
+
+        }
 //        if (getView() == null || getView().getPullRequest() == null) return;
 //        if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
 //            PullRequest pullRequest = getView().getPullRequest();

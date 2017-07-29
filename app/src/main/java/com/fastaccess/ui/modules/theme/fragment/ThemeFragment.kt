@@ -103,38 +103,29 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     }
 
     private fun setTheme() {
-        if (!isGoogleSupported()) return
         when (theme) {
-            R.style.ThemeLight -> {
-                setTheme(getString(R.string.light_theme_mode))
-            }
-            R.style.ThemeDark -> {
-                setTheme(getString(R.string.dark_theme_mode))
-            }
-            R.style.ThemeAmlod -> {
-                if (!isGoogleSupported()) return
-                if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    setTheme(getString(R.string.amlod_theme_mode))
-                } else {
-                    DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
-                }
-            }
-            R.style.ThemeMidNighBlue -> {
-                if (!isGoogleSupported()) return
-                if (PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isProEnabled()) {
-                    setTheme(getString(R.string.mid_night_blue_theme_mode))
-                } else {
-                    DonateActivity.start(this, getString(R.string.midnight_blue_theme_purchase))
-                }
-            }
-            R.style.ThemeBluish -> {
-                if (!isGoogleSupported()) return
-                if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
-                    setTheme(getString(R.string.bluish_theme))
-                } else {
-                    DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
-                }
-            }
+            R.style.ThemeLight -> setTheme(getString(R.string.light_theme_mode))
+            R.style.ThemeDark -> setTheme(getString(R.string.dark_theme_mode))
+            R.style.ThemeAmlod -> applyAmlodTheme()
+            R.style.ThemeBluish -> applyBluishTheme()
+        }
+    }
+
+    private fun applyBluishTheme() {
+        if (!isGoogleSupported()) return
+        if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
+            setTheme(getString(R.string.bluish_theme))
+        } else {
+            DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
+        }
+    }
+
+    private fun applyAmlodTheme() {
+        if (!isGoogleSupported()) return
+        if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
+            setTheme(getString(R.string.amlod_theme_mode))
+        } else {
+            DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
         }
     }
 
@@ -149,7 +140,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         if (AppHelper.isGoogleAvailable(context)) {
             return true
         }
-        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text))
+        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text, getString(R.string.app_name)))
         return false
     }
 }

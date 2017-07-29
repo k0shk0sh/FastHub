@@ -46,6 +46,7 @@ public class CommentsViewHolder extends BaseViewHolder<Comment> {
         itemView.setOnLongClickListener(null);
         toggleHolder.setOnClickListener(this);
         toggle.setOnClickListener(this);
+        toggle.setOnLongClickListener(this);
     }
 
     public static CommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter) {

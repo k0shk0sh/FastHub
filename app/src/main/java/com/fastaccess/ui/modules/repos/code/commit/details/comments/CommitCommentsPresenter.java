@@ -163,12 +163,17 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, TimelineModel item) {
-        ReactionTypes reactionTypes = ReactionTypes.get(v.getId());
-        if (reactionTypes != null) {
-            if (getView() != null) getView().showReactionsPopup(reactionTypes, login, repoId, item.getComment().getId());
+    @Override public void onItemLongClick(int position, View v, TimelineModel timelineModel) {
+        if (v.getId() == R.id.commentMenu) {
+            Comment item = timelineModel.getComment();
+            if (getView() != null) getView().onReply(item.getUser(), item.getBody());
         } else {
-            onItemClick(position, v, item);
+            ReactionTypes reactionTypes = ReactionTypes.get(v.getId());
+            if (reactionTypes != null) {
+                if (getView() != null) getView().showReactionsPopup(reactionTypes, login, repoId, timelineModel.getComment().getId());
+            } else {
+                onItemClick(position, v, timelineModel);
+            }
         }
     }
 

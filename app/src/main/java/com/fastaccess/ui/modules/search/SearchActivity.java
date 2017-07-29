@@ -60,8 +60,12 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
         }
     }
 
-    @OnEditorAction(R.id.searchEditText) boolean onEditor() {
+    @OnClick(R.id.search) void onSearchClicked() {
         getPresenter().onSearchClicked(pager, searchEditText);
+    }
+
+    @OnEditorAction(R.id.searchEditText) boolean onEditor() {
+        onSearchClicked();
         return true;
     }
 
