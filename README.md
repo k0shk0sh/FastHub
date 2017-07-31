@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub) [![Build status](https://ci.appveyor.com/api/projects/status/2yhxx7hu6hju24bk?svg=true)](https://ci.appveyor.com/project/k0shk0sh/fasthub)
-[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Join the chat at https://gitter.im/FastHubAndroid/Lobby](https://badges.gitter.im/FastHubAndroid/Lobby.svg)](https://gitter.im/FastHubAndroid/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Discord](https://img.shields.io/discord/102860784329052160.svg)](https://discord.gg/V6afZWf)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
