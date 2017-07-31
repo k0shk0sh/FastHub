@@ -4,6 +4,8 @@
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
 # FastHub  
+
+[![Join the chat at https://gitter.im/FastHubAndroid/Lobby](https://badges.gitter.im/FastHubAndroid/Lobby.svg)](https://gitter.im/FastHubAndroid/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Yet another **open-source** GitHub client app but unlike any other app, FastHub was built from scratch.  
 <!--
 [<img src="https://f-droid.org/badge/get-it-on.png"
