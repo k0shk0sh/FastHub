@@ -164,6 +164,7 @@
     <string name="contributors">Contributors</string>
     <string name="contributions">Contributions</string>
     <string name="by">by</string>
+    <string name="english_please">Please submit your request in english.</string>
     <string name="close_issue">Close Issue</string>
     <string name="re_open_issue">Reopen Issue</string>
     <string name="re_open">Reopen</string>
