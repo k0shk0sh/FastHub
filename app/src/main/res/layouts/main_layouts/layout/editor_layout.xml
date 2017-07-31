@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/parentView">
+    android:background="?card_background"
+    android:orientation="vertical">
 
     <include layout="@layout/appbar_elevation_dark"/>
 
     <ScrollView
+        android:id="@+id/parentView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"

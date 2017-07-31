@@ -9,11 +9,25 @@ import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.timeline.HtmlHelper;
 
+import org.commonmark.ext.autolink.AutolinkExtension;
+import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
+import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
+import org.commonmark.ext.gfm.tables.TablesExtension;
+import org.commonmark.ext.ins.InsExtension;
+import org.commonmark.node.IndentedCodeBlock;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.commonmark.renderer.NodeRenderer;
+import org.commonmark.renderer.html.HtmlNodeRendererContext;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.renderer.html.HtmlWriter;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
@@ -37,7 +51,15 @@ public class MarkDownProvider {
         if (!InputHelper.isEmpty(markdown)) {
             Parser parser = Parser.builder().build();
             Node node = parser.parse(markdown);
-            HtmlHelper.htmlIntoTextView(textView, HtmlRenderer.builder().build().render(node));
+            String rendered = HtmlRenderer.builder()
+                    .extensions(Arrays.asList(AutolinkExtension.create(),
+                            StrikethroughExtension.create(),
+                            TablesExtension.create(),
+                            InsExtension.create(),
+                            YamlFrontMatterExtension.create()))
+                    .build().render(node);
+            Logger.e(rendered);
+            HtmlHelper.htmlIntoTextView(textView, rendered);
         }
     }
 
@@ -125,7 +147,7 @@ public class MarkDownProvider {
         int selectionStart = editText.getSelectionStart();
         int selectionEnd = editText.getSelectionEnd();
         String substring = source.substring(selectionStart, selectionEnd);
-        String result = "__" + substring + "__ ";
+        String result = "**" + substring + "** ";
         editText.getText().replace(selectionStart, selectionEnd, result);
         editText.setSelection(result.length() + selectionStart - 3);
 
@@ -258,5 +280,27 @@ public class MarkDownProvider {
         }
 
         return false;
+    }
+
+    private static class IndentedCodeBlockNodeRenderer implements NodeRenderer {
+
+        private final HtmlWriter html;
+
+        IndentedCodeBlockNodeRenderer(HtmlNodeRendererContext context) {
+            this.html = context.getWriter();
+        }
+
+        @Override public Set<Class<? extends Node>> getNodeTypes() {
+            return Collections.singleton(IndentedCodeBlock.class);
+        }
+
+        @Override public void render(Node node) {
+            IndentedCodeBlock codeBlock = (IndentedCodeBlock) node;
+            html.line();
+            html.tag("pre");
+            html.text(codeBlock.getLiteral());
+            html.tag("/pre");
+            html.line();
+        }
     }
 }

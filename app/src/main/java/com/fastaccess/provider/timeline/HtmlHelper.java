@@ -23,6 +23,7 @@ import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.handler.BetterLinkMovementExtended;
 import com.fastaccess.provider.timeline.handler.DrawableHandler;
 import com.fastaccess.provider.timeline.handler.EmojiHandler;
+import com.fastaccess.provider.timeline.handler.HrHandler;
 import com.fastaccess.provider.timeline.handler.ItalicHandler;
 import com.fastaccess.provider.timeline.handler.LinkHandler;
 import com.fastaccess.provider.timeline.handler.ListsHandler;
@@ -108,6 +109,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("sub", new SubScriptHandler());
         mySpanner.registerHandler("sup", new SuperScriptHandler());
         mySpanner.registerHandler("a", new LinkHandler());
+        mySpanner.registerHandler("hr", new HrHandler(windowBackground, textView.getWidth()));
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
         WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
@@ -119,7 +121,7 @@ public class HtmlHelper {
         return mySpanner;
     }
 
-    @ColorInt public static int getWindowBackground(@PrefGetter.ThemeType int theme) {
+    @ColorInt static int getWindowBackground(@PrefGetter.ThemeType int theme) {
         switch (theme) {
             case PrefGetter.AMLOD:
                 return Color.parseColor("#0B162A");
@@ -143,10 +145,6 @@ public class HtmlHelper {
     private static final String SIGNATURE_START = "<div class=\"email-signature-reply\">";
 
     private static final String SIGNATURE_END = "</div>";
-
-    private static final String EMAIL_START = "<div class=\"email-fragment\">";
-
-    private static final String EMAIL_END = "</div>";
 
     private static final String HIDDEN_REPLY_START = "<div class=\"email-hidden-reply\" style=\" display:none\">";
 
