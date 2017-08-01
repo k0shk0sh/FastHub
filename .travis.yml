@@ -27,5 +27,10 @@ after_success:
   - bash <(curl -s https://codecov.io/bash)
 
 notifications:
-  slack: fasthub:mjJWGD8UpgSgKawKa5OqMNlR
-  email: false
+  webhooks:
+    urls:
+      - https://discordapp.com/api/webhooks/341508199612153857/_86ddhBkrka3SaPzYJtL2LBH-sKeVI_tSAp0L2h4cPoy2m4CLa4lpqqJu4rjxHs86V0i
+    on_success: always
+    on_failure: always
+    on_start: never
+    email: false

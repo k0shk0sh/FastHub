@@ -1,0 +1,164 @@
+query PullRequestTimeline($owner: String!, $name: String!, $number: Int!){
+  repository(owner: $owner, name: $name) {
+    pullRequest(number: $number) {
+      timeline(first: 30) {
+        pageInfo {
+          hasNextPage
+          startCursor
+          endCursor
+        }
+        edges {
+          cursor
+        }
+        totalCount
+        nodes {
+          __typename
+          ... on Commit {
+            committer {
+              user {
+                login
+                avatarUrl
+                url
+              }
+            }
+            oid
+            signature {
+              state
+            }
+            messageHeadlineHTML
+            status {
+              state
+            }
+            committedDate
+            url
+          }
+          ... on PullRequestReview {
+            bodyHTML
+          }
+          ... on IssueComment {
+            viewerCanUpdate
+            author {
+              login
+              avatarUrl
+              url
+            }
+            authorAssociation
+            createdAt
+            updatedAt
+            body
+            reactionGroups {
+              viewerHasReacted
+              content
+              users {
+                totalCount
+              }
+            }
+          }
+          ... on ReviewRequestedEvent {
+            actor {
+              login
+              avatarUrl
+            }
+            subject {
+              login
+              avatarUrl
+            }
+          }
+          ... on PullRequestReviewComment {
+            body
+            author {
+              login
+            }
+          }
+          ... on ClosedEvent {
+            commit {
+              oid
+            }
+            actor {
+              login
+              avatarUrl
+            }
+          }
+          ... on ReopenedEvent {
+            actor {
+              login
+            }
+          }
+          ... on ReferencedEvent {
+            actor {
+              login
+            }
+            isCrossRepository
+            isDirectReference
+            subject {
+              ... on Issue {
+                title
+              }
+              ... on PullRequest {
+                title
+              }
+            }
+          }
+          ... on LabeledEvent {
+            actor {
+              login
+            }
+            label {
+              color
+              name
+            }
+          }
+          ... on RenamedTitleEvent {
+            actor {
+              login
+              avatarUrl
+            }
+            previousTitle
+            currentTitle
+          }
+          ... on AssignedEvent {
+            createdAt
+            actor {
+              login
+              avatarUrl
+            }
+            user {
+              login
+              avatarUrl
+            }
+          }
+          ... on MergedEvent {
+            createdAt
+            actor {
+              login
+            }
+            commit {
+              oid
+            }
+            mergeRefName
+          }
+          ... on HeadRefDeletedEvent {
+            createdAt
+            actor {
+              login
+              avatarUrl
+            }
+            headRefName
+          }
+          ... on HeadRefRestoredEvent {
+            createdAt
+            actor {
+              login
+              avatarUrl
+            }
+          }
+        }
+      }
+    }
+  }
+  rateLimit {
+    cost
+    remaining
+    limit
+  }
+}
