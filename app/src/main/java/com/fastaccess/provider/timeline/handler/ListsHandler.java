@@ -42,7 +42,7 @@ import lombok.NoArgsConstructor;
         return node.getParent() == null ? null : node.getParent().getName();
     }
 
-    @Override public void beforeChildren(TagNode node, SpannableStringBuilder builder) {
+    @Override public void beforeChildren(TagNode node, SpannableStringBuilder builder)  {
         TodoItems todoItem = null;
         if (node.getChildTags() != null && node.getChildTags().length > 0) {
             for (TagNode tagNode : node.getChildTags()) {

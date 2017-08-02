@@ -39,10 +39,13 @@ public interface OrganizationService {
 
     @GET("teams/{id}/repos") Observable<Pageable<Repo>> getTeamRepos(@Path("id") long id, @Query("page") int page);
 
-    @GET("orgs/{username}/events")
-    Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName, @Query("page") int page);
+    @GET("users/{username}/events/orgs/{org}")
+    Observable<Pageable<Event>> getReceivedEvents(@NonNull @Path("username") String userName,
+                                                  @NonNull @Path("org") String org, @Query("page") int page);
 
     @GET("orgs/{org}/repos")
-    Observable<Pageable<Repo>> getOrgRepos(@NonNull @Path("org") String org, @QueryMap(encoded = true) Map<String, String> filterParams, @Query("page") int page);
+    Observable<Pageable<Repo>> getOrgRepos(@NonNull @Path("org") String org,
+                                           @QueryMap(encoded = true) Map<String, String> filterParams,
+                                           @Query("page") int page);
 
 }

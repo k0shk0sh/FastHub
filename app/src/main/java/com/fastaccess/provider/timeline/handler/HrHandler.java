@@ -4,6 +4,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
+import net.nightwhistler.htmlspanner.spans.CenterSpan;
 
 import org.htmlcleaner.TagNode;
 
@@ -17,12 +18,16 @@ import lombok.AllArgsConstructor;
 
     private final int color;
     private final int width;
-
+    private final boolean isHeader;
 
     @Override public void handleTagNode(TagNode tagNode, SpannableStringBuilder spannableStringBuilder, int i, int i1) {
-        spannableStringBuilder.append(" ");
-        spannableStringBuilder.setSpan(new UnderLineSpan(color, width), i, i1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         spannableStringBuilder.append("\n");
+        SpannableStringBuilder builder = new SpannableStringBuilder("$");
+        HrSpan hrSpan = new HrSpan(color, width);
+        builder.setSpan(hrSpan, 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new CenterSpan(), 0, builder.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.append("\n");
+        spannableStringBuilder.append(builder);
     }
 
 }

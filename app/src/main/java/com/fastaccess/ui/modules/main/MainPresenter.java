@@ -54,10 +54,10 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                     }
                     return Observable.empty();
                 })
-                .subscribe(unread -> sendToView(view -> {
+                .subscribe(unread -> {/**/}, Throwable::printStackTrace/*fail silently*/, () -> sendToView(view -> {
                     view.onInvalidateNotification();
                     view.onUpdateDrawerMenuHeader();
-                }), Throwable::printStackTrace/*fail silently*/));
+                })));
     }
 
     @Override public boolean canBackPress(@NonNull DrawerLayout drawerLayout) {

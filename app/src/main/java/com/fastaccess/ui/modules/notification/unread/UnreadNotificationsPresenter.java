@@ -30,9 +30,7 @@ public class UnreadNotificationsPresenter extends BasePresenter<UnreadNotificati
         if (getView() == null) return;
         Notification item = model.getNotification();
         if (v.getId() == R.id.markAsRead) {
-            if (item.isUnread() && !PrefGetter.isMarkAsReadEnabled()) {
-                markAsRead(position, v, item);
-            }
+            if (item.isUnread()) markAsRead(position, v, item);
         } else if (v.getId() == R.id.unsubsribe) {
             item.setUnread(false);
             manageDisposable(item.save(item));

@@ -3,6 +3,7 @@ package com.fastaccess.provider.markdown;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.view.ViewTreeObserver;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -12,6 +13,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.timeline.HtmlHelper;
 
+import org.commonmark.Extension;
 import org.commonmark.ext.autolink.AutolinkExtension;
 import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
@@ -27,6 +29,7 @@ import org.commonmark.renderer.html.HtmlWriter;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -49,18 +52,38 @@ public class MarkDownProvider {
 
     public static void setMdText(@NonNull TextView textView, String markdown) {
         if (!InputHelper.isEmpty(markdown)) {
-            Parser parser = Parser.builder().build();
-            Node node = parser.parse(markdown);
-            String rendered = HtmlRenderer.builder()
-                    .extensions(Arrays.asList(AutolinkExtension.create(),
-                            StrikethroughExtension.create(),
-                            TablesExtension.create(),
-                            InsExtension.create(),
-                            YamlFrontMatterExtension.create()))
-                    .build().render(node);
-            Logger.e(rendered);
-            HtmlHelper.htmlIntoTextView(textView, rendered);
+            int width = textView.getMeasuredWidth();
+            if (width > 0) {
+                render(textView, markdown, width);
+            } else {
+                textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override public void onGlobalLayout() {
+                        textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        render(textView, markdown, textView.getMeasuredWidth());
+                    }
+                });
+            }
         }
+    }
+
+    protected static void render(@NonNull TextView textView, String markdown, int width) {
+        List<Extension> extensions = Arrays.asList(
+                StrikethroughExtension.create(),
+                AutolinkExtension.create(),
+                TablesExtension.create(),
+                InsExtension.create(),
+                YamlFrontMatterExtension.create());
+        Parser parser = Parser.builder()
+                .extensions(extensions)
+                .build();
+        Node node = parser.parse(markdown);
+        String rendered = HtmlRenderer
+                .builder()
+                .extensions(extensions)
+                .build()
+                .render(node);
+        Logger.e(rendered);
+        HtmlHelper.htmlIntoTextView(textView, rendered, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
     }
 
     public static void stripMdText(@NonNull TextView textView, String markdown) {
@@ -171,6 +194,17 @@ public class MarkDownProvider {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void addInlinleCode(@NonNull EditText editText) {
+        String source = editText.getText().toString();
+        int selectionStart = editText.getSelectionStart();
+        int selectionEnd = editText.getSelectionEnd();
+        String substring = source.substring(selectionStart, selectionEnd);
+        String result = "`" + substring + "` ";
+        editText.getText().replace(selectionStart, selectionEnd, result);
+        editText.setSelection(result.length() + selectionStart - 2);
+
     }
 
     public static void addStrikeThrough(@NonNull EditText editText) {

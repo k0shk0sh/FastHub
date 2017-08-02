@@ -129,7 +129,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         }
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml());
+            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(), viewGroup.getWidth());
         } else {
             comment.setText("");
         }

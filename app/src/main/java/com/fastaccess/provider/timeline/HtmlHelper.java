@@ -1,21 +1,20 @@
 package com.fastaccess.provider.timeline;
 
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.HapticFeedbackConstants;
-import android.view.WindowManager;
+import android.view.ViewTreeObserver;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
@@ -46,9 +45,18 @@ import net.nightwhistler.htmlspanner.handlers.BoldHandler;
 
 public class HtmlHelper {
 
-    public static void htmlIntoTextView(@NonNull TextView textView, @NonNull String html) {
+    public static void htmlIntoTextView(@NonNull TextView textView, @NonNull String html, int width) {
         registerClickEvent(textView);
-        textView.setText(initHtml(textView).fromHtml(format(html).toString()));
+        if (textView.getMeasuredWidth() > 0) {
+            textView.setText(initHtml(textView, getActualWidth(textView)).fromHtml(format(html).toString()));
+        } else {
+            textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override public void onGlobalLayout() {
+                    textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                    textView.setText(initHtml(textView, getActualWidth(textView)).fromHtml(format(html).toString()));
+                }
+            });
+        }
     }
 
     private static void registerClickEvent(@NonNull TextView textView) {
@@ -83,7 +91,11 @@ public class HtmlHelper {
         });
     }
 
-    private static HtmlSpanner initHtml(@NonNull TextView textView) {
+    private static int getActualWidth(TextView textView) {
+        return textView.getMeasuredWidth() - (convertDpToPx(textView.getContext(), 16));
+    }
+
+    private static HtmlSpanner initHtml(@NonNull TextView textView, int width) {
         @PrefGetter.ThemeType int theme = PrefGetter.getThemeType();
         @ColorInt int windowBackground = getWindowBackground(theme);
         Drawable checked = ContextCompat.getDrawable(textView.getContext(), R.drawable.ic_checkbox_small);
@@ -109,14 +121,10 @@ public class HtmlHelper {
         mySpanner.registerHandler("sub", new SubScriptHandler());
         mySpanner.registerHandler("sup", new SuperScriptHandler());
         mySpanner.registerHandler("a", new LinkHandler());
-        mySpanner.registerHandler("hr", new HrHandler(windowBackground, textView.getWidth()));
+        mySpanner.registerHandler("hr", new HrHandler(windowBackground, width, false));
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
-        WindowManager windowManager = (WindowManager) App.getInstance().getSystemService(Context.WINDOW_SERVICE);
-        Point point = new Point();
-        windowManager.getDefaultDisplay().getRealSize(point);
-        tableHandler.setTableWidth((int) (point.x / 1.2));
-        tableHandler.setTextSize(18.0F);
+        tableHandler.setTableWidth(width);
         mySpanner.registerHandler("table", tableHandler);
         return mySpanner;
     }
@@ -204,4 +212,9 @@ public class HtmlHelper {
             length = input.length();
         }
     }
+
+    private static int convertDpToPx(Context context, float dp) {
+        return (int) (dp * context.getResources().getDisplayMetrics().density + 0.5f);
+    }
+
 }

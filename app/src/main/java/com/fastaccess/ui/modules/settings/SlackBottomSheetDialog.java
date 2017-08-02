@@ -51,8 +51,7 @@ public class SlackBottomSheetDialog extends BaseBottomSheetDialog {
     @OnClick({R.id.cancel, R.id.ok}) public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ok:
-//                view.getContext().startService(new Intent(getContext().getApplicationContext(), SlackInvitationService.class));
-                ActivityHelper.startCustomTab(getActivity(), "http://rebrand.ly/fasthub");
+                ActivityHelper.startCustomTab(getActivity(), "http://rebrand.ly/fasthub-slack");
                 break;
         }
         if (listener != null) listener.onDismissed();

@@ -139,8 +139,9 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
-        menu.findItem(R.id.browser).setVisible(true);
-        menu.findItem(R.id.copyUrl).setVisible(true);
+        menu.findItem(R.id.browser).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.copyUrl).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.share).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -175,7 +176,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         String login = commit.getAuthor() != null ? commit.getAuthor().getLogin() : commit.getGitCommit().getAuthor().getName();
         String avatar = commit.getAuthor() != null ? commit.getAuthor().getAvatarUrl() : null;
         Date dateValue = commit.getGitCommit().getAuthor().getDate();
-        HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage());
+        HtmlHelper.htmlIntoTextView(title, commit.getGitCommit().getMessage(), title.getWidth());
         setTaskName(commit.getLogin() + "/" + commit.getRepoId() + " - Commit " + StringsKt.take(commit.getSha(), 5));
         detailsIcon.setVisibility(View.VISIBLE);
         size.setVisibility(View.GONE);

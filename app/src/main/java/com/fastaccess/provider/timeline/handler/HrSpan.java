@@ -2,19 +2,22 @@ package com.fastaccess.provider.timeline.handler;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.text.style.LineHeightSpan;
 import android.text.style.ReplacementSpan;
 
-public class UnderLineSpan extends ReplacementSpan implements LineHeightSpan {
+public class HrSpan extends ReplacementSpan implements LineHeightSpan {
 
-    private final int height = 5;
+    private final int height = 10;
     private int width;
     private final Drawable drawable;
+    private final int color;
 
-    UnderLineSpan(int color, int width) {
+    HrSpan(int color, int width) {
+        this.color = color;
         this.width = width;
         this.drawable = new ColorDrawable(color);
     }
@@ -25,8 +28,11 @@ public class UnderLineSpan extends ReplacementSpan implements LineHeightSpan {
 
     @Override public void draw(@NonNull Canvas canvas, CharSequence text, int start, int end, float x, int top,
                                int y, int bottom, @NonNull Paint paint) {
-        drawable.setBounds((int) x, bottom - height, (int) x + width, bottom);
-        drawable.draw(canvas);
+        final int currentColor = paint.getColor();
+        paint.setColor(color);
+        paint.setStyle(Paint.Style.FILL);
+        canvas.drawRect(new Rect(0, bottom - height, (int) x + width, bottom), paint);
+        paint.setColor(currentColor);
     }
 
     @Override public void chooseHeight(CharSequence text, int start, int end, int spanstartv, int v, Paint.FontMetricsInt fm) {

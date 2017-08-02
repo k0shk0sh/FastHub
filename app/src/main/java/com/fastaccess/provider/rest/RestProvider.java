@@ -61,7 +61,7 @@ public class RestProvider {
             .setPrettyPrinting()
             .create();
 
-    private static OkHttpClient provideOkHttpClient() {
+    public static OkHttpClient provideOkHttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder client = new OkHttpClient.Builder();
             if (BuildConfig.DEBUG) {
