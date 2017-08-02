@@ -18,11 +18,12 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.timeline.PullRequestTimelineModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
@@ -310,7 +311,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         PullRequestTimelineQuery query = getTimelineBuilder(login, repoId, number, page);
         ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient()
                 .query(query);
-        manageDisposable(Rx2Apollo.from(apolloCall)
+        manageDisposable(RxHelper.getObservable(Rx2Apollo.from(apolloCall))
                 .filter(dataResponse -> !dataResponse.hasErrors() && dataResponse.data() != null)
                 .map(Response::data)
                 .filter(data -> data != null && data.repository() != null)
@@ -318,7 +319,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 .filter(repository -> repository.pullRequest() != null)
                 .map(PullRequestTimelineQuery.Repository::pullRequest)
                 .map(PullRequestTimelineQuery.PullRequest::timeline)
-                .map(timeline -> {
+                .filter(timeline -> timeline.nodes() != null)
+                .flatMap(timeline -> {
                     pages.clear();
                     List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
                     if (edges != null) {
@@ -326,10 +328,13 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             pages.append(i, edges.get(i).cursor());
                         }
                     }
-                    return timeline;
+                    List<PullRequestTimelineQuery.Node> nodes = timeline.nodes();
+                    return nodes != null ? Observable.fromIterable(nodes)
+                                         : Observable.fromIterable(new ArrayList<>());
                 })
+                .map(PullRequestTimelineModel::new)
                 .subscribe(timeline -> {
-                    Logger.e(timeline.__typename(), timeline.pageInfo(), timeline.edges());
+//                    sendToView(view -> view.onNotifyAdapter(timeline, page));
                 }, Throwable::printStackTrace, () -> sendToView(BaseMvp.FAView::hideProgress)));
     }
 
