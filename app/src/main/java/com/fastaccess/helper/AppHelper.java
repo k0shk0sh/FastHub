@@ -78,8 +78,15 @@ public class AppHelper {
         if (!(model.equalsIgnoreCase(brand) || "google".equals(Build.BRAND))) {
             builder.append("- **Brand:** ").append(brand).append("  \n");
         }
-        builder.append("- **Model:** ").append(model).append("  \n")
-                .append("---").append("\n\n");
+        builder.append("- **Model:** ")
+                .append(model)
+                .append("  \n").append("---").append("\n");
+        if (!Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
+            builder.append("<--")
+                    .append(App.getInstance().getString(R.string.english_please))
+                    .append("-->")
+                    .append("\n");
+        }
         return builder.toString();
     }
 
