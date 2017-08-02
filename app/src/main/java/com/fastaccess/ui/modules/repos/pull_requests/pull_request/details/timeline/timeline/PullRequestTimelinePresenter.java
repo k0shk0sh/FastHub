@@ -23,6 +23,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -333,9 +334,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                                          : Observable.fromIterable(new ArrayList<>());
                 })
                 .map(PullRequestTimelineModel::new)
-                .subscribe(timeline -> {
-//                    sendToView(view -> view.onNotifyAdapter(timeline, page));
-                }, Throwable::printStackTrace, () -> sendToView(BaseMvp.FAView::hideProgress)));
+                .subscribe(Logger::e, Throwable::printStackTrace, () -> sendToView(BaseMvp.FAView::hideProgress)));
     }
 
     @NonNull private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {

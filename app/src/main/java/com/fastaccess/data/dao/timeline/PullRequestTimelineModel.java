@@ -49,4 +49,8 @@ public class PullRequestTimelineModel {
         }
         return EVENT;
     }
+
+    @Override public String toString() {
+        return String.valueOf(getType());
+    }
 }

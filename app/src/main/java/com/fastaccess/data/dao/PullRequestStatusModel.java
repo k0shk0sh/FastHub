@@ -3,7 +3,6 @@ package com.fastaccess.data.dao;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.fastaccess.data.dao.timeline.Timeline;
 import com.fastaccess.data.dao.types.StatusStateType;
 
 import java.util.Date;
@@ -16,7 +15,7 @@ import lombok.Setter;
  * Created by Kosh on 10 Apr 2017, 3:15 AM
  */
 
-@Getter @Setter public class PullRequestStatusModel extends Timeline implements Parcelable {
+@Getter @Setter public class PullRequestStatusModel implements Parcelable {
 
     StatusStateType state;
     String sha;
