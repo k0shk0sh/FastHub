@@ -25,6 +25,7 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private NotificationsAdapter adapter;
     private OnNotificationChangedListener onNotificationChangedListener;
 
@@ -113,6 +115,7 @@ public class UnreadNotificationsFragment extends BaseFragment<UnreadNotification
         if (savedInstanceState == null || !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public UnreadNotificationsPresenter providePresenter() {

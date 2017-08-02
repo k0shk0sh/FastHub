@@ -18,6 +18,7 @@ import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.search.SearchMvp;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<String> onLoadMore;
     private ReposAdapter adapter;
     private SearchMvp.View countCallback;
@@ -93,6 +95,7 @@ public class SearchReposFragment extends BaseFragment<SearchReposMvp.View, Searc
         if (InputHelper.isEmpty(searchQuery)) {
             stateLayout.showEmptyState();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public SearchReposPresenter providePresenter() {

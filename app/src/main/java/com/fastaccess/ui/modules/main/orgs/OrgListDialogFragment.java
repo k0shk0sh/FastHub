@@ -15,6 +15,7 @@ import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private UsersAdapter adapter;
 
     public static OrgListDialogFragment newInstance() {
@@ -71,6 +73,7 @@ public class OrgListDialogFragment extends BaseDialogFragment<OrgListDialogMvp.V
         if (savedInstanceState == null) {
             getPresenter().onLoadOrgs();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void showProgress(@StringRes int resId) {

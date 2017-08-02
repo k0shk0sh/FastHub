@@ -14,6 +14,7 @@ import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerListener
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
 
 /**
  * Created by Kosh on 06 Jul 2017, 9:48 PM
@@ -22,6 +23,7 @@ class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), Br
     val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
     val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
     val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
+    val fastScroller: RecyclerViewFastScroller by lazy { view!!.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) }
     private var onLoadMore: OnLoadMore<Boolean>? = null
     private var branchCallback: BranchesPagerListener? = null
 
@@ -72,6 +74,7 @@ class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), Br
         if (savedInstanceState == null) {
             presenter.onFragmentCreated(arguments)
         }
+        fastScroller.attachRecyclerView(recycler)
     }
 
     override fun showProgress(resId: Int) {

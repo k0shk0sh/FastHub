@@ -24,6 +24,7 @@ import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<IssueState> onLoadMore;
     private PullRequestAdapter adapter;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
@@ -102,6 +104,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
         }
         stateLayout.setEmptyText(getPresenter().getIssueState() == IssueState.open
                                  ? R.string.no_open_pull_requests : R.string.no_closed_pull_request);
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

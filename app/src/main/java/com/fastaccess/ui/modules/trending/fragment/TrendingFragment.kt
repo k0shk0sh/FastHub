@@ -10,6 +10,7 @@ import com.fastaccess.ui.adapter.TrendingAdapter
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
 
 /**
  * Created by Kosh on 30 May 2017, 11:37 PM
@@ -20,6 +21,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
     val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
     val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
     val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
+    val fastScroller: RecyclerViewFastScroller by lazy { view!!.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) }
     val adapter by lazy { TrendingAdapter(presenter.getTendingList()) }
 
     @State var lang: String = ""
@@ -40,6 +42,7 @@ class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragment
         stateLayout.setOnReloadListener { onCallApi() }
         adapter.listener = presenter
         recycler.adapter = adapter
+        fastScroller.attachRecyclerView(recycler)
     }
 
     override fun onNotifyAdapter(items: TrendingModel) {

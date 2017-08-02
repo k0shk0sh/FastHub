@@ -22,6 +22,7 @@ import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
 
     public static GistFilesListFragment newInstance(@NonNull GithubFileModel gistsModel) {
         GistFilesListFragment view = new GistFilesListFragment();
@@ -66,6 +68,7 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
         if (!filesListModel.isEmpty()) {
             recycler.setAdapter(new GistFilesAdapter(filesListModel, getPresenter()));
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onOpenFile(@NonNull FilesListModel item) {

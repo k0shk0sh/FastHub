@@ -25,6 +25,7 @@ import com.fastaccess.ui.modules.editor.EditorActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -42,6 +43,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State SparseBooleanArrayParcelable sparseBooleanArray;
     private String gistId;
     private CommentsAdapter adapter;
@@ -76,6 +78,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
             sparseBooleanArray = new SparseBooleanArrayParcelable();
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onRefresh() {
