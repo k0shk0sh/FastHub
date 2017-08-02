@@ -80,6 +80,9 @@ class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp
             case R.id.unCheckbox:
                 MarkDownProvider.addList(editText, "- [ ]");
                 break;
+            case R.id.inlineCode:
+                MarkDownProvider.addInlinleCode(editText);
+                break;
         }
     }
 

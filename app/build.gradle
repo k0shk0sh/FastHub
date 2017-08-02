@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.apollographql.android'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
@@ -145,7 +146,12 @@ dependencies {
     implementation 'com.github.nightwhistler:HtmlSpanner:0.4'
     implementation 'net.sourceforge.htmlcleaner:htmlcleaner:2.2'
     implementation 'com.github.matthiasrobbers:shortbread:1.0.1'
-    implementation 'com.atlassian.commonmark:commonmark:0.9.0'
+    implementation "com.atlassian.commonmark:commonmark:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-autolink:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-gfm-strikethrough:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-gfm-tables:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-ins:${commonmark}"
+    implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
     implementation "com.google.firebase:firebase-messaging:${gms}"
     implementation "com.google.android.gms:play-services-ads:${gms}"
     implementation "com.google.firebase:firebase-database:${gms}"
@@ -158,6 +164,7 @@ dependencies {
     implementation 'org.jsoup:jsoup:1.10.2'
     implementation "com.evernote:android-state:${state_version}"
     implementation "petrov.kristiyan:colorpicker-library:1.1.4"
+    implementation 'com.apollographql.apollo:apollo-rx2-support:0.4.0'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "io.requery:requery-processor:${requery}"
     kapt "org.projectlombok:lombok:${lombokVersion}"

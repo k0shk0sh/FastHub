@@ -242,8 +242,10 @@ import lombok.Getter;
                         lastPage = response.getLast();
                     }
                     return TimelineConverter.INSTANCE.convert(response != null ? response.getItems() : null);
-                }).toList()
-                .toObservable();
+                })
+                .toList()
+                .toObservable()
+                .doOnError(Throwable::printStackTrace);
         makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));
     }
 }

@@ -144,7 +144,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
                         (commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()) + ")</b> in "
                         + commentsModel.getPath() + "</i></small><br/>" + body;
             }
-            HtmlHelper.htmlIntoTextView(comment, body);
+            HtmlHelper.htmlIntoTextView(comment, body, viewGroup.getWidth());
         } else {
             comment.setText("");
         }

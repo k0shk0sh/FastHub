@@ -3,17 +3,34 @@ package com.fastaccess.provider.markdown;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.Html;
+import android.view.ViewTreeObserver;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.timeline.HtmlHelper;
 
+import org.commonmark.Extension;
+import org.commonmark.ext.autolink.AutolinkExtension;
+import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
+import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
+import org.commonmark.ext.gfm.tables.TablesExtension;
+import org.commonmark.ext.ins.InsExtension;
+import org.commonmark.node.IndentedCodeBlock;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
+import org.commonmark.renderer.NodeRenderer;
+import org.commonmark.renderer.html.HtmlNodeRendererContext;
 import org.commonmark.renderer.html.HtmlRenderer;
+import org.commonmark.renderer.html.HtmlWriter;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
@@ -35,10 +52,38 @@ public class MarkDownProvider {
 
     public static void setMdText(@NonNull TextView textView, String markdown) {
         if (!InputHelper.isEmpty(markdown)) {
-            Parser parser = Parser.builder().build();
-            Node node = parser.parse(markdown);
-            HtmlHelper.htmlIntoTextView(textView, HtmlRenderer.builder().build().render(node));
+            int width = textView.getMeasuredWidth();
+            if (width > 0) {
+                render(textView, markdown, width);
+            } else {
+                textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override public void onGlobalLayout() {
+                        textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                        render(textView, markdown, textView.getMeasuredWidth());
+                    }
+                });
+            }
         }
+    }
+
+    protected static void render(@NonNull TextView textView, String markdown, int width) {
+        List<Extension> extensions = Arrays.asList(
+                StrikethroughExtension.create(),
+                AutolinkExtension.create(),
+                TablesExtension.create(),
+                InsExtension.create(),
+                YamlFrontMatterExtension.create());
+        Parser parser = Parser.builder()
+                .extensions(extensions)
+                .build();
+        Node node = parser.parse(markdown);
+        String rendered = HtmlRenderer
+                .builder()
+                .extensions(extensions)
+                .build()
+                .render(node);
+        Logger.e(rendered);
+        HtmlHelper.htmlIntoTextView(textView, rendered, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
     }
 
     public static void stripMdText(@NonNull TextView textView, String markdown) {
@@ -125,7 +170,7 @@ public class MarkDownProvider {
         int selectionStart = editText.getSelectionStart();
         int selectionEnd = editText.getSelectionEnd();
         String substring = source.substring(selectionStart, selectionEnd);
-        String result = "__" + substring + "__ ";
+        String result = "**" + substring + "** ";
         editText.getText().replace(selectionStart, selectionEnd, result);
         editText.setSelection(result.length() + selectionStart - 3);
 
@@ -149,6 +194,17 @@ public class MarkDownProvider {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void addInlinleCode(@NonNull EditText editText) {
+        String source = editText.getText().toString();
+        int selectionStart = editText.getSelectionStart();
+        int selectionEnd = editText.getSelectionEnd();
+        String substring = source.substring(selectionStart, selectionEnd);
+        String result = "`" + substring + "` ";
+        editText.getText().replace(selectionStart, selectionEnd, result);
+        editText.setSelection(result.length() + selectionStart - 2);
+
     }
 
     public static void addStrikeThrough(@NonNull EditText editText) {
@@ -258,5 +314,27 @@ public class MarkDownProvider {
         }
 
         return false;
+    }
+
+    private static class IndentedCodeBlockNodeRenderer implements NodeRenderer {
+
+        private final HtmlWriter html;
+
+        IndentedCodeBlockNodeRenderer(HtmlNodeRendererContext context) {
+            this.html = context.getWriter();
+        }
+
+        @Override public Set<Class<? extends Node>> getNodeTypes() {
+            return Collections.singleton(IndentedCodeBlock.class);
+        }
+
+        @Override public void render(Node node) {
+            IndentedCodeBlock codeBlock = (IndentedCodeBlock) node;
+            html.line();
+            html.tag("pre");
+            html.text(codeBlock.getLiteral());
+            html.tag("/pre");
+            html.line();
+        }
     }
 }

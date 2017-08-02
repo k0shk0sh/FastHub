@@ -300,6 +300,21 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 
     private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
                                 @NonNull String sha, boolean isMergeable, int page) {
+        /*PullRequestTimelineQuery query = new PullRequestTimelineQuery(login, repoId, number);
+        ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient()
+                .query(query);
+        manageDisposable(Rx2Apollo.from(apolloCall)
+                .filter(dataResponse -> !dataResponse.hasErrors() && dataResponse.data() != null)
+                .map(Response::data)
+                .filter(data -> data != null && data.repository() != null)
+                .map(PullRequestTimelineQuery.Data::repository)
+                .filter(repository -> repository.pullRequest() != null)
+                .map(PullRequestTimelineQuery.Repository::pullRequest)
+                .map(PullRequestTimelineQuery.PullRequest::timeline)
+                .subscribe(timeline -> {
+                    Logger.e(timeline.__typename(), timeline.pageInfo(), timeline.edges());
+                }, Throwable::printStackTrace, () -> sendToView(BaseMvp.FAView::hideProgress)));*/
+
 
         Observable<List<TimelineModel>> timeline = RestProvider.getIssueService(isEnterprise())
                 .getTimeline(login, repoId, number, page)

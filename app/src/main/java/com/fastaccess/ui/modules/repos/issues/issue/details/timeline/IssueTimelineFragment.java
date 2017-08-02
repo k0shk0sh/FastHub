@@ -19,6 +19,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
@@ -90,6 +91,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             adapter.subList(1, adapter.getItemCount());
         }
         adapter.addItems(items);
+        Logger.e(adapter.getItemCount());
     }
 
     @NonNull @Override public OnLoadMore<Issue> getLoadMore() {

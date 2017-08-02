@@ -10,7 +10,6 @@ import android.support.transition.TransitionManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -22,7 +21,6 @@ import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
-import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -145,7 +143,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
 
     @OnClick({R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic,
             R.id.strikethrough, R.id.bullet, R.id.header, R.id.code, R.id.numbered,
-            R.id.quote, R.id.link, R.id.image, R.id.unCheckbox, R.id.checkbox}) void onActions(View v) {
+            R.id.quote, R.id.link, R.id.image, R.id.unCheckbox, R.id.checkbox, R.id.inlineCode})
+    void onActions(View v) {
         if (!editText.isEnabled()) {
             Snackbar.make(editText, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show();
             return;
@@ -173,7 +172,6 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
         if (savedInstanceState == null) {
             onCreate();
         }
-        if (!PrefGetter.isEditorHintShowed()) {}
         if (editText.getText().toString().contains(sentFromFastHub)) {
             editText.setText(editText.getText().toString().replace(sentFromFastHub, ""));
             sentVia.setChecked(true);
@@ -233,6 +231,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
         if (menu.findItem(R.id.submit) != null) {
             menu.findItem(R.id.submit).setEnabled(true);
+        }
+        if (BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA.equalsIgnoreCase(extraType)) {
+            menu.findItem(R.id.submit).setIcon(R.drawable.ic_done);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -302,6 +303,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             }
             participants = bundle.getStringArrayList("participants");
         }
+        invalidateOptionsMenu();
     }
 
     private void updateMentionList(@NonNull String mentioning) {

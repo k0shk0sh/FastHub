@@ -19,6 +19,7 @@ import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -66,9 +67,10 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         Login login = Login.getUser();
         if (login == null) return;// I can't understand how this could possibly be reached lol.
         Observable<Pageable<Event>> observable;
+        Logger.e(isOrg);
         if (user != null) {
             if (isOrg) {
-                observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(user, page);
+                observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(login.getLogin(), user, page);
             } else {
                 observable = RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
                                                          ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
