@@ -3,9 +3,14 @@ package com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timel
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.PopupMenu;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
+import com.apollographql.apollo.rx2.Rx2Apollo;
+import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
@@ -13,14 +18,16 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.timeline.PullRequestTimelineModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
-import com.fastaccess.provider.timeline.TimelineConverter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -28,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import pr.PullRequestTimelineQuery;
 
 /**
  * Created by Kosh on 31 Mar 2017, 7:17 PM
@@ -35,6 +43,7 @@ import io.reactivex.Observable;
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
+    private SparseArray<String> pages = new SparseArray<>();
     private ReactionsProvider reactionsProvider;
     private int page;
     private int previousTotal;
@@ -300,10 +309,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 
     private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
                                 @NonNull String sha, boolean isMergeable, int page) {
-        /*PullRequestTimelineQuery query = new PullRequestTimelineQuery(login, repoId, number);
+        PullRequestTimelineQuery query = getTimelineBuilder(login, repoId, number, page);
         ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient()
                 .query(query);
-        manageDisposable(Rx2Apollo.from(apolloCall)
+        manageDisposable(RxHelper.getObservable(Rx2Apollo.from(apolloCall))
                 .filter(dataResponse -> !dataResponse.hasErrors() && dataResponse.data() != null)
                 .map(Response::data)
                 .filter(data -> data != null && data.repository() != null)
@@ -311,25 +320,34 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 .filter(repository -> repository.pullRequest() != null)
                 .map(PullRequestTimelineQuery.Repository::pullRequest)
                 .map(PullRequestTimelineQuery.PullRequest::timeline)
-                .subscribe(timeline -> {
-                    Logger.e(timeline.__typename(), timeline.pageInfo(), timeline.edges());
-                }, Throwable::printStackTrace, () -> sendToView(BaseMvp.FAView::hideProgress)));*/
-
-
-        Observable<List<TimelineModel>> timeline = RestProvider.getIssueService(isEnterprise())
-                .getTimeline(login, repoId, number, page)
-                .flatMap(response -> {
-                    lastPage = response != null ? response.getLast() : 0;
-                    return TimelineConverter.INSTANCE.convert(response != null ? response.getItems() : null);
-                })
-                .toList()
-                .toObservable()
-                .doOnComplete(() -> {
-                    if (page == 1) {
-                        loadStatus(login, repoId, sha, isMergeable);
+                .filter(timeline -> timeline.nodes() != null)
+                .flatMap(timeline -> {
+                    pages.clear();
+                    List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
+                    if (edges != null) {
+                        for (int i = 0; i < edges.size(); i++) {
+                            pages.append(i, edges.get(i).cursor());
+                        }
                     }
-                });
-        makeRestCall(timeline, timelineModels -> sendToView(view -> view.onNotifyAdapter(timelineModels, page)));
+                    List<PullRequestTimelineQuery.Node> nodes = timeline.nodes();
+                    return nodes != null ? Observable.fromIterable(nodes)
+                                         : Observable.fromIterable(new ArrayList<>());
+                })
+                .map(PullRequestTimelineModel::new)
+                .subscribe(Logger::e, Throwable::printStackTrace, () -> sendToView(BaseMvp.FAView::hideProgress)));
+    }
+
+    @NonNull private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {
+        return PullRequestTimelineQuery.builder()
+                .owner(login)
+                .name(repoId)
+                .number(number)
+                .page(getPage(page))
+                .build();
+    }
+
+    @Nullable private String getPage(int number) {
+        return number < pages.size() ? pages.get(number - 1) : null;
     }
 
     private void loadStatus(@NonNull String login, @NonNull String repoId, @NonNull String sha, boolean isMergeable) {

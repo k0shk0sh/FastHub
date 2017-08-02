@@ -1,51 +1,87 @@
-query PullRequestTimeline($owner: String!, $name: String!, $number: Int!){
+query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page: String) {
   repository(owner: $owner, name: $name) {
     pullRequest(number: $number) {
-      timeline(first: 30) {
+      timeline(first: 100 after: $page) {
+        edges {
+          cursor
+        }
         pageInfo {
           hasNextPage
           startCursor
           endCursor
         }
-        edges {
-          cursor
-        }
         totalCount
         nodes {
           __typename
           ... on Commit {
-            committer {
+            id
+            oid
+            url
+            messageHeadlineHTML
+            author {
+              name
               user {
                 login
-                avatarUrl
                 url
+                avatarUrl
               }
             }
-            oid
-            signature {
-              state
-            }
-            messageHeadlineHTML
-            status {
-              state
-            }
-            committedDate
-            url
           }
           ... on PullRequestReview {
+            databaseId
+            url
             bodyHTML
-          }
-          ... on IssueComment {
-            viewerCanUpdate
+            submittedAt
+            createdAt
+            state
             author {
               login
-              avatarUrl
               url
+              avatarUrl
             }
-            authorAssociation
+            comments(first: 30) {
+              edges {
+                node {
+                  databaseId
+                  authorAssociation
+                  bodyHTML
+                  diffHunk
+                  createdAt
+                  url
+                  originalPosition
+                  path
+                  position
+                  author {
+                    login
+                    avatarUrl
+                    url
+                  }
+                  reactionGroups {
+                    viewerHasReacted
+                    content
+                    users {
+                      totalCount
+                    }
+                  }
+                }
+              }
+            }
+          }
+          ... on IssueComment {
+            databaseId
+            bodyHTML
             createdAt
             updatedAt
-            body
+            viewerCanReact
+            viewerCanDelete
+            viewerCanUpdate
+            viewerDidAuthor
+            authorAssociation
+            author {
+              login
+              url
+              avatarUrl
+            }
             reactionGroups {
               viewerHasReacted
               content
@@ -54,102 +90,356 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!){
               }
             }
           }
-          ... on ReviewRequestedEvent {
+          ... on ClosedEvent {
+            createdAt
             actor {
               login
               avatarUrl
+              url
             }
-            subject {
+            commit {
+              oid
+              url
+              messageHeadlineHTML
+            }
+          }
+          ... on ReopenedEvent {
+            createdAt
+            actor {
               login
               avatarUrl
+              url
             }
           }
-          ... on PullRequestReviewComment {
-            body
-            author {
-              login
-            }
-          }
-          ... on ClosedEvent {
+          ... on MergedEvent {
+            id
+            url
+            createdAt
+            mergeRefName
             commit {
               oid
             }
             actor {
-              login
               avatarUrl
-            }
-          }
-          ... on ReopenedEvent {
-            actor {
               login
+              url
             }
           }
           ... on ReferencedEvent {
-            actor {
-              login
-            }
+            id
+            createdAt
             isCrossRepository
             isDirectReference
+            commitRepository {
+              nameWithOwner
+              url
+            }
+            commit {
+              oid
+            }
             subject {
+              __typename
               ... on Issue {
                 title
+                number
               }
               ... on PullRequest {
                 title
+                number
               }
+            }
+          }
+          ... on AssignedEvent {
+            id
+            createdAt
+            actor {
+              login
+              avatarUrl
+              url
+            }
+            user {
+              avatarUrl
+              login
+              url
+            }
+          }
+          ... on UnassignedEvent {
+            id
+            createdAt
+            actor {
+              login
+              avatarUrl
+              url
+            }
+            user {
+              avatarUrl
+              login
+              url
             }
           }
           ... on LabeledEvent {
             actor {
               login
+              avatarUrl
+              url
             }
             label {
               color
               name
             }
           }
+          ... on UnlabeledEvent {
+            actor {
+              login
+              avatarUrl
+              url
+            }
+            label {
+              color
+              name
+            }
+          }
+          ... on MilestonedEvent {
+            createdAt
+            id
+            milestoneTitle
+            actor {
+              login
+              avatarUrl
+              url
+            }
+          }
+          ... on DemilestonedEvent {
+            createdAt
+            id
+            milestoneTitle
+            actor {
+              login
+              avatarUrl
+              url
+            }
+          }
           ... on RenamedTitleEvent {
-            actor {
-              login
-              avatarUrl
-            }
-            previousTitle
+            id
+            createdAt
             currentTitle
+            previousTitle
           }
-          ... on AssignedEvent {
+          ... on LockedEvent {
             createdAt
             actor {
               login
               avatarUrl
-            }
-            user {
-              login
-              avatarUrl
+              url
             }
           }
-          ... on MergedEvent {
+          ... on UnlockedEvent {
             createdAt
             actor {
               login
+              avatarUrl
+              url
             }
-            commit {
-              oid
+          }
+          ... on DeployedEvent {
+            createdAt
+            ref {
+              name
+              prefix
             }
-            mergeRefName
+            deployment {
+              createdAt
+              state
+              creator {
+                avatarUrl
+                login
+                url
+              }
+              latestStatus {
+                description
+                environmentUrl
+                state
+              }
+              statuses(first: 30) {
+                edges {
+                  node {
+                    creator {
+                      avatarUrl
+                      login
+                      url
+                    }
+                    logUrl
+                    state
+                    description
+                    environmentUrl
+                  }
+                }
+              }
+            }
           }
           ... on HeadRefDeletedEvent {
             createdAt
-            actor {
-              login
-              avatarUrl
-            }
             headRefName
+            actor {
+              avatarUrl
+              login
+              url
+            }
           }
           ... on HeadRefRestoredEvent {
+            actor {
+              avatarUrl
+              login
+              url
+            }
             createdAt
+            pullRequest {
+              number
+              headRefName
+            }
+          }
+          ... on HeadRefForcePushedEvent {
+            createdAt
+            ref {
+              name
+              prefix
+            }
             actor {
               login
               avatarUrl
+              url
+            }
+            afterCommit {
+              oid
+              url
+            }
+            beforeCommit {
+              oid
+              url
+              status {
+                state
+                contexts {
+                  context
+                  createdAt
+                  description
+                  state
+                  targetUrl
+                  creator {
+                    avatarUrl
+                    login
+                    url
+                  }
+                }
+              }
+            }
+          }
+          ... on BaseRefForcePushedEvent {
+            createdAt
+            ref {
+              name
+              prefix
+            }
+            actor {
+              login
+              avatarUrl
+              url
+            }
+            afterCommit {
+              oid
+              url
+            }
+            beforeCommit {
+              oid
+              url
+              status {
+                state
+                contexts {
+                  context
+                  createdAt
+                  description
+                  state
+                  targetUrl
+                  creator {
+                    avatarUrl
+                    login
+                    url
+                  }
+                }
+              }
+            }
+          }
+          ... on ReviewRequestedEvent {
+            id
+            createdAt
+            actor {
+              avatarUrl
+              login
+              url
+            }
+            subject {
+              avatarUrl
+              login
+              url
+            }
+          }
+          ... on ReviewRequestRemovedEvent {
+            id
+            createdAt
+            actor {
+              avatarUrl
+              login
+              url
+            }
+            subject {
+              avatarUrl
+              login
+              url
+            }
+          }
+          ... on ReviewDismissedEvent {
+            databaseId
+            createdAt
+            messageHtml
+            previousReviewState
+            review {
+              databaseId
+              submittedAt
+              authorAssociation
+              bodyHTML
+              state
+              viewerDidAuthor
+              author {
+                login
+                avatarUrl
+                url
+              }
+              comments(first: 30) {
+                edges {
+                  node {
+                    databaseId
+                    authorAssociation
+                    bodyHTML
+                    diffHunk
+                    createdAt
+                    url
+                    originalPosition
+                    path
+                    position
+                    author {
+                      login
+                      avatarUrl
+                      url
+                    }
+                    reactionGroups {
+                      viewerHasReacted
+                      content
+                      users {
+                        totalCount
+                      }
+                    }
+                  }
+                }
+              }
             }
           }
         }

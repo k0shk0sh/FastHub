@@ -17,6 +17,7 @@ import com.fastaccess.ui.adapter.LabelColorsAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.Arrays;
 
@@ -32,6 +33,7 @@ public class CreateLabelDialogFragment extends BaseDialogFragment<CreateLabelMvp
     @BindView(R.id.name) TextInputLayout name;
     @BindView(R.id.description) TextInputLayout description;
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private LabelsMvp.View callback;
 
     public static CreateLabelDialogFragment newInstance(@NonNull String login, @NonNull String repo) {
@@ -95,6 +97,7 @@ public class CreateLabelDialogFragment extends BaseDialogFragment<CreateLabelMvp
             }
             return true;
         });
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public CreateLabelPresenter providePresenter() {

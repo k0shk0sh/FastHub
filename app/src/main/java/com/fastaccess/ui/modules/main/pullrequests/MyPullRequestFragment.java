@@ -22,6 +22,7 @@ import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State IssueState issueState;
     private OnLoadMore<IssueState> onLoadMore;
     private PullRequestAdapter adapter;
@@ -155,6 +157,7 @@ public class MyPullRequestFragment extends BaseFragment<MyPullRequestsMvp.View, 
             onRefresh();
         }
         stateLayout.setEmptyText(getString(R.string.no) + " " + getString(R.string.pull_requests));
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public MyPullRequestsPresenter providePresenter() {

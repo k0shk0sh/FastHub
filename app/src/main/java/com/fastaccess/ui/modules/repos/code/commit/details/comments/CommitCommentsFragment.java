@@ -28,6 +28,7 @@ import com.fastaccess.ui.modules.repos.reactions.ReactionsDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,6 +45,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
 
     private IssuePullsTimelineAdapter adapter;
@@ -80,6 +82,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onRefresh() {

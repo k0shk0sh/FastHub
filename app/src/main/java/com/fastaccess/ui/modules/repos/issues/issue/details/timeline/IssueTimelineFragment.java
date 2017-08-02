@@ -33,7 +33,7 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
-import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerFastScroller;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -49,7 +49,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
 
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
-    @BindView(R.id.fastScroller) RecyclerFastScroller fastScroller;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
     private IssuePullsTimelineAdapter adapter;
@@ -124,7 +124,6 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         stateLayout.setOnReloadListener(this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        fastScroller.setOnLoadMore(getLoadMore());
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);

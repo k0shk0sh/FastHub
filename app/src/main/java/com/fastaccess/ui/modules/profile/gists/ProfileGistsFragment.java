@@ -20,6 +20,7 @@ import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
 
     private GistsAdapter adapter;
     private OnLoadMore<String> onLoadMore;
@@ -68,6 +70,7 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
         if (getPresenter().getGists().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onRefresh() {

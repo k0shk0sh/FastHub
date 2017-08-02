@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.fastaccess.data.dao.model.User;
-import com.fastaccess.data.dao.timeline.Timeline;
 
 import java.util.Date;
 
@@ -15,7 +14,7 @@ import lombok.Setter;
  * Created by Kosh on 04 May 2017, 7:10 PM
  */
 
-@Getter @Setter public class ReviewCommentModel extends Timeline implements Parcelable {
+@Getter @Setter public class ReviewCommentModel implements Parcelable {
 
     long id;
     String url;
