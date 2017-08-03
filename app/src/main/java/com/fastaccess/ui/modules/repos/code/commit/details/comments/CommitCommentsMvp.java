@@ -46,6 +46,8 @@ interface CommitCommentsMvp {
         void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId);
 
         void addComment(@NonNull Comment newComment);
+
+        void showReload();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

@@ -17,7 +17,6 @@ import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
-import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -70,7 +69,11 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                             lastPage = listResponse.getLast();
                             return TimelineModel.construct(listResponse.getItems());
                         })
-                        .doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)),
+                        .doOnComplete(() -> {
+                            if (lastPage <= 1) {
+                                sendToView(CommitCommentsMvp.View::showReload);
+                            }
+                        }),
                 listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
     }
 

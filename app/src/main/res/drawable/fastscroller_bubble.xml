@@ -4,17 +4,15 @@
     <item android:state_selected="true">
         <shape android:shape="rectangle">
             <solid android:color="?colorPrimary"/>
-            <corners android:bottomLeftRadius="@dimen/spacing_normal"
-                     android:topLeftRadius="@dimen/spacing_normal"/>
-            <size android:width="7dp" android:height="54dp"/>
+            <corners android:bottomLeftRadius="@dimen/spacing_micro"
+                     android:topLeftRadius="@dimen/spacing_micro"/>
+            <size android:width="7dp" android:height="74dp"/>
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
             <solid android:color="?colorAccent"/>
-            <corners android:bottomLeftRadius="@dimen/spacing_normal"
-                     android:topLeftRadius="@dimen/spacing_normal"/>
-            <size android:width="7dp" android:height="54dp"/>
+            <size android:width="7dp" android:height="74dp"/>
         </shape>
     </item>
 </selector>

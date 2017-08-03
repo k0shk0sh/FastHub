@@ -42,6 +42,8 @@ import pr.PullRequestTimelineQuery;
  */
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
+    @com.evernote.android.state.State boolean hasNextPage;
+
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private SparseArray<String> pages = new SparseArray<>();
     private ReactionsProvider reactionsProvider;
@@ -322,6 +324,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 .map(PullRequestTimelineQuery.PullRequest::timeline)
                 .filter(timeline -> timeline.nodes() != null)
                 .flatMap(timeline -> {
+                    hasNextPage = timeline.pageInfo().hasNextPage();
                     pages.clear();
                     List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
                     if (edges != null) {
@@ -351,13 +354,13 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     private void loadStatus(@NonNull String login, @NonNull String repoId, @NonNull String sha, boolean isMergeable) {
-        manageObservable(RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
-                .map(statuses -> {
-                    if (statuses != null) {
-                        statuses.setMergable(isMergeable);
-                    }
-                    return statuses;
-                }).map(TimelineModel::new)
-                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
+//        manageObservable(RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
+//                .map(statuses -> {
+//                    if (statuses != null) {
+//                        statuses.setMergable(isMergeable);
+//                    }
+//                    return statuses;
+//                }).map(PullRequestTimelineModel::new)
+//                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
     }
 }

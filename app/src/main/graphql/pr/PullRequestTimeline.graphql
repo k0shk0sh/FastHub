@@ -1,7 +1,7 @@
 query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page: String) {
   repository(owner: $owner, name: $name) {
     pullRequest(number: $number) {
-      timeline(first: 100 after: $page) {
+      timeline(first: 30 after: $page) {
         edges {
           cursor
         }

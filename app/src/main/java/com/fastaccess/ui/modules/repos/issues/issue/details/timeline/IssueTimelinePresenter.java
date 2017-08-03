@@ -244,8 +244,7 @@ import lombok.Getter;
                     return TimelineConverter.INSTANCE.convert(response != null ? response.getItems() : null);
                 })
                 .toList()
-                .toObservable()
-                .doOnError(Throwable::printStackTrace);
+                .toObservable();
         makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));
     }
 }
