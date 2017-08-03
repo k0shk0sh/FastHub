@@ -5,8 +5,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -89,16 +87,8 @@ public class RecyclerViewFastScroller extends FrameLayout {
         setVisibility(VISIBLE);
         Activity activity = ActivityHelper.getActivity(getContext());
         if (activity != null) {
-            if (activity instanceof AppCompatActivity) {
-                Fragment fragment = ActivityHelper.getVisibleFragment(((AppCompatActivity) activity).getSupportFragmentManager());
-                if (fragment != null && fragment.getView() != null) {
-                    appBarLayout = fragment.getView().findViewById(R.id.appbar);
-                }
-            }
-            if (appBarLayout == null) {
-                appBarLayout = activity.findViewById(R.id.appbar);
-                bottomNavigation = activity.findViewById(R.id.bottomNavigation);
-            }
+            appBarLayout = activity.findViewById(R.id.appbar);
+            bottomNavigation = activity.findViewById(R.id.bottomNavigation);
         }
     }
 
