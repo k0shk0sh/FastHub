@@ -15,7 +15,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
@@ -107,11 +106,11 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
-        Logger.e();
         if (isLoggedIn() && Notification.hasUnreadNotifications()) {
             ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
         } else {
-            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getIconColor(this));
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_notifications_none).getIcon(), ViewHelper.getIconColor
+                    (this));
         }
         return super.onPrepareOptionsMenu(menu);
     }

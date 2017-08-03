@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
@@ -20,7 +19,7 @@ import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -47,13 +46,11 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                 })
                 .flatMap(login -> RxHelper.getObservable(RestProvider.getNotificationService(isEnterprise())
                         .getNotifications(ParseDateFormat.getLastWeekDate())))
-                .flatMap(notificationPageable -> {
-                    boolean hasUnread = false;
-                    if (notificationPageable != null && notificationPageable.getItems() == null && !notificationPageable.getItems().isEmpty()) {
-                        hasUnread = Stream.of(notificationPageable.getItems()).anyMatch(Notification::isUnread);
-                        manageDisposable(Notification.save(notificationPageable.getItems()));
+                .flatMapSingle(notificationPageable -> {
+                    if (notificationPageable != null) {
+                        return Notification.saveAsSingle(notificationPageable.getItems());
                     }
-                    return Observable.just(hasUnread);
+                    return Single.just(true);
                 })
                 .subscribe(unread -> {/**/}, Throwable::printStackTrace/*fail silently*/, () -> sendToView(view -> {
                     view.onInvalidateNotification();
