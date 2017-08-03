@@ -108,15 +108,17 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.head_ref_deleted || event == IssueEventType.head_ref_restored) {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "),
                             new BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())));
+                } else if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
+                    spannableBuilder.append(" ")
+                            .append(event == IssueEventType.milestoned ? "added this to the" : "removed this from the")
+                            .append(" ")
+                            .bold(issueEventModel.getMilestone().getTitle())
+                            .append(" ")
+                            .append("milestone");
                 } else {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "));
                 }
-                if (event == IssueEventType.milestoned || event == IssueEventType.demilestoned) {
-                    spannableBuilder.append(" ")
-                            .append(event == IssueEventType.milestoned ? to : from)
-                            .append(" ")
-                            .bold(issueEventModel.getMilestone().getTitle());
-                } else if (event == IssueEventType.renamed) {
+                if (event == IssueEventType.renamed) {
                     spannableBuilder
                             .append(" ")
                             .append(from)
