@@ -28,8 +28,8 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 402
-        versionName "4.0.2"
+        versionCode 403
+        versionName "4.0.3"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
         buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
@@ -127,11 +127,12 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${retrofit}"
     implementation "com.squareup.retrofit2:converter-gson:${retrofit}"
     implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofit}"
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    implementation "com.github.bumptech.glide:glide:3.7.0"
+//    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'cn.gavinliu.android.lib:ShapedImageView:0.8.3'
     implementation "com.jakewharton:butterknife:${butterKnifeVersion}"
     implementation 'it.sephiroth.android.library.bottomnavigation:bottom-navigation:2.0.1-rc1'
-    implementation 'io.reactivex.rxjava2:rxjava:2.0.7'
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
     implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.annimon:stream:1.1.7'
@@ -150,7 +151,7 @@ dependencies {
     implementation "com.google.firebase:firebase-database:${gms}"
     implementation('com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0') { transitive = false }
     implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0') { transitive = false }
-    implementation 'com.github.k0shk0sh:firebase-jobdispatcher-android:v0.7.0'
+    implementation 'com.firebase:firebase-jobdispatcher:0.7.0'
     implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') { transitive = true }
     implementation "com.github.miguelbcr:RxBillingService:0.0.3"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

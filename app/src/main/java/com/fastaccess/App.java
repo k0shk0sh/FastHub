@@ -11,7 +11,6 @@ import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
-import com.fastaccess.provider.uil.UILProvider;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
 import io.fabric.sdk.android.Fabric;
@@ -50,7 +49,6 @@ public class App extends Application {
         deleteDatabase("database.db");
         getDataStore();//init requery before anything.
         setupPreference();
-        UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);

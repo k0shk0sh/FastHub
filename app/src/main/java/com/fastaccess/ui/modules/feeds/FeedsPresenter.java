@@ -105,7 +105,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         onCallApi(page);
     }
 
-    @Override public void onSubscribed() {
+    @Override public void onSubscribed(boolean cancelable) {
         sendToView(view -> view.showProgress(0));
     }
 

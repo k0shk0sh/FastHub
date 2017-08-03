@@ -176,4 +176,9 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     public boolean isShowedGuide() {
         return showedGuide;
     }
+
+    @Override public void onViewDetachedFromWindow(VH holder) {
+        holder.onViewIsDetaching();
+        super.onViewDetachedFromWindow(holder);
+    }
 }

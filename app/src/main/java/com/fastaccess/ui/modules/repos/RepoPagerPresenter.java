@@ -172,7 +172,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                         } else {
                             callApi(navTyp);
                         }
-                    }));
+                    }, Throwable::printStackTrace));
         } else {
             sendToView(RepoPagerMvp.View::onFinishActivity);
         }

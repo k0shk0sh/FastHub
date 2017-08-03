@@ -9,6 +9,7 @@ import com.fastaccess.provider.rest.jsoup.JsoupProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.repos.RepoPagerActivity
 import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -18,6 +19,8 @@ import org.jsoup.select.Elements
  */
 
 class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), TrendingFragmentMvp.Presenter {
+
+    var disposel: Disposable? = null
 
     private val trendingList: ArrayList<TrendingModel> = ArrayList()
 
@@ -33,12 +36,14 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
     }
 
     override fun onCallApi(lang: String, since: String) {
-        manageViewDisposable(RxHelper.getObservable(JsoupProvider.getTrendingService().getTrending(
+        disposel?.let { if (!it.isDisposed) it.dispose() }
+        disposel = RxHelper.getObservable(JsoupProvider.getTrendingService().getTrending(
                 (if (!InputHelper.isEmpty(lang)) lang.replace(" ".toRegex(), "-") else "").toLowerCase(), since))
                 .flatMap { s -> RxHelper.getObservable(getTrendingObservable(s)) }
                 .doOnSubscribe { sendToView { it.showProgress(0) } }
                 .subscribe({ response -> sendToView { view -> view.onNotifyAdapter(response) } },
-                        { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) }))
+                        { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) })
+        manageDisposable(disposel)
     }
 
 

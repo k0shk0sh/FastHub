@@ -61,6 +61,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
     String repoId;
     String login;
     @Transient List<LabelModel> labels;
+    @Transient Issue issue;
 
     public static Disposable save(@NonNull List<IssueEvent> models, @NonNull String repoId,
                                   @NonNull String login, @NonNull String issueId) {
@@ -125,6 +126,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         dest.writeString(this.repoId);
         dest.writeString(this.login);
         dest.writeTypedList(this.labels);
+        dest.writeParcelable(this.issue, flags);
     }
 
     protected AbstractIssueEvent(Parcel in) {
@@ -149,6 +151,7 @@ import static com.fastaccess.data.dao.model.IssueEvent.REPO_ID;
         this.repoId = in.readString();
         this.login = in.readString();
         this.labels = in.createTypedArrayList(LabelModel.CREATOR);
+        this.issue = in.readParcelable(Issue.class.getClassLoader());
     }
 
     public static final Creator<IssueEvent> CREATOR = new Creator<IssueEvent>() {

@@ -28,21 +28,14 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
     val pager: ViewPagerView by bindView(R.id.pager)
     val parentLayout: View by bindView(R.id.parentLayout)
 
-    override fun layout(): Int {
-        return R.layout.theme_viewpager
-    }
+    override fun layout(): Int = R.layout.theme_viewpager
 
-    override fun isTransparent(): Boolean {
-        return false
-    }
 
-    override fun canBack(): Boolean {
-        return true
-    }
+    override fun isTransparent(): Boolean = false
 
-    override fun isSecured(): Boolean {
-        return false
-    }
+    override fun canBack(): Boolean = true
+
+    override fun isSecured(): Boolean = false
 
     override fun providePresenter(): BasePresenter<BaseMvp.FAView> {
         return BasePresenter()
@@ -79,6 +72,7 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
                 override fun onAnimationEnd(animation: Animator?) {
                     super.onAnimationEnd(animation)
                     window?.statusBarColor = color
+                    changeNavColor(color)
                 }
             })
             parentLayout.setBackgroundColor(color)
@@ -86,7 +80,12 @@ class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>
         } else {
             parentLayout.setBackgroundColor(color)
             window.statusBarColor = color
+            changeNavColor(color)
         }
+    }
+
+    private fun changeNavColor(color: Int) {
+        window?.navigationBarColor = color
     }
 
     override fun onThemeApplied() {

@@ -26,6 +26,7 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,7 +47,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     private CommitPagerMvp.View viewCallback;
     private CommitFilesAdapter adapter;
 
-    public static CommitFilesFragment newInstance(@NonNull String sha, @Nullable CommitFileListModel commitFileModels) {//TODO fix this
+    public static CommitFilesFragment newInstance(@NonNull String sha, @Nullable CommitFileListModel commitFileModels) {
         CommitFilesFragment view = new CommitFilesFragment();
         if (commitFileModels != null) {
             CommitFilesSingleton.getInstance().putFiles(sha, commitFileModels);
@@ -90,7 +91,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     }
 
     @Override public void hideProgress() {
-        refresh.setRefreshing(false);
+        if (refresh != null) refresh.setRefreshing(false);
     }
 
     @Override protected int fragmentLayout() {
@@ -101,12 +102,10 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         refresh.setEnabled(false);
         stateLayout.setEmptyText(R.string.no_files);
         recycler.setEmptyView(stateLayout, refresh);
-        adapter = new CommitFilesAdapter(getPresenter().getFiles(), this, this);
+        adapter = new CommitFilesAdapter(new ArrayList<>(), this, this);
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
-        if (savedInstanceState == null || adapter.isEmpty()) {
-            getPresenter().onFragmentCreated(getArguments());
-        }
+        getPresenter().onFragmentCreated(getArguments());
     }
 
     @NonNull @Override public CommitFilesPresenter providePresenter() {

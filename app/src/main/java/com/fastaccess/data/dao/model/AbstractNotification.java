@@ -13,6 +13,7 @@ import com.fastaccess.helper.RxHelper;
 import java.util.Date;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.requery.BlockingEntityStore;
@@ -71,17 +72,17 @@ import lombok.NoArgsConstructor;
         })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
-    @android.support.annotation.Nullable public static Disposable save(@android.support.annotation.Nullable List<Notification> models) {
+    public static Disposable save(@android.support.annotation.Nullable List<Notification> models) {
         if (models == null || models.isEmpty()) {
-            return null;
+            return Observable.empty().subscribe();
         }
         return RxHelper.getSingle(Single.fromPublisher(s -> {
             try {
                 BlockingEntityStore<Persistable> dataStore = App.getInstance().getDataStore().toBlocking();
                 for (Notification entity : models) {
                     dataStore.delete(Notification.class).where(Notification.ID.eq(entity.getId())).get().value();
-                    dataStore.insert(entity);
                 }
+                dataStore.insert(models);
                 s.onNext(true);
             } catch (Exception e) {
                 e.printStackTrace();

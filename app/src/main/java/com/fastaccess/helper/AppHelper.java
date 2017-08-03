@@ -71,14 +71,22 @@ public class AppHelper {
                 .append("**FastHub Version: ").append(BuildConfig.VERSION_NAME).append(enterprise ? " Enterprise**" : "**").append("  \n")
                 .append(!isInstalledFromPlaySore(App.getInstance()) ? "**APK Source: Unknown**  \n" : "")
                 .append("**Android Version: ").append(String.valueOf(Build.VERSION.RELEASE)).append(" (SDK: ")
-                    .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
+                .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
                 .append("**Device Information:**").append("  \n")
-                .append("- " + (!model.equalsIgnoreCase(brand) ? "MANUFACTURER" : "MANUFACTURER&BRAND") + ": ").append(Build.MANUFACTURER).append("  \n");
-        if (!model.equalsIgnoreCase(brand)) {
-            builder.append("- BRAND: ").append(brand).append("  \n");
+                .append("- **" + (!model.equalsIgnoreCase(brand) ? "Manufacturer" : "Manufacturer&Brand") + ":** ").append(Build.MANUFACTURER)
+                .append("  \n");
+        if (!(model.equalsIgnoreCase(brand) || "google".equals(Build.BRAND))) {
+            builder.append("- **Brand:** ").append(brand).append("  \n");
         }
-        builder.append("- MODEL: ").append(model).append("  \n")
-               .append("---").append("\n\n");
+        builder.append("- **Model:** ")
+                .append(model)
+                .append("  \n").append("---").append("\n");
+        if (!Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
+            builder.append("<--")
+                    .append(App.getInstance().getString(R.string.english_please))
+                    .append("-->")
+                    .append("\n");
+        }
         return builder.toString();
     }
 
@@ -136,7 +144,7 @@ public class AppHelper {
         return brand.equalsIgnoreCase(model) ? InputHelper.capitalizeFirstLetter(model) : InputHelper.capitalizeFirstLetter(brand) + " " + model;
     }
 
-    private static boolean isEmulator() {
+    public static boolean isEmulator() {
         return Build.FINGERPRINT.startsWith("generic")
                 || Build.FINGERPRINT.startsWith("unknown")
                 || Build.MODEL.contains("google_sdk")
@@ -153,6 +161,7 @@ public class AppHelper {
     }
 
     public static boolean isGoogleAvailable(@NonNull Context context) {
-        return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
+        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+        return status != ConnectionResult.SERVICE_DISABLED && status == ConnectionResult.SUCCESS;
     }
 }

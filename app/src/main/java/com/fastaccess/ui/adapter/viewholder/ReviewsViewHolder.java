@@ -12,6 +12,7 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
+import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -67,6 +68,13 @@ public class ReviewsViewHolder extends BaseViewHolder<TimelineModel> {
             } else {
                 body.setVisibility(View.GONE);
             }
+        }
+    }
+
+    @Override protected void onViewIsDetaching() {
+        DrawableGetter drawableGetter = (DrawableGetter) stateText.getTag(R.id.drawable_callback);
+        if (drawableGetter != null) {
+            drawableGetter.clear(drawableGetter);
         }
     }
 }

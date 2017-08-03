@@ -5,6 +5,7 @@ import android.content.Intent
 import android.widget.Toast
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
+import com.fastaccess.data.dao.model.Release
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.rest.RestProvider
 
@@ -16,8 +17,8 @@ class CheckVersionService : IntentService("CheckVersionService") {
     override fun onHandleIntent(p0: Intent?) {
         RxHelper.getObservable(RestProvider.getRepoService(false)
                 .getLatestRelease("k0shk0sh", "FastHub"))
-                .subscribe({
-                    if (it != null) {
+                .subscribe({ t: Release? ->
+                    t?.let {
                         Toast.makeText(this, if (BuildConfig.VERSION_NAME.contains(it.tagName))
                             R.string.up_to_date else R.string.new_version, Toast.LENGTH_LONG).show()
                     }

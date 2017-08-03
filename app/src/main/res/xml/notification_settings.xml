@@ -32,5 +32,12 @@
         android:summary="@string/enable_notification_sound_summary"
         android:title="@string/enable_notification_sound_title"/>
 
+    <Preference
+        android:dependency="notificationSound"
+        android:icon="@drawable/ic_ring"
+        android:key="notification_sound_path"
+        android:ringtoneType="notification"
+        android:showDefault="true"
+        android:title="@string/sound_chooser_title"/>
 
 </PreferenceScreen>

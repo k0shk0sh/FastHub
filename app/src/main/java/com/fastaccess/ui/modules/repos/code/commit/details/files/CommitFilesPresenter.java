@@ -24,8 +24,6 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 
-import java.util.ArrayList;
-
 import io.reactivex.Observable;
 
 /**
@@ -34,7 +32,6 @@ import io.reactivex.Observable;
 
 class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements CommitFilesMvp.Presenter {
     @com.evernote.android.state.State String sha;
-    private ArrayList<CommitFileChanges> files = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, CommitFileChanges model) {
         if (v.getId() == R.id.open) {
@@ -78,18 +75,14 @@ class CommitFilesPresenter extends BasePresenter<CommitFilesMvp.View> implements
                     manageObservable(Observable.just(commitFiles)
                             .map(CommitFileChanges::construct)
                             .doOnSubscribe(disposable -> sendToView(CommitFilesMvp.View::clearAdapter))
-                            .doFinally(() -> sendToView(BaseMvp.FAView::hideProgress))
-                            .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges))));
+                            .doOnNext(commitFileChanges -> sendToView(view -> view.onNotifyAdapter(commitFileChanges)))
+                            .doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)));
                 }
 
             }
         } else {
             throw new NullPointerException("Bundle is null");
         }
-    }
-
-    @NonNull @Override public ArrayList<CommitFileChanges> getFiles() {
-        return files;
     }
 
     @Override public void onSubmitComment(@NonNull String comment, @NonNull CommitLinesModel item, @Nullable Bundle bundle) {

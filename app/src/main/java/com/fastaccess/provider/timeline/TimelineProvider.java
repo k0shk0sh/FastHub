@@ -56,7 +56,11 @@ public class TimelineProvider {
                 if (user != null) {
                     spannableBuilder.bold(user.getLogin());
                 }
-                if (event == IssueEventType.closed || event == IssueEventType.reopened) {
+
+                if ((event == IssueEventType.review_requested || (event == IssueEventType.review_dismissed ||
+                        event == IssueEventType.review_request_removed)) && user != null) {
+                    appendReviews(issueEventModel, event, spannableBuilder, from, user);
+                } else if (event == IssueEventType.closed || event == IssueEventType.reopened) {
                     if (isMerged) {
                         spannableBuilder.append(" ").append(IssueEventType.merged.name());
                     } else {
@@ -87,6 +91,11 @@ public class TimelineProvider {
                                 .append(" ")
                                 .bold(issueEventModel.getAssignee().getLogin());
                     }
+                } else if (event == IssueEventType.locked || event == IssueEventType.unlocked) {
+                    spannableBuilder
+                            .append(" ")
+                            .append(event == IssueEventType.locked ? "locked and limited conversation to collaborators" : "unlocked this " +
+                                    "conversation");
                 } else if (event == IssueEventType.head_ref_deleted || event == IssueEventType.head_ref_restored) {
                     spannableBuilder.append(" ").append(event.name().replaceAll("_", " "),
                             new BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())));
@@ -114,23 +123,39 @@ public class TimelineProvider {
                             .append("commit")
                             .append(" ")
                             .url(substring(issueEventModel.getCommitId()));
-                } else if (event == IssueEventType.review_requested) {
-                    spannableBuilder
-                            .append(" ")
-                            .append(from)
-                            .append(" ");
-                    if (issueEventModel.getRequestedTeam() != null) {
-                        String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
-                                      ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
-                        spannableBuilder.bold(name).append(" ").append("team");
-                    } else if (issueEventModel.getRequestedReviewer() != null) {
-                        spannableBuilder.append(issueEventModel.getRequestedReviewer().getLogin());
-                    }
                 }
                 spannableBuilder.append(" ").append(getDate(issueEventModel.getCreatedAt()));
             }
         }
         return spannableBuilder;
+    }
+
+    private static void appendReviews(@NonNull IssueEvent issueEventModel, @NonNull IssueEventType event,
+                                      @NonNull SpannableBuilder spannableBuilder, @NonNull String from, @NonNull User user) {
+        spannableBuilder.append(" ");
+        User reviewer = issueEventModel.getRequestedReviewer() != null
+                        ? issueEventModel.getRequestedReviewer() : issueEventModel.getIssue() != null ? issueEventModel.getIssue().getUser() : null;
+        if (reviewer != null && user.getLogin().equalsIgnoreCase(reviewer.getLogin())) {
+            spannableBuilder
+                    .append(event == IssueEventType.review_requested
+                            ? "self-requested a review" : "removed their request for review");
+        } else {
+            spannableBuilder
+                    .append(event == IssueEventType.review_requested ? "Requested a review" : "dismissed the review")
+                    .append(" ")
+                    .append(reviewer != null && !reviewer.getLogin().equalsIgnoreCase(user.getLogin()) ? from : " ")
+                    .append(reviewer != null && !reviewer.getLogin().equalsIgnoreCase(user.getLogin()) ? " " : "");
+        }
+        if (issueEventModel.getRequestedTeam() != null) {
+            String name = !InputHelper.isEmpty(issueEventModel.getRequestedTeam().getName())
+                          ? issueEventModel.getRequestedTeam().getName() : issueEventModel.getRequestedTeam().getSlug();
+            spannableBuilder
+                    .bold(name)
+                    .append(" ")
+                    .append("team");
+        } else if (reviewer != null && !user.getLogin().equalsIgnoreCase(reviewer.getLogin())) {
+            spannableBuilder.bold(issueEventModel.getRequestedReviewer().getLogin());
+        }
     }
 
     public static void appendLabels(@NonNull LabelModel labelModel, @NonNull SpannableBuilder spannableBuilder) {

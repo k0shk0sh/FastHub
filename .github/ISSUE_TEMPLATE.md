@@ -4,7 +4,7 @@
    - Make sure that you are always on the latest version.
    - Search issue before submitting a new one.
    
-   Public Slack channel: https://rebrand.ly/fasthub
+   Public Slack channel: https://rebrand.ly/fasthub-slack
 -->
 
 **FastHub Version:**  <!-- Don't forget to mention "Enterprise" here if needed. -->  <>

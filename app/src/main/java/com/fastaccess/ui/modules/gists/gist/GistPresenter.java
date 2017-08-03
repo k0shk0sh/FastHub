@@ -53,7 +53,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
     @Override public void onDeleteGist() {
         if (getGist() == null) return;
         manageDisposable(RxHelper.getObservable(RestProvider.getGistService(isEnterprise()).deleteGist(getGist().getGistId()))
-                .doOnSubscribe(disposable -> onSubscribed())
+                .doOnSubscribe(disposable -> onSubscribed(false))
                 .doOnNext(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         sendToView(GistMvp.View::onSuccessDeleted);

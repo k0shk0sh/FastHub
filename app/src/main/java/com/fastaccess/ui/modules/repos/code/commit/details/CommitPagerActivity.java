@@ -20,6 +20,7 @@ import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.helper.ActivityHelper;
+import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
@@ -139,6 +140,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share_menu, menu);
         menu.findItem(R.id.browser).setVisible(true);
+        menu.findItem(R.id.copyUrl).setVisible(true);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -151,6 +153,9 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
             return true;
         } else if (item.getItemId() == R.id.browser) {
             if (getPresenter().getCommit() != null) ActivityHelper.startCustomTab(this, getPresenter().getCommit().getHtmlUrl());
+            return true;
+        } else if (item.getItemId() == R.id.copyUrl) {
+            if (getPresenter().getCommit() != null) AppHelper.copyToClipboard(this, getPresenter().getCommit().getHtmlUrl());
             return true;
         }
         return super.onOptionsItemSelected(item);

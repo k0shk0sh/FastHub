@@ -33,7 +33,7 @@ object ThemeEngine {
     }
 
     private fun applyNavBarColor(activity: Activity) {
-        if (!PrefGetter.isNavBarTintingDisabled()) {
+        if (!PrefGetter.isNavBarTintingDisabled() && PrefGetter.getThemeType() != PrefGetter.LIGHT) {
             activity.window.navigationBarColor = ViewHelper.getPrimaryColor(activity)
         }
     }
