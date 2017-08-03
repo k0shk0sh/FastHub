@@ -129,7 +129,7 @@ public class HtmlHelper {
         return mySpanner;
     }
 
-    @ColorInt static int getWindowBackground(@PrefGetter.ThemeType int theme) {
+    @ColorInt public static int getWindowBackground(@PrefGetter.ThemeType int theme) {
         switch (theme) {
             case PrefGetter.AMLOD:
                 return Color.parseColor("#0B162A");

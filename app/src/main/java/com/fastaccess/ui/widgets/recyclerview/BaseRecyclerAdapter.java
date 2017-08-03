@@ -120,6 +120,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     public void addItem(M item) {
+        removeProgress();
         data.add(item);
         notifyItemInserted(data.size() - 1);
     }
