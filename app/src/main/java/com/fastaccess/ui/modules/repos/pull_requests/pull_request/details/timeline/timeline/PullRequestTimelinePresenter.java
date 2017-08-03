@@ -287,10 +287,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable PullRequest parameter) {
+    @Override public boolean onCallApi(int page, @Nullable PullRequest parameter) {
         if (parameter == null) {
             sendToView(BaseMvp.FAView::hideProgress);
-            return;
+            return false;
         }
         String login = parameter.getLogin();
         String repoId = parameter.getRepoId();
@@ -301,12 +301,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(PullRequestTimelineMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         if (parameter.getHead() != null) {
             loadEverything(login, repoId, number, parameter.getHead().getSha(), parameter.isMergeable(), page);
+            return true;
         }
+        return false;
     }
 
     private void loadEverything(@NonNull String login, @NonNull String repoId, int number,

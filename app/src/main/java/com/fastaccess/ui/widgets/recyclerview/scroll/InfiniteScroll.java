@@ -5,6 +5,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
+
 /**
  * Created by Kosh on 8/2/2015. copyrights are reserved @
  */
@@ -70,8 +72,13 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
         }
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
             currentPage++;
-            onLoadMore(currentPage, totalItemCount);
+            boolean isCallingApi = onLoadMore(currentPage, totalItemCount);
             loading = true;
+            if (recyclerView.getAdapter() != null && isCallingApi) {
+                if (recyclerView.getAdapter() instanceof BaseRecyclerAdapter) {
+                    ((BaseRecyclerAdapter) recyclerView.getAdapter()).addProgress();
+                }
+            }
         }
     }
 
@@ -87,7 +94,7 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
         this.loading = true;
     }
 
-    public abstract void onLoadMore(int page, int totalItemsCount);
+    public abstract boolean onLoadMore(int page, int totalItemsCount);
 
 }
 

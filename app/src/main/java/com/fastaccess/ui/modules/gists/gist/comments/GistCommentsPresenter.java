@@ -50,14 +50,14 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || parameter == null || lastPage == 0) {
             sendToView(GistCommentsMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getGistService(isEnterprise()).getGistComments(parameter, page),
@@ -68,6 +68,7 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
                     }
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Comment> getComments() {

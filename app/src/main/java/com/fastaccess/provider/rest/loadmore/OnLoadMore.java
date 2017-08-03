@@ -29,10 +29,11 @@ public class OnLoadMore<P> extends InfiniteScroll {
         return parameter;
     }
 
-    @Override public void onLoadMore(int page, int totalItemsCount) {
+    @Override public boolean onLoadMore(int page, int totalItemsCount) {
         if (presenter != null) {
             presenter.setPreviousTotal(totalItemsCount);
-            presenter.onCallApi(page + 1, parameter);
+            return presenter.onCallApi(page + 1, parameter);
         }
+        return false;
     }
 }

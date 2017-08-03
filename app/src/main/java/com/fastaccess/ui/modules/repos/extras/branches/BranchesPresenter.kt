@@ -68,10 +68,10 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
         this.previousTotal = previousTotal
     }
 
-    override fun onCallApi(page: Int, parameter: Boolean?) {
+    override fun onCallApi(page: Int, parameter: Boolean?): Boolean {
         if (login.isNullOrEmpty() || repoId.isNullOrEmpty()) {
             sendToView({ it.hideProgress() })
-            return
+            return false
         }
         if (page == 1) {
             lastPage = Integer.MAX_VALUE
@@ -79,10 +79,11 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
         }
         if (page > lastPage || lastPage == 0) {
             sendToView({ it.hideProgress() })
-            return
+            return false
         }
         currentPage = page
         callApi(login!!, repoId!!, page)
+        return true
     }
 
 }

@@ -54,14 +54,14 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(CommitCommentsMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommitComments(login, repoId, sha, page)
@@ -75,6 +75,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                             }
                         }),
                 listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
+        return true;
     }
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {

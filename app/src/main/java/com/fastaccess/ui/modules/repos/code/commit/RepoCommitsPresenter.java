@@ -52,7 +52,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -60,9 +60,9 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoCommitsMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
+        if (repoId == null || login == null) return false;
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommits(login, repoId, branch, page),
                 response -> {
                     if (response != null && response.getItems() != null) {
@@ -73,6 +73,7 @@ class RepoCommitsPresenter extends BasePresenter<RepoCommitsMvp.View> implements
                     }
                     sendToView(view -> view.onNotifyAdapter(response != null ? response.getItems() : null, page));
                 });
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {
