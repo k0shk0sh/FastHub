@@ -2,7 +2,9 @@ package com.fastaccess.ui.widgets.recyclerview;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -59,6 +61,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
 
     @Override public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == PROGRESS_TYPE) {
+            addSpanLookup(parent);
             return (VH) ProgressBarViewHolder.newInstance(parent);
         } else {
             return viewHolder(parent, viewType);
@@ -66,7 +69,12 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     @Override public void onBindViewHolder(@NonNull VH holder, int position) {
-        if (getItem(position) != null) {
+        if (holder instanceof ProgressBarViewHolder) {
+            if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
+            }
+        } else if (getItem(position) != null) {
             animate(holder, position);
             onBindView(holder, position);
             onShowGuide(holder, position);
@@ -210,6 +218,18 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
             removeItem(getItemCount() - 1);
         }
         progressAdded = false;
+    }
+
+    private void addSpanLookup(ViewGroup parent) {
+        if (parent instanceof RecyclerView) {
+            if (((RecyclerView) parent).getLayoutManager() instanceof GridLayoutManager) {
+                ((GridLayoutManager) ((RecyclerView) parent).getLayoutManager()).setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override public int getSpanSize(int position) {
+                        return getItemViewType(position) == PROGRESS_TYPE ? 2 : 1;
+                    }
+                });
+            }
+        }
     }
 
     public interface GuideListener<M> {
