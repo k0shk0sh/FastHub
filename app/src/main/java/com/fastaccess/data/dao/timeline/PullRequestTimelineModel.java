@@ -1,24 +1,27 @@
 package com.fastaccess.data.dao.timeline;
 
+import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.model.PullRequest;
 
+import lombok.Getter;
+import lombok.Setter;
 import pr.PullRequestTimelineQuery;
 
 /**
  * Created by kosh on 02/08/2017.
  */
 
-public class PullRequestTimelineModel {
+@Getter @Setter public class PullRequestTimelineModel {
 
     public static final int HEADER = 0;
-    public static final int LINE_COMMENT = 1;
-    public static final int EVENT = 2;
-    public static final int COMMENT = 3;
-    public static final int STATUS = 4;
-    public static final int REVIEW = 5;
+    public static final int EVENT = 1;
+    public static final int COMMENT = 2;
+    public static final int STATUS = 3;
+    public static final int REVIEW = 4;
 
     private PullRequestTimelineQuery.Node node;
     private PullRequest pullRequest;
+    private PullRequestStatusModel status;
 
     public PullRequestTimelineModel(PullRequest pullRequest) {
         this.pullRequest = pullRequest;
@@ -26,6 +29,10 @@ public class PullRequestTimelineModel {
 
     public PullRequestTimelineModel(PullRequestTimelineQuery.Node node) {
         this.node = node;
+    }
+
+    public PullRequestTimelineModel(PullRequestStatusModel status) {
+        this.status = status;
     }
 
     public int getType() {
@@ -37,11 +44,11 @@ public class PullRequestTimelineModel {
                 || node.asReferencedEvent() != null || node.asRenamedTitleEvent() != null
                 || node.asReopenedEvent() != null || node.asUnassignedEvent() != null
                 || node.asUnlabeledEvent() != null || node.asUnlockedEvent() != null
-                || node.asCommit() != null) {
+                || node.asCommit() != null || node.asHeadRefRestoredEvent() != null) {
             return EVENT;
         } else if (node.asIssueComment() != null) {
             return COMMENT;
-        } else if (node.asDeployedEvent() != null) {
+        } else if (status != null) {
             return STATUS;
         } else if (node.asPullRequestReview() != null || node.asReviewDismissedEvent() != null
                 || node.asReviewRequestedEvent() != null || node.asReviewRequestRemovedEvent() != null) {

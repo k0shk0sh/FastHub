@@ -65,14 +65,14 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0 || (login == null || repoId == null || reactionType == null)) {
             sendToView(ReactionsDialogMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         Observable<Pageable<ReactionsModel>> observable = null;
@@ -104,6 +104,7 @@ public class ReactionsDialogPresenter extends BasePresenter<ReactionsDialogMvp.V
                     .map(ReactionsModel::getUser)
                     .collect(Collectors.toList()), page));
         });
+        return true;
     }
 
     ReactionTypes getReactionType() {

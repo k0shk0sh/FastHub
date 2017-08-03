@@ -17,7 +17,6 @@ import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
-import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
 import java.util.ArrayList;
@@ -55,14 +54,14 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(CommitCommentsMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommitComments(login, repoId, sha, page)
@@ -70,8 +69,13 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                             lastPage = listResponse.getLast();
                             return TimelineModel.construct(listResponse.getItems());
                         })
-                        .doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)),
+                        .doOnComplete(() -> {
+                            if (lastPage <= 1) {
+                                sendToView(CommitCommentsMvp.View::showReload);
+                            }
+                        }),
                 listResponse -> sendToView(view -> view.onNotifyAdapter(listResponse, page)));
+        return true;
     }
 
     @Override public void onFragmentCreated(@Nullable Bundle bundle) {

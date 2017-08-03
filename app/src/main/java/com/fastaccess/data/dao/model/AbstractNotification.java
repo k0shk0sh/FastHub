@@ -92,6 +92,26 @@ import lombok.NoArgsConstructor;
         })).subscribe(o -> {/*do nothing*/}, Throwable::printStackTrace);
     }
 
+    public static Single<Boolean> saveAsSingle(@android.support.annotation.Nullable List<Notification> models) {
+        if (models == null || models.isEmpty()) {
+            return Single.just(true);
+        }
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataStore = App.getInstance().getDataStore().toBlocking();
+                for (Notification entity : models) {
+                    dataStore.delete(Notification.class).where(Notification.ID.eq(entity.getId())).get().value();
+                }
+                dataStore.insert(models);
+                s.onNext(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+                s.onError(e);
+            }
+            s.onComplete();
+        }));
+    }
+
     public static Single<List<Notification>> getUnreadNotifications() {
         return App.getInstance()
                 .getDataStore()
@@ -116,9 +136,9 @@ import lombok.NoArgsConstructor;
     public static boolean hasUnreadNotifications() {
         return App.getInstance()
                 .getDataStore()
+                .toBlocking()
                 .count(Notification.class)
                 .where(Notification.UNREAD.equal(true))
-                .limit(1)
                 .get()
                 .value() > 0;
     }

@@ -4,6 +4,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+
+import com.fastaccess.helper.Logger;
+import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
+import com.fastaccess.ui.widgets.recyclerview.ProgressBarViewHolder;
 
 /**
  * Created by Kosh on 8/2/2015. copyrights are reserved @
@@ -64,14 +69,27 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
                 this.loading = true;
             }
         }
+        View child = recyclerView.getChildAt(lastVisibleItemPosition);
+        if (child != null) {
+            RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(child);
+            if (viewHolder != null && viewHolder instanceof ProgressBarViewHolder) {
+                Logger.e();
+                return;
+            }
+        }
         if (loading && (totalItemCount > previousTotalItemCount)) {
             loading = false;
             previousTotalItemCount = totalItemCount;
         }
         if (!loading && (lastVisibleItemPosition + visibleThreshold) > totalItemCount) {
             currentPage++;
-            onLoadMore(currentPage, totalItemCount);
+            boolean isCallingApi = onLoadMore(currentPage, totalItemCount);
             loading = true;
+            if (recyclerView.getAdapter() != null && isCallingApi) {
+                if (recyclerView.getAdapter() instanceof BaseRecyclerAdapter) {
+                    ((BaseRecyclerAdapter) recyclerView.getAdapter()).addProgress();
+                }
+            }
         }
     }
 
@@ -87,7 +105,7 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
         this.loading = true;
     }
 
-    public abstract void onLoadMore(int page, int totalItemsCount);
+    public abstract boolean onLoadMore(int page, int totalItemsCount);
 
 }
 

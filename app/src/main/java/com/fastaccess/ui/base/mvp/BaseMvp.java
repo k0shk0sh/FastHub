@@ -79,7 +79,7 @@ public interface BaseMvp {
 
         void setPreviousTotal(int previousTotal);
 
-        void onCallApi(int page, @Nullable P parameter);
+        boolean onCallApi(int page, @Nullable P parameter);
     }
 
     interface OnScrollTopListener {

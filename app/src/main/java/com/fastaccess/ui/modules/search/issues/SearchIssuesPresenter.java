@@ -38,18 +38,15 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         setCurrentPage(page);
-        if (page > lastPage || lastPage == 0) {
+        if (page > lastPage || lastPage == 0 || parameter == null) {
             sendToView(SearchIssuesMvp.View::hideProgress);
-            return;
-        }
-        if (parameter == null) {
-            return;
+            return false;
         }
         makeRestCall(RestProvider.getSearchService(isEnterprise()).searchIssues(parameter, page),
                 response -> {
@@ -59,6 +56,7 @@ class SearchIssuesPresenter extends BasePresenter<SearchIssuesMvp.View> implemen
                         view.onSetTabCount(response.getTotalCount());
                     });
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Issue> getIssues() {

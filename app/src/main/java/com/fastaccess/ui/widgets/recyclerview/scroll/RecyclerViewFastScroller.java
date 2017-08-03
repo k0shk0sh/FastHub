@@ -1,9 +1,10 @@
 package com.fastaccess.ui.widgets.recyclerview.scroll;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewCompat;
+import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.fastaccess.R;
+import com.fastaccess.helper.ActivityHelper;
+
+import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 
 public class RecyclerViewFastScroller extends FrameLayout {
 
@@ -24,16 +28,9 @@ public class RecyclerViewFastScroller extends FrameLayout {
     private int height;
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;
-
-    private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
-        @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-            if (scrollerView.isSelected()) return;
-            int verticalScrollOffset = recyclerView.computeVerticalScrollOffset();
-            int verticalScrollRange = recyclerView.computeVerticalScrollRange();
-            float proportion = (float) verticalScrollOffset / ((float) verticalScrollRange - height);
-            setScrollerHeight(height * proportion);
-        }
-    };
+    private AppBarLayout appBarLayout;
+    private BottomNavigation bottomNavigation;
+    private boolean toggled;
 
     public RecyclerViewFastScroller(Context context) {
         super(context);
@@ -58,8 +55,9 @@ public class RecyclerViewFastScroller extends FrameLayout {
         int action = event.getAction();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                if (event.getX() < scrollerView.getX() - ViewCompat.getPaddingStart(scrollerView)) return false;
+                if (event.getX() < (scrollerView.getX() - scrollerView.getPaddingStart())) return false;
                 scrollerView.setSelected(true);
+                hideAppbar();
             case MotionEvent.ACTION_MOVE:
                 float y = event.getY();
                 setScrollerHeight(y);
@@ -68,6 +66,7 @@ public class RecyclerViewFastScroller extends FrameLayout {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 scrollerView.setSelected(false);
+                showAppbar();
                 return true;
         }
         return super.onTouchEvent(event);
@@ -75,6 +74,8 @@ public class RecyclerViewFastScroller extends FrameLayout {
 
     @Override protected void onDetachedFromWindow() {
         if (recyclerView != null) recyclerView.removeOnScrollListener(onScrollListener);
+        appBarLayout = null;
+        bottomNavigation = null;
         super.onDetachedFromWindow();
     }
 
@@ -84,6 +85,37 @@ public class RecyclerViewFastScroller extends FrameLayout {
         inflater.inflate(R.layout.fastscroller_layout, this);
         scrollerView = findViewById(R.id.fast_scroller_handle);
         setVisibility(VISIBLE);
+        Activity activity = ActivityHelper.getActivity(getContext());
+        if (activity != null) {
+            appBarLayout = activity.findViewById(R.id.appbar);
+            bottomNavigation = activity.findViewById(R.id.bottomNavigation);
+        }
+    }
+
+    protected void hideAppbar() {
+        if (!toggled) {
+            if (appBarLayout != null) {
+                appBarLayout.setExpanded(false, true);
+            }
+            if (bottomNavigation != null) {
+                bottomNavigation.setExpanded(false, true);
+            }
+            toggled = true;
+        }
+    }
+
+    protected void showAppbar() {
+        if (toggled) {
+            if (scrollerView.getY() == 0) {
+                if (appBarLayout != null) {
+                    appBarLayout.setExpanded(true, true);
+                }
+                if (bottomNavigation != null) {
+                    bottomNavigation.setExpanded(true, true);
+                }
+                toggled = false;
+            }
+        }
     }
 
     public void attachRecyclerView(final RecyclerView recyclerView) {
@@ -108,7 +140,6 @@ public class RecyclerViewFastScroller extends FrameLayout {
             }
         });
     }
-
 
     private void setRecyclerViewPosition(float y) {
         if (recyclerView != null) {
@@ -140,4 +171,14 @@ public class RecyclerViewFastScroller extends FrameLayout {
         int handleHeight = scrollerView.getHeight();
         scrollerView.setY(getValueInRange(height - handleHeight, (int) (y - handleHeight / 2)));
     }
+
+    private final RecyclerView.OnScrollListener onScrollListener = new RecyclerView.OnScrollListener() {
+        @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            if (scrollerView.isSelected()) return;
+            int verticalScrollOffset = recyclerView.computeVerticalScrollOffset();
+            int verticalScrollRange = recyclerView.computeVerticalScrollRange();
+            float proportion = (float) verticalScrollOffset / ((float) verticalScrollRange - height);
+            setScrollerHeight(height * proportion);
+        }
+    };
 }

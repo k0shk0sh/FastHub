@@ -66,6 +66,7 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private Preference notificationTime;
     private Preference notificationRead;
     private Preference notificationSound;
+    private Preference notificationSoundPath;
     private SettingsCallback settingsCallback;
 
     @Override public void onAttach(Context context) {
@@ -111,12 +112,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 getPreferenceScreen().addPreference(notificationTime);
                 getPreferenceScreen().addPreference(notificationRead);
                 getPreferenceScreen().addPreference(notificationSound);
+                getPreferenceScreen().addPreference(notificationSoundPath);
                 NotificationSchedulerJobTask.scheduleJob(App.getInstance(),
                         PrefGetter.getNotificationTaskDuration(), true);
             } else {
                 getPreferenceScreen().removePreference(notificationTime);
                 getPreferenceScreen().removePreference(notificationRead);
                 getPreferenceScreen().removePreference(notificationSound);
+                getPreferenceScreen().removePreference(notificationSoundPath);
                 NotificationSchedulerJobTask.scheduleJob(App.getInstance(), -1, true);
             }
             return true;
@@ -199,14 +202,17 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 restoreData(data);
             } else if (requestCode == SOUND_REQUEST_CODE) {
                 Uri ringtone = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-                findPreference("notification_sound_path").setDefaultValue(ringtone.toString());
+                if (notificationSoundPath != null && notificationSoundPath.isVisible()) {
+                    notificationSoundPath.setDefaultValue(ringtone.toString());
+                }
             }
         }
     }
 
     @Override public void onSoundSelected(Uri uri) {
         PrefGetter.setNotificationSound(uri);
-        findPreference("notification_sound_path").setSummary(FileHelper.getRingtoneName(getContext(), uri));
+        if (notificationSoundPath != null && notificationSoundPath.isVisible())
+            notificationSoundPath.setSummary(FileHelper.getRingtoneName(getContext(), uri));
     }
 
     private void showFileChooser() {
@@ -283,18 +289,20 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
         notificationTime = findPreference("notificationTime");
         notificationRead = findPreference("markNotificationAsRead");
         notificationSound = findPreference("notificationSound");
-        findPreference("notification_sound_path").setSummary(FileHelper.getRingtoneName(getContext(), PrefGetter.getNotificationSound()));
-        findPreference("notification_sound_path").setOnPreferenceClickListener(preference -> {
+        notificationTime.setOnPreferenceChangeListener(this);
+        findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
+        notificationSoundPath = findPreference("notification_sound_path");
+        notificationSoundPath.setSummary(FileHelper.getRingtoneName(getContext(), PrefGetter.getNotificationSound()));
+        notificationSoundPath.setOnPreferenceClickListener(preference -> {
             NotificationSoundBottomSheet.Companion.newInstance(FileHelper.getRingtoneName(getContext(), PrefGetter.getNotificationSound()))
                     .show(getChildFragmentManager(), "NotificationSoundBottomSheet");
             return true;
         });
-        findPreference("notificationTime").setOnPreferenceChangeListener(this);
-        findPreference("notificationEnabled").setOnPreferenceChangeListener(this);
         if (!PrefHelper.getBoolean("notificationEnabled")) {
             getPreferenceScreen().removePreference(notificationTime);
             getPreferenceScreen().removePreference(notificationRead);
             getPreferenceScreen().removePreference(notificationSound);
+            getPreferenceScreen().removePreference(notificationSoundPath);
         }
     }
 

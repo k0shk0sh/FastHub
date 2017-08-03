@@ -2,7 +2,9 @@ package com.fastaccess.ui.widgets.recyclerview;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -18,9 +20,7 @@ import java.util.List;
 public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         P extends BaseViewHolder.OnItemClickListener<M>> extends RecyclerView.Adapter<VH> {
 
-    public interface GuideListener<M> {
-        void onShowGuide(@NonNull View itemView, @NonNull M model);
-    }
+    private final static int PROGRESS_TYPE = 2017;
 
     @NonNull private List<M> data;
     @Nullable private P listener;
@@ -28,6 +28,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     private boolean enableAnimation = PrefGetter.isRVAnimationEnabled();
     private boolean showedGuide;
     private GuideListener guideListener;
+    private boolean progressAdded;
 
     public BaseRecyclerAdapter() {
         this(new ArrayList<>());
@@ -59,13 +60,32 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     @Override public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return viewHolder(parent, viewType);
+        if (viewType == PROGRESS_TYPE) {
+            addSpanLookup(parent);
+            return (VH) ProgressBarViewHolder.newInstance(parent);
+        } else {
+            return viewHolder(parent, viewType);
+        }
     }
 
     @Override public void onBindViewHolder(@NonNull VH holder, int position) {
-        animate(holder, position);
-        onBindView(holder, position);
-        onShowGuide(holder, position);
+        if (holder instanceof ProgressBarViewHolder) {
+            if (holder.itemView.getLayoutParams() instanceof StaggeredGridLayoutManager.LayoutParams) {
+                StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
+                layoutParams.setFullSpan(true);
+            }
+        } else if (getItem(position) != null) {
+            animate(holder, position);
+            onBindView(holder, position);
+            onShowGuide(holder, position);
+        }
+    }
+
+    @Override public int getItemViewType(int position) {
+        if (getItem(position) == null) {
+            return PROGRESS_TYPE;
+        }
+        return super.getItemViewType(position);
     }
 
     @Override public int getItemCount() {
@@ -91,6 +111,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         data.clear();
         data.addAll(items);
         notifyDataSetChanged();
+        progressAdded = false;
     }
 
     public void addItem(M item, int position) {
@@ -104,6 +125,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     @SuppressWarnings("WeakerAccess") public void addItems(@NonNull List<M> items) {
+        removeProgress();
         data.addAll(items);
         notifyItemRangeInserted(getItemCount(), (getItemCount() + items.size()) - 1);
     }
@@ -143,6 +165,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     public void clear() {
+        progressAdded = false;
         data.clear();
         notifyDataSetChanged();
     }
@@ -180,5 +203,37 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     @Override public void onViewDetachedFromWindow(VH holder) {
         holder.onViewIsDetaching();
         super.onViewDetachedFromWindow(holder);
+    }
+
+    public void addProgress() {
+        if (!progressAdded) {
+            addItem(null);
+            progressAdded = true;
+        }
+    }
+
+    private void removeProgress() {
+        M m = getItem(getItemCount() - 1);
+        if (m == null) {
+            removeItem(getItemCount() - 1);
+        }
+        progressAdded = false;
+    }
+
+    private void addSpanLookup(ViewGroup parent) {
+        if (parent instanceof RecyclerView) {
+            if (((RecyclerView) parent).getLayoutManager() instanceof GridLayoutManager) {
+                GridLayoutManager layoutManager = ((GridLayoutManager) ((RecyclerView) parent).getLayoutManager());
+                layoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override public int getSpanSize(int position) {
+                        return getItemViewType(position) == PROGRESS_TYPE ? layoutManager.getSpanCount() : 1;
+                    }
+                });
+            }
+        }
+    }
+
+    public interface GuideListener<M> {
+        void onShowGuide(@NonNull View itemView, @NonNull M model);
     }
 }

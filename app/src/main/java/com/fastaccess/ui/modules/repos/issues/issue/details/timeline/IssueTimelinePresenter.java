@@ -218,10 +218,10 @@ import lombok.Getter;
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Issue parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Issue parameter) {
         if (parameter == null) {
             sendToView(BaseMvp.FAView::hideProgress);
-            return;
+            return false;
         }
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
@@ -229,7 +229,7 @@ import lombok.Getter;
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(IssueTimelineMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         String login = parameter.getLogin();
@@ -244,8 +244,8 @@ import lombok.Getter;
                     return TimelineConverter.INSTANCE.convert(response != null ? response.getItems() : null);
                 })
                 .toList()
-                .toObservable()
-                .doOnError(Throwable::printStackTrace);
+                .toObservable();
         makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));
+        return true;
     }
 }

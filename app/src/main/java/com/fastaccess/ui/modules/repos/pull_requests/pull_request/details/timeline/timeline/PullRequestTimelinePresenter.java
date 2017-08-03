@@ -42,6 +42,8 @@ import pr.PullRequestTimelineQuery;
  */
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
+    @com.evernote.android.state.State boolean hasNextPage;
+
     private ArrayList<TimelineModel> timeline = new ArrayList<>();
     private SparseArray<String> pages = new SparseArray<>();
     private ReactionsProvider reactionsProvider;
@@ -285,10 +287,10 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable PullRequest parameter) {
+    @Override public boolean onCallApi(int page, @Nullable PullRequest parameter) {
         if (parameter == null) {
             sendToView(BaseMvp.FAView::hideProgress);
-            return;
+            return false;
         }
         String login = parameter.getLogin();
         String repoId = parameter.getRepoId();
@@ -299,12 +301,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(PullRequestTimelineMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         if (parameter.getHead() != null) {
             loadEverything(login, repoId, number, parameter.getHead().getSha(), parameter.isMergeable(), page);
+            return true;
         }
+        return false;
     }
 
     private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
@@ -322,6 +326,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 .map(PullRequestTimelineQuery.PullRequest::timeline)
                 .filter(timeline -> timeline.nodes() != null)
                 .flatMap(timeline -> {
+                    hasNextPage = timeline.pageInfo().hasNextPage();
                     pages.clear();
                     List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
                     if (edges != null) {
@@ -351,13 +356,13 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     private void loadStatus(@NonNull String login, @NonNull String repoId, @NonNull String sha, boolean isMergeable) {
-        manageObservable(RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
-                .map(statuses -> {
-                    if (statuses != null) {
-                        statuses.setMergable(isMergeable);
-                    }
-                    return statuses;
-                }).map(TimelineModel::new)
-                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
+//        manageObservable(RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
+//                .map(statuses -> {
+//                    if (statuses != null) {
+//                        statuses.setMergable(isMergeable);
+//                    }
+//                    return statuses;
+//                }).map(PullRequestTimelineModel::new)
+//                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
     }
 }
