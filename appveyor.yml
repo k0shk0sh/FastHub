@@ -1,12 +1,17 @@
 image: Visual Studio 2017
-clone_folder: C:\F
+clone_folder: 'C:\FastHub'
 
 environment:
-  ANDROID_HOME: 'C:\Android\android-sdk'
-  GRADLE_USER_HOME: 'C:\G'
+  ANDROID_HOME: 'A:\'
+  GRADLE_USER_HOME: 'G:\'
 
 init:
   - ps: |
+      subst F: C:\FastHub
+      mkdir C:\gradle.home
+      subst G: C:\gradle.home
+      mkdir C:\Android\android-sdk
+      subst A: C:\Android\android-sdk
       appveyor DownloadFile "https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip" -FileName "C:\android-tools.zip"
       Write-Host "Extracting SDK tools..."
       7z x "C:\android-tools.zip" -o"$env:ANDROID_HOME" | Out-Null
@@ -28,7 +33,7 @@ install:
       }
 
 build_script:
-  - cmd: gradlew clean assembleDebug --stacktrace
+  - cmd: F:\gradlew clean assembleDebug --stacktrace
 
 after_build:
   - ps: Rename-Item -Path "$env:APPVEYOR_BUILD_FOLDER\app\build\outputs\apk\debug\app-debug.apk" -NewName "fasthub-debug-$env:APPVEYOR_BUILD_VERSION.apk"
