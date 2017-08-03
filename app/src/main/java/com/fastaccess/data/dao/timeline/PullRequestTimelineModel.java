@@ -19,9 +19,9 @@ import pr.PullRequestTimelineQuery;
     public static final int STATUS = 3;
     public static final int REVIEW = 4;
 
-    private PullRequestTimelineQuery.Node node;
-    private PullRequest pullRequest;
-    private PullRequestStatusModel status;
+    public PullRequestTimelineQuery.Node node;
+    public PullRequest pullRequest;
+    public PullRequestStatusModel status;
 
     public PullRequestTimelineModel(PullRequest pullRequest) {
         this.pullRequest = pullRequest;

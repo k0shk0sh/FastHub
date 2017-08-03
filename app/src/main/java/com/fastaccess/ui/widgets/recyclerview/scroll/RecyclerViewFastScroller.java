@@ -128,17 +128,25 @@ public class RecyclerViewFastScroller extends FrameLayout {
     }
 
     private void initScrollHeight() {
-        this.recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override public boolean onPreDraw() {
-                RecyclerViewFastScroller.this.recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
-                if (scrollerView.isSelected()) return true;
-                int verticalScrollOffset = RecyclerViewFastScroller.this.recyclerView.computeVerticalScrollOffset();
-                int verticalScrollRange = RecyclerViewFastScroller.this.computeVerticalScrollRange();
-                float proportion = (float) verticalScrollOffset / ((float) verticalScrollRange - height);
-                setScrollerHeight(height * proportion);
-                return true;
-            }
-        });
+        if (recyclerView.computeVerticalScrollOffset() == 0) {
+            this.recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                @Override public boolean onPreDraw() {
+                    RecyclerViewFastScroller.this.recyclerView.getViewTreeObserver().removeOnPreDrawListener(this);
+                    iniHeight();
+                    return true;
+                }
+            });
+        } else {
+            iniHeight();
+        }
+    }
+
+    protected void iniHeight() {
+        if (scrollerView.isSelected()) return;
+        int verticalScrollOffset = RecyclerViewFastScroller.this.recyclerView.computeVerticalScrollOffset();
+        int verticalScrollRange = RecyclerViewFastScroller.this.computeVerticalScrollRange();
+        float proportion = (float) verticalScrollOffset / ((float) verticalScrollRange - height);
+        setScrollerHeight(height * proportion);
     }
 
     private void setRecyclerViewPosition(float y) {

@@ -23,7 +23,7 @@ import java.util.List;
  * Created by Kosh on 13 Dec 2016, 1:44 AM
  */
 
-public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, BaseViewHolder,
+public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, BaseViewHolder,
         BaseViewHolder.OnItemClickListener<TimelineModel>> {
 
     private final OnToggleView onToggleView;
@@ -34,9 +34,9 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     private final String repoOwner;
     private final String poster;
 
-    public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
-                                     ReactionsCallback reactionsCallback, boolean isMerged,
-                                     ReviewCommentCallback reviewCommentCallback, String repoOwner, String poster) {
+    public IssuesTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
+                                 ReactionsCallback reactionsCallback, boolean isMerged,
+                                 ReviewCommentCallback reviewCommentCallback, String repoOwner, String poster) {
         super(data);
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
@@ -47,8 +47,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
         this.poster = poster;
     }
 
-    public IssuePullsTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
-                                     ReactionsCallback reactionsCallback, String repoOwner, String poster) {
+    public IssuesTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
+                                 ReactionsCallback reactionsCallback, String repoOwner, String poster) {
         this(data, onToggleView, showEmojies, reactionsCallback, false, null, repoOwner, poster);
     }
 
@@ -99,7 +99,8 @@ public class IssuePullsTimelineAdapter extends BaseRecyclerAdapter<TimelineModel
     }
 
     @Override public int getItemViewType(int position) {
-        return getData().get(position).getType();
+        TimelineModel timelineModel = getData().get(position);
+        return timelineModel != null ? timelineModel.getType() : super.getItemViewType(position);
     }
 }
 

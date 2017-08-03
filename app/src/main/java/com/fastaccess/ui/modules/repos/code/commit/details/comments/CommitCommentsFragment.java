@@ -21,7 +21,7 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
-import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
 import com.fastaccess.ui.modules.repos.reactions.ReactionsDialogFragment;
@@ -48,7 +48,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
 
-    private IssuePullsTimelineAdapter adapter;
+    private IssuesTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
 
     public static CommitCommentsFragment newInstance(@NonNull String login, @NonNull String repoId, @NonNull String sha) {
@@ -72,7 +72,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true,
+        adapter = new IssuesTimelineAdapter(getPresenter().getComments(), this, true,
                 this, getArguments().getString(BundleConstant.EXTRA), null);
         adapter.setListener(getPresenter());
         getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());

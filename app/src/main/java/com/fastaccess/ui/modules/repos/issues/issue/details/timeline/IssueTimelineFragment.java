@@ -23,7 +23,7 @@ import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
-import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
@@ -52,7 +52,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
-    private IssuePullsTimelineAdapter adapter;
+    private IssuesTimelineAdapter adapter;
     private OnLoadMore<Issue> onLoadMore;
     private IssuePagerMvp.IssuePrCallback<Issue> issueCallback;
 
@@ -111,10 +111,10 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
             throw new NullPointerException("Issue went missing!!!");
         }
         if (issueCallback != null && issueCallback.getData() != null) {
-            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true,
+            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(), this, true,
                     this, issueCallback.getData().getLogin(), issueCallback.getData().getUser().getLogin());
         } else {
-            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true,
+            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(), this, true,
                     this, "", "");
         }
         recycler.setVerticalScrollBarEnabled(false);

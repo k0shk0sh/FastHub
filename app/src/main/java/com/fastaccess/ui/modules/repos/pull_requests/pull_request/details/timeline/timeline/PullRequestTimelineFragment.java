@@ -23,7 +23,7 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
-import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
@@ -53,7 +53,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
-    private IssuePullsTimelineAdapter adapter;
+    private IssuesTimelineAdapter adapter;
     private OnLoadMore<PullRequest> onLoadMore;
 
     private IssuePagerMvp.IssuePrCallback<PullRequest> issueCallback;
@@ -93,11 +93,11 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         }
         boolean isMerged = getPresenter().isMerged(getPullRequest());
         if (issueCallback != null && issueCallback.getData() != null) {
-            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(),
                     this, true, this, isMerged, getPresenter(), issueCallback.getData().getLogin(),
                     issueCallback.getData().getRepoId());
         } else {
-            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(),
+            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(),
                     this, true, this, isMerged, getPresenter(), "", "");
         }
         recycler.setVerticalScrollBarEnabled(false);

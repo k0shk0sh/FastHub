@@ -4,11 +4,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.view.View;
 
-import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
-import com.fastaccess.ui.widgets.recyclerview.ProgressBarViewHolder;
 
 /**
  * Created by Kosh on 8/2/2015. copyrights are reserved @
@@ -20,6 +17,7 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     private boolean loading = true;
     private int startingPageIndex = 0;
     private RecyclerView.LayoutManager mLayoutManager;
+    private BaseRecyclerAdapter adapter;
 
     public InfiniteScroll() {}
 
@@ -52,6 +50,11 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
         if (mLayoutManager == null) {
             initLayoutManager(recyclerView.getLayoutManager());
         }
+        if (adapter == null) {
+            if (recyclerView.getAdapter() instanceof BaseRecyclerAdapter) {
+                adapter = (BaseRecyclerAdapter) recyclerView.getAdapter();
+            }
+        }
         int lastVisibleItemPosition = 0;
         int totalItemCount = mLayoutManager.getItemCount();
         if (mLayoutManager instanceof StaggeredGridLayoutManager) {
@@ -69,14 +72,6 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
                 this.loading = true;
             }
         }
-        View child = recyclerView.getChildAt(lastVisibleItemPosition);
-        if (child != null) {
-            RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(child);
-            if (viewHolder != null && viewHolder instanceof ProgressBarViewHolder) {
-                Logger.e();
-                return;
-            }
-        }
         if (loading && (totalItemCount > previousTotalItemCount)) {
             loading = false;
             previousTotalItemCount = totalItemCount;
@@ -85,10 +80,8 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
             currentPage++;
             boolean isCallingApi = onLoadMore(currentPage, totalItemCount);
             loading = true;
-            if (recyclerView.getAdapter() != null && isCallingApi) {
-                if (recyclerView.getAdapter() instanceof BaseRecyclerAdapter) {
-                    ((BaseRecyclerAdapter) recyclerView.getAdapter()).addProgress();
-                }
+            if (adapter != null && isCallingApi) {
+                adapter.addProgress();
             }
         }
     }
