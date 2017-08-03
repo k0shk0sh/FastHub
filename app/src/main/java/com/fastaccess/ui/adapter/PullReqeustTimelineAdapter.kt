@@ -2,6 +2,7 @@ package com.fastaccess.ui.adapter
 
 import android.view.ViewGroup
 import com.fastaccess.data.dao.timeline.PullRequestTimelineModel
+import com.fastaccess.ui.adapter.viewholder.PullRequestEventViewHolder
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
@@ -16,13 +17,15 @@ class PullReqeustTimelineAdapter constructor(val data: ArrayList<PullRequestTime
         when (viewType) {
             PullRequestTimelineModel.STATUS -> PullStatusViewHolder.newInstance(parent)
         }
-        return null
+        return PullRequestEventViewHolder.newInstance(parent, this)
     }
 
     override fun onBindView(holder: BaseViewHolder<PullRequestTimelineModel>?, position: Int) {
         val item = data[position]
         if (item.type == PullRequestTimelineModel.STATUS) {
             (holder as PullStatusViewHolder).bind(item.status)
+        }else {
+            holder?.bind(item)
         }
     }
 

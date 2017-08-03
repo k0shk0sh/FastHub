@@ -12,11 +12,11 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
         }
         totalCount
         nodes {
-          __typename
           ... on Commit {
             id
             oid
             url
+            committedDate
             messageHeadlineHTML
             author {
               name
@@ -130,6 +130,11 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             createdAt
             isCrossRepository
             isDirectReference
+            actor {
+              avatarUrl
+              login
+              url
+            }
             commitRepository {
               nameWithOwner
               url
@@ -178,6 +183,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             }
           }
           ... on LabeledEvent {
+            createdAt
             actor {
               login
               avatarUrl
@@ -189,6 +195,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             }
           }
           ... on UnlabeledEvent {
+            createdAt
             actor {
               login
               avatarUrl
@@ -224,6 +231,11 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             createdAt
             currentTitle
             previousTitle
+            actor {
+              login
+              avatarUrl
+              url
+            }
           }
           ... on LockedEvent {
             createdAt
@@ -243,6 +255,11 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
           }
           ... on DeployedEvent {
             createdAt
+            actor {
+              login
+              avatarUrl
+              url
+            }
             ref {
               name
               prefix
