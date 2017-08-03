@@ -48,11 +48,12 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                 .flatMap(login -> RxHelper.getObservable(RestProvider.getNotificationService(isEnterprise())
                         .getNotifications(ParseDateFormat.getLastWeekDate())))
                 .flatMap(notificationPageable -> {
+                    boolean hasUnread = false;
                     if (notificationPageable != null && notificationPageable.getItems() == null && !notificationPageable.getItems().isEmpty()) {
+                        hasUnread = Stream.of(notificationPageable.getItems()).anyMatch(Notification::isUnread);
                         manageDisposable(Notification.save(notificationPageable.getItems()));
-                        return Observable.just(Stream.of(notificationPageable.getItems()).anyMatch(Notification::isUnread));
                     }
-                    return Observable.empty();
+                    return Observable.just(hasUnread);
                 })
                 .subscribe(unread -> {/**/}, Throwable::printStackTrace/*fail silently*/, () -> sendToView(view -> {
                     view.onInvalidateNotification();

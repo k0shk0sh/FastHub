@@ -4,8 +4,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
+import com.fastaccess.helper.Logger;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
+import com.fastaccess.ui.widgets.recyclerview.ProgressBarViewHolder;
 
 /**
  * Created by Kosh on 8/2/2015. copyrights are reserved @
@@ -64,6 +67,14 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
             this.previousTotalItemCount = totalItemCount;
             if (totalItemCount == 0) {
                 this.loading = true;
+            }
+        }
+        View child = recyclerView.getChildAt(lastVisibleItemPosition);
+        if (child != null) {
+            RecyclerView.ViewHolder viewHolder = recyclerView.getChildViewHolder(child);
+            if (viewHolder != null && viewHolder instanceof ProgressBarViewHolder) {
+                Logger.e();
+                return;
             }
         }
         if (loading && (totalItemCount > previousTotalItemCount)) {

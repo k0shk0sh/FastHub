@@ -25,12 +25,16 @@ public class GridManager extends GridLayoutManager {
     }
 
     @Override public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
-        super.onLayoutChildren(recycler, state);
-        updateCount();
+        try {
+            super.onLayoutChildren(recycler, state);
+            updateCount();
+        } catch (Exception ignored) {}
     }
 
     @Override public void onMeasure(RecyclerView.Recycler recycler, RecyclerView.State state, int widthSpec, int heightSpec) {
-        super.onMeasure(recycler, state, widthSpec, heightSpec);
+        try {
+            super.onMeasure(recycler, state, widthSpec, heightSpec);
+        } catch (Exception ignored) {}
     }
 
     private void updateCount() {

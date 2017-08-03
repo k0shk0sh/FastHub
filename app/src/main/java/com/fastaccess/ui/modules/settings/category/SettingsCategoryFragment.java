@@ -111,12 +111,14 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
                 getPreferenceScreen().addPreference(notificationTime);
                 getPreferenceScreen().addPreference(notificationRead);
                 getPreferenceScreen().addPreference(notificationSound);
+                getPreferenceScreen().addPreference(findPreference("notification_sound_path"));
                 NotificationSchedulerJobTask.scheduleJob(App.getInstance(),
                         PrefGetter.getNotificationTaskDuration(), true);
             } else {
                 getPreferenceScreen().removePreference(notificationTime);
                 getPreferenceScreen().removePreference(notificationRead);
                 getPreferenceScreen().removePreference(notificationSound);
+                getPreferenceScreen().removePreference(findPreference("notification_sound_path"));
                 NotificationSchedulerJobTask.scheduleJob(App.getInstance(), -1, true);
             }
             return true;
