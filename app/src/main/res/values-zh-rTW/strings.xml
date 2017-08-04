@@ -414,7 +414,7 @@ APP
     <string name="reviewer_added">成功添加審核者</string>
     <string name="milestone_added">成功添加里程碑</string>
     <string name="feed">動態</string>
-    <string name="premium_theme">高級主題</string>
+    <string name="premium_theme">付費主題</string>
     <string name="choose_code_theme">選擇程式碼配色</string>
     <string name="add_account">新增帳戶</string>
     <string name="choose_account">選擇帳戶</string>
@@ -422,4 +422,8 @@ APP
     <string name="owner">擁有者</string>
     <string name="colored_navbar_summary">取消導覽列在主題中的顏色</string>
     <string name="colored_navbar_title">取消導覽列的顏色</string>
+    <string name="sound_chooser_summary">選擇自訂通知提示聲</string>
+    <string name="sound_chooser_title">選擇通知提示聲</string>
+    <string name="disable_auto_gif_summary">停用 GIF 自動播放</string>
+    <string name="disable_auto_gif_title">停用 GIF 自動播放</string>
 </resources>
