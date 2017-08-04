@@ -426,4 +426,5 @@ APP
     <string name="sound_chooser_title">選擇通知提示聲</string>
     <string name="disable_auto_gif_summary">停用 GIF 自動播放</string>
     <string name="disable_auto_gif_title">停用 GIF 自動播放</string>
+	<string name="english_please">請用英文來提交你的請求</string>
 </resources>
