@@ -81,7 +81,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
             stateText.text = SpannableBuilder.builder()
                     .bold(it.login())
                     .append(" ")
-                    .append("unlabeled")
+                    .append("unlabeled")//Review[k0shk0sh] should we change this to be like github? They have it as removed [label]
                     .append(" ")
                     .append(event.label().name(), CodeSpan(color, ViewHelper.generateTextColor(color), 5.0f))
                     .append(" ")
@@ -96,7 +96,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
             stateText.text = SpannableBuilder.builder()
                     .bold(it.login())
                     .append(" ")
-                    .append("unassigned")
+                    .append("unassigned") //TODO add "removed their assignment" for self
                     .append(" ")
                     .append(event.user()?.login())
                     .append(" ")
@@ -142,13 +142,14 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("from").append(" ")
                     .url(if (event.commit() != null) {
-                        substring(event.commit()?.oid()?.toString())
+                        substring(event.commit()?.oid()?.toString()) //TODO Referenced this in commit
                     } else if (event.subject().asIssue() != null) {
-                        "${event.subject().asIssue()?.title()}#${event.subject().asIssue()?.number()}"
+                        "${event.subject().asIssue()?.title()}#${event.subject().asIssue()?.number()}" //TODO Referenced this in issue #[issue #]
+                        //TODO If its an external issue Referenced this in [owner/repo#]
                     } else if (event.subject().asPullRequest() != null) {
-                        "${event.subject().asPullRequest()?.title()}#${event.subject().asPullRequest()?.number()}"
+                        "${event.subject().asPullRequest()?.title()}#${event.subject().asPullRequest()?.number()}" //TODO Same as issue just use PR
                     } else {
-                        ""
+                        "" //What?
                     })
                     .append(" ")
                     .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
@@ -182,7 +183,11 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .url(substring(event.commit()?.oid()?.toString()))
                     .append(" ")
                     .append("into")
-                    .append(event.mergeRefName())
+                    .append(" ")
+                    .append(event.actor())//TODO This should be the repo owner not actor
+                    .append(":")
+                    .append(event.mergeRefName())//TODO the above 2 lines should be `BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType()`
+                    .append(" ")
                     .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
             stateImage.setImageResource(R.drawable.ic_merge)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
@@ -225,9 +230,11 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("restored the")
                     .append(" ")
-                    .append(it.login())
+                    .append(it.login())//TODO This should be the repo owner not actor
                     .append(":")
-                    .url(substring(event.pullRequest().headRefName()))
+                    .url(substring(event.pullRequest().headRefName()))//TODO the above 2 lines should be `BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType()`
+                    .append(" ")
+                    .append("branch")
                     .append(" ")
                     .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
             stateImage.setImageResource(R.drawable.ic_push)
@@ -257,9 +264,11 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("deleted the")
                     .append(" ")
-                    .append(it.login())
+                    .append(it.login())//TODO This should be the repo owner not actor
                     .append(":")
-                    .url(substring(event.headRefName()))
+                    .url(substring(event.headRefName())) //TODO needs coloring
+                    .append(" ")
+                    .append("branch")
                     .append(" ")
                     .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
             stateImage.setImageResource(R.drawable.ic_trash)
@@ -299,7 +308,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
 
     private fun commitEvent(event: PullRequestTimelineQuery.AsCommit) {
         event.author()?.let {
-            stateText.text = SpannableBuilder.builder()
+            stateText.text = SpannableBuilder.builder()//Review[k0shk0sh] We may want to suppress more then 3 or 4 commits. since it will clog the it
                     .bold(it.name())
                     .append(" ")
                     .append("committed")
@@ -348,7 +357,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
             stateText.text = SpannableBuilder.builder()
                     .bold(it.login())
                     .append(" ")
-                    .append("assigned")
+                    .append("assigned") //TODO add "self-assigned" for self
                     .append(" ")
                     .append(event.user()?.login())
                     .append(" ")
