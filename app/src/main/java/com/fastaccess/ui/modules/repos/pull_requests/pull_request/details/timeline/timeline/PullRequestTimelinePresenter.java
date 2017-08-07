@@ -7,14 +7,13 @@ import android.util.SparseArray;
 import android.view.View;
 import android.widget.PopupMenu;
 
+import com.annimon.stream.Stream;
 import com.apollographql.apollo.ApolloCall;
-import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.rx2.Rx2Apollo;
 import com.fastaccess.App;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
-import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
@@ -44,16 +43,16 @@ import pr.PullRequestTimelineQuery;
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     @com.evernote.android.state.State boolean hasNextPage;
 
-    private ArrayList<TimelineModel> timeline = new ArrayList<>();
+    private ArrayList<PullRequestTimelineModel> timeline = new ArrayList<>();
     private SparseArray<String> pages = new SparseArray<>();
     private ReactionsProvider reactionsProvider;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
 
-    @Override public void onItemClick(int position, View v, TimelineModel item) {
+    @Override public void onItemClick(int position, View v, PullRequestTimelineModel item) {
 //        if (getView() != null && getView().getPullRequest() != null) {
-//            if (item.getType() == TimelineModel.COMMENT) {
+//            if (item.getType() == PullRequestTimelineModel.COMMENT) {
 //                PullRequest pullRequest = getView().getPullRequest();
 //                if (v.getId() == R.id.commentMenu) {
 //                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
@@ -79,12 +78,12 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 //                } else {
 //                    onHandleReaction(v.getId(), item.getComment().getId(), ReactionsProvider.COMMENT);
 //                }
-//            } else if (item.getType() == TimelineModel.EVENT) {
+//            } else if (item.getType() == PullRequestTimelineModel.EVENT) {
 //                IssueEvent issueEventModel = item.getEvent();
 //                if (issueEventModel.getCommitUrl() != null) {
 //                    SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
 //                }
-//            } else if (item.getType() == TimelineModel.HEADER) {
+//            } else if (item.getType() == PullRequestTimelineModel.HEADER) {
 //                if (v.getId() == R.id.commentMenu) {
 //                    PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
 //                    popupMenu.inflate(R.menu.comments_menu);
@@ -111,7 +110,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 //                } else {
 //                    onHandleReaction(v.getId(), item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
 //                }
-//            } else if (item.getType() == TimelineModel.GROUPED_REVIEW) {
+//            } else if (item.getType() == PullRequestTimelineModel.GROUPED_REVIEW) {
 //                GroupedReviewModel reviewModel = item.getGroupedReview();
 //                if (v.getId() == R.id.addCommentPreview) {
 //                    EditReviewCommentModel model = new EditReviewCommentModel();
@@ -124,22 +123,22 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 //        }
     }
 
-    @Override public void onItemLongClick(int position, View v, TimelineModel item) {
-        if (v.getId() == R.id.commentMenu && item.getType() == TimelineModel.COMMENT) {
-            Comment comment = item.getComment();
-            if (getView() != null) getView().onReply(comment.getUser(), comment.getBody());
-        } else {
+    @Override public void onItemLongClick(int position, View v, PullRequestTimelineModel item) {
+        if (v.getId() == R.id.commentMenu && item.getType() == PullRequestTimelineModel.COMMENT) {
+//            Comment comment = item.getComment();
+//            if (getView() != null) getView().onReply(comment.getUser(), comment.getBody());
+//        } else {
 
         }
 //        if (getView() == null || getView().getPullRequest() == null) return;
-//        if (item.getType() == TimelineModel.COMMENT || item.getType() == TimelineModel.HEADER) {
+//        if (item.getType() == PullRequestTimelineModel.COMMENT || item.getType() == PullRequestTimelineModel.HEADER) {
 //            PullRequest pullRequest = getView().getPullRequest();
 //            String login = pullRequest.getLogin();
 //            String repoId = pullRequest.getRepoId();
 //            if (!InputHelper.isEmpty(login) && !InputHelper.isEmpty(repoId)) {
 //                ReactionTypes type = ReactionTypes.get(v.getId());
 //                if (type != null) {
-//                    if (item.getType() == TimelineModel.HEADER) {
+//                    if (item.getType() == PullRequestTimelineModel.HEADER) {
 //                        getView().showReactionsPopup(type, login, repoId, item.getPullRequest().getNumber(), ReactionsProvider.HEADER);
 //                    } else {
 //                        getView().showReactionsPopup(type, login, repoId, item.getComment().getId(), ReactionsProvider.COMMENT);
@@ -153,7 +152,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 //        }
     }
 
-    @NonNull @Override public ArrayList<TimelineModel> getEvents() {
+    @NonNull @Override public ArrayList<PullRequestTimelineModel> getEvents() {
         return timeline;
     }
 
@@ -175,7 +174,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-                                view.onRemove(TimelineModel.constructComment(comment));
+//                                view.onRemove(PullRequestTimelineModel.constructComment(comment));
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -299,7 +298,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
-        if (page > lastPage || lastPage == 0) {
+        if (page > lastPage || lastPage == 0 || !hasNextPage) {
             sendToView(PullRequestTimelineMvp.View::hideProgress);
             return false;
         }
@@ -314,32 +313,36 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
                                 @NonNull String sha, boolean isMergeable, int page) {
         PullRequestTimelineQuery query = getTimelineBuilder(login, repoId, number, page);
-        ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient()
-                .query(query);
-        manageDisposable(RxHelper.getObservable(Rx2Apollo.from(apolloCall))
-                .filter(dataResponse -> !dataResponse.hasErrors() && dataResponse.data() != null)
-                .map(Response::data)
-                .filter(data -> data != null && data.repository() != null)
-                .map(PullRequestTimelineQuery.Data::repository)
-                .filter(repository -> repository.pullRequest() != null)
-                .map(PullRequestTimelineQuery.Repository::pullRequest)
-                .map(PullRequestTimelineQuery.PullRequest::timeline)
-                .filter(timeline -> timeline.nodes() != null)
-                .flatMap(timeline -> {
-                    hasNextPage = timeline.pageInfo().hasNextPage();
-                    pages.clear();
-                    List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
-                    if (edges != null) {
-                        for (int i = 0; i < edges.size(); i++) {
-                            pages.append(i, edges.get(i).cursor());
+        ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient().query(query);
+        Observable<PullRequestTimelineModel> observable = Rx2Apollo.from(apolloCall)
+                .flatMap(response -> {
+                    if (!response.hasErrors()) {
+                        PullRequestTimelineQuery.Data data = response.data();
+                        if (data != null) {
+                            PullRequestTimelineQuery.Repository repo = data.repository();
+                            PullRequestTimelineQuery.PullRequest pullRequest = repo != null ? repo.pullRequest() : null;
+                            if (pullRequest != null) {
+                                PullRequestTimelineQuery.Timeline timeline = pullRequest.timeline();
+                                hasNextPage = timeline.pageInfo().hasNextPage();
+                                pages.clear();
+                                List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
+                                if (edges != null) {
+                                    Stream.of(edges).forEachIndexed((i, edge) -> pages.append(i, edge.cursor()));
+                                }
+                                List<PullRequestTimelineQuery.Node> nodes = timeline.nodes();
+                                if (nodes != null) {
+                                    Logger.e(nodes.size());
+                                    return RxHelper.getObservable(Observable.fromIterable(nodes));
+                                }
+                            }
                         }
                     }
-                    List<PullRequestTimelineQuery.Node> nodes = timeline.nodes();
-                    return nodes != null ? Observable.fromIterable(nodes)
-                                         : Observable.fromIterable(new ArrayList<>());
+                    Logger.e(response.hasErrors(), response.errors());
+                    return RxHelper.getObservable(Observable.fromIterable(new ArrayList<>()));
                 })
-                .map(PullRequestTimelineModel::new)
-                .subscribe(Logger::e, Throwable::printStackTrace, () -> sendToView(BaseMvp.FAView::hideProgress)));
+                .map(PullRequestTimelineModel::new);
+        makeRestCall(observable.toList().toObservable(),
+                pullRequestTimelineModels -> sendToView(view -> view.onNotifyAdapter(pullRequestTimelineModels, page)));
     }
 
     @NonNull private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {

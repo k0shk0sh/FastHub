@@ -114,7 +114,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
         if (AppHelper.isGoogleAvailable(this)) {
             return true
         }
-        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text))
+        showErrorMessage(getString(R.string.google_play_service_error))
         return false
     }
 

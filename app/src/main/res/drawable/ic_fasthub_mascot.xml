@@ -1,8 +1,8 @@
 <vector
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:width="234dp"
-    android:height="215dp"
+    android:width="24dp"
+    android:height="20dp"
     android:viewportHeight="215"
     android:viewportWidth="234">
     <group android:name="canvas">

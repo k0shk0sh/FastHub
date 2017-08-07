@@ -83,7 +83,7 @@ public class AvatarLayout extends FrameLayout {
         }
         Glide.with(getContext())
                 .load(url)
-                .fallback(ContextCompat.getDrawable(getContext(), R.drawable.ic_github))
+                .fallback(ContextCompat.getDrawable(getContext(), R.drawable.ic_fasthub_mascot))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .dontAnimate()
                 .into(avatar);

@@ -21,7 +21,6 @@ import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.zzhoujay.markdown.style.CodeSpan
 import pr.PullRequestTimelineQuery
-import java.util.*
 
 /**
  * Created by kosh on 03/08/2017.
@@ -69,7 +68,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("unlocked this conversation")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_lock)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -81,11 +80,11 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
             stateText.text = SpannableBuilder.builder()
                     .bold(it.login())
                     .append(" ")
-                    .append("unlabeled")//Review[k0shk0sh] should we change this to be like github? They have it as removed [label]
+                    .append("removed")
                     .append(" ")
                     .append(event.label().name(), CodeSpan(color, ViewHelper.generateTextColor(color), 5.0f))
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_label)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -100,7 +99,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append(event.user()?.login())
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_profile)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -113,7 +112,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("reopened this")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_issue_opened)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -127,7 +126,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append("changed the title from").append(" ").append(event.previousTitle())
                     .append(" ").append("to").append(" ").bold(event.currentTitle())
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_edit)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -142,17 +141,25 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("from").append(" ")
                     .url(if (event.commit() != null) {
-                        substring(event.commit()?.oid()?.toString()) //TODO Referenced this in commit
+                        substring(event.commit()?.oid()?.toString())
                     } else if (event.subject().asIssue() != null) {
-                        "${event.subject().asIssue()?.title()}#${event.subject().asIssue()?.number()}" //TODO Referenced this in issue #[issue #]
-                        //TODO If its an external issue Referenced this in [owner/repo#]
+                        if (event.isCrossRepository) {
+                            "${event.commitRepository().nameWithOwner()} ${event.subject().asIssue()?.title()}#${event.subject().asIssue()?.number()}"
+                        } else {
+                            "${event.subject().asIssue()?.title()}#${event.subject().asIssue()?.number()}"
+                        }
                     } else if (event.subject().asPullRequest() != null) {
-                        "${event.subject().asPullRequest()?.title()}#${event.subject().asPullRequest()?.number()}" //TODO Same as issue just use PR
+                        if (event.isCrossRepository) {
+                            "${event.commitRepository().nameWithOwner()} ${event.subject().asPullRequest()?.title()}" +
+                                    "#${event.subject().asPullRequest()?.number()}"
+                        } else {
+                            "${event.subject().asPullRequest()?.title()}#${event.subject().asPullRequest()?.number()}"
+                        }
                     } else {
-                        "" //What?
+                        event.commitRepository().nameWithOwner()
                     })
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_push)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -167,7 +174,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append(event.milestoneTitle()).append(" ").append("milestone")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_milestone)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -184,11 +191,11 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("into")
                     .append(" ")
-                    .append(event.actor())//TODO This should be the repo owner not actor
+                    .append(event.actor())
                     .append(":")
-                    .append(event.mergeRefName())//TODO the above 2 lines should be `BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType()`
+                    .append(event.mergeRefName(), BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())))
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_merge)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -201,7 +208,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("locked and limited conversation to collaborators")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_lock)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -217,7 +224,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append(event.label().name(), CodeSpan(color, ViewHelper.generateTextColor(color), 5.0f))
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_label)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -230,13 +237,13 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("restored the")
                     .append(" ")
-                    .append(it.login())//TODO This should be the repo owner not actor
+                    .append(it.login())
                     .append(":")
-                    .url(substring(event.pullRequest().headRefName()))//TODO the above 2 lines should be `BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType()`
+                    .append(event.pullRequest().headRefName(), BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())))
                     .append(" ")
                     .append("branch")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_push)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -251,7 +258,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .url(substring(event.afterCommit().oid().toString()))
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_push)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -264,13 +271,13 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("deleted the")
                     .append(" ")
-                    .append(it.login())//TODO This should be the repo owner not actor
+                    .append(it.login())
                     .append(":")
-                    .url(substring(event.headRefName())) //TODO needs coloring
+                    .append(substring(event.headRefName()), BackgroundColorSpan(HtmlHelper.getWindowBackground(PrefGetter.getThemeType())))
                     .append(" ")
                     .append("branch")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_trash)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -285,7 +292,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append(event.deployment().latestStatus()?.state()?.name)
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_push)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -300,7 +307,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append(event.milestoneTitle()).append(" ").append("milestone")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_milestone)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -313,9 +320,11 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append("committed")
                     .append(" ")
-                    .append("${event.messageHeadlineHTML()}#${substring(event.oid().toString())}")
+                    .append("${event.messageHeadline()}")
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.committedDate() as Date)))
+                    .url(substring(event.oid().toString()))
+                    .append(" ")
+                    .append(ParseDateFormat.getTimeAgo((event.committedDate()?.toString())))
             stateImage.setImageResource(R.drawable.ic_push)
             avatarLayout.setUrl(it.user()?.avatarUrl().toString(), it.user()?.login(), false,
                     LinkParserHelper.isEnterprise(it.user()?.url().toString()))
@@ -331,7 +340,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .url(substring(event.commit()?.oid()?.toString()))
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_merge)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -346,7 +355,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .url(substring(event.afterCommit().oid().toString()))
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_push)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -361,7 +370,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
                     .append(" ")
                     .append(event.user()?.login())
                     .append(" ")
-                    .append(ParseDateFormat.getTimeAgo((event.createdAt() as Date)))
+                    .append(ParseDateFormat.getTimeAgo((event.createdAt()?.toString())))
             stateImage.setImageResource(R.drawable.ic_profile)
             avatarLayout.setUrl(it.avatarUrl().toString(), it.login(), false, LinkParserHelper.isEnterprise(it.url().toString()))
         }
@@ -377,7 +386,7 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
 
     companion object {
         fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): PullRequestEventViewHolder {
-            return PullRequestEventViewHolder(getView(parent, R.layout.label_row_item), adapter)
+            return PullRequestEventViewHolder(getView(parent, R.layout.issue_timeline_row_item), adapter)
         }
     }
 }

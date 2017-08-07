@@ -17,7 +17,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             oid
             url
             committedDate
-            messageHeadlineHTML
+            messageHeadline
             author {
               name
               user {
@@ -100,7 +100,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             commit {
               oid
               url
-              messageHeadlineHTML
+              messageHeadline
             }
           }
           ... on ReopenedEvent {

@@ -8,10 +8,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
-import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.data.dao.timeline.PullRequestTimelineModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.ReactionsProvider;
@@ -19,6 +19,8 @@ import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
+
+import net.grandcentrix.thirtyinch.callonmainthread.CallOnMainThread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ public interface PullRequestTimelineMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
             OnToggleView, ReactionsCallback {
 
-        void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
+        @CallOnMainThread void onNotifyAdapter(@Nullable List<PullRequestTimelineModel> items, int page);
 
         @NonNull OnLoadMore<PullRequest> getLoadMore();
 
@@ -46,7 +48,7 @@ public interface PullRequestTimelineMvp {
 
         void onEditReviewComment(@NonNull ReviewCommentModel item, int groupPosition, int childPosition);
 
-        void onRemove(@NonNull TimelineModel timelineModel);
+        void onRemove(@NonNull PullRequestTimelineModel timelineModel);
 
         void onStartNewComment();
 
@@ -64,19 +66,21 @@ public interface PullRequestTimelineMvp {
 
         void onRemoveReviewComment(int groupPosition, int commentPosition);
 
-        void onSetHeader(@NonNull TimelineModel timelineModel);
+        void onSetHeader(@NonNull PullRequestTimelineModel timelineModel);
 
         @Nullable PullRequest getPullRequest();
 
         void onUpdateHeader();
 
-        void onAddStatus(@NonNull TimelineModel timelineModel);
+        void onAddStatus(@NonNull PullRequestTimelineModel timelineModel);
+
+        @CallOnMainThread void showReload();
     }
 
-    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<PullRequestTimelineModel>,
             ReviewCommentCallback, BaseMvp.PaginationListener<PullRequest> {
 
-        @NonNull ArrayList<TimelineModel> getEvents();
+        @NonNull ArrayList<PullRequestTimelineModel> getEvents();
 
         void onWorkOffline();
 

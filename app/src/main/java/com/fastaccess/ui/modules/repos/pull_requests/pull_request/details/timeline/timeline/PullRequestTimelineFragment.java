@@ -13,17 +13,16 @@ import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
-import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
+import com.fastaccess.data.dao.timeline.PullRequestTimelineModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
-import com.fastaccess.provider.timeline.CommentsHelper;
-import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
+import com.fastaccess.ui.adapter.PullRequestTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
@@ -53,7 +52,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
-    private IssuesTimelineAdapter adapter;
+    private PullRequestTimelineAdapter adapter;
     private OnLoadMore<PullRequest> onLoadMore;
 
     private IssuePagerMvp.IssuePrCallback<PullRequest> issueCallback;
@@ -92,15 +91,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
             throw new NullPointerException("PullRequest went missing!!!");
         }
         boolean isMerged = getPresenter().isMerged(getPullRequest());
-        if (issueCallback != null && issueCallback.getData() != null) {
-            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(),
-                    this, true, this, isMerged, getPresenter(), issueCallback.getData().getLogin(),
-                    issueCallback.getData().getRepoId());
-        } else {
-            adapter = new IssuesTimelineAdapter(getPresenter().getEvents(),
-                    this, true, this, isMerged, getPresenter(), "", "");
-        }
-        recycler.setVerticalScrollBarEnabled(false);
+        adapter = new PullRequestTimelineAdapter(getPresenter().getEvents(), this, this, isMerged, "null", "null");
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
@@ -113,7 +104,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
-            onSetHeader(TimelineModel.constructHeader(getPullRequest()));
+            onSetHeader(new PullRequestTimelineModel(getPullRequest()));
             onRefresh();
         } else if (getPresenter().getEvents().isEmpty() || getPresenter().getEvents().size() == 1) {
             onRefresh();
@@ -156,7 +147,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         return toggleMap.get(position) != null && toggleMap.get(position);
     }
 
-    @Override public void onNotifyAdapter(@Nullable List<TimelineModel> items, int page) {
+    @Override public void onNotifyAdapter(@Nullable List<PullRequestTimelineModel> items, int page) {
         hideProgress();
         if (items == null) {
             adapter.subList(1, adapter.getItemCount());
@@ -187,7 +178,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_ISSUE_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
@@ -210,14 +201,14 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.REVIEW_EXTRA, model)
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_REVIEW_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REVIEW_REQUEST_CODE);
     }
 
-    @Override public void onRemove(@NonNull TimelineModel timelineModel) {
+    @Override public void onRemove(@NonNull PullRequestTimelineModel timelineModel) {
         hideProgress();
         adapter.removeItem(timelineModel);
     }
@@ -231,7 +222,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
                 .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
@@ -257,7 +248,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
                 .put(BundleConstant.EXTRA, "@" + user.getLogin())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_ISSUE_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .put("message", message)
                 .end());
@@ -277,7 +268,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
                 .put(BundleConstant.REVIEW_EXTRA, model)
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_REVIEW_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .put("message", message)
                 .end());
@@ -303,7 +294,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
 
     @Override public void onRemoveReviewComment(int groupPosition, int commentPosition) {
         hideProgress();
-        TimelineModel timelineModel = adapter.getItem(groupPosition);
+        PullRequestTimelineModel timelineModel = adapter.getItem(groupPosition);
 //        if (timelineModel != null && timelineModel.getGroupedReview() != null) {
 //            if (timelineModel.getGroupedReview().getComments() != null) {
 //                timelineModel.getGroupedReview().getComments().remove(commentPosition);
@@ -316,7 +307,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
 //        }
     }
 
-    @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {
+    @Override public void onSetHeader(@NonNull PullRequestTimelineModel timelineModel) {
         if (adapter != null) {
             if (adapter.isEmpty()) {
                 adapter.addItem(timelineModel, 0);
@@ -332,10 +323,10 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
 
     @Override public void onUpdateHeader() {
         if (getPullRequest() == null) return;
-        onSetHeader(TimelineModel.constructHeader(getPullRequest()));
+        onSetHeader(new PullRequestTimelineModel(getPullRequest()));
     }
 
-    @Override public void onAddStatus(@NonNull TimelineModel timelineModel) {
+    @Override public void onAddStatus(@NonNull PullRequestTimelineModel timelineModel) {
         adapter.addItem(timelineModel, 1);
     }
 
@@ -356,17 +347,17 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                         return;
                     }
                     if (isNew) {
-                        adapter.addItem(TimelineModel.constructComment(commentsModel));
-                        recycler.smoothScrollToPosition(adapter.getItemCount());
+//                        adapter.addItem(PullRequestTimelineModel.constructComment(commentsModel));
+//                        recycler.smoothScrollToPosition(adapter.getItemCount());
                     } else {
-                        int position = adapter.getItem(TimelineModel.constructComment(commentsModel));
-                        if (position != -1) {
-                            adapter.swapItem(TimelineModel.constructComment(commentsModel), position);
-                            recycler.smoothScrollToPosition(position);
-                        } else {
-                            adapter.addItem(TimelineModel.constructComment(commentsModel));
-                            recycler.smoothScrollToPosition(adapter.getItemCount());
-                        }
+//                        int position = adapter.getItem(PullRequestTimelineModel.constructComment(commentsModel));
+//                        if (position != -1) {
+//                            adapter.swapItem(PullRequestTimelineModel.constructComment(commentsModel), position);
+//                            recycler.smoothScrollToPosition(position);
+//                        } else {
+//                            adapter.addItem(PullRequestTimelineModel.constructComment(commentsModel));
+//                            recycler.smoothScrollToPosition(adapter.getItemCount());
+//                        }
                     }
                 } else if (requestCode == BundleConstant.REVIEW_REQUEST_CODE) {
                     EditReviewCommentModel commentModel = bundle.getParcelable(BundleConstant.ITEM);
@@ -374,7 +365,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                         onRefresh(); // bundle size is too large? refresh the api
                         return;
                     }
-                    TimelineModel timelineModel = adapter.getItem(commentModel.getGroupPosition());
+                    PullRequestTimelineModel timelineModel = adapter.getItem(commentModel.getGroupPosition());
 //                    if (isNew) {
 //                        if (timelineModel.getGroupedReview() != null && timelineModel.getGroupedReview().getComments() != null) {
 //                            timelineModel.getGroupedReview().getComments().add(commentModel.getCommentModel());
@@ -417,12 +408,12 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         if (recycler != null) recycler.scrollToPosition(0);
     }
 
-    private View getFromView() {
-        return getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
-    }
-
-    private void showReload() {
+    @Override public void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    private View getFromView() {
+        return getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
     }
 }

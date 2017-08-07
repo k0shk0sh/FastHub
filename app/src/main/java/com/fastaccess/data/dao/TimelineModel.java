@@ -22,12 +22,9 @@ import lombok.Setter;
  */
 
 @Getter @Setter public class TimelineModel implements Parcelable {
-    public static final int HEADER = 0;
-    public static final int LINE_COMMENT = 1;
+    public static final int HEADER = 1;
     public static final int EVENT = 2;
     public static final int COMMENT = 3;
-    public static final int STATUS = 4;
-    public static final int REVIEW = 5;
 
     public IssueEventType event;
     public Comment comment;
@@ -55,10 +52,6 @@ import lombok.Setter;
         this.status = statusModel;
     }
 
-    public TimelineModel(ReviewCommentModel reviewCommentModel) {
-        this.reviewComment = reviewCommentModel;
-        this.event = IssueEventType.line_commented;
-    }
 
     public TimelineModel() {}
 
@@ -67,17 +60,12 @@ import lombok.Setter;
             switch (getEvent()) {
                 case commented:
                     return COMMENT;
-                case line_commented:
-                    return LINE_COMMENT;
-                case reviewed:
-                    return REVIEW;
                 default:
                     return EVENT;
             }
         } else {
             if (issue != null || pullRequest != null) return HEADER;
-            if (status != null) return STATUS;
-            return EVENT;
+            return 0;
         }
     }
 

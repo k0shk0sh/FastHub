@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -17,8 +19,6 @@ import android.view.inputmethod.InputMethodManager;
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.Locale;
 
@@ -163,7 +163,12 @@ public class AppHelper {
     }
 
     public static boolean isGoogleAvailable(@NonNull Context context) {
-        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
-        return status != ConnectionResult.SERVICE_DISABLED && status == ConnectionResult.SUCCESS;
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return applicationInfo != null && applicationInfo.enabled;
     }
 }

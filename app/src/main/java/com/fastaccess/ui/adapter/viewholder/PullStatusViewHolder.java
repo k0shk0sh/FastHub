@@ -1,6 +1,5 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
@@ -10,6 +9,7 @@ import android.view.ViewGroup;
 import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestStatusModel;
+import com.fastaccess.data.dao.timeline.PullRequestTimelineModel;
 import com.fastaccess.data.dao.types.StatusStateType;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -25,7 +25,7 @@ import butterknife.BindView;
  * Created by Kosh on 10 Apr 2017, 3:40 AM
  */
 
-public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel> {
+public class PullStatusViewHolder extends BaseViewHolder<PullRequestTimelineModel> {
 
     @BindView(R.id.stateImage) ForegroundImageView stateImage;
     @BindView(R.id.status) FontTextView status;
@@ -44,7 +44,8 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
         return new PullStatusViewHolder(getView(parent, R.layout.pull_status_row_item));
     }
 
-    @Override public void bind(@NonNull PullRequestStatusModel pullRequestStatusModel) {
+    @Override public void bind(@NonNull PullRequestTimelineModel model) {
+        PullRequestStatusModel pullRequestStatusModel = model.getStatus();
         if (pullRequestStatusModel.getState() != null) {
             StatusStateType stateType = pullRequestStatusModel.getState();
             stateImage.setImageResource(stateType.getDrawableRes());

@@ -1,7 +1,5 @@
 package com.fastaccess.provider.timeline
 
-import com.fastaccess.data.dao.ReviewCommentModel
-import com.fastaccess.data.dao.ReviewModel
 import com.fastaccess.data.dao.TimelineModel
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.data.dao.timeline.GenericEvent
@@ -10,7 +8,6 @@ import com.fastaccess.helper.InputHelper
 import com.fastaccess.provider.rest.RestProvider
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-
 import io.reactivex.Observable
 
 /**
@@ -32,10 +29,6 @@ object TimelineConverter {
                         if (type != null) {
                             if (type == IssueEventType.commented) {
                                 timeline.comment = getComment(jsonObject, gson)
-                            } else if (type == IssueEventType.line_commented) {
-                                timeline.reviewComment = getReviewComment(jsonObject, gson)
-                            } else if (type == IssueEventType.reviewed) {
-                                timeline.review = getReview(jsonObject, gson)
                             } else {
                                 timeline.genericEvent = getGenericEvent(jsonObject, gson)
                             }
@@ -48,16 +41,8 @@ object TimelineConverter {
                 .filter { filterEvents(it.event) }
     }
 
-    private fun getReview(jsonObject: JsonObject, gson: Gson): ReviewModel {
-        return gson.fromJson(jsonObject, ReviewModel::class.java)
-    }
-
     private fun getGenericEvent(jsonObject: JsonObject, gson: Gson): GenericEvent {
         return gson.fromJson(jsonObject, GenericEvent::class.java)
-    }
-
-    private fun getReviewComment(jsonObject: JsonObject, gson: Gson): ReviewCommentModel {
-        return gson.fromJson(jsonObject, ReviewCommentModel::class.java)
     }
 
     private fun getComment(jsonObject: JsonObject, gson: Gson): Comment {
@@ -65,6 +50,6 @@ object TimelineConverter {
     }
 
     private fun filterEvents(type: IssueEventType?): Boolean {
-        return type != IssueEventType.subscribed && type != IssueEventType.unsubscribed && type != IssueEventType.mentioned
+        return type != null && type != IssueEventType.subscribed && type != IssueEventType.unsubscribed && type != IssueEventType.mentioned
     }
 }

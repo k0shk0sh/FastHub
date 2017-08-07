@@ -6,7 +6,7 @@ buildscript {
         state_version = '1.1.0'
         lombokVersion = '1.12.6'
         supportVersion = "26.0.0"
-        gms = "11.0.2"
+        gms = "11.0.4"
         thirtyinchVersion = '0.8.0'
         retrofit = '2.3.0'
         junitVersion = '4.12'

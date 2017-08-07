@@ -13,11 +13,11 @@ import pr.PullRequestTimelineQuery;
 
 @Getter @Setter public class PullRequestTimelineModel {
 
-    public static final int HEADER = 0;
-    public static final int EVENT = 1;
-    public static final int COMMENT = 2;
-    public static final int STATUS = 3;
-    public static final int REVIEW = 4;
+    public static final int HEADER = 1;
+    public static final int EVENT = 2;
+    public static final int COMMENT = 3;
+    public static final int STATUS = 4;
+    public static final int REVIEW = 5;
 
     public PullRequestTimelineQuery.Node node;
     public PullRequest pullRequest;
@@ -37,24 +37,26 @@ import pr.PullRequestTimelineQuery;
 
     public int getType() {
         if (pullRequest != null) return HEADER;
-        if (node.asAssignedEvent() != null || node.asClosedEvent() != null
-                || node.asDemilestonedEvent() != null || node.asHeadRefDeletedEvent() != null
-                || node.asLabeledEvent() != null || node.asLockedEvent() != null
-                || node.asMergedEvent() != null || node.asMilestonedEvent() != null
-                || node.asReferencedEvent() != null || node.asRenamedTitleEvent() != null
-                || node.asReopenedEvent() != null || node.asUnassignedEvent() != null
-                || node.asUnlabeledEvent() != null || node.asUnlockedEvent() != null
-                || node.asCommit() != null || node.asHeadRefRestoredEvent() != null) {
-            return EVENT;
-        } else if (node.asIssueComment() != null) {
-            return COMMENT;
+        if (node != null) {
+            if (node.asAssignedEvent() != null || node.asClosedEvent() != null
+                    || node.asDemilestonedEvent() != null || node.asHeadRefDeletedEvent() != null
+                    || node.asLabeledEvent() != null || node.asLockedEvent() != null
+                    || node.asMergedEvent() != null || node.asMilestonedEvent() != null
+                    || node.asReferencedEvent() != null || node.asRenamedTitleEvent() != null
+                    || node.asReopenedEvent() != null || node.asUnassignedEvent() != null
+                    || node.asUnlabeledEvent() != null || node.asUnlockedEvent() != null
+                    || node.asCommit() != null || node.asHeadRefRestoredEvent() != null) {
+                return EVENT;
+            } else if (node.asIssueComment() != null) {
+                return COMMENT;
+            } else if (node.asPullRequestReview() != null || node.asReviewDismissedEvent() != null
+                    || node.asReviewRequestedEvent() != null || node.asReviewRequestRemovedEvent() != null) {
+                return REVIEW;
+            }
         } else if (status != null) {
             return STATUS;
-        } else if (node.asPullRequestReview() != null || node.asReviewDismissedEvent() != null
-                || node.asReviewRequestedEvent() != null || node.asReviewRequestRemovedEvent() != null) {
-            return REVIEW;
         }
-        return EVENT;
+        return 0;
     }
 
     @Override public String toString() {

@@ -207,7 +207,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     public void addProgress() {
-        if (!progressAdded) {
+        if (!progressAdded && !isEmpty()) {
             addItem(null);
             progressAdded = true;
         }
@@ -218,11 +218,13 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     private void removeProgress() {
-        M m = getItem(getItemCount() - 1);
-        if (m == null) {
-            removeItem(getItemCount() - 1);
+        if (!isEmpty()) {
+            M m = getItem(getItemCount() - 1);
+            if (m == null) {
+                removeItem(getItemCount() - 1);
+            }
+            progressAdded = false;
         }
-        progressAdded = false;
     }
 
     private void addSpanLookup(ViewGroup parent) {

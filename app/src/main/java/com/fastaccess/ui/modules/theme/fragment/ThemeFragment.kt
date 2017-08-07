@@ -140,7 +140,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         if (AppHelper.isGoogleAvailable(context)) {
             return true
         }
-        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text, getString(R.string.app_name)))
+        showErrorMessage(getString(R.string.google_play_service_error, getString(R.string.app_name)))
         return false
     }
 }

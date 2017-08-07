@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.gms.ads.AdView
+<View
     android:id="@+id/adView"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -9,6 +9,4 @@
     android:layout_gravity="bottom|center"
     android:background="?colorPrimary"
     android:visibility="gone"
-    ads:adSize="BANNER"
-    ads:adUnitId="@string/banner_ad_unit_id"
     tools:visibility="visible"/>

@@ -4,15 +4,14 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.ViewGroup;
 
+import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
-import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
-import com.fastaccess.ui.adapter.viewholder.ReviewCommentsViewHolder;
-import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
+import com.fastaccess.ui.adapter.viewholder.UnknownTypeViewHolder;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp.ReviewCommentCallback;
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
@@ -53,22 +52,13 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
     }
 
     @Override protected BaseViewHolder viewHolder(ViewGroup parent, int viewType) {
-        if (viewType == TimelineModel.HEADER) {
+        if (viewType == 0) {
+            return new UnknownTypeViewHolder(BaseViewHolder.getView(parent, R.layout.unknown_row_item));
+        } else if (viewType == TimelineModel.HEADER) {
             return IssueDetailsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, repoOwner, poster);
         } else if (viewType == TimelineModel.EVENT) {
             return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
-        } else if (viewType == TimelineModel.STATUS) {
-            return PullStatusViewHolder.newInstance(parent);
-        } else if (viewType == TimelineModel.LINE_COMMENT) {
-            return ReviewCommentsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, repoOwner, poster);
-//            return ReviewsViewHolder.newInstance(parent, this);
-        } else if (viewType == TimelineModel.REVIEW) {
-            return ReviewsViewHolder.newInstance(parent, this);
         }
-//        else if (viewType == TimelineModel.GROUPED_REVIEW) {
-//            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
-//                    reviewCommentCallback, repoOwner, poster);
-//        }
         return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies,
                 reactionsCallback, repoOwner, poster);
     }
@@ -81,16 +71,6 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
             ((IssueTimelineViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.COMMENT) {
             ((TimelineCommentsViewHolder) holder).bind(model);
-        } else if (model.getType() == TimelineModel.LINE_COMMENT) {
-            ((ReviewCommentsViewHolder) holder).bind(model.getReviewComment());
-        } else if (model.getType() == TimelineModel.REVIEW) {
-            ((ReviewsViewHolder) holder).bind(model);
-        }
-// else if (model.getType() == TimelineModel.GROUPED_REVIEW) {
-//            ((GroupedReviewsViewHolder) holder).bind(model);
-//        }
-        else {
-            if (model.getStatus() != null) ((PullStatusViewHolder) holder).bind(model.getStatus());
         }
         if (model.getType() != TimelineModel.COMMENT) {
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();
@@ -102,5 +82,6 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
         TimelineModel timelineModel = getData().get(position);
         return timelineModel != null ? timelineModel.getType() : super.getItemViewType(position);
     }
+
 }
 
