@@ -41,7 +41,7 @@ import pr.PullRequestTimelineQuery;
  */
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
-    @com.evernote.android.state.State boolean hasNextPage;
+    @com.evernote.android.state.State boolean hasNextPage = true;
 
     private ArrayList<PullRequestTimelineModel> timeline = new ArrayList<>();
     private SparseArray<String> pages = new SparseArray<>();
