@@ -17,15 +17,15 @@ import lombok.Setter;
 
 @Getter @Setter public class ReviewModel implements Parcelable {
 
-    long id;
-    User user;
-    String bodyHtml;
-    String state;
-    Date submittedAt;
-    String commitId;
-    String diffText;
-    List<ReviewCommentModel> comments;
-    ReactionsModel reactions;
+    private long id;
+    private User user;
+    private String bodyHtml;
+    private String state;
+    private Date submittedAt;
+    private String commitId;
+    private String diffText;
+    private List<ReviewCommentModel> comments;
+    private ReactionsModel reactions;
 
     public ReviewModel() {}
 
@@ -43,7 +43,7 @@ import lombok.Setter;
         dest.writeParcelable(this.reactions, flags);
     }
 
-    protected ReviewModel(Parcel in) {
+    private ReviewModel(Parcel in) {
         this.id = in.readLong();
         this.user = in.readParcelable(User.class.getClassLoader());
         this.bodyHtml = in.readString();

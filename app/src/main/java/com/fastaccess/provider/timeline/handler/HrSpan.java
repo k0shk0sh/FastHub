@@ -11,15 +11,13 @@ import android.text.style.ReplacementSpan;
 
 public class HrSpan extends ReplacementSpan implements LineHeightSpan {
 
-    private final int height = 10;
-    private int width;
-    private final Drawable drawable;
+    private final int width;
     private final int color;
 
     HrSpan(int color, int width) {
         this.color = color;
         this.width = width;
-        this.drawable = new ColorDrawable(color);
+        Drawable drawable = new ColorDrawable(color);
     }
 
     @Override public int getSize(@NonNull Paint paint, CharSequence text, int start, int end, Paint.FontMetricsInt fm) {
@@ -31,6 +29,7 @@ public class HrSpan extends ReplacementSpan implements LineHeightSpan {
         final int currentColor = paint.getColor();
         paint.setColor(color);
         paint.setStyle(Paint.Style.FILL);
+        int height = 10;
         canvas.drawRect(new Rect(0, bottom - height, (int) x + width, bottom), paint);
         paint.setColor(currentColor);
     }

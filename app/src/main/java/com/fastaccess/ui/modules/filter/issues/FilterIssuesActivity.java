@@ -244,7 +244,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         }
     }
 
-    @OnEditorAction(R.id.searchEditText) boolean onEditor() {
+    @OnEditorAction(R.id.searchEditText) protected boolean onEditor() {
         onSearchClicked();
         return true;
     }
