@@ -43,7 +43,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             }
           }
           ... on PullRequestReview {
-            databaseId
+            id
             url
             bodyHTML
             submittedAt
@@ -57,7 +57,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             comments(first: 30) {
               edges {
                 node {
-                  databaseId
+                  id
                   authorAssociation
                   bodyHTML
                   diffHunk
@@ -83,7 +83,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             }
           }
           ... on IssueComment {
-            databaseId
+            id
             bodyHTML
             createdAt
             updatedAt
@@ -92,6 +92,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             viewerCanUpdate
             viewerDidAuthor
             authorAssociation
+            lastEditedAt
             author {
               login
               url
@@ -429,12 +430,12 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             }
           }
           ... on ReviewDismissedEvent {
-            databaseId
+            id
             createdAt
             messageHtml
             previousReviewState
             review {
-              databaseId
+              id
               submittedAt
               authorAssociation
               bodyHTML
@@ -448,7 +449,7 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
               comments(first: 30) {
                 edges {
                   node {
-                    databaseId
+                    id
                     authorAssociation
                     bodyHTML
                     diffHunk

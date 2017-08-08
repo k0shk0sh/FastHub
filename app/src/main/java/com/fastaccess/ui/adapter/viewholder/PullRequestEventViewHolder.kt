@@ -316,11 +316,11 @@ class PullRequestEventViewHolder private constructor(val view: View, adapter: Ba
     private fun commitEvent(event: PullRequestTimelineQuery.AsCommit) {
         event.author()?.let {
             stateText.text = SpannableBuilder.builder()//Review[k0shk0sh] We may want to suppress more then 3 or 4 commits. since it will clog the it
-                    .bold(it.name())
+                    .bold(if(it.user() == null) it.name() else it.user()?.login())
                     .append(" ")
                     .append("committed")
                     .append(" ")
-                    .append("${event.messageHeadline()}")
+                    .append(event.messageHeadline())
                     .append(" ")
                     .url(substring(event.oid().toString()))
                     .append(" ")

@@ -2,12 +2,18 @@ package com.fastaccess.data.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.User;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
+import pr.PullRequestTimelineQuery;
 
 /**
  * Created by Kosh on 28 Mar 2017, 9:15 PM
@@ -26,6 +32,7 @@ import lombok.Setter;
     private int heart;
     private String content;
     private User user;
+    private boolean viewerHasReacted;
     private boolean isCallingApi;
 
     public ReactionsModel() {}
@@ -81,4 +88,18 @@ import lombok.Setter;
 
         @Override public ReactionsModel[] newArray(int size) {return new ReactionsModel[size];}
     };
+
+    @NonNull public static List<ReactionsModel> getReaction(@Nullable List<PullRequestTimelineQuery.ReactionGroup1> reactions) {
+        List<ReactionsModel> models = new ArrayList<>();
+        if (reactions != null && !reactions.isEmpty()) {
+            for (PullRequestTimelineQuery.ReactionGroup1 reaction : reactions) {
+                ReactionsModel model = new ReactionsModel();
+                model.setContent(reaction.content().name());
+                model.setViewerHasReacted(reaction.viewerHasReacted());
+                model.setTotal_count(reaction.users().totalCount());
+                models.add(model);
+            }
+        }
+        return models;
+    }
 }

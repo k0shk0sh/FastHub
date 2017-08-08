@@ -6,6 +6,7 @@ import com.fastaccess.ui.adapter.callback.OnToggleView
 import com.fastaccess.ui.adapter.callback.ReactionsCallback
 import com.fastaccess.ui.adapter.viewholder.PullRequestDetailsViewHolder
 import com.fastaccess.ui.adapter.viewholder.PullRequestEventViewHolder
+import com.fastaccess.ui.adapter.viewholder.PullRequestTimelineCommentsViewHolder
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
@@ -27,6 +28,7 @@ class PullRequestTimelineAdapter constructor(val data: ArrayList<PullRequestTime
             PullRequestTimelineModel.HEADER -> return PullRequestDetailsViewHolder.newInstance(parent, this,
                     onToggleView, reactionsCallback, repoOwner, poster)
             PullRequestTimelineModel.STATUS -> return PullStatusViewHolder.newInstance(parent)
+            PullRequestTimelineModel.COMMENT -> return PullRequestTimelineCommentsViewHolder.newInstance(parent, this, onToggleView)
             else -> return PullRequestEventViewHolder.newInstance(parent, this)
         }
     }

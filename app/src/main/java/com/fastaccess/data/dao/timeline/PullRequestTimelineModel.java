@@ -1,6 +1,9 @@
 package com.fastaccess.data.dao.timeline;
 
+import com.fastaccess.data.dao.ReactionsModel;
 import com.fastaccess.data.dao.model.PullRequest;
+
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +24,7 @@ import pr.PullRequestTimelineQuery;
     public PullRequestTimelineQuery.Node node;
     public PullRequest pullRequest;
     public PullRequestTimelineQuery.Status status;
+    public List<ReactionsModel> reactions;
     public boolean isMergeable;
 
     public PullRequestTimelineModel(PullRequest pullRequest) {
@@ -49,6 +53,10 @@ import pr.PullRequestTimelineQuery;
                     || node.asCommit() != null || node.asHeadRefRestoredEvent() != null) {
                 return EVENT;
             } else if (node.asIssueComment() != null) {
+                if (reactions == null) {
+                    //noinspection ConstantConditions
+                    setReactions(ReactionsModel.getReaction(node.asIssueComment().reactionGroups()));
+                }
                 return COMMENT;
             } else if (node.asPullRequestReview() != null || node.asReviewDismissedEvent() != null
                     || node.asReviewRequestedEvent() != null || node.asReviewRequestRemovedEvent() != null) {
