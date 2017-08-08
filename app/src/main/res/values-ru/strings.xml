@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">Загрузка, подождите…</string>
     <string name="action">Действия</string>
     <string name="settings">Настройки</string>
@@ -8,12 +9,11 @@
     <string name="no_data">Доступные данные отсутствуют</string>
     <string name="search">Поиск</string>
     <string name="please_login">Пожалуйста, войдите, чтобы продолжить использовать FastHub</string>
-    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы получить всё самое лучшее от FastHub</string>
+    <string name="sign_in_to_github">Войдите в свою учётную запись GitHub, чтобы начать использовать FastHub</string>
     <string name="failed_login">Не удалось войти</string>
     <string name="sign_in">Войти</string>
     <string name="share">Поделиться</string>
     <string name="reload">Обновить</string>
-    <string name="feeds">Обновления</string>
     <string name="profile">Профиль</string>
     <string name="error">Ошибка</string>
     <string name="press_again_to_exit">Нажмите ещё раз для выхода</string>
@@ -131,6 +131,7 @@
     <string name="notifications">Уведомления</string>
     <string name="unread_notification">У вас есть новые уведомления</string>
     <string name="open">Открыть</string>
+    <string name="open_new_window">Открыть в новом окне</string>
     <string name="notification_type">Тип уведомления</string>
     <string name="labels">Метки</string>
     <string name="no_labels">Метки отсутствуют</string>
@@ -265,9 +266,10 @@
     <string name="success_purchase_message">Спасибо за то, что Вы есть!</string>
     <string name="change_theme_warning">Если тема применится некорректно, то, пожалуйста, принудительно закройте приложение и снова его запустите.</string>
     <string name="pin">Закрепить</string>
-    <string name="pinned">Закреплённые</string>
+    <string name="pinned">Закладки</string>
     <string name="unpin">Открепить</string>
-    <string name="empty_pinned_repos">Закреплённые репозитории отсутствуют. Закреплённые репозитории будут показаны здесь</string>
+    <string name="empty_pinned_repos">Сохранённые репозитории отсутствуют. Они будут отображены здесь\n
+        P.S: Чем чаще вы посещаете репозиторий, тем выше он будет находиться</string>
     <string name="yes">Да</string>
     <string name="no">Нет</string>
     <string name="no_feeds">Новости отсутствуют</string>
@@ -311,6 +313,7 @@
     <string name="no_members">Участники отсутствуют</string>
     <string name="no_teams">Команды отсутствуют</string>
     <string name="no_orgs">Организации отсутствуют</string>
+    <string name="no_orgs_dialog_title">Не видите свои организации?</string>
     <string name="mark_as_read">Прочитано</string>
     <string name="animations">Анимации</string>
     <string name="dialog_animation_summary">Включить всплывающие анимации</string>
@@ -402,4 +405,16 @@
     <string name="feed">Обновления</string>
     <string name="premium_theme">Премиальная тема</string>
     <string name="choose_code_theme">Выбрать цвет. палитру кода</string>
+    <string name="enterprise_login_warning">Пожалуйста, выполните вход в свою учётную запись GitHub используя метод (OAuth), чтобы не возникали проблемы в работе с API GitHub.
+        В противном случае авторизация будет сбрасываться каждый раз, когда вы будете выходить за рамки GitHub Enterprise.
+        Это случается из-за того, что токен, передаваемый серверам GitHub, имеет доступ только к вашему аккаунту Enterprise.</string>
+    <string name="add_account">Добавить уч. запись</string>
+    <string name="choose_account">Выбрать уч. запись</string>
+    <string name="not_match">Не соответствует</string>
+    <string name="warning">Предупреждение</string>
+    <string name="owner">Владелец</string>
+    <string name="original_poster">Автор</string>
+    <string name="cancel_reviews">Отменить обзоры</string>
+    <string name="colored_navbar_summary">Отключить цвет панели навигации при использовании тем</string>
+    <string name="colored_navbar_title">Отключить цвет панели навигации</string>
 </resources>

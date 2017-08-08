@@ -10,9 +10,8 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.ColorStateList;
-import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.customtabs.CustomTabsIntent;
@@ -22,18 +21,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ShareCompat;
 import android.support.v4.util.Pair;
-import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.fastaccess.App;
 import com.fastaccess.R;
-import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.parser.LinksParserActivity;
 
 import java.util.ArrayList;
@@ -46,10 +38,7 @@ import es.dmoral.toasty.Toasty;
  */
 public class ActivityHelper {
 
-    private static int BUTTON_ID = 32;
-
-    @Nullable
-    public static Activity getActivity(@Nullable Context content) {
+    @Nullable public static Activity getActivity(@Nullable Context content) {
         if (content == null) return null;
         else if (content instanceof Activity) return (Activity) content;
         else if (content instanceof ContextWrapper) return getActivity(((ContextWrapper) content).getBaseContext());
@@ -64,7 +53,11 @@ public class ActivityHelper {
                     .setShowTitle(true)
                     .build();
             customTabsIntent.intent.setPackage(packageNameToUse);
-            customTabsIntent.launchUrl(context, url);
+            try {
+                customTabsIntent.launchUrl(context, url);
+            } catch (ActivityNotFoundException ignored) {
+                openChooser(context, url, true);
+            }
         } else {
             openChooser(context, url, true);
         }
@@ -111,8 +104,7 @@ public class ActivityHelper {
         openChooser(context, Uri.parse(url));
     }
 
-    @SafeVarargs
-    public static void start(@NonNull Activity activity, Class cl, Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, Class cl, Pair<View, String>... sharedElements) {
         Intent intent = new Intent(activity, cl);
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
@@ -145,8 +137,8 @@ public class ActivityHelper {
         activity.startActivity(intent, options.toBundle());
     }
 
-    @SafeVarargs
-    public static void start(@NonNull Activity activity, @NonNull Intent intent, @NonNull Pair<View, String>... sharedElements) {
+    @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent,
+                                          @NonNull Pair<View, String>... sharedElements) {
         ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedElements);
         activity.startActivity(intent, options.toBundle());
 
@@ -167,8 +159,7 @@ public class ActivityHelper {
     }
 
     @SuppressWarnings("RestrictedApi")
-    @Nullable
-    public static Fragment getVisibleFragment(@NonNull FragmentManager manager) {
+    @Nullable public static Fragment getVisibleFragment(@NonNull FragmentManager manager) {
         List<Fragment> fragments = manager.getFragments();
         if (fragments != null && !fragments.isEmpty()) {
             for (Fragment fragment : fragments) {
@@ -248,5 +239,13 @@ public class ActivityHelper {
         pm.setComponentEnabledSetting(new ComponentName(context, LinksParserActivity.class), flag, PackageManager.DONT_KILL_APP);
     }
 
+    public static Intent editBundle(@NonNull Intent intent, boolean isEnterprise) {
+        Bundle bundle = intent.getExtras();
+        if (bundle != null) {
+            bundle.putBoolean(BundleConstant.IS_ENTERPRISE, isEnterprise);
+            intent.putExtras(bundle);
+        }
+        return intent;
+    }
 
 }

@@ -81,13 +81,14 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     private PopupWindow popupWindow;
 
     public static void startActivity(@NonNull Activity context, @NonNull String login, @NonNull String repoId,
-                                     boolean isIssue, boolean isOpen) {
+                                     boolean isIssue, boolean isOpen, boolean isEnterprise) {
         Intent intent = new Intent(context, FilterIssuesActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, isIssue)
                 .put(BundleConstant.EXTRA_THREE, isOpen)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         View view = context.findViewById(R.id.fab);
         if (view != null) {
@@ -148,7 +149,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
                 searchEditText.setText(text);
                 onSearch();
             } else {
-                searchEditText.setText(String.format("%s %s", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
+                searchEditText.setText(String.format("%s %s ", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
                 onSearch();
             }
         }
@@ -164,7 +165,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
                 searchEditText.setText(text);
                 onSearch();
             } else {
-                searchEditText.setText(String.format("%s %s", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
+                searchEditText.setText(String.format("%s %s ", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
                 onSearch();
             }
         }
@@ -309,7 +310,8 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
 
     private void onSearch() {
         if (!InputHelper.isEmpty(searchEditText)) {
-            getFilterFragment().onSearch(getRepoName() + InputHelper.toString(searchEditText), open.isSelected(), isIssue);
+            getFilterFragment().onSearch(getRepoName() + InputHelper.toString(searchEditText),
+                    open.isSelected(), isIssue, isEnterprise());
             searchEditText.setSelection(searchEditText.getEditableText().length());
         } else {
             getFilterFragment().onClear();

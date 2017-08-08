@@ -43,8 +43,6 @@ import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.layout_manager.GridManager;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 
 import java.util.List;
 
@@ -151,6 +149,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @SuppressLint("ClickableViewAccessibility") @Override public void onInitViews(@Nullable User userModel) {
         progress.setVisibility(GONE);
         if (userModel == null) return;
+        if (profileCallback != null) profileCallback.onCheckType(userModel.isOrganizationType());
         if (getView() != null) {
             if (this.userModel == null) {
                 TransitionManager.beginDelayedTransition((ViewGroup) getView(),
@@ -268,12 +267,6 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
 
     @Override public void onImagePosted(@Nullable String link) {
         hideProgress();
-        ImageLoader.getInstance().loadImage(link, new SimpleImageLoadingListener() {
-            @Override public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                super.onLoadingComplete(imageUri, view, loadedImage);
-                onHeaderLoaded(loadedImage);
-            }
-        });
     }
 
     @Override public void showProgress(@StringRes int resId) {

@@ -33,7 +33,7 @@ public class OrgMembersFragment extends BaseFragment<OrgMembersMvp.View, OrgMemb
     private OnLoadMore<String> onLoadMore;
     private UsersAdapter adapter;
 
-    public static OrgMembersFragment newInstance(@NonNull String username, boolean isEnterprise) {
+    public static OrgMembersFragment newInstance(@NonNull String username) {
         OrgMembersFragment view = new OrgMembersFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, username).end());
         return view;
@@ -64,7 +64,7 @@ public class OrgMembersFragment extends BaseFragment<OrgMembersMvp.View, OrgMemb
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new UsersAdapter(getPresenter().getFollowers());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);

@@ -47,6 +47,8 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     private String pathText;
     private PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback;
     private ViewGroup viewGroup;
+    private String repoOwner;
+    private String poster;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
@@ -61,7 +63,8 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     private GroupedReviewsViewHolder(@NonNull View itemView, ViewGroup viewGroup, @Nullable BaseRecyclerAdapter adapter,
                                      @NonNull OnToggleView onToggleView,
                                      @NonNull ReactionsCallback reactionsCallback,
-                                     @NonNull PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback) {
+                                     @NonNull PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback,
+                                     String repoOwner, String poster) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
         this.viewGroup = viewGroup;
@@ -71,6 +74,8 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
         patchDeletionColor = ViewHelper.getPatchDeletionColor(itemView.getContext());
         patchRefColor = ViewHelper.getPatchRefColor(itemView.getContext());
         this.onToggleView = onToggleView;
+        this.repoOwner = repoOwner;
+        this.poster = poster;
         nestedRecyclerView.setNestedScrollingEnabled(false);
         addCommentPreview.setOnClickListener(this);
         toggle.setOnClickListener(this);
@@ -82,9 +87,10 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     public static GroupedReviewsViewHolder newInstance(ViewGroup viewGroup, BaseRecyclerAdapter adapter,
                                                        @NonNull OnToggleView onToggleView,
                                                        @NonNull ReactionsCallback reactionsCallback,
-                                                       @NonNull PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback) {
+                                                       @NonNull PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback,
+                                                       String repoOwner, String poster) {
         return new GroupedReviewsViewHolder(getView(viewGroup, R.layout.grouped_review_timeline_row_item), viewGroup, adapter,
-                onToggleView, reactionsCallback, reviewCommentCallback);
+                onToggleView, reactionsCallback, reviewCommentCallback, repoOwner, poster);
     }
 
     @Override public void bind(@NonNull TimelineModel model) {
@@ -97,7 +103,8 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
             nestedRecyclerView.setAdapter(null);
         } else {
             nestedRecyclerView.setVisibility(View.VISIBLE);
-            nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this, onToggleView, reactionsCallback));
+            nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this,
+                    onToggleView, reactionsCallback, repoOwner, poster));
             nestedRecyclerView.addDivider();
         }
         onToggle(onToggleView.isCollapsed(getId()), false);

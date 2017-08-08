@@ -36,7 +36,7 @@ import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
-import com.fastaccess.ui.modules.login.LoginChooserActivity;
+import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
@@ -45,7 +45,6 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -53,6 +52,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
 
 
@@ -70,11 +71,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
     @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
     @Nullable @BindView(R.id.adView) AdView adView;
-    private MainNavDrawer mainNavDrawer;
 
     @State Bundle presenterStateBundle = new Bundle();
 
-    private static int REFRESH_CODE = 64;
+    private MainNavDrawer mainNavDrawer;
 
     private long backPressTimer;
     private Toast toast;
@@ -183,19 +183,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void showProgress(@StringRes int resId) {
-        String msg = getString(R.string.in_progress);
-        if (resId != 0) {
-            msg = getString(resId);
-        }
-        if (!isProgressShowing && !isFinishing()) {
-            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
-                    ProgressDialogFragment.TAG);
-            if (fragment == null) {
-                isProgressShowing = true;
-                fragment = ProgressDialogFragment.newInstance(msg, true);
-                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
-            }
-        }
+        showProgress(resId, true);
+    }
+
+    @Override public void showBlockingProgress(int resId) {
+        showProgress(resId, false);
     }
 
     @Override public void hideProgress() {
@@ -209,8 +201,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        ImageLoader.getInstance().clearDiskCache();
-        ImageLoader.getInstance().clearMemoryCache();
         PrefGetter.setToken(null);
         PrefGetter.setEnterpriseUrl(null);
         PrefGetter.setOtpCode(null);
@@ -223,16 +213,14 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        if (drawer != null) {
-            drawer.closeDrawer(GravityCompat.START);
-        }
+        closeDrawer();
         mainNavDrawer.onMainNavItemClick(item);
         return false;
     }
 
     @Override public void onBackPressed() {
         if (drawer != null && drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
+            closeDrawer();
         } else {
             boolean clickTwiceToExit = !PrefGetter.isTwiceBackButtonDisabled();
             superOnBackPressed(clickTwiceToExit);
@@ -261,12 +249,12 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
     }
 
     @Override public void onOpenSettings() {
-        startActivityForResult(new Intent(this, SettingsActivity.class), REFRESH_CODE);
+        startActivityForResult(new Intent(this, SettingsActivity.class), BundleConstant.REFRESH_CODE);
     }
 
     @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            if (requestCode == REFRESH_CODE) {
+            if (requestCode == BundleConstant.REFRESH_CODE) {
                 onThemeChanged();
             }
         }
@@ -298,6 +286,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public boolean isEnterprise() {
         return getPresenter() != null && getPresenter().isEnterprise();
+    }
+
+    @Optional @OnClick(R.id.logout) void onLogoutClicked() {
+        closeDrawer();
+        onLogoutPressed();
     }
 
     protected void setTaskName(@Nullable String name) {
@@ -424,6 +417,10 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         mainNavDrawer.setupViewDrawer();
     }
 
+    protected void closeDrawer() {
+        if (drawer != null) drawer.closeDrawer(GravityCompat.START);
+    }
+
     private void setupDrawer() {
         if (drawer != null && !(this instanceof MainActivity)) {
             if (!PrefGetter.isNavDrawerHintShowed()) {
@@ -435,7 +432,7 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                                 super.onDrawerOpened(drawerView);
                                 drawerView.postDelayed(() -> {
                                     if (drawer != null) {
-                                        drawer.closeDrawer(GravityCompat.START);
+                                        closeDrawer();
                                         drawer.removeDrawerListener(this);
                                     }
                                 }, 1000);
@@ -492,5 +489,21 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finishAndRemoveTask();
+    }
+
+    private void showProgress(int resId, boolean cancelable) {
+        String msg = getString(R.string.in_progress);
+        if (resId != 0) {
+            msg = getString(resId);
+        }
+        if (!isProgressShowing && !isFinishing()) {
+            ProgressDialogFragment fragment = (ProgressDialogFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(),
+                    ProgressDialogFragment.TAG);
+            if (fragment == null) {
+                isProgressShowing = true;
+                fragment = ProgressDialogFragment.newInstance(msg, cancelable);
+                fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
+            }
+        }
     }
 }

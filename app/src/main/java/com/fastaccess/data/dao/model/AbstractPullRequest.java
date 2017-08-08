@@ -30,12 +30,13 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.PullRequest.ID;
@@ -91,23 +92,37 @@ import static com.fastaccess.data.dao.model.PullRequest.UPDATED_AT;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
     public Single<PullRequest> save(PullRequest entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
-    }
-
-    public static Observable<PullRequest> save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(PullRequest.class)
-                .where(REPO_ID.equal(repoId)
-                        .and(LOGIN.equal(login)))
+        return RxHelper.getSingle(App.getInstance().getDataStore()
+                .delete(PullRequest.class)
+                .where(PullRequest.ID.eq(entity.getId()))
                 .get()
                 .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(pulRequest -> {
-                    pulRequest.setRepoId(repoId);
-                    pulRequest.setLogin(login);
-                    return pulRequest.save(pulRequest).toObservable();
-                }));
+                .flatMap(observer -> App.getInstance().getDataStore().insert(entity)));
+    }
+
+    public static Disposable save(@NonNull List<PullRequest> models, @NonNull String repoId, @NonNull String login) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(PullRequest.class)
+                        .where(REPO_ID.equal(repoId)
+                                .and(LOGIN.equal(login)))
+                        .get()
+                        .value();
+                if (!models.isEmpty()) {
+                    for (PullRequest pullRequest : models) {
+                        dataSource.delete(PullRequest.class).where(PullRequest.ID.eq(pullRequest.getId())).get().value();
+                        pullRequest.setRepoId(repoId);
+                        pullRequest.setLogin(login);
+                        dataSource.insert(pullRequest);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     public static Single<List<PullRequest>> getPullRequests(@NonNull String repoId, @NonNull String login,

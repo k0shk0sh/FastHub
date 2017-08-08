@@ -1,9 +1,10 @@
 [![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub) [![Build status](https://ci.appveyor.com/api/projects/status/2yhxx7hu6hju24bk?svg=true)](https://ci.appveyor.com/project/k0shk0sh/fasthub)
-[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub) [![Donate](https://img.shields.io/badge/Donate-PayPal-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=kosh20111@gmail.com)
+[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Discord](https://img.shields.io/badge/chat-discord-7289DA.svg)](https://discord.gg/V6afZWf)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
 # FastHub  
+
 Yet another **open-source** GitHub client app but unlike any other app, FastHub was built from scratch.  
 <!--
 [<img src="https://f-droid.org/badge/get-it-on.png"
@@ -19,11 +20,13 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
 
 #### Snapshots / Test builds
 
-We have configurated snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
+We have configured snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
 
 # Features  
 - **App**
-  - Two login types (Basic Auth), (Access Token) or via (Browser)
+  - Three login types (Basic Auth), (Access Token) or via (OAuth)
+  - Multiple Accounts
+  - Enterprise Accounts
   - Themes mode
   - Offline-mode
   - Markdown and code highlighting support
@@ -31,6 +34,7 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
   - Search users/orgs, repos, issues/prs & code.
   - Pinned Repos
   - Trending
+  - Wiki
 - **Repositories**
   - Browse & Read Wiki
   - Search Repos
@@ -52,7 +56,8 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
   - Assign people and add Labels and Milestones to Issues/PRs
   - Manage Milestones
   - Merge PRs
-  - PRs reviews(reply, react with emojies, delete & edit comment)
+  - PRs reviews (reply, react with emojies, delete & edit comment)
+  - PRs request review changes/approve & comment.
   - PRs statuses
 - **Commits and Gists**
   - Search Code/Gists
@@ -61,13 +66,14 @@ We have configurated snapshots of FastHub, which can be downloaded from [AppVeyo
   - Manage Commit/Gist comments
   - Create/Delete Gists
   - React to Commit comments with reactions
+  - Comment on line number in Files/Code changes.
 - **Orgs**
     - Overview
     - Feeds
     - Teams & Teams repos
     - Repos
 - **Users**
-  - Follow/unfollow users
+  - Follow/Unfollow users
   - View user feeds
   - Contribution graph.
   - Search Users, Repos, Issues,Pull Requests and Code
@@ -90,7 +96,7 @@ _Ads currently not available._
 - [**Android State**](https://github.com/evernote/android-state) for saving instance states
 - [**Lombok**](https://projectlombok.github.io) for getters and setters
 - [**Material-BottomNavigation**](https://github.com/sephiroth74/Material-BottomNavigation) for `BottomBar` tabs 
-- [**Android-Universal-Image-Loader**](https://github.com/nostra13/Android-Universal-Image-Loader) for loading images
+- [**Glide**](https://github.com/bumptech/glide) for loading images
 - [**commonmark**](https://github.com/atlassian/commonmark-java) for _Markdown_ conversion to html
 - [**Toasty**](https://github.com/GrenderG/Toasty) for displaying error/success messages
 - [**ShapedImageView**](https://github.com/gavinliu/ShapedImageView) for round avatars
@@ -157,13 +163,13 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 
 ## Screenshots
 
-| Mobile Light | Mobile Dark |
+| Feeds | Drawer |
 |:-:|:-:|
-| ![Main Screen Light](/.github/assets/mobile_light.png?raw=true) | ![Main Screen Dark](/.github/assets/mobile_night.png?raw=true) |
+| ![First](/.github/assets/first.png?raw=true) | ![Sec](/.github/assets/sec.png?raw=true) |
 
-| Tablet Light | Tablet Dark |
+| Repo | Profile |
 |:-:|:-:|
-| ![Main Screen Light](/.github/assets/tablet_light.png?raw=true) | ![Main Screen Dark](/.github/assets/tablet_night.png?raw=true) |
+| ![Third](/.github/assets/third.png?raw=true) | ![Fourth](/.github/assets/fourth.png?raw=true) |
 
 ## FastHub Logo
 

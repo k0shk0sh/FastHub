@@ -40,6 +40,7 @@ import com.fastaccess.ui.modules.repos.code.contributors.RepoContributorsFragmen
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 import com.fastaccess.ui.modules.repos.code.prettifier.ViewerFragment;
 import com.fastaccess.ui.modules.repos.code.releases.RepoReleasesFragment;
+import com.fastaccess.ui.modules.repos.extras.branches.BranchesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineFragment;
@@ -64,8 +65,8 @@ import lombok.Setter;
 
 @Getter @Setter public class FragmentPagerAdapterModel {
 
-    private String title;
-    private Fragment fragment;
+    String title;
+    Fragment fragment;
 
     private FragmentPagerAdapterModel(String title, Fragment fragment) {
         this.title = title;
@@ -83,10 +84,10 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    public static List<FragmentPagerAdapterModel> buildForRepoCode(@NonNull Context context, @NonNull String repoId,
-                                                                   @NonNull String login, @NonNull String url,
-                                                                   @NonNull String defaultBranch,
-                                                                   @NonNull String htmlUrl) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForRepoCode(@NonNull Context context, @NonNull String repoId,
+                                                                            @NonNull String login, @NonNull String url,
+                                                                            @NonNull String defaultBranch,
+                                                                            @NonNull String htmlUrl) {
         return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.readme), ViewerFragment.newInstance(url, htmlUrl, true)),
                 new FragmentPagerAdapterModel(context.getString(R.string.files), RepoFilePathFragment.newInstance(login, repoId, null,
                         defaultBranch)),
@@ -143,9 +144,10 @@ import lombok.Setter;
         String login = commitModel.getLogin();
         String repoId = commitModel.getRepoId();
         String sha = commitModel.getSha();
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), CommitFilesFragment.newInstance(commitModel.getSha(),
-                commitModel.getFiles())),
-                new FragmentPagerAdapterModel(context.getString(R.string.comments), CommitCommentsFragment.newInstance(login, repoId, sha)))
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files),
+                        CommitFilesFragment.newInstance(commitModel.getSha(), commitModel.getFiles())),
+                new FragmentPagerAdapterModel(context.getString(R.string.comments),
+                        CommitCommentsFragment.newInstance(login, repoId, sha)))
                 .collect(Collectors.toList());
     }
 
@@ -194,14 +196,14 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login,
-                                                                       boolean isMember, boolean isEnterprise) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForOrg(@NonNull Context context, @NonNull String login, boolean isMember) {
         return Stream.of(
-                new FragmentPagerAdapterModel(context.getString(R.string.feeds), isMember ? FeedsFragment.newInstance(login, true, isEnterprise) : null),
-                new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login, isEnterprise)),
-                new FragmentPagerAdapterModel(context.getString(R.string.repos), OrgReposFragment.newInstance(login, isEnterprise)),
-                new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersFragment.newInstance(login, isEnterprise)),
-                new FragmentPagerAdapterModel(context.getString(R.string.teams), isMember ? OrgTeamFragment.newInstance(login, isEnterprise) : null))
+                new FragmentPagerAdapterModel(context.getString(R.string.feeds),
+                        isMember ? FeedsFragment.newInstance(login, true) : null),
+                new FragmentPagerAdapterModel(context.getString(R.string.overview), OrgProfileOverviewFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.repos), OrgReposFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.people), OrgMembersFragment.newInstance(login)),
+                new FragmentPagerAdapterModel(context.getString(R.string.teams), isMember ? OrgTeamFragment.newInstance(login) : null))
                 .filter(fragmentPagerAdapterModel -> fragmentPagerAdapterModel.getFragment() != null)
                 .collect(Collectors.toList());
     }
@@ -218,5 +220,13 @@ import lombok.Setter;
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)))
                 .collect(Collectors.toList());
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForBranches(@NonNull Context context, @NonNull String repoId, @NonNull String login) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.branches),
+                        BranchesFragment.Companion.newInstance(login, repoId, true)),
+                new FragmentPagerAdapterModel(context.getString(R.string.tags),
+                        BranchesFragment.Companion.newInstance(login, repoId, false)))
+                .toList();
     }
 }

@@ -12,7 +12,7 @@ import io.reactivex.Observable
 
 class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Presenter {
     override fun onFilterLanguage(key: String) {
-        manageObservable(RxHelper.getObserver(Observable.fromIterable(ColorsProvider.languages()))
+        manageObservable(RxHelper.getObservable(Observable.fromIterable(ColorsProvider.languages()))
                 .doOnSubscribe { sendToView { it.onClearMenu() } }
                 .filter { it.toLowerCase().contains(key.toLowerCase()) }
                 .doOnNext { sendWithColor(it) })
@@ -34,7 +34,7 @@ class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Present
     }
 
     override fun onLoadLanguage() {
-        manageObservable(RxHelper.getObserver(Observable.fromIterable(ColorsProvider.languages()))
+        manageObservable(RxHelper.getObservable(Observable.fromIterable(ColorsProvider.languages()))
                 .doOnNext { sendWithColor(it) })
     }
 }

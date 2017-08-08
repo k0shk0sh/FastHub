@@ -13,18 +13,19 @@ import com.fastaccess.helper.RxHelper;
 import java.util.Date;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposable;
+import io.requery.BlockingEntityStore;
 import io.requery.Column;
 import io.requery.Convert;
 import io.requery.Entity;
 import io.requery.Key;
 import io.requery.Persistable;
-import io.requery.reactivex.ReactiveEntityStore;
 import lombok.NoArgsConstructor;
 
 import static com.fastaccess.data.dao.model.Comment.COMMIT_ID;
 import static com.fastaccess.data.dao.model.Comment.GIST_ID;
+import static com.fastaccess.data.dao.model.Comment.ID;
 import static com.fastaccess.data.dao.model.Comment.ISSUE_ID;
 import static com.fastaccess.data.dao.model.Comment.LOGIN;
 import static com.fastaccess.data.dao.model.Comment.PULL_REQUEST_ID;
@@ -54,41 +55,55 @@ import static com.fastaccess.data.dao.model.Comment.UPDATED_AT;
     String pullRequestId;
     @Convert(ReactionsConverter.class) ReactionsModel reactions;
 
-    public Single<Comment> save(Comment entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore().upsert(entity));
+    public static Disposable saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(Comment.class)
+                        .where(GIST_ID.equal(gistId))
+                        .get()
+                        .value();
+                if (!models.isEmpty()) {
+                    for (Comment model : models) {
+                        dataSource.delete(Comment.class).where(ID.eq(model.getId())).get().value();
+                        model.setGistId(gistId);
+                        dataSource.insert(model);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
-    public static Observable<Comment> saveForGist(@NonNull List<Comment> models, @NonNull String gistId) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Comment.class)
-                .where(GIST_ID.equal(gistId))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(comment -> {
-                    comment.setGistId(gistId);
-                    return comment.save(comment).toObservable();
-                }));
-    }
-
-    public static Observable saveForCommits(@NonNull List<Comment> models, @NonNull String repoId,
+    public static Disposable saveForCommits(@NonNull List<Comment> models, @NonNull String repoId,
                                             @NonNull String login, @NonNull String commitId) {
-        ReactiveEntityStore<Persistable> singleEntityStore = App.getInstance().getDataStore();
-        return RxHelper.safeObservable(singleEntityStore.delete(Comment.class)
-                .where(COMMIT_ID.equal(commitId)
-                        .and(REPO_ID.equal(repoId))
-                        .and(LOGIN.equal(login)))
-                .get()
-                .single()
-                .toObservable()
-                .flatMap(integer -> Observable.fromIterable(models))
-                .flatMap(model -> {
-                    model.setLogin(login);
-                    model.setRepoId(repoId);
-                    model.setCommitId(commitId);
-                    return model.save(model).toObservable();
-                }));
+        return RxHelper.getSingle(Single.fromPublisher(s -> {
+            try {
+                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                dataSource.delete(Comment.class)
+                        .where(COMMIT_ID.equal(commitId)
+                                .and(REPO_ID.equal(repoId))
+                                .and(LOGIN.equal(login)))
+                        .get()
+                        .value();
+                if (!models.isEmpty()) {
+                    for (Comment model : models) {
+                        dataSource.delete(Comment.class).where(ID.eq(model.getId())).get().value();
+                        model.setLogin(login);
+                        model.setRepoId(repoId);
+                        model.setCommitId(commitId);
+                        dataSource.insert(model);
+                    }
+                }
+                s.onNext("");
+            } catch (Exception e) {
+                s.onError(e);
+            }
+            s.onComplete();
+        })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
 
     public static Single<List<Comment>> getGistComments(@NonNull String gistId) {

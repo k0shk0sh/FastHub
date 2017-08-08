@@ -10,9 +10,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 
 import com.annimon.stream.Stream;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
@@ -21,7 +23,6 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
-import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.modules.notification.NotificationActivity;
 import com.firebase.jobdispatcher.Constraint;
@@ -33,10 +34,6 @@ import com.firebase.jobdispatcher.JobService;
 import com.firebase.jobdispatcher.Lifetime;
 import com.firebase.jobdispatcher.RetryStrategy;
 import com.firebase.jobdispatcher.Trigger;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.assist.ImageSize;
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 
 import java.util.List;
 
@@ -49,15 +46,18 @@ import io.reactivex.schedulers.Schedulers;
 
 public class NotificationSchedulerJobTask extends JobService {
     private final static String JOB_ID = "fasthub_notification";
+    private final static String SINGLE_JOB_ID = "single_fasthub_notification";
 
     private final static int THIRTY_MINUTES = 30 * 60;
     private static final String NOTIFICATION_GROUP_ID = "FastHub";
 
     @Override public boolean onStartJob(JobParameters job) {
-        if (PrefGetter.getNotificationTaskDuration() == -1) {
-            scheduleJob(this, -1, false);
-            finishJob(job);
-            return true;
+        if (!SINGLE_JOB_ID.equalsIgnoreCase(job.getTag())) {
+            if (PrefGetter.getNotificationTaskDuration() == -1) {
+                scheduleJob(this, -1, false);
+                finishJob(job);
+                return true;
+            }
         }
         Login login = null;
         try {
@@ -75,8 +75,6 @@ public class NotificationSchedulerJobTask extends JobService {
                             finishJob(job);
                         }
                     }, throwable -> jobFinished(job, true));
-        } else {
-            finishJob(job);
         }
         return true;
     }
@@ -91,28 +89,45 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
-        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
-        if (cancel) dispatcher.cancel(JOB_ID);
-        if (duration == -1) {
-            dispatcher.cancel(JOB_ID);
-            return;
+        if (AppHelper.isGoogleAvailable(context)) {
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            if (cancel) dispatcher.cancel(JOB_ID);
+            if (duration == -1) {
+                dispatcher.cancel(JOB_ID);
+                return;
+            }
+            duration = duration <= 0 ? THIRTY_MINUTES : duration;
+            Job.Builder builder = dispatcher
+                    .newJobBuilder()
+                    .setTag(JOB_ID)
+                    .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
+                    .setLifetime(Lifetime.FOREVER)
+                    .setRecurring(true)
+                    .setConstraints(Constraint.ON_ANY_NETWORK)
+                    .setTrigger(Trigger.executionWindow(duration / 2, duration))
+                    .setService(NotificationSchedulerJobTask.class);
+            dispatcher.mustSchedule(builder.build());
         }
-        duration = duration <= 0 ? THIRTY_MINUTES : duration;
-        Job.Builder builder = dispatcher
-                .newJobBuilder()
-                .setTag(JOB_ID)
-                .setRetryStrategy(RetryStrategy.DEFAULT_LINEAR)
-                .setLifetime(Lifetime.FOREVER)
-                .setRecurring(true)
-                .setConstraints(Constraint.ON_ANY_NETWORK)
-                .setTrigger(Trigger.executionWindow(duration / 2, duration))
-                .setService(NotificationSchedulerJobTask.class);
-        dispatcher.mustSchedule(builder.build());
+    }
+
+    public static void scheduleOneTimeJob(@NonNull Context context) {
+        if (AppHelper.isGoogleAvailable(context)) {
+            FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            Job.Builder builder = dispatcher
+                    .newJobBuilder()
+                    .setTag(SINGLE_JOB_ID)
+                    .setReplaceCurrent(true)
+                    .setRecurring(false)
+                    .setTrigger(Trigger.executionWindow(30, 60))
+                    .setConstraints(Constraint.ON_ANY_NETWORK)
+                    .setService(NotificationSchedulerJobTask.class);
+            dispatcher.mustSchedule(builder.build());
+        }
     }
 
     private void onSave(@Nullable List<Notification> notificationThreadModels, JobParameters job) {
         if (notificationThreadModels != null) {
-            RxHelper.safeObservable(Notification.save(notificationThreadModels)).subscribe(notification -> {/**/}, Throwable::printStackTrace);
+            Notification.save(notificationThreadModels);
             onNotifyUser(notificationThreadModels, job);
         }
     }
@@ -177,22 +192,12 @@ public class NotificationSchedulerJobTask extends JobService {
         if (!InputHelper.isEmpty(iconUrl)) {
             withoutComments(null, thread, context, accentColor);
         } else {
-            ImageLoader.getInstance().loadImage(iconUrl, new ImageSize(50, 50), new ImageLoadingListener() {
-                @Override public void onLoadingStarted(String s, View view) {}
-
-                @Override public void onLoadingFailed(String s, View view, FailReason failReason) {
-                    withoutComments(null, thread, context, accentColor);
-                }
-
-                @Override public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                    withoutComments(bitmap, thread, context, accentColor);
-                }
-
-                @Override public void onLoadingCancelled(String s, View view) {
-                    withoutComments(null, thread, context, accentColor);
-
-                }
-            });
+            Glide.with(context).load(iconUrl).asBitmap()
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                            withoutComments(resource, thread, context, accentColor);
+                        }
+                    });
         }
     }
 
@@ -214,19 +219,9 @@ public class NotificationSchedulerJobTask extends JobService {
 
     private void getNotificationWithComment(Context context, int accentColor, Notification thread, Comment comment, String url) {
         if (!InputHelper.isEmpty(url)) {
-            ImageLoader.getInstance().loadImage(url, new ImageSize(50, 50), new ImageLoadingListener() {
-                @Override public void onLoadingStarted(String s, View view) {}
-
-                @Override public void onLoadingFailed(String s, View view, FailReason failReason) {
-                    withComments(null, comment, context, thread, accentColor);
-                }
-
-                @Override public void onLoadingComplete(String s, View view, Bitmap bitmap) {
-                    withComments(bitmap, comment, context, thread, accentColor);
-                }
-
-                @Override public void onLoadingCancelled(String s, View view) {
-                    withComments(null, comment, context, thread, accentColor);
+            Glide.with(context).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
+                @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+                    withComments(resource, comment, context, thread, accentColor);
                 }
             });
         } else {
@@ -259,6 +254,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
                 .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
+                .setSound(PrefGetter.getNotificationSound())
                 .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))

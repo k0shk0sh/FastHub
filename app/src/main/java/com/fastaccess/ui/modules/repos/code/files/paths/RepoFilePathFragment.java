@@ -22,7 +22,7 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
-import com.fastaccess.ui.modules.repos.extras.branches.BranchesDialogFragment;
+import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerFragment;
 import com.fastaccess.ui.modules.search.repos.files.SearchFileActivity;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -80,7 +80,7 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     }
 
     @OnClick(R.id.searchRepoFiles) void onSearchClicked() {
-        startActivity(SearchFileActivity.createIntent(getContext(), getPresenter().getLogin(), getPresenter().getRepoId()));
+        startActivity(SearchFileActivity.createIntent(getContext(), getPresenter().getLogin(), getPresenter().getRepoId(), isEnterprise()));
     }
 
     @OnClick(R.id.toParentFolder) void onBackClicked() {
@@ -91,8 +91,8 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     }
 
     @OnClick(R.id.branches) void onBranchesClicked() {
-        BranchesDialogFragment.Companion.newInstance(getPresenter().login, getPresenter().repoId)
-                .show(getChildFragmentManager(), "BranchesDialogFragment");
+        BranchesPagerFragment.Companion.newInstance(getPresenter().login, getPresenter().repoId)
+                .show(getChildFragmentManager(), "BranchesFragment");
     }
 
     @Override public void onAttach(Context context) {

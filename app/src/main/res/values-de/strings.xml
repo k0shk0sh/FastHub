@@ -12,7 +12,6 @@
     <string name="sign_in">Anmelden</string>
     <string name="share">Teilen</string>
     <string name="reload">Neu laden</string>
-    <string name="feeds">Feeds</string>
     <string name="profile">Profil</string>
     <string name="error">Fehler</string>
     <string name="press_again_to_exit">Nochmal drücken zum beenden</string>
@@ -192,7 +191,7 @@
     <string name="background_job_summary">Wähle wie regelmäßig FastHub nach neuen Benachrichtigungen sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
-    <string name="behavior">Verhalten &amp; Aussehen</string>
+    <string name="behavior">Verhalten :\&#38; Aussehen</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
     <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub ausversehen verlässt</string>
@@ -297,7 +296,7 @@
     <string name="least_commented">Am wenigsten kommentiert</string>
     <string name="recently_updated">Vor kurzem aktualisiert</string>
     <string name="least_recent_updated">Am wenigsten vor kurzem aktiviert</string>
-    <string name="empty_search_error">Das Suchfeld darf nicht leer sein</string>
+    <string name="empty_search_error">Das Suchfeld darf nicht leer sein!</string>
     <string name="long_press_repo_fab_hint">Tippe länger um ein Issue-Ticket zu erstellen</string>
     <string name="commit_can_be_merged">Diese Pull-Request kann gemerged werden</string>
     <string name="reviewed">überprüft</string>
@@ -313,7 +312,7 @@
     <string name="enable_notification_sound_title">Benachrichtigunston aktivieren</string>
     <string name="login_with_personal_token">Mit persönlichen Token anmelden</string>
     <string name="personal_token">Persönlicher Token</string>
-    <string name="basic_login">normal anmelden</string>
+    <string name="basic_login">Normal anmelden</string>
     <string name="no_orgs_description">Wenn du in einer Organisation bist und sie nicht sehen kannst, folge dem unteren Link
 \nhttps://help.github.com/articles/about-third-party-application-restrictions</string>
     <string name="insert">Einfügen</string>
@@ -351,7 +350,7 @@
     <string name="enable_signature">Signatur aktivieren</string>
     <string name="enable_signature_summary">&quot;Gesendet von meinem...&quot;-Signatur aktivieren</string>
     <string name="enable_signature_box">Signaturbox aktivieren</string>
-    <string name="enable_signature_box_summary">Die Signatur wird im Editor angezeigt, sobald aktiviert.</string>
+    <string name="enable_signature_box_summary">Aktivieren, damit Signatur im Editor angezeigt wird</string>
     <string name="tags">Tags</string>
     <string name="add_comment">Kommentar hinzufügen</string>
     <string name="banners">Einführung von Bannern</string>
@@ -382,7 +381,13 @@
     <string name="assignee_added">Assignee erfolgreich hinzugefügt</string>
     <string name="reviewer_added">Reviewer erfolgreich hinzugefügt</string>
     <string name="milestone_added">Meilenstein erfolgreich hinzugefügt</string>
-<string name="feed">Feed</string>
+    <string name="feed">Feed</string>
+    <string name="premium_theme">Premiumdesign</string>
+    <string name="choose_code_theme">Farbcodepalette auswählen</string>
+    <string name="enterprise_login_warning">Bitte logge dich per OAuth ein um den ganzen Umfang der GitHub API benutzen 
+	zu können und um zufällige Logouts bezüglich Enterprise und Logintokens zu verhindern.</string>
+    <string name="add_account">Account hinzufügen</string>
+<string name="choose_account">Account auswählen</string>
 </resources>
 
 

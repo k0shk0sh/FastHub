@@ -31,7 +31,6 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
     val editText: TextInputLayout by lazy { view!!.findViewById<TextInputLayout>(R.id.editText) }
     val spacePattern = "\\s+".toRegex()
 
-
     private var commentCallback: ReviewCommentListener? = null
 
     override fun onAttach(context: Context?) {

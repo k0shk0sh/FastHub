@@ -22,9 +22,10 @@ public enum IssueEventType {
     subscribed(R.drawable.ic_subscribe),
     unassigned(R.drawable.ic_profile),
     unlabeled(R.drawable.ic_label),
-    unlocked(R.drawable.ic_unsubscribe),
+    unlocked(R.drawable.ic_unlock),
     unsubscribed(R.drawable.ic_eye_off),
     review_requested(R.drawable.ic_eye),
+    review_dismissed(R.drawable.ic_eye_off),
     review_request_removed(R.drawable.ic_eye_off),
     @SerializedName("cross-referenced")crossReferenced(R.drawable.ic_format_quote);
 

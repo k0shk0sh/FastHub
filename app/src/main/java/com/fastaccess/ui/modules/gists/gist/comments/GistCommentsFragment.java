@@ -67,7 +67,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         stateLayout.setOnReloadListener(this);
         adapter = new CommentsAdapter(getPresenter().getComments());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());

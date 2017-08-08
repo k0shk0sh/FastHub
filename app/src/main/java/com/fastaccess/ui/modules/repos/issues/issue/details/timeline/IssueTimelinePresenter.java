@@ -96,7 +96,7 @@ import lombok.Getter;
                             Activity activity = ActivityHelper.getActivity(v.getContext());
                             if (activity == null) return false;
                             CreateIssueActivity.startForResult(activity,
-                                    item.getIssue().getLogin(), item.getIssue().getRepoId(), item.getIssue());
+                                    item.getIssue().getLogin(), item.getIssue().getRepoId(), item.getIssue(), isEnterprise());
                         } else if (item1.getItemId() == R.id.share) {
                             ActivityHelper.shareUrl(v.getContext(), item.getIssue().getHtmlUrl());
                         }

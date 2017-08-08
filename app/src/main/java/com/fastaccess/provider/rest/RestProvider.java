@@ -76,10 +76,6 @@ public class RestProvider {
         return okHttpClient;
     }
 
-    private static Retrofit provideRetrofit() {
-        return provideRetrofit(false);
-    }
-
     private static Retrofit provideRetrofit(boolean enterprise) {
         return new Retrofit.Builder()
                 .baseUrl(enterprise && PrefGetter.isEnterprise() ? LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl()) : BuildConfig.REST_URL)
@@ -91,9 +87,14 @@ public class RestProvider {
 
     public static void downloadFile(@NonNull Context context, @NonNull String url) {
         if (InputHelper.isEmpty(url)) return;
+        boolean isEnterprise = LinkParserHelper.isEnterprise(url);
         Uri uri = Uri.parse(url);
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri);
+        if (isEnterprise) {
+            String authToken = PrefGetter.getEnterpriseToken();
+            request.addRequestHeader("Authorization", authToken.startsWith("Basic") ? authToken : "token " + authToken);
+        }
         File direct = new File(Environment.getExternalStorageDirectory() + File.separator + context.getString(R.string.app_name));
         if (!direct.isDirectory() || !direct.exists()) {
             boolean isCreated = direct.mkdirs();
@@ -160,7 +161,7 @@ public class RestProvider {
     }
 
     @NonNull public static ReviewService getReviewService(boolean enterprise) {
-        return provideRetrofit().create(ReviewService.class);
+        return provideRetrofit(enterprise).create(ReviewService.class);
     }
 
     @NonNull public static UserRestService getContribution() {
@@ -172,8 +173,8 @@ public class RestProvider {
                 .create(UserRestService.class);
     }
 
-    @NonNull public static SearchService getSearchService() {
-        return provideRetrofit().create(SearchService.class);
+    @NonNull public static SearchService getSearchService(boolean enterprise) {
+        return provideRetrofit(enterprise).create(SearchService.class);
     }
 
     @Nullable public static GitHubErrorResponse getErrorResponse(@NonNull Throwable throwable) {

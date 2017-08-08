@@ -91,7 +91,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new PullRequestAdapter(getPresenter().getPullRequests(), true);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addKeyLineDivider();
         recycler.addOnScrollListener(getLoadMore());
@@ -156,7 +156,8 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
     }
 
     @Override public void onOpenPullRequest(@NonNull PullsIssuesParser parser) {
-        Intent intent = PullRequestPagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber());
+        Intent intent = PullRequestPagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(),
+                parser.getNumber(), false, isEnterprise());
         startActivityForResult(intent, RepoPullRequestMvp.PULL_REQUEST_REQUEST_CODE);
     }
 

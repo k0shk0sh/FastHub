@@ -7,8 +7,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
-import com.fastaccess.helper.Logger;
+import com.fastaccess.data.dao.model.Login;
+import com.fastaccess.data.dao.model.Notification;
+import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -17,7 +20,7 @@ import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
-import java.util.Observable;
+import io.reactivex.Observable;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -30,21 +33,31 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
 
     MainPresenter() {
         setEnterprise(PrefGetter.isEnterprise());
-        manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getUser())
+        manageDisposable(RxHelper.getObservable(RestProvider.getUserService(isEnterprise()).getUser())
                 .flatMap(login -> {
-                    login.setIsLoggedIn(true);
-                    login.setEnterpriseUrl(isEnterprise() ? PrefGetter.getEnterpriseUrl() : null);
-                    login.setToken(isEnterprise() ? PrefGetter.getEnterpriseToken() : PrefGetter.getToken());
-                    login.setOtpCode(isEnterprise() ? PrefGetter.getEnterpriseOtpCode() : PrefGetter.getOtpCode());
-                    login.setIsEnterprise(isEnterprise());
-                    return login.update(login);
+                    Login current = Login.getUser();
+                    current.setLogin(login.getLogin());
+                    current.setName(login.getName());
+                    current.setAvatarUrl(login.getAvatarUrl());
+                    current.setEmail(login.getEmail());
+                    current.setBio(login.getBio());
+                    current.setBlog(login.getBlog());
+                    current.setCompany(current.getCompany());
+                    return login.update(current);
                 })
-                .subscribe(login -> {
-                    Logger.e(login.getToken());
-                    if (login != null) {
-                        sendToView(MainMvp.View::onUpdateDrawerMenuHeader);
+                .flatMap(login -> RxHelper.getObservable(RestProvider.getNotificationService(isEnterprise())
+                        .getNotifications(ParseDateFormat.getLastWeekDate())))
+                .flatMap(notificationPageable -> {
+                    if (notificationPageable != null && notificationPageable.getItems() == null && !notificationPageable.getItems().isEmpty()) {
+                        manageDisposable(Notification.save(notificationPageable.getItems()));
+                        return Observable.just(Stream.of(notificationPageable.getItems()).anyMatch(Notification::isUnread));
                     }
-                }, Throwable::printStackTrace/*fail silently*/));
+                    return Observable.empty();
+                })
+                .subscribe(unread -> sendToView(view -> {
+                    view.onInvalidateNotification();
+                    view.onUpdateDrawerMenuHeader();
+                }), Throwable::printStackTrace/*fail silently*/));
     }
 
     @Override public boolean canBackPress(@NonNull DrawerLayout drawerLayout) {
@@ -52,32 +65,38 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
     }
 
     @SuppressWarnings("ConstantConditions")
-    @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType int type) {
+    @Override public void onModuleChanged(@NonNull FragmentManager fragmentManager, @MainMvp.NavigationType
+            int type) {
         Fragment currentVisible = getVisibleFragment(fragmentManager);
-        FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment.TAG);
-        MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag(fragmentManager, MyPullsPagerFragment.TAG);
-        MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag(fragmentManager, MyIssuesPagerFragment.TAG);
+        FeedsFragment homeView = (FeedsFragment) getFragmentByTag(fragmentManager, FeedsFragment
+                .TAG);
+        MyPullsPagerFragment pullRequestView = (MyPullsPagerFragment) getFragmentByTag
+                (fragmentManager, MyPullsPagerFragment.TAG);
+        MyIssuesPagerFragment issuesView = (MyIssuesPagerFragment) getFragmentByTag
+                (fragmentManager, MyIssuesPagerFragment.TAG);
         switch (type) {
             case MainMvp.PROFILE:
                 sendToView(MainMvp.View::onOpenProfile);
                 break;
             case MainMvp.FEEDS:
                 if (homeView == null) {
-                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(isEnterprise()), currentVisible);
+                    onAddAndHide(fragmentManager, FeedsFragment.newInstance(null),
+                            currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, homeView, currentVisible);
                 }
                 break;
             case MainMvp.PULL_REQUESTS:
                 if (pullRequestView == null) {
-                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(isEnterprise()), currentVisible);
+                    onAddAndHide(fragmentManager, MyPullsPagerFragment.newInstance(
+                    ), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestView, currentVisible);
                 }
                 break;
             case MainMvp.ISSUES:
                 if (issuesView == null) {
-                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(isEnterprise()), currentVisible);
+                    onAddAndHide(fragmentManager, MyIssuesPagerFragment.newInstance(), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, issuesView, currentVisible);
                 }
@@ -85,7 +104,8 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
         }
     }
 
-    @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow, @NonNull Fragment toHide) {
+    @Override public void onShowHideFragment(@NonNull FragmentManager fragmentManager, @NonNull Fragment toShow,
+                                             @NonNull Fragment toHide) {
         toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()
@@ -95,7 +115,8 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
         toShow.onHiddenChanged(false);
     }
 
-    @Override public void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd, @NonNull Fragment toHide) {
+    @Override public void onAddAndHide(@NonNull FragmentManager fragmentManager, @NonNull Fragment toAdd,
+                                       @NonNull Fragment toHide) {
         toHide.onHiddenChanged(true);
         fragmentManager
                 .beginTransaction()

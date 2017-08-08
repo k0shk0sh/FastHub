@@ -1,32 +1,44 @@
 image: Visual Studio 2017
-clone_folder: C:\FH
+clone_folder: 'C:\FastHub'
 
 environment:
-  ANDROID_HOME: C:\\Android\\android-sdk
+  ANDROID_HOME: 'A:\'
+  GRADLE_USER_HOME: 'G:\'
 
 init:
-  - cmd: appveyor DownloadFile "https://dl.google.com/android/repository/tools_r25.2.5-windows.zip" -FileName "C:\android-tools.zip"
-  - cmd: 7z x "C:\android-tools.zip" -o"%ANDROID_HOME%" > nul
+  - ps: |
+      subst F: C:\FastHub
+      mkdir C:\gradle.home
+      subst G: C:\gradle.home
+      mkdir C:\Android\android-sdk
+      subst A: C:\Android\android-sdk
+      appveyor DownloadFile "https://dl.google.com/android/repository/sdk-tools-windows-3859397.zip" -FileName "C:\android-tools.zip"
+      Write-Host "Extracting SDK tools..."
+      7z x "C:\android-tools.zip" -o"$env:ANDROID_HOME" | Out-Null
 
 install:
   - ps: |
-      IF ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
-        cinst cs-script
+      Write-Output "" > ~\.android\repositories.cfg
+      if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+        Write-Host "PR detected. Installing C# Script Engine and doing translations check:"
+        cinst cs-script --version 3.26.2.0
         cscs
-        cscs -ac:2 -nl C:\FH\.github\check_translations.cs
+        cscs -ac:2 -nl $env:APPVEYOR_BUILD_FOLDER\.github\check_translations.cs
       }
-  - cmd: 'echo   > C:/Users/appveyor/.android/repositories.cfg'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platform-tools"'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "extras;android;m2repository"'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "extras;google;m2repository"'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "build-tools;26.0.0"'
-  - ps: 'echo "y" | & C:/Android/android-sdk/tools/bin/sdkmanager.bat "platforms;android-25"'
+      Write-Host "Installing Android packages:"
+      $pkgs = '"platform-tools"', '"extras;android;m2repository"', '"extras;google;m2repository"', '"build-tools;26.0.0"', '"platforms;android-25"'
+      foreach ($pkg in $pkgs) {
+        Write-Host "Installing ${pkg}:"
+        echo "y" | & $env:ANDROID_HOME\tools\bin\sdkmanager.bat ${pkg}
+      }
 
 build_script:
-  - cmd: gradlew clean assembleDebug --stacktrace
+  - cmd: |
+      CD /D F:
+      F:\gradlew clean assembleDebug --stacktrace
 
 after_build:
-  - cmd: RENAME C:\FH\app\build\outputs\apk\debug\app-debug.apk fasthub-debug-%APPVEYOR_BUILD_VERSION%.apk
+  - ps: Rename-Item -Path "$env:APPVEYOR_BUILD_FOLDER\app\build\outputs\apk\debug\app-debug.apk" -NewName "fasthub-debug-$env:APPVEYOR_BUILD_VERSION.apk"
 
 test: off
 

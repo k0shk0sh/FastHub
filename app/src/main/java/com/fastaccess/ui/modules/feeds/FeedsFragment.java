@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.feeds;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -11,15 +12,18 @@ import android.view.View;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitCommitModel;
+import com.fastaccess.data.dao.NameParser;
 import com.fastaccess.data.dao.SimpleUrlsModel;
 import com.fastaccess.data.dao.model.Event;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.FeedsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -33,7 +37,8 @@ import butterknife.BindView;
  * Created by Kosh on 11 Nov 2016, 12:36 PM
  */
 
-public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> implements FeedsMvp.View {
+public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> implements
+        FeedsMvp.View {
 
     public static final String TAG = FeedsFragment.class.getSimpleName();
 
@@ -43,26 +48,17 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     private FeedsAdapter adapter;
     private OnLoadMore onLoadMore;
 
-    public static FeedsFragment newInstance(@NonNull String user) {
+    public static FeedsFragment newInstance(@Nullable String user) {
         return newInstance(user, false);
     }
 
     public static FeedsFragment newInstance(@Nullable String user, boolean isOrg) {
-        return newInstance(user, isOrg, false);
-    }
-
-    public static FeedsFragment newInstance(@Nullable String user, boolean isOrg, boolean isEnterprise) {
         FeedsFragment feedsFragment = new FeedsFragment();
         feedsFragment.setArguments(Bundler.start()
                 .put(BundleConstant.EXTRA, user)
                 .put(BundleConstant.EXTRA_TWO, isOrg)
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return feedsFragment;
-    }
-
-    public static FeedsFragment newInstance(boolean isEnterprise) {
-        return newInstance(null, false, isEnterprise);
     }
 
     @Override protected int fragmentLayout() {
@@ -76,7 +72,8 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
         recycler.setEmptyView(stateLayout, refresh);
         adapter = new FeedsAdapter(getPresenter().getEvents(), isProfile());
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter()
+                .getPreviousTotal());
         recycler.setAdapter(adapter);
         if (isProfile()) {
             recycler.addDivider();
@@ -161,7 +158,10 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
             SchemeParser.launchUri(getContext(), Uri.parse(((SimpleUrlsModel) item).getItem()));
         } else if (item instanceof GitCommitModel) {
             GitCommitModel model = (GitCommitModel) item;
-            SchemeParser.launchUri(getContext(), Uri.parse(model.getUrl()));
+            NameParser nameParser = new NameParser(model.getUrl());
+            Intent intent = CommitPagerActivity.createIntent(getContext(), nameParser.getName(),
+                    nameParser.getUsername(), model.getSha(), true, LinkParserHelper.isEnterprise(model.getUrl()));
+            getContext().startActivity(intent);
         }
     }
 
@@ -178,6 +178,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     }
 
     public boolean isProfile() {
-        return !InputHelper.isEmpty(getArguments().getString(BundleConstant.EXTRA)) && !getArguments().getBoolean(BundleConstant.EXTRA_TWO);
+        return !InputHelper.isEmpty(getArguments().getString(BundleConstant.EXTRA)) &&
+                !getArguments().getBoolean(BundleConstant.EXTRA_TWO);
     }
 }

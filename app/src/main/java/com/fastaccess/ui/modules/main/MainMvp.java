@@ -39,6 +39,8 @@ public interface MainMvp {
         void onUpdateDrawerMenuHeader();
 
         void onOpenProfile();
+
+        void onInvalidateNotification();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

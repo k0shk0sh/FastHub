@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.GitHubErrorResponse;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.BaseMvp;
@@ -51,7 +50,7 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
 
     @Override public <T> void manageObservable(@Nullable Observable<T> observable) {
         if (observable != null) {
-            manageDisposable(RxHelper.getObserver(observable).subscribe(t -> {/**/}, Throwable::printStackTrace));
+            manageDisposable(RxHelper.getObservable(observable).subscribe(t -> {/**/}, Throwable::printStackTrace));
         }
     }
 
@@ -69,8 +68,14 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
         return apiCalled;
     }
 
-    @Override public void onSubscribed() {
-        sendToView(v -> v.showProgress(R.string.in_progress));
+    @Override public void onSubscribed(boolean cancelable) {
+        sendToView(v -> {
+            if (cancelable) {
+                v.showProgress(R.string.in_progress);
+            } else {
+                v.showBlockingProgress(R.string.in_progress);
+            }
+        });
     }
 
     @Override public void onError(@NonNull Throwable throwable) {
@@ -89,9 +94,13 @@ public class BasePresenter<V extends BaseMvp.FAView> extends TiPresenter<V> impl
     }
 
     @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext) {
+        makeRestCall(observable, onNext, true);
+    }
+
+    @Override public <T> void makeRestCall(@NonNull Observable<T> observable, @NonNull Consumer<T> onNext, boolean cancelable) {
         manageDisposable(
-                RxHelper.getObserver(observable)
-                        .doOnSubscribe(disposable -> onSubscribed())
+                RxHelper.getObservable(observable)
+                        .doOnSubscribe(disposable -> onSubscribed(cancelable))
                         .subscribe(onNext, this::onError, () -> apiCalled = true)
         );
     }

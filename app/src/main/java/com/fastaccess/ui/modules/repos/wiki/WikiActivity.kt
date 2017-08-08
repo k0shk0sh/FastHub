@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.ProgressBar
 import com.evernote.android.state.State
 import com.fastaccess.R
+import com.fastaccess.data.dao.NameParser
 import com.fastaccess.data.dao.wiki.WikiContentModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
@@ -108,7 +109,11 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
             }
             android.R.id.home -> {
                 if (!presenter.login.isNullOrEmpty() && !presenter.repoId.isNullOrEmpty()) {
-                    startActivity(RepoPagerActivity.createIntent(this, presenter.repoId!!, presenter.login!!))
+                    val nameParse = NameParser("")
+                    nameParse.name = presenter.repoId!!
+                    nameParse.username = presenter.login!!
+                    nameParse.isEnterprise = isEnterprise
+                    RepoPagerActivity.startRepoPager(this, nameParse)
                 }
                 finish()
                 return true

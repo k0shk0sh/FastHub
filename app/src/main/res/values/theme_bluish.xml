@@ -8,7 +8,7 @@
     <color name="bluish_accent">#448AFF</color>
 
     <color name="bluishWindowBackground">@color/bluish_background</color>
-    <color name="bluishDivider">#80949494</color>
+    <color name="bluishDivider">#802A456B</color>
 
     <style name="ThemeBluish" parent="ThemeBluish.Base"/>
 
@@ -44,7 +44,6 @@
         <item name="android:toolbarStyle">@style/ToolbarStyleBluish</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">false</item>
         <item name="android:popupMenuStyle">@style/PopupMenuBluish</item>
-        <item name="android:navigationBarColor">@color/bluish_primary</item>
     </style>
 
     <style name="PopupMenuBluish" parent="Widget.AppCompat.PopupMenu">

@@ -32,7 +32,7 @@ import butterknife.OnClick;
 import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
 import shortbread.Shortcut;
 
-@Shortcut(id = "feeds", icon = R.drawable.ic_github_shortcut, shortLabelRes = R.string.feeds, rank = 1)
+@Shortcut(id = "feeds", icon = R.drawable.ic_app_shortcut_github, shortLabelRes = R.string.feeds, rank = 1)
 public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> implements MainMvp.View {
 
     @State @MainMvp.NavigationType int navType = MainMvp.FEEDS;
@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 new SlackBottomSheetDialog().show(getSupportFragmentManager(), SlackBottomSheetDialog.TAG);
             }
         }
+        getPresenter().setEnterprise(PrefGetter.isEnterprise());
         selectHome(false);
         hideShowShadow(navType == MainMvp.FEEDS);
         setToolbarIcon(R.drawable.ic_menu);
@@ -86,9 +87,6 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.search_menu, menu);
-        if (isLoggedIn() && Notification.hasUnreadNotifications()) {
-            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -105,6 +103,13 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override public boolean onPrepareOptionsMenu(Menu menu) {
+        if (isLoggedIn() && Notification.hasUnreadNotifications()) {
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
+        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override public void onNavigationChanged(@MainMvp.NavigationType int navType) {
@@ -125,13 +130,17 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     }
 
     @Override public void onOpenProfile() {
-        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise(), -1);
     }
 
-    @Shortcut(id = "myIssues", icon = R.drawable.ic_issues_shortcut, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
+    @Override public void onInvalidateNotification() {
+        invalidateOptionsMenu();
+    }
+
+    @Shortcut(id = "myIssues", icon = R.drawable.ic_app_shortcut_issues, shortLabelRes = R.string.issues, rank = 2, action = "myIssues")
     public void myIssues() {}//do nothing
 
-    @Shortcut(id = "myPulls", icon = R.drawable.ic_pull_requests_shortcut, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
+    @Shortcut(id = "myPulls", icon = R.drawable.ic_app_shortcut_pull_requests, shortLabelRes = R.string.pull_requests, rank = 3, action = "myPulls")
     public void myPulls() {}//do nothing
 
     private void onInit(@Nullable Bundle savedInstanceState) {
@@ -143,7 +152,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                         navType = MainMvp.PULL_REQUESTS;
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.container, MyPullsPagerFragment.newInstance(false), MyPullsPagerFragment.TAG)
+                                .replace(R.id.container, MyPullsPagerFragment.newInstance(), MyPullsPagerFragment.TAG)
                                 .commit();
                         bottomNavigation.setSelectedIndex(2, true);
                         attachFeeds = false;
@@ -151,7 +160,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                         navType = MainMvp.ISSUES;
                         getSupportFragmentManager()
                                 .beginTransaction()
-                                .replace(R.id.container, MyIssuesPagerFragment.newInstance(false), MyIssuesPagerFragment.TAG)
+                                .replace(R.id.container, MyIssuesPagerFragment.newInstance(), MyIssuesPagerFragment.TAG)
                                 .commit();
                         bottomNavigation.setSelectedIndex(1, true);
                         attachFeeds = false;
@@ -161,7 +170,7 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
                 if (attachFeeds) {
                     getSupportFragmentManager()
                             .beginTransaction()
-                            .replace(R.id.container, FeedsFragment.newInstance(false), FeedsFragment.TAG)
+                            .replace(R.id.container, FeedsFragment.newInstance(null), FeedsFragment.TAG)
                             .commit();
                 }
             }

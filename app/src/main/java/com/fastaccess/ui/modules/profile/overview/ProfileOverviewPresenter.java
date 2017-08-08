@@ -36,7 +36,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     @Override public void onCheckFollowStatus(@NonNull String login) {
         if (!TextUtils.equals(login, Login.getUser().getLogin())) {
-            manageDisposable(RxHelper.getObserver(RestProvider.getUserService(isEnterprise()).getFollowStatus(login))
+            manageDisposable(RxHelper.getObservable(RestProvider.getUserService(isEnterprise()).getFollowStatus(login))
                     .subscribe(booleanResponse -> {
                         isSuccessResponse = true;
                         isFollowing = booleanResponse.code() == 204;
@@ -54,8 +54,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @Override public void onFollowButtonClicked(@NonNull String login) {
-        manageDisposable(RxHelper.getObserver(!isFollowing ? RestProvider.getUserService(isEnterprise()).followUser(login)
-                                                           : RestProvider.getUserService(isEnterprise()).unfollowUser(login))
+        manageDisposable(RxHelper.getObservable(!isFollowing ? RestProvider.getUserService(isEnterprise()).followUser(login)
+                                                             : RestProvider.getUserService(isEnterprise()).unfollowUser(login))
                 .subscribe(booleanResponse -> {
                     if (booleanResponse.code() == 204) {
                         isFollowing = !isFollowing;
@@ -113,7 +113,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         if (!isEnterprise()) {
             if (contributions == null || contributions.isEmpty()) {
                 String url = String.format(URL, login);
-                manageDisposable(RxHelper.getObserver(RestProvider.getContribution().getContributions(url))
+                manageDisposable(RxHelper.getObservable(RestProvider.getContribution().getContributions(url))
                         .flatMap(s -> Observable.just(new ContributionsProvider().getContributions(s)))
                         .subscribe(lists -> {
                             contributions.clear();
@@ -149,8 +149,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     private void loadOrgs() {
         boolean isMe = login.equalsIgnoreCase(Login.getUser() != null ? Login.getUser().getLogin() : "");
-        manageDisposable(RxHelper.getObserver(isMe ? RestProvider.getOrgService(isEnterprise()).getMyOrganizations()
-                                                   : RestProvider.getOrgService(isEnterprise()).getMyOrganizations(login))
+        manageDisposable(RxHelper.getObservable(isMe ? RestProvider.getOrgService(isEnterprise()).getMyOrganizations()
+                                                     : RestProvider.getOrgService(isEnterprise()).getMyOrganizations(login))
                 .subscribe(response -> {
                     if (response != null && response.getItems() != null) {
                         userOrgs.addAll(response.getItems());

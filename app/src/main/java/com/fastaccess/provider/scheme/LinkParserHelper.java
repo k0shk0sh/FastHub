@@ -3,6 +3,7 @@ package com.fastaccess.provider.scheme;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 
 import com.annimon.stream.Optional;
 import com.annimon.stream.Stream;
@@ -103,5 +104,35 @@ public class LinkParserHelper {
             return url + "api/v3/";
         }
         return url;
+    }
+
+    public static String getEnterpriseGistUrl(@NonNull String url, boolean isEnterprise) {
+        if (isEnterprise) {
+            Uri uri = Uri.parse(url);
+            boolean isGist = uri == null || uri.getPathSegments() == null ? url.contains("gist/") : uri.getPathSegments().get(0).equals("gist");
+            if (isGist) {
+                String enterpriseUrl = PrefGetter.getEnterpriseUrl();
+                if (!url.contains(enterpriseUrl + "/raw/")) {
+                    url = url.replace(enterpriseUrl, enterpriseUrl + "/raw");
+                }
+            }
+        }
+        return url;
+    }
+
+    @Nullable public static String getGistId(@NonNull Uri uri) {
+        String gistId = null;
+        if (uri.toString().contains("raw/gist")) {
+            if (uri.getPathSegments().size() > 5) {
+                gistId = uri.getPathSegments().get(5);
+            }
+        } else if (uri.getPathSegments() != null) {
+            if (TextUtils.equals(LinkParserHelper.HOST_GISTS_RAW, uri.getAuthority())) {
+                if (uri.getPathSegments().size() > 1) {
+                    gistId = uri.getPathSegments().get(1);
+                }
+            }
+        }
+        return gistId;
     }
 }

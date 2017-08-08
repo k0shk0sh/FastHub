@@ -5,11 +5,9 @@ import android.view.View
 import com.fastaccess.data.dao.BranchesModel
 import com.fastaccess.data.dao.Pageable
 import com.fastaccess.helper.BundleConstant
-import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.rest.RestProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import io.reactivex.Observable
-import io.reactivex.functions.BiFunction
 
 /**
  * Created by Kosh on 06 Jul 2017, 9:14 PM
@@ -20,6 +18,7 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
     private var lastPage = Integer.MAX_VALUE
     @com.evernote.android.state.State var login: String? = null
     @com.evernote.android.state.State var repoId: String? = null
+    @com.evernote.android.state.State var isBranch: Boolean = true
 
     var branches = ArrayList<BranchesModel>()
 
@@ -27,43 +26,28 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
     override fun onFragmentCreated(bundle: Bundle) {
         login = bundle.getString(BundleConstant.EXTRA)
         repoId = bundle.getString(BundleConstant.ID)
+        isBranch = bundle.getBoolean(BundleConstant.EXTRA_TYPE)
         if (branches.isEmpty()) {
             onCallApi(1, null)
         }
     }
 
-    private fun getObservable(login: String, repoId: String, page: Int): Observable<ArrayList<BranchesModel>> {
-        return RxHelper.getObserver(Observable.zip(
-                RestProvider.getRepoService(isEnterprise()).getBranches(login, repoId, page),
-                RestProvider.getRepoService(isEnterprise()).getTags(login, repoId, page),
-                BiFunction({ branchPageable: Pageable<BranchesModel>?, tags: Pageable<BranchesModel>? ->
-                    val branchesModels = ArrayList<BranchesModel>()
-                    if (branchPageable != null) {
-                        if (tags != null) {
-                            if (branchPageable.last > tags.last) {
-                                lastPage = branchPageable.last
-                            } else {
-                                lastPage = tags.last
-                            }
+    private fun callApi(login: String, repoId: String, page: Int) {
+        val observable = if (!isBranch) RestProvider.getRepoService(isEnterprise)
+                .getTags(login, repoId, page) else RestProvider.getRepoService(isEnterprise)
+                .getBranches(login, repoId, page)
+        return makeRestCall(observable
+                .flatMap({ t: Pageable<BranchesModel>? ->
+                    val list = ArrayList<BranchesModel>()
+                    if (t != null) {
+                        lastPage = t.last
+                        t.items.onEach {
+                            it.isTag = !isBranch
+                            list.add(it)
                         }
-                    } else if (tags != null) {
-                        lastPage = tags.last
                     }
-
-                    if (branchPageable != null && branchPageable.items != null) {
-                        branchesModels.addAll(branchPageable.items.map {
-                            it.isTag = false
-                            return@map it
-                        })
-                    }
-                    if (tags != null && tags.items != null) {
-                        branchesModels.addAll(tags.items.map {
-                            it.isTag = true
-                            return@map it
-                        })
-                    }
-                    return@BiFunction branchesModels
-                })))
+                    return@flatMap Observable.just(list)
+                }), { items -> sendToView { v -> v.onNotifyAdapter(items, page) } })
     }
 
     override fun onItemClick(position: Int, v: View?, item: BranchesModel?) {
@@ -84,7 +68,7 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
         this.previousTotal = previousTotal
     }
 
-    override fun onCallApi(page: Int, parameter: Any?) {
+    override fun onCallApi(page: Int, parameter: Boolean?) {
         if (login.isNullOrEmpty() || repoId.isNullOrEmpty()) {
             sendToView({ it.hideProgress() })
             return
@@ -98,8 +82,7 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
             return
         }
         currentPage = page
-        val observable = getObservable(login!!, repoId!!, page)
-        makeRestCall<ArrayList<BranchesModel>>(observable, { models -> sendToView({ it.onNotifyAdapter(models, page) }) })
+        callApi(login!!, repoId!!, page)
     }
 
 }

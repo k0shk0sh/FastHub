@@ -85,6 +85,10 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
         callback.showProgress(resId);
     }
 
+    @Override public void showBlockingProgress(int resId) {
+        callback.showBlockingProgress(resId);
+    }
+
     @Override public void hideProgress() {
         callback.hideProgress();
     }
@@ -105,9 +109,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
         return callback.isLoggedIn();
     }
 
-    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
-
-    }
+    @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {}
 
     @Override public void onDialogDismissed() {
 
@@ -140,7 +142,7 @@ public abstract class BaseMvpBottomSheetDialogFragment<V extends BaseMvp.FAView,
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final BottomSheetDialog dialog = new BottomSheetDialog(getContext(), getTheme());
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        if (dialog.getWindow() != null) dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setOnShowListener(dialogInterface -> {
             if (ViewHelper.isTablet(getActivity())) {
                 if (dialog.getWindow() != null) {

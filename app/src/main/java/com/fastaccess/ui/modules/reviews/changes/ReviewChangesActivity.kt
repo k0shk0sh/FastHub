@@ -34,6 +34,7 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     @State var owner: String? = null
     @State var number: Long? = null
     @State var isProgressShowing: Boolean = false
+    @State var isClosed: Boolean = false
 
     override fun layout(): Int = R.layout.add_review_dialog_layout
 
@@ -54,8 +55,9 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
         repoId = bundle.getString(BundleConstant.EXTRA_TWO)
         owner = bundle.getString(BundleConstant.EXTRA_THREE)
         number = bundle.getLong(BundleConstant.ID)
+        isClosed = bundle.getBoolean(BundleConstant.EXTRA_FIVE)
         val isAuthor = bundle.getBoolean(BundleConstant.EXTRA_FOUR)
-        if (isAuthor) {
+        if (isAuthor || isClosed) {
             spinner.setSelection(2, true)
             spinner.isEnabled = false
         }
@@ -69,9 +71,10 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.submit -> {
-                if (editText.editText?.text.isNullOrEmpty()) {
+                if (spinner.selectedItemPosition != 0 && editText.editText?.text.isNullOrEmpty()) {
                     editText.error = getString(R.string.required_field)
                 } else {
+                    editText.error = null
                     presenter.onSubmit(reviewRequest!!, repoId!!, owner!!, number!!, InputHelper.toString(editText), spinner.selectedItem as String)
                 }
                 return true
@@ -131,19 +134,16 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     }
 
     companion object {
-        /**
-         * val repoId = bundle.getString(BundleConstant.EXTRA_TWO)
-         * val owner = bundle.getString(BundleConstant.EXTRA_THREE)
-         * val number = bundle.getLong(BundleConstant.ID)
-         */
         fun startForResult(activity: Activity, view: View, reviewChanges: ReviewRequestModel, repoId: String, owner: String, number: Long,
-                           isAuthor: Boolean) {
+                           isAuthor: Boolean, isEnterprise: Boolean, isClosed: Boolean) {
             val bundle = Bundler.start()
                     .put(BundleConstant.EXTRA, reviewChanges)
                     .put(BundleConstant.EXTRA_TWO, repoId)
                     .put(BundleConstant.EXTRA_THREE, owner)
                     .put(BundleConstant.EXTRA_FOUR, isAuthor)
                     .put(BundleConstant.ID, number)
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                    .put(BundleConstant.EXTRA_FIVE, isClosed)
                     .end()
             val intent = Intent(activity, ReviewChangesActivity::class.java)
             intent.putExtras(bundle)

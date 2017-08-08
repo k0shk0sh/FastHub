@@ -14,10 +14,10 @@ interface BranchesMvp {
     interface View : BaseMvp.FAView {
         fun onNotifyAdapter(branches: ArrayList<BranchesModel>, page: Int)
         fun onBranchSelected(item: BranchesModel?)
-        fun getLoadMore(): OnLoadMore<Any>
+        fun getLoadMore(): OnLoadMore<Boolean>
     }
 
-    interface Presenter : BaseViewHolder.OnItemClickListener<BranchesModel>, BaseMvp.PaginationListener<Any> {
+    interface Presenter : BaseViewHolder.OnItemClickListener<BranchesModel>, BaseMvp.PaginationListener<Boolean> {
         fun onFragmentCreated(bundle: Bundle)
     }
 

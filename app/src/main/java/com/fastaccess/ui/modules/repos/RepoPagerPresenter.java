@@ -60,6 +60,10 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         super.onError(throwable);
     }
 
+    @Override public void onUpdatePinnedEntry(@NonNull String repoId, @NonNull String login) {
+        manageDisposable(PinnedRepos.updateEntry(login + "/" + repoId));
+    }
+
     @Override public void onActivityCreate(@NonNull String repoId, @NonNull String login, int navTyp) {
         this.login = login;
         this.repoId = repoId;
@@ -131,7 +135,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (getRepo() != null) {
             String login = login();
             String name = repoId();
-            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).isWatchingRepo(login, name))
+            manageDisposable(RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).isWatchingRepo(login, name))
                     .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableWatch(false)))
                     .doOnNext(subscriptionModel -> sendToView(view -> view.onRepoWatched(isWatched = subscriptionModel.isSubscribed())))
                     .subscribe(o -> {/**/}, throwable -> {
@@ -145,7 +149,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (getRepo() != null) {
             String login = login();
             String name = repoId();
-            manageDisposable(RxHelper.getObserver(RestProvider.getRepoService(isEnterprise()).checkStarring(login, name))
+            manageDisposable(RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).checkStarring(login, name))
                     .doOnSubscribe(disposable -> sendToView(view -> view.onEnableDisableStar(false)))
                     .doOnNext(response -> sendToView(view -> view.onRepoStarred(isStarred = response.code() == 204)))
                     .subscribe(booleanResponse -> {/**/}, throwable -> {
@@ -157,7 +161,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
 
     @Override public void onWorkOffline() {
         if (!InputHelper.isEmpty(login()) && !InputHelper.isEmpty(repoId())) {
-            manageDisposable(RxHelper.getObserver(Repo.getRepo(repoId, login).toObservable())
+            manageDisposable(RxHelper.getObservable(Repo.getRepo(repoId, login).toObservable())
                     .subscribe(repoModel -> {
                         repo = repoModel;
                         if (repo != null) {
@@ -168,7 +172,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                         } else {
                             callApi(navTyp);
                         }
-                    }));
+                    }, Throwable::printStackTrace));
         } else {
             sendToView(RepoPagerMvp.View::onFinishActivity);
         }
@@ -234,8 +238,11 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 .hide(toHide)
                 .add(R.id.container, toAdd, toAdd.getClass().getSimpleName())
                 .commit();
-        toHide.onHiddenChanged(true);
-        toAdd.onHiddenChanged(false);
+
+        //noinspection ConstantConditions really android?
+        if (toHide != null) toHide.onHiddenChanged(true);
+        //noinspection ConstantConditions really android?
+        if (toAdd != null) toAdd.onHiddenChanged(false);
     }
 
     @Override public void onDeleteRepo() {

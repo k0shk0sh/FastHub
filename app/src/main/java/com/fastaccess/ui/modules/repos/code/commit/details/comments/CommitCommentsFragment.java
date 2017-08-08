@@ -70,9 +70,10 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true, this);
+        adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true,
+                this, getArguments().getString(BundleConstant.EXTRA), null);
         adapter.setListener(getPresenter());
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.setAdapter(adapter);
         recycler.addOnScrollListener(getLoadMore());
         recycler.addNormalSpacingDivider();

@@ -7,11 +7,11 @@ import android.support.v7.preference.PreferenceManager;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.fastaccess.data.dao.model.Models;
+import com.fastaccess.helper.DeviceNameGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
-import com.fastaccess.provider.uil.UILProvider;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
 
 import io.fabric.sdk.android.Fabric;
@@ -50,12 +50,12 @@ public class App extends Application {
         deleteDatabase("database.db");
         getDataStore();//init requery before anything.
         setupPreference();
-        UILProvider.initUIL(this);
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();
+        DeviceNameGetter.getInstance().loadDevice();
     }
 
     private void initFabric() {
@@ -80,7 +80,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 10);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 11);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

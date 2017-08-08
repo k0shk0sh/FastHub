@@ -108,7 +108,13 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         if (getIssue() == null) {
             throw new NullPointerException("Issue went missing!!!");
         }
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true, this);
+        if (issueCallback != null && issueCallback.getData() != null) {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true,
+                    this, issueCallback.getData().getLogin(), issueCallback.getData().getUser().getLogin());
+        } else {
+            adapter = new IssuePullsTimelineAdapter(getPresenter().getEvents(), this, true,
+                    this, "", "");
+        }
         recycler.setVerticalScrollBarEnabled(false);
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
@@ -120,7 +126,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
         fastScroller.setVisibility(View.VISIBLE);
         fastScroller.attachRecyclerView(recycler);
         recycler.addDivider(TimelineCommentsViewHolder.class);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         recycler.addOnScrollListener(getLoadMore());
         if (savedInstanceState == null) {
             onSetHeader(TimelineModel.constructHeader(getIssue()));

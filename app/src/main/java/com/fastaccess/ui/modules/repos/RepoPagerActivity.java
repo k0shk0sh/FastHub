@@ -110,7 +110,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     public static void startRepoPager(@NonNull Context context, @NonNull NameParser nameParser) {
         if (!InputHelper.isEmpty(nameParser.getName()) && !InputHelper.isEmpty(nameParser.getUsername())) {
-            context.startActivity(createIntent(context, nameParser.getName(), nameParser.getUsername()));
+            Intent intent = new Intent(context, RepoPagerActivity.class);
+            intent.putExtras(Bundler.start()
+                    .put(BundleConstant.ID, nameParser.getName())
+                    .put(BundleConstant.EXTRA_TWO, nameParser.getUsername())
+                    .put(BundleConstant.EXTRA_TYPE, RepoPagerMvp.CODE)
+                    .put(BundleConstant.IS_ENTERPRISE, nameParser.isEnterprise())
+                    .end());
+            context.startActivity(intent);
         }
     }
 
@@ -162,7 +169,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
                     RepoPullRequestPagerFragment.TAG);
             if (pullRequestPagerView != null) {
                 FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), false,
-                        pullRequestPagerView.getCurrentItem() == 0);
+                        pullRequestPagerView.getCurrentItem() == 0, isEnterprise());
             }
         } else {
             fab.hide();
@@ -198,13 +205,14 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @OnClick(R.id.tagsIcon) void onTagsClick() {
-        if (topicsList.getAdapter().getItemCount() > 0)
+        if (topicsList.getAdapter().getItemCount() > 0) {
             TransitionManager.beginDelayedTransition(topicsList);
-        topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+            topicsList.setVisibility(topicsList.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        }
     }
 
-    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout, R.id.pinLayout, R.id.wikiLayout, R.id.licenseLayout})
-    void onClick(View view) {
+    @OnClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout,
+            R.id.pinLayout, R.id.wikiLayout, R.id.licenseLayout}) void onClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
                 MessageDialogView.newInstance(getString(R.string.fork), String.format("%s %s/%s?", getString(R.string.fork), login, repoId),
@@ -298,6 +306,9 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             repoId = extras.getString(BundleConstant.ID);
             login = extras.getString(BundleConstant.EXTRA_TWO);
             navType = extras.getInt(BundleConstant.EXTRA_TYPE);
+        }
+        if (savedInstanceState == null) {
+            getPresenter().onUpdatePinnedEntry(repoId, login);
         }
         getPresenter().onActivityCreate(repoId, login, navType);
         setTitle("");
@@ -454,7 +465,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     }
 
     @Override public void openUserProfile() {
-        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise());
+        UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise(), -1);
     }
 
     @Override public boolean onCreateOptionsMenu(Menu menu) {
@@ -555,7 +566,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         if (pagerView != null) {
             isOpen = pagerView.getCurrentItem() == 0;
         }
-        FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen);
+        FilterIssuesActivity.startActivity(this, getPresenter().login(), getPresenter().repoId(), true, isOpen, isEnterprise());
     }
 
     private void showHideFab() {

@@ -16,8 +16,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.TabsCountStateModel;
 import com.fastaccess.data.dao.types.IssueState;
-import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseFragment;
@@ -41,12 +39,8 @@ public class MyIssuesPagerFragment extends BaseFragment<MyIssuesPagerMvp.View, M
     @BindView(R.id.pager) ViewPagerView pager;
     @State HashSet<TabsCountStateModel> counts = new HashSet<>();
 
-    public static MyIssuesPagerFragment newInstance(boolean isEnterprise) {
-        MyIssuesPagerFragment fragment = new MyIssuesPagerFragment();
-        fragment.setArguments(Bundler.start()
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
-                .end());
-        return fragment;
+    public static MyIssuesPagerFragment newInstance() {
+        return new MyIssuesPagerFragment();
     }
 
     @Override protected int fragmentLayout() {

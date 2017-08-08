@@ -2,6 +2,8 @@ package com.fastaccess.helper;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -95,9 +97,12 @@ public class PrefGetter {
     private static final String AMLOD_THEME_ENABLED = "amlod_theme_enabled";
     private static final String MIDNIGHTBLUE_THEME_ENABLED = "midnightblue_theme_enabled";
     private static final String BLUISH_THEME_ENABLED = "bluish_theme_enabled";
-    private static final String PRO_ITEMS = "pro_items";
+    private static final String PRO_ITEMS = "fasth_pro_items";
+    private static final String ENTERPRISE_ITEM = "enterprise_item";
     private static final String CODE_THEME = "code_theme";
-    private static final String ENTERPRISE_URL = "ENTERPRISE_URL";
+    private static final String ENTERPRISE_URL = "enterprise_url";
+    private static final String NOTIFICATION_SOUND_PATH = "notification_sound_path";
+    private static final String DISABLE_AUTO_PLAY_GIF = "disable_auto_play_gif";
 
     public static void setToken(@Nullable String token) {
         PrefHelper.set(TOKEN, token);
@@ -333,9 +338,13 @@ public class PrefGetter {
         return BLUE;
     }
 
-    @NonNull static String getAppLanguage() {
+    @NonNull public static String getAppLanguage() {
         String appLanguage = PrefHelper.getString(APP_LANGUAGE);
         return appLanguage == null ? "en" : appLanguage;
+    }
+
+    public static void setAppLangauge(@Nullable String language) {
+        PrefHelper.set(APP_LANGUAGE, language == null ? "en" : language);
     }
 
     public static void setProfileBackgroundUrl(@Nullable String url) {
@@ -389,6 +398,20 @@ public class PrefGetter {
     public static void setProItems() {
         PrefHelper.set(PRO_ITEMS, true);
         enableAmlodTheme();
+        enableBluishTheme();
+        enableMidNightBlueTheme();
+    }
+
+    public static void setEnterpriseItem() {
+        PrefHelper.set(ENTERPRISE_ITEM, true);
+    }
+
+    public static boolean isEnterpriseEnabled() {
+        return PrefHelper.getBoolean(ENTERPRISE_ITEM);
+    }
+
+    public static boolean isAllFeaturesUnlocked() {
+        return isProEnabled() && isEnterprise();
     }
 
     public static boolean isProEnabled() {
@@ -419,9 +442,26 @@ public class PrefGetter {
         return !InputHelper.isEmpty(getEnterpriseUrl());
     }
 
+    public static boolean isNavBarTintingDisabled() {
+        return PrefHelper.getBoolean("navigation_color");
+    }
+
     public static void resetEnterprise() {
         PrefGetter.setTokenEnterprise(null);
         PrefGetter.setEnterpriseOtpCode(null);
         PrefGetter.setEnterpriseUrl(null);
+    }
+
+    @Nullable public static Uri getNotificationSound() {
+        String nsp = PrefHelper.getString(NOTIFICATION_SOUND_PATH);
+        return !InputHelper.isEmpty(nsp) ? Uri.parse(nsp) : RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    }
+
+    public static void setNotificationSound(@NonNull Uri uri) {
+        PrefHelper.set(NOTIFICATION_SOUND_PATH, uri.toString());
+    }
+
+    public static boolean isGistDisabled() {
+        return PrefHelper.getBoolean(DISABLE_AUTO_PLAY_GIF);
     }
 }

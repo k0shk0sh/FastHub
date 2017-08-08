@@ -10,27 +10,28 @@ import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.provider.rest.loadmore.OnLoadMore
 import com.fastaccess.ui.adapter.BranchesAdapter
-import com.fastaccess.ui.base.BaseDialogFragment
+import com.fastaccess.ui.base.BaseFragment
+import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerListener
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 
 /**
  * Created by Kosh on 06 Jul 2017, 9:48 PM
  */
-class BranchesDialogFragment : BaseDialogFragment<BranchesMvp.View, BranchesPresenter>(), BranchesMvp.View {
+class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), BranchesMvp.View {
     val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
     val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
     val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
-    private var onLoadMore: OnLoadMore<Any>? = null
-    private var branchCallback: BranchesMvp.BranchSelectionListener? = null
+    private var onLoadMore: OnLoadMore<Boolean>? = null
+    private var branchCallback: BranchesPagerListener? = null
 
     val adapter by lazy { BranchesAdapter(presenter.branches, presenter) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is BranchesMvp.BranchSelectionListener) {
-            branchCallback = parentFragment as BranchesMvp.BranchSelectionListener
-        } else branchCallback = context as BranchesMvp.BranchSelectionListener
+        if (parentFragment is BranchesPagerListener) {
+            branchCallback = parentFragment as BranchesPagerListener
+        } else branchCallback = context as BranchesPagerListener
     }
 
     override fun onDetach() {
@@ -49,11 +50,10 @@ class BranchesDialogFragment : BaseDialogFragment<BranchesMvp.View, BranchesPres
     }
 
     override fun onBranchSelected(item: BranchesModel?) {
-        branchCallback?.onBranchSelected(item!!)
-        dismiss()
+        branchCallback?.onItemSelect(item!!)
     }
 
-    override fun getLoadMore(): OnLoadMore<Any> {
+    override fun getLoadMore(): OnLoadMore<Boolean> {
         if (onLoadMore == null) {
             onLoadMore = OnLoadMore(presenter)
         }
@@ -61,11 +61,13 @@ class BranchesDialogFragment : BaseDialogFragment<BranchesMvp.View, BranchesPres
     }
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
+        getLoadMore().initialize(presenter.currentPage, presenter.previousTotal)
         stateLayout.setEmptyText(R.string.no_branches)
         refresh.setOnRefreshListener { presenter.onCallApi(1, null) }
         recycler.setEmptyView(stateLayout, refresh)
         stateLayout.setOnReloadListener { presenter.onCallApi(1, null) }
         recycler.adapter = adapter
+        recycler.addOnScrollListener(getLoadMore())
         recycler.addDivider()
         if (savedInstanceState == null) {
             presenter.onFragmentCreated(arguments)
@@ -99,11 +101,12 @@ class BranchesDialogFragment : BaseDialogFragment<BranchesMvp.View, BranchesPres
     }
 
     companion object {
-        fun newInstance(login: String, repoId: String): BranchesDialogFragment {
-            val fragment = BranchesDialogFragment()
+        fun newInstance(login: String, repoId: String, branch: Boolean): BranchesFragment {
+            val fragment = BranchesFragment()
             fragment.arguments = Bundler.start()
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.EXTRA, login)
+                    .put(BundleConstant.EXTRA_TYPE, branch)
                     .end()
             return fragment
         }

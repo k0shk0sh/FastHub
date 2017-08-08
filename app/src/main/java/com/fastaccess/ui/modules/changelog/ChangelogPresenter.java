@@ -15,7 +15,7 @@ import lombok.Getter;
     private String html;
 
     @Override public void onLoadChangelog() {
-        manageDisposable(RxHelper.getObserver(ToGsonProvider.getChangelog(App.getInstance()))
+        manageDisposable(RxHelper.getObservable(ToGsonProvider.getChangelog(App.getInstance()))
                 .subscribe(s -> {
                     this.html = s;
                     sendToView(view -> view.onChangelogLoaded(html));

@@ -33,7 +33,7 @@ public class OrgTeamFragment extends BaseFragment<OrgTeamMvp.View, OrgTeamPresen
     private OnLoadMore<String> onLoadMore;
     private TeamsAdapter adapter;
 
-    public static OrgTeamFragment newInstance(@NonNull String username, boolean isEnterprise) {
+    public static OrgTeamFragment newInstance(@NonNull String username) {
         OrgTeamFragment view = new OrgTeamFragment();
         view.setArguments(Bundler.start().put(BundleConstant.EXTRA, username).end());
         return view;
@@ -64,7 +64,7 @@ public class OrgTeamFragment extends BaseFragment<OrgTeamMvp.View, OrgTeamPresen
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
         recycler.setEmptyView(stateLayout, refresh);
-        getLoadMore().setCurrent_page(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
+        getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
         adapter = new TeamsAdapter(getPresenter().getTeams());
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
