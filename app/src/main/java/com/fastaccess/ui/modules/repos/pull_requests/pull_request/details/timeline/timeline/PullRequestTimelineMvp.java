@@ -72,8 +72,6 @@ public interface PullRequestTimelineMvp {
 
         void onUpdateHeader();
 
-        void onAddStatus(@NonNull PullRequestTimelineModel timelineModel);
-
         @CallOnMainThread void showReload();
     }
 

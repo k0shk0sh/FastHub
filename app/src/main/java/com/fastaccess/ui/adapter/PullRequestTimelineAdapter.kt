@@ -9,6 +9,7 @@ import com.fastaccess.ui.adapter.viewholder.PullRequestEventViewHolder
 import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
+import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder.OnItemClickListener
 
 /**
  * Created by kosh on 03/08/2017.
@@ -18,9 +19,8 @@ class PullRequestTimelineAdapter constructor(val data: ArrayList<PullRequestTime
                                              internal var reactionsCallback: ReactionsCallback,
                                              internal var isMerged: Boolean = false,
                                              internal var repoOwner: String,
-                                             internal var poster: String)
-    : BaseRecyclerAdapter<PullRequestTimelineModel,
-        BaseViewHolder<PullRequestTimelineModel>, BaseViewHolder.OnItemClickListener<PullRequestTimelineModel>>(data) {
+                                             internal var poster: String) : BaseRecyclerAdapter<PullRequestTimelineModel,
+        BaseViewHolder<PullRequestTimelineModel>, OnItemClickListener<PullRequestTimelineModel>>(data) {
 
     override fun viewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<PullRequestTimelineModel> {
         when (viewType) {

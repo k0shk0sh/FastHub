@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.ReactionsModel;
-import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
@@ -120,18 +119,14 @@ public class PullRequestDetailsViewHolder extends BaseViewHolder<PullRequestTime
 
     private void addReactionCount(View v) {
         if (adapter != null) {
-            TimelineModel timelineModel = (TimelineModel) adapter.getItem(getAdapterPosition());
+            PullRequestTimelineModel timelineModel = (PullRequestTimelineModel) adapter.getItem(getAdapterPosition());
             if (timelineModel == null) return;
             ReactionsModel reactionsModel = null;
             PullRequest pullRequest = timelineModel.getPullRequest();
-            Issue issue = timelineModel.getIssue();
             int number = 0;
             if (pullRequest != null) {
                 reactionsModel = pullRequest.getReactions();
                 number = pullRequest.getNumber();
-            } else if (issue != null) {
-                reactionsModel = issue.getReactions();
-                number = issue.getNumber();
             }
             if (reactionsModel == null) reactionsModel = new ReactionsModel();
             boolean isReacted = reactionsCallback == null || reactionsCallback.isPreviouslyReacted(number, v.getId());
@@ -160,10 +155,6 @@ public class PullRequestDetailsViewHolder extends BaseViewHolder<PullRequestTime
                 pullRequest.setReactions(reactionsModel);
                 appendEmojies(reactionsModel);
                 timelineModel.setPullRequest(pullRequest);
-            } else if (issue != null) {
-                issue.setReactions(reactionsModel);
-                appendEmojies(reactionsModel);
-                timelineModel.setIssue(issue);
             }
         }
     }

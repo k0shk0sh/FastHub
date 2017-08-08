@@ -326,10 +326,6 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         onSetHeader(new PullRequestTimelineModel(getPullRequest()));
     }
 
-    @Override public void onAddStatus(@NonNull PullRequestTimelineModel timelineModel) {
-        adapter.addItem(timelineModel, 1);
-    }
-
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {

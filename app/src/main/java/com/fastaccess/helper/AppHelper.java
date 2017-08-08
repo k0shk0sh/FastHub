@@ -19,6 +19,8 @@ import android.view.inputmethod.InputMethodManager;
 import com.fastaccess.App;
 import com.fastaccess.BuildConfig;
 import com.fastaccess.R;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 
 import java.util.Locale;
 
@@ -169,6 +171,7 @@ public class AppHelper {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        return applicationInfo != null && applicationInfo.enabled;
+        return applicationInfo != null && applicationInfo.enabled &&
+                GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.PopupMenu;
 
 import com.annimon.stream.Stream;
 import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.rx2.Rx2Apollo;
 import com.fastaccess.App;
 import com.fastaccess.R;
@@ -22,7 +23,6 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -42,6 +42,7 @@ import pr.PullRequestTimelineQuery;
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
     @com.evernote.android.state.State boolean hasNextPage = true;
+    @com.evernote.android.state.State String previousPage;
 
     private ArrayList<PullRequestTimelineModel> timeline = new ArrayList<>();
     private SparseArray<String> pages = new SparseArray<>();
@@ -313,39 +314,58 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
                                 @NonNull String sha, boolean isMergeable, int page) {
         PullRequestTimelineQuery query = getTimelineBuilder(login, repoId, number, page);
+        if (query == null) {
+            sendToView(PullRequestTimelineMvp.View::hideProgress);
+            return;
+        }
         ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient().query(query);
         Observable<PullRequestTimelineModel> observable = Rx2Apollo.from(apolloCall)
                 .flatMap(response -> {
-                    if (!response.hasErrors()) {
-                        PullRequestTimelineQuery.Data data = response.data();
-                        if (data != null) {
-                            PullRequestTimelineQuery.Repository repo = data.repository();
-                            PullRequestTimelineQuery.PullRequest pullRequest = repo != null ? repo.pullRequest() : null;
-                            if (pullRequest != null) {
-                                PullRequestTimelineQuery.Timeline timeline = pullRequest.timeline();
-                                hasNextPage = timeline.pageInfo().hasNextPage();
-                                pages.clear();
-                                List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
-                                if (edges != null) {
-                                    Stream.of(edges).forEachIndexed((i, edge) -> pages.append(i, edge.cursor()));
-                                }
-                                List<PullRequestTimelineQuery.Node> nodes = timeline.nodes();
-                                if (nodes != null) {
-                                    Logger.e(nodes.size());
-                                    return RxHelper.getObservable(Observable.fromIterable(nodes));
-                                }
-                            }
-                        }
-                    }
-                    Logger.e(response.hasErrors(), response.errors());
-                    return RxHelper.getObservable(Observable.fromIterable(new ArrayList<>()));
-                })
-                .map(PullRequestTimelineModel::new);
+                    Observable<PullRequestTimelineModel> models = getTimelineObservable(response, isMergeable);
+                    return models != null ? models : RxHelper.getObservable(Observable.fromIterable(new ArrayList<>()));
+                });
         makeRestCall(observable.toList().toObservable(),
                 pullRequestTimelineModels -> sendToView(view -> view.onNotifyAdapter(pullRequestTimelineModels, page)));
     }
 
-    @NonNull private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {
+    @Nullable private Observable<PullRequestTimelineModel> getTimelineObservable(Response<PullRequestTimelineQuery.Data> response,
+                                                                                 boolean isMergeable) {
+        if (!response.hasErrors()) {
+            PullRequestTimelineQuery.Data data = response.data();
+            if (data != null) {
+                PullRequestTimelineQuery.Repository repo = data.repository();
+                PullRequestTimelineQuery.PullRequest pullRequest = repo != null ? repo.pullRequest() : null;
+                if (pullRequest != null) {
+                    PullRequestTimelineQuery.Timeline timeline = pullRequest.timeline();
+                    hasNextPage = timeline.pageInfo().hasNextPage();
+                    pages.clear();
+                    ArrayList<PullRequestTimelineModel> models = new ArrayList<>();
+                    PullRequestTimelineQuery.PullRequestCommits pullRequestCommits = pullRequest.pullRequestCommits();
+                    List<PullRequestTimelineQuery.PullRequestCommit> commits = pullRequestCommits.pullRequestCommit();
+                    if (commits != null && !commits.isEmpty()) {
+                        PullRequestTimelineQuery.Status status = commits.get(0).commit().status();
+                        if (status != null) {
+                            models.add(new PullRequestTimelineModel(status, isMergeable));
+                        }
+                    }
+                    List<PullRequestTimelineQuery.Edge> edges = timeline.edges();
+                    if (edges != null) {
+                        Stream.of(edges).forEachIndexed((i, edge) -> pages.append(i, edge.cursor()));
+                    }
+                    List<PullRequestTimelineQuery.Node> nodes = timeline.nodes();
+                    if (nodes != null) {
+                        for (PullRequestTimelineQuery.Node node : nodes) {
+                            models.add(new PullRequestTimelineModel(node));
+                        }
+                    }
+                    return RxHelper.getObservable(Observable.fromIterable(models));
+                }
+            }
+        }
+        return null;
+    }
+
+    private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {
         return PullRequestTimelineQuery.builder()
                 .owner(login)
                 .name(repoId)
@@ -355,17 +375,6 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     @Nullable private String getPage(int number) {
-        return number < pages.size() ? pages.get(number - 1) : null;
-    }
-
-    private void loadStatus(@NonNull String login, @NonNull String repoId, @NonNull String sha, boolean isMergeable) {
-//        manageObservable(RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, sha)
-//                .map(statuses -> {
-//                    if (statuses != null) {
-//                        statuses.setMergable(isMergeable);
-//                    }
-//                    return statuses;
-//                }).map(PullRequestTimelineModel::new)
-//                .doOnNext(timelineModel -> sendToView(view -> view.onAddStatus(timelineModel))));
+        return number < pages.size() ? pages.get(number) : null;
     }
 }

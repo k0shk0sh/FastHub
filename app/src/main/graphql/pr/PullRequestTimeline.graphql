@@ -1,6 +1,21 @@
 query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page: String) {
   repository(owner: $owner, name: $name) {
     pullRequest(number: $number) {
+      pullRequestCommits: commits(last: 1) {
+        pullRequestCommit: nodes {
+          commit {
+            status {
+              state
+              contexts {
+                state
+                context
+                description
+                targetUrl
+              }
+            }
+          }
+        }
+      }
       timeline(first: 30 after: $page) {
         edges {
           cursor

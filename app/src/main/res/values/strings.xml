@@ -432,7 +432,7 @@
     <string name="milestones">Milestones</string>
     <string name="assignee">Assignee</string>
     <string name="checks_failed">Some checks have failed</string>
-    <string name="checks_pending">All checks are pending</string>
+    <string name="checks_pending">Some checks are pending</string>
     <string name="checks_passed">All checks have passed</string>
     <string name="sort">Sort</string>
     <string name="newest">Newest</string>

@@ -1,6 +1,5 @@
 package com.fastaccess.data.dao.timeline;
 
-import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.model.PullRequest;
 
 import lombok.Getter;
@@ -21,7 +20,8 @@ import pr.PullRequestTimelineQuery;
 
     public PullRequestTimelineQuery.Node node;
     public PullRequest pullRequest;
-    public PullRequestStatusModel status;
+    public PullRequestTimelineQuery.Status status;
+    public boolean isMergeable;
 
     public PullRequestTimelineModel(PullRequest pullRequest) {
         this.pullRequest = pullRequest;
@@ -31,8 +31,9 @@ import pr.PullRequestTimelineQuery;
         this.node = node;
     }
 
-    public PullRequestTimelineModel(PullRequestStatusModel status) {
+    public PullRequestTimelineModel(PullRequestTimelineQuery.Status status, boolean isMergeable) {
         this.status = status;
+        this.isMergeable = isMergeable;
     }
 
     public int getType() {

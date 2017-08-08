@@ -154,6 +154,7 @@ dependencies {
     implementation "com.atlassian.commonmark:commonmark-ext-yaml-front-matter:${commonmark}"
     implementation "com.google.firebase:firebase-messaging:${gms}"
     implementation "com.google.firebase:firebase-database:${gms}"
+    implementation "com.google.android.gms:play-services-base:${gms}"
     implementation('com.github.b3er.rxfirebase:firebase-database-kotlin:11.2.0') { transitive = false }
     implementation('com.github.b3er.rxfirebase:firebase-database:11.2.0') { transitive = false }
     implementation 'com.firebase:firebase-jobdispatcher:0.7.0'
