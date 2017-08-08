@@ -33,9 +33,9 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
     private final String repoOwner;
     private final String poster;
 
-    public IssuesTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
-                                 ReactionsCallback reactionsCallback, boolean isMerged,
-                                 ReviewCommentCallback reviewCommentCallback, String repoOwner, String poster) {
+    private IssuesTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
+                                  ReactionsCallback reactionsCallback, boolean isMerged,
+                                  ReviewCommentCallback reviewCommentCallback, String repoOwner, String poster) {
         super(data);
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;

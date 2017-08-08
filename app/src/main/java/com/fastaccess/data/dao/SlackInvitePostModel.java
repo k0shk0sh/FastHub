@@ -25,7 +25,7 @@ import lombok.Setter;
 
     public SlackInvitePostModel() {}
 
-    protected SlackInvitePostModel(Parcel in) {
+    private SlackInvitePostModel(Parcel in) {
         this.email = in.readString();
         this.first_name = in.readString();
         this.last_name = in.readString();

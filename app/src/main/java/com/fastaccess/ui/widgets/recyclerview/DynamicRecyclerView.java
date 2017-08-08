@@ -76,7 +76,7 @@ public class DynamicRecyclerView extends RecyclerView {
         addItemDecoration(bottomPaddingDecoration);
     }
 
-    public void showEmptyView() {
+    private void showEmptyView() {
         Adapter<?> adapter = getAdapter();
         if (adapter != null) {
             if (emptyView != null) {

@@ -21,9 +21,9 @@ import com.fastaccess.ui.modules.repos.extras.branches.BranchesMvp
  * Created by kosh on 15/07/2017.
  */
 class BranchesPagerFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>(), BranchesPagerListener {
-    val pager: ViewPager by lazy { view!!.findViewById<ViewPager>(R.id.pager) }
-    val tabs: TabLayout by lazy { view!!.findViewById<TabLayout>(R.id.tabs) }
-    val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
+    private val pager: ViewPager by lazy { view!!.findViewById<ViewPager>(R.id.pager) }
+    private val tabs: TabLayout by lazy { view!!.findViewById<TabLayout>(R.id.tabs) }
+    private val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
     private var branchCallback: BranchesMvp.BranchSelectionListener? = null
 
     override fun onAttach(context: Context) {

@@ -95,7 +95,7 @@ import lombok.Setter;
         dest.writeParcelable(this.reactions, flags);
     }
 
-    protected CommentEvent(Parcel in) {
+    private CommentEvent(Parcel in) {
         this.id = in.readLong();
         this.user = in.readParcelable(User.class.getClassLoader());
         this.url = in.readString();

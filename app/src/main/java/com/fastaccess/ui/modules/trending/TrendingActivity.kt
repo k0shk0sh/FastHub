@@ -35,13 +35,13 @@ import com.fastaccess.ui.widgets.bindView
 class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), TrendingMvp.View {
     private var trendingFragment: TrendingFragment? = null
 
-    val navMenu: NavigationView by bindView(R.id.navMenu)
-    val daily: TextView by bindView(R.id.daily)
-    val weekly: TextView by bindView(R.id.weekly)
-    val monthly: TextView by bindView(R.id.monthly)
-    val drawerLayout: DrawerLayout by bindView(R.id.drawer)
-    val clear: View by bindView(R.id.clear)
-    val searchEditText: FontEditText by bindView(R.id.searchEditText)
+    private val navMenu: NavigationView by bindView(R.id.navMenu)
+    private val daily: TextView by bindView(R.id.daily)
+    private val weekly: TextView by bindView(R.id.weekly)
+    private val monthly: TextView by bindView(R.id.monthly)
+    private val drawerLayout: DrawerLayout by bindView(R.id.drawer)
+    private val clear: View by bindView(R.id.clear)
+    private val searchEditText: FontEditText by bindView(R.id.searchEditText)
 
 
     @State var selectedTitle: String = "All Language"

@@ -21,9 +21,9 @@ import com.prettifier.pretty.helper.CodeThemesHelper
 
 class ThemeCodeActivity : BaseActivity<ThemeCodeMvp.View, ThemeCodePresenter>(), ThemeCodeMvp.View {
 
-    val spinner: Spinner by bindView(R.id.themesList)
-    val webView: PrettifyWebView by bindView(R.id.webView)
-    val progress: ProgressBar? by bindView(R.id.readmeLoader)
+    private val spinner: Spinner by bindView(R.id.themesList)
+    private val webView: PrettifyWebView by bindView(R.id.webView)
+    private val progress: ProgressBar? by bindView(R.id.readmeLoader)
 
     override fun layout(): Int = R.layout.theme_code_layout
 

@@ -6,7 +6,7 @@ import android.os.Parcelable
 /**
  * Created by Kosh on 13 Jun 2017, 8:06 PM
  */
-data class WikiContentModel(val content: String? = null, val footer: String? = null,
+data class WikiContentModel(val content: String? = null, private val footer: String? = null,
                             val sidebar: ArrayList<WikiSideBarModel>) : Parcelable {
     companion object {
         @JvmField val CREATOR: Parcelable.Creator<WikiContentModel> = object : Parcelable.Creator<WikiContentModel> {

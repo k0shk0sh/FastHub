@@ -30,11 +30,11 @@ import com.prettifier.pretty.PrettifyWebView
  */
 class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
 
-    val navMenu: NavigationView by bindView(R.id.wikiSidebar)
-    val drawerLayout: DrawerLayout by bindView(R.id.drawer)
-    val progressbar: ProgressBar by bindView(R.id.progress)
-    val stateLayout: StateLayout by bindView(R.id.stateLayout)
-    val webView: PrettifyWebView by bindView(R.id.webView)
+    private val navMenu: NavigationView by bindView(R.id.wikiSidebar)
+    private val drawerLayout: DrawerLayout by bindView(R.id.drawer)
+    private val progressbar: ProgressBar by bindView(R.id.progress)
+    private val stateLayout: StateLayout by bindView(R.id.stateLayout)
+    private val webView: PrettifyWebView by bindView(R.id.webView)
 
 
     @State var wiki = WikiContentModel(null, null, arrayListOf())

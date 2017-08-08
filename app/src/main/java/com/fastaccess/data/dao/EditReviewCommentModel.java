@@ -33,7 +33,7 @@ import lombok.Setter;
         dest.writeLong(this.inReplyTo);
     }
 
-    protected EditReviewCommentModel(Parcel in) {
+    private EditReviewCommentModel(Parcel in) {
         this.groupPosition = in.readInt();
         this.commentPosition = in.readInt();
         this.comment = in.readString();

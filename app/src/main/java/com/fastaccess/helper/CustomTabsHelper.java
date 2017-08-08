@@ -12,7 +12,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomTabsHelper {
+class CustomTabsHelper {
     private static final String TAG = "CustomTabsHelper";
     private static final String STABLE_PACKAGE = "com.android.chrome";
     private static final String BETA_PACKAGE = "com.chrome.beta";

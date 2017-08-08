@@ -44,7 +44,7 @@ import lombok.Setter;
         dest.writeValue(this.line);
     }
 
-    protected CommentRequestModel(Parcel in) {
+    private CommentRequestModel(Parcel in) {
         this.body = in.readString();
         this.inReplyTo = (Long) in.readValue(Long.class.getClassLoader());
         this.path = in.readString();

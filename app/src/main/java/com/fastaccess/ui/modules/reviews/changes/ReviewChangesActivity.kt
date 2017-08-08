@@ -26,8 +26,8 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
 
 
     val toolbar: Toolbar by bindView(R.id.toolbar)
-    val spinner: Spinner by bindView(R.id.reviewMethod)
-    val editText: TextInputLayout by bindView(R.id.editText)
+    private val spinner: Spinner by bindView(R.id.reviewMethod)
+    private val editText: TextInputLayout by bindView(R.id.editText)
 
     @State var reviewRequest: ReviewRequestModel? = null
     @State var repoId: String? = null

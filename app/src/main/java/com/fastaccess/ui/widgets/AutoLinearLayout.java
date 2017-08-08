@@ -17,8 +17,8 @@ public class AutoLinearLayout extends FrameLayout {
     private int mOrientation;
     private int mGravity = Gravity.TOP | GravityCompat.START;
 
-    public final static int HORIZONTAL = 0;
-    public final static int VERTICAL = 1;
+    private final static int HORIZONTAL = 0;
+    private final static int VERTICAL = 1;
 
     private ArrayList<ViewPosition> mListPositions = new ArrayList<>();
 
@@ -183,7 +183,7 @@ public class AutoLinearLayout extends FrameLayout {
      * @param bottom
      *         parent bottom
      */
-    void layoutVertical(int left, int top, int right, int bottom) {
+    private void layoutVertical(int left, int top, int right, int bottom) {
         final int count = getChildCount();
         if (count == 0)
             return;
@@ -253,7 +253,7 @@ public class AutoLinearLayout extends FrameLayout {
      * @param bottom
      *         parent bottom
      */
-    void layoutHorizontal(int left, int top, int right, int bottom) {
+    private void layoutHorizontal(int left, int top, int right, int bottom) {
         final int count = getChildCount();
         if (count == 0)
             return;
@@ -419,7 +419,7 @@ public class AutoLinearLayout extends FrameLayout {
      * @param gravity
      *         See {@link Gravity}
      */
-    public void setGravity(int gravity) {
+    private void setGravity(int gravity) {
         if (mGravity != gravity) {
             if ((gravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) == 0) {
                 gravity |= GravityCompat.START;

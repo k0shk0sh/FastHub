@@ -22,11 +22,11 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
     @State var content: String? = null
 
 
-    val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
+    private val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
 
-    val loader: ProgressBar by lazy { view!!.findViewById<ProgressBar>(R.id.readmeLoader) }
-    val webView: PrettifyWebView by lazy { view!!.findViewById<PrettifyWebView>(R.id.webView) }
-    val licenseName: TextView by lazy { view!!.findViewById<TextView>(R.id.licenseName) }
+    private val loader: ProgressBar by lazy { view!!.findViewById<ProgressBar>(R.id.readmeLoader) }
+    private val webView: PrettifyWebView by lazy { view!!.findViewById<PrettifyWebView>(R.id.webView) }
+    private val licenseName: TextView by lazy { view!!.findViewById<TextView>(R.id.licenseName) }
 
 
     override fun providePresenter(): RepoLicensePresenter = RepoLicensePresenter()

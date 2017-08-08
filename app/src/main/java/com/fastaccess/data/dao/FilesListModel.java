@@ -35,7 +35,7 @@ public class FilesListModel implements Parcelable, Serializable {
         dest.writeString(this.language);
     }
 
-    protected FilesListModel(Parcel in) {
+    private FilesListModel(Parcel in) {
         this.filename = in.readString();
         this.type = in.readString();
         this.rawUrl = in.readString();

@@ -21,7 +21,7 @@ import lombok.Setter;
 
     public ParentsModel() {}
 
-    protected ParentsModel(Parcel in) {
+    private ParentsModel(Parcel in) {
         this.sha = in.readString();
         this.url = in.readString();
         this.htmlUrl = in.readString();

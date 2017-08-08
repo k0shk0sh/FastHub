@@ -79,7 +79,6 @@ public class CreateLabelDialogFragment extends BaseDialogFragment<CreateLabelMvp
         if (login == null || repo == null) {
             return;
         }
-        ;
         recycler.setAdapter(new LabelColorsAdapter(Arrays.asList(getResources().getStringArray(R.array.label_colors)), getPresenter()));
         recycler.addKeyLineDivider();
         toolbar.setTitle(R.string.create_label);

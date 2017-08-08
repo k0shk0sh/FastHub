@@ -20,14 +20,14 @@ import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
  * Created by Kosh on 06 Jul 2017, 9:48 PM
  */
 class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), BranchesMvp.View {
-    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
-    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
-    val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
-    val fastScroller: RecyclerViewFastScroller by lazy { view!!.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) }
+    private val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
+    private val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
+    private val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
+    private val fastScroller: RecyclerViewFastScroller by lazy { view!!.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) }
     private var onLoadMore: OnLoadMore<Boolean>? = null
     private var branchCallback: BranchesPagerListener? = null
 
-    val adapter by lazy { BranchesAdapter(presenter.branches, presenter) }
+    private val adapter by lazy { BranchesAdapter(presenter.branches, presenter) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

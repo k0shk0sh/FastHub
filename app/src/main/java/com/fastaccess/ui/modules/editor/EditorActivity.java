@@ -165,9 +165,7 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
         sentVia.setVisibility(PrefGetter.isSentViaBoxEnabled() ? View.VISIBLE : GONE);
         sentVia.setChecked(PrefGetter.isSentViaEnabled());
-        sentVia.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            PrefHelper.set("sent_via", isChecked);
-        });
+        sentVia.setOnCheckedChangeListener((buttonView, isChecked) -> PrefHelper.set("sent_via", isChecked));
         MarkDownProvider.setMdText(sentVia, sentFromFastHub);
         if (savedInstanceState == null) {
             onCreate();

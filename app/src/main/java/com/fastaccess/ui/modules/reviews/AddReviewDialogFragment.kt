@@ -25,11 +25,11 @@ import com.fastaccess.ui.widgets.SpannableBuilder
  */
 class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
 
-    val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
-    val textView: TextView by lazy { view!!.findViewById<TextView>(R.id.text) }
-    val lineNo: TextView by lazy { view!!.findViewById<TextView>(R.id.lineNo) }
-    val editText: TextInputLayout by lazy { view!!.findViewById<TextInputLayout>(R.id.editText) }
-    val spacePattern = "\\s+".toRegex()
+    private val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
+    private val textView: TextView by lazy { view!!.findViewById<TextView>(R.id.text) }
+    private val lineNo: TextView by lazy { view!!.findViewById<TextView>(R.id.lineNo) }
+    private val editText: TextInputLayout by lazy { view!!.findViewById<TextInputLayout>(R.id.editText) }
+    private val spacePattern = "\\s+".toRegex()
 
     private var commentCallback: ReviewCommentListener? = null
 

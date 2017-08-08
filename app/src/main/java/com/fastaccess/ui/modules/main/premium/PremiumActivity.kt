@@ -26,9 +26,9 @@ import com.fastaccess.ui.widgets.bindView
  */
 class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), PremiumMvp.View {
 
-    val editText: EditText by bindView(R.id.editText)
-    val progressLayout: View by bindView(R.id.progressLayout)
-    val viewGroup: FrameLayout by bindView(R.id.viewGroup)
+    private val editText: EditText by bindView(R.id.editText)
+    private val progressLayout: View by bindView(R.id.progressLayout)
+    private val viewGroup: FrameLayout by bindView(R.id.viewGroup)
 
     override fun layout(): Int = R.layout.pro_features_layout
 
