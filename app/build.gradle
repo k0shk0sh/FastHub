@@ -116,6 +116,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "com.android.support:appcompat-v7:${supportVersion}"
+    implementation 'com.jaredrummler:android-device-names:1.1.4'
     implementation "com.android.support:design:${supportVersion}"
     implementation "com.android.support:cardview-v7:${supportVersion}"
     implementation "com.android.support:recyclerview-v7:${supportVersion}"

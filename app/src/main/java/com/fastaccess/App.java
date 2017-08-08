@@ -7,6 +7,7 @@ import android.support.v7.preference.PreferenceManager;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.core.CrashlyticsCore;
 import com.fastaccess.data.dao.model.Models;
+import com.fastaccess.helper.DeviceNameGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
@@ -54,6 +55,7 @@ public class App extends Application {
         Shortbread.create(this);
         EmojiManager.load();
         ColorsProvider.load();
+        DeviceNameGetter.getInstance().loadDevice();
     }
 
     private void initFabric() {
