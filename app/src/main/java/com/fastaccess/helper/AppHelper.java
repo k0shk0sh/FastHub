@@ -134,14 +134,10 @@ public class AppHelper {
     }
 
     public static String getDeviceName() {
-        String brand = Build.BRAND;
-        String model = Build.MODEL;
-        if (model.startsWith(brand)) {
-            return InputHelper.capitalizeFirstLetter(model);
-        } else if (isEmulator()) {
+        if (isEmulator()) {
             return "Android Emulator";
         }
-        return brand.equalsIgnoreCase(model) ? InputHelper.capitalizeFirstLetter(model) : InputHelper.capitalizeFirstLetter(brand) + " " + model;
+        return DeviceNameGetter.getInstance().getDeviceName();
     }
 
     public static boolean isEmulator() {
