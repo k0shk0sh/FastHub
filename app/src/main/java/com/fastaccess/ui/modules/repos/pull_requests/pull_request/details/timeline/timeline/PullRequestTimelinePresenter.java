@@ -314,10 +314,6 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
                                 @NonNull String sha, boolean isMergeable, int page) {
         PullRequestTimelineQuery query = getTimelineBuilder(login, repoId, number, page);
-        if (query == null) {
-            sendToView(PullRequestTimelineMvp.View::hideProgress);
-            return;
-        }
         ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient().query(query);
         Observable<PullRequestTimelineModel> observable = Rx2Apollo.from(apolloCall)
                 .flatMap(response -> {

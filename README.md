@@ -32,7 +32,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
   - Search users/orgs, repos, issues/prs & code.
-  - Pinned Repos
+  - FastHub & GitHub Pinned Repos
   - Trending
   - Wiki
 - **Repositories**
@@ -73,6 +73,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
     - Teams & Teams repos
     - Repos
 - **Users**
+  - GitHub Pinned Repos 
   - Follow/Unfollow users
   - View user feeds
   - Contribution graph.

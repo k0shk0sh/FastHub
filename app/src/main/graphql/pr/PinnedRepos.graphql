@@ -1,0 +1,28 @@
+query getPinnedRepos($login: String!) {
+  user(login: $login) {
+    pinnedRepositories(first: 100) {
+      edges {
+        node {
+          name
+          url
+          issues(states: OPEN) {
+            totalCount
+          }
+          pullRequests(states: OPEN) {
+            totalCount
+          }
+          stargazers {
+            totalCount
+          }
+          forks {
+            totalCount
+          }
+          primaryLanguage {
+            name
+            color
+          }
+        }
+      }
+    }
+  }
+}

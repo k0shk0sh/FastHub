@@ -26,7 +26,7 @@ import pr.PullRequestTimelineQuery
  * Created by kosh on 03/08/2017.
  */
 
-class PullRequestEventViewHolder private constructor(private val view: View, adapter: BaseRecyclerAdapter<*, *, *>) :
+class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRecyclerAdapter<*, *, *>) :
         BaseViewHolder<PullRequestTimelineModel>(view, adapter) {
 
     @BindView(R.id.stateImage) lateinit var stateImage: ForegroundImageView
@@ -316,7 +316,7 @@ class PullRequestEventViewHolder private constructor(private val view: View, ada
     private fun commitEvent(event: PullRequestTimelineQuery.AsCommit) {
         event.author()?.let {
             stateText.text = SpannableBuilder.builder()//Review[k0shk0sh] We may want to suppress more then 3 or 4 commits. since it will clog the it
-                    .bold(if(it.user() == null) it.name() else it.user()?.login())
+                    .bold(if (it.user() == null) it.name() else it.user()?.login())
                     .append(" ")
                     .append("committed")
                     .append(" ")
