@@ -22,12 +22,12 @@ import com.fastaccess.ui.widgets.FontTextView
 class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<NotificationSoundMvp.View,
         NotificationSoundPresenter>(), NotificationSoundMvp.View {
 
-    val title: FontTextView by lazy { view!!.findViewById<FontTextView>(R.id.title) }
-    val radioGroup: RadioGroup by lazy { view!!.findViewById<RadioGroup>(R.id.picker) }
-    val okButton: Button by lazy { view!!.findViewById<Button>(R.id.ok) }
-    val padding: Int by lazy { resources.getDimensionPixelSize(R.dimen.spacing_xs_large) }
-    var canPlaySound: Boolean = false
-    val mediaPlayer = MediaPlayer()
+    private val title: FontTextView by lazy { view!!.findViewById<FontTextView>(R.id.title) }
+    private val radioGroup: RadioGroup by lazy { view!!.findViewById<RadioGroup>(R.id.picker) }
+    private val okButton: Button by lazy { view!!.findViewById<Button>(R.id.ok) }
+    private val padding: Int by lazy { resources.getDimensionPixelSize(R.dimen.spacing_xs_large) }
+    private var canPlaySound: Boolean = false
+    private val mediaPlayer = MediaPlayer()
 
     private var listener: NotificationSoundMvp.NotificationSoundListener? = null
 

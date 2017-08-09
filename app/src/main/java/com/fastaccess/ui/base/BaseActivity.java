@@ -63,9 +63,9 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
-    @Nullable @BindView(R.id.toolbar) public Toolbar toolbar;
-    @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
-    @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
+    @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar;
+    @Nullable @BindView(R.id.appbar) protected AppBarLayout appbar;
+    @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
     @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
 

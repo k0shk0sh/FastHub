@@ -36,7 +36,7 @@ import lombok.Setter;
         dest.writeTypedList(this.comments);
     }
 
-    protected GroupedReviewModel(Parcel in) {
+    private GroupedReviewModel(Parcel in) {
         this.position = in.readInt();
         this.diffText = in.readString();
         long tmpDate = in.readLong();

@@ -19,8 +19,8 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
 class LoginViewHolder private constructor(itemView: View, adapter: BaseRecyclerAdapter<*, *, *>?) :
         BaseViewHolder<Login>(itemView, adapter) {
-    val avatarLayout: AvatarLayout? by bindOptionalView(R.id.avatarLayout)
-    val title: FontTextView by bindView(R.id.title)
+    private val avatarLayout: AvatarLayout? by bindOptionalView(R.id.avatarLayout)
+    private val title: FontTextView by bindView(R.id.title)
 
     @SuppressLint("SetTextI18n")
     override fun bind(login: Login) {

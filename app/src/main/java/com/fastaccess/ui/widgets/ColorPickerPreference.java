@@ -25,8 +25,6 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class ColorPickerPreference extends Preference implements ColorPicker.OnChooseColorListener {
 
-    private ColorPicker colorPicker;
-
     public ColorPickerPreference(Context context) {
         super(context);
         init();
@@ -57,12 +55,12 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
 
         int selected_color = getSelectedColor();
         String title = String.format("Accent Color: (Currently: %s)", getSelectedColorName());
-        colorPicker = new ColorPicker(getContext());
+        ColorPicker colorPicker = new ColorPicker(getContext());
         colorPicker.setRoundColorButton(true);
         colorPicker.setColors(R.array.theme_colors_hex);
         colorPicker.setDefaultColorButton(selected_color);
         colorPicker.setTitle(title);
-        TextView title_tv = (TextView) colorPicker.getDialogViewLayout().findViewById(R.id.title);
+        TextView title_tv = colorPicker.getDialogViewLayout().findViewById(R.id.title);
         title_tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
         colorPicker.getPositiveButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));
         colorPicker.getNegativeButton().setTextColor(ViewHelper.getPrimaryTextColor(getContext()));
@@ -108,7 +106,7 @@ public class ColorPickerPreference extends Preference implements ColorPicker.OnC
         // do nothing when the dialog is canceled
     }
 
-    public String getSelectedColorName() {
+    private String getSelectedColorName() {
         String[] colorNames = getContext().getResources().getStringArray(R.array.theme_colors);
         return colorNames[PrefGetter.getThemeColor(getContext()) - 1];
     }

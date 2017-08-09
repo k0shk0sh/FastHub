@@ -15,12 +15,12 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder.OnItemClickListener
 /**
  * Created by kosh on 03/08/2017.
  */
-class PullRequestTimelineAdapter constructor(val data: ArrayList<PullRequestTimelineModel>,
-                                             internal var onToggleView: OnToggleView,
-                                             internal var reactionsCallback: ReactionsCallback,
+class PullRequestTimelineAdapter constructor(private val data: ArrayList<PullRequestTimelineModel>,
+                                             private var onToggleView: OnToggleView,
+                                             private var reactionsCallback: ReactionsCallback,
                                              internal var isMerged: Boolean = false,
-                                             internal var repoOwner: String,
-                                             internal var poster: String) : BaseRecyclerAdapter<PullRequestTimelineModel,
+                                             private var repoOwner: String,
+                                             private var poster: String) : BaseRecyclerAdapter<PullRequestTimelineModel,
         BaseViewHolder<PullRequestTimelineModel>, OnItemClickListener<PullRequestTimelineModel>>(data) {
 
     override fun viewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<PullRequestTimelineModel> {

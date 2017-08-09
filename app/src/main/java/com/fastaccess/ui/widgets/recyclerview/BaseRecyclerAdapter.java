@@ -30,15 +30,15 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     private GuideListener guideListener;
     private boolean progressAdded;
 
-    public BaseRecyclerAdapter() {
+    protected BaseRecyclerAdapter() {
         this(new ArrayList<>());
     }
 
-    public BaseRecyclerAdapter(@NonNull List<M> data) {
+    protected BaseRecyclerAdapter(@NonNull List<M> data) {
         this(data, null);
     }
 
-    public BaseRecyclerAdapter(@NonNull List<M> data, @Nullable P listener) {
+    protected BaseRecyclerAdapter(@NonNull List<M> data, @Nullable P listener) {
         this.data = data;
         this.listener = listener;
     }
@@ -93,7 +93,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     }
 
     @SuppressWarnings("unchecked")
-    protected void onShowGuide(@NonNull VH holder, int position) {// give the flexibility to other adapters to override this
+    private void onShowGuide(@NonNull VH holder, int position) {// give the flexibility to other adapters to override this
         if (position == 0 && !isShowedGuide() && guideListener != null) {
             guideListener.onShowGuide(holder.itemView, getItem(position));
             showedGuide = true;
@@ -197,7 +197,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         this.guideListener = guideListener;
     }
 
-    public boolean isShowedGuide() {
+    private boolean isShowedGuide() {
         return showedGuide;
     }
 

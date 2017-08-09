@@ -30,12 +30,12 @@ import java.util.*
 
 class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPresenter>(), LoginChooserMvp.View {
 
-    val language_selector: RelativeLayout by bindView(R.id.language_selector)
-    val recycler: DynamicRecyclerView by bindView(R.id.recycler)
-    val multiAccLayout: View by bindView(R.id.multiAccLayout)
-    val viewGroup: CoordinatorLayout by bindView(R.id.viewGroup)
-    val toggleImage: View by bindView(R.id.toggleImage)
-    val adapter = LoginAdapter()
+    private val language_selector: RelativeLayout by bindView(R.id.language_selector)
+    private val recycler: DynamicRecyclerView by bindView(R.id.recycler)
+    private val multiAccLayout: View by bindView(R.id.multiAccLayout)
+    private val viewGroup: CoordinatorLayout by bindView(R.id.viewGroup)
+    private val toggleImage: View by bindView(R.id.toggleImage)
+    private val adapter = LoginAdapter()
 
     override fun layout(): Int = R.layout.login_chooser_layout
 

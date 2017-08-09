@@ -30,7 +30,7 @@ public class AccessTokenModel implements Parcelable {
         dest.writeString(this.tokenType);
     }
 
-    protected AccessTokenModel(Parcel in) {
+    private AccessTokenModel(Parcel in) {
         this.id = in.readLong();
         this.token = in.readString();
         this.hashedToken = in.readString();

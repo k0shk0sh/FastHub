@@ -22,7 +22,7 @@ import lombok.Setter;
         dest.writeString(this.label);
     }
 
-    protected AppLanguageModel(Parcel in) {
+    private AppLanguageModel(Parcel in) {
         this.value = in.readString();
         this.label = in.readString();
     }

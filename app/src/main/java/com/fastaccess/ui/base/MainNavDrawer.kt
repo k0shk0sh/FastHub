@@ -33,14 +33,14 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 /**
  * Created by Kosh on 09 Jul 2017, 3:50 PM
  */
-class MainNavDrawer(val view: BaseActivity<*, *>, val extraNav: NavigationView?, val accountsNav: NavigationView?)
+class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: NavigationView?, private val accountsNav: NavigationView?)
     : BaseViewHolder.OnItemClickListener<Login> {
 
-    var menusHolder: ViewGroup? = null
-    val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
-    val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
-    val pinnedListAdapter = PinnedReposAdapter(true)
-    val userModel: Login? = Login.getUser()
+    private var menusHolder: ViewGroup? = null
+    private val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
+    private val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+    private val pinnedListAdapter = PinnedReposAdapter(true)
+    private val userModel: Login? = Login.getUser()
 
     init {
         menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)

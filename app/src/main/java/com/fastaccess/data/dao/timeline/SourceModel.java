@@ -35,7 +35,7 @@ import lombok.Setter;
         dest.writeParcelable(this.repository, flags);
     }
 
-    protected SourceModel(Parcel in) {
+    private SourceModel(Parcel in) {
         this.type = in.readString();
         this.issue = in.readParcelable(Issue.class.getClassLoader());
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());

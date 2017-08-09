@@ -54,7 +54,6 @@
     <string name="no_body">Содержимое отсутствует</string>
     <string name="contributors">Вкладчики</string>
     <string name="contributions">Вклады</string>
-    <string name="by"></string>
     <string name="close_issue">Закрыть Вопрос</string>
     <string name="re_open_issue">Открыть Вопрос</string>
     <string name="re_open">Открыть</string>

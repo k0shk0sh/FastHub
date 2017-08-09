@@ -23,7 +23,7 @@ import lombok.Setter;
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
     }
 
-    protected AuthorModel(Parcel in) {
+    private AuthorModel(Parcel in) {
         this.name = in.readString();
         this.email = in.readString();
         long tmpDate = in.readLong();

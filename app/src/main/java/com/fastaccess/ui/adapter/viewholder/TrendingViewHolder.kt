@@ -18,12 +18,12 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 open class TrendingViewHolder(itemView: View, adapter: BaseRecyclerAdapter<TrendingModel,
         TrendingViewHolder, OnItemClickListener<TrendingModel>>) : BaseViewHolder<TrendingModel>(itemView, adapter) {
 
-    val title: FontTextView by bindView(R.id.title)
-    val description: FontTextView by bindView(R.id.description)
-    val todayStars: FontTextView by bindView(R.id.todayStars)
-    val stars: FontTextView by bindView(R.id.stars)
-    val fork: FontTextView by bindView(R.id.forks)
-    val lang: FontTextView by bindView(R.id.language)
+    private val title: FontTextView by bindView(R.id.title)
+    private val description: FontTextView by bindView(R.id.description)
+    private val todayStars: FontTextView by bindView(R.id.todayStars)
+    private val stars: FontTextView by bindView(R.id.stars)
+    private val fork: FontTextView by bindView(R.id.forks)
+    private val lang: FontTextView by bindView(R.id.language)
 
     override fun bind(t: TrendingModel) {
         title.text = t.title

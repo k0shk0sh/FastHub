@@ -85,7 +85,7 @@ public class DonationActivity extends BaseActivity {
         }
     }
 
-    protected void checkPurchase() {
+    private void checkPurchase() {
         ((BasePresenter) getPresenter()).manageViewDisposable(RxBillingService.getInstance(this, BuildConfig.DEBUG)
                 .getPurchases(ProductType.IN_APP)
                 .subscribe((purchases, throwable) -> {

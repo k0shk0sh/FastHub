@@ -18,11 +18,11 @@ import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
 
 class TrendingFragment : BaseFragment<TrendingFragmentMvp.View, TrendingFragmentPresenter>(), TrendingFragmentMvp.View {
 
-    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
-    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
-    val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
-    val fastScroller: RecyclerViewFastScroller by lazy { view!!.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) }
-    val adapter by lazy { TrendingAdapter(presenter.getTendingList()) }
+    private val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
+    private val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
+    private val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
+    private val fastScroller: RecyclerViewFastScroller by lazy { view!!.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) }
+    private val adapter by lazy { TrendingAdapter(presenter.getTendingList()) }
 
     @State var lang: String = ""
     @State var since: String = ""

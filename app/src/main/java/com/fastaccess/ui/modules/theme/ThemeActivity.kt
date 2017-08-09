@@ -25,8 +25,8 @@ import com.fastaccess.ui.widgets.bindView
 
 class ThemeActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>(), ThemeFragmentMvp.ThemeListener {
 
-    val pager: ViewPagerView by bindView(R.id.pager)
-    val parentLayout: View by bindView(R.id.parentLayout)
+    private val pager: ViewPagerView by bindView(R.id.pager)
+    private val parentLayout: View by bindView(R.id.parentLayout)
 
     override fun layout(): Int = R.layout.theme_viewpager
 
