@@ -54,6 +54,8 @@
     <string name="no_body">Содержимое отсутствует</string>
     <string name="contributors">Вкладчики</string>
     <string name="contributions">Вклады</string>
+    <string name="by"></string>
+    <string name="english_please">Пожалуйста, в отзыве используйте английский язык.</string>
     <string name="close_issue">Закрыть Вопрос</string>
     <string name="re_open_issue">Открыть Вопрос</string>
     <string name="re_open">Открыть</string>
@@ -404,7 +406,7 @@
     <string name="feed">Обновления</string>
     <string name="premium_theme">Премиальная тема</string>
     <string name="choose_code_theme">Выбрать цвет. палитру кода</string>
-    <string name="enterprise_login_warning">Пожалуйста, выполните вход в свою учётную запись GitHub используя метод (OAuth), чтобы не возникали проблемы в работе с API GitHub.
+    <string name="enterprise_login_warning">Пожалуйста, выполните вход в свою учётную запись GitHub, чтобы не возникали проблемы в работе с API GitHub.
         В противном случае авторизация будет сбрасываться каждый раз, когда вы будете выходить за рамки GitHub Enterprise.
         Это случается из-за того, что токен, передаваемый серверам GitHub, имеет доступ только к вашему аккаунту Enterprise.</string>
     <string name="add_account">Добавить уч. запись</string>
@@ -416,4 +418,8 @@
     <string name="cancel_reviews">Отменить обзоры</string>
     <string name="colored_navbar_summary">Отключить цвет панели навигации при использовании тем</string>
     <string name="colored_navbar_title">Отключить цвет панели навигации</string>
+    <string name="sound_chooser_summary">Установить пользовательский звук уведомлений</string>
+    <string name="sound_chooser_title">Установить звук уведомлений</string>
+    <string name="disable_auto_gif_summary">Отключить автоматическое проигрывание GIF</string>
+    <string name="disable_auto_gif_title">Отключить проигрывание GIF</string>
 </resources>
