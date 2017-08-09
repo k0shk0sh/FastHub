@@ -323,14 +323,14 @@
     <string name="commits_reflected">Commits have been switched to the selected branch</string>
     <string name="general_settings">General</string>
     <string name="background_job_summary">Change how frequently FastHub checks for new notifications</string>
-    <string name="background_job_title">Notification Sync Interval</string>
+    <string name="background_job_title">Sync Interval</string>
     <string name="every">Every</string>
     <string name="behavior">Behavior</string>
     <string name="customization">Customization</string>
     <string name="recycler_view_animation_summary">Enable list animations</string>
     <string name="recycler_view_animation_title">List Animation</string>
     <string name="back_button_summary">Disable dialog preventing accidental app closure</string>
-    <string name="back_button_title">Press Back to Exit</string>
+    <string name="back_button_title">Exit Confirmation</string>
     <string name="restore">Restore</string>
     <string name="backup">Backup</string>
     <string name="backed_up">Successfully backed up!</string>
@@ -340,8 +340,8 @@
     <string name="now">Now</string>
     <string name="unsaved_data_warning">Discard unsaved changes?</string>
     <string name="private_repo">Private</string>
-    <string name="rect_avatar_summary">Use rounded rectangle avatars instead of circular avatars</string>
-    <string name="rect_avatar_title">Avatar Appearance</string>
+    <string name="rect_avatar_summary">Use rounded squarish avatars instead of circular ones</string>
+    <string name="rect_avatar_title">Squarish Avatars</string>
     <string name="rate_app">Rate this app</string>
     <string name="author">Author</string>
     <string name="fork_github">Fork on GitHub</string>
@@ -351,7 +351,7 @@
     <string name="report_issue">Report an issue</string>
     <string name="report_issue_here">Having an issue? Report it here</string>
     <string name="about">About</string>
-    <string name="notification_settings">Notification</string>
+    <string name="notification_settings">Notifications</string>
     <string name="turn_off">Turn off</string>
     <string name="unauthorized_user">Unauthorized user</string>
     <string name="two_factors_otp_error">Two factors OTP is required</string>
@@ -368,7 +368,7 @@
     <string name="or_character">OR</string>
     <string name="mark_notification_title">Disable Notification Read Status</string>
     <string name="mark_notification_summary">Disable marking as read upon clicking a notification.</string>
-    <string name="theme_title">Choose Theme</string>
+    <string name="theme_title">Theme</string>
     <string name="theme_summary">Choose your default theme</string>
     <string name="theme_color_summary">Choose theme accent color</string>
     <string name="theme_color_title">Theme Accent Color</string>
@@ -533,7 +533,7 @@
     <string name="milestone_added">Milestone added successfully</string>
     <string name="feed">Feed</string>
     <string name="premium_theme">Premium Theme</string>
-    <string name="choose_code_theme">Choose Code color palette</string>
+    <string name="choose_code_theme">Code color palette</string>
     <string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
         otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
         GitHub API is coming from your Enterprise Account.</string>
@@ -544,8 +544,8 @@
     <string name="owner">Owner</string>
     <string name="original_poster">Original Poster</string>
     <string name="cancel_reviews">Cancel Reviews</string>
-    <string name="colored_navbar_summary">Disable tinting the navigation bar in themes</string>
-    <string name="colored_navbar_title">Disable Navbar tinting</string>
+    <string name="colored_navbar_summary">Disable colored navigation bar in themes</string>
+    <string name="colored_navbar_title">Colorless Navbar</string>
     <string name="sound_chooser_summary">Choose custom notification sound</string>
     <string name="sound_chooser_title">Choose Notification Sound</string>
     <string name="disable_auto_gif_summary">Disable auto playing GIFs</string>
