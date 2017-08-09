@@ -330,7 +330,7 @@
     <string name="recycler_view_animation_summary">Enable list animations</string>
     <string name="recycler_view_animation_title">List Animation</string>
     <string name="back_button_summary">Disable dialog preventing accidental app closure</string>
-    <string name="back_button_title">Exit Confirmation</string>
+    <string name="back_button_title">Disable Exit Confirmation</string>
     <string name="restore">Restore</string>
     <string name="backup">Backup</string>
     <string name="backed_up">Successfully backed up!</string>
