@@ -89,7 +89,7 @@
     <string name="changes">Изменения</string>
     <string name="status">Статус</string>
     <string name="confirm_message">Вы уверены?</string>
-    <string name="success">Успех</string>
+    <string name="success">Успешно</string>
     <string name="to">в</string>
     <string name="error_deleting_comment">Ошибка удаления комментария</string>
     <string name="delete">Удалить</string>
@@ -256,8 +256,8 @@
     <string name="forking_gist">Клонирование Gist\'a</string>
     <string name="login_using_your_default_browser">Войти через ваш Интернет Браузер по умолчанию (OAuth)</string>
     <string name="or_character">ИЛИ</string>
-    <string name="mark_notification_title">Отключить статус о прочтении</string>
-    <string name="mark_notification_summary">Отключить маркировку как прочтённое до клика на уведомление.</string>
+    <string name="mark_notification_title">Отключить автопрочтение</string>
+    <string name="mark_notification_summary">Отключить автопрочтение без клика на уведомление.</string>
     <string name="theme_title">Тема оформления</string>
     <string name="theme_summary">Выбрать тему по умолчанию</string>
     <string name="theme_color_summary">Выбрать акцентный цвет темы</string>
@@ -361,7 +361,7 @@
     <string name="support_with_5_00">Пожертвовать $5.00</string>
     <string name="support_with_10_00">Пожертвовать $10.00</string>
     <string name="support_with_20_00">Пожертвовать $20.00</string>
-    <string name="app_language">Язык приложения</string>
+    <string name="app_language">Язык</string>
     <string name="language">Язык</string>
     <string name="choose_language_title">Выберите язык</string>
     <string name="choose_language_summary">Выберите нужный язык</string>
@@ -421,5 +421,5 @@
     <string name="sound_chooser_summary">Установить пользовательский звук уведомлений</string>
     <string name="sound_chooser_title">Установить звук уведомлений</string>
     <string name="disable_auto_gif_summary">Отключить автоматическое проигрывание GIF</string>
-    <string name="disable_auto_gif_title">Отключить проигрывание GIF</string>
+    <string name="disable_auto_gif_title">Отключить автопроигрывание GIF</string>
 </resources>
