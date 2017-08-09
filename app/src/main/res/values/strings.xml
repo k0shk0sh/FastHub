@@ -472,7 +472,7 @@
     <string name="support_with_5_00">Support with $5.00</string>
     <string name="support_with_10_00">Support with $10.00</string>
     <string name="support_with_20_00">Support with $20.00</string>
-    <string name="app_language">App Language</string>
+    <string name="app_language">Language</string>
     <string name="language">Language</string>
     <string name="choose_language_title">Choose Language</string>
     <string name="choose_language_summary">Choose your preferred language</string>
