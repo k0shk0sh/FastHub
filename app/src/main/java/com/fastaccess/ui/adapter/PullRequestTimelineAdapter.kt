@@ -4,10 +4,7 @@ import android.view.ViewGroup
 import com.fastaccess.data.dao.timeline.PullRequestTimelineModel
 import com.fastaccess.ui.adapter.callback.OnToggleView
 import com.fastaccess.ui.adapter.callback.ReactionsCallback
-import com.fastaccess.ui.adapter.viewholder.PullRequestDetailsViewHolder
-import com.fastaccess.ui.adapter.viewholder.PullRequestEventViewHolder
-import com.fastaccess.ui.adapter.viewholder.PullRequestTimelineCommentsViewHolder
-import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder
+import com.fastaccess.ui.adapter.viewholder.*
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder.OnItemClickListener
@@ -29,6 +26,7 @@ class PullRequestTimelineAdapter constructor(private val data: ArrayList<PullReq
                     onToggleView, reactionsCallback, repoOwner, poster)
             PullRequestTimelineModel.STATUS -> return PullStatusViewHolder.newInstance(parent)
             PullRequestTimelineModel.COMMENT -> return PullRequestTimelineCommentsViewHolder.newInstance(parent, this, onToggleView)
+            PullRequestTimelineModel.REVIEW -> return ReviewsViewHolder.newInstance(parent, this)
             else -> return PullRequestEventViewHolder.newInstance(parent, this)
         }
     }

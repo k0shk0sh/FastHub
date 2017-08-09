@@ -16,17 +16,13 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     private int previousTotalItemCount = 0;
     private boolean loading = true;
     private int startingPageIndex = 0;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager layoutManager;
     private BaseRecyclerAdapter adapter;
 
     public InfiniteScroll() {}
 
-    public InfiniteScroll(RecyclerView.LayoutManager layoutManager) {
-        initLayoutManager(layoutManager);
-    }
-
     private void initLayoutManager(RecyclerView.LayoutManager layoutManager) {
-        this.mLayoutManager = layoutManager;
+        this.layoutManager = layoutManager;
         if (layoutManager instanceof GridLayoutManager) {
             visibleThreshold = visibleThreshold * ((GridLayoutManager) layoutManager).getSpanCount();
         } else if (layoutManager instanceof StaggeredGridLayoutManager) {
@@ -47,7 +43,7 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     }
 
     @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-        if (mLayoutManager == null) {
+        if (layoutManager == null) {
             initLayoutManager(recyclerView.getLayoutManager());
         }
         if (adapter == null) {
@@ -55,15 +51,17 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
                 adapter = (BaseRecyclerAdapter) recyclerView.getAdapter();
             }
         }
+        if (adapter != null && adapter.isProgressAdded()) return;
+
         int lastVisibleItemPosition = 0;
-        int totalItemCount = mLayoutManager.getItemCount();
-        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
-            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
+        int totalItemCount = layoutManager.getItemCount();
+        if (layoutManager instanceof StaggeredGridLayoutManager) {
+            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) layoutManager).findLastVisibleItemPositions(null);
             lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
-        } else if (mLayoutManager instanceof GridLayoutManager) {
-            lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        } else if (mLayoutManager instanceof LinearLayoutManager) {
-            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
+        } else if (layoutManager instanceof GridLayoutManager) {
+            lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+        } else if (layoutManager instanceof LinearLayoutManager) {
+            lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
         }
         if (totalItemCount < previousTotalItemCount) {
             this.currentPage = this.startingPageIndex;
