@@ -24,7 +24,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha9'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta1'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'

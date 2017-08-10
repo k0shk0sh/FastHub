@@ -2,6 +2,7 @@ package com.fastaccess.ui.adapter.viewholder
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.text.style.BackgroundColorSpan
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.zzhoujay.markdown.style.CodeSpan
 import pr.PullRequestTimelineQuery
+import pr.type.StatusState
 
 /**
  * Created by kosh on 03/08/2017.
@@ -32,6 +34,7 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
     @BindView(R.id.stateImage) lateinit var stateImage: ForegroundImageView
     @BindView(R.id.avatarLayout) lateinit var avatarLayout: AvatarLayout
     @BindView(R.id.stateText) lateinit var stateText: FontTextView
+    @BindView(R.id.commitStatus) lateinit var commitStatus: ForegroundImageView
 
     override fun bind(t: PullRequestTimelineModel) {
         val node = t.node
@@ -328,6 +331,16 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
             stateImage.setImageResource(R.drawable.ic_push)
             avatarLayout.setUrl(it.user()?.avatarUrl().toString(), it.user()?.login(), false,
                     LinkParserHelper.isEnterprise(it.user()?.url().toString()))
+            event.status()?.let {
+                commitStatus.visibility = View.VISIBLE
+                val context = commitStatus.context
+                commitStatus.tintDrawableColor(when (it.state()) {
+                    StatusState.ERROR -> ContextCompat.getColor(context, R.color.material_red_700)
+                    StatusState.FAILURE -> ContextCompat.getColor(context, R.color.material_deep_orange_700)
+                    StatusState.SUCCESS -> ContextCompat.getColor(context, R.color.material_green_700)
+                    else -> ContextCompat.getColor(context, R.color.material_yellow_700)
+                })
+            }
         }
     }
 

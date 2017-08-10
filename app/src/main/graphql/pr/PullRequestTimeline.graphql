@@ -33,12 +33,46 @@ query PullRequestTimeline($owner: String!, $name: String!, $number: Int!, $page:
             url
             committedDate
             messageHeadline
+            status {
+              state
+            }
             author {
               name
               user {
                 login
                 url
                 avatarUrl
+              }
+            }
+          }
+          ... on CommitCommentThread {
+            path
+            position
+            commit {
+              oid
+            }
+            comments(first: 30) {
+              edges {
+                node {
+                  id
+                  authorAssociation
+                  bodyHTML
+                  body
+                  createdAt
+                  reactionGroups {
+                    viewerHasReacted
+                    content
+                    users {
+                      totalCount
+                    }
+                  }
+                  lastEditedAt
+                  author {
+                    avatarUrl
+                    login
+                    url
+                  }
+                }
               }
             }
           }

@@ -11,7 +11,7 @@ import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter;
  * Created by Kosh on 8/2/2015. copyrights are reserved @
  */
 public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
-    private int visibleThreshold = 3;
+    private int visibleThreshold = 5;
     private int currentPage = 0;
     private int previousTotalItemCount = 0;
     private boolean loading = true;

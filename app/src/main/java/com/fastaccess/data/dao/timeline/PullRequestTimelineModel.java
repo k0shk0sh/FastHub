@@ -20,7 +20,7 @@ import pr.PullRequestTimelineQuery;
     public static final int COMMENT = 3;
     public static final int STATUS = 4;
     public static final int REVIEW = 5;
-
+    public static final int COMMIT_COMMENTS = 6;
     public PullRequestTimelineQuery.Node node;
     public PullRequest pullRequest;
     public PullRequestTimelineQuery.Status status;
@@ -55,12 +55,14 @@ import pr.PullRequestTimelineQuery;
             } else if (node.asIssueComment() != null) {
                 if (reactions == null) {
                     //noinspection ConstantConditions
-                    setReactions(ReactionsModel.getReaction(node.asIssueComment().reactionGroups()));
+                    setReactions(ReactionsModel.getReaction2(node.asIssueComment().reactionGroups()));
                 }
                 return COMMENT;
             } else if (node.asPullRequestReview() != null || node.asReviewDismissedEvent() != null
                     || node.asReviewRequestedEvent() != null || node.asReviewRequestRemovedEvent() != null) {
                 return REVIEW;
+            } else if (node.asCommitCommentThread() != null) {
+                return COMMIT_COMMENTS;
             }
         } else if (status != null) {
             return STATUS;

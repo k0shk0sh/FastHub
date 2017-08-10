@@ -106,7 +106,7 @@ public class PullRequestTimelineCommentsViewHolder extends BaseViewHolder<PullRe
     @Override public void bind(@NonNull PullRequestTimelineModel timelineModel) {
         PullRequestTimelineQuery.AsIssueComment commentsModel = timelineModel.getNode().asIssueComment();
         if (commentsModel != null) {
-            PullRequestTimelineQuery.Author3 author3 = commentsModel.author();
+            PullRequestTimelineQuery.Author4 author3 = commentsModel.author();
             owner.setVisibility(View.VISIBLE);
             owner.setText(commentsModel.authorAssociation().name().toLowerCase());
             if (author3 != null) {
