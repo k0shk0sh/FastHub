@@ -4,7 +4,6 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
 apply plugin: 'io.fabric'
-apply plugin: 'ManifestClasspath'
 
 buildProperties {
     notThere {
@@ -185,4 +184,5 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
 }
 
+apply plugin: 'ManifestClasspath'
 apply plugin: 'com.google.gms.google-services'
