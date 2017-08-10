@@ -5,12 +5,20 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.annimon.stream.Collectors;
+import com.annimon.stream.Stream;
+import com.fastaccess.data.dao.CreateGistModel;
+import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Kosh on 12 Nov 2016, 12:17 PM
@@ -105,5 +113,28 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
                         sendToView(GistMvp.View::onSetupDetails);
                     }));
         }
+    }
+
+    @Override public void onUpdateGist(@NonNull List<FilesListModel> files, @NonNull String filename) {
+        CreateGistModel createGistModel = new CreateGistModel();
+        createGistModel.setDescription(gist.getDescription());
+        Logger.e(filename);
+        if (!files.isEmpty()) {
+            HashMap<String, FilesListModel> map = Stream.of(files)
+                    .collect(Collectors.toMap(FilesListModel::getFilename, filesListModel -> filesListModel, HashMap::new));
+            map.put(filename, new FilesListModel());
+            createGistModel.setFiles(map);
+        } else {
+            HashMap<String, FilesListModel> map = new HashMap<>();
+            map.put(filename, new FilesListModel());
+            createGistModel.setFiles(map);
+        }
+        makeRestCall(RestProvider.getGistService(isEnterprise()).editGist(createGistModel, gistId),
+                gist1 -> {
+                    if (gist1 != null) {
+                        gist = gist1;
+                        sendToView(GistMvp.View::onSetupDetails);
+                    }
+                });
     }
 }

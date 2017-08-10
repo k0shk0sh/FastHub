@@ -151,9 +151,9 @@ import lombok.Setter;
                 .collect(Collectors.toList());
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForGist(@NonNull Context context, @NonNull Gist gistsModel) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForGist(@NonNull Context context, @NonNull Gist gistsModel, boolean isOwner) {
 
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListFragment.newInstance(gistsModel.getFiles())),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListFragment.newInstance(gistsModel.getFiles(), isOwner)),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), GistCommentsFragment.newInstance(gistsModel.getGistId())))
                 .collect(Collectors.toList());
     }

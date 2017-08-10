@@ -4,12 +4,11 @@ import android.annotation.SuppressLint
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
 import com.fastaccess.ui.widgets.AvatarLayout
 import com.fastaccess.ui.widgets.FontTextView
-import com.fastaccess.ui.widgets.bindOptionalView
-import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
@@ -19,8 +18,9 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
 class LoginViewHolder private constructor(itemView: View, adapter: BaseRecyclerAdapter<*, *, *>?) :
         BaseViewHolder<Login>(itemView, adapter) {
-    private val avatarLayout: AvatarLayout? by bindOptionalView(R.id.avatarLayout)
-    private val title: FontTextView by bindView(R.id.title)
+
+    val avatarLayout: AvatarLayout? by lazy { itemView.findViewById<AvatarLayout>(R.id.avatarLayout) as AvatarLayout }
+    @BindView(R.id.title) lateinit var title: FontTextView
 
     @SuppressLint("SetTextI18n")
     override fun bind(login: Login) {

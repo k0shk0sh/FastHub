@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.BranchesModel
 import com.fastaccess.helper.BundleConstant
@@ -20,10 +21,12 @@ import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
  * Created by Kosh on 06 Jul 2017, 9:48 PM
  */
 class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), BranchesMvp.View {
-    private val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
-    private val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
-    private val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
-    private val fastScroller: RecyclerViewFastScroller by lazy { view!!.findViewById<RecyclerViewFastScroller>(R.id.fastScroller) }
+
+    @BindView(R.id.recycler) lateinit var recycler: DynamicRecyclerView
+    @BindView(R.id.refresh) lateinit var refresh: SwipeRefreshLayout
+    @BindView(R.id.stateLayout) lateinit var stateLayout: StateLayout
+    @BindView(R.id.fastScroller) lateinit var fastScroller: RecyclerViewFastScroller
+
     private var onLoadMore: OnLoadMore<Boolean>? = null
     private var branchCallback: BranchesPagerListener? = null
 

@@ -166,12 +166,12 @@ dependencies {
     implementation 'com.apollographql.apollo:apollo-rx2-support:0.4.0'
     implementation 'com.jaredrummler:android-device-names:1.1.4'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
-    kapt "io.requery:requery-processor:${requery}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
     kapt "com.evernote:android-state-processor:${state_version}"
     kapt "com.jakewharton:butterknife-compiler:${butterKnifeVersion}"
     kapt 'com.github.matthiasrobbers:shortbread-compiler:1.0.1'
     kapt "org.projectlombok:lombok:${lombokVersion}"
+    kapt "io.requery:requery-processor:${requery}"
 //    testImplementation "net.grandcentrix.thirtyinch:thirtyinch-test:$thirtyinchVersion"
     testImplementation "junit:junit:${junitVersion}"
     testImplementation "org.mockito:mockito-core:${mockitoVersion}"

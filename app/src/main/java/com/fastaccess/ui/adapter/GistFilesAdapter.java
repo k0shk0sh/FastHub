@@ -17,13 +17,16 @@ import java.util.List;
 
 public class GistFilesAdapter extends BaseRecyclerAdapter<FilesListModel, GistFilesViewHolder, BaseViewHolder
         .OnItemClickListener<FilesListModel>> {
+    private boolean isOwner;
 
-    public GistFilesAdapter(@NonNull List<FilesListModel> data, @Nullable BaseViewHolder.OnItemClickListener<FilesListModel> listener) {
+    public GistFilesAdapter(@NonNull List<FilesListModel> data, @Nullable BaseViewHolder.OnItemClickListener<FilesListModel> listener,
+                            boolean isOwner) {
         super(data, listener);
+        this.isOwner = isOwner;
     }
 
     @Override protected GistFilesViewHolder viewHolder(ViewGroup parent, int viewType) {
-        return GistFilesViewHolder.newInstance(parent, this);
+        return GistFilesViewHolder.newInstance(parent, this, isOwner);
     }
 
     @Override protected void onBindView(GistFilesViewHolder holder, int position) {

@@ -11,6 +11,8 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.helper.*
 import com.fastaccess.ui.base.BaseFragment
@@ -23,8 +25,8 @@ import com.fastaccess.ui.widgets.SpannableBuilder
 
 class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter>(), ThemeFragmentMvp.View {
 
-    private val apply: FloatingActionButton by lazy { view!!.findViewById<FloatingActionButton>(R.id.apply) }
-    private val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
+    @BindView(R.id.apply) lateinit var apply: FloatingActionButton
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
 
     private val THEME = "appTheme"
     private var primaryDarkColor: Int = 0

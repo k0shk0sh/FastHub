@@ -15,8 +15,10 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.model.Gist;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -34,6 +36,8 @@ import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -220,7 +224,8 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
             date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()));
         }
         size.setText(Formatter.formatFileSize(this, gistsModel.getSize()));
-        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForGist(this, gistsModel)));
+        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForGist(this, gistsModel
+                , Login.getUser().getLogin().equalsIgnoreCase(login))));
         tabs.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override public void onPageSelected(int position) {
@@ -248,11 +253,16 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
+    @Override public void onUpdateGist(@NonNull List<FilesListModel> files, @NonNull String filename) {
+        getPresenter().onUpdateGist(files, filename);
+    }
+
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
-            fab.show();
+            fab.setImageResource(R.drawable.ic_comment);
         } else {
-            fab.hide();
+            fab.setImageResource(R.drawable.ic_add);
         }
+        fab.show();
     }
 }

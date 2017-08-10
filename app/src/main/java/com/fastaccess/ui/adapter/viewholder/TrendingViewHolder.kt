@@ -1,13 +1,13 @@
 package com.fastaccess.ui.adapter.viewholder
 
 import android.view.View
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.TrendingModel
 import com.fastaccess.helper.Logger
 import com.fastaccess.provider.colors.ColorsProvider
 import com.fastaccess.provider.emoji.EmojiParser
 import com.fastaccess.ui.widgets.FontTextView
-import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
@@ -18,12 +18,13 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 open class TrendingViewHolder(itemView: View, adapter: BaseRecyclerAdapter<TrendingModel,
         TrendingViewHolder, OnItemClickListener<TrendingModel>>) : BaseViewHolder<TrendingModel>(itemView, adapter) {
 
-    private val title: FontTextView by bindView(R.id.title)
-    private val description: FontTextView by bindView(R.id.description)
-    private val todayStars: FontTextView by bindView(R.id.todayStars)
-    private val stars: FontTextView by bindView(R.id.stars)
-    private val fork: FontTextView by bindView(R.id.forks)
-    private val lang: FontTextView by bindView(R.id.language)
+    @BindView(R.id.title) lateinit var title: FontTextView
+    @BindView(R.id.description) lateinit var description: FontTextView
+    @BindView(R.id.todayStars) lateinit var todayStars: FontTextView
+    @BindView(R.id.stars) lateinit var stars: FontTextView
+    @BindView(R.id.forks) lateinit var fork: FontTextView
+    @BindView(R.id.language) lateinit var lang: FontTextView
+
 
     override fun bind(t: TrendingModel) {
         title.text = t.title

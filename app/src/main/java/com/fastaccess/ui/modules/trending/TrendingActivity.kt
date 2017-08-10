@@ -15,6 +15,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
+import butterknife.BindView
 import butterknife.OnClick
 import butterknife.OnEditorAction
 import butterknife.OnTextChanged
@@ -25,7 +26,6 @@ import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.trending.fragment.TrendingFragment
 import com.fastaccess.ui.widgets.FontEditText
-import com.fastaccess.ui.widgets.bindView
 
 
 /**
@@ -35,13 +35,13 @@ import com.fastaccess.ui.widgets.bindView
 class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), TrendingMvp.View {
     private var trendingFragment: TrendingFragment? = null
 
-    private val navMenu: NavigationView by bindView(R.id.navMenu)
-    private val daily: TextView by bindView(R.id.daily)
-    private val weekly: TextView by bindView(R.id.weekly)
-    private val monthly: TextView by bindView(R.id.monthly)
-    private val drawerLayout: DrawerLayout by bindView(R.id.drawer)
-    private val clear: View by bindView(R.id.clear)
-    private val searchEditText: FontEditText by bindView(R.id.searchEditText)
+    @BindView(R.id.navMenu) lateinit var navMenu: NavigationView
+    @BindView(R.id.daily) lateinit var daily: TextView
+    @BindView(R.id.weekly) lateinit var weekly: TextView
+    @BindView(R.id.monthly) lateinit var monthly: TextView
+    @BindView(R.id.drawer) lateinit var drawerLayout: DrawerLayout
+    @BindView(R.id.clear) lateinit var clear: View
+    @BindView(R.id.searchEditText) lateinit var searchEditText: FontEditText
 
 
     @State var selectedTitle: String = "All Language"
@@ -112,14 +112,14 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         if (savedInstanceState == null) {
             presenter.onLoadLanguage()
         } else {
-             Handler().postDelayed({
-                 Logger.e(searchEditText.text)
-                 if (InputHelper.isEmpty(searchEditText)) { //searchEditText.text is always empty even tho there is a text in it !!!!!!!
-                     presenter.onLoadLanguage()
-                 } else {
-                     presenter.onFilterLanguage(InputHelper.toString(searchEditText))
-                 }
-             }, 300)
+            Handler().postDelayed({
+                Logger.e(searchEditText.text)
+                if (InputHelper.isEmpty(searchEditText)) { //searchEditText.text is always empty even tho there is a text in it !!!!!!!
+                    presenter.onLoadLanguage()
+                } else {
+                    presenter.onFilterLanguage(InputHelper.toString(searchEditText))
+                }
+            }, 300)
         }
         onSelectTrending()
     }

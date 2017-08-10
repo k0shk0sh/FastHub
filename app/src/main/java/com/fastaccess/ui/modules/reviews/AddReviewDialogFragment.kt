@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.widget.Toolbar
 import android.view.View
 import android.widget.TextView
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.CommitLinesModel
 import com.fastaccess.helper.BundleConstant
@@ -25,10 +26,11 @@ import com.fastaccess.ui.widgets.SpannableBuilder
  */
 class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>() {
 
-    private val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
-    private val textView: TextView by lazy { view!!.findViewById<TextView>(R.id.text) }
-    private val lineNo: TextView by lazy { view!!.findViewById<TextView>(R.id.lineNo) }
-    private val editText: TextInputLayout by lazy { view!!.findViewById<TextInputLayout>(R.id.editText) }
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.text) lateinit var textView: TextView
+    @BindView(R.id.lineNo) lateinit var lineNo: TextView
+    @BindView(R.id.editText) lateinit var editText: TextInputLayout
+
     private val spacePattern = "\\s+".toRegex()
 
     private var commentCallback: ReviewCommentListener? = null

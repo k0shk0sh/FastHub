@@ -7,6 +7,7 @@ import android.support.transition.TransitionManager
 import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
+import butterknife.BindView
 import butterknife.OnClick
 import butterknife.OnEditorAction
 import com.crashlytics.android.answers.Answers
@@ -19,16 +20,15 @@ import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.main.donation.DonateActivity
-import com.fastaccess.ui.widgets.bindView
 
 /**
  * Created by kosh on 13/07/2017.
  */
 class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), PremiumMvp.View {
 
-    private val editText: EditText by bindView(R.id.editText)
-    private val progressLayout: View by bindView(R.id.progressLayout)
-    private val viewGroup: FrameLayout by bindView(R.id.viewGroup)
+    @BindView(R.id.editText) lateinit var editText: EditText
+    @BindView(R.id.viewGroup) lateinit var viewGroup: FrameLayout
+    @BindView(R.id.progressLayout) lateinit var progressLayout: FrameLayout
 
     override fun layout(): Int = R.layout.pro_features_layout
 
