@@ -1,4 +1,5 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools"
+           tools:ignore="MissingTranslation">
     <string name="in_progress">読み込み中、お待ちください…</string>
     <string name="action">アクション</string>
     <string name="settings">設定</string>
@@ -136,8 +137,8 @@
     <string name="comment_hint">タップしてタグの作者にコメントまたはコメントを編集します。
         \nコメントを削除するには長押しします。</string>
     <string name="star_hint">レポジトリをスターまたは解除します</string>
-    <string name="watch">Watch</string>
-    <string name="watch_hint">レポジトリをWatchまたは解除します</string>
+    <string name="watch">ウオッチ</string>
+    <string name="watch_hint">レポジトリをウオッチまたは解除します</string>
     <string name="pin_repo_hint">ナビゲーションドロワーからより素早くアクセスするためにレポジトリを固定します。</string>
     <string name="no_url">URLが見つかりません</string>
     <string name="last_updated">最終更新</string>
@@ -171,7 +172,7 @@
     <string name="deleted">削除された</string>
     <string name="unknown">不明</string>
     <string name="commented_on_commit">コミットにコメント</string>
-    <string name="switch_branch">branchを切り替え</string>
+    <string name="switch_branch">ブランチを切り替え</string>
     <string name="assignees">Assignees</string>
     <string name="edit">編集</string>
     <string name="update_issue">Issueをアップデート</string>
@@ -194,7 +195,7 @@
     <string name="customization">カスタマイズ</string>
     <string name="recycler_view_animation_summary">リストアニメーションを有効にする</string>
     <string name="recycler_view_animation_title">リストアニメーション</string>
-    <string name="back_button_summary">偶発的にアプリの終了を妨げるダイアログを無効にする</string>
+    <string name="back_button_summary">アプリの終了を妨げる突然のダイアログを無効にする</string>
     <string name="back_button_title">戻るを押して終了します</string>
     <string name="restore">復元</string>
     <string name="backup">バックアップ</string>
@@ -386,4 +387,20 @@
     <string name="milestone_added">マイルストーンの追加に成功しました</string>
     <string name="feed">フィード</string>
     <string name="premium_theme">プレミアムテーマ</string>
+    <string name="choose_code_theme">カラーパレットからコードの色を選択</string>
+    <string name="enterprise_login_warning">GitHub APIからアクセスするために、GitHubアカウントにログインしてください。そうしなくては、トークンをGitHub APIにGitHubのエンタープライズアカウントで送信することによって、アクセスごとにキックアウトされてしまいます。</string>
+    <string name="add_account">アカウントを追加</string>
+    <string name="choose_account">アカウントを選択</string>
+    <string name="not_match">適合しません</string>
+    <string name="warning">警告</string>
+    <string name="owner">オーナー</string>
+    <string name="original_poster">オリジナルポスター</string>
+    <string name="cancel_reviews">レビューをキャンセル</string>
+    <string name="colored_navbar_summary">テーマ内でのナビゲーションバーの透過を無効化する</string>
+    <string name="colored_navbar_title">ナビバーの透過を無効化する</string>
+    <string name="sound_chooser_summary">カスタムの通知音を選択する</string>
+    <string name="sound_chooser_title">通知音を選択</string>
+    <string name="disable_auto_gif_summary">GIFの自動再生を無効化する</string>
+    <string name="disable_auto_gif_title">GIFの再生を無効化する</string>
+
 </resources>
