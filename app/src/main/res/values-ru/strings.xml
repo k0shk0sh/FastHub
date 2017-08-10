@@ -417,9 +417,9 @@
     <string name="original_poster">Автор</string>
     <string name="cancel_reviews">Отменить обзоры</string>
     <string name="colored_navbar_summary">Отключить цвет панели навигации при использовании тем</string>
-    <string name="colored_navbar_title">Бесцветная панель навигации</string>
+    <string name="colored_navbar_title">Бесцветная нав. панель</string>
     <string name="sound_chooser_summary">Установить пользовательский звук уведомлений</string>
-    <string name="sound_chooser_title">Установить звук уведомлений</string>
+    <string name="sound_chooser_title">Звук уведомлений</string>
     <string name="disable_auto_gif_summary">Отключить автоматическое проигрывание GIF</string>
-    <string name="disable_auto_gif_title">Отключить автопроигрывание GIF</string>
+    <string name="disable_auto_gif_title">Откл. автопроигрывание GIF</string>
 </resources>
