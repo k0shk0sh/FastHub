@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.build-properties'
 apply plugin: 'jacoco-android'
 apply plugin: 'io.fabric'
+apply plugin: 'ManifestClasspath'
 
 buildProperties {
     notThere {
@@ -24,7 +25,7 @@ android {
         }
     }
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
