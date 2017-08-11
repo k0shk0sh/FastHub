@@ -24,7 +24,7 @@ android {
         }
     }
     compileSdkVersion 26
-    buildToolsVersion "26.0.0"
+    buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
@@ -184,4 +184,5 @@ dependencies {
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${espresseVersion}"
 }
 
+apply plugin: 'ManifestClasspath'
 apply plugin: 'com.google.gms.google-services'
