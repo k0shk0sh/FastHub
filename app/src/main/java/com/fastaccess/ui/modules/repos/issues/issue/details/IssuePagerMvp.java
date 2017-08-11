@@ -14,7 +14,6 @@ import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:21 AM
@@ -29,8 +28,6 @@ public interface IssuePagerMvp {
         void showSuccessIssueActionMsg(boolean isClose);
 
         void showErrorIssueActionMsg(boolean isClose);
-
-        void onLabelsRetrieved(@NonNull List<LabelModel> items);
 
         void onUpdateTimeline();
 
@@ -65,8 +62,6 @@ public interface IssuePagerMvp {
         void onOpenCloseIssue();
 
         void onLockUnlockIssue();
-
-        void onLoadLabels();
 
         void onPutMilestones(@NonNull MilestoneModel milestone);
 

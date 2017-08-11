@@ -174,23 +174,6 @@ class IssuePagerPresenter extends BasePresenter<IssuePagerMvp.View> implements I
 
     }
 
-    @Override public void onLoadLabels() {
-        manageDisposable(
-                RxHelper.getObservable(RestProvider.getRepoService(isEnterprise()).getLabels(login, repoId))
-                        .doOnSubscribe(disposable -> onSubscribed(false))
-                        .doOnNext(response -> {
-                            if (response.getItems() != null && !response.getItems().isEmpty()) {
-                                sendToView(view -> view.onLabelsRetrieved(response.getItems()));
-                            } else {
-                                sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
-                            }
-                        })
-                        .subscribe(labelModelPageable -> {/**/}, throwable -> {
-                            sendToView(view -> view.showMessage(R.string.error, R.string.no_labels));
-                        })
-        );
-    }
-
     @Override public void onPutMilestones(@NonNull MilestoneModel milestone) {
         issueModel.setMilestone(milestone);
         IssueRequestModel issueRequestModel = IssueRequestModel.clone(issueModel, false);

@@ -19,9 +19,9 @@ public class LabelsAdapter extends BaseRecyclerAdapter<LabelModel, LabelsViewHol
         .OnItemClickListener<LabelModel>> {
 
     public interface OnSelectLabel {
-        boolean isLabelSelected(int position);
+        boolean isLabelSelected(LabelModel labelModel);
 
-        void onToggleSelection(int position, boolean select);
+        void onToggleSelection(LabelModel labelModel, boolean select);
     }
 
     @Nullable private OnSelectLabel onSelectLabel;

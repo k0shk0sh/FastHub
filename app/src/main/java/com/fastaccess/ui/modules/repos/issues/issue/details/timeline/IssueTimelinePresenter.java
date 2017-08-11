@@ -26,6 +26,7 @@ import com.fastaccess.provider.timeline.ReactionsProvider;
 import com.fastaccess.provider.timeline.TimelineConverter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 
 import java.util.ArrayList;
@@ -51,9 +52,9 @@ import lombok.Getter;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (getView() != null) {
+            Issue issue = getView().getIssue();
+            if (issue == null) return;
             if (item.getType() == TimelineModel.COMMENT) {
-                if (getView().getIssue() == null) return;
-                Issue issue = getView().getIssue();
                 if (v.getId() == R.id.commentMenu) {
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
@@ -82,6 +83,15 @@ import lombok.Getter;
                 GenericEvent issueEventModel = item.getGenericEvent();
                 if (issueEventModel.getCommitUrl() != null) {
                     SchemeParser.launchUri(v.getContext(), Uri.parse(issueEventModel.getCommitUrl()));
+                } else if (issueEventModel.getLabel() != null) {
+                    FilterIssuesActivity.startActivity(v, issue.getLogin(), issue.getRepoId(), true,
+                            true, isEnterprise(), "label:\"" + issueEventModel.getLabel().getName() + "\"");
+                } else if (issueEventModel.getMilestone() != null) {
+                    FilterIssuesActivity.startActivity(v, issue.getLogin(), issue.getRepoId(), true,
+                            true, isEnterprise(), "milestone:\"" + issueEventModel.getMilestone().getTitle() + "\"");
+                } else if (issueEventModel.getAssignee() != null) {
+                    FilterIssuesActivity.startActivity(v, issue.getLogin(), issue.getRepoId(), true,
+                            true, isEnterprise(), "assignee:\"" + issueEventModel.getAssignee().getLogin() + "\"");
                 } else {
                     SourceModel sourceModel = issueEventModel.getSource();
                     if (sourceModel != null) {

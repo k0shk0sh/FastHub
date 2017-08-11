@@ -9,7 +9,6 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.timeline.GenericEvent;
 import com.fastaccess.data.dao.types.IssueEventType;
-import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.TimelineProvider;
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
@@ -66,7 +65,6 @@ public class IssueTimelineViewHolder extends BaseViewHolder<TimelineModel> {
             stateText.setText("");
             stateImage.setImageResource(R.drawable.ic_label);
         }
-        itemView.setEnabled(!InputHelper.isEmpty(issueEventModel.getCommitUrl()) || issueEventModel.getSource() != null);
     }
 
     @Override protected void onViewIsDetaching() {

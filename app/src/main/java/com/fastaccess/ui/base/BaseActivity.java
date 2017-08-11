@@ -33,13 +33,18 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.markdown.CachedComments;
 import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
+import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
@@ -270,6 +275,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         onLogoutPressed();
     }
 
+    @Override protected void onDestroy() {
+        clearCachedComments();
+        super.onDestroy();
+    }
+
     protected void setTaskName(@Nullable String name) {
         setTaskDescription(new ActivityManager.TaskDescription(name, null, ViewHelper.getPrimaryDarkColor(this)));
     }
@@ -464,6 +474,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 fragment = ProgressDialogFragment.newInstance(msg, cancelable);
                 fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
             }
+        }
+    }
+
+    /**
+     * not really needed but meh.
+     */
+    private void clearCachedComments() {
+        if (this instanceof IssuePagerActivity || this instanceof CommitPagerActivity ||
+                this instanceof PullRequestPagerActivity || this instanceof GistActivity) {
+            CachedComments.Companion.getInstance().clear();
         }
     }
 }

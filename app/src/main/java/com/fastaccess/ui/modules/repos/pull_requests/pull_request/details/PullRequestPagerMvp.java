@@ -19,7 +19,6 @@ import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePul
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:21 AM
@@ -32,8 +31,6 @@ public interface PullRequestPagerMvp {
             IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback {
 
         void onSetupIssue(boolean update);
-
-        void onLabelsRetrieved(@NonNull List<LabelModel> items);
 
         void showSuccessIssueActionMsg(boolean isClose);
 
@@ -73,9 +70,6 @@ public interface PullRequestPagerMvp {
         @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
         void onMerge(String s, String msg);
-
-        void onLoadLabels();
-
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
 
         void onPutMilestones(@NonNull MilestoneModel milestone);

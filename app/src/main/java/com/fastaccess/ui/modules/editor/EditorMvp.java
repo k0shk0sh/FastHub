@@ -1,15 +1,14 @@
 package com.fastaccess.ui.modules.editor;
 
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.EditText;
 
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp;
+import com.fastaccess.ui.widgets.MarkDownLayout;
 
 /**
  * Created by Kosh on 27 Nov 2016, 1:31 AM
@@ -17,7 +16,7 @@ import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp;
 
 interface EditorMvp {
 
-    interface View extends BaseMvp.FAView, EditorLinkImageMvp.EditorLinkCallback {
+    interface View extends BaseMvp.FAView, EditorLinkImageMvp.EditorLinkCallback, MarkDownLayout.MarkdownListener {
         void onSendResultAndFinish(@NonNull Comment commentModel, boolean isNew);
 
         void onSendMarkDownResult();
@@ -26,8 +25,6 @@ interface EditorMvp {
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
-
-        void onActionClicked(@NonNull EditText editText, @IdRes int id);
 
         void onEditGistComment(long id, @Nullable CharSequence savedText, @NonNull String gistId);
 

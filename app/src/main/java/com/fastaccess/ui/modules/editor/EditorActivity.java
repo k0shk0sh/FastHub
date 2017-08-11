@@ -5,8 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
-import android.support.design.widget.Snackbar;
 import android.support.transition.TransitionManager;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
@@ -21,7 +22,6 @@ import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
-import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -29,13 +29,12 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.PrefHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.markdown.CachedComments;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.ui.base.BaseActivity;
-import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment;
 import com.fastaccess.ui.widgets.FontEditText;
 import com.fastaccess.ui.widgets.FontTextView;
-import com.fastaccess.ui.widgets.ForegroundImageView;
-import com.fastaccess.ui.widgets.dialog.MessageDialogView;
+import com.fastaccess.ui.widgets.MarkDownLayout;
 
 import java.util.ArrayList;
 
@@ -59,9 +58,8 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     private CharSequence savedText = "";
     @BindView(R.id.replyQuote) LinearLayout replyQuote;
     @BindView(R.id.replyQuoteText) FontTextView quote;
-    @BindView(R.id.view) ForegroundImageView viewCode;
+    @BindView(R.id.markDownLayout) MarkDownLayout markDownLayout;
     @BindView(R.id.editText) FontEditText editText;
-    @BindView(R.id.editorIconsHolder) View editorIconsHolder;
     @BindView(R.id.sentVia) CheckBox sentVia;
     @BindView(R.id.list_divider) View listDivider;
     @BindView(R.id.parentView) View parentView;
@@ -124,42 +122,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 quote.getMaxLines() == 3 ? R.drawable.ic_arrow_drop_down : R.drawable.ic_arrow_drop_up, 0);
     }
 
-    @OnClick(R.id.view) void onViewMarkDown() {
-        if (editText.isEnabled() && !InputHelper.isEmpty(editText)) {
-            editText.setEnabled(false);
-            sentVia.setEnabled(false);
-            MarkDownProvider.setMdText(editText, InputHelper.toString(editText));
-            ViewHelper.hideKeyboard(editText);
-            AnimHelper.animateVisibility(editorIconsHolder, false);
-        } else {
-            editText.setText(savedText);
-            editText.setSelection(savedText.length());
-            editText.setEnabled(true);
-            sentVia.setEnabled(true);
-            ViewHelper.showKeyboard(editText);
-            AnimHelper.animateVisibility(editorIconsHolder, true);
-        }
-    }
-
-    @OnClick({R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic,
-            R.id.strikethrough, R.id.bullet, R.id.header, R.id.code, R.id.numbered,
-            R.id.quote, R.id.link, R.id.image, R.id.unCheckbox, R.id.checkbox, R.id.inlineCode})
-    void onActions(View v) {
-        if (!editText.isEnabled()) {
-            Snackbar.make(editText, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show();
-            return;
-        }
-        if (v.getId() == R.id.link) {
-            EditorLinkImageDialogFragment.newInstance(true).show(getSupportFragmentManager(), "BannerDialogFragment");
-        } else if (v.getId() == R.id.image) {
-            EditorLinkImageDialogFragment.newInstance(false).show(getSupportFragmentManager(), "BannerDialogFragment");
-        } else {
-            getPresenter().onActionClicked(editText, v.getId());
-        }
-    }
-
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        markDownLayout.setMarkdownListener(this);
         setToolbarIcon(R.drawable.ic_clear);
         sentFromFastHub = "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_";
@@ -247,14 +212,11 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
     }
 
     @Override public void onBackPressed() {
-        if (InputHelper.isEmpty(editText)) {
-            super.onBackPressed();
-        } else {
+        if (!InputHelper.isEmpty(editText)) {
             ViewHelper.hideKeyboard(editText);
-            MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
-                    Bundler.start().put("primary_extra", getString(R.string.discard)).put("secondary_extra", getString(R.string.cancel))
-                            .put(BundleConstant.EXTRA, true).end()).show(getSupportFragmentManager(), MessageDialogView.TAG);
+            CachedComments.Companion.getInstance().put(itemId, login, issueNumber, savedText);
         }
+        super.onBackPressed();
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
@@ -271,6 +233,22 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
             editText.setText(String.format("%s\n", editText.getText()));
             MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link));
         }
+    }
+
+    @NonNull @Override public EditText getEditText() {
+        return editText;
+    }
+
+    @NonNull @Override public CharSequence getSavedText() {
+        return savedText;
+    }
+
+    @Override public void onReview(boolean enabled) {
+        sentVia.setEnabled(enabled);
+    }
+
+    @NonNull @Override public FragmentManager fragmentManager() {
+        return getSupportFragmentManager();
     }
 
     private void onCreate() {
@@ -300,6 +278,9 @@ public class EditorActivity extends BaseActivity<EditorMvp.View, EditorPresenter
                 MarkDownProvider.setMdText(quote, bundle.getString("message", ""));
             }
             participants = bundle.getStringArrayList("participants");
+        }
+        if (InputHelper.isEmpty(editText)) {
+            editText.setText(CachedComments.Companion.getInstance().get(itemId, login, issueNumber));
         }
         invalidateOptionsMenu();
     }

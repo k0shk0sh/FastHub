@@ -1,16 +1,12 @@
 package com.fastaccess.ui.modules.editor;
 
-import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.widget.EditText;
 
-import com.fastaccess.R;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -29,62 +25,6 @@ import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_REVIEW_COMMENT_
  */
 
 class EditorPresenter extends BasePresenter<EditorMvp.View> implements EditorMvp.Presenter {
-
-    @Override public void onActionClicked(@NonNull EditText editText, @IdRes int id) {
-        if (editText.getSelectionEnd() == -1 || editText.getSelectionStart() == -1) {
-            return;
-        }
-        switch (id) {
-            case R.id.headerOne:
-                MarkDownProvider.addHeader(editText, 1);
-                break;
-            case R.id.headerTwo:
-                MarkDownProvider.addHeader(editText, 2);
-                break;
-            case R.id.headerThree:
-                MarkDownProvider.addHeader(editText, 3);
-                break;
-            case R.id.bold:
-                MarkDownProvider.addBold(editText);
-                break;
-            case R.id.italic:
-                MarkDownProvider.addItalic(editText);
-                break;
-            case R.id.strikethrough:
-                MarkDownProvider.addStrikeThrough(editText);
-                break;
-            case R.id.numbered:
-                MarkDownProvider.addList(editText, "1.");
-                break;
-            case R.id.bullet:
-                MarkDownProvider.addList(editText, "-");
-                break;
-            case R.id.header:
-                MarkDownProvider.addDivider(editText);
-                break;
-            case R.id.code:
-                MarkDownProvider.addCode(editText);
-                break;
-            case R.id.quote:
-                MarkDownProvider.addQuote(editText);
-                break;
-            case R.id.link:
-                MarkDownProvider.addLink(editText);
-                break;
-            case R.id.image:
-                MarkDownProvider.addPhoto(editText);
-                break;
-            case R.id.checkbox:
-                MarkDownProvider.addList(editText, "- [x]");
-                break;
-            case R.id.unCheckbox:
-                MarkDownProvider.addList(editText, "- [ ]");
-                break;
-            case R.id.inlineCode:
-                MarkDownProvider.addInlinleCode(editText);
-                break;
-        }
-    }
 
     @Override public void onEditGistComment(long id, @Nullable CharSequence savedText, @NonNull String gistId) {
         if (!InputHelper.isEmpty(savedText)) {

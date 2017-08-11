@@ -46,7 +46,6 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -194,7 +193,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.labels) {
-            getPresenter().onLoadLabels();
+            LabelsDialogFragment.newInstance(getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null,
+                    getPresenter().getRepoId(), getPresenter().getLogin())
+                    .show(getSupportFragmentManager(), "LabelsDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.edit) {
             CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(),
@@ -304,13 +305,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         } else {
             showMessage(getString(R.string.error), getString(R.string.error_re_opening_issue));
         }
-    }
-
-    @Override public void onLabelsRetrieved(@NonNull List<LabelModel> items) {
-        hideProgress();
-        LabelsDialogFragment.newInstance(items, getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null,
-                getPresenter().getRepoId(), getPresenter().getLogin())
-                .show(getSupportFragmentManager(), "LabelsDialogFragment");
     }
 
     @Override public void onUpdateTimeline() {

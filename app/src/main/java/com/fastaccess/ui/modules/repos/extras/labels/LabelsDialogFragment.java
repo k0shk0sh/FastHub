@@ -2,14 +2,12 @@ package com.fastaccess.ui.modules.repos.extras.labels;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
-import com.annimon.stream.Collectors;
-import com.annimon.stream.Stream;
 import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.LabelListModel;
@@ -17,6 +15,7 @@ import com.fastaccess.data.dao.LabelModel;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.LabelsAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.create.CreateLabelDialogFragment;
@@ -26,10 +25,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,15 +42,15 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
     @BindView(R.id.add) View add;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
-    @State HashMap<Integer, LabelModel> selectionMap;
+    @State ArrayList<LabelModel> labelModels = new ArrayList<>();
+
+    private OnLoadMore onLoadMore;
     private LabelsAdapter adapter;
     private LabelsMvp.SelectedLabelsListener callback;
 
-    public static LabelsDialogFragment newInstance(@NonNull List<LabelModel> models, @Nullable LabelListModel selectedLabels,
-                                                   @NonNull String repo, @NonNull String login) {
+    public static LabelsDialogFragment newInstance(@Nullable LabelListModel selectedLabels, @NonNull String repo, @NonNull String login) {
         LabelsDialogFragment fragment = new LabelsDialogFragment();
         fragment.setArguments(Bundler.start()
-                .putParcelableArrayList(BundleConstant.ITEM, (ArrayList<? extends Parcelable>) models)
                 .putParcelableArrayList(BundleConstant.EXTRA, selectedLabels)
                 .put(BundleConstant.EXTRA_TWO, repo)
                 .put(BundleConstant.EXTRA_THREE, login)
@@ -91,44 +87,63 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        refresh.setEnabled(false);
         stateLayout.setEmptyText(R.string.no_labels);
         recycler.setEmptyView(stateLayout, refresh);
+        refresh.setOnRefreshListener(() -> getPresenter().onCallApi(1, null));
+        stateLayout.setOnReloadListener(v -> getPresenter().onCallApi(1, null));
         recycler.addDivider();
         title.setText(R.string.labels);
         add.setVisibility(View.VISIBLE);
-        List<LabelModel> list = getArguments().getParcelableArrayList(BundleConstant.ITEM);
-        List<LabelModel> selectedLabels = getArguments().getParcelableArrayList(BundleConstant.EXTRA);
-        if (list != null) {
-            adapter = new LabelsAdapter(list, this);
-            recycler.setAdapter(adapter);
-            if (savedInstanceState == null) {
-                if (selectedLabels != null && !selectedLabels.isEmpty()) {
-                    Stream.of(selectedLabels)
-                            .map(list::indexOf)
-                            .filter(value -> value != -1)
-                            .forEach(integer -> onToggleSelection(integer, true));
-                }
-            }
+        labelModels = getArguments().getParcelableArrayList(BundleConstant.EXTRA);
+        if (labelModels == null) {
+            labelModels = new ArrayList<>();
         }
+        adapter = new LabelsAdapter(getPresenter().getLabels(), this);
+        recycler.setAdapter(adapter);
         fastScroller.attachRecyclerView(recycler);
+        recycler.addOnScrollListener(getLoadMore());
+        if (getPresenter().getLabels().isEmpty() && !getPresenter().isApiCalled()) {
+            getPresenter().onCallApi(1, null);
+        }
     }
 
     @NonNull @Override public LabelsPresenter providePresenter() {
-        return new LabelsPresenter();
+        Bundle bundle = getArguments();
+        //noinspection ConstantConditions
+        return new LabelsPresenter(bundle.getString(BundleConstant.EXTRA_THREE), bundle.getString(BundleConstant.EXTRA_TWO));
     }
 
-    @Override public boolean isLabelSelected(int position) {
-        return getSelectionMap().get(position) != null;
+    @Override public boolean isLabelSelected(LabelModel labelModel) {
+        return labelModels.indexOf(labelModel) != -1;
     }
 
-    @Override public void onToggleSelection(int position, boolean select) {
+    @Override public void onToggleSelection(LabelModel labelModel, boolean select) {
         if (select) {
-            getSelectionMap().put(position, adapter.getItem(position));
+            labelModels.add(labelModel);
         } else {
-            getSelectionMap().remove(position);
+            labelModels.remove(labelModel);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    @SuppressWarnings("unchecked") @NonNull @Override public OnLoadMore getLoadMore() {
+        if (onLoadMore == null) {
+            onLoadMore = new OnLoadMore(getPresenter());
+        }
+        return onLoadMore;
+    }
+
+    @Override public void onNotifyAdapter(@Nullable List<LabelModel> items, int page) {
+        hideProgress();
+        if (items == null || items.isEmpty()) {
+            adapter.clear();
+            return;
+        }
+        if (page <= 1) {
+            adapter.insertItems(items);
+        } else {
+            adapter.addItems(items);
+        }
     }
 
     @Override public void onLabelAdded(@NonNull LabelModel labelModel) {
@@ -142,22 +157,34 @@ public class LabelsDialogFragment extends BaseDialogFragment<LabelsMvp.View, Lab
                 dismiss();
                 break;
             case R.id.ok:
-                ArrayList<LabelModel> labels = Stream.of(selectionMap)
-                        .filter(value -> value.getValue() != null)
-                        .map(Map.Entry::getValue)
-                        .collect(Collectors.toCollection(ArrayList::new));
-                if (labels != null && !labels.isEmpty()) {
-                    callback.onSelectedLabels(labels);
-                }
+                callback.onSelectedLabels(labelModels);
                 dismiss();
                 break;
         }
     }
 
-    public HashMap<Integer, LabelModel> getSelectionMap() {
-        if (selectionMap == null) {
-            selectionMap = new LinkedHashMap<>();
-        }
-        return selectionMap;
+    @Override public void showProgress(@StringRes int resId) {
+        refresh.setRefreshing(true);
+        stateLayout.showProgress();
+    }
+
+    @Override public void hideProgress() {
+        refresh.setRefreshing(false);
+        stateLayout.hideProgress();
+    }
+
+    @Override public void showErrorMessage(@NonNull String message) {
+        showReload();
+        super.showErrorMessage(message);
+    }
+
+    @Override public void showMessage(int titleRes, int msgRes) {
+        showReload();
+        super.showMessage(titleRes, msgRes);
+    }
+
+    private void showReload() {
+        hideProgress();
+        stateLayout.showReload(adapter.getItemCount());
     }
 }

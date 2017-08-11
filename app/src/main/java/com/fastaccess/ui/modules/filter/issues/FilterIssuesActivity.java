@@ -71,6 +71,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     @State boolean isOpen;
     @State String login;
     @State String repoId;
+    @State String criteria;
 
     private FilterIssueFragment filterFragment;
     private MilestonesAdapter milestonesAdapter;
@@ -94,6 +95,21 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         } else {
             context.startActivity(intent);
         }
+    }
+
+    public static void startActivity(@NonNull View view, @NonNull String login, @NonNull String repoId,
+                                     boolean isIssue, boolean isOpen, boolean isEnterprise, @NonNull String criteria) {
+        Intent intent = new Intent(view.getContext(), FilterIssuesActivity.class);
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA_TWO, isIssue)
+                .put(BundleConstant.EXTRA_THREE, isOpen)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .put(BundleConstant.EXTRA_FOUR, criteria)
+                .end());
+        //noinspection ConstantConditions
+        ActivityHelper.startReveal(ActivityHelper.getActivity(view.getContext()), intent, view);
     }
 
     @Override protected int layout() {
@@ -124,6 +140,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
             isOpen = bundle.getBoolean(BundleConstant.EXTRA_THREE);
             repoId = bundle.getString(BundleConstant.ID);
             login = bundle.getString(BundleConstant.EXTRA);
+            criteria = bundle.getString(BundleConstant.EXTRA_FOUR);
             getPresenter().onStart(login, repoId);
             if (isOpen) {
                 onOpenClicked();
@@ -148,6 +165,10 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
                 onSearch();
             } else {
                 searchEditText.setText(String.format("%s %s ", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
+                if (!InputHelper.isEmpty(criteria)) {
+                    searchEditText.setText(String.format("%s%s", InputHelper.toString(searchEditText), criteria));
+                    criteria = null;
+                }
                 onSearch();
             }
         }
