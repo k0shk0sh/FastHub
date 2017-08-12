@@ -3,7 +3,7 @@
     <string name="in_progress">Загрузка, подождите…</string>
     <string name="action">Действия</string>
     <string name="settings">Настройки</string>
-    <string name="discard">Отменить</string>
+    <string name="discard">Сбросить</string>
     <string name="cancel">Отмена</string>
     <string name="ok">OK</string>
     <string name="no_data">Доступные данные отсутствуют</string>
@@ -228,7 +228,7 @@
     <string name="permission_failed">Доступ не предоставлен.</string>
     <string name="backup_summary">Последнее обновление: %s</string>
     <string name="now">Сейчас</string>
-    <string name="unsaved_data_warning">Все несохранённые изменения будут отменены</string>
+    <string name="unsaved_data_warning">Все несохранённые изменения будут сброшены.</string>
     <string name="private_repo">Частный</string>
     <string name="rect_avatar_summary">Использовать скруглённые квадратные аватары вместо круглых</string>
     <string name="rect_avatar_title">Квадратные аватары</string>
