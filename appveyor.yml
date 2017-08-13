@@ -26,7 +26,7 @@ install:
         cscs -ac:2 -nl $env:APPVEYOR_BUILD_FOLDER\.github\check_translations.cs
       }
       Write-Host "Installing Android packages:"
-      $pkgs = '"platform-tools"', '"extras;android;m2repository"', '"extras;google;m2repository"', '"build-tools;26.0.0"', '"platforms;android-25"'
+      $pkgs = '"platform-tools"', '"extras;android;m2repository"', '"extras;google;m2repository"', '"build-tools;26.0.1"', '"platforms;android-26"'
       foreach ($pkg in $pkgs) {
         Write-Host "Installing ${pkg}:"
         echo "y" | & $env:ANDROID_HOME\tools\bin\sdkmanager.bat ${pkg}
