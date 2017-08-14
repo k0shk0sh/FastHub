@@ -11,6 +11,7 @@ import android.widget.TextView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
 import com.fastaccess.data.dao.model.PinnedRepos
+import com.fastaccess.helper.Logger
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.scheme.SchemeParser
@@ -114,13 +115,12 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
         val adapter = LoginAdapter(true)
         view.getPresenter().manageViewDisposable(Login.getAccounts()
                 .doOnComplete {
-                    when (!adapter.isEmpty) {
-                        true -> {
-                            toggleAccountsLayout.visibility = View.VISIBLE
-                            adapter.listener = this
-                            recyclerView.adapter = adapter
-                        }
-                        else -> toggleAccountsLayout.visibility = View.GONE
+                    if (!adapter.isEmpty) {
+                        toggleAccountsLayout.visibility = View.VISIBLE
+                        adapter.listener = this
+                        recyclerView.adapter = adapter
+                    } else {
+                        toggleAccountsLayout.visibility = View.GONE
                     }
                 }
                 .subscribe({ adapter.addItem(it) }, ::print))

@@ -17,7 +17,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -71,10 +70,10 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         getActivity().invalidateOptionsMenu();
     }
 
-    @Override public void onSetMdText(@NonNull String text, String baseUrl) {
+    @Override public void onSetMdText(@NonNull String text, String baseUrl, boolean replace) {
         webView.setVisibility(View.VISIBLE);
         loader.setIndeterminate(false);
-        webView.setGithubContent(text, baseUrl);
+        webView.setGithubContentWithReplace(text, baseUrl, replace);
         webView.setOnContentChangedListener(this);
         getActivity().invalidateOptionsMenu();
     }
@@ -155,7 +154,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @Override public void onScrollChanged(boolean reachedTop, int scroll) {
         if (getPresenter().isRepo()) {
             if (appBarLayout != null && bottomNavigation != null) {
-                if (scroll <= (appBarLayout.getTotalScrollRange() / 2)) {
+                if (scroll <= (appBarLayout.getTotalScrollRange() / 2) && !scrolledTop) {
                     scrolledTop = true;
                     bottomNavigation.setExpanded(true, true);
                     appBarLayout.setExpanded(true, true);
@@ -179,7 +178,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             getPresenter().onHandleIntent(getArguments());
         } else {
             if (getPresenter().isMarkDown()) {
-                onSetMdText(getPresenter().downloadedStream(), getPresenter().url());
+                onSetMdText(getPresenter().downloadedStream(), getPresenter().url(), false);
             } else {
                 onSetCode(getPresenter().downloadedStream());
             }

@@ -58,6 +58,7 @@ public class RestProvider {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .disableHtmlEscaping()
             .setPrettyPrinting()
             .create();
 

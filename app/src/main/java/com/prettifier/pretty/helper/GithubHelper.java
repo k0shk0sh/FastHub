@@ -23,11 +23,11 @@ import java.util.ArrayList;
 public class GithubHelper {
 
     @NonNull public static String generateContent(@NonNull Context context, @NonNull String source,
-                                                  @Nullable String baseUrl, boolean dark, boolean isWiki) {
+                                                  @Nullable String baseUrl, boolean dark, boolean isWiki, boolean replace) {
         if (baseUrl == null) {
-            return mergeContent(context, source, dark);
+            return mergeContent(context, source, dark, replace);
         } else {
-            return mergeContent(context, parseReadme(source, baseUrl, isWiki), dark);
+            return mergeContent(context, parseReadme(source, baseUrl, isWiki), dark, replace);
         }
     }
 
@@ -58,9 +58,7 @@ public class GithubHelper {
 
     @NonNull private static String getParsedHtml(@NonNull String source, String owner, String repoName,
                                                  String builder, String baseLinkUrl, boolean isWiki) {
-        Document document = Jsoup.parse(source
-                .replaceAll("&lt;", "<")
-                .replaceAll("&gt;", ">"), "");
+        Document document = Jsoup.parse(source, "");
         Elements imageElements = document.getElementsByTag("img");
         if (imageElements != null && !imageElements.isEmpty()) {
             for (Element element : imageElements) {
@@ -112,7 +110,7 @@ public class GithubHelper {
         return builder.toString();
     }
 
-    @NonNull private static String mergeContent(@NonNull Context context, @NonNull String source, boolean dark) {
+    @NonNull private static String mergeContent(@NonNull Context context, @NonNull String source, boolean dark, boolean replace) {
         return "<html>\n" +
                 "\n" +
                 "<head>\n" +
@@ -123,8 +121,7 @@ public class GithubHelper {
                 "    <script src=\"./intercept-hash.js\"></script>\n" +
                 "</head>\n" +
                 "\n" +
-                "<body>\n" +
-                source +
+                "<body>\n" + (replace ? source.replaceAll("&lt;", "<").replaceAll("&gt;", ">") : source) +
                 "\n<script src=\"./intercept-touch.js\"></script>\n" +
                 "</body>\n" +
                 "\n" +

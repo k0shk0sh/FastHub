@@ -94,7 +94,7 @@ public class MarkDownProvider {
         }
     }
 
-    private static String stripHtml(String html) {
+    public static String stripHtml(String html) {
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
             return Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY).toString();
         } else {
@@ -314,27 +314,5 @@ public class MarkDownProvider {
         }
 
         return false;
-    }
-
-    private static class IndentedCodeBlockNodeRenderer implements NodeRenderer {
-
-        private final HtmlWriter html;
-
-        IndentedCodeBlockNodeRenderer(HtmlNodeRendererContext context) {
-            this.html = context.getWriter();
-        }
-
-        @Override public Set<Class<? extends Node>> getNodeTypes() {
-            return Collections.singleton(IndentedCodeBlock.class);
-        }
-
-        @Override public void render(Node node) {
-            IndentedCodeBlock codeBlock = (IndentedCodeBlock) node;
-            html.line();
-            html.tag("pre");
-            html.text(codeBlock.getLiteral());
-            html.tag("/pre");
-            html.line();
-        }
     }
 }

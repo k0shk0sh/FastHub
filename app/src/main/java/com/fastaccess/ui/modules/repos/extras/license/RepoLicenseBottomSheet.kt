@@ -37,7 +37,7 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
             loader.isIndeterminate = false
             val licenseText = license.replace("<pre>", "<pre style='overflow: hidden;word-wrap:break-word;word-break:break-all;" +
                     "white-space:pre-line;'>")
-            webView.setGithubContent("<div class='markdown-body'>$licenseText</div>", null)
+            webView.setGithubContent("<div class='markdown-body'>$licenseText</div>", null, false)
         } else {
             hideProgress()
         }
