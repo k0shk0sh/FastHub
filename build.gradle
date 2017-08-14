@@ -15,7 +15,7 @@ buildscript {
         assertjVersion = '2.5.0'
         espresseVersion = '2.2.2'
         requery = '1.3.2'
-        kotlin_version = '1.1.3-2'
+        kotlin_version = '1.1.3'
         commonmark = '0.9.0'
     }
     repositories {
@@ -24,7 +24,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.0.0-alpha9'
+        classpath 'com.android.tools.build:gradle:3.0.0-beta2'
         classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.novoda:gradle-build-properties-plugin:0.3'
         classpath 'com.dicedmelon.gradle:jacoco-android:0.1.2'
