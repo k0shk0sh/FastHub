@@ -6,6 +6,7 @@ skip_branch_with_pr: true
 skip_commits:
   files:
     - '**/*.md'
+  message: \[(skip app veyor|app veyor skip|skip appveyor|appveyor skip)\]
 
 environment:
   ANDROID_HOME: 'A:\'
