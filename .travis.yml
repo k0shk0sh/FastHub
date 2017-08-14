@@ -8,6 +8,14 @@ jdk: oraclejdk8
 
 sudo: required
 
+before_install:
+  # Skip build if the commit message contains [skip travis] or [travis skip]
+   - >
+       echo "$TRAVIS_COMMIT_MESSAGE"
+       | grep -E  '\[(skip travis|travis skip)\]'
+       && echo "[skip travis] has been found, exiting."
+       && exit 0 || true
+
 before_script:
   - (while sleep 3; do echo "y"; done) | $ANDROID_HOME/tools/bin/sdkmanager "platform-tools" "extras;android;m2repository" "extras;google;m2repository" "build-tools;26.0.0" "platforms;android-26"
 
