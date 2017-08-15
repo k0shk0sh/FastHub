@@ -108,7 +108,8 @@ public class PullRequestTimelineCommentsViewHolder extends BaseViewHolder<PullRe
         if (commentsModel != null) {
             PullRequestTimelineQuery.Author4 author3 = commentsModel.author();
             owner.setVisibility(View.VISIBLE);
-            owner.setText(commentsModel.authorAssociation().name().toLowerCase());
+            owner.setText("none".equalsIgnoreCase(commentsModel.authorAssociation().name().toLowerCase())
+                          ? "" : commentsModel.authorAssociation().name().toLowerCase());
             if (author3 != null) {
                 avatar.setUrl(author3.avatarUrl().toString(), author3.login(),
                         false, LinkParserHelper.isEnterprise(author3.url().toString()));

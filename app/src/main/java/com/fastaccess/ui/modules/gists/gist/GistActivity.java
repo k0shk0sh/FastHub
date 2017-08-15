@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.FilesListModel;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
@@ -24,20 +23,21 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
 import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -59,6 +59,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     @BindView(R.id.startGist) ForegroundImageView startGist;
     @BindView(R.id.forkGist) ForegroundImageView forkGist;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    @BindView(R.id.edit) View edit;
     private int accentColor;
     private int iconColor;
 
@@ -76,6 +77,8 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
             GistCommentsFragment view = (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
             if (view != null) {
                 view.onStartNewComment();
+            } else {
+                //TODO
             }
         }
     }
@@ -105,6 +108,14 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
             case R.id.browser:
                 ActivityHelper.startCustomTab(this, getPresenter().getGist().getHtmlUrl());
                 break;
+        }
+    }
+
+    @OnClick(R.id.edit) void onEdit() {
+        if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+            if (getPresenter().getGist() != null) CreateGistActivity.start(this, getPresenter().getGist());
+        } else {
+            PremiumActivity.Companion.startActivity(this);
         }
     }
 
@@ -177,6 +188,15 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
+                getPresenter().callApi();
+            }
+        }
+    }
+
     @Override public void onSuccessDeleted() {
         hideProgress();
         if (getPresenter().getGist() != null) {
@@ -217,6 +237,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         avatarLayout.setUrl(url, login, false, LinkParserHelper.isEnterprise(gistsModel.getHtmlUrl()));
         title.setText(gistsModel.getDisplayTitle(false, true));
         setTaskName(gistsModel.getDisplayTitle(false, true).toString());
+        edit.setVisibility(Login.getUser().getLogin().equals(login) ? View.VISIBLE : View.GONE);
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
         if (gistsModel.getCreatedAt().before(gistsModel.getUpdatedAt())) {
             date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()), getString(R.string.edited)));
@@ -224,8 +245,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
             date.setText(ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()));
         }
         size.setText(Formatter.formatFileSize(this, gistsModel.getSize()));
-        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForGist(this, gistsModel
-                , Login.getUser().getLogin().equalsIgnoreCase(login))));
+        pager.setAdapter(new FragmentsPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapterModel.buildForGist(this, gistsModel)));
         tabs.setupWithViewPager(pager);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override public void onPageSelected(int position) {
@@ -253,16 +273,11 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
-    @Override public void onUpdateGist(@NonNull List<FilesListModel> files, @NonNull String filename) {
-        getPresenter().onUpdateGist(files, filename);
-    }
-
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
-            fab.setImageResource(R.drawable.ic_comment);
+            fab.show();
         } else {
-            fab.setImageResource(R.drawable.ic_add);
+            fab.hide();
         }
-        fab.show();
     }
 }

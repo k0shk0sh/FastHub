@@ -19,10 +19,14 @@ public class GistFilesAdapter extends BaseRecyclerAdapter<FilesListModel, GistFi
         .OnItemClickListener<FilesListModel>> {
     private boolean isOwner;
 
-    public GistFilesAdapter(@NonNull List<FilesListModel> data, @Nullable BaseViewHolder.OnItemClickListener<FilesListModel> listener,
-                            boolean isOwner) {
+    public GistFilesAdapter(@NonNull List<FilesListModel> data,
+                            @Nullable BaseViewHolder.OnItemClickListener<FilesListModel> listener, boolean isOwner) {
         super(data, listener);
         this.isOwner = isOwner;
+    }
+
+    public void setOwner(boolean owner) {
+        isOwner = owner;
     }
 
     @Override protected GistFilesViewHolder viewHolder(ViewGroup parent, int viewType) {

@@ -17,6 +17,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -152,6 +153,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onScrollChanged(boolean reachedTop, int scroll) {
+        Logger.e(scroll, reachedTop);
         if (getPresenter().isRepo()) {
             if (appBarLayout != null && bottomNavigation != null) {
                 if (scroll <= (appBarLayout.getTotalScrollRange() / 2) && !scrolledTop) {

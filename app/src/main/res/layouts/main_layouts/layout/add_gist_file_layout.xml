@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?card_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar_elevation_dark"/>
+
+    <LinearLayout
+        android:id="@+id/parentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_xs_large"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:paddingStart="@dimen/spacing_xs_large"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/file_name_hint"
+                android:singleLine="true"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+        <com.fastaccess.ui.widgets.markdown.MarkDownLayout
+            android:id="@+id/markDownLayout"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            tools:visibility="visible"/>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_xs_large"
+            android:layout_marginTop="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:paddingStart="@dimen/spacing_xs_large"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Title">
+
+            <com.fastaccess.ui.widgets.markdown.MarkdownEditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/content"
+                android:inputType="textMultiLine"
+                android:maxLines="10"/>
+        </android.support.design.widget.TextInputLayout>
+
+    </LinearLayout>
+</LinearLayout>

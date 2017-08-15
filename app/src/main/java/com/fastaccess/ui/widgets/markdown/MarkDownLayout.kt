@@ -1,4 +1,4 @@
-package com.fastaccess.ui.widgets
+package com.fastaccess.ui.widgets.markdown
 
 import android.content.Context
 import android.support.design.widget.Snackbar
@@ -114,6 +114,6 @@ class MarkDownLayout : LinearLayout {
         fun getEditText(): EditText
         fun fragmentManager(): FragmentManager
         fun getSavedText(): CharSequence
-        fun onReview(enabled: Boolean)
+        fun onReview(enabled: Boolean) {}
     }
 }

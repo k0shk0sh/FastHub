@@ -46,7 +46,7 @@
                     android:background="?dividerColor"/>
             </LinearLayout>
 
-            <com.fastaccess.ui.widgets.FontEditText
+            <com.fastaccess.ui.widgets.markdown.MarkdownEditText
                 android:id="@+id/editText"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -81,7 +81,7 @@
         android:layout_height="4dp"
         android:background="@drawable/toolbar_shadow_up"/>
 
-    <com.fastaccess.ui.widgets.MarkDownLayout
+    <com.fastaccess.ui.widgets.markdown.MarkDownLayout
         android:id="@+id/markDownLayout"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"

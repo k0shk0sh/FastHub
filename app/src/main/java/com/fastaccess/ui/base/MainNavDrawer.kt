@@ -164,7 +164,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
             if (!view.isFinishing()) {
                 when {
                     item.itemId == R.id.navToRepo -> view.onNavToRepoClicked()
-                    item.itemId == R.id.gists -> GistsListActivity.startActivity(view, false)
+                    item.itemId == R.id.gists -> GistsListActivity.startActivity(view)
                     item.itemId == R.id.pinnedMenu -> PinnedReposActivity.startActivity(view)
                     item.itemId == R.id.mainView -> {
                         val intent = Intent(view, MainActivity::class.java)

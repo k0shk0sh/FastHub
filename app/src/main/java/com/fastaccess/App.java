@@ -7,6 +7,7 @@ import android.support.v7.preference.PreferenceManager;
 import com.apollographql.apollo.ApolloClient;
 import com.fastaccess.data.dao.model.Models;
 import com.fastaccess.helper.DeviceNameGetter;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.emoji.EmojiManager;
@@ -14,6 +15,7 @@ import com.fastaccess.provider.fabric.FabricProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.tasks.notification.NotificationSchedulerJobTask;
 import com.miguelbcr.io.rx_billing_service.RxBillingService;
+
 import io.requery.Persistable;
 import io.requery.android.sqlite.DatabaseSource;
 import io.requery.meta.EntityModel;
@@ -83,7 +85,7 @@ public class App extends Application {
     public ApolloClient getApolloClient() {
         if (apolloClient == null) {
             apolloClient = ApolloClient.builder()
-                    .serverUrl("https://api.github.com/graphql")
+                    .serverUrl("https://" + (PrefGetter.isEnterprise() ? PrefGetter.getEnterpriseUrl() : "api.github.com") + "/graphql")
                     .okHttpClient(RestProvider.provideOkHttpClient())
                     .build();
         }

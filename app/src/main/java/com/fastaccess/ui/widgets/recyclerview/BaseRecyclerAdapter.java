@@ -59,7 +59,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
         return data.indexOf(t);
     }
 
-    @Override public VH onCreateViewHolder(ViewGroup parent, int viewType) {
+    @SuppressWarnings("unchecked") @Override public VH onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == PROGRESS_TYPE) {
             addSpanLookup(parent);
             return (VH) ProgressBarViewHolder.newInstance(parent);

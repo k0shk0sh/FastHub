@@ -31,6 +31,7 @@ public class RecyclerViewFastScroller extends FrameLayout {
     private AppBarLayout appBarLayout;
     private BottomNavigation bottomNavigation;
     private boolean toggled;
+    private boolean registeredObserver = false;
 
     public RecyclerViewFastScroller(Context context) {
         super(context);
@@ -73,13 +74,25 @@ public class RecyclerViewFastScroller extends FrameLayout {
     }
 
     @Override protected void onDetachedFromWindow() {
-        if (recyclerView != null) recyclerView.removeOnScrollListener(onScrollListener);
+        if (recyclerView != null) {
+            recyclerView.removeOnScrollListener(onScrollListener);
+            safelyUnregisterObserver();
+        }
         appBarLayout = null;
         bottomNavigation = null;
         super.onDetachedFromWindow();
     }
 
+    private void safelyUnregisterObserver() {
+        try {
+            if (registeredObserver && recyclerView.getAdapter() != null) {
+                recyclerView.getAdapter().unregisterAdapterDataObserver(observer);
+            }
+        } catch (Exception ignored) {}
+    }
+
     protected void init() {
+        setVisibility(GONE);
         setClipChildren(false);
         LayoutInflater inflater = LayoutInflater.from(getContext());
         inflater.inflate(R.layout.fastscroller_layout, this);
@@ -123,6 +136,10 @@ public class RecyclerViewFastScroller extends FrameLayout {
             this.recyclerView = recyclerView;
             this.layoutManager = recyclerView.getLayoutManager();
             this.recyclerView.addOnScrollListener(onScrollListener);
+            if (recyclerView.getAdapter() != null && !registeredObserver) {
+                recyclerView.getAdapter().registerAdapterDataObserver(observer);
+                registeredObserver = true;
+            }
             initScrollHeight();
         }
     }
@@ -187,6 +204,15 @@ public class RecyclerViewFastScroller extends FrameLayout {
             int verticalScrollRange = recyclerView.computeVerticalScrollRange();
             float proportion = (float) verticalScrollOffset / ((float) verticalScrollRange - height);
             setScrollerHeight(height * proportion);
+        }
+    };
+
+    private final RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+        @Override public void onChanged() {
+            super.onChanged();
+            if (recyclerView != null) {
+                setVisibility(recyclerView.getAdapter().getItemCount() > 5 ? VISIBLE : GONE);
+            }
         }
     };
 }

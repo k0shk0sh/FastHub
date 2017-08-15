@@ -32,7 +32,7 @@ public interface GistService {
 
     @POST("gists") Observable<Gist> createGist(@Body CreateGistModel gistBody);
 
-    @PATCH("gists/{id}") Observable<Gist> editGist(@Body CreateGistModel gistBody, @NonNull @Path("id") String id);
+    @PATCH("gists/{id}") Observable<Gist> editGist(@Body CreateGistModel gistBody, @Path("id") String id);
 
     @DELETE("gists/{id}") Observable<Response<Boolean>> deleteGist(@Path("id") String id);
 

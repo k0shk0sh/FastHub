@@ -133,6 +133,8 @@ public class ProfileGistsFragment extends BaseFragment<ProfileGistsMvp.View, Pro
                 if (gistsModel != null && adapter != null) {
                     adapter.removeItem(gistsModel);
                 }
+            } else {
+                onRefresh();
             }
         }
     }

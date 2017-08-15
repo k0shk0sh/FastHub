@@ -65,6 +65,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Comment on Commits/Gists
   - Manage Commit/Gist comments
   - Create/Delete Gists
+  - Edit Gist & Gist Files
   - React to Commit comments with reactions
   - Comment on line number in Files/Code changes.
 - **Orgs**

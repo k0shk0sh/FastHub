@@ -1,32 +1,35 @@
 package com.fastaccess.ui.modules.gists.gist.files;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
+import com.evernote.android.state.State;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FilesListModel;
-import com.fastaccess.data.dao.GithubFileModel;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.GistFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
-import com.fastaccess.ui.modules.gists.gist.files.GistFilesListMvp.UpdateGistCallback;
+import com.fastaccess.ui.modules.gists.create.dialog.AddGistBottomSheetDialog;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 
@@ -41,30 +44,16 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
+    @State boolean isOwner;
     private GistFilesAdapter adapter;
-    private UpdateGistCallback updateGistCallback;
 
-    public static GistFilesListFragment newInstance(@NonNull GithubFileModel gistsModel, boolean isOwner) {
+    public static GistFilesListFragment newInstance(@NonNull ArrayList<FilesListModel> files, boolean isOwner) {
         GistFilesListFragment view = new GistFilesListFragment();
         view.setArguments(Bundler.start()
-                .putParcelableArrayList(BundleConstant.ITEM, new ArrayList<>(gistsModel.values()))
+                .putParcelableArrayList(BundleConstant.ITEM, files)
                 .put(BundleConstant.EXTRA_TYPE, isOwner)
                 .end());
         return view;
-    }
-
-    @Override public void onAttach(Context context) {
-        super.onAttach(context);
-        if (getParentFragment() instanceof UpdateGistCallback) {
-            updateGistCallback = (UpdateGistCallback) getParentFragment();
-        } else if (context instanceof UpdateGistCallback) {
-            updateGistCallback = (UpdateGistCallback) context;
-        }
-    }
-
-    @Override public void onDetach() {
-        updateGistCallback = null;
-        super.onDetach();
     }
 
     @Override protected int fragmentLayout() {
@@ -76,25 +65,28 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ArrayList<FilesListModel> filesListModel = getArguments().getParcelableArrayList(BundleConstant.ITEM);
-        boolean isOwner = getArguments().getBoolean(BundleConstant.EXTRA_TYPE);
-        stateLayout.hideReload();
         stateLayout.setEmptyText(R.string.no_files);
-        recycler.setEmptyView(stateLayout);
+        stateLayout.showEmptyState();
+        recycler.setEmptyView(stateLayout, refresh);
         refresh.setEnabled(false);
-        if (filesListModel == null) {
-            return;
-        }
-        if (!filesListModel.isEmpty()) {
-            adapter = new GistFilesAdapter(filesListModel, getPresenter(), isOwner);
-            recycler.setAdapter(adapter);
+        adapter = new GistFilesAdapter(getPresenter().getFiles(), getPresenter(), isOwner);
+        recycler.setAdapter(adapter);
+        if (getArguments() != null && savedInstanceState == null) {
+            ArrayList<FilesListModel> filesListModel = getArguments().getParcelableArrayList(BundleConstant.ITEM);
+            isOwner = getArguments().getBoolean(BundleConstant.EXTRA_TYPE);
+            onInitFiles(filesListModel, isOwner);
+            setArguments(null);//CLEAR
+        } else {
+            onInitFiles(getPresenter().getFiles(), isOwner);
         }
         fastScroller.attachRecyclerView(recycler);
     }
 
-    @Override public void onOpenFile(@NonNull FilesListModel item) {
-        if (canOpen(item)) {
+    @Override public void onOpenFile(@NonNull FilesListModel item, int position) {
+        if (canOpen(item) && !isOwner) {
             CodeViewerActivity.startActivity(getContext(), item.getRawUrl(), item.getRawUrl());
+        } else if (isOwner && canOpen(item)) {
+            onEditFile(item, position);
         }
     }
 
@@ -108,7 +100,31 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     }
 
     @Override public void onEditFile(@NonNull FilesListModel item, int position) {
+        AddGistBottomSheetDialog.Companion.newInstance(item, position).show(getChildFragmentManager(), AddGistBottomSheetDialog.Companion.getTAG());
+    }
 
+    @Override public void onInitFiles(@Nullable ArrayList<FilesListModel> filesListModel, boolean isOwner) {
+        if (filesListModel == null) {
+            filesListModel = new ArrayList<>();//DO NOT PASS NULL TO ADAPTER
+        }
+        if (getPresenter().getFilesMap().isEmpty()) {
+            for (FilesListModel listModel : filesListModel) {
+                getPresenter().getFilesMap().put(listModel.getFilename(), listModel);
+            }
+        }
+        adapter.setOwner(isOwner);
+        getPresenter().onSetList(filesListModel);
+        adapter.insertItems(filesListModel);
+    }
+
+    @Override public void onAddNewFile() {
+        Logger.e("Hello world");
+        if (adapter.getItemCount() == 0 || (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked())) {
+            AddGistBottomSheetDialog.Companion.newInstance(null, -1)
+                    .show(getChildFragmentManager(), AddGistBottomSheetDialog.Companion.getTAG());
+        } else {
+            PremiumActivity.Companion.startActivity(getContext());
+        }
     }
 
     @Override public void onMessageDialogActionClicked(boolean isOk, @Nullable Bundle bundle) {
@@ -122,11 +138,15 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
             } else if (bundle.getBoolean(BundleConstant.YES_NO_EXTRA)) {
                 if (adapter != null) {
                     int position = bundle.getInt(BundleConstant.ID);
-                    String filename = adapter.getItem(position).getFilename();
-                    adapter.removeItem(position);
-                    if (updateGistCallback != null) {
-                        updateGistCallback.onUpdateGist(adapter.getData(), filename);
+                    FilesListModel file = adapter.getItem(position);
+                    if (file != null) {
+                        if (getPresenter().getFilesMap().get(file.getFilename()) != null) {
+                            file = getPresenter().getFilesMap().get(file.getFilename());
+                            file.setContent(null);
+                            getPresenter().getFilesMap().put(file.getFilename(), file);
+                        }
                     }
+                    adapter.removeItem(position);
                 }
             }
         }
@@ -135,6 +155,23 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
     @Override public void onScrollTop(int index) {
         super.onScrollTop(index);
         if (recycler != null) recycler.scrollToPosition(0);
+    }
+
+    @Override public void onFileAdded(@NonNull FilesListModel file, Integer position) {
+        if (position == null || position == -1) {
+            adapter.addItem(file);
+            getPresenter().getFilesMap().put(file.getFilename(), file);
+        } else {
+            FilesListModel current = adapter.getItem(position);
+            if (getPresenter().getFilesMap().get(current.getFilename()) != null) {
+                FilesListModel toUpdate = getPresenter().getFilesMap().get(current.getFilename());
+                toUpdate.setFilename(file.getFilename());
+                toUpdate.setContent(file.getContent());
+                getPresenter().getFilesMap().put(current.getFilename(), toUpdate);
+            }
+            adapter.swapItem(file, position);
+
+        }
     }
 
     private boolean canOpen(@NonNull FilesListModel item) {
@@ -146,5 +183,9 @@ public class GistFilesListFragment extends BaseFragment<GistFilesListMvp.View, G
             return false;
         }
         return true;
+    }
+
+    @NonNull @Override public HashMap<String, FilesListModel> getFiles() {
+        return getPresenter().getFilesMap();
     }
 }

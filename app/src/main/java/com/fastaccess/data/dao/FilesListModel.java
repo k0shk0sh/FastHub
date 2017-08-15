@@ -6,22 +6,24 @@ import android.os.Parcelable;
 import java.io.Serializable;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * Created by Kosh on 12 Nov 2016, 11:09 AM
  */
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter
 public class FilesListModel implements Parcelable, Serializable {
-    private String filename;
-    private String type;
-    private String rawUrl;
-    private Long size;
-    private String content;
-    private Boolean needFetching;
-    private String language;
+    public String filename;
+    public String type;
+    public String rawUrl;
+    public Long size;
+    public String content;
+    public Boolean needFetching;
+    public String language;
+
+    public FilesListModel() {
+    }
 
     @Override public int describeContents() { return 0; }
 
