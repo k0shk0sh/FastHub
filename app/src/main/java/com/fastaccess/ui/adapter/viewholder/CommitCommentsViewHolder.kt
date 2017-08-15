@@ -72,6 +72,17 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     @BindView(R.id.reactionsText) lateinit var reactionsText: FontTextView
     @BindView(R.id.owner) lateinit var owner: FontTextView
 
+    override fun onClick(v: View) {
+        if (v.id == R.id.toggle || v.id == R.id.toggleHolder) {
+            val position = adapterPosition
+            onToggleView.onToggle(position.toLong(), !onToggleView.isCollapsed(position.toLong()))
+            onToggle(onToggleView.isCollapsed(position.toLong()), true)
+        } else {
+            addReactionCount(v)
+            super.onClick(v)
+        }
+    }
+
     override fun bind(t: PullRequestCommitModel) {
         val commentsModel = t.node1
         val author3 = commentsModel.author()
@@ -98,7 +109,7 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
         }
         appendEmojies(t.reaction)
         emojiesList.visibility = View.VISIBLE
-        if (onToggleView != null) onToggle(onToggleView.isCollapsed(adapterPosition.toLong()), false)
+        onToggle(onToggleView.isCollapsed(adapterPosition.toLong()), false)
     }
 
     private fun addReactionCount(v: View) {
