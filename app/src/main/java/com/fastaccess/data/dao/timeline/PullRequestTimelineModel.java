@@ -26,6 +26,7 @@ import pr.PullRequestTimelineQuery;
     public PullRequestTimelineQuery.Status status;
     public List<ReactionsModel> reactions;
     public boolean isMergeable;
+    public PullRequestCommitModel commitThread;
 
     public PullRequestTimelineModel(PullRequest pullRequest) {
         this.pullRequest = pullRequest;
@@ -33,6 +34,9 @@ import pr.PullRequestTimelineQuery;
 
     public PullRequestTimelineModel(PullRequestTimelineQuery.Node node) {
         this.node = node;
+        if (this.node.asCommitCommentThread() != null) {
+            commitThread = PullRequestCommitModel.getThread(this.node.asCommitCommentThread());
+        }
     }
 
     public PullRequestTimelineModel(PullRequestTimelineQuery.Status status, boolean isMergeable) {
@@ -61,7 +65,7 @@ import pr.PullRequestTimelineQuery;
             } else if (node.asPullRequestReview() != null || node.asReviewDismissedEvent() != null
                     || node.asReviewRequestedEvent() != null || node.asReviewRequestRemovedEvent() != null) {
                 return REVIEW;
-            } else if (node.asCommitCommentThread() != null) {
+            } else if (commitThread != null) {
                 return COMMIT_COMMENTS;
             }
         } else if (status != null) {

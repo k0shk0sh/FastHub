@@ -9,9 +9,7 @@
         android:id="@+id/fast_scroller_bar"
         android:layout_width="7dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:alpha="0.6"
-        android:background="?android:windowBackground"/>
+        android:layout_gravity="end"/>
 
     <ImageView
         android:id="@+id/fast_scroller_handle"

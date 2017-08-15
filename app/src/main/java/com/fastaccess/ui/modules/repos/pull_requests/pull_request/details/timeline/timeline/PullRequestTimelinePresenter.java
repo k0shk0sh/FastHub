@@ -347,16 +347,15 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     }
 
     @NonNull private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {
-        String cursor = getPage(page);
         return PullRequestTimelineQuery.builder()
                 .owner(login)
                 .name(repoId)
                 .number(number)
-                .page(cursor)
+                .page(getPage())
                 .build();
     }
 
-    @Nullable private String getPage(int page) {
+    @Nullable private String getPage() {
         return pages.size() != 0 ? pages.valueAt(pages.size() - 1) : "";
     }
 

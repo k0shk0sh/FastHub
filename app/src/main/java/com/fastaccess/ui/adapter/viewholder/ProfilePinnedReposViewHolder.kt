@@ -26,12 +26,6 @@ class ProfilePinnedReposViewHolder private constructor(view: View, adapter: Base
 
     override fun bind(t: GetPinnedReposQuery.Node) {}
 
-    companion object {
-        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): ProfilePinnedReposViewHolder {
-            return ProfilePinnedReposViewHolder(getView(parent, R.layout.profile_pinned_repo_row_item), adapter)
-        }
-    }
-
     fun bind(t: GetPinnedReposQuery.Node, numberFormat: NumberFormat) {
         title.text = t.name()
         issues.text = numberFormat.format(t.issues().totalCount())
@@ -48,6 +42,12 @@ class ProfilePinnedReposViewHolder private constructor(view: View, adapter: Base
                     language.tintDrawables(Color.parseColor(color))
                 }
             }
+        }
+    }
+
+    companion object {
+        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): ProfilePinnedReposViewHolder {
+            return ProfilePinnedReposViewHolder(getView(parent, R.layout.profile_pinned_repo_row_item), adapter)
         }
     }
 }
