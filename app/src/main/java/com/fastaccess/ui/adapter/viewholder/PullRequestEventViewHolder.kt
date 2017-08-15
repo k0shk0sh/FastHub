@@ -38,29 +38,38 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
 
     override fun bind(t: PullRequestTimelineModel) {
         val node = t.node
-        avatarLayout.setUrl(null, null, false, false)
-        stateText.text = null
-        node?.let {
-            it.asAssignedEvent()?.let { assignedEvent(it) }
-            it.asBaseRefForcePushedEvent()?.let { forcePushEvent(it) }
-            it.asClosedEvent()?.let { closedEvent(it) }
-            it.asCommit()?.let { commitEvent(it) }
-            it.asDemilestonedEvent()?.let { demilestonedEvent(it) }
-            it.asDeployedEvent()?.let { deployedEvent(it) }
-            it.asHeadRefDeletedEvent()?.let { refDeletedEvent(it) }
-            it.asHeadRefForcePushedEvent()?.let { refForPushedEvent(it) }
-            it.asHeadRefRestoredEvent()?.let { headRefRestoredEvent(it) }
-            it.asLabeledEvent()?.let { labeledEvent(it) }
-            it.asLockedEvent()?.let { lockEvent(it) }
-            it.asMergedEvent()?.let { mergedEvent(it) }
-            it.asMilestonedEvent()?.let { milestoneEvent(it) }
-            it.asReferencedEvent()?.let { referenceEvent(it) }
-            it.asRenamedTitleEvent()?.let { renamedEvent(it) }
-            it.asReopenedEvent()?.let { reopenedEvent(it) }
-            it.asUnassignedEvent()?.let { unassignedEvent(it) }
-            it.asUnlabeledEvent()?.let { unlabeledEvent(it) }
-            it.asUnlockedEvent()?.let { unlockedEvent(it) }
+        commitStatus.visibility = View.GONE
+        if (node != null) {
+            when {
+                node.asAssignedEvent() != null -> assignedEvent(node.asAssignedEvent()!!)
+                node.asBaseRefForcePushedEvent() != null -> forcePushEvent(node.asBaseRefForcePushedEvent()!!)
+                node.asClosedEvent() != null -> closedEvent(node.asClosedEvent()!!)
+                node.asCommit() != null -> commitEvent(node.asCommit()!!)
+                node.asDemilestonedEvent() != null -> demilestonedEvent(node.asDemilestonedEvent()!!)
+                node.asDeployedEvent() != null -> deployedEvent(node.asDeployedEvent()!!)
+                node.asHeadRefDeletedEvent() != null -> refDeletedEvent(node.asHeadRefDeletedEvent()!!)
+                node.asHeadRefForcePushedEvent() != null -> refForPushedEvent(node.asHeadRefForcePushedEvent()!!)
+                node.asHeadRefRestoredEvent() != null -> headRefRestoredEvent(node.asHeadRefRestoredEvent()!!)
+                node.asLabeledEvent() != null -> labeledEvent(node.asLabeledEvent()!!)
+                node.asLockedEvent() != null -> lockEvent(node.asLockedEvent()!!)
+                node.asMergedEvent() != null -> mergedEvent(node.asMergedEvent()!!)
+                node.asMilestonedEvent() != null -> milestoneEvent(node.asMilestonedEvent()!!)
+                node.asReferencedEvent() != null -> referenceEvent(node.asReferencedEvent()!!)
+                node.asRenamedTitleEvent() != null -> renamedEvent(node.asRenamedTitleEvent()!!)
+                node.asReopenedEvent() != null -> reopenedEvent(node.asReopenedEvent()!!)
+                node.asUnassignedEvent() != null -> unassignedEvent(node.asUnassignedEvent()!!)
+                node.asUnlabeledEvent() != null -> unlabeledEvent(node.asUnlabeledEvent()!!)
+                node.asUnlockedEvent() != null -> unlockedEvent(node.asUnlockedEvent()!!)
+                else -> reset()
+            }
+        } else {
+            reset()
         }
+    }
+
+    private fun reset() {
+        stateText.text = null
+        avatarLayout.setUrl(null, null, false, false)
     }
 
     @SuppressLint("SetTextI18n")
