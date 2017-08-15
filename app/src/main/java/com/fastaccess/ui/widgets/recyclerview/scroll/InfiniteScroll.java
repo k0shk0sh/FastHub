@@ -43,6 +43,9 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     }
 
     @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        if (dx == 0 && dy == 0) {
+            return;
+        }
         if (layoutManager == null) {
             initLayoutManager(recyclerView.getLayoutManager());
         }

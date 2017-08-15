@@ -84,7 +84,7 @@ public class RecyclerViewFastScroller extends FrameLayout {
     }
 
     private void safelyUnregisterObserver() {
-        try {
+        try {// rare case
             if (registeredObserver && recyclerView.getAdapter() != null) {
                 recyclerView.getAdapter().unregisterAdapterDataObserver(observer);
             }
@@ -140,6 +140,7 @@ public class RecyclerViewFastScroller extends FrameLayout {
                 recyclerView.getAdapter().registerAdapterDataObserver(observer);
                 registeredObserver = true;
             }
+            hideShow();
             initScrollHeight();
         }
     }
@@ -210,9 +211,13 @@ public class RecyclerViewFastScroller extends FrameLayout {
     private final RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
         @Override public void onChanged() {
             super.onChanged();
-            if (recyclerView != null) {
-                setVisibility(recyclerView.getAdapter().getItemCount() > 5 ? VISIBLE : GONE);
-            }
+            hideShow();
         }
     };
+
+    protected void hideShow() {
+        if (recyclerView != null && recyclerView.getAdapter() != null) {
+            setVisibility(recyclerView.getAdapter().getItemCount() > 10 ? VISIBLE : GONE);
+        }
+    }
 }

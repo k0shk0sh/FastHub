@@ -41,9 +41,6 @@ import pr.PullRequestTimelineQuery;
  */
 
 public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimelineMvp.View> implements PullRequestTimelineMvp.Presenter {
-    @com.evernote.android.state.State boolean hasNextPage = true;
-    @com.evernote.android.state.State String previousPage;
-
     private ArrayList<PullRequestTimelineModel> timeline = new ArrayList<>();
     private SparseArray<String> pages = new SparseArray<>();
     private ReactionsProvider reactionsProvider;
@@ -298,8 +295,9 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         if (page <= 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
+            pages.clear();
         }
-        if (page > lastPage || lastPage == 0 || !hasNextPage) {
+        if (page > lastPage || lastPage == 0) {
             sendToView(PullRequestTimelineMvp.View::hideProgress);
             return false;
         }
@@ -311,19 +309,6 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return false;
     }
 
-    private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
-                                @NonNull String sha, boolean isMergeable, int page) {
-        PullRequestTimelineQuery query = getTimelineBuilder(login, repoId, number, page);
-        ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient().query(query);
-        Observable<PullRequestTimelineModel> observable = Rx2Apollo.from(apolloCall)
-                .flatMap(response -> {
-                    Observable<PullRequestTimelineModel> models = getTimelineObservable(response, isMergeable);
-                    return models != null ? models : RxHelper.getObservable(Observable.fromIterable(new ArrayList<>()));
-                });
-        makeRestCall(observable.toList().toObservable(),
-                pullRequestTimelineModels -> sendToView(view -> view.onNotifyAdapter(pullRequestTimelineModels, page)));
-    }
-
     @Nullable private Observable<PullRequestTimelineModel> getTimelineObservable(Response<PullRequestTimelineQuery.Data> response,
                                                                                  boolean isMergeable) {
         if (!response.hasErrors()) {
@@ -333,12 +318,12 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 PullRequestTimelineQuery.PullRequest pullRequest = repo != null ? repo.pullRequest() : null;
                 if (pullRequest != null) {
                     PullRequestTimelineQuery.Timeline timeline = pullRequest.timeline();
-                    hasNextPage = timeline.pageInfo().hasNextPage();
+                    lastPage = timeline.pageInfo().hasNextPage() ? Integer.MAX_VALUE : 0;
                     pages.clear();
                     ArrayList<PullRequestTimelineModel> models = new ArrayList<>();
                     PullRequestTimelineQuery.PullRequestCommits pullRequestCommits = pullRequest.pullRequestCommits();
                     List<PullRequestTimelineQuery.PullRequestCommit> commits = pullRequestCommits.pullRequestCommit();
-                    if (commits != null && !commits.isEmpty()) {
+                    if (commits != null && !commits.isEmpty() && page <= 1) {
                         PullRequestTimelineQuery.Status status = commits.get(0).commit().status();
                         if (status != null) {
                             models.add(new PullRequestTimelineModel(status, isMergeable));
@@ -361,16 +346,30 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         return null;
     }
 
-    private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {
+    @NonNull private PullRequestTimelineQuery getTimelineBuilder(@NonNull String login, @NonNull String repoId, int number, int page) {
+        String cursor = getPage(page);
         return PullRequestTimelineQuery.builder()
                 .owner(login)
                 .name(repoId)
                 .number(number)
-                .page(getPage(page))
+                .page(cursor)
                 .build();
     }
 
-    @Nullable private String getPage(int number) {
-        return number < pages.size() ? pages.get(number) : null;
+    @Nullable private String getPage(int page) {
+        return pages.size() != 0 ? pages.valueAt(pages.size() - 1) : "";
+    }
+
+    private void loadEverything(@NonNull String login, @NonNull String repoId, int number,
+                                @NonNull String sha, boolean isMergeable, int page) {
+        PullRequestTimelineQuery query = getTimelineBuilder(login, repoId, number, page);
+        ApolloCall<PullRequestTimelineQuery.Data> apolloCall = App.getInstance().getApolloClient().query(query);
+        Observable<PullRequestTimelineModel> observable = Rx2Apollo.from(apolloCall)
+                .flatMap(response -> {
+                    Observable<PullRequestTimelineModel> models = getTimelineObservable(response, isMergeable);
+                    return models != null ? models : RxHelper.getObservable(Observable.fromIterable(new ArrayList<>()));
+                });
+        makeRestCall(observable.toList().toObservable(),
+                pullRequestTimelineModels -> sendToView(view -> view.onNotifyAdapter(pullRequestTimelineModels, page)));
     }
 }
