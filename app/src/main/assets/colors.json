@@ -364,7 +364,7 @@
         "url": "https://github.com/trending?l=Fancy"
     },
     "Fantom": {
-        "color": "#dbded5",
+        "color": "#14253c",
         "url": "https://github.com/trending?l=Fantom"
     },
     "Filebench WML": {
@@ -492,7 +492,7 @@
         "url": "https://github.com/trending?l=Harbour"
     },
     "Haskell": {
-        "color": "#29b544",
+        "color": "#5e5086",
         "url": "https://github.com/trending?l=Haskell"
     },
     "Haxe": {
