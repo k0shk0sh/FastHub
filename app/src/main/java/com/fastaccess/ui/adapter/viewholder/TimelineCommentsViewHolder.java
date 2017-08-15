@@ -56,6 +56,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.comment) FontTextView comment;
     @BindView(R.id.reactionsText) FontTextView reactionsText;
     @BindView(R.id.owner) FontTextView owner;
+    @BindView(R.id.pathText) FontTextView pathText;
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
@@ -137,13 +138,16 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             avatar.setUrl(null, null, false, false);
             name.setText(null);
         }
+        if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
+            pathText.setVisibility(View.VISIBLE);
+            pathText.setText(String.format("Commented on %s#L%s", commentsModel.getPath(),
+                    commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()));
+        } else {
+            pathText.setText("");
+            pathText.setVisibility(View.GONE);
+        }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             String body = commentsModel.getBodyHtml();
-            if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
-                body = "<small color='grey'><i>Commented at <b>line(" +
-                        (commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()) + ")</b> in "
-                        + commentsModel.getPath() + "</i></small><br/>" + body;
-            }
             HtmlHelper.htmlIntoTextView(comment, body, viewGroup.getWidth());
         } else {
             comment.setText("");

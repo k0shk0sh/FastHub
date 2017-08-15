@@ -209,9 +209,20 @@ public class RecyclerViewFastScroller extends FrameLayout {
     };
 
     private final RecyclerView.AdapterDataObserver observer = new RecyclerView.AdapterDataObserver() {
+        @Override public void onItemRangeInserted(int positionStart, int itemCount) {
+            super.onItemRangeInserted(positionStart, itemCount);
+            hideShow();
+        }
+
+        @Override public void onItemRangeRemoved(int positionStart, int itemCount) {
+            super.onItemRangeRemoved(positionStart, itemCount);
+            hideShow();
+        }
+
         @Override public void onChanged() {
             super.onChanged();
             hideShow();
+
         }
     };
 
