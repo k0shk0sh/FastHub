@@ -5,7 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/grid_spacing"
+    android:layout_marginBottom="@dimen/spacing_micro"
+    android:layout_marginEnd="@dimen/grid_spacing"
+    android:layout_marginStart="@dimen/grid_spacing"
+    android:layout_marginTop="@dimen/spacing_micro"
     android:background="?card_background"
     tools:ignore="RtlSymmetry">
 

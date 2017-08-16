@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.timeline.PullRequestTimelineModel
 import com.fastaccess.ui.adapter.CommitCommentsAdapter
 import com.fastaccess.ui.adapter.callback.OnToggleView
 import com.fastaccess.ui.widgets.FontTextView
+import com.fastaccess.ui.widgets.SpannableBuilder
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
@@ -45,11 +46,14 @@ class CommitThreadViewHolder private constructor(view: View,
     @SuppressLint("SetTextI18n")
     override fun bind(t: PullRequestTimelineModel) {
         t.commitThread?.let {
-            pathText.text = "commented on ${if (!it.path.isNullOrEmpty()) {
-                "${it.path}#L${it.position} in ${it.commit?.oid().toString().substring(0, 7)}"
-            } else {
-                it.commit?.oid().toString().substring(0, 7)
-            }}"
+            val builder = SpannableBuilder.builder()
+            pathText.text = builder.append("commented on")
+                    .append(if (!it.path.isNullOrEmpty()) {
+                        "${it.path}#L${it.position} in "
+                    } else {
+                        " "
+                    })
+                    .url(it.commit?.oid().toString().substring(0, 7))
             it.comments?.let {
                 commitComments.adapter = CommitCommentsAdapter(it, this, onToggleView)
             }
