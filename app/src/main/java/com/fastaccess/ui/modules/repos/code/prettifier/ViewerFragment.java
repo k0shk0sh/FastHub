@@ -17,7 +17,6 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
@@ -39,7 +38,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private AppBarLayout appBarLayout;
     private BottomNavigation bottomNavigation;
-    private boolean scrolledTop = true;
+    private boolean isAppBarExpanded = true;
     @State boolean isWrap = PrefGetter.isWrapCode();
 
     public static ViewerFragment newInstance(@NonNull String url, @Nullable String htmlUrl) {
@@ -154,16 +153,10 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     @Override public void onScrollChanged(boolean reachedTop, int scroll) {
         if (getPresenter().isRepo()) {
-            if (appBarLayout != null && bottomNavigation != null) {
-                if (scroll <= (appBarLayout.getTotalScrollRange() / 2)) {
-                    scrolledTop = true;
-                    bottomNavigation.setExpanded(true, true);
-                    appBarLayout.setExpanded(true, true);
-                } else if (scroll >= appBarLayout.getTotalScrollRange() && scrolledTop) {
-                    bottomNavigation.setExpanded(false, true);
-                    appBarLayout.setExpanded(false, true);
-                    scrolledTop = false;
-                }
+            if (appBarLayout != null && bottomNavigation != null && reachedTop != isAppBarExpanded) {
+                isAppBarExpanded = reachedTop;
+                bottomNavigation.setExpanded(reachedTop, true);
+                appBarLayout.setExpanded(reachedTop, true);
                 webView.setNestedScrollingEnabled(scroll <= (appBarLayout.getTotalScrollRange() * 2));
             }
         }
