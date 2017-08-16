@@ -8,6 +8,7 @@ import android.support.design.widget.AppBarLayout;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -29,7 +30,7 @@ import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
  * Created by Kosh on 28 Nov 2016, 9:27 PM
  */
 
-public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter> implements ViewerMvp.View {
+public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter> implements ViewerMvp.View, AppBarLayout.OnOffsetChangedListener {
 
     public static final String TAG = ViewerFragment.class.getSimpleName();
 
@@ -38,7 +39,9 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     private AppBarLayout appBarLayout;
     private BottomNavigation bottomNavigation;
+    private boolean isAppBarMoving;
     private boolean isAppBarExpanded = true;
+    private boolean isAppBarListener;
     @State boolean isWrap = PrefGetter.isWrapCode();
 
     public static ViewerFragment newInstance(@NonNull String url, @Nullable String htmlUrl) {
@@ -152,12 +155,16 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
     }
 
     @Override public void onScrollChanged(boolean reachedTop, int scroll) {
-        if (getPresenter().isRepo()) {
-            if (appBarLayout != null && bottomNavigation != null && reachedTop != isAppBarExpanded) {
-                isAppBarExpanded = reachedTop;
-                bottomNavigation.setExpanded(reachedTop, true);
-                appBarLayout.setExpanded(reachedTop, true);
-                webView.setNestedScrollingEnabled(scroll <= (appBarLayout.getTotalScrollRange() * 2));
+        if (getPresenter().isRepo() && appBarLayout != null && bottomNavigation != null && webView != null) {
+            boolean shouldExpand = webView.getScrollY() == 0;
+            if (!isAppBarMoving && shouldExpand != isAppBarExpanded) {
+                isAppBarMoving = true;
+                isAppBarExpanded = shouldExpand;
+                bottomNavigation.setExpanded(shouldExpand, true);
+                appBarLayout.setExpanded(shouldExpand, true);
+                webView.setNestedScrollingEnabled(shouldExpand);
+                if (shouldExpand)
+                    webView.onTouchEvent(MotionEvent.obtain(0, 0, MotionEvent.ACTION_UP, 0, 0, 0));
             }
         }
     }
@@ -186,7 +193,30 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         if (getPresenter().isRepo()) {
             appBarLayout = getActivity().findViewById(R.id.appbar);
             bottomNavigation = getActivity().findViewById(R.id.bottomNavigation);
+
+            if (appBarLayout != null && !isAppBarListener) {
+                appBarLayout.addOnOffsetChangedListener(this);
+                isAppBarListener = true;
+            }
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (appBarLayout != null && !isAppBarListener) {
+            appBarLayout.addOnOffsetChangedListener(this);
+            isAppBarListener = true;
+        }
+    }
+
+    @Override
+    public void onStop() {
+        if (appBarLayout != null && isAppBarListener) {
+            appBarLayout.removeOnOffsetChangedListener(this);
+            isAppBarListener = false;
+        }
+        super.onStop();
     }
 
     @Override public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -227,5 +257,12 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         if (!isVisibleToUser && appBarLayout != null) {
             appBarLayout.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Override
+    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+        verticalOffset = Math.abs(verticalOffset);
+        if (verticalOffset == 0 || verticalOffset == appBarLayout.getTotalScrollRange())
+            isAppBarMoving = false;
     }
 }
