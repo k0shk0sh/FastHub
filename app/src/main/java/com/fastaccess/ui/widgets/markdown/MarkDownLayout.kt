@@ -16,6 +16,7 @@ import com.fastaccess.R
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.markdown.MarkDownProvider
+import com.fastaccess.ui.modules.editor.emoji.EmojiBottomSheet
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment
 
 /**
@@ -67,19 +68,21 @@ class MarkDownLayout : LinearLayout {
 
     @OnClick(R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic, R.id.strikethrough,
             R.id.bullet, R.id.header, R.id.code, R.id.numbered, R.id.quote, R.id.link, R.id.image,
-            R.id.unCheckbox, R.id.checkbox, R.id.inlineCode)
+            R.id.unCheckbox, R.id.checkbox, R.id.inlineCode, R.id.addEmoji)
     fun onActions(v: View) {
         markdownListener?.let {
             it.getEditText().let { editText ->
                 if (!editText.isEnabled) {
                     Snackbar.make(this, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show()
                 } else {
-                    if (v.id == R.id.link) {
-                        EditorLinkImageDialogFragment.newInstance(true).show(it.fragmentManager(), "BannerDialogFragment")
-                    } else if (v.id == R.id.image) {
-                        EditorLinkImageDialogFragment.newInstance(false).show(it.fragmentManager(), "BannerDialogFragment")
-                    } else {
-                        onActionClicked(editText, v.id)
+                    when {
+                        v.id == R.id.link -> EditorLinkImageDialogFragment.newInstance(true).show(it.fragmentManager(), "BannerDialogFragment")
+                        v.id == R.id.image -> EditorLinkImageDialogFragment.newInstance(false).show(it.fragmentManager(), "BannerDialogFragment")
+                        v.id == R.id.addEmoji -> {
+                            ViewHelper.hideKeyboard(it.getEditText())
+                            EmojiBottomSheet().show(it.fragmentManager(), "EmojiBottomSheet")
+                        }
+                        else -> onActionClicked(editText, v.id)
                     }
                 }
             }

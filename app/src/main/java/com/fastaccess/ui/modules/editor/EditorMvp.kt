@@ -4,6 +4,7 @@ import com.fastaccess.data.dao.EditReviewCommentModel
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.ui.base.mvp.BaseMvp
+import com.fastaccess.ui.modules.editor.emoji.EmojiMvp
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 
@@ -13,7 +14,8 @@ import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 
 interface EditorMvp {
 
-    interface View : BaseMvp.FAView, EditorLinkImageMvp.EditorLinkCallback, MarkDownLayout.MarkdownListener {
+    interface View : BaseMvp.FAView, EditorLinkImageMvp.EditorLinkCallback,
+            MarkDownLayout.MarkdownListener, EmojiMvp.EmojiCallback {
         fun onSendResultAndFinish(commentModel: Comment, isNew: Boolean)
 
         fun onSendMarkDownResult()

@@ -87,7 +87,7 @@ public class EmojiManager {
         return EMOJI_TRIE.getEmoji(unicode);
     }
 
-    public static Collection<Emoji> getAll() {
+    public static List<Emoji> getAll() {
         return ALL_EMOJIS;
     }
 

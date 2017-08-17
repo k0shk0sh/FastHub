@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:tools="http://schemas.android.com/tools"
-       xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:tools="http://schemas.android.com/tools"
        tools:showIn="@layout/editor_layout">
 
 
     <HorizontalScrollView
         android:id="@+id/editorIconsHolder"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:fadeScrollbars="true"
         android:scrollbarFadeDuration="500"
         android:scrollbarSize="1dp"
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/link"
-                android:padding="@dimen/spacing_normal"
+                android:padding="@dimen/spacing_micro"
 
                 android:src="@drawable/ic_insert_link"/>
 
@@ -182,6 +182,16 @@
         </LinearLayout>
 
     </HorizontalScrollView>
+
+    <com.fastaccess.ui.widgets.ForegroundImageView
+        android:id="@+id/addEmoji"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/reactions"
+        android:padding="@dimen/spacing_normal"
+        android:src="@drawable/ic_add_emoji"/>
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/view"

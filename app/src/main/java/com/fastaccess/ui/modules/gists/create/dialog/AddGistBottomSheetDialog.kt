@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.gists.create.dialog
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
@@ -19,6 +20,7 @@ import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
+import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseDialogFragment
 import com.fastaccess.ui.modules.gists.create.dialog.AddGistMvp.AddGistFileListener
@@ -112,6 +114,12 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
             description.editText?.setText(it.filename)
             editText.setText(it.content)
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    override fun onEmojiAdded(emoji: Emoji) {
+        ViewHelper.showKeyboard(editText)
+        editText.setText("${editText.text} :${emoji.aliases[0]}:")
     }
 
     companion object {

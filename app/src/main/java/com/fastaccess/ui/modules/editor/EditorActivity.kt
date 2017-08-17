@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.editor
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.fastaccess.R
 import com.fastaccess.data.dao.EditReviewCommentModel
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.helper.*
+import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.provider.markdown.CachedComments
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseActivity
@@ -36,7 +38,7 @@ import java.util.*
 
 class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMvp.View {
 
-    val sentFromFastHub: String by lazy {
+    private val sentFromFastHub: String by lazy {
         "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_"
     }
@@ -52,13 +54,21 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     @BindView(R.id.parentView) lateinit var parentView: View
     @BindView(R.id.autocomplete) lateinit var mention: ListView
 
-    @State @BundleConstant.ExtraTYpe var extraType: String? = null
-    @State var itemId: String? = null
-    @State var login: String? = null
-    @State var issueNumber: Int = 0
-    @State var commentId: Long = 0
-    @State var sha: String? = null
-    @State var reviewComment: EditReviewCommentModel? = null
+    @State
+    @BundleConstant.ExtraTYpe
+    var extraType: String? = null
+    @State
+    var itemId: String? = null
+    @State
+    var login: String? = null
+    @State
+    var issueNumber: Int = 0
+    @State
+    var commentId: Long = 0
+    @State
+    var sha: String? = null
+    @State
+    var reviewComment: EditReviewCommentModel? = null
 
     override fun layout(): Int = R.layout.editor_layout
 
@@ -202,6 +212,12 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     }
 
     override fun fragmentManager(): FragmentManager = supportFragmentManager
+
+    @SuppressLint("SetTextI18n")
+    override fun onEmojiAdded(emoji: Emoji) {
+        ViewHelper.showKeyboard(editText)
+        editText.setText("${editText.text} :${emoji.aliases[0]}:")
+    }
 
     private fun onCreate() {
         val intent = intent

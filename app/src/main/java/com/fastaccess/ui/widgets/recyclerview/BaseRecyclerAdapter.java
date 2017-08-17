@@ -30,6 +30,7 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     private GuideListener guideListener;
     private boolean progressAdded;
 
+
     protected BaseRecyclerAdapter() {
         this(new ArrayList<>());
     }
@@ -41,6 +42,10 @@ public abstract class BaseRecyclerAdapter<M, VH extends BaseViewHolder,
     protected BaseRecyclerAdapter(@NonNull List<M> data, @Nullable P listener) {
         this.data = data;
         this.listener = listener;
+    }
+
+    protected BaseRecyclerAdapter(@Nullable P listener) {
+        this(new ArrayList<>(), listener);
     }
 
     protected abstract VH viewHolder(ViewGroup parent, int viewType);
