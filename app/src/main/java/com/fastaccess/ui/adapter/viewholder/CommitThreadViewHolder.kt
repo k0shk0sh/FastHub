@@ -55,7 +55,7 @@ class CommitThreadViewHolder private constructor(view: View,
                     })
                     .url(it.commit?.oid().toString().substring(0, 7))
             it.comments?.let {
-                commitComments.adapter = CommitCommentsAdapter(it, this, onToggleView)
+                if (!it.isEmpty()) commitComments.adapter = CommitCommentsAdapter(it, this, onToggleView)
             }
         }
         onToggle(onToggleView.isCollapsed(adapterPosition.toLong()))

@@ -18,6 +18,7 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     private int startingPageIndex = 0;
     private RecyclerView.LayoutManager layoutManager;
     private BaseRecyclerAdapter adapter;
+    private boolean newlyAdded = true;
 
     public InfiniteScroll() {}
 
@@ -43,6 +44,10 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     }
 
     @Override public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+        if (newlyAdded) {
+            newlyAdded = false;
+            return;
+        }
         if (layoutManager == null) {
             initLayoutManager(recyclerView.getLayoutManager());
         }
