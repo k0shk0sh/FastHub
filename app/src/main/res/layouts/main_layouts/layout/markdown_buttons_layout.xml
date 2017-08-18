@@ -177,11 +177,24 @@
                 android:background="?selectableItemBackgroundBorderless"
                 android:contentDescription="@string/image"
                 android:padding="@dimen/spacing_normal"
-
                 android:src="@drawable/ic_image"/>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/signature"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackgroundBorderless"
+                android:contentDescription="@string/app_name"
+                android:padding="@dimen/spacing_normal"
+                android:src="@drawable/ic_fasthub_mascot"/>
         </LinearLayout>
 
     </HorizontalScrollView>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="?dividerColor"/>
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/addEmoji"

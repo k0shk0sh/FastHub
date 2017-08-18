@@ -19,6 +19,6 @@ interface EmojiMvp {
     }
 
     interface EmojiCallback {
-        fun onEmojiAdded(emoji: Emoji)
+        fun onEmojiAdded(emoji: Emoji?)
     }
 }

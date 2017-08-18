@@ -2,8 +2,10 @@ package com.fastaccess.ui.modules.editor.emoji
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
 import android.view.View
 import butterknife.BindView
+import butterknife.OnTextChanged
 import com.fastaccess.R
 import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.ui.adapter.EmojiAdapter
@@ -23,6 +25,12 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
     val adapter: EmojiAdapter by lazy { EmojiAdapter(this) }
 
     var emojiCallback: EmojiMvp.EmojiCallback? = null
+
+
+    @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
+    fun onTextChange(text: Editable) {
+        adapter.filter.filter(text)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

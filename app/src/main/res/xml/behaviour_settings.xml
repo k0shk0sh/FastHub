@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <SwitchPreference
-        android:defaultValue="true"
-        android:icon="@drawable/ic_checkbox"
-        android:key="sent_via_enabled"
-        android:summary="@string/enable_signature_box_summary"
-        android:title="@string/enable_signature_box"/>
-
+    
     <SwitchPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_edit"

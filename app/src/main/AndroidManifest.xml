@@ -115,7 +115,8 @@
         <activity
             android:name=".ui.modules.editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/markdown"/>
+            android:label="@string/markdown"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.modules.gists.create.CreateGistActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -170,8 +171,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-        <activity android:name=".ui.modules.settings.SettingsActivity"/>
-        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity"/>
+        <activity
+            android:name=".ui.modules.settings.SettingsActivity"
+            android:configChanges="keyboard|orientation|screenSize"/>
+
+        <activity
+            android:name=".ui.modules.settings.category.SettingsCategoryActivity"
+            android:configChanges="keyboard|orientation|screenSize"/>
+
         <activity
             android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
             android:label="@string/releases"

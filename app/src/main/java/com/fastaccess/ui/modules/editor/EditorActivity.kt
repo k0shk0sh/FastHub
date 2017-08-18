@@ -12,7 +12,6 @@ import android.view.MenuItem
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.ListView
@@ -38,18 +37,16 @@ import java.util.*
 
 class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMvp.View {
 
+    private var participants: ArrayList<String>? = null
     private val sentFromFastHub: String by lazy {
         "\n\n_" + getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
                 "[" + getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_"
     }
 
-    private var participants: ArrayList<String>? = null
-
     @BindView(R.id.replyQuote) lateinit var replyQuote: LinearLayout
     @BindView(R.id.replyQuoteText) lateinit var quote: FontTextView
     @BindView(R.id.markDownLayout) lateinit var markDownLayout: MarkDownLayout
     @BindView(R.id.editText) lateinit var editText: MarkdownEditText
-    @BindView(R.id.sentVia) lateinit var sentVia: CheckBox
     @BindView(R.id.list_divider) lateinit var listDivider: View
     @BindView(R.id.parentView) lateinit var parentView: View
     @BindView(R.id.autocomplete) lateinit var mention: ListView
@@ -96,18 +93,11 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
         super.onCreate(savedInstanceState)
         markDownLayout.markdownListener = this
         setToolbarIcon(R.drawable.ic_clear)
-        sentVia.visibility = if (PrefGetter.isSentViaBoxEnabled()) View.VISIBLE else GONE
-        sentVia.isChecked = PrefGetter.isSentViaEnabled()
-        sentVia.setOnCheckedChangeListener { _, isChecked -> PrefHelper.set("sent_via", isChecked) }
-        MarkDownProvider.setMdText(sentVia, sentFromFastHub)
         if (savedInstanceState == null) {
             onCreate()
         }
         invalidateOptionsMenu()
         editText.initListView(mention, listDivider, participants)
-        if (editText.text.toString().contains(sentFromFastHub)) {
-            sentVia.isChecked = true
-        }
         editText.requestFocus()
     }
 
@@ -207,16 +197,20 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
 
     override fun getSavedText(): CharSequence = editText.savedText
 
-    override fun onReview(enabled: Boolean) {
-        sentVia.isEnabled = enabled
-    }
+    override fun onReview(enabled: Boolean) {}
 
     override fun fragmentManager(): FragmentManager = supportFragmentManager
 
     @SuppressLint("SetTextI18n")
-    override fun onEmojiAdded(emoji: Emoji) {
+    override fun onEmojiAdded(emoji: Emoji?) {
         ViewHelper.showKeyboard(editText)
-        editText.setText("${editText.text} :${emoji.aliases[0]}:")
+        emoji?.let {
+            editText.setText(if (editText.text.isNullOrEmpty()) {
+                ":${it.aliases[0]}:"
+            } else {
+                "${editText.text} :${it.aliases[0]}:"
+            })
+        }
     }
 
     private fun onCreate() {

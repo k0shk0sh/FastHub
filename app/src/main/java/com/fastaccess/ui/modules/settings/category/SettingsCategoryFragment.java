@@ -62,7 +62,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
     private String appColor;
     private String appLanguage;
 
-    private Preference signatureVia;
     private Preference notificationTime;
     private Preference notificationRead;
     private Preference notificationSound;
@@ -143,12 +142,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
             if (newValue.toString().equalsIgnoreCase(appLanguage))
                 return true;
             callback.onThemeChanged();
-            return true;
-        } else if (preference.getKey().equalsIgnoreCase("sent_via_enabled")) {
-            if ((boolean) newValue)
-                getPreferenceScreen().removePreference(signatureVia);
-            else
-                getPreferenceScreen().addPreference(signatureVia);
             return true;
         }
         return false;
@@ -276,12 +269,6 @@ public class SettingsCategoryFragment extends PreferenceFragmentCompat implement
 
     private void addBehaviour() {
         addPreferencesFromResource(R.xml.behaviour_settings);
-        findPreference("sent_via_enabled").setOnPreferenceChangeListener(this);
-        signatureVia = findPreference("sent_via");
-        if (PrefHelper.getBoolean("sent_via_enabled")) {
-            signatureVia.setDefaultValue(false);
-            getPreferenceScreen().removePreference(signatureVia);
-        }
     }
 
     private void addNotifications() {

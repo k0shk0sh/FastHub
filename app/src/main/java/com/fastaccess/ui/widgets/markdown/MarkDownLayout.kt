@@ -13,6 +13,7 @@ import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.OnClick
 import com.fastaccess.R
+import com.fastaccess.helper.AppHelper
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.markdown.MarkDownProvider
@@ -23,6 +24,11 @@ import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment
  * Created by kosh on 11/08/2017.
  */
 class MarkDownLayout : LinearLayout {
+
+    private val sentFromFastHub: String by lazy {
+        "\n\n_" + resources.getString(R.string.sent_from_fasthub, AppHelper.getDeviceName(), "",
+                "[" + resources.getString(R.string.app_name) + "](https://play.google.com/store/apps/details?id=com.fastaccess.github)") + "_"
+    }
 
     var markdownListener: MarkdownListener? = null
 
@@ -68,7 +74,8 @@ class MarkDownLayout : LinearLayout {
 
     @OnClick(R.id.headerOne, R.id.headerTwo, R.id.headerThree, R.id.bold, R.id.italic, R.id.strikethrough,
             R.id.bullet, R.id.header, R.id.code, R.id.numbered, R.id.quote, R.id.link, R.id.image,
-            R.id.unCheckbox, R.id.checkbox, R.id.inlineCode, R.id.addEmoji)
+            R.id.unCheckbox, R.id.checkbox, R.id.inlineCode, R.id.addEmoji,
+            R.id.signature)
     fun onActions(v: View) {
         markdownListener?.let {
             it.getEditText().let { editText ->
@@ -110,6 +117,13 @@ class MarkDownLayout : LinearLayout {
             R.id.checkbox -> MarkDownProvider.addList(editText, "- [x]")
             R.id.unCheckbox -> MarkDownProvider.addList(editText, "- [ ]")
             R.id.inlineCode -> MarkDownProvider.addInlinleCode(editText)
+            R.id.signature -> {
+                markdownListener?.getEditText()?.let {
+                    if (!it.text.toString().contains(sentFromFastHub)) {
+                        it.setText("${it.text}$sentFromFastHub")
+                    }
+                }
+            }
         }
     }
 
