@@ -37,13 +37,25 @@ class ReviewsViewHolder private constructor(itemView: View, adapter: BaseRecycle
     }
 
     override fun bind(model: PullRequestTimelineModel) {
+        if (model.node != null) {
+            model.node.let {
+                when {
+                    it.asPullRequestReview() != null -> initPrReview(it.asPullRequestReview()!!)
+                    it.asReviewDismissedEvent() != null -> initPrDismissedReview(it.asReviewDismissedEvent()!!)
+                    it.asReviewRequestedEvent() != null -> initPrRequestedReview(it.asReviewRequestedEvent()!!)
+                    it.asReviewRequestRemovedEvent() != null -> initPrRemovedReview(it.asReviewRequestRemovedEvent()!!)
+                    else -> reset()
+                }
+            }
+        } else {
+            reset()
+        }
+    }
+
+    private fun reset() {
         avatarLayout.setUrl(null, null, false, false)
         stateText.text = null
         body.text = null
-        model.node?.asPullRequestReview()?.let { initPrReview(it) }
-        model.node?.asReviewDismissedEvent()?.let { initPrDismissedReview(it) }
-        model.node?.asReviewRequestedEvent()?.let { initPrRequestedReview(it) }
-        model.node?.asReviewRequestRemovedEvent()?.let { initPrRemovedReview(it) }
     }
 
     private fun initPrRemovedReview(event: PullRequestTimelineQuery.AsReviewRequestRemovedEvent) {
