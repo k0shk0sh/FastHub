@@ -197,20 +197,11 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
 
     override fun getSavedText(): CharSequence = editText.savedText
 
-    override fun onReview(enabled: Boolean) {}
-
     override fun fragmentManager(): FragmentManager = supportFragmentManager
 
     @SuppressLint("SetTextI18n")
     override fun onEmojiAdded(emoji: Emoji?) {
-        ViewHelper.showKeyboard(editText)
-        emoji?.let {
-            editText.setText(if (editText.text.isNullOrEmpty()) {
-                ":${it.aliases[0]}:"
-            } else {
-                "${editText.text} :${it.aliases[0]}:"
-            })
-        }
+        markDownLayout.onEmojiAdded(emoji)
     }
 
     private fun onCreate() {

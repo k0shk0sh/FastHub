@@ -1,5 +1,6 @@
 package com.fastaccess.ui.widgets.markdown
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.support.design.widget.Snackbar
 import android.support.transition.TransitionManager
@@ -16,6 +17,7 @@ import com.fastaccess.R
 import com.fastaccess.helper.AppHelper
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
+import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.modules.editor.emoji.EmojiBottomSheet
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageDialogFragment
@@ -56,7 +58,6 @@ class MarkDownLayout : LinearLayout {
                 TransitionManager.beginDelayedTransition(this)
                 if (editText.isEnabled && !InputHelper.isEmpty(editText)) {
                     editText.isEnabled = false
-                    it.onReview(false)
                     MarkDownProvider.setMdText(editText, InputHelper.toString(editText))
                     editorIconsHolder.visibility = View.INVISIBLE
                     ViewHelper.hideKeyboard(editText)
@@ -64,7 +65,6 @@ class MarkDownLayout : LinearLayout {
                     editText.setText(it.getSavedText())
                     editText.setSelection(it.getSavedText().length)
                     editText.isEnabled = true
-                    it.onReview(true)
                     editorIconsHolder.visibility = View.VISIBLE
                     ViewHelper.showKeyboard(editText)
                 }
@@ -96,6 +96,7 @@ class MarkDownLayout : LinearLayout {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun onActionClicked(editText: EditText, id: Int) {
         if (editText.selectionEnd == -1 || editText.selectionStart == -1) {
             return
@@ -121,8 +122,23 @@ class MarkDownLayout : LinearLayout {
                 markdownListener?.getEditText()?.let {
                     if (!it.text.toString().contains(sentFromFastHub)) {
                         it.setText("${it.text}$sentFromFastHub")
+                    } else {
+                        it.setText(it.text.toString().replace(sentFromFastHub, ""))
                     }
                 }
+            }
+        }
+    }
+
+    fun onEmojiAdded(emoji: Emoji?) {
+        markdownListener?.getEditText()?.let { editText ->
+            ViewHelper.showKeyboard(editText)
+            emoji?.let {
+                editText.setText(if (editText.text.isNullOrEmpty()) {
+                    ":${it.aliases[0]}:"
+                } else {
+                    "${editText.text} :${it.aliases[0]}:"
+                })
             }
         }
     }
@@ -131,6 +147,5 @@ class MarkDownLayout : LinearLayout {
         fun getEditText(): EditText
         fun fragmentManager(): FragmentManager
         fun getSavedText(): CharSequence
-        fun onReview(enabled: Boolean) {}
     }
 }

@@ -118,15 +118,7 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
 
     @SuppressLint("SetTextI18n")
     override fun onEmojiAdded(emoji: Emoji?) {
-        ViewHelper.showKeyboard(editText)
-        ViewHelper.showKeyboard(editText)
-        emoji?.let {
-            editText.setText(if (editText.text.isNullOrEmpty()) {
-                ":${it.aliases[0]}:"
-            } else {
-                "${editText.text} :${it.aliases[0]}:"
-            })
-        }
+        markDownLayout.onEmojiAdded(emoji)
     }
 
     companion object {
