@@ -209,7 +209,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
         if (intent != null && intent.extras != null) {
             val bundle = intent.extras
             extraType = bundle.getString(BundleConstant.EXTRA_TYPE)
-            reviewComment = bundle.getParcelable<EditReviewCommentModel>(BundleConstant.REVIEW_EXTRA)
+            reviewComment = bundle.getParcelable(BundleConstant.REVIEW_EXTRA)
             itemId = bundle.getString(BundleConstant.ID)
             login = bundle.getString(BundleConstant.EXTRA_TWO)
             if (extraType.equals(BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA, ignoreCase = true)

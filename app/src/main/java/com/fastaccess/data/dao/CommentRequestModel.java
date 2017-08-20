@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Objects;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +27,7 @@ import lombok.Setter;
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CommentRequestModel that = (CommentRequestModel) o;
-        return position == that.position && (path != null ? path.equals(that.path) : that.path == null);
+        return Objects.equals(position, that.position) && (path != null ? path.equals(that.path) : that.path == null);
     }
 
     @Override public int hashCode() {

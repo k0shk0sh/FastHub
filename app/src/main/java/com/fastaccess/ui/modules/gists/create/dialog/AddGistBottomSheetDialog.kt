@@ -41,12 +41,10 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is AddGistFileListener) {
-            addFileListener = parentFragment as AddGistFileListener
-        } else if (context is AddGistFileListener) {
-            addFileListener = context
-        } else {
-            throw NullPointerException("${context::class.java.simpleName} most implement AddGistFileListener")
+        when {
+            parentFragment is AddGistFileListener -> addFileListener = parentFragment as AddGistFileListener
+            context is AddGistFileListener -> addFileListener = context
+            else -> throw NullPointerException("${context::class.java.simpleName} most implement AddGistFileListener")
         }
     }
 

@@ -34,12 +34,10 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (parentFragment is EmojiMvp.EmojiCallback) {
-            emojiCallback = parentFragment as EmojiMvp.EmojiCallback
-        } else if (context is EmojiMvp.EmojiCallback) {
-            emojiCallback = context
-        } else {
-            throw IllegalArgumentException("${context.javaClass.simpleName} must implement EmojiMvp.EmojiCallback")
+        when {
+            parentFragment is EmojiMvp.EmojiCallback -> emojiCallback = parentFragment as EmojiMvp.EmojiCallback
+            context is EmojiMvp.EmojiCallback -> emojiCallback = context
+            else -> throw IllegalArgumentException("${context.javaClass.simpleName} must implement EmojiMvp.EmojiCallback")
         }
     }
 

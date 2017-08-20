@@ -111,22 +111,18 @@ class ReviewsViewHolder private constructor(itemView: View, adapter: BaseRecycle
                     .append(" ")
                     .append(stateText.resources.getString(R.string.dismissed_review))
                     .append(" ")
-                    .bold(if (event.previousReviewState() == PullRequestReviewState.APPROVED) {
-                        "Approval"
-                    } else if (event.previousReviewState() == PullRequestReviewState.CHANGES_REQUESTED) {
-                        "Requested Changes"
-                    } else if (event.previousReviewState() == PullRequestReviewState.COMMENTED) {
-                        "Comment"
-                    } else if (event.previousReviewState() == PullRequestReviewState.DISMISSED) {
-                        "Dismissal"
-                    } else {
-                        "Pending Review"
+                    .bold(when {
+                        event.previousReviewState() == PullRequestReviewState.APPROVED -> "Approval"
+                        event.previousReviewState() == PullRequestReviewState.CHANGES_REQUESTED -> "Requested Changes"
+                        event.previousReviewState() == PullRequestReviewState.COMMENTED -> "Comment"
+                        event.previousReviewState() == PullRequestReviewState.DISMISSED -> "Dismissal"
+                        else -> "Pending Review"
                     })
                     .append(" ")
                     .append(ParseDateFormat.getTimeAgo(event.createdAt().toString()))
         }
         if (!event.messageHtml().toString().isBlank()) {
-            HtmlHelper.htmlIntoTextView(body, event.messageHtml().toString(), viewGroup.width);
+            HtmlHelper.htmlIntoTextView(body, event.messageHtml().toString(), viewGroup.width)
             body.visibility = View.VISIBLE
         } else {
             body.visibility = View.GONE

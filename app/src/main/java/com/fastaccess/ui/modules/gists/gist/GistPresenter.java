@@ -58,9 +58,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
                         sendToView(GistMvp.View::onErrorDeleting);
                     }
                 })
-                .subscribe(booleanResponse -> {/**/}, throwable -> {
-                    sendToView(view -> view.showErrorMessage(throwable.getMessage()));
-                }));
+                .subscribe(booleanResponse -> {/**/}, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage()))));
     }
 
     @Override public boolean isOwner() {

@@ -19,7 +19,7 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 class LoginViewHolder private constructor(itemView: View, adapter: BaseRecyclerAdapter<*, *, *>?) :
         BaseViewHolder<Login>(itemView, adapter) {
 
-    val avatarLayout: AvatarLayout? by lazy { itemView.findViewById<AvatarLayout>(R.id.avatarLayout) as AvatarLayout? }
+    val avatarLayout: AvatarLayout? by lazy { itemView.findViewById<AvatarLayout>(R.id.avatarLayout) }
     @BindView(R.id.title) lateinit var title: FontTextView
 
     @SuppressLint("SetTextI18n")

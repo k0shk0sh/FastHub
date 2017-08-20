@@ -14,7 +14,7 @@ import java.text.NumberFormat
 class ProfilePinnedReposAdapter(data: List<GetPinnedReposQuery.Node>) : BaseRecyclerAdapter<GetPinnedReposQuery.Node,
         ProfilePinnedReposViewHolder, BaseViewHolder.OnItemClickListener<GetPinnedReposQuery.Node>>(data) {
 
-    val numberFormat = NumberFormat.getNumberInstance()
+    private val numberFormat = NumberFormat.getNumberInstance()!!
 
     override fun viewHolder(parent: ViewGroup, viewType: Int): ProfilePinnedReposViewHolder {
         return ProfilePinnedReposViewHolder.newInstance(parent, this)
