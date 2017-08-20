@@ -27,7 +27,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
 
     @BindView(R.id.editText) lateinit var editText: EditText
     @BindView(R.id.viewGroup) lateinit var viewGroup: FrameLayout
-    @BindView(R.id.progressLayout) lateinit var progressLayout: FrameLayout
+    @BindView(R.id.progressLayout) lateinit var progressLayout: View
 
     override fun layout(): Int = R.layout.pro_features_layout
 

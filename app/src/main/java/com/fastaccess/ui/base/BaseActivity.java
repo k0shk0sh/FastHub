@@ -32,6 +32,7 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.markdown.CachedComments;
 import com.fastaccess.provider.theme.ThemeEngine;
@@ -58,6 +59,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
+import io.reactivex.Observable;
 
 
 /**
@@ -202,17 +204,21 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        Glide glide = Glide.get(this);
-        glide.clearDiskCache();
-        glide.clearMemory();
-        PrefGetter.setToken(null);
-        PrefGetter.setOtpCode(null);
-        PrefGetter.resetEnterprise();
-        Login.logout();
-        Intent intent = new Intent(this, LoginChooserActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finishAffinity();
+        final Glide glide = Glide.get(App.getInstance());
+        getPresenter().manageViewDisposable(RxHelper.getObservable(Observable.fromCallable(() -> {
+            glide.clearDiskCache();
+            PrefGetter.setToken(null);
+            PrefGetter.setOtpCode(null);
+            PrefGetter.resetEnterprise();
+            Login.logout();
+            return true;
+        })).subscribe(aBoolean -> {
+            glide.clearMemory();
+            Intent intent = new Intent(this, LoginChooserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
+        }));
     }
 
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {

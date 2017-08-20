@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
+import com.fastaccess.provider.markdown.extension.emoji.EmojiExtension;
 import com.fastaccess.provider.timeline.HtmlHelper;
 
 import org.commonmark.Extension;
@@ -19,18 +20,12 @@ import org.commonmark.ext.front.matter.YamlFrontMatterExtension;
 import org.commonmark.ext.gfm.strikethrough.StrikethroughExtension;
 import org.commonmark.ext.gfm.tables.TablesExtension;
 import org.commonmark.ext.ins.InsExtension;
-import org.commonmark.node.IndentedCodeBlock;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
-import org.commonmark.renderer.NodeRenderer;
-import org.commonmark.renderer.html.HtmlNodeRendererContext;
 import org.commonmark.renderer.html.HtmlRenderer;
-import org.commonmark.renderer.html.HtmlWriter;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by Kosh on 24 Nov 2016, 7:43 PM
@@ -72,6 +67,7 @@ public class MarkDownProvider {
                 AutolinkExtension.create(),
                 TablesExtension.create(),
                 InsExtension.create(),
+                EmojiExtension.create(),
                 YamlFrontMatterExtension.create());
         Parser parser = Parser.builder()
                 .extensions(extensions)

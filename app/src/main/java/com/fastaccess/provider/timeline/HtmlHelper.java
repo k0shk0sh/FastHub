@@ -122,6 +122,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("sup", new SuperScriptHandler());
         mySpanner.registerHandler("a", new LinkHandler());
         mySpanner.registerHandler("hr", new HrHandler(windowBackground, width, false));
+        mySpanner.registerHandler("emoji", new EmojiHandler());
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
         tableHandler.setTableWidth(width);

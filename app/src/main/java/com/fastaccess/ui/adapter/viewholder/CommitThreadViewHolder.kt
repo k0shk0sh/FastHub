@@ -49,7 +49,7 @@ class CommitThreadViewHolder private constructor(view: View,
             val builder = SpannableBuilder.builder()
             pathText.text = builder.append("commented on")
                     .append(if (!it.path.isNullOrEmpty()) {
-                        "${it.path}#L${it.position} in "
+                        " ${it.path}#L${it.position} in "
                     } else {
                         " "
                     })
