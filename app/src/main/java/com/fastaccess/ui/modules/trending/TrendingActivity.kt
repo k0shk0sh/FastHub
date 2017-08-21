@@ -151,9 +151,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
                 .isChecked = title.toLowerCase() == selectedTitle.toLowerCase()
     }
 
-    override fun onClearMenu() {
-        navMenu.menu.clear()
-    }
+    override fun onClearMenu() = navMenu.menu.clear()
 
     private fun onItemClicked(item: MenuItem?): Boolean {
         when (item?.title.toString()) {
@@ -165,9 +163,7 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
         return true
     }
 
-    private fun closeDrawerLayout() {
-        drawerLayout.closeDrawer(Gravity.END)
-    }
+    private fun closeDrawerLayout() = drawerLayout.closeDrawer(Gravity.END)
 
     private fun setValues() {
         closeDrawerLayout()

@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import com.fastaccess.R
 import com.fastaccess.ui.widgets.FontEditText
 import java.util.*
 
@@ -17,7 +16,7 @@ class MarkdownEditText : FontEditText {
     var savedText: CharSequence = ""
     private var mention: ListView? = null
     private var listDivider: View? = null
-    internal var inMentionMode = -1
+    private var inMentionMode = -1
     private var participants: ArrayList<String>? = null
 
     constructor(context: Context) : super(context)

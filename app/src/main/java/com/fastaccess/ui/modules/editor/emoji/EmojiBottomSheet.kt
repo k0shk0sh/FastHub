@@ -24,19 +24,17 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
 
     val adapter: EmojiAdapter by lazy { EmojiAdapter(this) }
 
-    var emojiCallback: EmojiMvp.EmojiCallback? = null
+    private var emojiCallback: EmojiMvp.EmojiCallback? = null
 
 
     @OnTextChanged(value = R.id.editText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    fun onTextChange(text: Editable) {
-        adapter.filter.filter(text)
-    }
+    fun onTextChange(text: Editable) = adapter.filter.filter(text)
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        when {
-            parentFragment is EmojiMvp.EmojiCallback -> emojiCallback = parentFragment as EmojiMvp.EmojiCallback
-            context is EmojiMvp.EmojiCallback -> emojiCallback = context
+        emojiCallback = when {
+            parentFragment is EmojiMvp.EmojiCallback -> parentFragment as EmojiMvp.EmojiCallback
+            context is EmojiMvp.EmojiCallback -> context
             else -> throw IllegalArgumentException("${context.javaClass.simpleName} must implement EmojiMvp.EmojiCallback")
         }
     }
@@ -50,20 +48,16 @@ class EmojiBottomSheet : BaseMvpBottomSheetDialogFragment<EmojiMvp.View, EmojiPr
 
     override fun providePresenter(): EmojiPresenter = EmojiPresenter()
 
-    override fun clearAdapter() {
-        adapter.clear()
-    }
+    override fun clearAdapter() = adapter.clear()
 
-    override fun onAddEmoji(emoji: Emoji) {
-        adapter.addItem(emoji)
-    }
+    override fun onAddEmoji(emoji: Emoji) = adapter.addItem(emoji)
 
     override fun onItemClick(position: Int, v: View?, item: Emoji) {
         emojiCallback?.onEmojiAdded(item)
         dismiss()
     }
 
-    override fun onItemLongClick(position: Int, v: View?, item: Emoji?) {}
+    override fun onItemLongClick(position: Int, v: View?, item: Emoji?) = Unit
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

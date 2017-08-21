@@ -16,12 +16,8 @@ class ProfilePinnedReposAdapter(data: List<GetPinnedReposQuery.Node>) : BaseRecy
 
     private val numberFormat = NumberFormat.getNumberInstance()!!
 
-    override fun viewHolder(parent: ViewGroup, viewType: Int): ProfilePinnedReposViewHolder {
-        return ProfilePinnedReposViewHolder.newInstance(parent, this)
-    }
+    override fun viewHolder(parent: ViewGroup, viewType: Int): ProfilePinnedReposViewHolder = ProfilePinnedReposViewHolder.newInstance(parent, this)
 
-    override fun onBindView(holder: ProfilePinnedReposViewHolder, position: Int) {
-        holder.bind(data[position], numberFormat)
-    }
+    override fun onBindView(holder: ProfilePinnedReposViewHolder, position: Int) = holder.bind(data[position], numberFormat)
 
 }

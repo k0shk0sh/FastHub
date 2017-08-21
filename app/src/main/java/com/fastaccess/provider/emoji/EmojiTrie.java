@@ -81,7 +81,7 @@ public class EmojiTrie {
     }
 
     private class Node {
-        private Map<Character, Node> children = new HashMap<Character, Node>();
+        private Map<Character, Node> children = new HashMap<>();
         private Emoji emoji;
 
         private void setEmoji(Emoji emoji) {

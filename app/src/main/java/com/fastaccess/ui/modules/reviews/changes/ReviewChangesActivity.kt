@@ -90,9 +90,7 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
         finish()
     }
 
-    override fun onErrorSubmitting() {
-        showErrorMessage(getString(R.string.network_error))
-    }
+    override fun onErrorSubmitting() = showErrorMessage(getString(R.string.network_error))
 
     override fun showProgress(@StringRes resId: Int) {
         var msg = getString(R.string.in_progress)

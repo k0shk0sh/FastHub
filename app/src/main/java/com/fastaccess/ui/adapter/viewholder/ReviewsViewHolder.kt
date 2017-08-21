@@ -44,20 +44,18 @@ class ReviewsViewHolder private constructor(itemView: View, adapter: BaseRecycle
         itemView.setOnClickListener(null)
     }
 
-    override fun bind(model: PullRequestTimelineModel) {
-        if (model.reviewModel != null) {
-            model.reviewModel.let {
-                when {
-                    it.reviewDismissedEvent != null -> initPrDismissedReview(it.reviewDismissedEvent!!)
-                    it.reviewRequestedEvent != null -> initPrRequestedReview(it.reviewRequestedEvent!!)
-                    it.reviewRequestRemovedEvent != null -> initPrRemovedReview(it.reviewRequestRemovedEvent!!)
-                    it.id != null -> initPrReview(it)
-                    else -> reset()
-                }
+    override fun bind(model: PullRequestTimelineModel) = if (model.reviewModel != null) {
+        model.reviewModel.let {
+            when {
+                it.reviewDismissedEvent != null -> initPrDismissedReview(it.reviewDismissedEvent!!)
+                it.reviewRequestedEvent != null -> initPrRequestedReview(it.reviewRequestedEvent!!)
+                it.reviewRequestRemovedEvent != null -> initPrRemovedReview(it.reviewRequestRemovedEvent!!)
+                it.id != null -> initPrReview(it)
+                else -> reset()
             }
-        } else {
-            reset()
         }
+    } else {
+        reset()
     }
 
     private fun reset() {
@@ -166,18 +164,13 @@ class ReviewsViewHolder private constructor(itemView: View, adapter: BaseRecycle
         drawableGetter?.clear(drawableGetter)
     }
 
-    override fun onItemClick(position: Int, v: View?, item: PullRequestReviewModel?) {
+    override fun onItemClick(position: Int, v: View?, item: PullRequestReviewModel?) = Unit
 
-    }
-
-    override fun onItemLongClick(position: Int, v: View?, item: PullRequestReviewModel?) {
-
-    }
+    override fun onItemLongClick(position: Int, v: View?, item: PullRequestReviewModel?) = Unit
 
     companion object {
-        fun newInstance(viewGroup: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>, onToggleView: OnToggleView): ReviewsViewHolder {
-            return ReviewsViewHolder(BaseViewHolder.getView(viewGroup, R.layout.review_timeline_row_item), adapter, viewGroup, onToggleView)
-        }
+        fun newInstance(viewGroup: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>, onToggleView: OnToggleView): ReviewsViewHolder =
+                ReviewsViewHolder(BaseViewHolder.getView(viewGroup, R.layout.review_timeline_row_item), adapter, viewGroup, onToggleView)
     }
 
 }

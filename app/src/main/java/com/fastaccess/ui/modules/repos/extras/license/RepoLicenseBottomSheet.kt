@@ -33,7 +33,7 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
 
     override fun onLicenseLoaded(license: String) {
         this.content = license
-        if (!license.isNullOrBlank()) {
+        if (!license.isBlank()) {
             loader.isIndeterminate = false
             val licenseText = license.replace("<pre>", "<pre style='overflow: hidden;word-wrap:break-word;word-break:break-all;" +
                     "white-space:pre-line;'>")
@@ -59,13 +59,11 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
         webView.setOnContentChangedListener(this)
     }
 
-    override fun onContentChanged(progress: Int) {
-        loader.let {
-            it.progress = progress
-            if (progress == 100) {
-                it.visibility = View.GONE
-                hideProgress()
-            }
+    override fun onContentChanged(progress: Int) = loader.let {
+        it.progress = progress
+        if (progress == 100) {
+            it.visibility = View.GONE
+            hideProgress()
         }
     }
 
@@ -95,7 +93,7 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
         super.showMessage(titleRes, msgRes)
     }
 
-    override fun onScrollChanged(reachedTop: Boolean, scroll: Int) {}
+    override fun onScrollChanged(reachedTop: Boolean, scroll: Int) = Unit
 
     companion object {
         fun newInstance(login: String, repo: String, license: String): RepoLicenseBottomSheet {

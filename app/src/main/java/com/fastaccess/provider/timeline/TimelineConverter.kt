@@ -41,15 +41,10 @@ object TimelineConverter {
                 .filter { filterEvents(it.event) }
     }
 
-    private fun getGenericEvent(jsonObject: JsonObject, gson: Gson): GenericEvent {
-        return gson.fromJson(jsonObject, GenericEvent::class.java)
-    }
+    private fun getGenericEvent(jsonObject: JsonObject, gson: Gson): GenericEvent = gson.fromJson(jsonObject, GenericEvent::class.java)
 
-    private fun getComment(jsonObject: JsonObject, gson: Gson): Comment {
-        return gson.fromJson(jsonObject, Comment::class.java)
-    }
+    private fun getComment(jsonObject: JsonObject, gson: Gson): Comment = gson.fromJson(jsonObject, Comment::class.java)
 
-    private fun filterEvents(type: IssueEventType?): Boolean {
-        return type != null && type != IssueEventType.subscribed && type != IssueEventType.unsubscribed && type != IssueEventType.mentioned
-    }
+    private fun filterEvents(type: IssueEventType?): Boolean =
+            type != null && type != IssueEventType.subscribed && type != IssueEventType.unsubscribed && type != IssueEventType.mentioned
 }

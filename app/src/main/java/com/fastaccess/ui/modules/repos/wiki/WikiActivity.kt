@@ -101,9 +101,7 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
                 .let { presenter.onSidebarClicked(it) }
     }
 
-    private fun closeDrawerLayout() {
-        drawerLayout.closeDrawer(Gravity.END)
-    }
+    private fun closeDrawerLayout() = drawerLayout.closeDrawer(Gravity.END)
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.trending_menu, menu)
@@ -158,9 +156,7 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
     }
 
     companion object {
-        fun getWiki(context: Context, repoId: String?, username: String?): Intent {
-            return getWiki(context, repoId, username, null)
-        }
+        fun getWiki(context: Context, repoId: String?, username: String?): Intent = getWiki(context, repoId, username, null)
 
         fun getWiki(context: Context, repoId: String?, username: String?, page: String?): Intent {
             val intent = Intent(context, WikiActivity::class.java)

@@ -32,49 +32,46 @@ class WikiPresenter : BasePresenter<WikiMvp.View>(), WikiMvp.Presenter {
         }
     }
 
-    override fun onSidebarClicked(sidebar: WikiSideBarModel) {
-        manageViewDisposable(RxHelper.getObservable(JsoupProvider.getWiki().getWiki(sidebar.link))
-                .flatMap { s -> RxHelper.getObservable(getWikiContent(s)) }
-                .doOnSubscribe { sendToView { it.showProgress(0) } }
-                .subscribe({ response -> sendToView { view -> view.onLoadContent(response) } },
-                        { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) }))
-    }
+    override fun onSidebarClicked(sidebar: WikiSideBarModel) =
+            manageViewDisposable(RxHelper.getObservable(JsoupProvider.getWiki().getWiki(sidebar.link))
+                    .flatMap { s -> RxHelper.getObservable(getWikiContent(s)) }
+                    .doOnSubscribe { sendToView { it.showProgress(0) } }
+                    .subscribe({ response -> sendToView { view -> view.onLoadContent(response) } },
+                            { throwable -> onError(throwable) }, { sendToView({ it.hideProgress() }) }))
 
-    private fun getWikiContent(body: String?): Observable<WikiContentModel> {
-        return Observable.fromPublisher { s ->
-            val document: Document = Jsoup.parse(body, "")
-            val wikiWrapper = document.select("#wiki-wrapper")
-            if (wikiWrapper.isNotEmpty()) {
-                val cloneUrl = wikiWrapper.select(".clone-url")
+    private fun getWikiContent(body: String?): Observable<WikiContentModel> = Observable.fromPublisher { s ->
+        val document: Document = Jsoup.parse(body, "")
+        val wikiWrapper = document.select("#wiki-wrapper")
+        if (wikiWrapper.isNotEmpty()) {
+            val cloneUrl = wikiWrapper.select(".clone-url")
 //                val bottomRightBar = wikiWrapper.select(".wiki-custom-sidebar")
-                if (cloneUrl.isNotEmpty()) {
-                    cloneUrl.remove()
-                }
+            if (cloneUrl.isNotEmpty()) {
+                cloneUrl.remove()
+            }
 //                if (bottomRightBar.isNotEmpty()) {
 //                    bottomRightBar.remove()
 //                }
-                val headerHtml = wikiWrapper.select(".gh-header .gh-header-meta")
-                val revision = headerHtml.select("a.history")
-                if (revision.isNotEmpty()) {
-                    revision.remove()
-                }
-                val header = "<div class='gh-header-meta'>${headerHtml.html()}</div>"
-                val wikiContent = wikiWrapper.select(".wiki-content")
-                val content = header + wikiContent.select(".wiki-body").html()
-                val rightBarList = wikiContent.select(".wiki-pages").select("li")
-                val sidebarList = arrayListOf<WikiSideBarModel>()
-                if (rightBarList.isNotEmpty()) {
-                    rightBarList.onEach {
-                        val sidebarTitle = it.select("a").text()
-                        val sidebarLink = it.select("a").attr("href")
-                        sidebarList.add(WikiSideBarModel(sidebarTitle, sidebarLink))
-                    }
-                }
-                s.onNext(WikiContentModel(content, "", sidebarList))
-            } else {
-                s.onNext(WikiContentModel("<h2 align='center'>No Wiki</h4>", "", arrayListOf()))
+            val headerHtml = wikiWrapper.select(".gh-header .gh-header-meta")
+            val revision = headerHtml.select("a.history")
+            if (revision.isNotEmpty()) {
+                revision.remove()
             }
-            s.onComplete()
+            val header = "<div class='gh-header-meta'>${headerHtml.html()}</div>"
+            val wikiContent = wikiWrapper.select(".wiki-content")
+            val content = header + wikiContent.select(".wiki-body").html()
+            val rightBarList = wikiContent.select(".wiki-pages").select("li")
+            val sidebarList = arrayListOf<WikiSideBarModel>()
+            if (rightBarList.isNotEmpty()) {
+                rightBarList.onEach {
+                    val sidebarTitle = it.select("a").text()
+                    val sidebarLink = it.select("a").attr("href")
+                    sidebarList.add(WikiSideBarModel(sidebarTitle, sidebarLink))
+                }
+            }
+            s.onNext(WikiContentModel(content, "", sidebarList))
+        } else {
+            s.onNext(WikiContentModel("<h2 align='center'>No Wiki</h4>", "", arrayListOf()))
         }
+        s.onComplete()
     }
 }

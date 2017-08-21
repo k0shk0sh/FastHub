@@ -22,8 +22,7 @@ class EmojiViewHolder private constructor(view: View, adapter: BaseRecyclerAdapt
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): EmojiViewHolder {
-            return EmojiViewHolder(getView(parent, R.layout.emoji_row_item), adapter)
-        }
+        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): EmojiViewHolder =
+                EmojiViewHolder(getView(parent, R.layout.emoji_row_item), adapter)
     }
 }

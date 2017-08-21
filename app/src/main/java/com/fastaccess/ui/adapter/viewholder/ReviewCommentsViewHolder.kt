@@ -72,15 +72,13 @@ class ReviewCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     @BindView(R.id.reactionsText) lateinit var reactionsText: FontTextView
     @BindView(R.id.owner) lateinit var owner: FontTextView
 
-    override fun onClick(v: View) {
-        if (v.id == R.id.toggle || v.id == R.id.toggleHolder) {
-            val position = adapterPosition
-            onToggleView.onToggle(position.toLong(), !onToggleView.isCollapsed(position.toLong()))
-            onToggle(onToggleView.isCollapsed(position.toLong()), true)
-        } else {
-            addReactionCount(v)
-            super.onClick(v)
-        }
+    override fun onClick(v: View) = if (v.id == R.id.toggle || v.id == R.id.toggleHolder) {
+        val position = adapterPosition
+        onToggleView.onToggle(position.toLong(), !onToggleView.isCollapsed(position.toLong()))
+        onToggle(onToggleView.isCollapsed(position.toLong()), true)
+    } else {
+        addReactionCount(v)
+        super.onClick(v)
     }
 
     override fun bind(t: PullRequestReviewModel) {
@@ -230,8 +228,7 @@ class ReviewCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>, onToggleView: OnToggleView): ReviewCommentsViewHolder {
-            return ReviewCommentsViewHolder(getView(parent, R.layout.comments_row_item), adapter, parent, onToggleView)
-        }
+        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>, onToggleView: OnToggleView): ReviewCommentsViewHolder =
+                ReviewCommentsViewHolder(getView(parent, R.layout.comments_row_item), adapter, parent, onToggleView)
     }
 }

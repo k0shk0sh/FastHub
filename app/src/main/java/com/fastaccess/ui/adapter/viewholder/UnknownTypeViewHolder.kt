@@ -7,5 +7,5 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
  * Created by kosh on 07/08/2017.
  */
 class UnknownTypeViewHolder(private val view: View) : BaseViewHolder<Any>(view) {
-    override fun bind(t: Any) {} //DO NOTHING
+    override fun bind(t: Any) = Unit //DO NOTHING
 }

@@ -50,11 +50,9 @@ class BranchesPresenter : BasePresenter<BranchesMvp.View>(), BranchesMvp.Present
                 }), { items -> sendToView { v -> v.onNotifyAdapter(items, page) } })
     }
 
-    override fun onItemClick(position: Int, v: View?, item: BranchesModel?) {
-        sendToView({ it.onBranchSelected(item) })
-    }
+    override fun onItemClick(position: Int, v: View?, item: BranchesModel?) = sendToView({ it.onBranchSelected(item) })
 
-    override fun onItemLongClick(position: Int, v: View?, item: BranchesModel?) {}
+    override fun onItemLongClick(position: Int, v: View?, item: BranchesModel?) = Unit
 
     override fun getCurrentPage(): Int = page
 

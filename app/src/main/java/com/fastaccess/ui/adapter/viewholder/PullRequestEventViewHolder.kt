@@ -407,8 +407,7 @@ class PullRequestEventViewHolder private constructor(view: View, adapter: BaseRe
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): PullRequestEventViewHolder {
-            return PullRequestEventViewHolder(getView(parent, R.layout.issue_timeline_row_item), adapter)
-        }
+        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): PullRequestEventViewHolder =
+                PullRequestEventViewHolder(getView(parent, R.layout.issue_timeline_row_item), adapter)
     }
 }

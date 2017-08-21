@@ -11,7 +11,6 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.helper.*
@@ -43,9 +42,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         super.onDetach()
     }
 
-    override fun fragmentLayout(): Int {
-        return 0
-    }
+    override fun fragmentLayout(): Int = 0
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         apply.setOnClickListener {
@@ -67,9 +64,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         return view
     }
 
-    override fun providePresenter(): ThemeFragmentPresenter {
-        return ThemeFragmentPresenter()
-    }
+    override fun providePresenter(): ThemeFragmentPresenter = ThemeFragmentPresenter()
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
