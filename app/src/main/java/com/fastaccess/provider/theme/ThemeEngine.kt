@@ -253,10 +253,9 @@ object ThemeEngine {
         return R.style.DialogThemeLight
     }
 
-    private fun setTaskDescription(activity: Activity) {
-        activity.setTaskDescription(ActivityManager.TaskDescription(activity.getString(R.string.app_name),
-                BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(activity)))
-    }
+    private fun setTaskDescription(activity: Activity) =
+            activity.setTaskDescription(ActivityManager.TaskDescription(activity.getString(R.string.app_name),
+                    BitmapFactory.decodeResource(activity.resources, R.mipmap.ic_launcher), ViewHelper.getPrimaryColor(activity)))
 
     private fun hasTheme(activity: BaseActivity<*, *>) = (activity is LoginChooserActivity || activity is LoginActivity ||
             activity is DonateActivity || activity is ReviewChangesActivity)

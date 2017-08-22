@@ -27,9 +27,9 @@ import lombok.Setter;
     public CommitCountModel() {}
 
     private CommitCountModel(Parcel in) {
-        this.all = new ArrayList<Integer>();
+        this.all = new ArrayList<>();
         in.readList(this.all, Integer.class.getClassLoader());
-        this.owner = new ArrayList<Integer>();
+        this.owner = new ArrayList<>();
         in.readList(this.owner, Integer.class.getClassLoader());
     }
 

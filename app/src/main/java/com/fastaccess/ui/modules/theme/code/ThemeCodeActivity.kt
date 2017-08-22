@@ -61,12 +61,10 @@ class ThemeCodeActivity : BaseActivity<ThemeCodeMvp.View, ThemeCodePresenter>(),
         presenter.onLoadThemes()
     }
 
-    override fun onContentChanged(p: Int) {
-        progress.let {
-            it.progress = p
-            if (p == 100) it.visibility = View.GONE
-        }
+    override fun onContentChanged(p: Int) = progress.let {
+        it.progress = p
+        if (p == 100) it.visibility = View.GONE
     }
 
-    override fun onScrollChanged(reachedTop: Boolean, scroll: Int) {}
+    override fun onScrollChanged(reachedTop: Boolean, scroll: Int) = Unit
 }

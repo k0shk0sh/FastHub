@@ -60,13 +60,11 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
 
     override fun providePresenter(): AddGistPresenter = AddGistPresenter()
 
-    override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
-        if (isLink) {
-            MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
-        } else {
-            editText.setText(String.format("%s\n", editText.text))
-            MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
-        }
+    override fun onAppendLink(title: String?, link: String?, isLink: Boolean) = if (isLink) {
+        MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
+    } else {
+        editText.setText(String.format("%s\n", editText.text))
+        MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
     }
 
     override fun fragmentLayout(): Int = R.layout.add_gist_file_layout
@@ -115,9 +113,7 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
     }
 
     @SuppressLint("SetTextI18n")
-    override fun onEmojiAdded(emoji: Emoji?) {
-        markDownLayout.onEmojiAdded(emoji)
-    }
+    override fun onEmojiAdded(emoji: Emoji?) = markDownLayout.onEmojiAdded(emoji)
 
     companion object {
         val TAG = AddGistBottomSheetDialog::class.java.simpleName!!

@@ -11,12 +11,10 @@ import io.reactivex.Observable
  */
 
 class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Presenter {
-    override fun onFilterLanguage(key: String) {
-        manageObservable(RxHelper.getObservable(Observable.fromIterable(ColorsProvider.languages()))
-                .doOnSubscribe { sendToView { it.onClearMenu() } }
-                .filter { it.toLowerCase().contains(key.toLowerCase()) }
-                .doOnNext { sendWithColor(it) })
-    }
+    override fun onFilterLanguage(key: String) = manageObservable(RxHelper.getObservable(Observable.fromIterable(ColorsProvider.languages()))
+            .doOnSubscribe { sendToView { it.onClearMenu() } }
+            .filter { it.toLowerCase().contains(key.toLowerCase()) }
+            .doOnNext { sendWithColor(it) })
 
     private fun sendWithColor(t: String) {
         val color = ColorsProvider.getColor(t)
@@ -33,8 +31,6 @@ class TrendingPresenter : BasePresenter<TrendingMvp.View>(), TrendingMvp.Present
         }
     }
 
-    override fun onLoadLanguage() {
-        manageObservable(RxHelper.getObservable(Observable.fromIterable(ColorsProvider.languages()))
-                .doOnNext { sendWithColor(it) })
-    }
+    override fun onLoadLanguage() = manageObservable(RxHelper.getObservable(Observable.fromIterable(ColorsProvider.languages()))
+            .doOnNext { sendWithColor(it) })
 }

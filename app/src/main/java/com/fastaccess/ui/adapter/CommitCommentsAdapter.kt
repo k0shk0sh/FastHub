@@ -16,11 +16,8 @@ class CommitCommentsAdapter(data: List<PullRequestCommitModel>,
     : BaseRecyclerAdapter<PullRequestCommitModel, CommitCommentsViewHolder,
         BaseViewHolder.OnItemClickListener<PullRequestCommitModel>>(data, listener) {
 
-    override fun viewHolder(parent: ViewGroup, viewType: Int): CommitCommentsViewHolder {
-        return CommitCommentsViewHolder.newInstance(parent, this, onToggleView)
-    }
+    override fun viewHolder(parent: ViewGroup, viewType: Int): CommitCommentsViewHolder =
+            CommitCommentsViewHolder.newInstance(parent, this, onToggleView)
 
-    override fun onBindView(holder: CommitCommentsViewHolder, position: Int) {
-        holder.bind(data[position])
-    }
+    override fun onBindView(holder: CommitCommentsViewHolder, position: Int) = holder.bind(data[position])
 }

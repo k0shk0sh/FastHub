@@ -16,40 +16,34 @@ class EmojiAdapter(listener: BaseViewHolder.OnItemClickListener<Emoji>)
 
     var copiedList = mutableListOf<Emoji>()
 
-    override fun viewHolder(parent: ViewGroup, viewType: Int): EmojiViewHolder {
-        return EmojiViewHolder.newInstance(parent, this)
-    }
+    override fun viewHolder(parent: ViewGroup, viewType: Int): EmojiViewHolder = EmojiViewHolder.newInstance(parent, this)
 
-    override fun onBindView(holder: EmojiViewHolder, position: Int) {
-        holder.bind(data[position])
-    }
+    override fun onBindView(holder: EmojiViewHolder, position: Int) = holder.bind(data[position])
 
-    override fun getFilter(): Filter {
-        return object : Filter() {
-            override fun performFiltering(constraint: CharSequence): Filter.FilterResults {
-                if (copiedList.isEmpty()) {
-                    copiedList.addAll(data)
-                }
-                val text = constraint.toString().toLowerCase()
-                val filteredResults: List<Emoji> = if (text.isNotBlank()) {
-                    val data = data.filter {
-                        text in it.tags || it.description.contains(text) ||
-                                it.unicode.contains(text) || text in it.aliases
-                    }
-                    if (data.isNotEmpty()) data
-                    else copiedList
-                } else {
-                    copiedList
-                }
-                val results = FilterResults()
-                results.values = filteredResults
-                results.count = filteredResults.size
-                return results
+    override fun getFilter(): Filter = object : Filter() {
+        override fun performFiltering(constraint: CharSequence): Filter.FilterResults {
+            if (copiedList.isEmpty()) {
+                copiedList.addAll(data)
             }
-
-            override fun publishResults(var1: CharSequence, results: Filter.FilterResults) {
-                insertItems(results.values as List<Emoji>)
+            val text = constraint.toString().toLowerCase()
+            val filteredResults: List<Emoji> = if (text.isNotBlank()) {
+                val data = data.filter {
+                    text in it.tags || it.description.contains(text) ||
+                            it.unicode.contains(text) || text in it.aliases
+                }
+                if (data.isNotEmpty()) data
+                else copiedList
+            } else {
+                copiedList
             }
+            val results = FilterResults()
+            results.values = filteredResults
+            results.count = filteredResults.size
+            return results
+        }
+
+        override fun publishResults(var1: CharSequence, results: Filter.FilterResults) {
+            insertItems(results.values as List<Emoji>)
         }
     }
 }

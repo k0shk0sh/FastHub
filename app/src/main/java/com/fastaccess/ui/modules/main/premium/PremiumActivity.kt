@@ -94,9 +94,7 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
         successResult()
     }
 
-    override fun onNoMatch() {
-        showErrorMessage(getString(R.string.not_match))
-    }
+    override fun onNoMatch() = showErrorMessage(getString(R.string.not_match))
 
     override fun showProgress(resId: Int) {
         ViewHelper.hideKeyboard(editText)
@@ -118,8 +116,6 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     companion object {
-        fun startActivity(context: Context) {
-            context.startActivity(Intent(context, PremiumActivity::class.java))
-        }
+        fun startActivity(context: Context) = context.startActivity(Intent(context, PremiumActivity::class.java))
     }
 }

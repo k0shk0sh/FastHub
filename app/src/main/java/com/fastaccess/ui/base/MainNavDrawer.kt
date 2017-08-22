@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
 import com.fastaccess.data.dao.model.PinnedRepos
-import com.fastaccess.helper.Logger
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.scheme.SchemeParser
@@ -38,13 +37,13 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
     : BaseViewHolder.OnItemClickListener<Login> {
 
     private var menusHolder: ViewGroup? = null
-    private val togglePinned: View? = view.findViewById<View>(R.id.togglePinned)
-    private val pinnedList: DynamicRecyclerView? = view.findViewById<DynamicRecyclerView>(R.id.pinnedList)
+    private val togglePinned: View? = view.findViewById(R.id.togglePinned)
+    private val pinnedList: DynamicRecyclerView? = view.findViewById(R.id.pinnedList)
     private val pinnedListAdapter = PinnedReposAdapter(true)
     private val userModel: Login? = Login.getUser()
 
     init {
-        menusHolder = view.findViewById<ViewGroup>(R.id.menusHolder)
+        menusHolder = view.findViewById(R.id.menusHolder)
         pinnedListAdapter.listener = object : BaseViewHolder.OnItemClickListener<PinnedRepos?> {
             override fun onItemClick(position: Int, v: View?, item: PinnedRepos?) {
                 if (v != null && item != null) {
@@ -53,7 +52,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                 }
             }
 
-            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) {}
+            override fun onItemLongClick(position: Int, v: View?, item: PinnedRepos?) = Unit
         }
         pinnedList?.adapter = pinnedListAdapter
         togglePinned?.setOnClickListener {
@@ -185,12 +184,11 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
         }, 250)
     }
 
-    override fun onItemLongClick(position: Int, v: View?, item: Login) {}
+    override fun onItemLongClick(position: Int, v: View?, item: Login) = Unit
 
-    override fun onItemClick(position: Int, v: View, item: Login) {
-        view.getPresenter().manageViewDisposable(RxHelper.getObservable(Login.onMultipleLogin(item, item.isIsEnterprise, false))
-                .doOnSubscribe { view.showProgress(0) }
-                .doOnComplete { view.hideProgress() }
-                .subscribe({ view.onRestartApp() }, ::println))
-    }
+    override fun onItemClick(position: Int, v: View, item: Login) =
+            view.getPresenter().manageViewDisposable(RxHelper.getObservable(Login.onMultipleLogin(item, item.isIsEnterprise, false))
+                    .doOnSubscribe { view.showProgress(0) }
+                    .doOnComplete { view.hideProgress() }
+                    .subscribe({ view.onRestartApp() }, ::println))
 }

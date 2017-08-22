@@ -16,11 +16,8 @@ class ReviewCommentsAdapter(data: List<PullRequestReviewModel>,
     : BaseRecyclerAdapter<PullRequestReviewModel, ReviewCommentsViewHolder,
         BaseViewHolder.OnItemClickListener<PullRequestReviewModel>>(data, listener) {
 
-    override fun viewHolder(parent: ViewGroup, viewType: Int): ReviewCommentsViewHolder {
-        return ReviewCommentsViewHolder.newInstance(parent, this, onToggleView)
-    }
+    override fun viewHolder(parent: ViewGroup, viewType: Int): ReviewCommentsViewHolder =
+            ReviewCommentsViewHolder.newInstance(parent, this, onToggleView)
 
-    override fun onBindView(holder: ReviewCommentsViewHolder, position: Int) {
-        holder.bind(data[position])
-    }
+    override fun onBindView(holder: ReviewCommentsViewHolder, position: Int) = holder.bind(data[position])
 }

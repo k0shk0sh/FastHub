@@ -38,7 +38,7 @@ class CheckPurchaseActivity : Activity() {
         }
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() = Unit
 
     private fun startMainActivity() {
         startActivity(Intent(this, MainActivity::class.java))

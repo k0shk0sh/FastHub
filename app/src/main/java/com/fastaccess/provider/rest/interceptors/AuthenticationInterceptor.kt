@@ -1,6 +1,5 @@
 package com.fastaccess.provider.rest.interceptors
 
-import com.fastaccess.helper.Logger
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.provider.scheme.LinkParserHelper
 import okhttp3.Interceptor

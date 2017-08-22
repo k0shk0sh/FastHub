@@ -69,14 +69,13 @@ class CommitThreadViewHolder private constructor(view: View,
         else View.GONE
     }
 
-    override fun onItemClick(position: Int, v: View?, item: PullRequestCommitModel?) {}
+    override fun onItemClick(position: Int, v: View?, item: PullRequestCommitModel?) = Unit
 
-    override fun onItemLongClick(position: Int, v: View?, item: PullRequestCommitModel?) {}
+    override fun onItemLongClick(position: Int, v: View?, item: PullRequestCommitModel?) = Unit
 
     companion object {
         fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>,
-                        onToggleView: OnToggleView): CommitThreadViewHolder {
-            return CommitThreadViewHolder(getView(parent, R.layout.grouped_commit_comment_row), adapter, onToggleView)
-        }
+                        onToggleView: OnToggleView): CommitThreadViewHolder =
+                CommitThreadViewHolder(getView(parent, R.layout.grouped_commit_comment_row), adapter, onToggleView)
     }
 }

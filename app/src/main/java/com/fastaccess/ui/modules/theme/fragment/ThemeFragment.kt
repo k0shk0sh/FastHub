@@ -11,7 +11,6 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
@@ -70,9 +69,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         return view
     }
 
-    override fun providePresenter(): ThemeFragmentPresenter {
-        return ThemeFragmentPresenter()
-    }
+    override fun providePresenter(): ThemeFragmentPresenter = ThemeFragmentPresenter()
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)

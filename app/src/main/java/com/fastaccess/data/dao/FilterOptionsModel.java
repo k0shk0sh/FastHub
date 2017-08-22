@@ -151,7 +151,7 @@ public class FilterOptionsModel implements Parcelable {
         this.sort = in.readString();
         this.sortDirection = in.readString();
         int queryMapSize = in.readInt();
-        this.queryMap = new HashMap<String, String>(queryMapSize);
+        this.queryMap = new HashMap<>(queryMapSize);
         for (int i = 0; i < queryMapSize; i++) {
             String key = in.readString();
             String value = in.readString();

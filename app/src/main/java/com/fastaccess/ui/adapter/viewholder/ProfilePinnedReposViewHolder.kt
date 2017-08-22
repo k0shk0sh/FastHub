@@ -24,7 +24,7 @@ class ProfilePinnedReposViewHolder private constructor(view: View, adapter: Base
     @BindView(R.id.stars) lateinit var stars: FontTextView
     @BindView(R.id.forks) lateinit var forks: FontTextView
 
-    override fun bind(t: GetPinnedReposQuery.Node) {}
+    override fun bind(t: GetPinnedReposQuery.Node) = Unit
 
     fun bind(t: GetPinnedReposQuery.Node, numberFormat: NumberFormat) {
         title.text = t.name()
@@ -46,8 +46,7 @@ class ProfilePinnedReposViewHolder private constructor(view: View, adapter: Base
     }
 
     companion object {
-        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): ProfilePinnedReposViewHolder {
-            return ProfilePinnedReposViewHolder(getView(parent, R.layout.profile_pinned_repo_row_item), adapter)
-        }
+        fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>): ProfilePinnedReposViewHolder =
+                ProfilePinnedReposViewHolder(getView(parent, R.layout.profile_pinned_repo_row_item), adapter)
     }
 }

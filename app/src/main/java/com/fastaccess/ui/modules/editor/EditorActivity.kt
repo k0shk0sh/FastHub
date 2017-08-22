@@ -183,13 +183,11 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
         }
     }
 
-    override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
-        if (isLink) {
-            MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
-        } else {
-            editText.setText(String.format("%s\n", editText.text))
-            MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
-        }
+    override fun onAppendLink(title: String?, link: String?, isLink: Boolean) = if (isLink) {
+        MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
+    } else {
+        editText.setText(String.format("%s\n", editText.text))
+        MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
     }
 
     override fun getEditText(): EditText = editText
@@ -199,9 +197,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun fragmentManager(): FragmentManager = supportFragmentManager
 
     @SuppressLint("SetTextI18n")
-    override fun onEmojiAdded(emoji: Emoji?) {
-        markDownLayout.onEmojiAdded(emoji)
-    }
+    override fun onEmojiAdded(emoji: Emoji?) = markDownLayout.onEmojiAdded(emoji)
 
     private fun onCreate() {
         val intent = intent

@@ -59,35 +59,28 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
         }
     }
 
-    @OnClick(R.id.basicAuth) fun onBasicAuthClicked() {
-        LoginActivity.start(this, true)
-    }
+    @OnClick(R.id.basicAuth)
+    fun onBasicAuthClicked() = LoginActivity.start(this, true)
 
-    @OnClick(R.id.accessToken) fun onAccessTokenClicked() {
-        LoginActivity.start(this, false)
-    }
+    @OnClick(R.id.accessToken)
+    fun onAccessTokenClicked() = LoginActivity.start(this, false)
 
-    @OnClick(R.id.enterprise) internal fun onEnterpriseClicked() {
-        if (Login.hasNormalLogin()) {
-            if (PrefGetter.isAllFeaturesUnlocked() || PrefGetter.isEnterpriseEnabled()) {
-                LoginActivity.start(this, true, true)
-            } else {
-                startActivity(Intent(this, PremiumActivity::class.java))
-            }
+    @OnClick(R.id.enterprise) internal fun onEnterpriseClicked() = if (Login.hasNormalLogin()) {
+        if (PrefGetter.isAllFeaturesUnlocked() || PrefGetter.isEnterpriseEnabled()) {
+            LoginActivity.start(this, true, true)
         } else {
-            MessageDialogView.newInstance(getString(R.string.warning), getString(R.string.enterprise_login_warning),
-                    false, Bundler.start().put("hide_buttons", true).end())
-                    .show(supportFragmentManager, MessageDialogView.TAG)
+            startActivity(Intent(this, PremiumActivity::class.java))
         }
+    } else {
+        MessageDialogView.newInstance(getString(R.string.warning), getString(R.string.enterprise_login_warning),
+                false, Bundler.start().put("hide_buttons", true).end())
+                .show(supportFragmentManager, MessageDialogView.TAG)
     }
 
-    @OnClick(R.id.browserLogin) internal fun onOpenBrowser() {
-        LoginActivity.startOAuth(this)
-    }
+    @OnClick(R.id.browserLogin) internal fun onOpenBrowser() = LoginActivity.startOAuth(this)
 
-    @OnClick(R.id.language_selector_clicker) fun onChangeLanguage() {
-        showLanguage()
-    }
+    @OnClick(R.id.language_selector_clicker)
+    fun onChangeLanguage() = showLanguage()
 
     @OnClick(R.id.toggle) internal fun onToggle() {
         TransitionManager.beginDelayedTransition(viewGroup)
@@ -96,38 +89,30 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
         toggleImage.rotation = if (!isVisible) 180f else 0f
     }
 
-    override fun onLanguageChanged(action: Action) {
-        try {
-            action.run()
-            recreate()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
+    override fun onLanguageChanged(action: Action) = try {
+        action.run()
+        recreate()
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
 
-    override fun providePresenter(): LoginChooserPresenter {
-        return LoginChooserPresenter()
+    override fun providePresenter(): LoginChooserPresenter = LoginChooserPresenter()
+
+    override fun onAccountsLoaded(accounts: List<Login>?) = if (accounts == null || accounts.isEmpty()) {
+        multiAccLayout.visibility = View.GONE
+    } else {
+        TransitionManager.beginDelayedTransition(viewGroup)
+        adapter.insertItems(accounts)
+        multiAccLayout.visibility = View.VISIBLE
     }
 
-    override fun onAccountsLoaded(accounts: List<Login>?) {
-        if (accounts == null || accounts.isEmpty()) {
-            multiAccLayout.visibility = View.GONE
-        } else {
-            TransitionManager.beginDelayedTransition(viewGroup)
-            adapter.insertItems(accounts)
-            multiAccLayout.visibility = View.VISIBLE
-        }
-    }
+    override fun onItemClick(position: Int, v: View, item: Login) =
+            presenter.manageViewDisposable(Login.onMultipleLogin(item, item.isIsEnterprise, false)
+                    .doOnSubscribe { showProgress(0) }
+                    .doOnComplete { this.hideProgress() }
+                    .subscribe({ onRestartApp() }, ::println))
 
-    override fun onItemClick(position: Int, v: View, item: Login) {
-        presenter.manageViewDisposable(Login.onMultipleLogin(item, item.isIsEnterprise, false)
-                .doOnSubscribe { showProgress(0) }
-                .doOnComplete { this.hideProgress() }
-                .subscribe({ onRestartApp() }, ::println))
-    }
-
-    override fun onItemLongClick(position: Int, v: View, item: Login) {}
+    override fun onItemLongClick(position: Int, v: View, item: Login) = Unit
 
     private fun showLanguage() {
         val languageBottomSheetDialog = LanguageBottomSheetDialog()

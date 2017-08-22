@@ -24,11 +24,9 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
 
     private val trendingList: ArrayList<TrendingModel> = ArrayList()
 
-    override fun getTendingList(): ArrayList<TrendingModel> {
-        return trendingList
-    }
+    override fun getTendingList(): ArrayList<TrendingModel> = trendingList
 
-    override fun onItemLongClick(position: Int, v: View?, item: TrendingModel?) {}
+    override fun onItemLongClick(position: Int, v: View?, item: TrendingModel?) = Unit
 
     override fun onItemClick(position: Int, v: View?, item: TrendingModel?) {
         val split = item?.title?.trim()?.split("/")!!
@@ -47,34 +45,32 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
     }
 
 
-    private fun getTrendingObservable(response: String): Observable<TrendingModel> {
-        return Observable.fromPublisher { s ->
-            val document: Document = Jsoup.parse(response, "")
-            val repoList = document.select(".repo-list")
-            if (repoList.isNotEmpty()) {
-                val list: Elements? = repoList.select("li")
-                list?.let {
-                    if (list.isNotEmpty()) {
-                        it.onEach {
-                            val title = it.select(".d-inline-block > h3 > a").text()
-                            val description = it.select(".py-1 > p").text()
-                            val stars = it.select(".f6 > a[href*=/stargazers]").text()
-                            val forks = it.select(".f6 > a[href*=/network]").text()
-                            var todayStars = it.select(".f6 > span.float-right").text()
-                            if (todayStars.isNullOrBlank()) {
-                                todayStars = it.select(".f6 > span.float-sm-right").text()
-                            }
-                            var language = it.select(".f6 .mr-3 > span[itemprop=programmingLanguage]").text()
-                            if (language.isNullOrBlank()) {
-                                language = it.select(".f6 span[itemprop=programmingLanguage]").text()
-                            }
-                            Logger.e(title, description, stars, forks, todayStars, language)
-                            s.onNext(TrendingModel(title, description, language, stars, forks, todayStars))
+    private fun getTrendingObservable(response: String): Observable<TrendingModel> = Observable.fromPublisher { s ->
+        val document: Document = Jsoup.parse(response, "")
+        val repoList = document.select(".repo-list")
+        if (repoList.isNotEmpty()) {
+            val list: Elements? = repoList.select("li")
+            list?.let {
+                if (list.isNotEmpty()) {
+                    it.onEach {
+                        val title = it.select(".d-inline-block > h3 > a").text()
+                        val description = it.select(".py-1 > p").text()
+                        val stars = it.select(".f6 > a[href*=/stargazers]").text()
+                        val forks = it.select(".f6 > a[href*=/network]").text()
+                        var todayStars = it.select(".f6 > span.float-right").text()
+                        if (todayStars.isNullOrBlank()) {
+                            todayStars = it.select(".f6 > span.float-sm-right").text()
                         }
+                        var language = it.select(".f6 .mr-3 > span[itemprop=programmingLanguage]").text()
+                        if (language.isNullOrBlank()) {
+                            language = it.select(".f6 span[itemprop=programmingLanguage]").text()
+                        }
+                        Logger.e(title, description, stars, forks, todayStars, language)
+                        s.onNext(TrendingModel(title, description, language, stars, forks, todayStars))
                     }
                 }
             }
-            s.onComplete()
         }
+        s.onComplete()
     }
 }

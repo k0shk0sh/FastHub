@@ -42,9 +42,7 @@ class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<Notificati
         }
     }
 
-    override fun onDetach() {
-        super.onDetach()
-    }
+    override fun onDetach() = super.onDetach()
 
     override fun fragmentLayout(): Int = R.layout.picker_dialog
 

@@ -131,7 +131,7 @@ public class EmojiParser {
   }
 
   private static List<AliasCandidate> getAliasCandidates(String input) {
-    List<AliasCandidate> candidates = new ArrayList<AliasCandidate>();
+      List<AliasCandidate> candidates = new ArrayList<>();
 
     Matcher matcher = ALIAS_CANDIDATE_PATTERN.matcher(input);
     matcher = matcher.useTransparentBounds(true);
@@ -345,7 +345,7 @@ public class EmojiParser {
 
   public static List<String> extractEmojis(String input) {
     List<UnicodeCandidate> emojis = getUnicodeCandidates(input);
-    List<String> result = new ArrayList<String>();
+      List<String> result = new ArrayList<>();
     for (UnicodeCandidate emoji : emojis) {
       result.add(emoji.getEmoji().getUnicode());
     }
@@ -366,7 +366,7 @@ public class EmojiParser {
    */
   private static List<UnicodeCandidate> getUnicodeCandidates(String input) {
     char[] inputCharArray = input.toCharArray();
-    List<UnicodeCandidate> candidates = new ArrayList<UnicodeCandidate>();
+      List<UnicodeCandidate> candidates = new ArrayList<>();
     for (int i = 0; i < input.length(); i++) {
       int emojiEnd = getEmojiEndPos(inputCharArray, i);
 

@@ -12,11 +12,7 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 class LoginAdapter constructor(private val small: Boolean = false)
     : BaseRecyclerAdapter<Login, LoginViewHolder, BaseViewHolder.OnItemClickListener<Login>>() {
 
-    override fun onBindView(holder: LoginViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
+    override fun onBindView(holder: LoginViewHolder, position: Int) = holder.bind(getItem(position))
 
-    override fun viewHolder(parent: ViewGroup, viewType: Int): LoginViewHolder {
-        return LoginViewHolder.Companion.newInstance(parent, this, small)
-    }
+    override fun viewHolder(parent: ViewGroup, viewType: Int): LoginViewHolder = LoginViewHolder.Companion.newInstance(parent, this, small)
 }
