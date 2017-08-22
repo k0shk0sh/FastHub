@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.ReactionsModel;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 
 import java.util.ArrayList;
@@ -60,6 +61,7 @@ public class PullRequestReviewModel {
                             comments.add(comment);
                         }
                     }
+                    Logger.e(comments.size());
                     model.comments = comments;
                 }
             } else {

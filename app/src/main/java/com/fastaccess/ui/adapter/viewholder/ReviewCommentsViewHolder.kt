@@ -13,15 +13,13 @@ import com.fastaccess.data.dao.ReactionsModel
 import com.fastaccess.data.dao.timeline.PullRequestReviewModel
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ParseDateFormat
+import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.provider.timeline.CommentsHelper
 import com.fastaccess.provider.timeline.HtmlHelper
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter
 import com.fastaccess.ui.adapter.callback.OnToggleView
-import com.fastaccess.ui.widgets.AvatarLayout
-import com.fastaccess.ui.widgets.FontTextView
-import com.fastaccess.ui.widgets.ForegroundImageView
-import com.fastaccess.ui.widgets.SpannableBuilder
+import com.fastaccess.ui.widgets.*
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import pr.type.ReactionContent
@@ -32,6 +30,8 @@ import pr.type.ReactionContent
 class ReviewCommentsViewHolder private constructor(view: View, adapter: BaseRecyclerAdapter<*, *, *>,
                                                    val viewGroup: ViewGroup, val onToggleView: OnToggleView)
     : BaseViewHolder<PullRequestReviewModel>(view, adapter) {
+
+
 
     init {
         itemView.setOnClickListener(null)
@@ -71,6 +71,7 @@ class ReviewCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     @BindView(R.id.comment) lateinit var comment: FontTextView
     @BindView(R.id.reactionsText) lateinit var reactionsText: FontTextView
     @BindView(R.id.owner) lateinit var owner: FontTextView
+    @BindView(R.id.pathText) lateinit var pathText: FontTextView
 
     override fun onClick(v: View) {
         if (v.id == R.id.toggle || v.id == R.id.toggleHolder) {
@@ -86,6 +87,11 @@ class ReviewCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     override fun bind(t: PullRequestReviewModel) {
         val commentsModel = t.node
         val author3 = commentsModel.author()
+        pathText.visibility = View.VISIBLE
+        pathText.text = DiffLineSpan.getSpannable(commentsModel.diffHunk(),
+                ViewHelper.getPatchAdditionColor(itemView.context),
+                ViewHelper.getPatchDeletionColor(itemView.context),
+                ViewHelper.getPatchRefColor(itemView.context), true)
         owner.visibility = View.VISIBLE
         owner.text = if ("none".equals(commentsModel.authorAssociation().name.toLowerCase(), ignoreCase = true)) ""
         else commentsModel.authorAssociation().name.toLowerCase()

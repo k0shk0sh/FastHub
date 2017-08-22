@@ -71,7 +71,7 @@ public class DiffLineSpan extends MetricAffectingSpan implements LineBackgroundS
                 int lines = split.length;
                 int index = -1;
                 for (int i = 0; i < lines; i++) {
-                    if (truncate && (lines - i) > 3) continue;
+                    if (truncate && (lines - i) > 2) continue;
                     String token = split[i];
                     if (i < (lines - 1)) {
                         token = token.concat("\n");

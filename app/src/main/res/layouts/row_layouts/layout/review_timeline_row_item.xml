@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/layout_margin"
     android:layout_marginStart="@dimen/layout_margin"
@@ -100,7 +101,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/reviewHolder"
-        android:layout_marginBottom="@dimen/spacing_normal"
+        app:layoutManager="@string/linear_layout_manager"
+        android:layout_marginBottom="@dimen/spacing_micro"
+        android:layout_marginTop="@dimen/spacing_micro"
         android:visibility="gone"
         tools:visibility="visible"/>
 
