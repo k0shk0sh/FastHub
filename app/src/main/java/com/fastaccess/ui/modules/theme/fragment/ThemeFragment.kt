@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.fastaccess.R
 import com.fastaccess.helper.*
 import com.fastaccess.ui.base.BaseFragment
@@ -27,6 +29,8 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
 
     @BindView(R.id.apply) lateinit var apply: FloatingActionButton
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+
+    private var unbinder: Unbinder? = null
 
     private val THEME = "appTheme"
     private var primaryDarkColor: Int = 0
@@ -43,9 +47,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         super.onDetach()
     }
 
-    override fun fragmentLayout(): Int {
-        return 0
-    }
+    override fun fragmentLayout(): Int = 0
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         apply.setOnClickListener {
@@ -57,13 +59,14 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         toolbar.setNavigationOnClickListener { activity.onBackPressed() }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         theme = arguments.getInt(BundleConstant.ITEM)
         val contextThemeWrapper = ContextThemeWrapper(activity, theme)
         primaryDarkColor = ViewHelper.getPrimaryDarkColor(contextThemeWrapper)
-        val localInflater = inflater?.cloneInContext(contextThemeWrapper)
-        val view = localInflater?.inflate(R.layout.theme_layout, container, false)
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        val view = localInflater.inflate(R.layout.theme_layout, container, false)!!
+        unbinder = ButterKnife.bind(this, view)
         return view
     }
 
@@ -142,7 +145,12 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         if (AppHelper.isGoogleAvailable(context)) {
             return true
         }
-        showErrorMessage(getString(R.string.google_play_service_error, getString(R.string.app_name)))
+        showErrorMessage(getString(R.string.common_google_play_services_unsupported_text))
         return false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbinder?.unbind()
     }
 }

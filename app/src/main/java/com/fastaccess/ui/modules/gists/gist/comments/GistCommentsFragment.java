@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.gists.gist.comments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.ui.adapter.CommentsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -31,8 +33,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-import static com.fastaccess.helper.BundleConstant.ExtraTYpe.EDIT_GIST_COMMENT_EXTRA;
-import static com.fastaccess.helper.BundleConstant.ExtraTYpe.NEW_GIST_COMMENT_EXTRA;
+import static com.fastaccess.helper.BundleConstant.ExtraType.EDIT_GIST_COMMENT_EXTRA;
 
 /**
  * Created by Kosh on 11 Nov 2016, 12:36 PM
@@ -45,6 +46,7 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State SparseBooleanArrayParcelable sparseBooleanArray;
+    private CommentEditorFragment.CommentListener commentsCallback;
     private String gistId;
     private CommentsAdapter adapter;
     private OnLoadMore<String> onLoadMore;
@@ -53,6 +55,23 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         GistCommentsFragment view = new GistCommentsFragment();
         view.setArguments(Bundler.start().put("gistId", gistId).end());
         return view;
+    }
+
+    @SuppressWarnings("unchecked") @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof CommentEditorFragment.CommentListener) {
+            commentsCallback = (CommentEditorFragment.CommentListener) getParentFragment();
+        } else if (context instanceof CommentEditorFragment.CommentListener) {
+            commentsCallback = (CommentEditorFragment.CommentListener) context;
+        } else {
+            throw new IllegalArgumentException(String.format("%s or parent fragment must implement CommentEditorFragment.CommentListener",
+                    context.getClass().getSimpleName()));
+        }
+    }
+
+    @Override public void onDetach() {
+        commentsCallback = null;
+        super.onDetach();
     }
 
     @Override protected int fragmentLayout() {
@@ -152,19 +171,6 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
-    @Override public void onStartNewComment() {
-        Intent intent = new Intent(getContext(), EditorActivity.class);
-        intent.putExtras(Bundler
-                .start()
-                .put(BundleConstant.ID, gistId)
-                .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
-                .end());
-        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
-        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
-    }
-
     @Override public void onShowDeleteMsg(long id) {
         MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
                 Bundler.start()
@@ -176,33 +182,23 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
                 .show(getChildFragmentManager(), MessageDialogView.TAG);
     }
 
-    @Override public void onTagUser(@NonNull User user) {
-        Intent intent = new Intent(getContext(), EditorActivity.class);
-        intent.putExtras(Bundler
-                .start()
-                .put(BundleConstant.ID, gistId)
-                .put(BundleConstant.EXTRA, "@" + user.getLogin())
-                .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
-                .end());
-        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
-        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+    @Override public void onTagUser(@Nullable User user) {
+        if (commentsCallback != null && user != null) {
+            commentsCallback.onTagUser(user.getLogin());
+        }
     }
 
     @Override public void onReply(User user, String message) {
-        Intent intent = new Intent(getContext(), EditorActivity.class);
-        intent.putExtras(Bundler
-                .start()
-                .put(BundleConstant.ID, gistId)
-                .put(BundleConstant.EXTRA, "@" + user.getLogin())
-                .put(BundleConstant.EXTRA_TYPE, NEW_GIST_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsers(adapter.getData()))
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
-                .put("message", message)
-                .end());
-        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
-        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+        onTagUser(user);
+    }
+
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        getPresenter().onHandleComment(text, bundle, gistId);
+    }
+
+    @Override public void onAddNewComment(@NonNull Comment comment) {
+        hideProgress();
+        adapter.addItem(comment);
     }
 
     @Override public void onDestroyView() {

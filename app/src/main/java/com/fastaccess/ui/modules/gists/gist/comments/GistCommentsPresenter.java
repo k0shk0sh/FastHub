@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
@@ -101,6 +102,13 @@ class GistCommentsPresenter extends BasePresenter<GistCommentsMvp.View> implemen
         } else {
             sendToView(BaseMvp.FAView::hideProgress);
         }
+    }
+
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle, String gistId) {
+        CommentRequestModel model = new CommentRequestModel();
+        model.setBody(text);
+        makeRestCall(RestProvider.getGistService(isEnterprise()).createGistComment(gistId, model),
+                comment -> sendToView(view -> view.onAddNewComment(comment)));
     }
 
     @Override public void onItemClick(int position, View v, Comment item) {

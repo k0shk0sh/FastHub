@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 
@@ -22,7 +23,8 @@ import java.util.ArrayList;
 public interface IssuePagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
-            AssigneesMvp.SelectedAssigneesListener, IssuePrCallback<Issue> {
+            AssigneesMvp.SelectedAssigneesListener, IssuePrCallback<Issue>,
+            CommentEditorFragment.CommentListener {
         void onSetupIssue(boolean isUpdate);
 
         void showSuccessIssueActionMsg(boolean isClose);
@@ -81,5 +83,4 @@ public interface IssuePagerMvp {
     interface IssuePrCallback<T> {
         @Nullable T getData();
     }
-
 }

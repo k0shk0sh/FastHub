@@ -31,6 +31,7 @@ import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.code.commit.details.comments.CommitCommentsFragment;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -63,6 +64,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
     @BindView(R.id.deletion) FontTextView deletion;
     @BindView(R.id.coordinatorLayout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    private CommentEditorFragment commentEditorFragment;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, @NonNull String sha) {
         return createIntent(context, repoId, login, sha, false);
@@ -98,14 +100,6 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
-    @OnClick(R.id.fab) void onAddComment() {
-        if (pager == null || pager.getAdapter() == null) return;
-        CommitCommentsFragment view = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
-        if (view != null) {
-            view.onStartNewComment();
-        }
-    }
-
     @Override protected int layout() {
         return R.layout.commit_pager_activity;
     }
@@ -128,6 +122,8 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fab.hide();
+        commentEditorFragment = (CommentEditorFragment) getSupportFragmentManager().findFragmentById(R.id.commentFragment);
         setTitle("");
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
@@ -249,11 +245,23 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         finish();
     }
 
+    @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
+        if (pager == null || pager.getAdapter() == null) return;
+        CommitCommentsFragment view = (CommitCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+        if (view != null) {
+            view.onHandleComment(text, bundle);
+        }
+    }
+
+    @Override public void onTagUser(@NonNull String username) {
+        commentEditorFragment.onAddUserName(username);
+    }
+
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
-            fab.show();
+            getSupportFragmentManager().beginTransaction().show(commentEditorFragment).commit();
         } else {
-            fab.hide();
+            getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
     }
 }

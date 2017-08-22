@@ -77,7 +77,7 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
 
     override fun fragmentManager(): FragmentManager = childFragmentManager
 
-    override fun getSavedText(): CharSequence = editText.savedText
+    override fun getSavedText(): CharSequence? = editText.savedText
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         markDownLayout.markdownListener = this

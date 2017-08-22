@@ -555,4 +555,5 @@
     <string name="google_play_service_error">Google Play Service unavailable</string>
     <string name="edit_gist">Edit Gist</string>
     <string name="content">Content</string>
+    <string name="Expand">expand</string>
 </resources>

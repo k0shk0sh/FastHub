@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
@@ -135,6 +136,13 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
 
     @Override public boolean isCallingApi(long id, int vId) {
         return getReactionsProvider().isCallingApi(id, vId);
+    }
+
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        CommentRequestModel model = new CommentRequestModel();
+        model.setBody(text);
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).postCommitComment(login, repoId, sha, model),
+                comment -> sendToView(view -> view.addComment(comment)));
     }
 
     @Override public void onItemClick(int position, View v, TimelineModel timelineModel) {

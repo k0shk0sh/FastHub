@@ -83,7 +83,8 @@
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
@@ -103,7 +104,8 @@
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
@@ -124,7 +126,8 @@
         <activity
             android:name=".ui.modules.gists.gist.GistActivity"
             android:label="@string/gist"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>

@@ -36,6 +36,7 @@ import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
@@ -79,6 +80,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     @BindView(R.id.prReviewHolder) CardView prReviewHolder;
     @State boolean isClosed;
     @State boolean isOpened;
+    private CommentEditorFragment commentEditorFragment;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
         return createIntent(context, repoId, login, number, false);
@@ -108,13 +110,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
-    @OnClick(R.id.fab) void onAddComment() {
-        if (pager == null || pager.getAdapter() == null) return;
-        PullRequestTimelineFragment view = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-        if (view != null) {
-            view.onStartNewComment();
-        }
-    }
 
     @OnClick(R.id.submitReviews) void onSubmitReviews(View view) {
         addPrReview(view);
@@ -151,11 +146,13 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        commentEditorFragment = (CommentEditorFragment) getSupportFragmentManager().findFragmentById(R.id.commentFragment);
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
         } else {
             if (getPresenter().getPullRequest() != null) onSetupIssue(false);
         }
+        fab.hide();
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
         if (getPresenter().showToRepoBtn()) showNavToRepoItem();
@@ -314,14 +311,13 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 onUpdateTimeline();
             }
         }
-        if (!getPresenter().isLocked() || getPresenter().isOwner()) {
-            pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                @Override public void onPageSelected(int position) {
-                    super.onPageSelected(position);
+        pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override public void onPageSelected(int position) {
+                hideShowFab();
+                super.onPageSelected(position);
 
-                }
-            });
-        }
+            }
+        });
         initTabs(pullRequest);
         hideShowFab();
         AnimHelper.mimicFabVisibility(getPresenter().hasReviewComments(), prReviewHolder, null);
@@ -429,6 +425,19 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         return getPresenter().getPullRequest();
     }
 
+    @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
+        if (pager != null && pager.getAdapter() != null) {
+            PullRequestTimelineFragment fragment = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+            if (fragment != null) {
+                fragment.onHandleComment(text, bundle);
+            }
+        }
+    }
+
+    @Override public void onTagUser(@NonNull String username) {
+        commentEditorFragment.onAddUserName(username);
+    }
+
     protected void hideAndClearReviews() {
         onUpdateTimeline();
         getPresenter().getCommitComment().clear();
@@ -499,13 +508,19 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     private void hideShowFab() {
         if (getPresenter().isLocked() && !getPresenter().isOwner()) {
-            fab.hide();
+            getSupportFragmentManager().beginTransaction()
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .hide(commentEditorFragment).commit();
             return;
         }
         if (pager.getCurrentItem() == 0) {
-            fab.show();
+            getSupportFragmentManager().beginTransaction().show(commentEditorFragment)
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .commit();
         } else {
-            fab.hide();
+            getSupportFragmentManager().beginTransaction().hide(commentEditorFragment)
+                    .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
+                    .commit();
         }
     }
 }

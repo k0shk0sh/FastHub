@@ -5,25 +5,24 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
-import com.fastaccess.R
 import com.fastaccess.ui.widgets.FontEditText
 import java.util.*
+
 
 /**
  * Created by kosh on 14/08/2017.
  */
 class MarkdownEditText : FontEditText {
 
-    var savedText: CharSequence = ""
+    var savedText: CharSequence? = ""
     private var mention: ListView? = null
     private var listDivider: View? = null
-    internal var inMentionMode = -1
+    private var inMentionMode = -1
     private var participants: ArrayList<String>? = null
 
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
-
 
     fun initListView(mention: ListView?, listDivider: View?, participants: ArrayList<String>?) {
         this.mention = mention
@@ -48,9 +47,9 @@ class MarkdownEditText : FontEditText {
 
     override fun onTextChanged(text: CharSequence?, start: Int, lengthBefore: Int, lengthAfter: Int) {
         super.onTextChanged(text, start, lengthBefore, lengthAfter)
-        text?.let {
-            if (isEnabled) {
-                savedText = it
+        if (isEnabled) {
+            savedText = text
+            text?.let {
                 mention(it)
             }
         }
@@ -86,7 +85,8 @@ class MarkdownEditText : FontEditText {
                 it.visibility = if (inMentionMode > 0) View.VISIBLE else GONE
                 listDivider!!.visibility = it.visibility
             }
-        } catch (ignored: Exception) { }
+        } catch (ignored: Exception) {
+        }
     }
 
     private fun updateMentionList(mentioning: String) {
@@ -97,4 +97,5 @@ class MarkdownEditText : FontEditText {
             mention?.setAdapter(adapter)
         }
     }
+
 }

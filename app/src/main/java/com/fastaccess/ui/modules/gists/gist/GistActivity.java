@@ -30,6 +30,7 @@ import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
@@ -62,6 +63,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     @BindView(R.id.edit) View edit;
     private int accentColor;
     private int iconColor;
+    private CommentEditorFragment commentEditorFragment;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String gistId, boolean isEnterprise) {
         Intent intent = new Intent(context, GistActivity.class);
@@ -70,17 +72,6 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
-    }
-
-    @OnClick(R.id.fab) void onAddComment() {
-        if (pager != null && pager.getAdapter() != null) {
-            GistCommentsFragment view = (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
-            if (view != null) {
-                view.onStartNewComment();
-            } else {
-                //TODO
-            }
-        }
     }
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
@@ -141,6 +132,8 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fab.hide();
+        commentEditorFragment = (CommentEditorFragment) getSupportFragmentManager().findFragmentById(R.id.commentFragment);
         accentColor = ViewHelper.getAccentColor(this);
         iconColor = ViewHelper.getIconColor(this);
         if (savedInstanceState == null) {
@@ -273,11 +266,24 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
+    @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
+        if (pager == null || pager.getAdapter() == null) return;
+        GistCommentsFragment view = (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+        if (view != null) {
+            view.onHandleComment(text, bundle);
+        }
+    }
+
+    @Override public void onTagUser(@NonNull String username) {
+        commentEditorFragment.onAddUserName(username);
+    }
+
+
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
-            fab.show();
+            getSupportFragmentManager().beginTransaction().show(commentEditorFragment).commit();
         } else {
-            fab.hide();
+            getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
     }
 }

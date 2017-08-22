@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
@@ -203,6 +204,20 @@ import lombok.Getter;
 
     @Override public boolean isCallingApi(long id, int vId) {
         return getReactionsProvider().isCallingApi(id, vId);
+    }
+
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        if (getView() == null) return;
+        Issue issue = getView().getIssue();
+        if (issue != null) {
+            if (bundle == null) {
+                CommentRequestModel commentRequestModel = new CommentRequestModel();
+                commentRequestModel.setBody(text);
+                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(issue.getLogin(), issue.getRepoId(),
+                        issue.getNumber(), commentRequestModel),
+                        comment -> sendToView(view -> view.addNewComment(TimelineModel.constructComment(comment))));
+            }
+        }
     }
 
     @NonNull private ReactionsProvider getReactionsProvider() {

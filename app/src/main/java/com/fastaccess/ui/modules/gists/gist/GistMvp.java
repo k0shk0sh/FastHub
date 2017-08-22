@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 
 /**
  * Created by Kosh on 12 Nov 2016, 12:17 PM
@@ -13,7 +14,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 
 interface GistMvp {
 
-    interface View extends BaseMvp.FAView {
+    interface View extends BaseMvp.FAView, CommentEditorFragment.CommentListener {
         void onSuccessDeleted();
 
         void onErrorDeleting();

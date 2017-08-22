@@ -52,7 +52,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     @BindView(R.id.autocomplete) lateinit var mention: ListView
 
     @State
-    @BundleConstant.ExtraTYpe
+    @BundleConstant.ExtraType
     var extraType: String? = null
     @State
     var itemId: String? = null
@@ -153,7 +153,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
         if (menu.findItem(R.id.submit) != null) {
             menu.findItem(R.id.submit).isEnabled = true
         }
-        if (BundleConstant.ExtraTYpe.FOR_RESULT_EXTRA.equals(extraType, ignoreCase = true)) {
+        if (BundleConstant.ExtraType.FOR_RESULT_EXTRA.equals(extraType, ignoreCase = true)) {
             menu.findItem(R.id.submit).setIcon(R.drawable.ic_done)
         }
         return super.onPrepareOptionsMenu(menu)
@@ -172,7 +172,6 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun onBackPressed() {
         if (!InputHelper.isEmpty(editText)) {
             ViewHelper.hideKeyboard(editText)
-            CachedComments.instance.put(itemId, login, issueNumber, editText.savedText)
         }
         super.onBackPressed()
     }
@@ -195,7 +194,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
 
     override fun getEditText(): EditText = editText
 
-    override fun getSavedText(): CharSequence = editText.savedText
+    override fun getSavedText(): CharSequence? = editText.savedText
 
     override fun fragmentManager(): FragmentManager = supportFragmentManager
 
@@ -209,11 +208,11 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
         if (intent != null && intent.extras != null) {
             val bundle = intent.extras
             extraType = bundle.getString(BundleConstant.EXTRA_TYPE)
-            reviewComment = bundle.getParcelable<EditReviewCommentModel>(BundleConstant.REVIEW_EXTRA)
+            reviewComment = bundle.getParcelable(BundleConstant.REVIEW_EXTRA)
             itemId = bundle.getString(BundleConstant.ID)
             login = bundle.getString(BundleConstant.EXTRA_TWO)
-            if (extraType.equals(BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA, ignoreCase = true)
-                    || extraType.equals(BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA, ignoreCase = true)) {
+            if (extraType.equals(BundleConstant.ExtraType.EDIT_COMMIT_COMMENT_EXTRA, ignoreCase = true)
+                    || extraType.equals(BundleConstant.ExtraType.NEW_COMMIT_COMMENT_EXTRA, ignoreCase = true)) {
                 sha = bundle.getString(BundleConstant.EXTRA_THREE)
             } else {
                 issueNumber = bundle.getInt(BundleConstant.EXTRA_THREE)
@@ -230,9 +229,6 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
                 MarkDownProvider.setMdText(quote, bundle.getString("message", ""))
             }
             participants = bundle.getStringArrayList("participants")
-        }
-        if (InputHelper.isEmpty(editText)) {
-            editText.setText(CachedComments.instance.get(itemId, login, issueNumber))
         }
     }
 }

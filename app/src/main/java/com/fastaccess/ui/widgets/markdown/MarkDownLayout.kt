@@ -42,6 +42,7 @@ class MarkDownLayout : LinearLayout {
 
     override fun onFinishInflate() {
         super.onFinishInflate()
+        orientation = HORIZONTAL
         View.inflate(context, R.layout.markdown_buttons_layout, this)
         if (isInEditMode) return
         ButterKnife.bind(this)
@@ -63,7 +64,7 @@ class MarkDownLayout : LinearLayout {
                     ViewHelper.hideKeyboard(editText)
                 } else {
                     editText.setText(it.getSavedText())
-                    editText.setSelection(it.getSavedText().length)
+                    editText.setSelection(editText.text.length)
                     editText.isEnabled = true
                     editorIconsHolder.visibility = View.VISIBLE
                     ViewHelper.showKeyboard(editText)
@@ -139,6 +140,7 @@ class MarkDownLayout : LinearLayout {
                 } else {
                     "${editText.text} :${it.aliases[0]}:"
                 })
+                editText.setSelection(editText.text.length)
             }
         }
     }
@@ -146,6 +148,6 @@ class MarkDownLayout : LinearLayout {
     interface MarkdownListener {
         fun getEditText(): EditText
         fun fragmentManager(): FragmentManager
-        fun getSavedText(): CharSequence
+        fun getSavedText(): CharSequence?
     }
 }

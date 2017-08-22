@@ -164,6 +164,7 @@ dependencies {
     implementation "petrov.kristiyan:colorpicker-library:1.1.4"
     implementation 'com.apollographql.apollo:apollo-rx2-support:0.4.0'
     implementation 'com.jaredrummler:android-device-names:1.1.4'
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
     kapt "com.evernote:android-state-processor:${state_version}"

@@ -30,13 +30,13 @@ public class EmojiDelimiterProcessor implements DelimiterProcessor {
     }
 
     @Override public void process(Text opener, Text closer, int delimiterCount) {
-        Node ins = new Emoji();
+        Node emoji = new Emoji();
         Node tmp = opener.getNext();
         while (tmp != null && tmp != closer) {
             Node next = tmp.getNext();
-            ins.appendChild(tmp);
+            emoji.appendChild(tmp);
             tmp = next;
         }
-        opener.insertAfter(ins);
+        opener.insertAfter(emoji);
     }
 }

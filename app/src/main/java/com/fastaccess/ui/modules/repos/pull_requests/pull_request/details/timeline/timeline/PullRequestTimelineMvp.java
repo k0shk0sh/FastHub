@@ -50,8 +50,6 @@ public interface PullRequestTimelineMvp {
 
         void onRemove(@NonNull PullRequestTimelineModel timelineModel);
 
-        void onStartNewComment();
-
         void onShowDeleteMsg(long id);
 
         void onReply(User user, String message);
@@ -73,6 +71,8 @@ public interface PullRequestTimelineMvp {
         void onUpdateHeader();
 
         @CallOnMainThread void showReload();
+
+        void onHandleComment(String text, @Nullable Bundle bundle);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<PullRequestTimelineModel>,
@@ -91,5 +91,7 @@ public interface PullRequestTimelineMvp {
         boolean isMerged(PullRequest pullRequest);
 
         boolean isCallingApi(long id, int vId);
+
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
     }
 }

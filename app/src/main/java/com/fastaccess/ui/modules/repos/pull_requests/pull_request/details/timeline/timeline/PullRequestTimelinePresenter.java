@@ -13,6 +13,7 @@ import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.rx2.Rx2Apollo;
 import com.fastaccess.App;
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -208,6 +209,22 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
 
     @Override public boolean isCallingApi(long id, int vId) {
         return getReactionsProvider().isCallingApi(id, vId);
+    }
+
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        if (getView() == null) return;
+        PullRequest pullRequest = getView().getPullRequest();
+        if (pullRequest != null) {
+            if (bundle == null) {
+                CommentRequestModel commentRequestModel = new CommentRequestModel();
+                commentRequestModel.setBody(text);
+                makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(pullRequest.getLogin(), pullRequest.getRepoId(),
+                        pullRequest.getNumber(), commentRequestModel), comment -> {
+                });
+            } else {
+
+            }
+        }
     }
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {

@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.search;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -45,10 +47,17 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
     @BindView(R.id.tabs) TabLayout tabs;
     @BindView(R.id.appbar) AppBarLayout appbar;
     @BindView(R.id.pager) ViewPagerView pager;
-    private NumberFormat numberFormat = NumberFormat.getNumberInstance();
     @State HashSet<TabsCountStateModel> tabsCountSet = new LinkedHashSet<>();
 
+    private NumberFormat numberFormat = NumberFormat.getNumberInstance();
     private ArrayAdapter<SearchHistory> adapter;
+
+
+    public static Intent getIntent(@NonNull Context context, @Nullable String query) {
+        Intent intent = new Intent(context, SearchActivity.class);
+        intent.putExtra("search", query);
+        return intent;
+    }
 
     @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
     void onTextChange(Editable s) {
@@ -105,11 +114,11 @@ public class SearchActivity extends BaseActivity<SearchMvp.View, SearchPresenter
         if (!tabsCountSet.isEmpty()) {
             setupTab();
         }
-
-        if (getIntent().hasExtra("search")) {
-            searchEditText.setText(getIntent().getStringExtra("search"));
-            onTextChange(searchEditText.getEditableText());
-            getPresenter().onSearchClicked(pager, searchEditText);
+        if (savedInstanceState == null && getIntent() != null) {
+            if (getIntent().hasExtra("search")) {
+                searchEditText.setText(getIntent().getStringExtra("search"));
+                getPresenter().onSearchClicked(pager, searchEditText);
+            }
         }
         tabs.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(pager) {
             @Override public void onTabReselected(TabLayout.Tab tab) {

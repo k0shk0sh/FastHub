@@ -11,6 +11,7 @@ import com.fastaccess.data.dao.MilestoneModel;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesMvp;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
@@ -28,7 +29,8 @@ public interface PullRequestPagerMvp {
 
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
             AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback,
-            IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback {
+            IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback,
+            CommentEditorFragment.CommentListener {
 
         void onSetupIssue(boolean update);
 
@@ -70,6 +72,7 @@ public interface PullRequestPagerMvp {
         @NonNull SpannableBuilder getMergeBy(@NonNull PullRequest pullRequest, @NonNull Context context);
 
         void onMerge(String s, String msg);
+
         void onPutLabels(@NonNull ArrayList<LabelModel> labels);
 
         void onPutMilestones(@NonNull MilestoneModel milestone);
