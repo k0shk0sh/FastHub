@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
+import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
@@ -40,7 +41,7 @@ public interface PullRequestTimelineMvp {
     interface View extends BaseMvp.FAView, SwipeRefreshLayout.OnRefreshListener, android.view.View.OnClickListener,
             OnToggleView, ReactionsCallback {
 
-        @CallOnMainThread void onNotifyAdapter(@Nullable List<PullRequestTimelineModel> items, int page);
+        @CallOnMainThread void onNotifyAdapter(@Nullable List<TimelineModel> items, int page);
 
         @NonNull OnLoadMore<PullRequest> getLoadMore();
 
@@ -48,7 +49,7 @@ public interface PullRequestTimelineMvp {
 
         void onEditReviewComment(@NonNull ReviewCommentModel item, int groupPosition, int childPosition);
 
-        void onRemove(@NonNull PullRequestTimelineModel timelineModel);
+        void onRemove(@NonNull TimelineModel timelineModel);
 
         void onShowDeleteMsg(long id);
 
@@ -64,7 +65,7 @@ public interface PullRequestTimelineMvp {
 
         void onRemoveReviewComment(int groupPosition, int commentPosition);
 
-        void onSetHeader(@NonNull PullRequestTimelineModel timelineModel);
+        void onSetHeader(@NonNull TimelineModel timelineModel);
 
         @Nullable PullRequest getPullRequest();
 
@@ -75,10 +76,10 @@ public interface PullRequestTimelineMvp {
         void onHandleComment(String text, @Nullable Bundle bundle);
     }
 
-    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<PullRequestTimelineModel>,
+    interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,
             ReviewCommentCallback, BaseMvp.PaginationListener<PullRequest> {
 
-        @NonNull ArrayList<PullRequestTimelineModel> getEvents();
+        @NonNull ArrayList<TimelineModel> getEvents();
 
         void onWorkOffline();
 

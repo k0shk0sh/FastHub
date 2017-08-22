@@ -6,14 +6,11 @@ import android.os.Parcelable;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Created by Kosh on 07 May 2017, 5:08 PM
  */
 
-@Getter @Setter public class GroupedReviewModel implements Parcelable {
+public class GroupedReviewModel implements Parcelable {
 
     private int position; //to group with!
     private String diffText;
@@ -22,8 +19,55 @@ import lombok.Setter;
     private long id;
     private List<ReviewCommentModel> comments;
 
-
     public GroupedReviewModel() {}
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public String getDiffText() {
+        return diffText;
+    }
+
+    public void setDiffText(String diffText) {
+        this.diffText = diffText;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public List<ReviewCommentModel> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<ReviewCommentModel> comments) {
+        this.comments = comments;
+    }
 
     @Override public int describeContents() { return 0; }
 

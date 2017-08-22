@@ -25,15 +25,18 @@ import lombok.Setter;
     public static final int HEADER = 1;
     public static final int EVENT = 2;
     public static final int COMMENT = 3;
+    public static final int REVIEW = 4;
+    public static final int GROUP = 5;
 
-    public IssueEventType event;
-    public Comment comment;
-    public GenericEvent genericEvent;
-    public ReviewCommentModel reviewComment;
-    public PullRequestStatusModel status;
-    public Issue issue;
-    public PullRequest pullRequest;
-    public ReviewModel review;
+    private IssueEventType event;
+    private Comment comment;
+    private GenericEvent genericEvent;
+    private ReviewCommentModel reviewComment;
+    private PullRequestStatusModel status;
+    private Issue issue;
+    private PullRequest pullRequest;
+    private ReviewModel review;
+    private GroupedReviewModel groupedReviewModel;
 
     public TimelineModel(Issue issue) {
         this.issue = issue;
@@ -52,7 +55,6 @@ import lombok.Setter;
         this.status = statusModel;
     }
 
-
     public TimelineModel() {}
 
     public int getType() {
@@ -60,11 +62,14 @@ import lombok.Setter;
             switch (getEvent()) {
                 case commented:
                     return COMMENT;
+                case reviewed:
+                    return REVIEW;
                 default:
                     return EVENT;
             }
         } else {
             if (issue != null || pullRequest != null) return HEADER;
+            else if (groupedReviewModel != null) return GROUP;
             return 0;
         }
     }
@@ -140,4 +145,76 @@ import lombok.Setter;
 
         @Override public TimelineModel[] newArray(int size) {return new TimelineModel[size];}
     };
+
+    public IssueEventType getEvent() {
+        return event;
+    }
+
+    public void setEvent(IssueEventType event) {
+        this.event = event;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public GenericEvent getGenericEvent() {
+        return genericEvent;
+    }
+
+    public void setGenericEvent(GenericEvent genericEvent) {
+        this.genericEvent = genericEvent;
+    }
+
+    public ReviewCommentModel getReviewComment() {
+        return reviewComment;
+    }
+
+    public void setReviewComment(ReviewCommentModel reviewComment) {
+        this.reviewComment = reviewComment;
+    }
+
+    public PullRequestStatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(PullRequestStatusModel status) {
+        this.status = status;
+    }
+
+    public Issue getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
+    }
+
+    public PullRequest getPullRequest() {
+        return pullRequest;
+    }
+
+    public void setPullRequest(PullRequest pullRequest) {
+        this.pullRequest = pullRequest;
+    }
+
+    public ReviewModel getReview() {
+        return review;
+    }
+
+    public void setReview(ReviewModel review) {
+        this.review = review;
+    }
+
+    public GroupedReviewModel getGroupedReviewModel() {
+        return groupedReviewModel;
+    }
+
+    public void setGroupedReviewModel(GroupedReviewModel groupedReviewModel) {
+        this.groupedReviewModel = groupedReviewModel;
+    }
 }

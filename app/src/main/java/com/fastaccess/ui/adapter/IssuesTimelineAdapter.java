@@ -8,6 +8,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
+import com.fastaccess.ui.adapter.viewholder.GroupedReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
@@ -58,6 +59,11 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
             return IssueDetailsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback, repoOwner, poster);
         } else if (viewType == TimelineModel.EVENT) {
             return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
+        } else if (viewType == TimelineModel.REVIEW) {
+
+        } else if (viewType == TimelineModel.GROUP) {
+            return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
+                    reviewCommentCallback, repoOwner, poster);
         }
         return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies,
                 reactionsCallback, repoOwner, poster);

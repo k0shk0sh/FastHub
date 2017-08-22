@@ -1,6 +1,6 @@
 package com.fastaccess.provider.timeline
 
-import com.fastaccess.data.dao.TimelineModel
+import com.fastaccess.data.dao.*
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.data.dao.timeline.GenericEvent
 import com.fastaccess.data.dao.types.IssueEventType
@@ -41,6 +41,61 @@ object TimelineConverter {
                 .filter { filterEvents(it.event) }
     }
 
+    fun convert(jsonObjects: List<JsonObject>?, comments: Pageable<ReviewCommentModel>?): List<TimelineModel> {
+        val list = arrayListOf<TimelineModel>()
+        if (jsonObjects == null) return list
+        val gson = RestProvider.gson
+
+        jsonObjects.onEach { jsonObject ->
+            val event = jsonObject.get("event").asString
+            val timeline = TimelineModel()
+            if (!InputHelper.isEmpty(event)) {
+                val type = IssueEventType.getType(event)
+                timeline.event = type
+                if (type != null) {
+                    if (type == IssueEventType.commented) {
+                        timeline.comment = getComment(jsonObject, gson)
+                        list.add(timeline)
+                    } else if (type == IssueEventType.reviewed) {
+                        val review = getReview(jsonObject, gson)
+                        if (review != null) {
+                            timeline.review = review
+                            list.add(timeline)
+                            val reviewComments = arrayListOf<ReviewCommentModel>()
+                            val firstReview = comments?.items?.firstOrNull { it.pullRequestReviewId == review.id }
+                            firstReview?.let {
+                                val grouped = GroupedReviewModel()
+                                grouped.diffText = it.diffHunk
+                                grouped.path = it.path
+                                grouped.position = it.position
+                                grouped.date = it.createdAt
+                                reviewComments.add(it)
+                                comments.items?.onEach {
+                                    if (it.id != it.id) {
+                                        if (it.position == it.position && firstReview.path == it.path) {
+                                            reviewComments.add(it)
+                                        }
+                                    }
+                                }
+                                grouped.comments = reviewComments
+                                val groupTimeline = TimelineModel()
+                                groupTimeline.groupedReviewModel = grouped
+                                list.add(groupTimeline)
+                            }
+                        }
+                    } else {
+                        timeline.genericEvent = getGenericEvent(jsonObject, gson)
+                        list.add(timeline)
+                    }
+                }
+            } else {
+                timeline.genericEvent = getGenericEvent(jsonObject, gson)
+                list.add(timeline)
+            }
+        }
+        return list.filter { filterEvents(it.event) }
+    }
+
     private fun getGenericEvent(jsonObject: JsonObject, gson: Gson): GenericEvent {
         return gson.fromJson(jsonObject, GenericEvent::class.java)
     }
@@ -51,5 +106,9 @@ object TimelineConverter {
 
     private fun filterEvents(type: IssueEventType?): Boolean {
         return type != null && type != IssueEventType.subscribed && type != IssueEventType.unsubscribed && type != IssueEventType.mentioned
+    }
+
+    private fun getReview(jsonObject: JsonObject, gson: Gson): ReviewModel? {
+        return gson.fromJson(jsonObject, ReviewModel::class.java)
     }
 }

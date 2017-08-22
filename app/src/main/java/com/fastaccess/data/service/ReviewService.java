@@ -42,7 +42,7 @@ public interface ReviewService {
     Observable<Pageable<ReviewCommentModel>> getReviewComments(@Path("owner") String owner, @Path("repo") String repo,
                                                                @Path("number") long number, @Path("id") long reviewId);
 
-    @GET("repos/{owner}/{repo}/pulls/{number}/comments")
+    @GET("repos/{owner}/{repo}/pulls/{number}/comments?per_page=100")
     @Headers("Accept: application/vnd.github.black-cat-preview+json, application/vnd.github.VERSION.html, "
             + "application/vnd.github.squirrel-girl-preview")
     @NonNull
@@ -68,5 +68,5 @@ public interface ReviewService {
     @POST("repos/{owner}/{repo}/pulls/{number}/reviews")
     @Headers("Accept: application/vnd.github.black-cat-preview")
     Observable<Response<ReviewModel>> submitPrReview(@Path("owner") String owner, @Path("repo") String repo,
-                                        @Path("number") long number, @NonNull @Body ReviewRequestModel body);
+                                                     @Path("number") long number, @NonNull @Body ReviewRequestModel body);
 }

@@ -8,14 +8,11 @@ import com.fastaccess.data.dao.model.User;
 import java.util.Date;
 import java.util.List;
 
-import lombok.Getter;
-import lombok.Setter;
-
 /**
  * Created by Kosh on 10 Apr 2017, 4:26 PM
  */
 
-@Getter @Setter public class ReviewModel implements Parcelable {
+public class ReviewModel implements Parcelable {
 
     private long id;
     private User user;
@@ -26,8 +23,20 @@ import lombok.Setter;
     private String diffText;
     private List<ReviewCommentModel> comments;
     private ReactionsModel reactions;
+    private String bodyText;
 
     public ReviewModel() {}
+
+    @Override public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ReviewModel that = (ReviewModel) o;
+        return id == that.id;
+    }
+
+    @Override public int hashCode() {
+        return (int) (id ^ (id >>> 32));
+    }
 
     @Override public int describeContents() { return 0; }
 
@@ -41,9 +50,10 @@ import lombok.Setter;
         dest.writeString(this.diffText);
         dest.writeTypedList(this.comments);
         dest.writeParcelable(this.reactions, flags);
+        dest.writeString(this.bodyText);
     }
 
-    private ReviewModel(Parcel in) {
+    protected ReviewModel(Parcel in) {
         this.id = in.readLong();
         this.user = in.readParcelable(User.class.getClassLoader());
         this.bodyHtml = in.readString();
@@ -54,6 +64,7 @@ import lombok.Setter;
         this.diffText = in.readString();
         this.comments = in.createTypedArrayList(ReviewCommentModel.CREATOR);
         this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
+        this.bodyText = in.readString();
     }
 
     public static final Creator<ReviewModel> CREATOR = new Creator<ReviewModel>() {
@@ -62,14 +73,83 @@ import lombok.Setter;
         @Override public ReviewModel[] newArray(int size) {return new ReviewModel[size];}
     };
 
-    @Override public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ReviewModel that = (ReviewModel) o;
-        return id == that.id;
+    public long getId() {
+        return id;
     }
 
-    @Override public int hashCode() {
-        return (int) (id ^ (id >>> 32));
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public String getBodyHtml() {
+        return bodyHtml;
+    }
+
+    public void setBodyHtml(String bodyHtml) {
+        this.bodyHtml = bodyHtml;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Date getSubmittedAt() {
+        return submittedAt;
+    }
+
+    public void setSubmittedAt(Date submittedAt) {
+        this.submittedAt = submittedAt;
+    }
+
+    public String getCommitId() {
+        return commitId;
+    }
+
+    public void setCommitId(String commitId) {
+        this.commitId = commitId;
+    }
+
+    public String getDiffText() {
+        return diffText;
+    }
+
+    public void setDiffText(String diffText) {
+        this.diffText = diffText;
+    }
+
+    public List<ReviewCommentModel> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<ReviewCommentModel> comments) {
+        this.comments = comments;
+    }
+
+    public ReactionsModel getReactions() {
+        return reactions;
+    }
+
+    public void setReactions(ReactionsModel reactions) {
+        this.reactions = reactions;
+    }
+
+    public String getBodyText() {
+        return bodyText;
+    }
+
+    public void setBodyText(String bodyText) {
+        this.bodyText = bodyText;
     }
 }

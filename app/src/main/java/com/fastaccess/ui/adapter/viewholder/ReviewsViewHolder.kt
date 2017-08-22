@@ -12,7 +12,6 @@ import com.fastaccess.helper.ParseDateFormat
 import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.provider.timeline.HtmlHelper
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter
-import com.fastaccess.ui.adapter.ReviewCommentsAdapter
 import com.fastaccess.ui.adapter.callback.OnToggleView
 import com.fastaccess.ui.widgets.AvatarLayout
 import com.fastaccess.ui.widgets.FontTextView
@@ -152,7 +151,7 @@ class ReviewsViewHolder private constructor(itemView: View, adapter: BaseRecycle
         if (event.comments != null && !event.comments.isEmpty()) {
             line.visibility = View.VISIBLE
             recyclerView.visibility = View.VISIBLE
-            recyclerView.adapter = ReviewCommentsAdapter(event.comments, this, onToggleView)
+//            recyclerView.adapter = ReviewCommentsAdapter(event.comments, this, onToggleView)
         } else {
             line.visibility = View.GONE
             recyclerView.visibility = View.GONE
