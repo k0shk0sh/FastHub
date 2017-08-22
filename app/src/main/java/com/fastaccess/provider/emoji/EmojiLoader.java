@@ -16,10 +16,10 @@ import java.util.List;
  *
  * @author Vincent DURMONT [vdurmont@gmail.com]
  */
-public class EmojiLoader {
+class EmojiLoader {
     private EmojiLoader() {}
 
-    public static List<Emoji> loadEmojis(InputStream stream) throws IOException {
+    static List<Emoji> loadEmojis(InputStream stream) throws IOException {
         try {
             JSONArray emojisJSON = new JSONArray(inputStreamToString(stream));
             List<Emoji> emojis = new ArrayList<Emoji>(emojisJSON.length());
@@ -48,7 +48,7 @@ public class EmojiLoader {
         return sb.toString();
     }
 
-    protected static Emoji buildEmojiFromJSON(JSONObject json) throws Exception {
+    private static Emoji buildEmojiFromJSON(JSONObject json) throws Exception {
         if (!json.has("emoji")) {
             return null;
         }

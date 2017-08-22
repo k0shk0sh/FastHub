@@ -114,7 +114,7 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
 
     private fun addReactionCount(v: View) {
         if (adapter != null) {
-            val timelineModel = adapter.getItemByPosition(adapterPosition) as PullRequestCommitModel ?: return
+            val timelineModel = adapter.getItemByPosition(adapterPosition) as PullRequestCommitModel
             val reactions = timelineModel.reaction
             if (reactions != null && !reactions.isEmpty()) {
                 val reactionIndex = getReaction(v.id, reactions)
@@ -160,42 +160,49 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
         val spannableBuilder = SpannableBuilder.builder()
         for (reaction in reactions) {
             var charSequence: CharSequence? = null
-            if (reaction.content.equals(ReactionContent.THUMBS_UP.name, ignoreCase = true)) {
-                charSequence = SpannableBuilder.builder()
-                        .append(CommentsHelper.getThumbsUp()).append(" ")
-                        .append(reaction.total_count.toString())
-                        .append("   ")
-                thumbsUp.text = charSequence
-            } else if (reaction.content.equals(ReactionContent.THUMBS_DOWN.name, ignoreCase = true)) {
-                charSequence = SpannableBuilder.builder()
-                        .append(CommentsHelper.getThumbsDown()).append(" ")
-                        .append(reaction.total_count.toString())
-                        .append("   ")
-                thumbsDown.text = charSequence
-            } else if (reaction.content.equals(ReactionContent.LAUGH.name, ignoreCase = true)) {
-                charSequence = SpannableBuilder.builder()
-                        .append(CommentsHelper.getLaugh()).append(" ")
-                        .append(reaction.total_count.toString())
-                        .append("   ")
-                laugh.text = charSequence
-            } else if (reaction.content.equals(ReactionContent.HOORAY.name, ignoreCase = true)) {
-                charSequence = SpannableBuilder.builder()
-                        .append(CommentsHelper.getHooray()).append(" ")
-                        .append(reaction.total_count.toString())
-                        .append("   ")
-                hurray.text = charSequence
-            } else if (reaction.content.equals(ReactionContent.HEART.name, ignoreCase = true)) {
-                charSequence = SpannableBuilder.builder()
-                        .append(CommentsHelper.getHeart()).append(" ")
-                        .append(reaction.total_count.toString())
-                        .append("   ")
-                heart.text = charSequence
-            } else if (reaction.content.equals(ReactionContent.CONFUSED.name, ignoreCase = true)) {
-                charSequence = SpannableBuilder.builder()
-                        .append(CommentsHelper.getSad()).append(" ")
-                        .append(reaction.total_count.toString())
-                        .append("   ")
-                sad.text = charSequence
+            when {
+                reaction.content.equals(ReactionContent.THUMBS_UP.name, ignoreCase = true) -> {
+                    charSequence = SpannableBuilder.builder()
+                            .append(CommentsHelper.getThumbsUp()).append(" ")
+                            .append(reaction.total_count.toString())
+                            .append("   ")
+                    thumbsUp.text = charSequence
+                }
+                reaction.content.equals(ReactionContent.THUMBS_DOWN.name, ignoreCase = true) -> {
+                    charSequence = SpannableBuilder.builder()
+                            .append(CommentsHelper.getThumbsDown()).append(" ")
+                            .append(reaction.total_count.toString())
+                            .append("   ")
+                    thumbsDown.text = charSequence
+                }
+                reaction.content.equals(ReactionContent.LAUGH.name, ignoreCase = true) -> {
+                    charSequence = SpannableBuilder.builder()
+                            .append(CommentsHelper.getLaugh()).append(" ")
+                            .append(reaction.total_count.toString())
+                            .append("   ")
+                    laugh.text = charSequence
+                }
+                reaction.content.equals(ReactionContent.HOORAY.name, ignoreCase = true) -> {
+                    charSequence = SpannableBuilder.builder()
+                            .append(CommentsHelper.getHooray()).append(" ")
+                            .append(reaction.total_count.toString())
+                            .append("   ")
+                    hurray.text = charSequence
+                }
+                reaction.content.equals(ReactionContent.HEART.name, ignoreCase = true) -> {
+                    charSequence = SpannableBuilder.builder()
+                            .append(CommentsHelper.getHeart()).append(" ")
+                            .append(reaction.total_count.toString())
+                            .append("   ")
+                    heart.text = charSequence
+                }
+                reaction.content.equals(ReactionContent.CONFUSED.name, ignoreCase = true) -> {
+                    charSequence = SpannableBuilder.builder()
+                            .append(CommentsHelper.getSad()).append(" ")
+                            .append(reaction.total_count.toString())
+                            .append("   ")
+                    sad.text = charSequence
+                }
             }
             if (charSequence != null && reaction.total_count > 0) {
                 spannableBuilder.append(charSequence)

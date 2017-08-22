@@ -41,12 +41,8 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     private final int patchDeletionColor;
     private final int patchRefColor;
     private OnToggleView onToggleView;
-    private ReactionsCallback reactionsCallback;
     private String pathText;
     private PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback;
-    private ViewGroup viewGroup;
-    private String repoOwner;
-    private String poster;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
@@ -65,15 +61,15 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
                                      String repoOwner, String poster) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
-        this.viewGroup = viewGroup;
-        this.reactionsCallback = reactionsCallback;
+        ViewGroup viewGroup1 = viewGroup;
+        ReactionsCallback reactionsCallback1 = reactionsCallback;
         this.reviewCommentCallback = reviewCommentCallback;
         patchAdditionColor = ViewHelper.getPatchAdditionColor(itemView.getContext());
         patchDeletionColor = ViewHelper.getPatchDeletionColor(itemView.getContext());
         patchRefColor = ViewHelper.getPatchRefColor(itemView.getContext());
         this.onToggleView = onToggleView;
-        this.repoOwner = repoOwner;
-        this.poster = poster;
+        String repoOwner1 = repoOwner;
+        String poster1 = poster;
         nestedRecyclerView.setNestedScrollingEnabled(false);
         addCommentPreview.setOnClickListener(this);
         toggle.setOnClickListener(this);
