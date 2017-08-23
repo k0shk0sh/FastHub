@@ -5,6 +5,7 @@ import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.data.dao.timeline.GenericEvent
 import com.fastaccess.data.dao.types.IssueEventType
 import com.fastaccess.helper.InputHelper
+import com.fastaccess.helper.Logger
 import com.fastaccess.provider.rest.RestProvider
 import com.google.gson.Gson
 import com.google.gson.JsonObject
@@ -45,7 +46,7 @@ object TimelineConverter {
         val list = arrayListOf<TimelineModel>()
         if (jsonObjects == null) return list
         val gson = RestProvider.gson
-
+        Logger.e(comments?.items?.size)
         jsonObjects.onEach { jsonObject ->
             val event = jsonObject.get("event").asString
             val timeline = TimelineModel()
@@ -56,35 +57,32 @@ object TimelineConverter {
                     if (type == IssueEventType.commented) {
                         timeline.comment = getComment(jsonObject, gson)
                         list.add(timeline)
-                    } else if (type == IssueEventType.reviewed) {
+                    } else if (type == IssueEventType.reviewed || type == IssueEventType.changes_requested) {
                         val review = getReview(jsonObject, gson)
                         if (review != null) {
                             timeline.review = review
                             list.add(timeline)
-                            val reviewComments = arrayListOf<ReviewCommentModel>()
-                            val firstReview = comments?.items?.firstOrNull { it.pullRequestReviewId == review.id }
-                            if (firstReview != null) {
-                                firstReview.let {
-                                    val grouped = GroupedReviewModel()
-                                    grouped.diffText = it.diffHunk
-                                    grouped.path = it.path
-                                    grouped.position = it.position
-                                    grouped.date = it.createdAt
-                                    reviewComments.add(it)
-                                    comments.items?.onEach {
-                                        if (firstReview.id != it.id) {
-                                            if (firstReview.position == it.position && firstReview.path == it.path) {
-                                                reviewComments.add(it)
-                                            }
-                                        }
+                            val reviewsList = arrayListOf<TimelineModel>()
+                            comments?.items?.filter { it.pullRequestReviewId == review.id }
+                                    ?.onEach {
+                                        val grouped = GroupedReviewModel()
+                                        grouped.diffText = it.diffHunk
+                                        grouped.path = it.path
+                                        grouped.position = it.position
+                                        grouped.comments = arrayListOf(it)
+                                        val groupTimeline = TimelineModel()
+                                        groupTimeline.event = IssueEventType.GROUPED
+                                        groupTimeline.groupedReviewModel = grouped
+                                        reviewsList.add(groupTimeline)
                                     }
-                                    grouped.comments = reviewComments
-                                    val groupTimeline = TimelineModel()
-                                    groupTimeline.event = IssueEventType.GROUPED
-                                    groupTimeline.groupedReviewModel = grouped
-                                    list.add(groupTimeline)
+                            comments?.items?.filter { it.pullRequestReviewId != review.id }?.onEach {
+                                reviewsList.onEach { reviews ->
+                                    if (it.path == reviews.groupedReviewModel.path && it.position == reviews.groupedReviewModel.position) {
+                                        reviews.groupedReviewModel.comments.add(it)
+                                    }
                                 }
                             }
+                            list.addAll(reviewsList)
                         }
                     } else {
                         timeline.genericEvent = getGenericEvent(jsonObject, gson)

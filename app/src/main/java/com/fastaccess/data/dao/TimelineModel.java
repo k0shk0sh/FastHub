@@ -10,6 +10,7 @@ import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.timeline.GenericEvent;
 import com.fastaccess.data.dao.types.IssueEventType;
 
+import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -31,12 +32,12 @@ import lombok.Setter;
     private IssueEventType event;
     private Comment comment;
     private GenericEvent genericEvent;
-    private ReviewCommentModel reviewComment;
     private PullRequestStatusModel status;
     private Issue issue;
     private PullRequest pullRequest;
     private ReviewModel review;
     private GroupedReviewModel groupedReviewModel;
+    private Date date;
 
     public TimelineModel(Issue issue) {
         this.issue = issue;
@@ -48,6 +49,7 @@ import lombok.Setter;
 
     public TimelineModel(Comment comment) {
         this.comment = comment;
+        this.date = comment.getCreatedAt();
         this.event = IssueEventType.commented;
     }
 
@@ -63,6 +65,7 @@ import lombok.Setter;
                 case commented:
                     return COMMENT;
                 case reviewed:
+                case changes_requested:
                     return REVIEW;
                 case GROUPED:
                     return GROUP;
@@ -101,8 +104,6 @@ import lombok.Setter;
         TimelineModel that = (TimelineModel) o;
         if (comment != null) {
             return comment.equals(that.comment);
-        } else if (reviewComment != null) {
-            return reviewComment.equals(that.reviewComment);
         } else if (review != null) {
             return review.equals(that.review);
         }
@@ -111,41 +112,9 @@ import lombok.Setter;
 
     @Override public int hashCode() {
         if (comment != null) return comment.hashCode();
-        else if (reviewComment != null) return reviewComment.hashCode();
         else if (review != null) return review.hashCode();
         else return -1;
     }
-
-    @Override public int describeContents() { return 0; }
-
-    @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.event == null ? -1 : this.event.ordinal());
-        dest.writeParcelable(this.comment, flags);
-        dest.writeParcelable(this.genericEvent, flags);
-        dest.writeParcelable(this.reviewComment, flags);
-        dest.writeParcelable(this.status, flags);
-        dest.writeParcelable(this.issue, flags);
-        dest.writeParcelable(this.pullRequest, flags);
-        dest.writeParcelable(this.review, flags);
-    }
-
-    protected TimelineModel(Parcel in) {
-        int tmpEvent = in.readInt();
-        this.event = tmpEvent == -1 ? null : IssueEventType.values()[tmpEvent];
-        this.comment = in.readParcelable(Comment.class.getClassLoader());
-        this.genericEvent = in.readParcelable(GenericEvent.class.getClassLoader());
-        this.reviewComment = in.readParcelable(ReviewCommentModel.class.getClassLoader());
-        this.status = in.readParcelable(PullRequestStatusModel.class.getClassLoader());
-        this.issue = in.readParcelable(Issue.class.getClassLoader());
-        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
-        this.review = in.readParcelable(ReviewModel.class.getClassLoader());
-    }
-
-    public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {
-        @Override public TimelineModel createFromParcel(Parcel source) {return new TimelineModel(source);}
-
-        @Override public TimelineModel[] newArray(int size) {return new TimelineModel[size];}
-    };
 
     public IssueEventType getEvent() {
         return event;
@@ -161,6 +130,7 @@ import lombok.Setter;
 
     public void setComment(Comment comment) {
         this.comment = comment;
+        this.date = comment.getCreatedAt();
     }
 
     public GenericEvent getGenericEvent() {
@@ -169,14 +139,7 @@ import lombok.Setter;
 
     public void setGenericEvent(GenericEvent genericEvent) {
         this.genericEvent = genericEvent;
-    }
-
-    public ReviewCommentModel getReviewComment() {
-        return reviewComment;
-    }
-
-    public void setReviewComment(ReviewCommentModel reviewComment) {
-        this.reviewComment = reviewComment;
+        this.date = genericEvent.getCreatedAt();
     }
 
     public PullRequestStatusModel getStatus() {
@@ -209,6 +172,7 @@ import lombok.Setter;
 
     public void setReview(ReviewModel review) {
         this.review = review;
+        this.date = review.getSubmittedAt();
     }
 
     public GroupedReviewModel getGroupedReviewModel() {
@@ -217,5 +181,48 @@ import lombok.Setter;
 
     public void setGroupedReviewModel(GroupedReviewModel groupedReviewModel) {
         this.groupedReviewModel = groupedReviewModel;
+        this.date = groupedReviewModel.getDate();
     }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.event == null ? -1 : this.event.ordinal());
+        dest.writeParcelable(this.comment, flags);
+        dest.writeParcelable(this.genericEvent, flags);
+        dest.writeParcelable(this.status, flags);
+        dest.writeParcelable(this.issue, flags);
+        dest.writeParcelable(this.pullRequest, flags);
+        dest.writeParcelable(this.review, flags);
+        dest.writeParcelable(this.groupedReviewModel, flags);
+        dest.writeLong(this.date != null ? this.date.getTime() : -1);
+    }
+
+    protected TimelineModel(Parcel in) {
+        int tmpEvent = in.readInt();
+        this.event = tmpEvent == -1 ? null : IssueEventType.values()[tmpEvent];
+        this.comment = in.readParcelable(Comment.class.getClassLoader());
+        this.genericEvent = in.readParcelable(GenericEvent.class.getClassLoader());
+        this.status = in.readParcelable(PullRequestStatusModel.class.getClassLoader());
+        this.issue = in.readParcelable(Issue.class.getClassLoader());
+        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
+        this.review = in.readParcelable(ReviewModel.class.getClassLoader());
+        this.groupedReviewModel = in.readParcelable(GroupedReviewModel.class.getClassLoader());
+        long tmpDate = in.readLong();
+        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+    }
+
+    public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {
+        @Override public TimelineModel createFromParcel(Parcel source) {return new TimelineModel(source);}
+
+        @Override public TimelineModel[] newArray(int size) {return new TimelineModel[size];}
+    };
 }

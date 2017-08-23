@@ -34,6 +34,7 @@ public enum IssueEventType {
     @SerializedName("cross-referenced")cross_referenced(R.drawable.ic_format_quote),
     @SerializedName("line-commented")line_commented(R.drawable.ic_comment),
     reviewed(R.drawable.ic_eye),
+    changes_requested(R.drawable.ic_eye),
     added_to_project(R.drawable.ic_add),
     GROUPED(R.drawable.ic_eye);
 
