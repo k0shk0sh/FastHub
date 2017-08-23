@@ -11,6 +11,7 @@ import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.adapter.viewholder.GroupedReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
+import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.UnknownTypeViewHolder;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp.ReviewCommentCallback;
@@ -60,7 +61,7 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
         } else if (viewType == TimelineModel.EVENT) {
             return IssueTimelineViewHolder.newInstance(parent, this, isMerged);
         } else if (viewType == TimelineModel.REVIEW) {
-
+            return ReviewsViewHolder.Companion.newInstance(parent, this);
         } else if (viewType == TimelineModel.GROUP) {
             return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
                     reviewCommentCallback, repoOwner, poster);
@@ -77,6 +78,10 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
             ((IssueTimelineViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.COMMENT) {
             ((TimelineCommentsViewHolder) holder).bind(model);
+        } else if (model.getType() == TimelineModel.GROUP) {
+            ((GroupedReviewsViewHolder) holder).bind(model);
+        } else if (model.getType() == TimelineModel.REVIEW) {
+            ((ReviewsViewHolder) holder).bind(model);
         }
         if (model.getType() != TimelineModel.COMMENT) {
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();

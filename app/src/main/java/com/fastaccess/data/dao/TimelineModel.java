@@ -64,12 +64,13 @@ import lombok.Setter;
                     return COMMENT;
                 case reviewed:
                     return REVIEW;
+                case GROUPED:
+                    return GROUP;
                 default:
                     return EVENT;
             }
         } else {
             if (issue != null || pullRequest != null) return HEADER;
-            else if (groupedReviewModel != null) return GROUP;
             return 0;
         }
     }

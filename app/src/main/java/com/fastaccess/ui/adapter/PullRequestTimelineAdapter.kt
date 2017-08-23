@@ -26,7 +26,7 @@ class PullRequestTimelineAdapter constructor(private val data: ArrayList<PullReq
                     onToggleView, reactionsCallback, repoOwner, poster)
             PullRequestTimelineModel.STATUS -> return PullStatusViewHolder.newInstance(parent)
             PullRequestTimelineModel.COMMENT -> return PullRequestTimelineCommentsViewHolder.newInstance(parent, this, onToggleView)
-            PullRequestTimelineModel.REVIEW -> return ReviewsViewHolder.newInstance(parent, this, onToggleView)
+//            PullRequestTimelineModel.REVIEW -> return ReviewsViewHolder.newInstance(parent, this, onToggleView)
             PullRequestTimelineModel.COMMIT_COMMENTS -> return CommitThreadViewHolder.newInstance(parent, this, onToggleView)
             else -> return PullRequestEventViewHolder.newInstance(parent, this)
         }

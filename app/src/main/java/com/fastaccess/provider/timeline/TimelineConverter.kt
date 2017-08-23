@@ -63,24 +63,27 @@ object TimelineConverter {
                             list.add(timeline)
                             val reviewComments = arrayListOf<ReviewCommentModel>()
                             val firstReview = comments?.items?.firstOrNull { it.pullRequestReviewId == review.id }
-                            firstReview?.let {
-                                val grouped = GroupedReviewModel()
-                                grouped.diffText = it.diffHunk
-                                grouped.path = it.path
-                                grouped.position = it.position
-                                grouped.date = it.createdAt
-                                reviewComments.add(it)
-                                comments.items?.onEach {
-                                    if (it.id != it.id) {
-                                        if (it.position == it.position && firstReview.path == it.path) {
-                                            reviewComments.add(it)
+                            if (firstReview != null) {
+                                firstReview.let {
+                                    val grouped = GroupedReviewModel()
+                                    grouped.diffText = it.diffHunk
+                                    grouped.path = it.path
+                                    grouped.position = it.position
+                                    grouped.date = it.createdAt
+                                    reviewComments.add(it)
+                                    comments.items?.onEach {
+                                        if (firstReview.id != it.id) {
+                                            if (firstReview.position == it.position && firstReview.path == it.path) {
+                                                reviewComments.add(it)
+                                            }
                                         }
                                     }
+                                    grouped.comments = reviewComments
+                                    val groupTimeline = TimelineModel()
+                                    groupTimeline.event = IssueEventType.GROUPED
+                                    groupTimeline.groupedReviewModel = grouped
+                                    list.add(groupTimeline)
                                 }
-                                grouped.comments = reviewComments
-                                val groupTimeline = TimelineModel()
-                                groupTimeline.groupedReviewModel = grouped
-                                list.add(groupTimeline)
                             }
                         }
                     } else {
