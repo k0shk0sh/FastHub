@@ -33,6 +33,7 @@ public enum IssueEventType {
     review_request_removed(R.drawable.ic_eye_off),
     @SerializedName("cross-referenced")cross_referenced(R.drawable.ic_format_quote),
     @SerializedName("line-commented")line_commented(R.drawable.ic_comment),
+    @SerializedName("commit-commented")commit_commented(R.drawable.ic_comment),
     reviewed(R.drawable.ic_eye),
     changes_requested(R.drawable.ic_eye),
     added_to_project(R.drawable.ic_add),

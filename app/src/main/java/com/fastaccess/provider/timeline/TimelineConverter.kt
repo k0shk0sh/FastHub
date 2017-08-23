@@ -3,6 +3,7 @@ package com.fastaccess.provider.timeline
 import com.fastaccess.data.dao.*
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.data.dao.timeline.GenericEvent
+import com.fastaccess.data.dao.timeline.PullRequestCommitModel
 import com.fastaccess.data.dao.types.IssueEventType
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.Logger
@@ -57,7 +58,21 @@ object TimelineConverter {
                     if (type == IssueEventType.commented) {
                         timeline.comment = getComment(jsonObject, gson)
                         list.add(timeline)
-                    } else if (type == IssueEventType.reviewed || type == IssueEventType.changes_requested) {
+                    } else if (type == IssueEventType.commit_commented) {
+                        val commit = getCommit(jsonObject, gson)
+                        if (commit != null) {
+                            val comment = commit.comments?.firstOrNull()
+                            comment?.let {
+                                commit.path = it.path
+                                commit.position = it.position
+                                commit.line = it.line
+                                commit.login = it.user?.login
+                            }
+                            timeline.commit = commit
+                            list.add(timeline)
+                        }
+                    } else if (type == IssueEventType.reviewed || type == IssueEventType
+                            .changes_requested) {
                         val review = getReview(jsonObject, gson)
                         if (review != null) {
                             timeline.review = review
@@ -95,6 +110,10 @@ object TimelineConverter {
             }
         }
         return list.filter { filterEvents(it.event) }
+    }
+
+    private fun getCommit(jsonObject: JsonObject, gson: Gson): PullRequestCommitModel? {
+        return gson.fromJson(jsonObject, PullRequestCommitModel::class.java)
     }
 
     private fun getGenericEvent(jsonObject: JsonObject, gson: Gson): GenericEvent {

@@ -123,6 +123,7 @@ public class HtmlHelper {
         mySpanner.registerHandler("a", new LinkHandler());
         mySpanner.registerHandler("hr", new HrHandler(windowBackground, width, false));
         mySpanner.registerHandler("emoji", new EmojiHandler());
+        mySpanner.registerHandler("mention", new LinkHandler());
         TableHandler tableHandler = new TableHandler();
         tableHandler.setTextColor(ViewHelper.generateTextColor(windowBackground));
         tableHandler.setTableWidth(width);

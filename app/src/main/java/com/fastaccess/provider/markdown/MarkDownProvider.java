@@ -12,6 +12,7 @@ import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.markdown.extension.emoji.EmojiExtension;
+import com.fastaccess.provider.markdown.extension.mention.MentionExtension;
 import com.fastaccess.provider.timeline.HtmlHelper;
 
 import org.commonmark.Extension;
@@ -68,6 +69,7 @@ public class MarkDownProvider {
                 TablesExtension.create(),
                 InsExtension.create(),
                 EmojiExtension.create(),
+                MentionExtension.create(),
                 YamlFrontMatterExtension.create());
         Parser parser = Parser.builder()
                 .extensions(extensions)

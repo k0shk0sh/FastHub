@@ -1,52 +1,98 @@
 package com.fastaccess.data.dao.timeline;
 
-import android.support.annotation.Nullable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-import com.fastaccess.data.dao.ReactionsModel;
+import com.fastaccess.data.dao.model.Comment;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import lombok.Getter;
-import pr.PullRequestTimelineQuery;
 
 /**
  * Created by kosh on 15/08/2017.
  */
 
-@Getter public class PullRequestCommitModel {
-    public String path;
-    public int position;
-    public PullRequestTimelineQuery.Commit1 commit;
-    public List<PullRequestCommitModel> comments;
-    public PullRequestTimelineQuery.Node1 node1;
-    public List<ReactionsModel> reaction;
+public class PullRequestCommitModel implements Parcelable {
+    private String login;
+    private String path;
+    private int position;
+    private String commitId;
+    private List<Comment> comments;
+    private int line;
+
+
+    public int getLine() {
+        return line;
+    }
+
+    public void setLine(int line) {
+        this.line = line;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
+
+    public String getCommitId() {
+        return commitId;
+    }
+
+    public void setCommitId(String commitId) {
+        this.commitId = commitId;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
 
     public PullRequestCommitModel() {}
 
-    @Nullable public static PullRequestCommitModel getThread(@Nullable PullRequestTimelineQuery.AsCommitCommentThread thread) {
-        if (thread != null) {
-            PullRequestCommitModel model = new PullRequestCommitModel();
-            model.path = thread.path();
-            Integer pathPosition = thread.position();
-            model.position = pathPosition != null ? pathPosition : 0;
-            model.commit = thread.commit();
-            PullRequestTimelineQuery.Comments comments = thread.comments();
-            List<PullRequestTimelineQuery.Edge1> edges = comments.edges();
-            if (edges != null && !edges.isEmpty()) {
-                List<PullRequestCommitModel> models = new ArrayList<>();
-                for (PullRequestTimelineQuery.Edge1 edge : edges) {
-                    PullRequestCommitModel comment = new PullRequestCommitModel();
-                    comment.node1 = edge.node();
-                    if (comment.node1 != null && comment.node1.reactionGroups() != null) {
-                        comment.reaction = ReactionsModel.getReactionGroup(comment.node1.reactionGroups());
-                    }
-                    models.add(comment);
-                }
-                model.comments = models;
-            }
-            return model;
-        }
-        return null;
+    public String getLogin() {
+        return login;
     }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    @Override public int describeContents() { return 0; }
+
+    @Override public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.login);
+        dest.writeString(this.path);
+        dest.writeInt(this.position);
+        dest.writeString(this.commitId);
+        dest.writeTypedList(this.comments);
+        dest.writeInt(this.line);
+    }
+
+    protected PullRequestCommitModel(Parcel in) {
+        this.login = in.readString();
+        this.path = in.readString();
+        this.position = in.readInt();
+        this.commitId = in.readString();
+        this.comments = in.createTypedArrayList(Comment.CREATOR);
+        this.line = in.readInt();
+    }
+
+    public static final Creator<PullRequestCommitModel> CREATOR = new Creator<PullRequestCommitModel>() {
+        @Override public PullRequestCommitModel createFromParcel(Parcel source) {return new PullRequestCommitModel(source);}
+
+        @Override public PullRequestCommitModel[] newArray(int size) {return new PullRequestCommitModel[size];}
+    };
 }

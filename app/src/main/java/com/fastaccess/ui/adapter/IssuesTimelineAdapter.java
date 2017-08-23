@@ -8,6 +8,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
+import com.fastaccess.ui.adapter.viewholder.CommitThreadViewHolder;
 import com.fastaccess.ui.adapter.viewholder.GroupedReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
@@ -65,6 +66,8 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
         } else if (viewType == TimelineModel.GROUP) {
             return GroupedReviewsViewHolder.newInstance(parent, this, onToggleView, reactionsCallback,
                     reviewCommentCallback, repoOwner, poster);
+        } else if (viewType == TimelineModel.COMMIT_COMMENTS) {
+            return CommitThreadViewHolder.Companion.newInstance(parent, this, onToggleView);
         }
         return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies,
                 reactionsCallback, repoOwner, poster);
@@ -82,6 +85,8 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
             ((GroupedReviewsViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.REVIEW) {
             ((ReviewsViewHolder) holder).bind(model);
+        } else if (model.getType() == TimelineModel.COMMIT_COMMENTS) {
+            ((CommitThreadViewHolder) holder).bind(model);
         }
         if (model.getType() != TimelineModel.COMMENT) {
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();

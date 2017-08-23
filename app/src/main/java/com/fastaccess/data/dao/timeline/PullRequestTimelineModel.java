@@ -36,7 +36,7 @@ import pr.PullRequestTimelineQuery;
     public PullRequestTimelineModel(PullRequestTimelineQuery.Node node) {
         this.node = node;
         if (this.node.asCommitCommentThread() != null) {
-            commitThread = PullRequestCommitModel.getThread(this.node.asCommitCommentThread());
+
         } else {
             if (node.asPullRequestReview() != null || node.asReviewDismissedEvent() != null
                     || node.asReviewRequestedEvent() != null || node.asReviewRequestRemovedEvent() != null) {

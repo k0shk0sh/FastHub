@@ -8,9 +8,9 @@ import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.timeline.GenericEvent;
+import com.fastaccess.data.dao.timeline.PullRequestCommitModel;
 import com.fastaccess.data.dao.types.IssueEventType;
 
-import java.util.Date;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -28,6 +28,7 @@ import lombok.Setter;
     public static final int COMMENT = 3;
     public static final int REVIEW = 4;
     public static final int GROUP = 5;
+    public static final int COMMIT_COMMENTS = 6;
 
     private IssueEventType event;
     private Comment comment;
@@ -37,7 +38,7 @@ import lombok.Setter;
     private PullRequest pullRequest;
     private ReviewModel review;
     private GroupedReviewModel groupedReviewModel;
-    private Date date;
+    private PullRequestCommitModel commit;
 
     public TimelineModel(Issue issue) {
         this.issue = issue;
@@ -49,7 +50,6 @@ import lombok.Setter;
 
     public TimelineModel(Comment comment) {
         this.comment = comment;
-        this.date = comment.getCreatedAt();
         this.event = IssueEventType.commented;
     }
 
@@ -69,6 +69,8 @@ import lombok.Setter;
                     return REVIEW;
                 case GROUPED:
                     return GROUP;
+                case commit_commented:
+                    return COMMIT_COMMENTS;
                 default:
                     return EVENT;
             }
@@ -130,7 +132,6 @@ import lombok.Setter;
 
     public void setComment(Comment comment) {
         this.comment = comment;
-        this.date = comment.getCreatedAt();
     }
 
     public GenericEvent getGenericEvent() {
@@ -139,7 +140,6 @@ import lombok.Setter;
 
     public void setGenericEvent(GenericEvent genericEvent) {
         this.genericEvent = genericEvent;
-        this.date = genericEvent.getCreatedAt();
     }
 
     public PullRequestStatusModel getStatus() {
@@ -172,7 +172,6 @@ import lombok.Setter;
 
     public void setReview(ReviewModel review) {
         this.review = review;
-        this.date = review.getSubmittedAt();
     }
 
     public GroupedReviewModel getGroupedReviewModel() {
@@ -181,15 +180,14 @@ import lombok.Setter;
 
     public void setGroupedReviewModel(GroupedReviewModel groupedReviewModel) {
         this.groupedReviewModel = groupedReviewModel;
-        this.date = groupedReviewModel.getDate();
     }
 
-    public Date getDate() {
-        return date;
+    public PullRequestCommitModel getCommit() {
+        return commit;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setCommit(PullRequestCommitModel commit) {
+        this.commit = commit;
     }
 
     @Override public int describeContents() { return 0; }
@@ -203,7 +201,7 @@ import lombok.Setter;
         dest.writeParcelable(this.pullRequest, flags);
         dest.writeParcelable(this.review, flags);
         dest.writeParcelable(this.groupedReviewModel, flags);
-        dest.writeLong(this.date != null ? this.date.getTime() : -1);
+        dest.writeParcelable(this.commit, flags);
     }
 
     protected TimelineModel(Parcel in) {
@@ -216,8 +214,7 @@ import lombok.Setter;
         this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
         this.review = in.readParcelable(ReviewModel.class.getClassLoader());
         this.groupedReviewModel = in.readParcelable(GroupedReviewModel.class.getClassLoader());
-        long tmpDate = in.readLong();
-        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+        this.commit = in.readParcelable(PullRequestCommitModel.class.getClassLoader());
     }
 
     public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {

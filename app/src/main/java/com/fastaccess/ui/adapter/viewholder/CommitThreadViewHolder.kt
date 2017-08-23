@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import butterknife.BindView
 import com.fastaccess.R
-import com.fastaccess.data.dao.timeline.PullRequestCommitModel
-import com.fastaccess.data.dao.timeline.PullRequestTimelineModel
+import com.fastaccess.data.dao.TimelineModel
+import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.ui.adapter.CommitCommentsAdapter
 import com.fastaccess.ui.adapter.callback.OnToggleView
 import com.fastaccess.ui.widgets.FontTextView
@@ -21,7 +21,7 @@ import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 class CommitThreadViewHolder private constructor(view: View,
                                                  adapter: BaseRecyclerAdapter<*, *, *>,
                                                  val onToggleView: OnToggleView)
-    : BaseViewHolder<PullRequestTimelineModel>(view, adapter), BaseViewHolder.OnItemClickListener<PullRequestCommitModel> {
+    : BaseViewHolder<TimelineModel>(view, adapter), BaseViewHolder.OnItemClickListener<Comment> {
 
     @BindView(R.id.pathText) lateinit var pathText: FontTextView
     @BindView(R.id.toggle) lateinit var toggle: View
@@ -44,16 +44,17 @@ class CommitThreadViewHolder private constructor(view: View,
     }
 
     @SuppressLint("SetTextI18n")
-    override fun bind(t: PullRequestTimelineModel) {
-        t.commitThread?.let {
+    override fun bind(model: TimelineModel) {
+        val t = model.commit
+        t?.let {
             val builder = SpannableBuilder.builder()
-            pathText.text = builder.append("commented on")
+            pathText.text = builder.append("${if (!it.login.isNullOrBlank()) it.login else ""} commented on")
                     .append(if (!it.path.isNullOrEmpty()) {
                         " ${it.path}#L${it.position} in "
                     } else {
                         " "
                     })
-                    .url(it.commit?.oid().toString().substring(0, 7))
+                    .url(it.commitId.substring(0, 7))
             it.comments?.let {
                 if (!it.isEmpty()) commitComments.adapter = CommitCommentsAdapter(it, this, onToggleView)
             }
@@ -69,9 +70,9 @@ class CommitThreadViewHolder private constructor(view: View,
         else View.GONE
     }
 
-    override fun onItemClick(position: Int, v: View?, item: PullRequestCommitModel?) {}
+    override fun onItemClick(position: Int, v: View?, item: Comment) {}
 
-    override fun onItemLongClick(position: Int, v: View?, item: PullRequestCommitModel?) {}
+    override fun onItemLongClick(position: Int, v: View?, item: Comment) {}
 
     companion object {
         fun newInstance(parent: ViewGroup, adapter: BaseRecyclerAdapter<*, *, *>,
