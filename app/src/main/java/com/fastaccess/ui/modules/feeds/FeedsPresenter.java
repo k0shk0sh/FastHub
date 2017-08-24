@@ -19,6 +19,7 @@ import com.fastaccess.data.dao.model.Repo;
 import com.fastaccess.data.dao.types.EventsType;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
@@ -53,22 +54,23 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         }
     }
 
-    @Override public void onCallApi(int page) {
+    @Override public boolean onCallApi(int page) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(FeedsMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         Login login = Login.getUser();
-        if (login == null) return;// I can't understand how this could possibly be reached lol.
+        if (login == null) return false;// I can't understand how this could possibly be reached lol.
         Observable<Pageable<Event>> observable;
+        Logger.e(isOrg);
         if (user != null) {
             if (isOrg) {
-                observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(user, page);
+                observable = RestProvider.getOrgService(isEnterprise()).getReceivedEvents(login.getLogin(), user, page);
             } else {
                 observable = RestProvider.getUserService(login.getLogin().equalsIgnoreCase(user)
                                                          ? PrefGetter.isEnterprise() : isEnterprise()).getUserEvents(user, page);
@@ -83,6 +85,7 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
             }
             sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
         });
+        return true;
     }
 
     @Override public int getCurrentPage() {
@@ -101,8 +104,8 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
-        onCallApi(page);
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
+        return onCallApi(page);
     }
 
     @Override public void onSubscribed(boolean cancelable) {

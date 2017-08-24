@@ -21,6 +21,7 @@ import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerFragme
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -35,6 +36,7 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.branches) FontTextView branches;
     private OnLoadMore onLoadMore;
     private CommitsAdapter adapter;
@@ -106,6 +108,7 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
             onRefresh();
         }
         branches.setText(getPresenter().branch);
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public RepoCommitsPresenter providePresenter() {

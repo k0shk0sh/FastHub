@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/spacing_xs_large"
-            android:ellipsize="end"
+            android:ellipsize="middle"
             android:maxLines="3"
             android:textColor="?android:textColorPrimary"
             android:transitionName="@string/title_transition"

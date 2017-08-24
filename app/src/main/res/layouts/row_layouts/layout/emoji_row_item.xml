@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:foreground="?selectableItemBackground"
+    android:gravity="center"
+    android:padding="@dimen/spacing_micro">
+
+    <com.fastaccess.ui.widgets.FontTextView
+        android:id="@+id/emoji"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="@dimen/header_icon_zie"
+        android:layout_height="@dimen/header_icon_zie"
+        android:gravity="center"
+        android:textSize="26sp"
+        tools:text="Hello"/>
+</FrameLayout>

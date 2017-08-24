@@ -31,13 +31,15 @@ interface GistCommentsMvp {
 
         void onEditComment(@NonNull Comment item);
 
-        void onStartNewComment();
-
         void onShowDeleteMsg(long id);
 
         void onTagUser(@NonNull User user);
 
         void onReply(User user, String message);
+
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle);
+
+        void onAddNewComment(@NonNull Comment comment);
     }
 
     interface Presenter extends BaseMvp.FAPresenter,
@@ -49,6 +51,8 @@ interface GistCommentsMvp {
         void onHandleDeletion(@Nullable Bundle bundle);
 
         void onWorkOffline(@NonNull String gistId);
+
+        void onHandleComment(@NonNull String text, @Nullable Bundle bundle, String gistId);
     }
 
 

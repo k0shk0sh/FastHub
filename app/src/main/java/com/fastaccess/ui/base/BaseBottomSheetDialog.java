@@ -132,6 +132,6 @@ import butterknife.Unbinder;
 
     protected void onDismissedByScrolling() {}
 
-    protected void onDialogIsShowing() {}
+    private void onDialogIsShowing() {}
 
 }

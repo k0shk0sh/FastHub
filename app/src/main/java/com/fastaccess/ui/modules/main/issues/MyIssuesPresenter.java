@@ -65,7 +65,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable IssueState parameter) {
+    @Override public boolean onCallApi(int page, @Nullable IssueState parameter) {
         if (parameter == null) {
             throw new NullPointerException("parameter is null");
         }
@@ -75,7 +75,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(MyIssuesMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getIssueService(isEnterprise()).getIssuesWithCount(getUrl(parameter), page), issues -> {
@@ -85,6 +85,7 @@ public class MyIssuesPresenter extends BasePresenter<MyIssuesMvp.View> implement
             }
             sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
         });
+        return true;
     }
 
     @NonNull private String getUrl(@NonNull IssueState parameter) {

@@ -26,7 +26,7 @@ import io.reactivex.Observable;
  */
 
 public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp.View> implements AllNotificationsMvp.Presenter {
-    private ArrayList<GroupedNotificationModel> notifications = new ArrayList<>();
+    private final ArrayList<GroupedNotificationModel> notifications = new ArrayList<>();
 
     @Override public void onItemClick(int position, View v, GroupedNotificationModel model) {
         if (getView() == null) return;
@@ -111,7 +111,7 @@ public class AllNotificationsPresenter extends BasePresenter<AllNotificationsMvp
                     }
                     return Observable.empty();
                 });
-        makeRestCall(observable.doFinally(() -> sendToView(BaseMvp.FAView::hideProgress)), response -> sendToView(view -> view.onNotifyAdapter
+        makeRestCall(observable.doOnComplete(() -> sendToView(BaseMvp.FAView::hideProgress)), response -> sendToView(view -> view.onNotifyAdapter
                 (response)));
     }
 

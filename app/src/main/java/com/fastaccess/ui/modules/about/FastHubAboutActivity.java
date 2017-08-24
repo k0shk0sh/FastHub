@@ -146,7 +146,7 @@ public class FastHubAboutActivity extends MaterialAboutActivity {
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.join_slack)
                         .icon(ContextCompat.getDrawable(context, R.drawable.ic_slack))
-                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "http://rebrand.ly/fasthub"))
+                        .setOnClickAction(() -> ActivityHelper.startCustomTab(this, "http://rebrand.ly/fasthub-slack"))
                         .build())
                 .addItem(new MaterialAboutActionItem.Builder()
                         .text(R.string.open_source_libs)

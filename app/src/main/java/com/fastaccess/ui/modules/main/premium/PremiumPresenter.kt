@@ -29,7 +29,7 @@ class PremiumPresenter : BasePresenter<PremiumMvp.View>(), PremiumMvp.Presenter 
                     Logger.e(it.children, it.childrenCount, exists)
                     return@flatMap Observable.just(exists)
                 }
-                .doFinally { sendToView { it.hideProgress() } }
+                .doOnComplete { sendToView { it.hideProgress() } }
                 .subscribe({
                     when (it) {
                         true -> sendToView { it.onSuccessfullyActivated() }

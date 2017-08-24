@@ -20,7 +20,7 @@ import org.jsoup.select.Elements
 
 class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), TrendingFragmentMvp.Presenter {
 
-    var disposel: Disposable? = null
+    private var disposel: Disposable? = null
 
     private val trendingList: ArrayList<TrendingModel> = ArrayList()
 
@@ -47,7 +47,7 @@ class TrendingFragmentPresenter : BasePresenter<TrendingFragmentMvp.View>(), Tre
     }
 
 
-    fun getTrendingObservable(response: String): Observable<TrendingModel> {
+    private fun getTrendingObservable(response: String): Observable<TrendingModel> {
         return Observable.fromPublisher { s ->
             val document: Document = Jsoup.parse(response, "")
             val repoList = document.select(".repo-list")

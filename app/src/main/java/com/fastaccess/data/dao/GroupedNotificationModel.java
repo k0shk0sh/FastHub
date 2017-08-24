@@ -33,7 +33,7 @@ import static com.annimon.stream.Collectors.toList;
     private Notification notification;
     private Date date;
 
-    public GroupedNotificationModel(Repo repo) {
+    private GroupedNotificationModel(Repo repo) {
         this.type = HEADER;
         this.repo = repo;
     }

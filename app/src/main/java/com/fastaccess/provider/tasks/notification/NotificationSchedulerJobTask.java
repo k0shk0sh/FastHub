@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
@@ -91,6 +92,7 @@ public class NotificationSchedulerJobTask extends JobService {
     public static void scheduleJob(@NonNull Context context, int duration, boolean cancel) {
         if (AppHelper.isGoogleAvailable(context)) {
             FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+            dispatcher.cancel(SINGLE_JOB_ID);
             if (cancel) dispatcher.cancel(JOB_ID);
             if (duration == -1) {
                 dispatcher.cancel(JOB_ID);
@@ -254,7 +256,7 @@ public class NotificationSchedulerJobTask extends JobService {
                 new Intent(getApplicationContext(), NotificationActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
         return getNotification(thread.getSubject().getTitle(), thread.getRepository().getFullName())
                 .setDefaults(PrefGetter.isNotificationSoundEnabled() ? NotificationCompat.DEFAULT_ALL : 0)
-                .setSound(PrefGetter.getNotificationSound())
+                .setSound(PrefGetter.getNotificationSound(), AudioManager.STREAM_NOTIFICATION)
                 .setContentIntent(toNotificationActivity ? pendingIntent : getPendingIntent(thread.getId(), thread.getSubject().getUrl()))
                 .addAction(R.drawable.ic_github, getString(R.string.open), getPendingIntent(thread.getId(), thread
                         .getSubject().getUrl()))

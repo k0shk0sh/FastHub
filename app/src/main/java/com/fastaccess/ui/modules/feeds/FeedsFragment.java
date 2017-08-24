@@ -27,6 +27,7 @@ import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.ListDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private FeedsAdapter adapter;
     private OnLoadMore onLoadMore;
 
@@ -79,6 +81,7 @@ public class FeedsFragment extends BaseFragment<FeedsMvp.View, FeedsPresenter> i
             recycler.addDivider();
         }
         recycler.addOnScrollListener(getLoadMore());
+        fastScroller.attachRecyclerView(recycler);
         if (getPresenter().getEvents().isEmpty() && !getPresenter().isApiCalled()) {
             getPresenter().onFragmentCreated(getArguments());
         }

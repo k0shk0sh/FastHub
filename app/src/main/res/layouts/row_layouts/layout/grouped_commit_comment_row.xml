@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_micro"
+    android:layout_marginEnd="@dimen/grid_spacing"
+    android:layout_marginStart="@dimen/grid_spacing"
+    android:layout_marginTop="@dimen/spacing_micro"
+    android:background="?card_background"
+    tools:ignore="RtlSymmetry">
+
+    <LinearLayout
+        android:id="@+id/toggleHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/pathText"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:paddingEnd="@dimen/spacing_xs_large"
+                android:paddingStart="@dimen/spacing_xs_large"
+                tools:text="Sunt monses dignus castus, fortis parses."/>
+
+            <com.fastaccess.ui.widgets.ForegroundImageView
+                android:id="@+id/toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:padding="@dimen/spacing_micro"
+                android:src="@drawable/ic_arrow_drop_down"/>
+        </LinearLayout>
+
+        <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+            android:id="@+id/commitComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layoutManager="@string/linear_layout_manager"/>
+
+    </LinearLayout>
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

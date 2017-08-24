@@ -38,6 +38,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     @BindView(R.id.minimized) View minimized;
     @BindView(R.id.addCommentPreview) View addCommentPreview;
     @BindView(R.id.toggleHolder) LinearLayout toggleHolder;
+    @BindView(R.id.bottomToggle) View bottomToggle;
 
     private final int patchAdditionColor;
     private final int patchDeletionColor;
@@ -51,7 +52,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     private String poster;
 
     @Override public void onClick(View v) {
-        if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
+        if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder || v.getId() == R.id.bottomToggle) {
             long position = getId();
             onToggleView.onToggle(position, !onToggleView.isCollapsed(position));
             onToggle(onToggleView.isCollapsed(position), true);
@@ -76,6 +77,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
         this.onToggleView = onToggleView;
         this.repoOwner = repoOwner;
         this.poster = poster;
+        bottomToggle.setOnClickListener(this);
         nestedRecyclerView.setNestedScrollingEnabled(false);
         addCommentPreview.setOnClickListener(this);
         toggle.setOnClickListener(this);
@@ -94,7 +96,7 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     }
 
     @Override public void bind(@NonNull TimelineModel model) {
-        GroupedReviewModel groupedReviewModel = model.getGroupedReview();
+        GroupedReviewModel groupedReviewModel = model.getGroupedReviewModel();
         this.pathText = groupedReviewModel.getDiffText();
         name.setText(groupedReviewModel.getPath());
         stateImage.setImageResource(R.drawable.ic_eye);

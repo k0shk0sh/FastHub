@@ -1,7 +1,10 @@
 package com.fastaccess.data.dao.types;
 
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 
 /**
@@ -22,5 +25,12 @@ public enum StatusStateType {
 
     @DrawableRes public int getDrawableRes() {
         return drawableRes;
+    }
+
+    @NonNull public static StatusStateType getState(@Nullable String status) {
+        return Stream.of(values())
+                .filter(value -> value.name().toLowerCase().equalsIgnoreCase(status))
+                .findFirst()
+                .orElse(pending);
     }
 }

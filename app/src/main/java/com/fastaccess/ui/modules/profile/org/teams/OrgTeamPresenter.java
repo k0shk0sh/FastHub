@@ -43,7 +43,7 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -54,13 +54,14 @@ class OrgTeamPresenter extends BasePresenter<OrgTeamMvp.View> implements OrgTeam
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(OrgTeamMvp.View::hideProgress);
-            return;
+            return false;
         }
         makeRestCall(RestProvider.getOrgService(isEnterprise()).getOrgTeams(parameter, page),
                 response -> {
                     lastPage = response.getLast();
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<TeamsModel> getTeams() {

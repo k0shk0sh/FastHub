@@ -31,10 +31,6 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder;
 
 import butterknife.BindView;
 
-/**
- * Created by Kosh on 15 Feb 2017, 10:29 PM
- */
-
 public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel> {
 
     @BindView(R.id.avatarView) AvatarLayout avatarView;
@@ -129,7 +125,7 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
         }
         date.setText(ParseDateFormat.getTimeAgo(commentModel.getCreatedAt()));
         if (!InputHelper.isEmpty(commentModel.getBodyHtml())) {
-            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml());
+            HtmlHelper.htmlIntoTextView(comment, commentModel.getBodyHtml(), viewGroup.getWidth());
         } else {
             comment.setText("");
         }

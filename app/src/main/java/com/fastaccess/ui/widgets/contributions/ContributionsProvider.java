@@ -14,9 +14,9 @@ import java.util.List;
  */
 public class ContributionsProvider {
 
-    public final static String FILL_STRING = "fill=\"";
-    public final static String DATA_STRING = "data-count=\"";
-    public final static String DATE_STRING = "data-date=\"";
+    private final static String FILL_STRING = "fill=\"";
+    private final static String DATA_STRING = "data-count=\"";
+    private final static String DATE_STRING = "data-date=\"";
 
     @NonNull public List<ContributionsDay> getContributions(@Nullable String string) {
         ArrayList<ContributionsDay> contributions = new ArrayList<>();

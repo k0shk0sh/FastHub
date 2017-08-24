@@ -121,13 +121,12 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     String starredUser;
     String reposOwner;
 
-    public Single<Repo> save(Repo entity) {
-        return RxHelper.getSingle(App.getInstance().getDataStore()
-                .delete(Repo.class)
-                .where(Repo.ID.eq(entity.getId()))
-                .get()
-                .single()
-                .flatMap(observer -> App.getInstance().getDataStore().insert(entity)));
+    public Disposable save(Repo entity) {
+        return Single.create(e -> {
+            BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+            dataSource.delete(Repo.class).where(Repo.ID.eq(entity.getId())).get().value();
+            dataSource.insert(entity);
+        }).subscribe(o -> {/**/}, Throwable::printStackTrace);
     }
 
     public static Maybe<Repo> getRepo(@NonNull String name, @NonNull String login) {

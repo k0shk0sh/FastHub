@@ -49,6 +49,11 @@ public class SpannableBuilder extends SpannableStringBuilder {
         return this;
     }
 
+    public SpannableBuilder append(Object span) {
+        setSpan(span, length() - 1, length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        return this;
+    }
+
     public SpannableBuilder append(Drawable drawable) {
         if (drawable != null) {
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());

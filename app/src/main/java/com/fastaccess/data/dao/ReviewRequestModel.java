@@ -27,7 +27,7 @@ import lombok.Setter;
         dest.writeTypedList(this.comments);
     }
 
-    protected ReviewRequestModel(Parcel in) {
+    private ReviewRequestModel(Parcel in) {
         this.commitId = in.readString();
         this.body = in.readString();
         this.event = in.readString();

@@ -7,9 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatSpinner;
 import android.text.Editable;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
@@ -48,10 +46,34 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
         return false;
     }
 
-    @OnItemSelected(R.id.searchOptions) void onOptionSelected(int position) {
+    @OnItemSelected(R.id.searchOptions) void onOptionSelected() {
         if (onSpinnerTouched) {
             onSearch();
         }
+    }
+
+    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) void onTextChange(Editable s) {
+        String text = s.toString();
+        if (text.length() == 0) {
+            AnimHelper.animateVisibility(clear, false);
+        } else {
+            AnimHelper.animateVisibility(clear, true);
+        }
+    }
+
+    @OnEditorAction(R.id.searchEditText) boolean onEditor() {
+        onSearch();
+        return true;
+    }
+
+    @OnClick(value = {R.id.clear}) void onClear(View view) {
+        if (view.getId() == R.id.clear) {
+            searchEditText.setText("");
+        }
+    }
+
+    @OnClick(R.id.search) void onSearchClicked() {
+        onSearch();
     }
 
     @Override protected int layout() {
@@ -72,31 +94,6 @@ public class SearchFileActivity extends BaseActivity<SearchFileMvp.View, SearchF
 
     @NonNull @Override public SearchFilePresenter providePresenter() {
         return new SearchFilePresenter();
-    }
-
-    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    void onTextChange(Editable s) {
-        String text = s.toString();
-        if (text.length() == 0) {
-            AnimHelper.animateVisibility(clear, false);
-        } else {
-            AnimHelper.animateVisibility(clear, true);
-        }
-    }
-
-    @OnEditorAction(R.id.searchEditText) boolean onEditor(int actionId, KeyEvent keyEvent) {
-        if (keyEvent != null && keyEvent.getAction() == KeyEvent.KEYCODE_SEARCH) {
-            onSearch();
-        } else if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            onSearch();
-        }
-        return false;
-    }
-
-    @OnClick(value = {R.id.clear}) void onClear(View view) {
-        if (view.getId() == R.id.clear) {
-            searchEditText.setText("");
-        }
     }
 
     @Override protected void onCreate(@Nullable Bundle savedInstanceState) {

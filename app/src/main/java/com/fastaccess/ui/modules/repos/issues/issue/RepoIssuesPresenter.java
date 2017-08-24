@@ -56,10 +56,10 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable IssueState parameter) {
+    @Override public boolean onCallApi(int page, @Nullable IssueState parameter) {
         if (parameter == null) {
             sendToView(RepoIssuesMvp.View::hideProgress);
-            return;
+            return false;
         }
         this.issueState = parameter;
         if (page == 1) {
@@ -69,7 +69,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
         }
         if (page > lastPage || lastPage == 0) {
             sendToView(RepoIssuesMvp.View::hideProgress);
-            return;
+            return false;
         }
         String sortBy = "created";
         if (isLastUpdated) {
@@ -87,6 +87,7 @@ class RepoIssuesPresenter extends BasePresenter<RepoIssuesMvp.View> implements R
                     }
                     sendToView(view -> view.onNotifyAdapter(filtered, page));
                 });
+        return true;
     }
 
     private void onCallCountApi(@NonNull IssueState issueState) {

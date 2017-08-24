@@ -25,12 +25,12 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerActivity;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
@@ -46,7 +46,6 @@ import com.fastaccess.ui.widgets.ViewPagerView;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -69,6 +68,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
     @BindView(R.id.detailsIcon) View detailsIcon;
     @State boolean isClosed;
     @State boolean isOpened;
+    private CommentEditorFragment commentEditorFragment;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login, int number) {
         return createIntent(context, repoId, login, number, false);
@@ -103,15 +103,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
-    @OnClick(R.id.fab) void onAddComment() {
-        if (pager != null && pager.getAdapter() != null) {
-            IssueTimelineFragment view = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-            if (view != null) {
-                view.onStartNewComment();
-            }
-        }
-    }
-
     @Override protected int layout() {
         return R.layout.issue_pager_activity;
     }
@@ -134,7 +125,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Logger.e(isEnterprise());
+        commentEditorFragment = (CommentEditorFragment) getSupportFragmentManager().findFragmentById(R.id.commentFragment);
         tabs.setVisibility(View.GONE);
         if (savedInstanceState == null) {
             getPresenter().onActivityCreated(getIntent());
@@ -143,6 +134,7 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         }
         startGist.setVisibility(View.GONE);
         forkGist.setVisibility(View.GONE);
+        fab.hide();
         if (getPresenter().showToRepoBtn()) showNavToRepoItem();
     }
 
@@ -194,7 +186,9 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
             return true;
         } else if (item.getItemId() == R.id.labels) {
-            getPresenter().onLoadLabels();
+            LabelsDialogFragment.newInstance(getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null,
+                    getPresenter().getRepoId(), getPresenter().getLogin())
+                    .show(getSupportFragmentManager(), "LabelsDialogFragment");
             return true;
         } else if (item.getItemId() == R.id.edit) {
             CreateIssueActivity.startForResult(this, getPresenter().getLogin(), getPresenter().getRepoId(),
@@ -306,13 +300,6 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         }
     }
 
-    @Override public void onLabelsRetrieved(@NonNull List<LabelModel> items) {
-        hideProgress();
-        LabelsDialogFragment.newInstance(items, getPresenter().getIssue() != null ? getPresenter().getIssue().getLabels() : null,
-                getPresenter().getRepoId(), getPresenter().getLogin())
-                .show(getSupportFragmentManager(), "LabelsDialogFragment");
-    }
-
     @Override public void onUpdateTimeline() {
         if (pager == null || pager.getAdapter() == null) return;
         IssueTimelineFragment issueDetailsView = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
@@ -374,12 +361,27 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         super.finish();
     }
 
+    @Override public void onSendActionClicked(@NonNull String text, @Nullable Bundle bundle) {
+        if (pager != null && pager.getAdapter() != null) {
+            IssueTimelineFragment fragment = (IssueTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+            if (fragment != null) {
+                fragment.onHandleComment(text, bundle);
+            }
+        }
+    }
+
+    @Override public void onTagUser(@NonNull String username) {
+        commentEditorFragment.onAddUserName(username);
+    }
+
+    @Override public void onCreateComment(String text, Bundle bundle) {}
+
     private void hideShowFab() {
         if (getPresenter().isLocked() && !getPresenter().isOwner()) {
-            fab.hide();
+            getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
             return;
         }
-        fab.show();
+        getSupportFragmentManager().beginTransaction().show(commentEditorFragment).commit();
     }
 
     private void updateViews(@NonNull Issue issueModel) {

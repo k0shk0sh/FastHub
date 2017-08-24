@@ -16,7 +16,6 @@ import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.ParseDateFormat;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -194,8 +193,8 @@ public class IssueDetailsViewHolder extends BaseViewHolder<TimelineModel> {
         if (reactionsModel != null) {
             appendEmojies(reactionsModel);
         }
-        if (!InputHelper.isEmpty(description)) {
-            HtmlHelper.htmlIntoTextView(comment, description);
+        if (description != null && !description.trim().isEmpty()) {
+            HtmlHelper.htmlIntoTextView(comment, description, viewGroup.getWidth());
         } else {
             comment.setText(R.string.no_description_provided);
         }

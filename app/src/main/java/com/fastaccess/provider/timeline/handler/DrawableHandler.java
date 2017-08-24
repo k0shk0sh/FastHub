@@ -5,10 +5,10 @@ import android.text.style.ImageSpan;
 import android.widget.TextView;
 
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
+import net.nightwhistler.htmlspanner.spans.CenterSpan;
 
 import org.htmlcleaner.TagNode;
 
@@ -30,15 +30,14 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
     @Override public void handleTagNode(TagNode node, SpannableStringBuilder builder, int start, int end) {
         String src = node.getAttributeByName("src");
-        boolean isGif = "gif".equalsIgnoreCase(node.getAttributeByName("alt"));
-        Logger.e(isGif);
         if (!InputHelper.isEmpty(src)) {
             builder.append("￼");
             if (isNull()) return;
+            CenterSpan centerSpan = new CenterSpan();
             DrawableGetter imageGetter = new DrawableGetter(textView);
+            builder.setSpan(centerSpan, start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.setSpan(new ImageSpan(imageGetter.getDrawable(src)), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
             appendNewLine(builder);
         }
     }
-
 }

@@ -1,45 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-
+    
     <SwitchPreference
         android:defaultValue="false"
-        android:key="enable_ads"
-        android:icon="@drawable/ic_heart"
-        android:title="@string/enable_ads"/>
-
-    <SwitchPreference
-        android:defaultValue="true"
-        android:key="sent_via_enabled"
-        android:icon="@drawable/ic_checkbox"
-        android:summary="@string/enable_signature_box_summary"
-        android:title="@string/enable_signature_box"/>
-
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="sent_via"
         android:icon="@drawable/ic_edit"
+        android:key="sent_via"
         android:summary="@string/enable_signature_summary"
         android:title="@string/enable_signature"/>
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="disable_auto_play_gif"
         android:icon="@drawable/ic_image"
+        android:key="disable_auto_play_gif"
         android:summary="@string/disable_auto_gif_summary"
         android:title="@string/disable_auto_gif_title"/>
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="wrap_code"
         android:icon="@drawable/ic_wrap_text"
+        android:key="wrap_code"
         android:summary="@string/wrap_code_summary"
         android:title="@string/wrap_code_title"/>
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="back_button"
         android:icon="@drawable/ic_back"
+        android:key="back_button"
         android:summary="@string/back_button_summary"
         android:title="@string/back_button_title"/>
 

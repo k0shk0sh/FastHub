@@ -76,7 +76,7 @@ public class GitHubContributionsView extends View {
         blockPaint.setStyle(Paint.Style.FILL);
     }
 
-    protected void initAttributes(TypedArray attributes) {
+    private void initAttributes(TypedArray attributes) {
         baseColor = attributes.getColor(R.styleable.GitHubContributionsView_baseColor, baseColor);
         baseEmptyColor = attributes.getColor(R.styleable.GitHubContributionsView_baseEmptyColor, baseEmptyColor);
         backgroundBaseColor = attributes.getColor(R.styleable.GitHubContributionsView_backgroundBaseColor, backgroundBaseColor);
@@ -236,7 +236,7 @@ public class GitHubContributionsView extends View {
      * @param username
      *         also, can be an organization
      */
-    public void loadUserName(String username) {
+    private void loadUserName(String username) {
         this.username = username;
         clearContribution();
     }
@@ -244,7 +244,7 @@ public class GitHubContributionsView extends View {
     /**
      * Clean de component.
      */
-    public void clearContribution() {
+    private void clearContribution() {
         bitmap = null;
         invalidate();
     }
@@ -371,7 +371,7 @@ public class GitHubContributionsView extends View {
         setLayoutParams(ll);
     }
 
-    public int getHorizontalBlockNumber(int total, int divider) {
+    private int getHorizontalBlockNumber(int total, int divider) {
         boolean isInteger = total % divider == 0;
         int result = total / divider;
         return (isInteger) ? result : result + 1;
