@@ -128,6 +128,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
   <p>- Portuguese <a href="https://github.com/caiorrs">@caiorrs</a></p>
   <p>- Czech <a href="https://github.com/hejsekvojtech">@hejsekvojtech</a></p>
   <p>- Spanish <a href="https://github.com/alete89">@alete89</a></p>
+  <p>- French <a href="https://github.com/ptt-homme">@ptt-homme</a></p>
 </details>
 
 ## FAQ
