@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.BranchesModel
 import com.fastaccess.helper.BundleConstant
@@ -14,18 +15,22 @@ import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerListener
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
 
 /**
  * Created by Kosh on 06 Jul 2017, 9:48 PM
  */
 class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), BranchesMvp.View {
-    val recycler: DynamicRecyclerView  by lazy { view!!.findViewById<DynamicRecyclerView>(R.id.recycler) }
-    val refresh: SwipeRefreshLayout by lazy { view!!.findViewById<SwipeRefreshLayout>(R.id.refresh) }
-    val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
+
+    @BindView(R.id.recycler) lateinit var recycler: DynamicRecyclerView
+    @BindView(R.id.refresh) lateinit var refresh: SwipeRefreshLayout
+    @BindView(R.id.stateLayout) lateinit var stateLayout: StateLayout
+    @BindView(R.id.fastScroller) lateinit var fastScroller: RecyclerViewFastScroller
+
     private var onLoadMore: OnLoadMore<Boolean>? = null
     private var branchCallback: BranchesPagerListener? = null
 
-    val adapter by lazy { BranchesAdapter(presenter.branches, presenter) }
+    private val adapter by lazy { BranchesAdapter(presenter.branches, presenter) }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -72,6 +77,7 @@ class BranchesFragment : BaseFragment<BranchesMvp.View, BranchesPresenter>(), Br
         if (savedInstanceState == null) {
             presenter.onFragmentCreated(arguments)
         }
+        fastScroller.attachRecyclerView(recycler)
     }
 
     override fun showProgress(resId: Int) {

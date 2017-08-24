@@ -52,7 +52,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -63,7 +63,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(ProfileStarredMvp.View::hideProgress);
-            return;
+            return false;
         }
         Observable<Pageable<Repo>> observable;
         if (starredCount == -1) {
@@ -87,6 +87,7 @@ class ProfileStarredPresenter extends BasePresenter<ProfileStarredMvp.View> impl
                 view.onNotifyAdapter(repoModelPageable.getItems(), page);
             });
         });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Repo> getRepos() {

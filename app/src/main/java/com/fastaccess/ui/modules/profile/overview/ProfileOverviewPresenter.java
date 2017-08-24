@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
+import com.apollographql.apollo.ApolloCall;
+import com.apollographql.apollo.rx2.Rx2Apollo;
+import com.fastaccess.App;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
@@ -21,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import pr.GetPinnedReposQuery;
 
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
@@ -30,7 +34,8 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     @com.evernote.android.state.State boolean isSuccessResponse;
     @com.evernote.android.state.State boolean isFollowing;
     @com.evernote.android.state.State String login;
-    @com.evernote.android.state.State ArrayList<User> userOrgs = new ArrayList<>();
+    private ArrayList<User> userOrgs = new ArrayList<>();
+    private ArrayList<GetPinnedReposQuery.Node> nodes = new ArrayList<>();
     private ArrayList<ContributionsDay> contributions = new ArrayList<>();
     private static final String URL = "https://github.com/users/%s/contributions";
 
@@ -83,9 +88,12 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
         }
         login = bundle.getString(BundleConstant.EXTRA);
         if (login != null) {
-            loadOrgs();
-//            loadUrlBackgroundImage();
-            makeRestCall(RestProvider.getUserService(isEnterprise()).getUser(login), userModel -> {
+            makeRestCall(RestProvider.getUserService(isEnterprise())
+                    .getUser(login)
+                    .doOnComplete(() -> {
+                        loadPinnedRepos(login);
+                        loadOrgs();
+                    }), userModel -> {
                 onSendUserToView(userModel);
                 if (userModel != null) {
                     userModel.save(userModel);
@@ -95,6 +103,29 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                 }
             });
         }
+    }
+
+    @SuppressWarnings("ConstantConditions") private void loadPinnedRepos(@NonNull String login) {
+        ApolloCall<GetPinnedReposQuery.Data> apolloCall = App.getInstance().getApolloClient()
+                .query(GetPinnedReposQuery.builder()
+                        .login(login)
+                        .build());
+        manageObservable(Rx2Apollo.from(apolloCall)
+                .filter(dataResponse -> !dataResponse.hasErrors())
+                .flatMap(dataResponse -> {
+                    if (dataResponse.data() != null && dataResponse.data().user() != null) {
+                        return Observable.fromIterable(dataResponse.data().user().pinnedRepositories().edges());
+                    }
+                    return Observable.empty();
+                })
+                .map(GetPinnedReposQuery.Edge::node)
+                .toList()
+                .toObservable()
+                .doOnNext(nodes1 -> {
+                    nodes.clear();
+                    nodes.addAll(nodes1);
+                    sendToView(view -> view.onInitPinnedRepos(nodes));
+                }));
     }
 
     @Override public void onWorkOffline(@NonNull String login) {
@@ -132,6 +163,10 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
 
     @NonNull @Override public ArrayList<ContributionsDay> getContributions() {
         return contributions;
+    }
+
+    @NonNull @Override public ArrayList<GetPinnedReposQuery.Node> getNodes() {
+        return nodes;
     }
 
     @NonNull @Override public String getLogin() {

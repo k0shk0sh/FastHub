@@ -7,6 +7,7 @@ import android.support.design.widget.CoordinatorLayout
 import android.support.transition.TransitionManager
 import android.view.View
 import android.widget.RelativeLayout
+import butterknife.BindView
 import butterknife.OnClick
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
@@ -16,10 +17,8 @@ import com.fastaccess.helper.PrefGetter
 import com.fastaccess.ui.adapter.LoginAdapter
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.login.LoginActivity
-import com.fastaccess.ui.modules.main.donation.CheckPurchaseActivity
 import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.settings.LanguageBottomSheetDialog
-import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.dialog.MessageDialogView
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 import io.reactivex.functions.Action
@@ -31,12 +30,13 @@ import java.util.*
 
 class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPresenter>(), LoginChooserMvp.View {
 
-    val language_selector: RelativeLayout by bindView(R.id.language_selector)
-    val recycler: DynamicRecyclerView by bindView(R.id.recycler)
-    val multiAccLayout: View by bindView(R.id.multiAccLayout)
-    val viewGroup: CoordinatorLayout by bindView(R.id.viewGroup)
-    val toggleImage: View by bindView(R.id.toggleImage)
-    val adapter = LoginAdapter()
+    @BindView(R.id.language_selector) lateinit var language_selector: RelativeLayout
+    @BindView(R.id.recycler) lateinit var recycler: DynamicRecyclerView
+    @BindView(R.id.multiAccLayout) lateinit var multiAccLayout: View
+    @BindView(R.id.viewGroup) lateinit var viewGroup: CoordinatorLayout
+    @BindView(R.id.toggleImage) lateinit var toggleImage: View
+
+    private val adapter = LoginAdapter()
 
     override fun layout(): Int = R.layout.login_chooser_layout
 
@@ -123,7 +123,7 @@ class LoginChooserActivity : BaseActivity<LoginChooserMvp.View, LoginChooserPres
     override fun onItemClick(position: Int, v: View, item: Login) {
         presenter.manageViewDisposable(Login.onMultipleLogin(item, item.isIsEnterprise, false)
                 .doOnSubscribe { showProgress(0) }
-                .doFinally { this.hideProgress() }
+                .doOnComplete { this.hideProgress() }
                 .subscribe({ onRestartApp() }, ::println))
     }
 

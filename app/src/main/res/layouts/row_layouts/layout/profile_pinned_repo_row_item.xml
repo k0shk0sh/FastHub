@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.fastaccess.ui.widgets.ForegroundRelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/grid_spacing"
+    android:foreground="?android:selectableItemBackground"
+    android:paddingBottom="@dimen/spacing_normal"
+    android:paddingEnd="@dimen/spacing_normal"
+    android:paddingStart="@dimen/spacing_normal"
+    tools:ignore="RtlSymmetry">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/title"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingTop="@dimen/spacing_normal"
+            tools:text="Repo Name"/>
+
+        <com.fastaccess.ui.widgets.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:auto_gravity="start"
+            app:auto_orientation="horizontal">
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/stars"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_star_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="1000"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/forks"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_fork_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="5000"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/issues"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_issue_opened_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                tools:text="100 MB"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/pullRequests"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/spacing_micro"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_pull_requests_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                tools:text="100 MB"/>
+
+            <com.fastaccess.ui.widgets.FontTextView
+                android:id="@+id/language"
+                style="@style/TextAppearance.AppCompat.Caption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/spacing_micro"
+                android:drawableStart="@drawable/ic_language_small"
+                android:gravity="start|center"
+                android:textColor="?android:attr/textColorSecondary"
+                app:drawableColor="?android:attr/textColorSecondary"
+                tools:text="TypeScript"/>
+
+        </com.fastaccess.ui.widgets.AutoLinearLayout>
+
+    </LinearLayout>
+</com.fastaccess.ui.widgets.ForegroundRelativeLayout>

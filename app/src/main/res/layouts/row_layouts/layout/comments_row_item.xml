@@ -6,7 +6,6 @@
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/grid_spacing"
     android:background="?card_background"
-    android:paddingTop="@dimen/spacing_normal"
     tools:ignore="RtlSymmetry">
 
     <LinearLayout
@@ -14,10 +13,25 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <com.fastaccess.ui.widgets.FontTextView
+            android:id="@+id/pathText"
+            style="@style/TextAppearance.AppCompat.Caption"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorPrimary"
+            android:paddingBottom="@dimen/spacing_normal"
+            android:paddingEnd="@dimen/spacing_xs_large"
+            android:paddingStart="@dimen/spacing_xs_large"
+            android:paddingTop="@dimen/spacing_normal"
+            android:visibility="gone"
+            tools:text="Sunt monses dignus castus, fortis parses."
+            tools:visibility="visible"/>
+
         <LinearLayout
             android:id="@+id/toggleHolder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="@dimen/spacing_normal"
             android:layout_marginEnd="@dimen/spacing_micro"
             android:orientation="horizontal">
 
@@ -85,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="?selectableItemBackgroundBorderless"
-                android:contentDescription="@string/options"
+                android:contentDescription="@string/reactions"
                 android:padding="@dimen/spacing_micro"
                 android:src="@drawable/ic_add_emoji"/>
 

@@ -48,7 +48,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (parameter == null) {
             throw new NullPointerException("Username is null");
         }
@@ -59,7 +59,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(ProfileGistsMvp.View::hideProgress);
-            return;
+            return false;
         }
         makeRestCall(RestProvider.getGistService(isEnterprise()).getUserGists(parameter, page),
                 listResponse -> {
@@ -67,6 +67,7 @@ class ProfileGistsPresenter extends BasePresenter<ProfileGistsMvp.View> implemen
                     sendToView(view -> view.onNotifyAdapter(listResponse.getItems(), page));
                     manageDisposable(Gist.save(Stream.of(listResponse.getItems()).toList(), parameter));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Gist> getGists() {

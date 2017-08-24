@@ -22,6 +22,7 @@ import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -39,6 +40,7 @@ public class ReactionsDialogFragment extends BaseDialogFragment<ReactionsDialogM
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private UsersAdapter adapter;
     private OnLoadMore onLoadMore;
 
@@ -77,6 +79,7 @@ public class ReactionsDialogFragment extends BaseDialogFragment<ReactionsDialogM
         toolbar.setTitle(SpannableBuilder.builder().append(getString(R.string.reactions))
                 .append(" ")
                 .append(CommentsHelper.getEmoji(getPresenter().getReactionType())));
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onNotifyAdapter(@Nullable List<User> items, int page) {
@@ -94,7 +97,7 @@ public class ReactionsDialogFragment extends BaseDialogFragment<ReactionsDialogM
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
         stateLayout.showProgress();
     }
 

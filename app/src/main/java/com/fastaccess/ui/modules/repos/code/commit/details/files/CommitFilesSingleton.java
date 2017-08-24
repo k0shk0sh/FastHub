@@ -25,7 +25,7 @@ class CommitFilesSingleton {
     private CommitFilesSingleton() {}
 
     void putFiles(@NonNull String id, @NonNull CommitFileListModel commitFiles) {
-        files.clear();
+        clear();
         files.put(id, commitFiles);
     }
 

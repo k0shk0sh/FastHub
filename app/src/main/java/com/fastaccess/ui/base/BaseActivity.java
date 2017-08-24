@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.evernote.android.state.State;
 import com.evernote.android.state.StateSaver;
 import com.fastaccess.App;
@@ -31,20 +32,23 @@ import com.fastaccess.helper.AppHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.PrefGetter;
+import com.fastaccess.helper.RxHelper;
 import com.fastaccess.helper.ViewHelper;
+import com.fastaccess.provider.markdown.CachedComments;
 import com.fastaccess.provider.theme.ThemeEngine;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.changelog.ChangelogBottomSheetDialog;
+import com.fastaccess.ui.modules.gists.gist.GistActivity;
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity;
 import com.fastaccess.ui.modules.main.MainActivity;
 import com.fastaccess.ui.modules.main.orgs.OrgListDialogFragment;
+import com.fastaccess.ui.modules.repos.code.commit.details.CommitPagerActivity;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.modules.settings.SettingsActivity;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 
 import net.grandcentrix.thirtyinch.TiActivity;
 
@@ -55,6 +59,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Optional;
 import es.dmoral.toasty.Toasty;
+import io.reactivex.Observable;
 
 
 /**
@@ -65,12 +70,11 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         BaseMvp.FAView, NavigationView.OnNavigationItemSelectedListener {
 
     @State boolean isProgressShowing;
-    @Nullable @BindView(R.id.toolbar) public Toolbar toolbar;
-    @Nullable @BindView(R.id.appbar) public AppBarLayout appbar;
-    @Nullable @BindView(R.id.drawer) public DrawerLayout drawer;
+    @Nullable @BindView(R.id.toolbar) protected Toolbar toolbar;
+    @Nullable @BindView(R.id.appbar) protected AppBarLayout appbar;
+    @Nullable @BindView(R.id.drawer) protected DrawerLayout drawer;
     @Nullable @BindView(R.id.extrasNav) public NavigationView extraNav;
     @Nullable @BindView(R.id.accountsNav) NavigationView accountsNav;
-    @Nullable @BindView(R.id.adView) AdView adView;
 
     @State Bundle presenterStateBundle = new Bundle();
 
@@ -113,7 +117,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
             getPresenter().onRestoreInstanceState(presenterStateBundle);
         }
         setupToolbarAndStatusBar(toolbar);
-        showHideAds();
         if (savedInstanceState == null) {
             if (getIntent() != null) {
                 if (getIntent().getExtras() != null) {
@@ -201,15 +204,21 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onRequireLogin() {
         Toasty.warning(App.getInstance(), getString(R.string.unauthorized_user), Toast.LENGTH_LONG).show();
-        PrefGetter.setToken(null);
-        PrefGetter.setEnterpriseUrl(null);
-        PrefGetter.setOtpCode(null);
-        PrefGetter.setEnterpriseOtpCode(null);
-        Login.logout();
-        Intent intent = new Intent(this, LoginChooserActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        finishAffinity();
+        final Glide glide = Glide.get(App.getInstance());
+        getPresenter().manageViewDisposable(RxHelper.getObservable(Observable.fromCallable(() -> {
+            glide.clearDiskCache();
+            PrefGetter.setToken(null);
+            PrefGetter.setOtpCode(null);
+            PrefGetter.resetEnterprise();
+            Login.logout();
+            return true;
+        })).subscribe(aBoolean -> {
+            glide.clearMemory();
+            Intent intent = new Intent(this, LoginChooserActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finishAffinity();
+        }));
     }
 
     @Override public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -263,27 +272,6 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
 
     @Override public void onScrollTop(int index) {}
 
-    @Override protected void onPause() {
-        if (adView != null && adView.isShown()) {
-            adView.pause();
-        }
-        super.onPause();
-    }
-
-    @Override protected void onResume() {
-        super.onResume();
-        if (adView != null && adView.isShown()) {
-            adView.resume();
-        }
-    }
-
-    @Override protected void onDestroy() {
-        if (adView != null && adView.isShown()) {
-            adView.destroy();
-        }
-        super.onDestroy();
-    }
-
     @Override public boolean isEnterprise() {
         return getPresenter() != null && getPresenter().isEnterprise();
     }
@@ -293,25 +281,13 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
         onLogoutPressed();
     }
 
-    protected void setTaskName(@Nullable String name) {
-        setTaskDescription(new ActivityManager.TaskDescription(name, null, ViewHelper.getPrimaryDarkColor(this)));
+    @Override protected void onDestroy() {
+        clearCachedComments();
+        super.onDestroy();
     }
 
-    protected void showHideAds() {
-        if (adView != null) {
-            boolean isAdsEnabled = PrefGetter.isAdsEnabled();
-            if (isAdsEnabled) {
-                adView.setVisibility(View.VISIBLE);
-                MobileAds.initialize(this, getString(R.string.banner_ad_unit_id));
-                AdRequest adRequest = new AdRequest.Builder()
-                        .addTestDevice(getString(R.string.test_device_id))
-                        .build();
-                adView.loadAd(adRequest);
-            } else {
-                adView.destroy();
-                adView.setVisibility(View.GONE);
-            }
-        }
+    protected void setTaskName(@Nullable String name) {
+        setTaskDescription(new ActivityManager.TaskDescription(name, null, ViewHelper.getPrimaryDarkColor(this)));
     }
 
     protected void selectHome(boolean hideRepo) {
@@ -504,6 +480,16 @@ public abstract class BaseActivity<V extends BaseMvp.FAView, P extends BasePrese
                 fragment = ProgressDialogFragment.newInstance(msg, cancelable);
                 fragment.show(getSupportFragmentManager(), ProgressDialogFragment.TAG);
             }
+        }
+    }
+
+    /**
+     * not really needed but meh.
+     */
+    private void clearCachedComments() {
+        if (this instanceof IssuePagerActivity || this instanceof CommitPagerActivity ||
+                this instanceof PullRequestPagerActivity || this instanceof GistActivity) {
+            CachedComments.Companion.getInstance().clear();
         }
     }
 }

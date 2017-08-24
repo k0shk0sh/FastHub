@@ -31,6 +31,7 @@ import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.modules.repos.wiki.WikiActivity;
+import com.fastaccess.ui.modules.search.SearchActivity;
 import com.fastaccess.ui.modules.trending.TrendingActivity;
 import com.fastaccess.ui.modules.user.UserPagerActivity;
 
@@ -338,6 +339,9 @@ public class SchemeParser {
         } else if (segments != null && !segments.isEmpty() && segments.size() > 1 && segments.get(0).equalsIgnoreCase("orgs")) {
             if ("invitation".equalsIgnoreCase(uri.getLastPathSegment())) {
                 return null;
+            } else if ("search".equalsIgnoreCase(uri.getLastPathSegment())) {
+                String query = uri.getQueryParameter("q");
+                return SearchActivity.getIntent(context, query);
             } else {
                 return UserPagerActivity.createIntent(context, segments.get(1), true);
             }

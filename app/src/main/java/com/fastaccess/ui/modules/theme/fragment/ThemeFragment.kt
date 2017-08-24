@@ -11,6 +11,10 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import butterknife.BindView
+import butterknife.ButterKnife
+import butterknife.Unbinder
 import com.fastaccess.R
 import com.fastaccess.helper.*
 import com.fastaccess.ui.base.BaseFragment
@@ -23,8 +27,10 @@ import com.fastaccess.ui.widgets.SpannableBuilder
 
 class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter>(), ThemeFragmentMvp.View {
 
-    val apply: FloatingActionButton by lazy { view!!.findViewById<FloatingActionButton>(R.id.apply) }
-    val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
+    @BindView(R.id.apply) lateinit var apply: FloatingActionButton
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+
+    private var unbinder: Unbinder? = null
 
     private val THEME = "appTheme"
     private var primaryDarkColor: Int = 0
@@ -41,9 +47,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         super.onDetach()
     }
 
-    override fun fragmentLayout(): Int {
-        return 0
-    }
+    override fun fragmentLayout(): Int = 0
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
         apply.setOnClickListener {
@@ -55,13 +59,14 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         toolbar.setNavigationOnClickListener { activity.onBackPressed() }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreateView(inflater, container, savedInstanceState)
         theme = arguments.getInt(BundleConstant.ITEM)
         val contextThemeWrapper = ContextThemeWrapper(activity, theme)
         primaryDarkColor = ViewHelper.getPrimaryDarkColor(contextThemeWrapper)
-        val localInflater = inflater?.cloneInContext(contextThemeWrapper)
-        val view = localInflater?.inflate(R.layout.theme_layout, container, false)
+        val localInflater = inflater.cloneInContext(contextThemeWrapper)
+        val view = localInflater.inflate(R.layout.theme_layout, container, false)!!
+        unbinder = ButterKnife.bind(this, view)
         return view
     }
 
@@ -103,38 +108,29 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
     }
 
     private fun setTheme() {
-        if (!isGoogleSupported()) return
         when (theme) {
-            R.style.ThemeLight -> {
-                setTheme(getString(R.string.light_theme_mode))
-            }
-            R.style.ThemeDark -> {
-                setTheme(getString(R.string.dark_theme_mode))
-            }
-            R.style.ThemeAmlod -> {
-                if (!isGoogleSupported()) return
-                if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
-                    setTheme(getString(R.string.amlod_theme_mode))
-                } else {
-                    DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
-                }
-            }
-            R.style.ThemeMidNighBlue -> {
-                if (!isGoogleSupported()) return
-                if (PrefGetter.isMidNightBlueThemeEnabled() || PrefGetter.isProEnabled()) {
-                    setTheme(getString(R.string.mid_night_blue_theme_mode))
-                } else {
-                    DonateActivity.start(this, getString(R.string.midnight_blue_theme_purchase))
-                }
-            }
-            R.style.ThemeBluish -> {
-                if (!isGoogleSupported()) return
-                if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
-                    setTheme(getString(R.string.bluish_theme))
-                } else {
-                    DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
-                }
-            }
+            R.style.ThemeLight -> setTheme(getString(R.string.light_theme_mode))
+            R.style.ThemeDark -> setTheme(getString(R.string.dark_theme_mode))
+            R.style.ThemeAmlod -> applyAmlodTheme()
+            R.style.ThemeBluish -> applyBluishTheme()
+        }
+    }
+
+    private fun applyBluishTheme() {
+        if (!isGoogleSupported()) return
+        if (PrefGetter.isBluishEnabled() || PrefGetter.isProEnabled()) {
+            setTheme(getString(R.string.bluish_theme))
+        } else {
+            DonateActivity.start(this, getString(R.string.theme_bluish_purchase))
+        }
+    }
+
+    private fun applyAmlodTheme() {
+        if (!isGoogleSupported()) return
+        if (PrefGetter.isAmlodEnabled() || PrefGetter.isProEnabled()) {
+            setTheme(getString(R.string.amlod_theme_mode))
+        } else {
+            DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
         }
     }
 
@@ -151,5 +147,10 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
         }
         showErrorMessage(getString(R.string.common_google_play_services_unsupported_text))
         return false
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        unbinder?.unbind()
     }
 }

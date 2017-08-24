@@ -4,12 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginBottom="@dimen/spacing_normal"
     android:layout_marginEnd="@dimen/layout_margin"
     android:layout_marginStart="@dimen/layout_margin"
-    android:layout_marginTop="@dimen/spacing_normal"
-    android:clipChildren="false"
-    android:foreground="?selectableItemBackground">
+    android:layout_marginTop="@dimen/spacing_normal">
 
     <com.fastaccess.ui.widgets.ForegroundImageView
         android:id="@+id/stateImage"
@@ -24,9 +23,11 @@
         tools:src="@drawable/ic_issue_opened"/>
 
     <android.support.design.internal.ForegroundLinearLayout
+        android:id="@+id/reviewHolder"
         style="?timeLineBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/stateImage"
@@ -78,5 +79,32 @@
                 tools:visibility="visible"/>
         </LinearLayout>
     </android.support.design.internal.ForegroundLinearLayout>
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/recycler"
+        android:layout_alignStart="@+id/stateImage"
+        android:layout_below="@+id/stateImage"
+        android:layout_marginBottom="@dimen/spacing_micro"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="@dimen/spacing_micro"
+        android:alpha="0.3"
+        android:background="?colorAccent"
+        android:minHeight="24dp"
+        android:visibility="gone"
+        tools:visibility="visible"/>
+
+    <com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/reviewHolder"
+        app:layoutManager="@string/linear_layout_manager"
+        android:layout_marginBottom="@dimen/spacing_micro"
+        android:layout_marginTop="@dimen/spacing_micro"
+        android:visibility="gone"
+        tools:visibility="visible"/>
 
 </com.fastaccess.ui.widgets.ForegroundRelativeLayout>

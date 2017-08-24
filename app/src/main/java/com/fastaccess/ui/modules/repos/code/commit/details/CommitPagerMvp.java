@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Commit;
 import com.fastaccess.ui.base.mvp.BaseMvp;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 
 /**
  * Created by Kosh on 10 Dec 2016, 9:21 AM
@@ -14,7 +15,7 @@ import com.fastaccess.ui.base.mvp.BaseMvp;
 
 public interface CommitPagerMvp {
 
-    interface View extends BaseMvp.FAView {
+    interface View extends BaseMvp.FAView, CommentEditorFragment.CommentListener  {
 
         void onSetup();
 

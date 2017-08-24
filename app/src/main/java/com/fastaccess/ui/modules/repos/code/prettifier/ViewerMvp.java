@@ -18,7 +18,7 @@ interface ViewerMvp {
 
         void onSetImageUrl(@NonNull String url);
 
-        void onSetMdText(@NonNull String text, String baseUrl);
+        void onSetMdText(@NonNull String text, String baseUrl, boolean replace);
 
         void onSetCode(@NonNull String text);
 

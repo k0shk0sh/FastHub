@@ -50,7 +50,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -58,9 +58,9 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(PullRequestCommitsMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
+        if (repoId == null || login == null) return false;
         makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestCommits(login, repoId, number, page),
                 response -> {
                     lastPage = response.getLast();
@@ -69,6 +69,7 @@ class PullRequestCommitsPresenter extends BasePresenter<PullRequestCommitsMvp.Vi
                     }
                     sendToView(view -> view.onNotifyAdapter(response.getItems(), page));
                 });
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {

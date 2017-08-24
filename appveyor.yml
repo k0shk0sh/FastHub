@@ -1,6 +1,13 @@
 image: Visual Studio 2017
 clone_folder: 'C:\FastHub'
 
+# skip branch build if there is an active pull request
+skip_branch_with_pr: true
+skip_commits:
+  files:
+    - '**/*.md'
+  message: \[(skip app veyor|app veyor skip|skip appveyor|appveyor skip)\]
+
 environment:
   ANDROID_HOME: 'A:\'
   GRADLE_USER_HOME: 'G:\'
@@ -19,19 +26,20 @@ init:
 install:
   - ps: |
       Write-Output "" > ~\.android\repositories.cfg
-      if ($env:APPVEYOR_PULL_REQUEST_NUMBER) {
+      if ($env:APPVEYOR_PULL_REQUEST_NUMBER){
+              if (($env:APPVEYOR_REPO_COMMIT_AUTHOR -ne 'Yakov') -and ($env:APPVEYOR_REPO_COMMIT_AUTHOR -ne 'Kosh Sergani')) {
         Write-Host "PR detected. Installing C# Script Engine and doing translations check:"
         cinst cs-script --version 3.26.2.0
         cscs
         cscs -ac:2 -nl $env:APPVEYOR_BUILD_FOLDER\.github\check_translations.cs
       }
+      }
       Write-Host "Installing Android packages:"
-      $pkgs = '"platform-tools"', '"extras;android;m2repository"', '"extras;google;m2repository"', '"build-tools;26.0.0"', '"platforms;android-25"'
+      $pkgs = '"platform-tools"', '"extras;android;m2repository"', '"extras;google;m2repository"', '"build-tools;26.0.1"', '"platforms;android-26"'
       foreach ($pkg in $pkgs) {
         Write-Host "Installing ${pkg}:"
         echo "y" | & $env:ANDROID_HOME\tools\bin\sdkmanager.bat ${pkg}
       }
-
 build_script:
   - cmd: |
       CD /D F:

@@ -9,10 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.Editable;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
@@ -73,6 +71,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
     @State boolean isOpen;
     @State String login;
     @State String repoId;
+    @State String criteria;
 
     private FilterIssueFragment filterFragment;
     private MilestonesAdapter milestonesAdapter;
@@ -96,6 +95,21 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         } else {
             context.startActivity(intent);
         }
+    }
+
+    public static void startActivity(@NonNull View view, @NonNull String login, @NonNull String repoId,
+                                     boolean isIssue, boolean isOpen, boolean isEnterprise, @NonNull String criteria) {
+        Intent intent = new Intent(view.getContext(), FilterIssuesActivity.class);
+        intent.putExtras(Bundler.start()
+                .put(BundleConstant.EXTRA, login)
+                .put(BundleConstant.ID, repoId)
+                .put(BundleConstant.EXTRA_TWO, isIssue)
+                .put(BundleConstant.EXTRA_THREE, isOpen)
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                .put(BundleConstant.EXTRA_FOUR, criteria)
+                .end());
+        //noinspection ConstantConditions
+        ActivityHelper.startReveal(ActivityHelper.getActivity(view.getContext()), intent, view);
     }
 
     @Override protected int layout() {
@@ -126,6 +140,7 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
             isOpen = bundle.getBoolean(BundleConstant.EXTRA_THREE);
             repoId = bundle.getString(BundleConstant.ID);
             login = bundle.getString(BundleConstant.EXTRA);
+            criteria = bundle.getString(BundleConstant.EXTRA_FOUR);
             getPresenter().onStart(login, repoId);
             if (isOpen) {
                 onOpenClicked();
@@ -150,6 +165,10 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
                 onSearch();
             } else {
                 searchEditText.setText(String.format("%s %s ", isOpen ? "is:open" : "is:closed", isIssue ? "is:issue" : "is:pr"));
+                if (!InputHelper.isEmpty(criteria)) {
+                    searchEditText.setText(String.format("%s%s", InputHelper.toString(searchEditText), criteria));
+                    criteria = null;
+                }
                 onSearch();
             }
         }
@@ -226,6 +245,31 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
         AnimHelper.revealPopupWindow(popupWindow, sort);
     }
 
+    @OnClick(value = {R.id.clear}) void onClear(View view) {
+        if (view.getId() == R.id.clear) {
+            AppHelper.hideKeyboard(searchEditText);
+            searchEditText.setText("");
+        }
+    }
+
+    @OnClick(R.id.search) void onSearchClicked() {
+        onSearch();
+    }
+
+    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) void onTextChange(Editable s) {
+        String text = s.toString();
+        if (text.length() == 0) {
+            AnimHelper.animateVisibility(clear, false);
+        } else {
+            AnimHelper.animateVisibility(clear, true);
+        }
+    }
+
+    @OnEditorAction(R.id.searchEditText) protected boolean onEditor() {
+        onSearchClicked();
+        return true;
+    }
+
     @Override public void onSetCount(int count, boolean isOpen) {
         if (isOpen) {
             open.setText(SpannableBuilder.builder()
@@ -250,31 +294,6 @@ public class FilterIssuesActivity extends BaseActivity<FilterIssuesActivityMvp.V
 
     @Override public void hideProgress() {
         super.hideProgress();
-    }
-
-    @OnTextChanged(value = R.id.searchEditText, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED) void onTextChange(Editable s) {
-        String text = s.toString();
-        if (text.length() == 0) {
-            AnimHelper.animateVisibility(clear, false);
-        } else {
-            AnimHelper.animateVisibility(clear, true);
-        }
-    }
-
-    @OnClick(value = {R.id.clear}) void onClear(View view) {
-        if (view.getId() == R.id.clear) {
-            AppHelper.hideKeyboard(searchEditText);
-            searchEditText.setText("");
-        }
-    }
-
-    @OnEditorAction(R.id.searchEditText) boolean onEditor(int actionId, KeyEvent keyEvent) {
-        if (keyEvent != null && keyEvent.getAction() == KeyEvent.KEYCODE_SEARCH) {
-            onSearch();
-        } else if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-            onSearch();
-        }
-        return false;
     }
 
     @NonNull private String getRepoName() {

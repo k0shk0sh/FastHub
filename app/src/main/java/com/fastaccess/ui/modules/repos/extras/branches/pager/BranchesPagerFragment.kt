@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
 import android.view.View
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.BranchesModel
 import com.fastaccess.data.dao.FragmentPagerAdapterModel
@@ -21,9 +22,11 @@ import com.fastaccess.ui.modules.repos.extras.branches.BranchesMvp
  * Created by kosh on 15/07/2017.
  */
 class BranchesPagerFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>(), BranchesPagerListener {
-    val pager: ViewPager by lazy { view!!.findViewById<ViewPager>(R.id.pager) }
-    val tabs: TabLayout by lazy { view!!.findViewById<TabLayout>(R.id.tabs) }
-    val toolbar: Toolbar by lazy { view!!.findViewById<Toolbar>(R.id.toolbar) }
+
+    @BindView(R.id.pager) lateinit var pager: ViewPager
+    @BindView(R.id.tabs) lateinit var tabs: TabLayout
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+
     private var branchCallback: BranchesMvp.BranchSelectionListener? = null
 
     override fun onAttach(context: Context) {

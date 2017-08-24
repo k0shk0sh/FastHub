@@ -39,7 +39,7 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
         if (InputHelper.isEmpty(login) || InputHelper.isEmpty(repoId)) return;
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getRepo(login(), repoId()), repoModel -> {
             this.repo = repoModel;
-            manageObservable(this.repo.save(repo).toObservable());
+            manageDisposable(this.repo.save(repo));
             updatePinned(repoModel);
             sendToView(view -> {
                 view.onInitRepo();

@@ -5,6 +5,7 @@ import android.support.annotation.StringRes
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
+import butterknife.BindView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.helper.BundleConstant
@@ -22,11 +23,10 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
     @State var content: String? = null
 
 
-    val stateLayout: StateLayout by lazy { view!!.findViewById<StateLayout>(R.id.stateLayout) }
-
-    val loader: ProgressBar by lazy { view!!.findViewById<ProgressBar>(R.id.readmeLoader) }
-    val webView: PrettifyWebView by lazy { view!!.findViewById<PrettifyWebView>(R.id.webView) }
-    val licenseName: TextView by lazy { view!!.findViewById<TextView>(R.id.licenseName) }
+    @BindView(R.id.stateLayout) lateinit var stateLayout: StateLayout
+    @BindView(R.id.readmeLoader) lateinit var loader: ProgressBar
+    @BindView(R.id.webView) lateinit var webView: PrettifyWebView
+    @BindView(R.id.licenseName) lateinit var licenseName: TextView
 
 
     override fun providePresenter(): RepoLicensePresenter = RepoLicensePresenter()
@@ -37,7 +37,7 @@ class RepoLicenseBottomSheet : BaseMvpBottomSheetDialogFragment<RepoLicenseMvp.V
             loader.isIndeterminate = false
             val licenseText = license.replace("<pre>", "<pre style='overflow: hidden;word-wrap:break-word;word-break:break-all;" +
                     "white-space:pre-line;'>")
-            webView.setGithubContent("<div class='markdown-body'>$licenseText</div>", null)
+            webView.setGithubContent("<div class='markdown-body'>$licenseText</div>", null, false)
         } else {
             hideProgress()
         }

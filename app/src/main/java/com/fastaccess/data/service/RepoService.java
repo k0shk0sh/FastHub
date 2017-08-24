@@ -138,6 +138,9 @@ public interface RepoService {
     @NonNull @GET("repos/{owner}/{repo}/labels?per_page=100")
     Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo);
 
+    @NonNull @GET("repos/{owner}/{repo}/labels?per_page=100")
+    Observable<Pageable<LabelModel>> getLabels(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo, @Query("page") int page);
+
     @NonNull @POST("repos/{owner}/{repo}/labels")
     Observable<LabelModel> addLabel(@NonNull @Path("owner") String owner, @NonNull @Path("repo") String repo, @Body LabelModel body);
 

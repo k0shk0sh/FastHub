@@ -23,7 +23,7 @@ import lombok.Setter;
     public List<CommitLinesModel> linesModel;
     public CommitFileModel commitFileModel;
 
-    public CommitFileChanges() {}
+    private CommitFileChanges() {}
 
     public static Observable<CommitFileChanges> constructToObservable(@Nullable List<CommitFileModel> files) {
         if (files == null || files.isEmpty()) return Observable.empty();
@@ -56,7 +56,7 @@ import lombok.Setter;
         dest.writeParcelable(this.commitFileModel, flags);
     }
 
-    protected CommitFileChanges(Parcel in) {
+    private CommitFileChanges(Parcel in) {
         this.linesModel = in.createTypedArrayList(CommitLinesModel.CREATOR);
         this.commitFileModel = in.readParcelable(CommitFileModel.class.getClassLoader());
     }

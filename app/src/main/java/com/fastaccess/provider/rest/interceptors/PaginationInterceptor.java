@@ -7,14 +7,24 @@ import com.fastaccess.helper.InputHelper;
 
 import java.io.IOException;
 
+import okhttp3.Headers;
 import okhttp3.Interceptor;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 public class PaginationInterceptor implements Interceptor {
 
     @Override public Response intercept(@NonNull Chain chain) throws IOException {
-        Response response = chain.proceed(chain.request());
+        Request request = chain.request();
+        Response response = chain.proceed(request);
+        Headers headers = chain.request().headers();
+        if (headers != null) {
+            if ((headers.values("Accept").contains("application/vnd.github.html") ||
+                    headers.values("Accept").contains("application/vnd.github.VERSION.raw"))) {
+                return response;//return them as they are.
+            }
+        }
         if (response.isSuccessful()) {
             if (response.peekBody(1).string().equals("[")) {
                 String json = "{";

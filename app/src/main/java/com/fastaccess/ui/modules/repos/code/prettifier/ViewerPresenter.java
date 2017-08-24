@@ -90,7 +90,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                                 isMarkdown = fileModel.isMarkdown();
                                 sendToView(view -> {
                                     if (isRepo || isMarkdown) {
-                                        view.onSetMdText(downloadedStream, fileModel.getFullUrl());
+                                        view.onSetMdText(downloadedStream, fileModel.getFullUrl(), false);
                                     } else {
                                         view.onSetCode(downloadedStream);
                                     }
@@ -110,8 +110,8 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         Observable<String> streamObservable = MarkDownProvider.isMarkdown(url)
                                               ? RestProvider.getRepoService(isEnterprise()).getFileAsHtmlStream(url)
                                               : RestProvider.getRepoService(isEnterprise()).getFileAsStream(url);
-        makeRestCall(isRepo ? RestProvider.getRepoService(isEnterprise()).getReadmeHtml(url)
-                            : streamObservable, content -> {
+        Observable<String> observable = isRepo ? RestProvider.getRepoService(isEnterprise()).getReadmeHtml(url) : streamObservable;
+        makeRestCall(observable, content -> {
             downloadedStream = content;
             ViewerFile fileModel = new ViewerFile();
             fileModel.setContent(downloadedStream);
@@ -121,7 +121,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                 fileModel.setMarkdown(true);
                 isMarkdown = true;
                 isRepo = true;
-                sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
+                sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl, false));
             } else {
                 isMarkdown = MarkDownProvider.isMarkdown(url);
                 if (isMarkdown) {
@@ -141,7 +141,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         fileModel.setMarkdown(true);
                         fileModel.setContent(downloadedStream);
                         manageObservable(fileModel.save(fileModel).toObservable());
-                        sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl));
+                        sendToView(view -> view.onSetMdText(downloadedStream, htmlUrl == null ? url : htmlUrl, true));
                     });
                     return;
                 }

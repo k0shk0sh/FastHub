@@ -13,6 +13,8 @@ import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import java.util.ArrayList;
 import java.util.List;
 
+import pr.GetPinnedReposQuery;
+
 /**
  * Created by Kosh on 03 Dec 2016, 9:15 AM
  */
@@ -33,6 +35,8 @@ public interface ProfileOverviewMvp {
         void onUserNotFound();
 
         void onImagePosted(@Nullable String link);
+
+        void onInitPinnedRepos(@NonNull List<GetPinnedReposQuery.Node> nodes);
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
@@ -56,6 +60,8 @@ public interface ProfileOverviewMvp {
         @NonNull ArrayList<User> getOrgs();
 
         @NonNull ArrayList<ContributionsDay> getContributions();
+
+        @NonNull ArrayList<GetPinnedReposQuery.Node> getNodes();
 
         @NonNull String getLogin();
     }

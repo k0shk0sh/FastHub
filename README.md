@@ -32,7 +32,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Markdown and code highlighting support
   - Notifications overview and "Mark all as read"
   - Search users/orgs, repos, issues/prs & code.
-  - Pinned Repos
+  - FastHub & GitHub Pinned Repos
   - Trending
   - Wiki
 - **Repositories**
@@ -65,6 +65,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Comment on Commits/Gists
   - Manage Commit/Gist comments
   - Create/Delete Gists
+  - Edit Gist & Gist Files
   - React to Commit comments with reactions
   - Comment on line number in Files/Code changes.
 - **Orgs**
@@ -73,6 +74,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
     - Teams & Teams repos
     - Repos
 - **Users**
+  - GitHub Pinned Repos 
   - Follow/Unfollow users
   - View user feeds
   - Contribution graph.
@@ -177,7 +179,7 @@ Read the [**contribution guide**](.github/CONTRIBUTING.md) for more detailed inf
 [Google+](https://plus.google.com/+CookiconsDesign) | [Twitter](https://twitter.com/mcookie)  
 Designer website [Cookicons](https://cookicons.co/).  
 
-**OLD FastHub** logo is designed by **Kevin Aguilar**.  
+**OLD FastHub** logo was designed by **Kevin Aguilar**.  
 [Google+](https://plus.google.com/+KevinAguilarC) | [Twitter](https://twitter.com/kevttob)  
 Designer at [221 Pixels](https://www.221pixels.com/).  
 Laus Deo Semper

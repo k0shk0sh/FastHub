@@ -73,10 +73,10 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         getActivity().invalidateOptionsMenu();
     }
 
-    @Override public void onSetMdText(@NonNull String text, String baseUrl) {
+    @Override public void onSetMdText(@NonNull String text, String baseUrl, boolean replace) {
         webView.setVisibility(View.VISIBLE);
         loader.setIndeterminate(false);
-        webView.setGithubContent(text, baseUrl);
+        webView.setGithubContentWithReplace(text, baseUrl, replace);
         webView.setOnContentChangedListener(this);
         getActivity().invalidateOptionsMenu();
     }
@@ -179,7 +179,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
             getPresenter().onHandleIntent(getArguments());
         } else {
             if (getPresenter().isMarkDown()) {
-                onSetMdText(getPresenter().downloadedStream(), getPresenter().url());
+                onSetMdText(getPresenter().downloadedStream(), getPresenter().url(), false);
             } else {
                 onSetCode(getPresenter().downloadedStream());
             }
@@ -201,8 +201,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         }
     }
 
-    @Override
-    public void onStart() {
+    @Override public void onStart() {
         super.onStart();
         if (appBarLayout != null && !isAppBarListener) {
             appBarLayout.addOnOffsetChangedListener(this);
@@ -210,8 +209,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         }
     }
 
-    @Override
-    public void onStop() {
+    @Override public void onStop() {
         if (appBarLayout != null && isAppBarListener) {
             appBarLayout.removeOnOffsetChangedListener(this);
             isAppBarListener = false;
@@ -259,8 +257,7 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         }
     }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+    @Override public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
         verticalOffset = Math.abs(verticalOffset);
         if (verticalOffset == 0 || verticalOffset == appBarLayout.getTotalScrollRange())
             isAppBarMoving = false;

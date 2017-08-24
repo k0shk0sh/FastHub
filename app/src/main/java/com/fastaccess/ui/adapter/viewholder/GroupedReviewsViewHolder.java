@@ -7,11 +7,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.fastaccess.R;
-import com.fastaccess.data.dao.GroupedReviewModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.helper.ViewHelper;
-import com.fastaccess.ui.adapter.ReviewCommentsAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineMvp;
@@ -43,12 +41,8 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     private final int patchDeletionColor;
     private final int patchRefColor;
     private OnToggleView onToggleView;
-    private ReactionsCallback reactionsCallback;
     private String pathText;
     private PullRequestTimelineMvp.ReviewCommentCallback reviewCommentCallback;
-    private ViewGroup viewGroup;
-    private String repoOwner;
-    private String poster;
 
     @Override public void onClick(View v) {
         if (v.getId() == R.id.toggle || v.getId() == R.id.toggleHolder) {
@@ -67,15 +61,15 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
                                      String repoOwner, String poster) {
         super(itemView, adapter);
         this.onToggleView = onToggleView;
-        this.viewGroup = viewGroup;
-        this.reactionsCallback = reactionsCallback;
+        ViewGroup viewGroup1 = viewGroup;
+        ReactionsCallback reactionsCallback1 = reactionsCallback;
         this.reviewCommentCallback = reviewCommentCallback;
         patchAdditionColor = ViewHelper.getPatchAdditionColor(itemView.getContext());
         patchDeletionColor = ViewHelper.getPatchDeletionColor(itemView.getContext());
         patchRefColor = ViewHelper.getPatchRefColor(itemView.getContext());
         this.onToggleView = onToggleView;
-        this.repoOwner = repoOwner;
-        this.poster = poster;
+        String repoOwner1 = repoOwner;
+        String poster1 = poster;
         nestedRecyclerView.setNestedScrollingEnabled(false);
         addCommentPreview.setOnClickListener(this);
         toggle.setOnClickListener(this);
@@ -94,20 +88,20 @@ public class GroupedReviewsViewHolder extends BaseViewHolder<TimelineModel> impl
     }
 
     @Override public void bind(@NonNull TimelineModel model) {
-        GroupedReviewModel groupedReviewModel = model.getGroupedReview();
-        this.pathText = groupedReviewModel.getDiffText();
-        name.setText(groupedReviewModel.getPath());
-        stateImage.setImageResource(R.drawable.ic_eye);
-        if (groupedReviewModel.getComments() == null || groupedReviewModel.getComments().isEmpty()) {
-            nestedRecyclerView.setVisibility(View.GONE);
-            nestedRecyclerView.setAdapter(null);
-        } else {
-            nestedRecyclerView.setVisibility(View.VISIBLE);
-            nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this,
-                    onToggleView, reactionsCallback, repoOwner, poster));
-            nestedRecyclerView.addDivider();
-        }
-        onToggle(onToggleView.isCollapsed(getId()), false);
+//        GroupedReviewModel groupedReviewModel = model.getGroupedReview();
+//        this.pathText = groupedReviewModel.getDiffText();
+//        name.setText(groupedReviewModel.getPath());
+//        stateImage.setImageResource(R.drawable.ic_eye);
+//        if (groupedReviewModel.getComments() == null || groupedReviewModel.getComments().isEmpty()) {
+//            nestedRecyclerView.setVisibility(View.GONE);
+//            nestedRecyclerView.setAdapter(null);
+//        } else {
+//            nestedRecyclerView.setVisibility(View.VISIBLE);
+//            nestedRecyclerView.setAdapter(new ReviewCommentsAdapter(groupedReviewModel.getComments(), this,
+//                    onToggleView, reactionsCallback, repoOwner, poster));
+//            nestedRecyclerView.addDivider();
+//        }
+//        onToggle(onToggleView.isCollapsed(getId()), false);
     }
 
 

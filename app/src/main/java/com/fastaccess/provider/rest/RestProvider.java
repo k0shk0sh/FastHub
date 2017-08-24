@@ -58,10 +58,11 @@ public class RestProvider {
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC)
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .disableHtmlEscaping()
             .setPrettyPrinting()
             .create();
 
-    private static OkHttpClient provideOkHttpClient() {
+    public static OkHttpClient provideOkHttpClient() {
         if (okHttpClient == null) {
             OkHttpClient.Builder client = new OkHttpClient.Builder();
             if (BuildConfig.DEBUG) {

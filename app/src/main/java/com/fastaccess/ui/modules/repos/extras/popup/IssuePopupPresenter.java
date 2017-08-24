@@ -16,7 +16,7 @@ public class IssuePopupPresenter extends BasePresenter<IssuePopupMvp.View> imple
         CommentRequestModel requestModel = new CommentRequestModel();
         requestModel.setBody(text);
         makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(login, repoId, issueNumber, requestModel),
-                comment -> sendToView(view -> view.onSuccessfullySubmitted()));
+                comment -> sendToView(IssuePopupMvp.View::onSuccessfullySubmitted));
     }
 
 

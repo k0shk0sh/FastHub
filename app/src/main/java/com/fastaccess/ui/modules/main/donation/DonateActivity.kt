@@ -5,11 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.crashlytics.android.answers.Answers
-import com.crashlytics.android.answers.PurchaseEvent
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
 import com.fastaccess.helper.*
+import com.fastaccess.provider.fabric.FabricProvider
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -46,7 +45,7 @@ class DonateActivity : BaseActivity<BaseMvp.FAView, BasePresenter<BaseMvp.FAView
                 .purchase(ProductType.IN_APP, productKey, "inapp:com.fastaccess.github:" + productKey))
                 .subscribe({ p: Purchase?, throwable: Throwable? ->
                     if (throwable == null) {
-                        Answers.getInstance().logPurchase(PurchaseEvent().putItemName(productKey).putSuccess(true))
+                        FabricProvider.logPurchase(productKey)
                         showMessage(R.string.success, R.string.success_purchase_message)
                         enableProduct(productKey, applicationContext)
                         val intent = Intent()
