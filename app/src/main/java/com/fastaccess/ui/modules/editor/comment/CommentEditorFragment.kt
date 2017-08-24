@@ -1,11 +1,14 @@
 package com.fastaccess.ui.modules.editor.comment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.transition.TransitionManager
 import android.support.v4.app.FragmentManager
 import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import butterknife.BindView
 import butterknife.OnClick
@@ -32,6 +35,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     @BindView(R.id.commentBox) lateinit var commentBox: View
     @BindView(R.id.markdDownLayout) lateinit var markdDownLayout: MarkDownLayout
     @BindView(R.id.commentText) lateinit var commentText: MarkdownEditText
+    @BindView(R.id.markdownBtnHolder) lateinit var markdownBtnHolder: View
     private var commentListener: CommentListener? = null
 
     @OnClick(R.id.sendComment) internal fun onComment() {
@@ -39,6 +43,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
             commentListener?.onSendActionClicked(InputHelper.toString(getEditText()), arguments?.getBundle(BundleConstant.ITEM))
             getEditText().setText("")
             ViewHelper.hideKeyboard(getEditText())
+            arguments = null
         }
     }
 
@@ -49,6 +54,12 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
                 .put(BundleConstant.EXTRA, getEditText().text.toString())
                 .end())
         startActivityForResult(intent, BundleConstant.REQUEST_CODE)
+    }
+
+    @OnClick(R.id.toggleButtons) internal fun onToggleButtons(v: View) {
+        TransitionManager.beginDelayedTransition((view as ViewGroup?)!!)
+        v.isActivated = !v.isActivated
+        markdownBtnHolder.visibility = if (markdownBtnHolder.visibility == View.VISIBLE) View.GONE else View.VISIBLE
     }
 
     override fun onAttach(context: Context?) {
@@ -84,6 +95,15 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
 
     override fun onEmojiAdded(emoji: Emoji?) = markdDownLayout.onEmojiAdded(emoji)
 
+    @SuppressLint("SetTextI18n")
+    fun onCreateComment(text: String, bundle: Bundle?) {
+        arguments = Bundler.start().put(BundleConstant.ITEM, bundle).end()
+        commentText.setText("${if (commentText.text.isNullOrBlank()) "" else "${commentText.text} "}$text")
+        getEditText().setSelection(getEditText().text.length)
+        commentText.requestFocus()
+        ViewHelper.showKeyboard(commentText)
+    }
+
     fun onAddUserName(username: String) {
         getEditText().setText(if (getEditText().text.isNullOrBlank()) {
             "@$username"
@@ -94,6 +114,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     }
 
     interface CommentListener {
+        fun onCreateComment(text: String, bundle: Bundle?) {}
         fun onSendActionClicked(text: String, bundle: Bundle?)
         fun onTagUser(username: String)
     }

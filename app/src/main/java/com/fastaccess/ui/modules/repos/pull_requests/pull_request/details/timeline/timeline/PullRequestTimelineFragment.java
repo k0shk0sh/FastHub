@@ -102,8 +102,8 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
             throw new NullPointerException("PullRequest went missing!!!");
         }
         boolean isMerged = getPresenter().isMerged(getPullRequest());
-        adapter = new IssuesTimelineAdapter(getPresenter().getEvents(),this,true,
-                this,getPullRequest().getLogin(),getPullRequest().getUser().getLogin());
+        adapter = new IssuesTimelineAdapter(getPresenter().getEvents(), this, true,
+                this, isMerged, getPresenter(), getPullRequest().getLogin(), getPullRequest().getUser().getLogin());
         stateLayout.setEmptyText(R.string.no_events);
         recycler.setEmptyView(stateLayout, refresh);
         refresh.setOnRefreshListener(this);
@@ -244,24 +244,24 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
         getPresenter().onHandleComment(text, bundle);
     }
 
-    @Override public void onReplyOrCreateReview(@Nullable User user, String message, int groupPosition, int childPosition,
-                                                @NonNull EditReviewCommentModel model) {
-        Intent intent = new Intent(getContext(), EditorActivity.class);
-        if (getPullRequest() == null) return;
-        intent.putExtras(Bundler
-                .start()
-                .put(BundleConstant.ID, getPullRequest().getRepoId())
-                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
-                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
-                .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
-                .put(BundleConstant.REVIEW_EXTRA, model)
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.NEW_REVIEW_COMMENT_EXTRA)
-//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
-                .put("message", message)
-                .end());
-        View view = getFromView();
-        ActivityHelper.startReveal(this, intent, view, BundleConstant.REVIEW_REQUEST_CODE);
+    @Override public void onReplyOrCreateReview(@Nullable User user, @Nullable Bundle bundle) {
+        if (commentsCallback != null) {
+            if (user != null) commentsCallback.onTagUser(user.getLogin());
+            commentsCallback.onCreateComment("", bundle);
+        }
+    }
+
+    @Override public void onAddReviewComment(@Nullable ReviewCommentModel reviewCommentModel, @NonNull EditReviewCommentModel commentModel) {
+        hideProgress();
+        if (reviewCommentModel != null) {
+            TimelineModel timelineModel = adapter.getItem(commentModel.getGroupPosition());
+            if (timelineModel.getGroupedReviewModel() != null && timelineModel.getGroupedReviewModel().getComments() != null) {
+                timelineModel.getGroupedReviewModel().getComments().add(reviewCommentModel);
+                adapter.notifyItemChanged(commentModel.getGroupPosition());
+            } else {
+                onRefresh();
+            }
+        }
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId,
@@ -331,17 +331,17 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                         return;
                     }
                     if (isNew) {
-//                        adapter.addItem(TimelineModel.constructComment(commentsModel));
-//                        recycler.smoothScrollToPosition(adapter.getItemCount());
+                        adapter.addItem(TimelineModel.constructComment(commentsModel));
+                        recycler.smoothScrollToPosition(adapter.getItemCount());
                     } else {
-//                        int position = adapter.getItem(TimelineModel.constructComment(commentsModel));
-//                        if (position != -1) {
-//                            adapter.swapItem(TimelineModel.constructComment(commentsModel), position);
-//                            recycler.smoothScrollToPosition(position);
-//                        } else {
-//                            adapter.addItem(TimelineModel.constructComment(commentsModel));
-//                            recycler.smoothScrollToPosition(adapter.getItemCount());
-//                        }
+                        int position = adapter.getItem(TimelineModel.constructComment(commentsModel));
+                        if (position != -1) {
+                            adapter.swapItem(TimelineModel.constructComment(commentsModel), position);
+                            recycler.smoothScrollToPosition(position);
+                        } else {
+                            adapter.addItem(TimelineModel.constructComment(commentsModel));
+                            recycler.smoothScrollToPosition(adapter.getItemCount());
+                        }
                     }
                 } else if (requestCode == BundleConstant.REVIEW_REQUEST_CODE) {
                     EditReviewCommentModel commentModel = bundle.getParcelable(BundleConstant.ITEM);
@@ -350,21 +350,22 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                         return;
                     }
                     TimelineModel timelineModel = adapter.getItem(commentModel.getGroupPosition());
-//                    if (isNew) {
-//                        if (timelineModel.getGroupedReview() != null && timelineModel.getGroupedReview().getComments() != null) {
-//                            timelineModel.getGroupedReview().getComments().add(commentModel.getCommentModel());
-//                            adapter.notifyItemChanged(commentModel.getGroupPosition());
-//                        } else {
-//                            onRefresh();
-//                        }
-//                    } else {
-//                        if (timelineModel.getGroupedReview() != null && timelineModel.getGroupedReview().getComments() != null) {
-//                            timelineModel.getGroupedReview().getComments().set(commentModel.getCommentPosition(), commentModel.getCommentModel());
-//                            adapter.notifyItemChanged(commentModel.getGroupPosition());
-//                        } else {
-//                            onRefresh();
-//                        }
-//                    }
+                    if (isNew) {
+                        if (timelineModel.getGroupedReviewModel() != null && timelineModel.getGroupedReviewModel().getComments() != null) {
+                            timelineModel.getGroupedReviewModel().getComments().add(commentModel.getCommentModel());
+                            adapter.notifyItemChanged(commentModel.getGroupPosition());
+                        } else {
+                            onRefresh();
+                        }
+                    } else {
+                        if (timelineModel.getGroupedReviewModel() != null && timelineModel.getGroupedReviewModel().getComments() != null) {
+                            timelineModel.getGroupedReviewModel().getComments().set(commentModel.getCommentPosition(), commentModel.getCommentModel
+                                    ());
+                            adapter.notifyItemChanged(commentModel.getGroupPosition());
+                        } else {
+                            onRefresh();
+                        }
+                    }
                 }
             } else {
                 onRefresh(); // bundle size is too large? refresh the api

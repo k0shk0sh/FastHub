@@ -374,6 +374,8 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
         commentEditorFragment.onAddUserName(username);
     }
 
+    @Override public void onCreateComment(String text, Bundle bundle) {}
+
     private void hideShowFab() {
         if (getPresenter().isLocked() && !getPresenter().isOwner()) {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();

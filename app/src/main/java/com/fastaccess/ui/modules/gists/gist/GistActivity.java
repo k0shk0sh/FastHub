@@ -286,4 +286,8 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
     }
+
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
+    }
 }

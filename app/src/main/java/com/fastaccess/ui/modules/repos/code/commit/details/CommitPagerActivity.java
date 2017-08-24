@@ -264,4 +264,8 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
     }
+
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
+    }
 }

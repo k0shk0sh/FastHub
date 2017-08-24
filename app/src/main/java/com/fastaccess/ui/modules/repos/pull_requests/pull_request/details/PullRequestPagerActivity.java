@@ -438,6 +438,10 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         commentEditorFragment.onAddUserName(username);
     }
 
+    @Override public void onCreateComment(@NonNull String text, @Nullable Bundle bundle) {
+        commentEditorFragment.onCreateComment(text, bundle);
+    }
+
     protected void hideAndClearReviews() {
         onUpdateTimeline();
         getPresenter().getCommitComment().clear();

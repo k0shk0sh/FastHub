@@ -12,7 +12,6 @@ import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.model.User;
-import com.fastaccess.data.dao.timeline.PullRequestTimelineModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.ReactionsProvider;
@@ -55,9 +54,6 @@ public interface PullRequestTimelineMvp {
 
         void onReply(User user, String message);
 
-        void onReplyOrCreateReview(@Nullable User user, @Nullable String message, int groupPosition, int childPosition,
-                                   @NonNull EditReviewCommentModel model);
-
         void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId, long idOrNumber, @ReactionsProvider
                 .ReactionType int reactionType);
 
@@ -74,6 +70,10 @@ public interface PullRequestTimelineMvp {
         @CallOnMainThread void showReload();
 
         void onHandleComment(String text, @Nullable Bundle bundle);
+
+        void onReplyOrCreateReview(@Nullable User user, @Nullable Bundle bundle);
+
+        void onAddReviewComment(@Nullable ReviewCommentModel reviewCommentModel, @NonNull EditReviewCommentModel commentModel);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,

@@ -12,6 +12,7 @@ import com.fastaccess.ui.adapter.viewholder.CommitThreadViewHolder;
 import com.fastaccess.ui.adapter.viewholder.GroupedReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueDetailsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.IssueTimelineViewHolder;
+import com.fastaccess.ui.adapter.viewholder.PullStatusViewHolder;
 import com.fastaccess.ui.adapter.viewholder.ReviewsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.adapter.viewholder.UnknownTypeViewHolder;
@@ -36,9 +37,9 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
     private final String repoOwner;
     private final String poster;
 
-    private IssuesTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
-                                  ReactionsCallback reactionsCallback, boolean isMerged,
-                                  ReviewCommentCallback reviewCommentCallback, String repoOwner, String poster) {
+    public IssuesTimelineAdapter(@NonNull List<TimelineModel> data, OnToggleView onToggleView, boolean showEmojies,
+                                 ReactionsCallback reactionsCallback, boolean isMerged,
+                                 ReviewCommentCallback reviewCommentCallback, String repoOwner, String poster) {
         super(data);
         this.onToggleView = onToggleView;
         this.showEmojies = showEmojies;
@@ -68,6 +69,8 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
                     reviewCommentCallback, repoOwner, poster);
         } else if (viewType == TimelineModel.COMMIT_COMMENTS) {
             return CommitThreadViewHolder.Companion.newInstance(parent, this, onToggleView);
+        } else if (viewType == TimelineModel.STATUS) {
+            return PullStatusViewHolder.newInstance(parent);
         }
         return TimelineCommentsViewHolder.newInstance(parent, this, onToggleView, showEmojies,
                 reactionsCallback, repoOwner, poster);
@@ -87,6 +90,8 @@ public class IssuesTimelineAdapter extends BaseRecyclerAdapter<TimelineModel, Ba
             ((ReviewsViewHolder) holder).bind(model);
         } else if (model.getType() == TimelineModel.COMMIT_COMMENTS) {
             ((CommitThreadViewHolder) holder).bind(model);
+        } else if (model.getType() == TimelineModel.STATUS && model.getStatus() != null) {
+            ((PullStatusViewHolder) holder).bind(model.getStatus());
         }
         if (model.getType() != TimelineModel.COMMENT) {
             StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams) holder.itemView.getLayoutParams();

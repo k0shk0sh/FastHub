@@ -23,6 +23,7 @@ import com.fastaccess.data.dao.timeline.SourceModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -35,6 +36,7 @@ import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivity;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -141,7 +143,11 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     model.setCommentPosition(-1);
                     model.setGroupPosition(position);
                     model.setInReplyTo(reviewModel.getId());
-                    getView().onReplyOrCreateReview(null, null, position, -1, model);
+                    Bundle bundle = Bundler.start()
+                            .put(BundleConstant.REVIEW_EXTRA, model)
+                            .put(BundleConstant.EXTRA_TWO, position)
+                            .end();
+                    if (getView() != null) getView().onReplyOrCreateReview(null, bundle);
                 }
             }
         }
@@ -197,7 +203,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             if (booleanResponse.code() == 204) {
                                 Comment comment = new Comment();
                                 comment.setId(commId);
-//                                view.onRemove(TimelineModel.constructComment(comment));
+                                view.onRemove(TimelineModel.constructComment(comment));
                             } else {
                                 view.showMessage(R.string.error, R.string.error_deleting_comment);
                             }
@@ -246,7 +252,17 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                         pullRequest.getNumber(), commentRequestModel), comment -> {
                 });
             } else {
-
+                EditReviewCommentModel commentModel = bundle.getParcelable(BundleConstant.REVIEW_EXTRA);
+                if (commentModel != null) {
+                    CommentRequestModel commentRequestModel = new CommentRequestModel();
+                    commentRequestModel.setBody(text);
+                    commentRequestModel.setInReplyTo(commentModel.getInReplyTo());
+                    makeRestCall(RestProvider.getReviewService(isEnterprise())
+                                    .submitComment(pullRequest.getLogin(), pullRequest.getRepoId(), pullRequest.getNumber(), commentRequestModel),
+                            reviewCommentModel -> {
+                                sendToView(view -> view.onAddReviewComment(reviewCommentModel, commentModel));
+                            });
+                }
             }
         }
     }
@@ -280,7 +296,12 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     model.setGroupPosition(groupPosition);
                     model.setCommentPosition(commentPosition);
                     model.setInReplyTo(comment.getId());
-                    getView().onReplyOrCreateReview(comment.getUser(), comment.getBodyHtml(), groupPosition, commentPosition, model);
+                    Bundle bundle = Bundler.start()
+                            .put(BundleConstant.REVIEW_EXTRA, model)
+                            .put(BundleConstant.EXTRA_TWO, groupPosition)
+                            .put(BundleConstant.EXTRA_THREE, commentPosition)
+                            .end();
+                    getView().onReplyOrCreateReview(comment.getUser(), bundle);
                 } else if (item1.getItemId() == R.id.edit) {
                     getView().onEditReviewComment(comment, groupPosition, commentPosition);
                 } else if (item1.getItemId() == R.id.share) {
@@ -345,14 +366,19 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         setCurrentPage(page);
         if (parameter.getHead() != null) {
             Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService(isEnterprise())
-                            .getTimeline(login, repoId, number, page), RestProvider.getReviewService(isEnterprise()).getPrReviewComments(login,
-                    repoId, number),
-                    (response, comments) -> {
+                            .getTimeline(login, repoId, number, page), RestProvider.getReviewService(isEnterprise())
+                            .getPrReviewComments(login, repoId, number),
+                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, parameter.getHead().getRef()),
+                    (response, comments, status) -> {
                         if (response != null) {
                             lastPage = response.getLast();
-                            return TimelineConverter.INSTANCE.convert(response.getItems(), comments);
+                            List<TimelineModel> models = TimelineConverter.INSTANCE.convert(response.getItems(), comments);
+                            if (page == 1 && status != null) {
+                                models.add(0, new TimelineModel(status));
+                            }
+                            return models;
                         } else {
-                            return new ArrayList<TimelineModel>();
+                            return Collections.emptyList();
                         }
                     });
             makeRestCall(observable, timeline -> sendToView(view -> view.onNotifyAdapter(timeline, page)));

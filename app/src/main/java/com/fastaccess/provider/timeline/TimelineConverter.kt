@@ -85,6 +85,7 @@ object TimelineConverter {
                                         grouped.path = it.path
                                         grouped.position = it.position
                                         grouped.comments = arrayListOf(it)
+                                        grouped.id = it.id
                                         val groupTimeline = TimelineModel()
                                         groupTimeline.event = IssueEventType.GROUPED
                                         groupTimeline.groupedReviewModel = grouped
@@ -109,7 +110,7 @@ object TimelineConverter {
                 list.add(timeline)
             }
         }
-        return list.filter { filterEvents(it.event) }
+        return list.filter({filterEvents(it.event)})
     }
 
     private fun getCommit(jsonObject: JsonObject, gson: Gson): PullRequestCommitModel? {

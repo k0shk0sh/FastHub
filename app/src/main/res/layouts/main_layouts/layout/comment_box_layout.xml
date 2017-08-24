@@ -11,13 +11,15 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@drawable/bbn_top_shadow"/>
+        android:background="@drawable/toolbar_shadow_up"/>
 
     <LinearLayout
+        android:id="@+id/markdownBtnHolder"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bottom_border"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone">
 
         <com.fastaccess.ui.widgets.markdown.MarkDownLayout
             android:id="@+id/markdDownLayout"
@@ -34,7 +36,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@color/transparent"
-            android:contentDescription="@string/Expand"
+            android:contentDescription="@string/expand"
             android:foreground="?selectableItemBackgroundBorderless"
             android:padding="@dimen/spacing_micro"
             android:src="@drawable/ic_fullscreen"/>
@@ -45,6 +47,19 @@
         android:layout_height="?actionBarSize"
         android:orientation="horizontal"
         tools:showIn="@layout/issue_pager_activity">
+
+        <ImageButton
+            android:id="@+id/toggleButtons"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="?colorPrimaryDark"
+            android:contentDescription="@string/expand"
+            android:foreground="?selectableItemBackgroundBorderless"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingStart="@dimen/spacing_normal"
+            android:rotation="180"
+            android:src="@drawable/arrow_toggle_drawable"
+            android:tint="?colorAccent"/>
 
         <com.fastaccess.ui.widgets.markdown.MarkdownEditText
             android:id="@+id/commentText"
@@ -66,8 +81,8 @@
             android:background="?colorPrimaryDark"
             android:contentDescription="@string/comment"
             android:foreground="?selectableItemBackgroundBorderless"
-            android:paddingEnd="@dimen/spacing_xs_large"
-            android:paddingStart="@dimen/spacing_xs_large"
+            android:paddingEnd="@dimen/spacing_normal"
+            android:paddingStart="@dimen/spacing_normal"
             android:src="@drawable/ic_send"
             android:tint="?colorAccent"/>
     </LinearLayout>

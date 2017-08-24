@@ -29,6 +29,7 @@ import lombok.Setter;
     public static final int REVIEW = 4;
     public static final int GROUP = 5;
     public static final int COMMIT_COMMENTS = 6;
+    public static final int STATUS = 7;
 
     private IssueEventType event;
     private Comment comment;
@@ -76,6 +77,7 @@ import lombok.Setter;
             }
         } else {
             if (issue != null || pullRequest != null) return HEADER;
+            else if (status != null) return STATUS;
             return 0;
         }
     }
@@ -103,20 +105,14 @@ import lombok.Setter;
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TimelineModel that = (TimelineModel) o;
-        if (comment != null) {
-            return comment.equals(that.comment);
-        } else if (review != null) {
-            return review.equals(that.review);
-        }
-        return false;
+        TimelineModel model = (TimelineModel) o;
+        return (comment != null && model.getComment() != null) && (comment.getId() == model.comment.getId());
     }
 
     @Override public int hashCode() {
-        if (comment != null) return comment.hashCode();
-        else if (review != null) return review.hashCode();
-        else return -1;
+        return comment != null ? (int) comment.getId() : 0;
     }
+
 
     public IssueEventType getEvent() {
         return event;
