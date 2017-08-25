@@ -38,18 +38,15 @@ class SearchReposPresenter extends BasePresenter<SearchReposMvp.View> implements
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         setCurrentPage(page);
-        if (page > lastPage || lastPage == 0) {
+        if (page > lastPage || lastPage == 0 || parameter == null) {
             sendToView(SearchReposMvp.View::hideProgress);
-            return;
-        }
-        if (parameter == null) {
-            return;
+            return false;
         }
         makeRestCall(RestProvider.getSearchService(isEnterprise()).searchRepositories(parameter, page),
                 response -> {
@@ -59,6 +56,7 @@ class SearchReposPresenter extends BasePresenter<SearchReposMvp.View> implements
                         view.onSetTabCount(response.getTotalCount());
                     });
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Repo> getRepos() {

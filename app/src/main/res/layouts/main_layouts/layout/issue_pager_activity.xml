@@ -2,16 +2,16 @@
 <android.support.v4.widget.DrawerLayout
     android:id="@+id/drawer"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <android.support.design.widget.CoordinatorLayout
@@ -91,8 +91,15 @@
 
         </android.support.design.widget.CoordinatorLayout>
 
-        <include layout="@layout/add_banner_layout"/>
+        <fragment
+            android:id="@+id/commentFragment"
+            android:name="com.fastaccess.ui.modules.editor.comment.CommentEditorFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:layout="@layout/comment_box_layout"/>
+
     </LinearLayout>
 
     <include layout="@layout/nav_menu_layout"/>
+
 </android.support.v4.widget.DrawerLayout>

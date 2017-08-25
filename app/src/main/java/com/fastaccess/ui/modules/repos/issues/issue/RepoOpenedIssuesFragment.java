@@ -27,6 +27,7 @@ import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -40,6 +41,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<IssueState> onLoadMore;
     private IssuesAdapter adapter;
     private RepoIssuesPagerMvp.View pagerCallback;
@@ -110,6 +112,7 @@ public class RepoOpenedIssuesFragment extends BaseFragment<RepoIssuesMvp.View, R
         } else if (getPresenter().getIssues().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

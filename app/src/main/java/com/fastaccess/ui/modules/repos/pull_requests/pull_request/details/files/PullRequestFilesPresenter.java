@@ -61,7 +61,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable Object parameter) {
+    @Override public boolean onCallApi(int page, @Nullable Object parameter) {
         if (page == 1) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
@@ -69,9 +69,9 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(PullRequestFilesMvp.View::hideProgress);
-            return;
+            return false;
         }
-        if (repoId == null || login == null) return;
+        if (repoId == null || login == null) return false;
         makeRestCall(RestProvider.getPullRequestService(isEnterprise()).getPullRequestFiles(login, repoId, number, page)
                         .flatMap(commitFileModelPageable -> {
                             if (commitFileModelPageable != null) {
@@ -83,6 +83,7 @@ class PullRequestFilesPresenter extends BasePresenter<PullRequestFilesMvp.View> 
                             return Observable.empty();
                         }),
                 response -> sendToView(view -> view.onNotifyAdapter(response, page)));
+        return true;
     }
 
     @Override public void onFragmentCreated(@NonNull Bundle bundle) {

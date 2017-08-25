@@ -116,6 +116,7 @@
 
     <string-array name="languages_array" translatable="false">
         <item>English</item>
+        <item>Français</item>
         <item>Deutsch</item>
         <item>Türk</item>
         <item>简体中文</item>
@@ -133,6 +134,7 @@
 
     <string-array name="languages_array_values" translatable="false">
         <item>en</item>
+        <item>fr</item>
         <item>de</item>
         <item>tr</item>
         <item>zh-rCN</item>

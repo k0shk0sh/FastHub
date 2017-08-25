@@ -21,7 +21,7 @@ import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.HtmlHelper;
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
-import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.adapter.callback.OnToggleView;
 import com.fastaccess.ui.adapter.callback.ReactionsCallback;
 import com.fastaccess.ui.widgets.AvatarLayout;
@@ -56,6 +56,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
     @BindView(R.id.comment) FontTextView comment;
     @BindView(R.id.reactionsText) FontTextView reactionsText;
     @BindView(R.id.owner) FontTextView owner;
+    @BindView(R.id.pathText) FontTextView pathText;
     private OnToggleView onToggleView;
     private boolean showEmojies;
     private ReactionsCallback reactionsCallback;
@@ -76,7 +77,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         }
     }
 
-    private TimelineCommentsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
+    private TimelineCommentsViewHolder(@NonNull View itemView, @NonNull ViewGroup viewGroup, @Nullable IssuesTimelineAdapter adapter,
                                        @NonNull OnToggleView onToggleView, boolean showEmojies, @NonNull ReactionsCallback reactionsCallback,
                                        String repoOwner, String poster) {
         super(itemView, adapter);
@@ -89,6 +90,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         itemView.setOnClickListener(null);
         itemView.setOnLongClickListener(null);
         commentMenu.setOnClickListener(this);
+        commentMenu.setOnLongClickListener(this);
         toggleHolder.setOnClickListener(this);
         toggle.setOnClickListener(this);
         laugh.setOnClickListener(this);
@@ -105,7 +107,7 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
         heart.setOnClickListener(this);
     }
 
-    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuePullsTimelineAdapter adapter,
+    public static TimelineCommentsViewHolder newInstance(@NonNull ViewGroup viewGroup, @Nullable IssuesTimelineAdapter adapter,
                                                          @NonNull OnToggleView onToggleView, boolean showEmojies,
                                                          @NonNull ReactionsCallback reactionsCallback, String repoOwner, String poster) {
         return new TimelineCommentsViewHolder(getView(viewGroup, R.layout.comments_row_item), viewGroup, adapter,
@@ -136,14 +138,17 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             avatar.setUrl(null, null, false, false);
             name.setText(null);
         }
+        if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
+            pathText.setVisibility(View.VISIBLE);
+            pathText.setText(String.format("Commented on %s#L%s", commentsModel.getPath(),
+                    commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()));
+        } else {
+            pathText.setText("");
+            pathText.setVisibility(View.GONE);
+        }
         if (!InputHelper.isEmpty(commentsModel.getBodyHtml())) {
             String body = commentsModel.getBodyHtml();
-            if (!InputHelper.isEmpty(commentsModel.getPath()) && commentsModel.getPosition() > 0) {
-                body = "<small color='grey'><i>Commented at <b>line(" +
-                        (commentsModel.getLine() > 0 ? commentsModel.getLine() : commentsModel.getPosition()) + ")</b> in "
-                        + commentsModel.getPath() + "</i></small><br/>" + body;
-            }
-            HtmlHelper.htmlIntoTextView(comment, body);
+            HtmlHelper.htmlIntoTextView(comment, body, viewGroup.getWidth());
         } else {
             comment.setText("");
         }

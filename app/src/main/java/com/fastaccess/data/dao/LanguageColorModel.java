@@ -24,7 +24,7 @@ import lombok.ToString;
 
     public LanguageColorModel() {}
 
-    protected LanguageColorModel(Parcel in) {
+    private LanguageColorModel(Parcel in) {
         this.color = in.readString();
         this.url = in.readString();
     }

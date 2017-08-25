@@ -16,6 +16,7 @@ import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class ProfileFollowingFragment extends BaseFragment<ProfileFollowingMvp.V
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<String> onLoadMore;
     private UsersAdapter adapter;
 
@@ -73,6 +75,7 @@ public class ProfileFollowingFragment extends BaseFragment<ProfileFollowingMvp.V
         if (getPresenter().getFollowing().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public ProfileFollowingPresenter providePresenter() {
@@ -81,7 +84,7 @@ public class ProfileFollowingFragment extends BaseFragment<ProfileFollowingMvp.V
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

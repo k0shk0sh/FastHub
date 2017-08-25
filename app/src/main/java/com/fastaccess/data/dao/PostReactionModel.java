@@ -20,7 +20,7 @@ import lombok.Setter;
 
     @Override public void writeToParcel(Parcel dest, int flags) {dest.writeString(this.content);}
 
-    protected PostReactionModel(Parcel in) {this.content = in.readString();}
+    private PostReactionModel(Parcel in) {this.content = in.readString();}
 
     public static final Parcelable.Creator<PostReactionModel> CREATOR = new Parcelable.Creator<PostReactionModel>() {
         @Override public PostReactionModel createFromParcel(Parcel source) {return new PostReactionModel(source);}

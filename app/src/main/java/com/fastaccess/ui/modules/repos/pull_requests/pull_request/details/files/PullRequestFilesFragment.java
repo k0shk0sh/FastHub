@@ -25,6 +25,7 @@ import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -42,6 +43,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
 
     private PullRequestFilesMvp.PatchCallback viewCallback;
@@ -107,6 +109,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         } else if (getPresenter().getFiles().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public PullRequestFilesPresenter providePresenter() {

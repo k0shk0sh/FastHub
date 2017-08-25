@@ -20,6 +20,7 @@ import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,7 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Integer, User> selectionMap;
 
     private AssigneesAdapter adapter;
@@ -88,6 +90,7 @@ public class AssigneesDialogFragment extends BaseDialogFragment<AssigneesMvp.Vie
         title.setText(isAssinees ? R.string.assignees : R.string.reviewers);
         adapter = new AssigneesAdapter(getPresenter().getList(), this);
         recycler.setAdapter(adapter);
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public AssigneesPresenter providePresenter() {

@@ -37,7 +37,7 @@ public class BranchesModel implements Parcelable {
         dest.writeByte(this.isTag ? (byte) 1 : (byte) 0);
     }
 
-    protected BranchesModel(Parcel in) {
+    private BranchesModel(Parcel in) {
         this.name = in.readString();
         this.commit = in.readParcelable(Commit.class.getClassLoader());
         this.protectedBranch = in.readByte() != 0;

@@ -39,7 +39,7 @@ import lombok.Setter;
         dest.writeLong(this.updatedAt != null ? this.updatedAt.getTime() : -1);
     }
 
-    protected StatusesModel(Parcel in) {
+    private StatusesModel(Parcel in) {
         this.url = in.readString();
         this.id = in.readInt();
         int tmpState = in.readInt();

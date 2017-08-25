@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import com.fastaccess.data.dao.model.Gist;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.BundleConstant;
+import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
@@ -40,11 +41,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
             checkStarring(gist.getGistId());
             sendToView(GistMvp.View::onSetupDetails);
         } else if (gistId != null) {
-            checkStarring(gistId);
-            makeRestCall(RestProvider.getGistService(isEnterprise()).getGist(gistId), gistsModel -> {
-                this.gist = gistsModel;
-                sendToView(GistMvp.View::onSetupDetails);
-            });
+            callApi();
         } else {
             sendToView(GistMvp.View::onSetupDetails);
         }
@@ -61,9 +58,7 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
                         sendToView(GistMvp.View::onErrorDeleting);
                     }
                 })
-                .subscribe(booleanResponse -> {/**/}, throwable -> {
-                    sendToView(view -> view.showErrorMessage(throwable.getMessage()));
-                }));
+                .subscribe(booleanResponse -> {/**/}, throwable -> sendToView(view -> view.showErrorMessage(throwable.getMessage()))));
     }
 
     @Override public boolean isOwner() {
@@ -104,6 +99,16 @@ class GistPresenter extends BasePresenter<GistMvp.View> implements GistMvp.Prese
                         this.gist = gistsModel;
                         sendToView(GistMvp.View::onSetupDetails);
                     }));
+        }
+    }
+
+    @Override public void callApi() {
+        if (!InputHelper.isEmpty(gistId)) {
+            checkStarring(gistId);
+            makeRestCall(RestProvider.getGistService(isEnterprise()).getGist(gistId), gistsModel -> {
+                this.gist = gistsModel;
+                sendToView(GistMvp.View::onSetupDetails);
+            });
         }
     }
 }

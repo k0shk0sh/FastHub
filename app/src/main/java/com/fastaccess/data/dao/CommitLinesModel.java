@@ -100,7 +100,7 @@ import static com.fastaccess.ui.widgets.DiffLineSpan.HUNK_TITLE;
         dest.writeInt(this.position);
     }
 
-    protected CommitLinesModel(Parcel in) {
+    private CommitLinesModel(Parcel in) {
         this.text = in.readString();
         this.color = in.readInt();
         this.leftLineNo = in.readInt();

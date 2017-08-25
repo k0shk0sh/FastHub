@@ -185,7 +185,7 @@ public class Bundler {
     /**
      * Get the underlying start.
      */
-    public Bundle get() {
+    private Bundle get() {
         return bundle;
     }
 

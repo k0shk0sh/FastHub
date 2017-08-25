@@ -18,6 +18,7 @@ import com.fastaccess.ui.adapter.UsersAdapter;
 import com.fastaccess.ui.base.BaseDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class RepoMiscDialogFragment extends BaseDialogFragment<RepoMiscMVp.View,
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @BindView(R.id.toolbar) Toolbar toolbar;
     private OnLoadMore<Integer> onLoadMore;
     private UsersAdapter adapter;
@@ -100,11 +102,12 @@ public class RepoMiscDialogFragment extends BaseDialogFragment<RepoMiscMVp.View,
         if (getPresenter().getList().isEmpty() && !getPresenter().isApiCalled()) {
             getPresenter().onCallApi(1, null);
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void showProgress(@StringRes int resId) {
 
-refresh.setRefreshing(true);
+        refresh.setRefreshing(true);
 
         stateLayout.showProgress();
     }

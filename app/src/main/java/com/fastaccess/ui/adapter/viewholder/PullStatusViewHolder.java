@@ -1,6 +1,5 @@
 package com.fastaccess.ui.adapter.viewholder;
 
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
@@ -78,6 +77,7 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
                         builder.append(ContextCompat.getDrawable(statuses.getContext(), statusesModel.getState().getDrawableRes()));
                         if (!InputHelper.isEmpty(statusesModel.getTargetUrl())) {
                             builder.append(" ")
+                                    .append(statusesModel.getContext() != null ? statusesModel.getContext() + " " : "")
                                     .url(statusesModel.getDescription(), v -> SchemeParser.launchUri(v.getContext(), statusesModel.getTargetUrl()))
                                     .append("\n");
                         } else {

@@ -83,7 +83,11 @@ public class MessageDialogView extends BaseBottomSheetDialog {
         } else {
             message.setText(msg);
         }
-        if (bundle != null) initButton(bundle);
+        if (bundle != null) {
+            boolean hideCancel = bundle.getBoolean("hideCancel");
+            if (hideCancel) cancel.setVisibility(View.GONE);
+            initButton(bundle);
+        }
     }
 
     private void initButton(@NonNull Bundle bundle) {
@@ -103,11 +107,11 @@ public class MessageDialogView extends BaseBottomSheetDialog {
                 } else if (!InputHelper.isEmpty(primaryExtra)) {
                     ok.setText(primaryExtra);
                     if (!InputHelper.isEmpty(secondaryExtra)) cancel.setText(secondaryExtra);
+                    ok.setVisibility(View.VISIBLE);
+                    cancel.setVisibility(View.VISIBLE);
                 }
             }
         }
-        boolean hideCancel = bundle.getBoolean("hideCancel");
-        if (hideCancel) cancel.setVisibility(View.GONE);
     }
 
     @Override protected void onDismissedByScrolling() {

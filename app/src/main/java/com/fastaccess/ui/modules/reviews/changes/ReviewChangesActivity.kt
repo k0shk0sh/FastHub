@@ -10,13 +10,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Spinner
+import butterknife.BindView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.ReviewRequestModel
 import com.fastaccess.helper.*
 import com.fastaccess.provider.theme.ThemeEngine
 import com.fastaccess.ui.base.BaseActivity
-import com.fastaccess.ui.widgets.bindView
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment
 
 /**
@@ -25,9 +25,9 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment
 class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesPresenter>(), ReviewChangesMvp.View {
 
 
-    val toolbar: Toolbar by bindView(R.id.toolbar)
-    val spinner: Spinner by bindView(R.id.reviewMethod)
-    val editText: TextInputLayout by bindView(R.id.editText)
+    @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
+    @BindView(R.id.reviewMethod) lateinit var spinner: Spinner
+    @BindView(R.id.editText) lateinit var editText: TextInputLayout
 
     @State var reviewRequest: ReviewRequestModel? = null
     @State var repoId: String? = null

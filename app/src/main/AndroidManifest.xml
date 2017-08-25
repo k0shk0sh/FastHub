@@ -83,7 +83,8 @@
         <activity
             android:name=".ui.modules.repos.issues.issue.details.IssuePagerActivity"
             android:label="@string/issue"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
@@ -103,7 +104,8 @@
         <activity
             android:name=".ui.modules.repos.code.commit.details.CommitPagerActivity"
             android:label="@string/commit"
-            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
@@ -115,7 +117,8 @@
         <activity
             android:name=".ui.modules.editor.EditorActivity"
             android:configChanges="keyboard|orientation|screenSize"
-            android:label="@string/markdown"/>
+            android:label="@string/markdown"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".ui.modules.gists.create.CreateGistActivity"
             android:configChanges="keyboard|orientation|screenSize"
@@ -123,7 +126,8 @@
         <activity
             android:name=".ui.modules.gists.gist.GistActivity"
             android:label="@string/gist"
-            android:parentActivityName=".ui.modules.main.MainActivity">
+            android:parentActivityName=".ui.modules.main.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.main.MainActivity"/>
@@ -170,8 +174,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
-        <activity android:name=".ui.modules.settings.SettingsActivity"/>
-        <activity android:name=".ui.modules.settings.category.SettingsCategoryActivity"/>
+        <activity
+            android:name=".ui.modules.settings.SettingsActivity"
+            android:configChanges="keyboard|orientation|screenSize"/>
+
+        <activity
+            android:name=".ui.modules.settings.category.SettingsCategoryActivity"
+            android:configChanges="keyboard|orientation|screenSize"/>
+
         <activity
             android:name=".ui.modules.repos.code.releases.ReleasesListActivity"
             android:label="@string/releases"

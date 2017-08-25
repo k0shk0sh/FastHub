@@ -2,249 +2,104 @@ package com.fastaccess.data.dao;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.annimon.stream.Collectors;
-import com.annimon.stream.Stream;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Issue;
-import com.fastaccess.data.dao.model.IssueEvent;
 import com.fastaccess.data.dao.model.PullRequest;
+import com.fastaccess.data.dao.timeline.GenericEvent;
+import com.fastaccess.data.dao.timeline.PullRequestCommitModel;
 import com.fastaccess.data.dao.types.IssueEventType;
-import com.fastaccess.data.dao.types.ReviewStateType;
-import com.fastaccess.helper.InputHelper;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observable;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
-
-import static com.annimon.stream.Collectors.toList;
 
 /**
  * Created by Kosh on 30 Mar 2017, 9:03 PM
  */
 
-@Getter @Setter @NoArgsConstructor public class TimelineModel implements Parcelable {
-    public static final int HEADER = 0;
-    public static final int STATUS = 1;
-    public static final int REVIEW = 2;
-    public static final int GROUPED_REVIEW = 3;
-    public static final int EVENT = 4;
-    public static final int COMMENT = 5;
+@Getter @Setter public class TimelineModel implements Parcelable {
+    public static final int HEADER = 1;
+    public static final int EVENT = 2;
+    public static final int COMMENT = 3;
+    public static final int REVIEW = 4;
+    public static final int GROUP = 5;
+    public static final int COMMIT_COMMENTS = 6;
+    public static final int STATUS = 7;
 
-    private int type;
-    private Issue issue;
+    private IssueEventType event;
     private Comment comment;
-    private IssueEvent event;
-    private PullRequest pullRequest;
+    private GenericEvent genericEvent;
     private PullRequestStatusModel status;
+    private Issue issue;
+    private PullRequest pullRequest;
     private ReviewModel review;
-    private GroupedReviewModel groupedReview;
-    private ReviewCommentModel reviewComment;
-    private Date sortedDate;
+    private GroupedReviewModel groupedReviewModel;
+    private PullRequestCommitModel commit;
 
-    private TimelineModel(Issue issue) {
-        this.type = HEADER;
+    public TimelineModel(Issue issue) {
         this.issue = issue;
-        this.sortedDate = issue.getCreatedAt();
     }
 
-    private TimelineModel(PullRequest pullRequest) {
-        this.type = HEADER;
+    public TimelineModel(PullRequest pullRequest) {
         this.pullRequest = pullRequest;
-        this.sortedDate = pullRequest.getCreatedAt();
     }
 
-    private TimelineModel(Comment comment) {
-        this.type = COMMENT;
+    public TimelineModel(Comment comment) {
         this.comment = comment;
-        this.sortedDate = comment.getCreatedAt() == null ? new Date() : comment.getCreatedAt();
+        this.event = IssueEventType.commented;
     }
 
-    private TimelineModel(IssueEvent event) {
-        this.type = EVENT;
-        this.event = event;
-        this.sortedDate = event.getCreatedAt();
+    public TimelineModel(PullRequestStatusModel statusModel) {
+        this.status = statusModel;
     }
 
-    private TimelineModel(PullRequestStatusModel status) {
-        this.type = STATUS;
-        this.status = status;
-        this.sortedDate = status.getCreatedAt();
+    public TimelineModel() {}
+
+    public int getType() {
+        if (getEvent() != null) {
+            switch (getEvent()) {
+                case commented:
+                    return COMMENT;
+                case reviewed:
+                case changes_requested:
+                    return REVIEW;
+                case GROUPED:
+                    return GROUP;
+                case commit_commented:
+                    return COMMIT_COMMENTS;
+                default:
+                    return EVENT;
+            }
+        } else {
+            if (issue != null || pullRequest != null) return HEADER;
+            else if (status != null) return STATUS;
+            return 0;
+        }
     }
 
-    private TimelineModel(ReviewModel review) {
-        this.type = REVIEW;
-        this.review = review;
-        this.sortedDate = review.getSubmittedAt();
-    }
-
-    private TimelineModel(GroupedReviewModel groupedReview) {
-        this.type = GROUPED_REVIEW;
-        this.groupedReview = groupedReview;
-        this.sortedDate = groupedReview.getDate();
-    }
-
-    @NonNull public static TimelineModel constructHeader(@NonNull Issue issue) {
+    public static TimelineModel constructHeader(Issue issue) {
         return new TimelineModel(issue);
     }
 
-    @NonNull public static TimelineModel constructHeader(@NonNull PullRequest pullRequest) {
+    public static TimelineModel constructHeader(PullRequest pullRequest) {
         return new TimelineModel(pullRequest);
     }
 
-    @NonNull public static TimelineModel constructComment(@NonNull Comment comment) {
+    public static TimelineModel constructComment(Comment comment) {
         return new TimelineModel(comment);
     }
 
-    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList) {
-        ArrayList<TimelineModel> list = new ArrayList<>();
-        if (commentList != null && !commentList.isEmpty()) {
-            list.addAll(Stream.of(commentList)
-                    .map(TimelineModel::new)
-                    .collect(Collectors.toList()));
-        }
-        return list;
-    }
-
-    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList, @Nullable List<IssueEvent> eventList) {
-        ArrayList<TimelineModel> list = new ArrayList<>();
-        if (commentList != null && !commentList.isEmpty()) {
-            list.addAll(Stream.of(commentList)
-                    .map(TimelineModel::new)
-                    .collect(Collectors.toList()));
-        }
-        if (eventList != null && !eventList.isEmpty()) {
-            list.addAll(constructLabels(eventList));
-        }
-
-        return Stream.of(list).sorted((o1, o2) -> {
-            if (o1.getEvent() != null && o2.getComment() != null) {
-                return o1.getEvent().getCreatedAt().compareTo(o2.getComment().getCreatedAt());
-            } else if (o1.getComment() != null && o2.getEvent() != null) {
-                return o1.getComment().getCreatedAt().compareTo(o2.getEvent().getCreatedAt());
-            } else {
-                return Integer.valueOf(o1.getType()).compareTo(o2.getType());
-            }
-        }).collect(Collectors.toList());
-    }
-
-    @NonNull public static List<TimelineModel> construct(@Nullable List<Comment> commentList, @Nullable List<IssueEvent> eventList,
-                                                         @Nullable PullRequestStatusModel status, @Nullable List<ReviewModel> reviews,
-                                                         @Nullable List<ReviewCommentModel> reviewComments) {
-        ArrayList<TimelineModel> list = new ArrayList<>();
-        if (status != null) {
-            list.add(new TimelineModel(status));
-        }
-        if (reviews != null && !reviews.isEmpty()) {
-            list.addAll(constructReviews(reviews, reviewComments));
-        }
-        if (commentList != null && !commentList.isEmpty()) {
-            list.addAll(Stream.of(commentList)
-                    .map(TimelineModel::new)
-                    .collect(Collectors.toList()));
-        }
-        if (eventList != null && !eventList.isEmpty()) {
-            list.addAll(constructLabels(eventList));
-        }
-
-        return Stream.of(list).sortBy(model -> {
-            if (model.getSortedDate() != null) {
-                return model.getSortedDate().getTime();
-            } else {
-                return (long) model.getType();
-            }
-        }).collect(Collectors.toList());
-    }
-
-    @NonNull private static List<TimelineModel> constructLabels(@NonNull List<IssueEvent> eventList) {
-        List<TimelineModel> models = new ArrayList<>();
-        Map<String, List<IssueEvent>> issueEventMap = Stream.of(eventList)
-                .filter(value -> value.getEvent() != null && value.getEvent() != IssueEventType.subscribed &&
-                        value.getEvent() != IssueEventType.unsubscribed && value.getEvent() != IssueEventType.mentioned)
-                .collect(Collectors.groupingBy(issueEvent -> {
-                    if (issueEvent.getAssigner() != null && issueEvent.getAssignee() != null) {
-                        return issueEvent.getAssigner().getLogin();
-                    }
-                    return issueEvent.getActor().getLogin();
-                }));
-        if (issueEventMap != null && !issueEventMap.isEmpty()) {
-            for (Map.Entry<String, List<IssueEvent>> stringListEntry : issueEventMap.entrySet()) {
-                List<LabelModel> labelModels = new ArrayList<>();
-                List<IssueEvent> events = stringListEntry.getValue();
-                IssueEvent toAdd = null;
-                for (IssueEvent event : events) {
-                    if (event.getEvent() == IssueEventType.labeled || event.getEvent() == IssueEventType.unlabeled) {
-                        if (toAdd == null) {
-                            toAdd = event;
-                        }
-                        long time = toAdd.getCreatedAt().after(event.getCreatedAt()) ? (toAdd.getCreatedAt().getTime() - event
-                                .getCreatedAt().getTime()) : (event.getCreatedAt().getTime() - toAdd.getCreatedAt().getTime());
-                        if (TimeUnit.MINUTES.toMinutes(time) <= 2 && toAdd.getEvent() == event.getEvent()) {
-                            labelModels.add(event.getLabel());
-                        } else {
-                            models.add(new TimelineModel(event));
-                        }
-                    } else {
-                        models.add(new TimelineModel(event));
-                    }
-                }
-                if (toAdd != null) {
-                    toAdd.setLabels(labelModels);
-                    models.add(new TimelineModel(toAdd));
-                }
-            }
-        }
-        return Stream.of(models)
-                .sortBy(TimelineModel::getSortedDate)
-                .toList();
-    }
-
-    @NonNull private static List<TimelineModel> constructReviews
-            (@NonNull List<ReviewModel> reviews, @Nullable List<ReviewCommentModel> comments) {
-        List<TimelineModel> models = new ArrayList<>();
-        if (comments == null || comments.isEmpty()) {
-            models.addAll(Stream.of(reviews)
-                    .map(TimelineModel::new)
-                    .collect(Collectors.toList()));
-        } else { // this is how bad github API is.
-            Map<Integer, List<ReviewCommentModel>> mappedComments = Stream.of(comments)
-                    .collect(Collectors.groupingBy(ReviewCommentModel::getOriginalPosition, LinkedHashMap::new,
-                            Collectors.mapping(o -> o, toList())));
-            for (Map.Entry<Integer, List<ReviewCommentModel>> entry : mappedComments.entrySet()) {
-                List<ReviewCommentModel> reviewCommentModels = entry.getValue();
-                GroupedReviewModel groupedReviewModel = new GroupedReviewModel();
-                if (!reviewCommentModels.isEmpty()) {
-                    ReviewCommentModel reviewCommentModel = reviewCommentModels.get(0);
-                    groupedReviewModel.setPath(reviewCommentModel.getPath());
-                    groupedReviewModel.setDiffText(reviewCommentModel.getDiffHunk());
-                    groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
-                    groupedReviewModel.setPosition(reviewCommentModel.getOriginalPosition());
-                    groupedReviewModel.setId(reviewCommentModel.getId());
-                }
-                for (ReviewCommentModel reviewCommentModel : reviewCommentModels) {
-                    if (reviewCommentModel.getCreatedAt() != null) {
-                        groupedReviewModel.setDate(reviewCommentModel.getCreatedAt());
-                        break;
-                    }
-                }
-                groupedReviewModel.setComments(reviewCommentModels);
-                models.add(new TimelineModel(groupedReviewModel));
-            }
-            models.addAll(Stream.of(reviews)
-                    .filter(reviewModel -> !InputHelper.isEmpty(reviewModel.getBody()) || reviewModel.getState() == ReviewStateType.APPROVED)
-                    .map(TimelineModel::new)
-                    .collect(Collectors.toList()));
-        }
-        return models;
+    @NonNull public static Observable<List<TimelineModel>> construct(@Nullable List<Comment> comments) {
+        if (comments == null || comments.isEmpty()) return Observable.empty();
+        return Observable.fromIterable(comments)
+                .map(TimelineModel::new)
+                .toList()
+                .toObservable();
     }
 
     @Override public boolean equals(Object o) {
@@ -258,33 +113,104 @@ import static com.annimon.stream.Collectors.toList;
         return comment != null ? (int) comment.getId() : 0;
     }
 
+
+    public IssueEventType getEvent() {
+        return event;
+    }
+
+    public void setEvent(IssueEventType event) {
+        this.event = event;
+    }
+
+    public Comment getComment() {
+        return comment;
+    }
+
+    public void setComment(Comment comment) {
+        this.comment = comment;
+    }
+
+    public GenericEvent getGenericEvent() {
+        return genericEvent;
+    }
+
+    public void setGenericEvent(GenericEvent genericEvent) {
+        this.genericEvent = genericEvent;
+    }
+
+    public PullRequestStatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(PullRequestStatusModel status) {
+        this.status = status;
+    }
+
+    public Issue getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
+    }
+
+    public PullRequest getPullRequest() {
+        return pullRequest;
+    }
+
+    public void setPullRequest(PullRequest pullRequest) {
+        this.pullRequest = pullRequest;
+    }
+
+    public ReviewModel getReview() {
+        return review;
+    }
+
+    public void setReview(ReviewModel review) {
+        this.review = review;
+    }
+
+    public GroupedReviewModel getGroupedReviewModel() {
+        return groupedReviewModel;
+    }
+
+    public void setGroupedReviewModel(GroupedReviewModel groupedReviewModel) {
+        this.groupedReviewModel = groupedReviewModel;
+    }
+
+    public PullRequestCommitModel getCommit() {
+        return commit;
+    }
+
+    public void setCommit(PullRequestCommitModel commit) {
+        this.commit = commit;
+    }
+
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.type);
-        dest.writeParcelable(this.issue, flags);
+        dest.writeInt(this.event == null ? -1 : this.event.ordinal());
         dest.writeParcelable(this.comment, flags);
-        dest.writeParcelable(this.event, flags);
-        dest.writeParcelable(this.pullRequest, flags);
+        dest.writeParcelable(this.genericEvent, flags);
         dest.writeParcelable(this.status, flags);
+        dest.writeParcelable(this.issue, flags);
+        dest.writeParcelable(this.pullRequest, flags);
         dest.writeParcelable(this.review, flags);
-        dest.writeParcelable(this.groupedReview, flags);
-        dest.writeParcelable(this.reviewComment, flags);
-        dest.writeLong(this.sortedDate != null ? this.sortedDate.getTime() : -1);
+        dest.writeParcelable(this.groupedReviewModel, flags);
+        dest.writeParcelable(this.commit, flags);
     }
 
     protected TimelineModel(Parcel in) {
-        this.type = in.readInt();
-        this.issue = in.readParcelable(Issue.class.getClassLoader());
+        int tmpEvent = in.readInt();
+        this.event = tmpEvent == -1 ? null : IssueEventType.values()[tmpEvent];
         this.comment = in.readParcelable(Comment.class.getClassLoader());
-        this.event = in.readParcelable(IssueEvent.class.getClassLoader());
-        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
+        this.genericEvent = in.readParcelable(GenericEvent.class.getClassLoader());
         this.status = in.readParcelable(PullRequestStatusModel.class.getClassLoader());
+        this.issue = in.readParcelable(Issue.class.getClassLoader());
+        this.pullRequest = in.readParcelable(PullRequest.class.getClassLoader());
         this.review = in.readParcelable(ReviewModel.class.getClassLoader());
-        this.groupedReview = in.readParcelable(GroupedReviewModel.class.getClassLoader());
-        this.reviewComment = in.readParcelable(ReviewCommentModel.class.getClassLoader());
-        long tmpSortedDate = in.readLong();
-        this.sortedDate = tmpSortedDate == -1 ? null : new Date(tmpSortedDate);
+        this.groupedReviewModel = in.readParcelable(GroupedReviewModel.class.getClassLoader());
+        this.commit = in.readParcelable(PullRequestCommitModel.class.getClassLoader());
     }
 
     public static final Creator<TimelineModel> CREATOR = new Creator<TimelineModel>() {

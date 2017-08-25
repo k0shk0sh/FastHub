@@ -7,7 +7,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 
-import com.annimon.stream.Stream;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.Notification;
@@ -20,7 +19,7 @@ import com.fastaccess.ui.modules.feeds.FeedsFragment;
 import com.fastaccess.ui.modules.main.issues.pager.MyIssuesPagerFragment;
 import com.fastaccess.ui.modules.main.pullrequests.pager.MyPullsPagerFragment;
 
-import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
 import static com.fastaccess.helper.AppHelper.getFragmentByTag;
@@ -47,17 +46,16 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                 })
                 .flatMap(login -> RxHelper.getObservable(RestProvider.getNotificationService(isEnterprise())
                         .getNotifications(ParseDateFormat.getLastWeekDate())))
-                .flatMap(notificationPageable -> {
-                    if (notificationPageable != null && notificationPageable.getItems() == null && !notificationPageable.getItems().isEmpty()) {
-                        manageDisposable(Notification.save(notificationPageable.getItems()));
-                        return Observable.just(Stream.of(notificationPageable.getItems()).anyMatch(Notification::isUnread));
+                .flatMapSingle(notificationPageable -> {
+                    if (notificationPageable != null) {
+                        return Notification.saveAsSingle(notificationPageable.getItems());
                     }
-                    return Observable.empty();
+                    return Single.just(true);
                 })
-                .subscribe(unread -> sendToView(view -> {
+                .subscribe(unread -> {/**/}, Throwable::printStackTrace/*fail silently*/, () -> sendToView(view -> {
                     view.onInvalidateNotification();
                     view.onUpdateDrawerMenuHeader();
-                }), Throwable::printStackTrace/*fail silently*/));
+                })));
     }
 
     @Override public boolean canBackPress(@NonNull DrawerLayout drawerLayout) {

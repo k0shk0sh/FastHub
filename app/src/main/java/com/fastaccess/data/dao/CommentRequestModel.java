@@ -13,11 +13,11 @@ import lombok.Setter;
  */
 
 @Getter @Setter public class CommentRequestModel implements Parcelable {
-    private String body;
-    @SerializedName("in_reply_to") private Long inReplyTo;
-    private String path;
-    private Integer position;
-    private Integer line;
+    public String body;
+    @SerializedName("in_reply_to") public Long inReplyTo;
+    public String path;
+    public Integer position;
+    public Integer line;
 
     public CommentRequestModel() {}
 
@@ -44,7 +44,7 @@ import lombok.Setter;
         dest.writeValue(this.line);
     }
 
-    protected CommentRequestModel(Parcel in) {
+    private CommentRequestModel(Parcel in) {
         this.body = in.readString();
         this.inReplyTo = (Long) in.readValue(Long.class.getClassLoader());
         this.path = in.readString();

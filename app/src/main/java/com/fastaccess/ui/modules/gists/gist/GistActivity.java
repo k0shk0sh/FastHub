@@ -17,18 +17,23 @@ import android.view.View;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.FragmentPagerAdapterModel;
 import com.fastaccess.data.dao.model.Gist;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.ParseDateFormat;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.FragmentsPagerAdapter;
 import com.fastaccess.ui.base.BaseActivity;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
+import com.fastaccess.ui.modules.gists.create.CreateGistActivity;
 import com.fastaccess.ui.modules.gists.gist.comments.GistCommentsFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.widgets.AvatarLayout;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -55,8 +60,10 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
     @BindView(R.id.startGist) ForegroundImageView startGist;
     @BindView(R.id.forkGist) ForegroundImageView forkGist;
     @BindView(R.id.detailsIcon) View detailsIcon;
+    @BindView(R.id.edit) View edit;
     private int accentColor;
     private int iconColor;
+    private CommentEditorFragment commentEditorFragment;
 
     public static Intent createIntent(@NonNull Context context, @NonNull String gistId, boolean isEnterprise) {
         Intent intent = new Intent(context, GistActivity.class);
@@ -65,15 +72,6 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
                 .end());
         return intent;
-    }
-
-    @OnClick(R.id.fab) void onAddComment() {
-        if (pager != null && pager.getAdapter() != null) {
-            GistCommentsFragment view = (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
-            if (view != null) {
-                view.onStartNewComment();
-            }
-        }
     }
 
     @OnClick(R.id.detailsIcon) void onTitleClick() {
@@ -104,6 +102,14 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
+    @OnClick(R.id.edit) void onEdit() {
+        if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+            if (getPresenter().getGist() != null) CreateGistActivity.start(this, getPresenter().getGist());
+        } else {
+            PremiumActivity.Companion.startActivity(this);
+        }
+    }
+
     @Override protected int layout() {
         return R.layout.gists_pager_layout;
     }
@@ -126,6 +132,8 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
 
     @Override protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        fab.hide();
+        commentEditorFragment = (CommentEditorFragment) getSupportFragmentManager().findFragmentById(R.id.commentFragment);
         accentColor = ViewHelper.getAccentColor(this);
         iconColor = ViewHelper.getIconColor(this);
         if (savedInstanceState == null) {
@@ -173,6 +181,15 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
+    @Override protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == BundleConstant.REQUEST_CODE) {
+                getPresenter().callApi();
+            }
+        }
+    }
+
     @Override public void onSuccessDeleted() {
         hideProgress();
         if (getPresenter().getGist() != null) {
@@ -213,6 +230,7 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         avatarLayout.setUrl(url, login, false, LinkParserHelper.isEnterprise(gistsModel.getHtmlUrl()));
         title.setText(gistsModel.getDisplayTitle(false, true));
         setTaskName(gistsModel.getDisplayTitle(false, true).toString());
+        edit.setVisibility(Login.getUser().getLogin().equals(login) ? View.VISIBLE : View.GONE);
         detailsIcon.setVisibility(InputHelper.isEmpty(gistsModel.getDescription()) || !ViewHelper.isEllipsed(title) ? View.GONE : View.VISIBLE);
         if (gistsModel.getCreatedAt().before(gistsModel.getUpdatedAt())) {
             date.setText(String.format("%s %s", ParseDateFormat.getTimeAgo(gistsModel.getCreatedAt()), getString(R.string.edited)));
@@ -248,11 +266,28 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         }
     }
 
+    @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
+        if (pager == null || pager.getAdapter() == null) return;
+        GistCommentsFragment view = (GistCommentsFragment) pager.getAdapter().instantiateItem(pager, 1);
+        if (view != null) {
+            view.onHandleComment(text, bundle);
+        }
+    }
+
+    @Override public void onTagUser(@NonNull String username) {
+        commentEditorFragment.onAddUserName(username);
+    }
+
+
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
-            fab.show();
+            getSupportFragmentManager().beginTransaction().show(commentEditorFragment).commit();
         } else {
-            fab.hide();
+            getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
+    }
+
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
     }
 }

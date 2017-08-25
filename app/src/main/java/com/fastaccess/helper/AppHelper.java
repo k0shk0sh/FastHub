@@ -4,6 +4,8 @@ import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Build;
@@ -73,14 +75,16 @@ public class AppHelper {
                 .append("**Android Version: ").append(String.valueOf(Build.VERSION.RELEASE)).append(" (SDK: ")
                 .append(String.valueOf(Build.VERSION.SDK_INT)).append(")**").append("  \n")
                 .append("**Device Information:**").append("  \n")
-                .append("- **" + (!model.equalsIgnoreCase(brand) ? "Manufacturer" : "Manufacturer&Brand") + ":** ").append(Build.MANUFACTURER)
+                .append("- **")
+                .append(!model.equalsIgnoreCase(brand) ? "Manufacturer" : "Manufacturer&Brand")
+                .append(":** ")
+                .append(Build.MANUFACTURER)
                 .append("  \n");
         if (!(model.equalsIgnoreCase(brand) || "google".equals(Build.BRAND))) {
             builder.append("- **Brand:** ").append(brand).append("  \n");
         }
-        builder.append("- **Model:** ")
-                .append(model)
-                .append("  \n").append("---").append("\n");
+        builder.append("- **Model:** ").append(model).append("  \n")
+                .append("---").append("\n\n");
         if (!Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
             builder.append("<--")
                     .append(App.getInstance().getString(R.string.english_please))
@@ -157,7 +161,13 @@ public class AppHelper {
     }
 
     public static boolean isGoogleAvailable(@NonNull Context context) {
-        int status = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
-        return status != ConnectionResult.SERVICE_DISABLED && status == ConnectionResult.SUCCESS;
+        ApplicationInfo applicationInfo = null;
+        try {
+            applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return applicationInfo != null && applicationInfo.enabled &&
+                GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS;
     }
 }

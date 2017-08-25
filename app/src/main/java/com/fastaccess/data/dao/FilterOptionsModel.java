@@ -146,7 +146,7 @@ public class FilterOptionsModel implements Parcelable {
         dest.writeByte(this.isOrg ? (byte) 1 : (byte) 0);
     }
 
-    protected FilterOptionsModel(Parcel in) {
+    private FilterOptionsModel(Parcel in) {
         this.type = in.readString();
         this.sort = in.readString();
         this.sortDirection = in.readString();

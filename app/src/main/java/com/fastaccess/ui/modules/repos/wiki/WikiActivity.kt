@@ -2,6 +2,7 @@ package com.fastaccess.ui.modules.repos.wiki
 
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.widget.DrawerLayout
@@ -10,16 +11,18 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
+import butterknife.BindView
 import com.evernote.android.state.State
 import com.fastaccess.R
 import com.fastaccess.data.dao.NameParser
 import com.fastaccess.data.dao.wiki.WikiContentModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
+import com.fastaccess.helper.Logger
+import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.repos.RepoPagerActivity
 import com.fastaccess.ui.widgets.StateLayout
-import com.fastaccess.ui.widgets.bindView
 import com.prettifier.pretty.PrettifyWebView
 
 /**
@@ -27,12 +30,11 @@ import com.prettifier.pretty.PrettifyWebView
  */
 class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
 
-    val navMenu: NavigationView by bindView(R.id.wikiSidebar)
-    val drawerLayout: DrawerLayout by bindView(R.id.drawer)
-    val progressbar: ProgressBar by bindView(R.id.progress)
-    val stateLayout: StateLayout by bindView(R.id.stateLayout)
-    val webView: PrettifyWebView by bindView(R.id.webView)
-
+    @BindView(R.id.wikiSidebar) lateinit var navMenu: NavigationView
+    @BindView(R.id.drawer) lateinit var drawerLayout: DrawerLayout
+    @BindView(R.id.progress) lateinit var progressbar: ProgressBar
+    @BindView(R.id.stateLayout) lateinit var stateLayout: StateLayout
+    @BindView(R.id.webView) lateinit var webView: PrettifyWebView
 
     @State var wiki = WikiContentModel(null, null, arrayListOf())
     @State var selectedTitle: String = "Home"
@@ -50,7 +52,15 @@ class WikiActivity : BaseActivity<WikiMvp.View, WikiPresenter>(), WikiMvp.View {
             loadMenu()
         }
         if (wiki.content != null) {
-            webView.setGithubContent(wiki.content, null, true)
+            val baseUrl = Uri.Builder().scheme("https")
+                    .authority(LinkParserHelper.HOST_DEFAULT)
+                    .appendPath(presenter.login)
+                    .appendPath(presenter.repoId)
+                    .appendPath("wiki")
+                    .build()
+                    .toString()
+            Logger.e(baseUrl)
+            webView.setWikiContent(wiki.content, baseUrl)
         }
     }
 

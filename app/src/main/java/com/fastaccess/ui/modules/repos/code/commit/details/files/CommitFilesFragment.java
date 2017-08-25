@@ -25,6 +25,7 @@ import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +43,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) AppbarRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
 
     private CommitPagerMvp.View viewCallback;
@@ -106,6 +108,7 @@ public class CommitFilesFragment extends BaseFragment<CommitFilesMvp.View, Commi
         adapter.setListener(getPresenter());
         recycler.setAdapter(adapter);
         getPresenter().onFragmentCreated(getArguments());
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @NonNull @Override public CommitFilesPresenter providePresenter() {

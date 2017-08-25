@@ -52,14 +52,14 @@ public class FilterIssuePresenter extends BasePresenter<FilterIssuesMvp.View> im
         this.previousTotal = previousTotal;
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (page == 1 || parameter == null) {
             lastPage = Integer.MAX_VALUE;
             sendToView(view -> view.getLoadMore().reset());
         }
         if (page > lastPage || lastPage == 0 || parameter == null) {
             sendToView(FilterIssuesMvp.View::hideProgress);
-            return;
+            return false;
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getSearchService(isEnterprise()).searchIssues(parameter, page),
@@ -70,5 +70,6 @@ public class FilterIssuePresenter extends BasePresenter<FilterIssuesMvp.View> im
                     }
                     sendToView(view -> view.onNotifyAdapter(issues.getItems(), page));
                 });
+        return true;
     }
 }

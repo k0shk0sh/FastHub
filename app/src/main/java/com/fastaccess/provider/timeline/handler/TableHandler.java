@@ -19,6 +19,7 @@ import android.text.style.AlignmentSpan;
 import android.text.style.ImageSpan;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
+import net.nightwhistler.htmlspanner.spans.CenterSpan;
 
 import org.htmlcleaner.TagNode;
 
@@ -35,12 +36,12 @@ import java.util.List;
  */
 public class TableHandler extends TagNodeHandler {
 
-    private int tableWidth = 400;
+    private int tableWidth = 500;
     private Typeface typeFace = Typeface.DEFAULT;
-    private float textSize = 16f;
+    private float textSize = 30f;
     private int textColor = Color.BLACK;
 
-    private static final int PADDING = 5;
+    private static final int PADDING = 20;
 
     /**
      * Sets how wide the table should be.
@@ -144,7 +145,6 @@ public class TableHandler extends TagNodeHandler {
         int rowHeight = 0;
 
         for (Spanned cell : row) {
-
             StaticLayout layout = new StaticLayout(cell, textPaint, columnWidth
                     - 2 * PADDING, Alignment.ALIGN_NORMAL, 1f, 0f, true);
 
@@ -165,19 +165,14 @@ public class TableHandler extends TagNodeHandler {
             drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
                     drawable.getIntrinsicHeight());
             builder.setSpan(new ImageSpan(drawable), start + i, builder.length(), 33);
-
         }
-
-        /*
-         We add an empty last row to work around a rendering issue where
-         the last row would appear detached.
-         */
         builder.append("\uFFFC");
-        Drawable drawable = new TableRowDrawable(new ArrayList<Spanned>(), table.isDrawBorder());
+        Drawable drawable = new TableRowDrawable(new ArrayList<>(), table.isDrawBorder());
         drawable.setBounds(0, 0, tableWidth, 1);
         builder.setSpan(new ImageSpan(drawable), builder.length() - 1, builder.length(),
                 Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         builder.setSpan((AlignmentSpan) () -> Alignment.ALIGN_CENTER, start, builder.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(new CenterSpan(), start, builder.length(), 33);
         builder.append("\n");
     }
 

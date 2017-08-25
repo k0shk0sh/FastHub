@@ -108,6 +108,9 @@ public class MainActivity extends BaseActivity<MainMvp.View, MainPresenter> impl
     @Override public boolean onPrepareOptionsMenu(Menu menu) {
         if (isLoggedIn() && Notification.hasUnreadNotifications()) {
             ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_ring).getIcon(), ViewHelper.getAccentColor(this));
+        } else {
+            ViewHelper.tintDrawable(menu.findItem(R.id.notifications).setIcon(R.drawable.ic_notifications_none).getIcon(), ViewHelper.getIconColor
+                    (this));
         }
         return super.onPrepareOptionsMenu(menu);
     }

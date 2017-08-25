@@ -54,7 +54,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
         super.onError(throwable);
     }
 
-    @Override public void onCallApi(int page, @Nullable String parameter) {
+    @Override public boolean onCallApi(int page, @Nullable String parameter) {
         if (currentLoggedIn == null) {
             currentLoggedIn = Login.getUser().getLogin();
         }
@@ -69,7 +69,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
         setCurrentPage(page);
         if (page > lastPage || lastPage == 0) {
             sendToView(ProfileReposMvp.View::hideProgress);
-            return;
+            return false;
         }
         boolean isProfile = TextUtils.equals(currentLoggedIn, username);
         filterOptions.setIsPersonalProfile(isProfile);
@@ -83,6 +83,7 @@ class ProfileReposPresenter extends BasePresenter<ProfileReposMvp.View> implemen
                     }
                     sendToView(view -> view.onNotifyAdapter(repoModelPageable.getItems(), page));
                 });
+        return true;
     }
 
     @NonNull @Override public ArrayList<Repo> getRepos() {

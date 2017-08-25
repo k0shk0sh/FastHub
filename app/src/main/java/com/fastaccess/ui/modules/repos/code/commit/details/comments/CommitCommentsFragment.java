@@ -1,6 +1,7 @@
 package com.fastaccess.ui.modules.repos.code.commit.details.comments;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,13 +22,15 @@ import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.provider.timeline.ReactionsProvider;
-import com.fastaccess.ui.adapter.IssuePullsTimelineAdapter;
+import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.editor.EditorActivity;
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment;
 import com.fastaccess.ui.modules.repos.reactions.ReactionsDialogFragment;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
+import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -44,9 +47,10 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     @BindView(R.id.recycler) DynamicRecyclerView recycler;
     @BindView(R.id.refresh) SwipeRefreshLayout refresh;
     @BindView(R.id.stateLayout) StateLayout stateLayout;
+    @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
-
-    private IssuePullsTimelineAdapter adapter;
+    private CommentEditorFragment.CommentListener commentsCallback;
+    private IssuesTimelineAdapter adapter;
     private OnLoadMore onLoadMore;
 
     public static CommitCommentsFragment newInstance(@NonNull String login, @NonNull String repoId, @NonNull String sha) {
@@ -57,6 +61,23 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
                 .put(BundleConstant.EXTRA_TWO, sha)
                 .end());
         return view;
+    }
+
+    @SuppressWarnings("unchecked") @Override public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getParentFragment() instanceof CommentEditorFragment.CommentListener) {
+            commentsCallback = (CommentEditorFragment.CommentListener) getParentFragment();
+        } else if (context instanceof CommentEditorFragment.CommentListener) {
+            commentsCallback = (CommentEditorFragment.CommentListener) context;
+        } else {
+            throw new IllegalArgumentException(String.format("%s or parent fragment must implement CommentEditorFragment.CommentListener",
+                    context.getClass().getSimpleName()));
+        }
+    }
+
+    @Override public void onDetach() {
+        commentsCallback = null;
+        super.onDetach();
     }
 
     @Override protected int fragmentLayout() {
@@ -70,7 +91,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         recycler.setItemViewCacheSize(30);
         refresh.setOnRefreshListener(this);
         stateLayout.setOnReloadListener(this);
-        adapter = new IssuePullsTimelineAdapter(getPresenter().getComments(), this, true,
+        adapter = new IssuesTimelineAdapter(getPresenter().getComments(), this, true,
                 this, getArguments().getString(BundleConstant.EXTRA), null);
         adapter.setListener(getPresenter());
         getLoadMore().initialize(getPresenter().getCurrentPage(), getPresenter().getPreviousTotal());
@@ -80,6 +101,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         if (getPresenter().getComments().isEmpty() && !getPresenter().isApiCalled()) {
             onRefresh();
         }
+        fastScroller.attachRecyclerView(recycler);
     }
 
     @Override public void onRefresh() {
@@ -147,16 +169,12 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
                 .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.EDIT_COMMIT_COMMENT_EXTRA)
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.EDIT_COMMIT_COMMENT_EXTRA)
                 .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
         ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
-    }
-
-    @Override public void onStartNewComment() {
-        onTagUser(null);
     }
 
     @Override public void onShowDeleteMsg(long id) {
@@ -169,36 +187,13 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     }
 
     @Override public void onTagUser(@Nullable User user) {
-        Intent intent = new Intent(getContext(), EditorActivity.class);
-        intent.putExtras(Bundler
-                .start()
-                .put(BundleConstant.ID, getPresenter().repoId())
-                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
-                .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
-                .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
-                .end());
-        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
-        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+        if (commentsCallback != null && user != null) {
+            commentsCallback.onTagUser(user.getLogin());
+        }
     }
 
     @Override public void onReply(User user, String message) {
-        Intent intent = new Intent(getContext(), EditorActivity.class);
-        intent.putExtras(Bundler
-                .start()
-                .put(BundleConstant.ID, getPresenter().repoId())
-                .put(BundleConstant.EXTRA_TWO, getPresenter().login())
-                .put(BundleConstant.EXTRA_THREE, getPresenter().sha())
-                .put(BundleConstant.EXTRA, "@" + user.getLogin())
-                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraTYpe.NEW_COMMIT_COMMENT_EXTRA)
-                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
-                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
-                .put("message", message)
-                .end());
-        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
-        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+        onTagUser(user);
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes reactionTypes, @NonNull String login, @NonNull String repoId, long commentId) {
@@ -207,6 +202,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
     }
 
     @Override public void addComment(@NonNull Comment newComment) {
+        hideProgress();
         if (adapter != null) {
             adapter.addItem(TimelineModel.constructComment(newComment));
         }
@@ -287,8 +283,12 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         if (recycler != null) recycler.scrollToPosition(0);
     }
 
-    private void showReload() {
+    @Override public void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
+    }
+
+    @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
+        getPresenter().onHandleComment(text, bundle);
     }
 }

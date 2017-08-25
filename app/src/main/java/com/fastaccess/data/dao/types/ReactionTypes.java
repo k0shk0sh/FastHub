@@ -3,6 +3,7 @@ package com.fastaccess.data.dao.types;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 
+import com.annimon.stream.Stream;
 import com.fastaccess.R;
 
 /**
@@ -35,10 +36,9 @@ public enum ReactionTypes {
     }
 
     @Nullable public static ReactionTypes get(@IdRes int vId) {
-        for (ReactionTypes type : ReactionTypes.values()) {
-            if (type.vId == vId) return type;
-        }
-
-        return null;
+        return Stream.of(values())
+                .filter(value -> value.getvId() == vId)
+                .findFirst()
+                .orElse(null);
     }
 }

@@ -32,7 +32,7 @@ import lombok.Setter;
         dest.writeString(this.htmlUrl);
     }
 
-    protected WikiModel(Parcel in) {
+    private WikiModel(Parcel in) {
         this.pageName = in.readString();
         this.title = in.readString();
         this.summary = in.readString();

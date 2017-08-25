@@ -40,7 +40,7 @@ public interface FeedsMvp {
 
         void onFragmentCreated(@NonNull Bundle argument);
 
-        void onCallApi(int page);
+        boolean onCallApi(int page);
 
         @NonNull ArrayList<Event> getEvents();
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.NotificationSoundModel
 import com.fastaccess.helper.BundleConstant
@@ -22,12 +23,13 @@ import com.fastaccess.ui.widgets.FontTextView
 class NotificationSoundBottomSheet : BaseMvpBottomSheetDialogFragment<NotificationSoundMvp.View,
         NotificationSoundPresenter>(), NotificationSoundMvp.View {
 
-    val title: FontTextView by lazy { view!!.findViewById<FontTextView>(R.id.title) }
-    val radioGroup: RadioGroup by lazy { view!!.findViewById<RadioGroup>(R.id.picker) }
-    val okButton: Button by lazy { view!!.findViewById<Button>(R.id.ok) }
-    val padding: Int by lazy { resources.getDimensionPixelSize(R.dimen.spacing_xs_large) }
-    var canPlaySound: Boolean = false
-    val mediaPlayer = MediaPlayer()
+    @BindView(R.id.title) lateinit var title: FontTextView
+    @BindView(R.id.picker) lateinit var radioGroup: RadioGroup
+    @BindView(R.id.ok) lateinit var okButton: Button
+
+    private val padding: Int by lazy { resources.getDimensionPixelSize(R.dimen.spacing_xs_large) }
+    private var canPlaySound: Boolean = false
+    private val mediaPlayer = MediaPlayer()
 
     private var listener: NotificationSoundMvp.NotificationSoundListener? = null
 
