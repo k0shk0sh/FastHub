@@ -18,11 +18,13 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
+import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.editor.EditorActivity
 import com.fastaccess.ui.modules.editor.emoji.EmojiMvp
+import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
 
@@ -30,12 +32,13 @@ import com.fastaccess.ui.widgets.markdown.MarkdownEditText
  * Created by kosh on 21/08/2017.
  */
 class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>(), MarkDownLayout.MarkdownListener,
-        EmojiMvp.EmojiCallback {
+        EmojiMvp.EmojiCallback, EditorLinkImageMvp.EditorLinkCallback {
 
     @BindView(R.id.commentBox) lateinit var commentBox: View
     @BindView(R.id.markdDownLayout) lateinit var markdDownLayout: MarkDownLayout
     @BindView(R.id.commentText) lateinit var commentText: MarkdownEditText
     @BindView(R.id.markdownBtnHolder) lateinit var markdownBtnHolder: View
+    @BindView(R.id.sendComment) lateinit var sendComment: View
     private var commentListener: CommentListener? = null
 
     @OnClick(R.id.sendComment) internal fun onComment() {
@@ -81,6 +84,12 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     override fun fragmentLayout(): Int = R.layout.comment_box_layout
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
+        arguments?.let {
+            val hideSendButton = it.getBoolean(BundleConstant.YES_NO_EXTRA)
+            if (hideSendButton) {
+                sendComment.visibility = View.GONE
+            }
+        }
         markdDownLayout.markdownListener = this
         if (savedInstanceState == null) {
             commentText.setText(arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA))
@@ -113,12 +122,6 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         getEditText().setSelection(getEditText().text.length)
     }
 
-    interface CommentListener {
-        fun onCreateComment(text: String, bundle: Bundle?) {}
-        fun onSendActionClicked(text: String, bundle: Bundle?)
-        fun onTagUser(username: String)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -130,6 +133,21 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         }
     }
 
+    override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
+        if (isLink) {
+            MarkDownProvider.addLink(getEditText(), InputHelper.toString(title), InputHelper.toString(link))
+        } else {
+            getEditText().setText(String.format("%s\n", getEditText().text))
+            MarkDownProvider.addPhoto(getEditText(), InputHelper.toString(title), InputHelper.toString(link))
+        }
+    }
+
+    interface CommentListener {
+        fun onCreateComment(text: String, bundle: Bundle?) {}
+        fun onSendActionClicked(text: String, bundle: Bundle?)
+        fun onTagUser(username: String)
+    }
+
     companion object {
         fun newInstance(bundle: Bundle?): CommentEditorFragment {
             val fragment = CommentEditorFragment()
@@ -138,5 +156,9 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
             }
             return fragment
         }
+    }
+
+    fun hideSendButton() {
+        if (sendComment != null) sendComment.visibility = View.GONE
     }
 }

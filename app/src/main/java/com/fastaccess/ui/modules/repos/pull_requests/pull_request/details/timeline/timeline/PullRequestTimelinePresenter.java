@@ -13,6 +13,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.GroupedReviewModel;
+import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -23,7 +24,6 @@ import com.fastaccess.data.dao.timeline.SourceModel;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -139,15 +139,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             } else if (item.getType() == TimelineModel.GROUP) {
                 GroupedReviewModel reviewModel = item.getGroupedReviewModel();
                 if (v.getId() == R.id.addCommentPreview) {
-                    EditReviewCommentModel model = new EditReviewCommentModel();
-                    model.setCommentPosition(-1);
-                    model.setGroupPosition(position);
-                    model.setInReplyTo(reviewModel.getId());
-                    Bundle bundle = Bundler.start()
-                            .put(BundleConstant.REVIEW_EXTRA, model)
-                            .put(BundleConstant.EXTRA_TWO, position)
-                            .end();
-                    if (getView() != null) getView().onReplyOrCreateReview(null, bundle);
+                    if (getView() != null) {
+                        EditReviewCommentModel model = new EditReviewCommentModel();
+                        model.setCommentPosition(-1);
+                        model.setGroupPosition(position);
+                        model.setInReplyTo(reviewModel.getId());
+                        getView().onReplyOrCreateReview(null, null, position, -1, model);
+
+                    }
                 }
             }
         }
@@ -249,20 +248,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 CommentRequestModel commentRequestModel = new CommentRequestModel();
                 commentRequestModel.setBody(text);
                 makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(pullRequest.getLogin(), pullRequest.getRepoId(),
-                        pullRequest.getNumber(), commentRequestModel), comment -> {
-                });
-            } else {
-                EditReviewCommentModel commentModel = bundle.getParcelable(BundleConstant.REVIEW_EXTRA);
-                if (commentModel != null) {
-                    CommentRequestModel commentRequestModel = new CommentRequestModel();
-                    commentRequestModel.setBody(text);
-                    commentRequestModel.setInReplyTo(commentModel.getInReplyTo());
-                    makeRestCall(RestProvider.getReviewService(isEnterprise())
-                                    .submitComment(pullRequest.getLogin(), pullRequest.getRepoId(), pullRequest.getNumber(), commentRequestModel),
-                            reviewCommentModel -> {
-                                sendToView(view -> view.onAddReviewComment(reviewCommentModel, commentModel));
-                            });
-                }
+                        pullRequest.getNumber(), commentRequestModel), comment -> sendToView(view -> view.addComment(TimelineModel.constructComment(comment))));
             }
         }
     }
@@ -296,12 +282,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     model.setGroupPosition(groupPosition);
                     model.setCommentPosition(commentPosition);
                     model.setInReplyTo(comment.getId());
-                    Bundle bundle = Bundler.start()
-                            .put(BundleConstant.REVIEW_EXTRA, model)
-                            .put(BundleConstant.EXTRA_TWO, groupPosition)
-                            .put(BundleConstant.EXTRA_THREE, commentPosition)
-                            .end();
-                    getView().onReplyOrCreateReview(comment.getUser(), bundle);
+                    getView().onReplyOrCreateReview(comment.getUser(), comment.getBodyHtml(), groupPosition, commentPosition, model);
                 } else if (item1.getItemId() == R.id.edit) {
                     getView().onEditReviewComment(comment, groupPosition, commentPosition);
                 } else if (item1.getItemId() == R.id.share) {
@@ -365,16 +346,19 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         }
         setCurrentPage(page);
         if (parameter.getHead() != null) {
-            Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService(isEnterprise())
-                            .getTimeline(login, repoId, number, page), RestProvider.getReviewService(isEnterprise())
-                            .getPrReviewComments(login, repoId, number),
-                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, parameter.getHead().getRef()),
+            Observable<List<TimelineModel>> observable = Observable.zip(
+                    RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number, page),
+                    RestProvider.getReviewService(isEnterprise()).getPrReviewComments(login, repoId, number),
+                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, parameter.getHead().getRef())
+                            .onErrorReturn(throwable -> RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId,
+                                    parameter.getBase().getRef()).blockingFirst(new PullRequestStatusModel())),
                     (response, comments, status) -> {
                         if (response != null) {
                             lastPage = response.getLast();
                             List<TimelineModel> models = TimelineConverter.INSTANCE.convert(response.getItems(), comments);
                             if (page == 1 && status != null) {
-                                models.add(0, new TimelineModel(status));
+                                status.setMergable(parameter.isMergable());
+                                if (status.getState() != null && status.getStatuses() != null) models.add(0, new TimelineModel(status));
                             }
                             return models;
                         } else {

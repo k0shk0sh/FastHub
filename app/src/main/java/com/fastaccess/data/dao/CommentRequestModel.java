@@ -24,13 +24,15 @@ import lombok.Setter;
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         CommentRequestModel that = (CommentRequestModel) o;
-        return position == that.position && (path != null ? path.equals(that.path) : that.path == null);
+        return (path != null ? path.equals(that.path) : that.path == null) &&
+                (position != null ? position.equals(that.position) : that.position == null);
     }
 
     @Override public int hashCode() {
         int result = path != null ? path.hashCode() : 0;
-        result = 31 * result + position;
+        result = 31 * result + (position != null ? position.hashCode() : 0);
         return result;
     }
 

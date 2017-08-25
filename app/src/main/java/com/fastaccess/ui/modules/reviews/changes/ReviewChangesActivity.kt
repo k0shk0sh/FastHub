@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.annotation.StringRes
-import android.support.design.widget.TextInputLayout
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
@@ -17,6 +16,7 @@ import com.fastaccess.data.dao.ReviewRequestModel
 import com.fastaccess.helper.*
 import com.fastaccess.provider.theme.ThemeEngine
 import com.fastaccess.ui.base.BaseActivity
+import com.fastaccess.ui.modules.editor.comment.CommentEditorFragment
 import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment
 
 /**
@@ -24,17 +24,23 @@ import com.fastaccess.ui.widgets.dialog.ProgressDialogFragment
  */
 class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesPresenter>(), ReviewChangesMvp.View {
 
-
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.reviewMethod) lateinit var spinner: Spinner
-    @BindView(R.id.editText) lateinit var editText: TextInputLayout
 
-    @State var reviewRequest: ReviewRequestModel? = null
-    @State var repoId: String? = null
-    @State var owner: String? = null
-    @State var number: Long? = null
-    @State var isProgressShowing: Boolean = false
-    @State var isClosed: Boolean = false
+    @State
+    var reviewRequest: ReviewRequestModel? = null
+    @State
+    var repoId: String? = null
+    @State
+    var owner: String? = null
+    @State
+    var number: Long? = null
+    @State
+    var isProgressShowing: Boolean = false
+    @State
+    var isClosed: Boolean = false
+
+    private var commentEditorFragment: CommentEditorFragment? = null
 
     override fun layout(): Int = R.layout.add_review_dialog_layout
 
@@ -49,6 +55,8 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeEngine.applyDialogTheme(this)
         super.onCreate(savedInstanceState)
+        commentEditorFragment = supportFragmentManager.findFragmentById(R.id.commentFragmentDialog) as CommentEditorFragment?
+        commentEditorFragment?.hideSendButton()
         setToolbarIcon(R.drawable.ic_clear)
         val bundle = intent.extras!!
         reviewRequest = bundle.getParcelable(BundleConstant.EXTRA)
@@ -71,11 +79,12 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.submit -> {
-                if (spinner.selectedItemPosition != 0 && editText.editText?.text.isNullOrEmpty()) {
-                    editText.error = getString(R.string.required_field)
+                if (spinner.selectedItemPosition != 0 && commentEditorFragment?.getEditText()?.text.isNullOrEmpty()) {
+                    commentEditorFragment?.getEditText()?.error = getString(R.string.required_field)
                 } else {
-                    editText.error = null
-                    presenter.onSubmit(reviewRequest!!, repoId!!, owner!!, number!!, InputHelper.toString(editText), spinner.selectedItem as String)
+                    commentEditorFragment?.getEditText()?.error = null
+                    presenter.onSubmit(reviewRequest!!, repoId!!, owner!!, number!!, InputHelper.toString(commentEditorFragment?.getEditText())
+                            , spinner.selectedItem as String)
                 }
                 return true
             }
@@ -132,6 +141,10 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
         hideProgress()
         super.showErrorMessage(msgRes)
     }
+
+    override fun onSendActionClicked(text: String, bundle: Bundle?) {}
+
+    override fun onTagUser(username: String) {}
 
     companion object {
         fun startForResult(activity: Activity, view: View, reviewChanges: ReviewRequestModel, repoId: String, owner: String, number: Long,

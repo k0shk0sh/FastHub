@@ -30,6 +30,7 @@ import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
@@ -393,6 +394,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         getPresenter().onAddComment(comment);
         AnimHelper.mimicFabVisibility(getPresenter().hasReviewComments(), prReviewHolder, null);
         reviewsCount.setText(String.format("%s", getPresenter().getCommitComment().size()));
+        Logger.e(reviewsCount.getText(), prReviewHolder.getVisibility());
     }
 
     @Override public void onMerge(@NonNull String msg, @NonNull String mergeMethod) {
