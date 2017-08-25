@@ -49,7 +49,9 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof EditorLinkImageMvp.EditorLinkCallback) {
+        if (getParentFragment() instanceof EditorLinkImageMvp.EditorLinkCallback) {
+            callback = (EditorLinkImageMvp.EditorLinkCallback) getParentFragment();
+        } else if (context instanceof EditorLinkImageMvp.EditorLinkCallback) {
             callback = (EditorLinkImageMvp.EditorLinkCallback) context;
         }
     }
@@ -62,7 +64,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
     @Override public void onUploaded(@Nullable String title, @Nullable String link) {
         hideProgress();
         if (callback != null) {
-            callback.onAppendLink(title, link, isLink());
+            callback.onAppendLink(title, link != null ? link.replace("http:", "https:") : null, isLink());
         }
         dismiss();
     }
@@ -108,7 +110,7 @@ public class EditorLinkImageDialogFragment extends BaseDialogFragment<EditorLink
 
     @OnClick(R.id.insert) public void onInsertClicked() {
         if (callback != null) {
-            callback.onAppendLink(InputHelper.toString(title), InputHelper.toString(link).replace("http://", "https://"), isLink());
+            callback.onAppendLink(InputHelper.toString(title), InputHelper.toString(link), isLink());
         }
         dismiss();
     }

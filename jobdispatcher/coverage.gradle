@@ -1,0 +1,40 @@
+apply plugin: "jacoco"
+
+jacoco {
+    // see https://github.com/jacoco/jacoco/pull/288 and the top build.gradle
+    toolVersion "0.7.6.201602180812"
+}
+
+android {
+    testOptions {
+        unitTests.all {
+            systemProperty "robolectric.logging.enabled", true
+            systemProperty "robolectric.logging", "stdout"
+
+            jacoco {
+                includeNoLocationClasses = true
+            }
+        }
+    }
+}
+
+// ignore these when generating coverage
+def ignoredPrefixes = ['R$', 'R.class', 'BuildConfig.class']
+
+task coverage(type: JacocoReport, dependsOn: ["testDebugUnitTest"]) {
+    group = "Reports"
+    description = "Generate a coverage report"
+
+    classDirectories = fileTree(
+        dir: "${project.buildDir}/intermediates/classes/debug/com/firebase/",
+        exclude: { d -> ignoredPrefixes.any { p -> d.file.name.startsWith(p) } }
+    )
+    sourceDirectories = files(["src/main/java/com/firebase/"])
+    executionData = files("${project.buildDir}/jacoco/testDebugUnitTest.exec")
+
+    reports {
+        xml.enabled = true
+        html.enabled = true
+        html.destination "${buildDir}/coverage_html"
+    }
+}

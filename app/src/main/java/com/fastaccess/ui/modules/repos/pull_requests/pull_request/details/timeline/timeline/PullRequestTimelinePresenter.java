@@ -248,7 +248,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 CommentRequestModel commentRequestModel = new CommentRequestModel();
                 commentRequestModel.setBody(text);
                 makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(pullRequest.getLogin(), pullRequest.getRepoId(),
-                        pullRequest.getNumber(), commentRequestModel), comment -> sendToView(view -> view.addComment(TimelineModel.constructComment(comment))));
+                        pullRequest.getNumber(), commentRequestModel), comment -> sendToView(view -> view.addComment(TimelineModel.constructComment
+                        (comment))));
             }
         }
     }
