@@ -21,6 +21,7 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.timeline.GenericEvent;
 import com.fastaccess.data.dao.timeline.SourceModel;
+import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
@@ -95,6 +96,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 } else if (issueEventModel.getAssignee() != null) {
                     FilterIssuesActivity.startActivity(v, pullRequest.getLogin(), pullRequest.getRepoId(), false,
                             true, isEnterprise(), "assignee:\"" + issueEventModel.getAssignee().getLogin() + "\"");
+                } else if (issueEventModel.getEvent() == IssueEventType.committed) {
+                    SchemeParser.launchUri(v.getContext(), issueEventModel.getUrl().replace("git/", ""));
                 } else {
                     SourceModel sourceModel = issueEventModel.getSource();
                     if (sourceModel != null) {

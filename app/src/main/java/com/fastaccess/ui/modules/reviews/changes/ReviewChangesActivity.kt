@@ -40,7 +40,9 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     @State
     var isClosed: Boolean = false
 
-    private var commentEditorFragment: CommentEditorFragment? = null
+    private val commentEditorFragment: CommentEditorFragment? by lazy {
+        supportFragmentManager.findFragmentByTag("commentContainer") as CommentEditorFragment?
+    }
 
     override fun layout(): Int = R.layout.add_review_dialog_layout
 
@@ -55,8 +57,13 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     override fun onCreate(savedInstanceState: Bundle?) {
         ThemeEngine.applyDialogTheme(this)
         super.onCreate(savedInstanceState)
-        commentEditorFragment = supportFragmentManager.findFragmentById(R.id.commentFragmentDialog) as CommentEditorFragment?
-        commentEditorFragment?.hideSendButton()
+        if (savedInstanceState == null) {
+            val fragment = CommentEditorFragment()
+            fragment.arguments = Bundler.start().put(BundleConstant.YES_NO_EXTRA, true).end()
+            supportFragmentManager.beginTransaction()
+                    .replace(R.id.commentContainer, fragment, "commentContainer")
+                    .commitNow()
+        }
         setToolbarIcon(R.drawable.ic_clear)
         val bundle = intent.extras!!
         reviewRequest = bundle.getParcelable(BundleConstant.EXTRA)
@@ -83,7 +90,7 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
                     commentEditorFragment?.getEditText()?.error = getString(R.string.required_field)
                 } else {
                     commentEditorFragment?.getEditText()?.error = null
-                    presenter.onSubmit(reviewRequest!!, repoId!!, owner!!, number!!, InputHelper.toString(commentEditorFragment?.getEditText())
+                    presenter.onSubmit(reviewRequest!!, repoId!!, owner!!, number!!, InputHelper.toString(commentEditorFragment?.getEditText()?.text)
                             , spinner.selectedItem as String)
                 }
                 return true

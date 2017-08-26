@@ -16,7 +16,7 @@ interface ViewerMvp {
 
     interface View extends BaseMvp.FAView, PrettifyWebView.OnContentChangedListener {
 
-        void onSetImageUrl(@NonNull String url);
+        void onSetImageUrl(@NonNull String url, boolean isSvg);
 
         void onSetMdText(@NonNull String text, String baseUrl, boolean replace);
 

@@ -131,7 +131,6 @@ public class SchemeParser {
             if (MarkDownProvider.isArchive(data.toString())) return null;
             if (TextUtils.equals(authority, HOST_DEFAULT) || TextUtils.equals(authority, RAW_AUTHORITY) ||
                     TextUtils.equals(authority, API_AUTHORITY) || isEnterprise) {
-                Logger.e(data);
                 Intent trending = getTrending(context, data);
                 Intent userIntent = getUser(context, data);
                 Intent repoIssues = getRepoIssueIntent(context, data);
@@ -176,6 +175,11 @@ public class SchemeParser {
             }
         }
         return null;
+    }
+
+    private static boolean getInvitationIntent(@NonNull Uri uri) {
+        List<String> segments = uri.getPathSegments();
+        return (segments != null && segments.size() == 3) && "invitations".equalsIgnoreCase(uri.getLastPathSegment());
     }
 
     @Nullable private static Intent getPullRequestIntent(@NonNull Context context, @NonNull Uri uri, boolean showRepoBtn) {
@@ -264,6 +268,9 @@ public class SchemeParser {
      */
     @Nullable private static Intent getGeneralRepo(@NonNull Context context, @NonNull Uri uri) {
         //TODO parse deeper links to their associate views. meantime fallback to repoPage
+        if (getInvitationIntent(uri)) {
+            return null;
+        }
         boolean isEnterprise = PrefGetter.isEnterprise() && Uri.parse(LinkParserHelper.getEndpoint(PrefGetter.getEnterpriseUrl())).getAuthority()
                 .equalsIgnoreCase(uri.getAuthority());
         if (uri.getAuthority().equals(HOST_DEFAULT) || uri.getAuthority().equals(API_AUTHORITY) || isEnterprise) {
@@ -359,6 +366,7 @@ public class SchemeParser {
         }
         if (segmentTwo.equals("blob") || segmentTwo.equals("tree")) {
             Uri urlBuilder = getBlobBuilder(uri);
+            Logger.e(urlBuilder);
             return CodeViewerActivity.createIntent(context, urlBuilder.toString(), uri.toString());
         } else {
             String authority = uri.getAuthority();

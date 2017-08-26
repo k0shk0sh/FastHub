@@ -88,7 +88,7 @@ class AddReviewDialogFragment : BaseDialogFragment<BaseMvp.FAView, BasePresenter
                 commentEditorFragment?.getEditText()?.error = getString(R.string.required_field)
             } else {
                 commentEditorFragment?.getEditText()?.error = null
-                commentCallback?.onCommentAdded(InputHelper.toString(commentEditorFragment?.getEditText()),
+                commentCallback?.onCommentAdded(InputHelper.toString(commentEditorFragment?.getEditText()?.text),
                         item, arguments.getBundle(BundleConstant.EXTRA))
                 dismiss()
             }

@@ -47,8 +47,10 @@ public class MainPresenter extends BasePresenter<MainMvp.View> implements MainMv
                 .flatMap(login -> RxHelper.getObservable(RestProvider.getNotificationService(isEnterprise())
                         .getNotifications(ParseDateFormat.getLastWeekDate())))
                 .flatMapSingle(notificationPageable -> {
-                    if (notificationPageable != null) {
+                    if (notificationPageable != null && (notificationPageable.getItems() != null && !notificationPageable.getItems().isEmpty())) {
                         return Notification.saveAsSingle(notificationPageable.getItems());
+                    } else {
+                        Notification.deleteAll();
                     }
                     return Single.just(true);
                 })

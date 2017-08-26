@@ -154,10 +154,14 @@
         <item name="comment_box_style">@style/CommentBoxDarkBluish</item>
         <item name="icon_color">#eee</item>
         <item name="timeLineBackground">@style/TimeLineBackgroundBluish</item>
+        <item name="patch_addition">@color/dark_patch_addition_color</item>
+        <item name="patch_deletion">@color/dark_patch_deletion_color</item>
+        <item name="patch_ref">@color/dark_patch_ref_color</item>
+        <item name="dividerColor">@color/bluishDivider</item>
+        <item name="android:windowBackground">@color/bluishWindowBackground</item>
         <item name="colorPrimary">@color/bluish_primary</item>
         <item name="colorPrimaryDark">@color/bluish_primary_dark</item>
         <item name="colorAccent">@color/bluish_accent</item>
-        <item name="android:windowBackground">@color/bluishWindowBackground</item>
     </style>
 
     <style name="DialogThemeBluish.Red" parent="DialogThemeBluish">

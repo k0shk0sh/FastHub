@@ -8,6 +8,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.fastaccess.R;
+import com.fastaccess.helper.PrefGetter;
 
 import java.lang.ref.WeakReference;
 
@@ -38,7 +39,7 @@ class GlideDrawableTarget extends SimpleTarget<GlideDrawable> {
             resource.setBounds(rect);
             urlDrawable.setBounds(rect);
             urlDrawable.setDrawable(resource);
-            if (resource.isAnimated()) {
+            if (resource.isAnimated() && !PrefGetter.isGistDisabled()) {
                 urlDrawable.setCallback((Drawable.Callback) textView.getTag(R.id.drawable_callback));
                 resource.setLoopCount(GlideDrawable.LOOP_FOREVER);
                 resource.start();

@@ -14,6 +14,7 @@ import com.fastaccess.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.net.URLDecoder;
 
 /**
  * Created by Kosh on 10 Nov 2016, 3:43 PM
@@ -91,7 +92,7 @@ public class PrefGetter {
     private static final String OTP_CODE = "otp_code";
     private static final String ENTERPRISE_OTP_CODE = "enterprise_otp_code";
     private static final String APP_LANGUAGE = "app_language";
-    private static final String SENT_VIA = "sent_via";
+    private static final String SENT_VIA = "fasthub_signature";
     private static final String SENT_VIA_BOX = "sent_via_enabled";
     private static final String PROFILE_BACKGROUND_URL = "profile_background_url";
     private static final String AMLOD_THEME_ENABLED = "amlod_theme_enabled";

@@ -143,6 +143,10 @@ import lombok.NoArgsConstructor;
                 .value() > 0;
     }
 
+    public static void deleteAll() {
+        App.getInstance().getDataStore().toBlocking().delete(Notification.class).get().value();
+    }
+
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

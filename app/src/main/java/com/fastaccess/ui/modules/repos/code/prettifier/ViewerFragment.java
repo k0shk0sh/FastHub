@@ -66,8 +66,8 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         return fragmentView;
     }
 
-    @Override public void onSetImageUrl(@NonNull String url) {
-        webView.loadImage(url);
+    @Override public void onSetImageUrl(@NonNull String url, boolean isSvg) {
+        webView.loadImage(url, isSvg);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
         getActivity().invalidateOptionsMenu();

@@ -122,7 +122,6 @@
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <string name="feeds" translatable="false">Feeds</string>
-
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
