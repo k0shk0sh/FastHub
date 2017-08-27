@@ -8,7 +8,7 @@
 
 # How to contribute & build *FastHub*
 
-If you have a question in mind, feel free to come our public [Slack](http://rebrand.ly/fasthub-slack) channel.
+If you have a question in mind, feel free to come our public [Slack](http://rebrand.ly/fasthub) channel.
 
 ### Optional
 
