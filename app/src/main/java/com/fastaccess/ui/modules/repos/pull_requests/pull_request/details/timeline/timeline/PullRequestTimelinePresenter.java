@@ -102,13 +102,13 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     SourceModel sourceModel = issueEventModel.getSource();
                     if (sourceModel != null) {
                         if (sourceModel.getCommit() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getCommit().getUrl()));
-                        } else if (sourceModel.getIssue() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getIssue().getUrl()));
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getCommit().getUrl());
                         } else if (sourceModel.getPullRequest() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getPullRequest().getUrl()));
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getPullRequest().getUrl());
+                        } else if (sourceModel.getIssue() != null) {
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getIssue().getHtmlUrl());
                         } else if (sourceModel.getRepository() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getRepository().getUrl()));
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getRepository().getUrl());
                         }
                     }
                 }

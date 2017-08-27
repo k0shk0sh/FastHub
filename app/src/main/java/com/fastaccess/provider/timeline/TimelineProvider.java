@@ -133,11 +133,13 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.cross_referenced) {
                     SourceModel sourceModel = issueEventModel.getSource();
                     if (sourceModel != null) {
+                        String type = sourceModel.getType();
                         SpannableBuilder title = SpannableBuilder.builder();
-                        if (sourceModel.getIssue() != null) {
+                        if (sourceModel.getPullRequest() != null) {
+                            if (sourceModel.getIssue() != null) title.url("#" + sourceModel.getIssue().getNumber());
+                            type = "pull request";
+                        } else if (sourceModel.getIssue() != null) {
                             title.url("#" + sourceModel.getIssue().getNumber());
-                        } else if (sourceModel.getPullRequest() != null) {
-                            title.url("#" + sourceModel.getPullRequest().getNumber());
                         } else if (sourceModel.getCommit() != null) {
                             title.url(substring(sourceModel.getCommit().getSha()));
                         } else if (sourceModel.getRepository() != null) {
@@ -147,7 +149,7 @@ public class TimelineProvider {
                             spannableBuilder.append(" ")
                                     .append(thisString)
                                     .append(" in ")
-                                    .append(sourceModel.getType())
+                                    .append(type)
                                     .append(" ")
                                     .append(title);
                         }
