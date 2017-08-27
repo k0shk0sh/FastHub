@@ -422,4 +422,9 @@
     <string name="sound_chooser_title">Звук уведомлений</string>
     <string name="disable_auto_gif_summary">Отключить автоматическое проигрывание GIF</string>
     <string name="disable_auto_gif_title">Откл. автопроигрывание GIF</string>
+    <string name="request_changes">запросил(а) изменения</string>
+    <string name="google_play_service_error">Сервисы Google Play недоступны</string>
+    <string name="edit_gist">Редактировать Gist</string>
+    <string name="content">Содержимое</string>
+    <string name="expand">expand</string>
 </resources>
