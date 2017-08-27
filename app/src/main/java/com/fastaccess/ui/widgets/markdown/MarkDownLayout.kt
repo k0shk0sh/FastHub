@@ -126,6 +126,8 @@ class MarkDownLayout : LinearLayout {
                     } else {
                         it.setText(it.text.toString().replace(sentFromFastHub, ""))
                     }
+                    editText.setSelection(it.text.length)
+                    editText.requestFocus()
                 }
             }
         }

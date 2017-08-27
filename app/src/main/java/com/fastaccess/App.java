@@ -50,7 +50,7 @@ public class App extends Application {
         FabricProvider.initFabric(this);
         RxBillingService.register(this);
         deleteDatabase("database.db");
-        getDataStore();//init requery before anything.
+        getDataStore();
         setupPreference();
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);

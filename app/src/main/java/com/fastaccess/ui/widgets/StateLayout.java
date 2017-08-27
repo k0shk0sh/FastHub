@@ -95,8 +95,8 @@ public class StateLayout extends NestedScrollView {
     }
 
     public void setEmptyText(@NonNull String text) {
-        this.emptyTextValue = text;
-        emptyText.setText(text);
+        this.emptyTextValue = text + "\n\n¯\\_(ツ)_/¯";
+        emptyText.setText(emptyTextValue);
     }
 
     public void showEmptyState() {

@@ -139,7 +139,7 @@
                     android:padding="@dimen/spacing_micro"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_clear"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     tools:visibility="visible"/>
 
             </LinearLayout>

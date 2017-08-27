@@ -68,7 +68,7 @@ public class AppHelper {
 
     public static String getFastHubIssueTemplate(boolean enterprise) {
         String brand = (!isEmulator()) ? Build.BRAND : "Android Emulator";
-        String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
+        String model = (!isEmulator()) ? DeviceNameGetter.getInstance().getDeviceName() : "Android Emulator";
         StringBuilder builder = new StringBuilder()
                 .append("**FastHub Version: ").append(BuildConfig.VERSION_NAME).append(enterprise ? " Enterprise**" : "**").append("  \n")
                 .append(!isInstalledFromPlaySore(App.getInstance()) ? "**APK Source: Unknown**  \n" : "")
