@@ -40,6 +40,7 @@ import com.fastaccess.ui.adapter.ProfilePinnedReposAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.profile.ProfilePagerMvp;
 import com.fastaccess.ui.widgets.AvatarLayout;
+import com.fastaccess.ui.widgets.FontButton;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
@@ -78,8 +79,8 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     @BindView(R.id.email) FontTextView email;
     @BindView(R.id.link) FontTextView link;
     @BindView(R.id.joined) FontTextView joined;
-    @BindView(R.id.following) FontTextView following;
-    @BindView(R.id.followers) FontTextView followers;
+    @BindView(R.id.following) FontButton following;
+    @BindView(R.id.followers) FontButton followers;
     @BindView(R.id.progress) View progress;
     @BindView(R.id.followBtn) Button followBtn;
     @BindView(R.id.orgsList) DynamicRecyclerView orgsList;
@@ -226,12 +227,14 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
         }
         followers.setText(SpannableBuilder.builder()
                 .append(getString(R.string.followers))
-                .append("\n")
-                .bold(String.valueOf(userModel.getFollowers())));
+                .append(" (")
+                .bold(String.valueOf(userModel.getFollowers()))
+                .append(")"));
         following.setText(SpannableBuilder.builder()
                 .append(getString(R.string.following))
-                .append("\n")
-                .bold(String.valueOf(userModel.getFollowing())));
+                .append(" (")
+                .bold(String.valueOf(userModel.getFollowing()))
+                .append(")"));
     }
 
     @Override public void invalidateFollowBtn() {

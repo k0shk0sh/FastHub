@@ -119,55 +119,54 @@
                         android:paddingTop="@dimen/spacing_normal"
                         tools:text="What’s the secret to large and cold peanut butter? Always use quartered szechuan pepper."/>
 
-                    <RelativeLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingTop="@dimen/spacing_xs_large"
                         android:paddingBottom="@dimen/spacing_xs_large"
-                        android:paddingTop="@dimen/spacing_xs_large">
+                        android:orientation="horizontal">
 
-                        <com.fastaccess.ui.widgets.FontTextView
+
+                        <com.fastaccess.ui.widgets.FontButton
                             android:id="@+id/following"
-                            style="@style/Base.TextAppearance.AppCompat.Small"
-                            android:layout_width="wrap_content"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentStart="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/spacing_xs_large"
-                            android:layout_marginStart="@dimen/spacing_xs_large"
-                            android:layout_toStartOf="@+id/followBtn"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:gravity="center"
-                            tools:text="Following\n40"/>
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textColor="@color/white"
+                            tools:text="Following (40)"/>
+
+                        <com.fastaccess.ui.widgets.FontButton
+                            android:id="@+id/followers"
+                            style="@style/Widget.AppCompat.Button.Colored"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:maxLines="1"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+                            android:textColor="@color/white"
+                            tools:text="Followers(140)"/>
 
                         <com.fastaccess.ui.widgets.FontButton
                             android:id="@+id/followBtn"
                             style="@style/Widget.AppCompat.Button.Colored"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
                             android:drawablePadding="@dimen/spacing_normal"
                             android:drawableStart="@drawable/asl_follow"
                             android:text="@string/follow"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                             android:textColor="@color/white"
                             android:visibility="gone"
                             tools:visibility="visible"/>
 
-                        <com.fastaccess.ui.widgets.FontTextView
-                            android:id="@+id/followers"
-                            style="@style/Base.TextAppearance.AppCompat.Small"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="@dimen/spacing_xs_large"
-                            android:layout_marginStart="@dimen/spacing_xs_large"
-                            android:layout_toEndOf="@+id/followBtn"
-                            android:background="?selectableItemBackgroundBorderless"
-                            android:gravity="center"
-                            tools:text="Followers\n140"/>
-
-                    </RelativeLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/section_container"
@@ -276,8 +275,8 @@
                     android:id="@+id/orgsList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
                     android:nestedScrollingEnabled="false"
+                    android:orientation="vertical"
                     app:layoutManager="@string/grid_layout_manager"
                     app:spanCount="3"
                     tools:listitem="@layout/profile_org_row_item"/>
