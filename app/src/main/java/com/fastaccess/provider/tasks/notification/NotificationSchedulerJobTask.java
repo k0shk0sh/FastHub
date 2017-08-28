@@ -13,9 +13,6 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 
 import com.annimon.stream.Stream;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.fastaccess.R;
 import com.fastaccess.data.dao.model.Comment;
 import com.fastaccess.data.dao.model.Login;
@@ -191,16 +188,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void showNotificationWithoutComment(Context context, int accentColor, Notification thread, String iconUrl) {
-        if (!InputHelper.isEmpty(iconUrl)) {
-            withoutComments(null, thread, context, accentColor);
-        } else {
-            Glide.with(context).load(iconUrl).asBitmap()
-                    .into(new SimpleTarget<Bitmap>() {
-                        @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                            withoutComments(resource, thread, context, accentColor);
-                        }
-                    });
-        }
+        withoutComments(null, thread, context, accentColor);
     }
 
     private void withoutComments(Bitmap bitmap, Notification thread, Context context, int accentColor) {
@@ -220,15 +208,7 @@ public class NotificationSchedulerJobTask extends JobService {
     }
 
     private void getNotificationWithComment(Context context, int accentColor, Notification thread, Comment comment, String url) {
-        if (!InputHelper.isEmpty(url)) {
-            Glide.with(context).load(url).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    withComments(resource, comment, context, thread, accentColor);
-                }
-            });
-        } else {
-            withComments(null, comment, context, thread, accentColor);
-        }
+        withComments(null, comment, context, thread, accentColor);
     }
 
     private void withComments(Bitmap bitmap, Comment comment, Context context, Notification thread, int accentColor) {

@@ -48,7 +48,9 @@ class EmojiAdapter(listener: BaseViewHolder.OnItemClickListener<Emoji>)
             }
 
             override fun publishResults(var1: CharSequence, results: Filter.FilterResults) {
-                insertItems(results.values as List<Emoji>)
+                results.values?.let {
+                    insertItems(it as List<Emoji>)
+                }
             }
         }
     }

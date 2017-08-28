@@ -10,17 +10,15 @@ import android.view.View;
 
 import com.evernote.android.state.State;
 import com.fastaccess.R;
-import com.fastaccess.data.dao.PullsIssuesParser;
 import com.fastaccess.data.dao.model.Issue;
 import com.fastaccess.data.dao.types.IssueState;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.adapter.IssuesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.filter.issues.FilterIssuesActivityMvp;
 import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
-import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerActivity;
-import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
@@ -132,19 +130,7 @@ public class FilterIssueFragment extends BaseFragment<FilterIssuesMvp.View, Filt
     }
 
     @Override public void onItemClicked(@NonNull Issue item) {
-        PullsIssuesParser parser;
-        if (!isIssue) {
-            parser = PullsIssuesParser.getForPullRequest(item.getHtmlUrl());
-        } else {
-            parser = PullsIssuesParser.getForIssue(item.getHtmlUrl());
-        }
-        if (parser != null) {
-            if (isIssue) {
-                startActivity(IssuePagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber(), true));
-            } else {
-                startActivity(PullRequestPagerActivity.createIntent(getContext(), parser.getRepoId(), parser.getLogin(), parser.getNumber(), true));
-            }
-        }
+        SchemeParser.launchUri(getContext(), item.getHtmlUrl());
     }
 
     @Override protected int fragmentLayout() {

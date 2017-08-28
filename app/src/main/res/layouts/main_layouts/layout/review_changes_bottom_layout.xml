@@ -14,8 +14,8 @@
     android:visibility="gone"
     app:cardBackgroundColor="?colorAccent"
     app:contentPadding="@dimen/spacing_normal"
-    app:layout_anchor="@+id/fab"
-    app:layout_anchorGravity="start|center"
+    app:layout_anchor="@+id/pager"
+    app:layout_anchorGravity="bottom|center"
     tools:visibility="visible">
 
     <LinearLayout

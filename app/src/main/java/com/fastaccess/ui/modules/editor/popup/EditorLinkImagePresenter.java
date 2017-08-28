@@ -28,7 +28,7 @@ public class EditorLinkImagePresenter extends BasePresenter<EditorLinkImageMvp.V
                             return;
                         }
                         sendToView(view -> view.onUploaded(null, null));
-                    });
+                    }, false);
         } else {
             if (getView() != null) getView().onUploaded(null, null);
         }
