@@ -29,11 +29,15 @@ interface ViewerMvp {
         void onShowMdProgress();
 
         void openUrl(@NonNull String url);
+
+        void onViewAsCode();
     }
 
     interface Presenter extends BaseMvp.FAPresenter {
 
         void onHandleIntent(@Nullable Bundle intent);
+
+        void onLoadContentAsStream();
 
         String downloadedStream();
 

@@ -556,4 +556,5 @@
     <string name="content">Content</string>
     <string name="expand">expand</string>
     <string name="copy_sha">Copy SHA</string>
+    <string name="view_as_code">View as code</string>
 </resources>

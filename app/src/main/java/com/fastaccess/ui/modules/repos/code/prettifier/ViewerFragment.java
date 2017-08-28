@@ -109,6 +109,10 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         ActivityHelper.startCustomTab(getActivity(), url);
     }
 
+    @Override public void onViewAsCode() {
+        getPresenter().onLoadContentAsStream();
+    }
+
     @Override public void showProgress(@StringRes int resId) {
         onShowMdProgress();
     }

@@ -102,7 +102,13 @@ public class CodeViewerActivity extends BaseActivity {
 
     @Override public boolean onOptionsItemSelected(MenuItem item) {
         if (InputHelper.isEmpty(url)) return super.onOptionsItemSelected(item);
-        if (item.getItemId() == R.id.download) {
+        if (item.getItemId() == R.id.viewAsCode) {
+            ViewerFragment viewerFragment = (ViewerFragment) AppHelper.getFragmentByTag(getSupportFragmentManager(), ViewerFragment.TAG);
+            if (viewerFragment != null) {
+                viewerFragment.onViewAsCode();
+            }
+            return true;
+        } else if (item.getItemId() == R.id.download) {
             if (ActivityHelper.checkAndRequestReadWritePermission(this)) {
                 RestProvider.downloadFile(this, url);
             }

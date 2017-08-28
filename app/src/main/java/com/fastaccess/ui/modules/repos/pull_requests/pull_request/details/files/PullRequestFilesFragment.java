@@ -14,6 +14,7 @@ import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.CommitFileChanges;
 import com.fastaccess.data.dao.CommitFileModel;
 import com.fastaccess.data.dao.CommitLinesModel;
+import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
@@ -22,7 +23,9 @@ import com.fastaccess.provider.rest.loadmore.OnLoadMore;
 import com.fastaccess.ui.adapter.CommitFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.main.premium.PremiumActivity;
+import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 import com.fastaccess.ui.modules.reviews.AddReviewDialogFragment;
+import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
@@ -45,10 +48,14 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     @State HashMap<Long, Boolean> toggleMap = new LinkedHashMap<>();
+    @BindView(R.id.changes) FontTextView changes;
+    @BindView(R.id.addition) FontTextView addition;
+    @BindView(R.id.deletion) FontTextView deletion;
 
     private PullRequestFilesMvp.PatchCallback viewCallback;
     private OnLoadMore onLoadMore;
     private CommitFilesAdapter adapter;
+    private IssuePagerMvp.IssuePrCallback<PullRequest> issueCallback;
 
     public static PullRequestFilesFragment newInstance(@NonNull String repoId, @NonNull String login, long number) {
         PullRequestFilesFragment view = new PullRequestFilesFragment();
@@ -60,8 +67,16 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
         return view;
     }
 
-    @Override public void onAttach(Context context) {
+    @SuppressWarnings("unchecked") @Override public void onAttach(Context context) {
         super.onAttach(context);
+        if (getParentFragment() instanceof IssuePagerMvp.IssuePrCallback) {
+            issueCallback = (IssuePagerMvp.IssuePrCallback) getParentFragment();
+        } else if (context instanceof IssuePagerMvp.IssuePrCallback) {
+            issueCallback = (IssuePagerMvp.IssuePrCallback) context;
+        } else {
+            throw new IllegalArgumentException(String.format("%s or parent fragment must implement IssuePagerMvp.IssuePrCallback", context.getClass()
+                    .getSimpleName()));
+        }
         if (getParentFragment() instanceof PullRequestFilesMvp.PatchCallback) {
             viewCallback = (PullRequestFilesMvp.PatchCallback) getParentFragment();
         } else if (context instanceof PullRequestFilesMvp.PatchCallback) {
@@ -70,6 +85,7 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override public void onDetach() {
+        issueCallback = null;
         viewCallback = null;
         super.onDetach();
     }
@@ -88,13 +104,14 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
     }
 
     @Override protected int fragmentLayout() {
-        return R.layout.micro_grid_refresh_list;
+        return R.layout.pull_request_files_layout;
     }
 
     @Override protected void onFragmentCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         if (getArguments() == null) {
             throw new NullPointerException("Bundle is null, therefore, PullRequestFilesFragment can't be proceeded.");
         }
+        setupChanges();
         stateLayout.setEmptyText(R.string.no_commits);
         stateLayout.setOnReloadListener(this);
         refresh.setOnRefreshListener(this);
@@ -110,6 +127,15 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
             onRefresh();
         }
         fastScroller.attachRecyclerView(recycler);
+    }
+
+    private void setupChanges() {
+        PullRequest pullRequest = issueCallback.getData();
+        if (pullRequest != null) {
+            addition.setText(String.valueOf(pullRequest.getAdditions()));
+            deletion.setText(String.valueOf(pullRequest.getDeletions()));
+            changes.setText(String.valueOf(pullRequest.getChangedFiles()));
+        }
     }
 
     @NonNull @Override public PullRequestFilesPresenter providePresenter() {
