@@ -137,6 +137,7 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         getMenuInflater().inflate(R.menu.share_menu, menu);
         menu.findItem(R.id.browser).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         menu.findItem(R.id.copyUrl).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+        menu.findItem(R.id.copySha).setVisible(true).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         menu.findItem(R.id.share).setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         return super.onCreateOptionsMenu(menu);
     }
@@ -154,12 +155,11 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         } else if (item.getItemId() == R.id.copyUrl) {
             if (getPresenter().getCommit() != null) AppHelper.copyToClipboard(this, getPresenter().getCommit().getHtmlUrl());
             return true;
+        } else if (item.getItemId() == R.id.copySha) {
+            if (getPresenter().getCommit() != null) AppHelper.copyToClipboard(this, getPresenter().getCommit().getSha());
+            return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override public void onSetup() {

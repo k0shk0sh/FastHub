@@ -555,4 +555,5 @@
     <string name="edit_gist">Edit Gist</string>
     <string name="content">Content</string>
     <string name="expand">expand</string>
+    <string name="copy_sha">Copy SHA</string>
 </resources>
