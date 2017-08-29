@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.ActivityHelper;
@@ -24,6 +25,7 @@ import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
 import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
+import com.fastaccess.ui.modules.repos.git.EditRepoFileActivity;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -43,6 +45,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private RepoFilesAdapter adapter;
+    private Login login;
     private RepoFilePathFragment parentFragment;
 
     @Override public void onNotifyAdapter() {
@@ -77,11 +80,16 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     }
 
     @Override public void onMenuClicked(@NonNull RepoFile item, View v) {
+        if (login == null) {
+            login = Login.getUser();
+        }
         if (refresh.isRefreshing()) return;
+        boolean isOwner = login.getLogin().equals(getPresenter().login);
         PopupMenu popup = new PopupMenu(getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.download_share_menu, popup.getMenu());
         popup.getMenu().findItem(R.id.download).setVisible(item.getType() == FilesType.file);
+        popup.getMenu().findItem(R.id.editFile).setVisible(isOwner && item.getType() == FilesType.file);
         popup.setOnMenuItemClickListener(item1 -> {
             switch (item1.getItemId()) {
                 case R.id.share:
@@ -94,6 +102,10 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                     break;
                 case R.id.copy:
                     AppHelper.copyToClipboard(v.getContext(), !InputHelper.isEmpty(item.getHtmlUrl()) ? item.getHtmlUrl() : item.getUrl());
+                    break;
+                case R.id.editFile:
+                    EditRepoFileActivity.Companion.startForResult(this, getPresenter().repoId,
+                            getPresenter().login, item.getPath(), item.getDownloadUrl(), true);
                     break;
             }
             return true;

@@ -3,6 +3,12 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/editFile"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit"
+        android:visible="false"
+        app:showAsAction="ifRoom"/>
+    <item
         android:id="@+id/download"
         android:icon="@drawable/ic_download"
         android:title="@string/download"

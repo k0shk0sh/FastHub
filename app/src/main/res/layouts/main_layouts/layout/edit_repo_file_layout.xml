@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?card_background"
+    android:orientation="vertical">
+
+    <include layout="@layout/appbar_elevation_dark"/>
+
+    <ScrollView
+        android:id="@+id/parentView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <com.fastaccess.ui.widgets.markdown.MarkdownEditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/transparent"
+                android:gravity="top|start"
+                android:hint="@string/type_here"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="5"
+                android:padding="@dimen/spacing_xs_large"
+                android:scrollbars="vertical"
+                tools:ignore="ScrollViewSize"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/toolbar_shadow_up"/>
+
+    <com.fastaccess.ui.widgets.markdown.MarkDownLayout
+        android:id="@+id/markDownLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:orientation="horizontal"/>
+</LinearLayout>

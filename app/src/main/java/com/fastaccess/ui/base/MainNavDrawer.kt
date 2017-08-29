@@ -11,7 +11,6 @@ import android.widget.TextView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Login
 import com.fastaccess.data.dao.model.PinnedRepos
-import com.fastaccess.helper.Logger
 import com.fastaccess.helper.PrefGetter
 import com.fastaccess.helper.RxHelper
 import com.fastaccess.provider.scheme.SchemeParser
@@ -24,6 +23,7 @@ import com.fastaccess.ui.modules.main.MainActivity
 import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.notification.NotificationActivity
 import com.fastaccess.ui.modules.pinned.PinnedReposActivity
+import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity
 import com.fastaccess.ui.modules.trending.TrendingActivity
 import com.fastaccess.ui.modules.user.UserPagerActivity
 import com.fastaccess.ui.widgets.AvatarLayout
@@ -180,6 +180,7 @@ class MainNavDrawer(val view: BaseActivity<*, *>, private val extraNav: Navigati
                     item.itemId == R.id.orgs -> view.onOpenOrgsDialog()
                     item.itemId == R.id.notifications -> view.startActivity(Intent(view, NotificationActivity::class.java))
                     item.itemId == R.id.trending -> view.startActivity(Intent(view, TrendingActivity::class.java))
+                    item.itemId == R.id.reportBug -> view.startActivity(CreateIssueActivity.startForResult(view))
                 }
             }
         }, 250)

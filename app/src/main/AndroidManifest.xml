@@ -232,6 +232,11 @@
             android:configChanges="keyboard|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"/>
+        <activity
+            android:name=".ui.modules.repos.git.EditRepoFileActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/markdown"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

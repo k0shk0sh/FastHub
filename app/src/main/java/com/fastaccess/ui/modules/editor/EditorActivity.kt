@@ -23,7 +23,6 @@ import com.fastaccess.data.dao.EditReviewCommentModel
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.helper.*
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.markdown.CachedComments
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.widgets.FontTextView
@@ -51,21 +50,13 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     @BindView(R.id.parentView) lateinit var parentView: View
     @BindView(R.id.autocomplete) lateinit var mention: ListView
 
-    @State
-    @BundleConstant.ExtraType
-    var extraType: String? = null
-    @State
-    var itemId: String? = null
-    @State
-    var login: String? = null
-    @State
-    var issueNumber: Int = 0
-    @State
-    var commentId: Long = 0
-    @State
-    var sha: String? = null
-    @State
-    var reviewComment: EditReviewCommentModel? = null
+    @State @BundleConstant.ExtraType var extraType: String? = null
+    @State var itemId: String? = null
+    @State var login: String? = null
+    @State var issueNumber: Int = 0
+    @State var commentId: Long = 0
+    @State var sha: String? = null
+    @State var reviewComment: EditReviewCommentModel? = null
 
     override fun layout(): Int = R.layout.editor_layout
 

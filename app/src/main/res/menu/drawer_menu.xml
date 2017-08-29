@@ -23,7 +23,6 @@
             android:id="@+id/orgs"
             android:icon="@drawable/ic_people"
             android:title="@string/organizations"/>
-
         <item
             android:id="@+id/notifications"
             android:icon="@drawable/ic_ring"
@@ -52,6 +51,10 @@
     <group
         android:id="@+id/group_three"
         android:checkableBehavior="none">
+        <item
+            android:id="@+id/reportBug"
+            android:icon="@drawable/ic_bug"
+            android:title="@string/report_issue"/>
         <item
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
