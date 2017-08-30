@@ -14,7 +14,6 @@ import com.fastaccess.R;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.net.URLDecoder;
 
 /**
  * Created by Kosh on 10 Nov 2016, 3:43 PM
@@ -464,5 +463,9 @@ public class PrefGetter {
 
     public static boolean isGistDisabled() {
         return PrefHelper.getBoolean(DISABLE_AUTO_PLAY_GIF);
+    }
+
+    public static boolean isAppAnimationDisabled() {
+        return PrefHelper.getBoolean("app_animation");
     }
 }

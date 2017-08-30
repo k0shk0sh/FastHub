@@ -557,4 +557,6 @@
     <string name="expand">expand</string>
     <string name="copy_sha">Copy SHA</string>
     <string name="view_as_code">View as code</string>
+    <string name="app_animation_title">In App Animations</string>
+    <string name="app_animation_summary">Disable in App animations everywhere.</string>
 </resources>
