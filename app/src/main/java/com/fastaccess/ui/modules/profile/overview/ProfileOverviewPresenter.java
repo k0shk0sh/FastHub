@@ -110,7 +110,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                 .query(GetPinnedReposQuery.builder()
                         .login(login)
                         .build());
-        manageObservable(Rx2Apollo.from(apolloCall)
+        manageDisposable(RxHelper.getObservable(Rx2Apollo.from(apolloCall))
                 .filter(dataResponse -> !dataResponse.hasErrors())
                 .flatMap(dataResponse -> {
                     if (dataResponse.data() != null && dataResponse.data().user() != null) {
@@ -121,11 +121,11 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
                 .map(GetPinnedReposQuery.Edge::node)
                 .toList()
                 .toObservable()
-                .doOnNext(nodes1 -> {
+                .subscribe(nodes1 -> {
                     nodes.clear();
                     nodes.addAll(nodes1);
                     sendToView(view -> view.onInitPinnedRepos(nodes));
-                }));
+                }, Throwable::printStackTrace));
     }
 
     @Override public void onWorkOffline(@NonNull String login) {

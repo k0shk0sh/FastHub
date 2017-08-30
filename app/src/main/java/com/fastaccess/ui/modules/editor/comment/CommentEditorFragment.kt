@@ -39,6 +39,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     @BindView(R.id.commentText) lateinit var commentText: MarkdownEditText
     @BindView(R.id.markdownBtnHolder) lateinit var markdownBtnHolder: View
     @BindView(R.id.sendComment) lateinit var sendComment: View
+    @BindView(R.id.toggleButtons) lateinit var toggleButtons: View
     private var commentListener: CommentListener? = null
 
     @OnClick(R.id.sendComment) internal fun onComment() {
@@ -94,6 +95,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         if (savedInstanceState == null) {
             commentText.setText(arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA))
         }
+        commentText.setOnFocusChangeListener { _, focused -> if (focused) onToggleButtons(toggleButtons) }
     }
 
     override fun getEditText(): EditText = commentText

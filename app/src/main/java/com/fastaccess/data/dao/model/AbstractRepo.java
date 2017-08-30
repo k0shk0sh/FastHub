@@ -147,30 +147,32 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
 
     public static Disposable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
         return RxHelper.getSingle(Single.fromPublisher(s -> {
-            Login login = Login.getUser();
-            if (login != null) {
-                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
-                if (login.getLogin().equalsIgnoreCase(starredUser)) {
-                    dataSource.delete(Repo.class)
-                            .where(STARRED_USER.eq(starredUser))
-                            .get()
-                            .value();
-                    if (!models.isEmpty()) {
-                        for (Repo repo : models) {
-                            dataSource.delete(Repo.class).where(Repo.ID.eq(repo.getId())).get().value();
-                            repo.setStarredUser(starredUser);
-                            dataSource.insert(repo);
+            try {
+                Login login = Login.getUser();
+                if (login != null) {
+                    BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                    if (login.getLogin().equalsIgnoreCase(starredUser)) {
+                        dataSource.delete(Repo.class)
+                                .where(STARRED_USER.eq(starredUser))
+                                .get()
+                                .value();
+                        if (!models.isEmpty()) {
+                            for (Repo repo : models) {
+                                dataSource.delete(Repo.class).where(Repo.ID.eq(repo.getId())).get().value();
+                                repo.setStarredUser(starredUser);
+                                dataSource.insert(repo);
+                            }
                         }
+                    } else {
+                        dataSource.delete(Repo.class)
+                                .where(STARRED_USER.notEqual(login.getLogin())
+                                        .or(STATUSES_URL.isNull()))
+                                .get()
+                                .value();
                     }
-                } else {
-                    dataSource.delete(Repo.class)
-                            .where(STARRED_USER.notEqual(login.getLogin())
-                                    .or(STATUSES_URL.isNull()))
-                            .get()
-                            .value();
                 }
-            }
-            s.onNext("");
+                s.onNext("");
+            } catch (Exception ignored) {}
             s.onComplete();
         })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }

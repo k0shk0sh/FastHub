@@ -281,6 +281,7 @@ public class ProfileOverviewFragment extends BaseFragment<ProfileOverviewMvp.Vie
     }
 
     @Override public void onInitPinnedRepos(@NonNull List<GetPinnedReposQuery.Node> nodes) {
+        if (pinnedReposTextView == null) return;
         if (!nodes.isEmpty()) {
             pinnedReposTextView.setVisibility(VISIBLE);
             pinnedReposCard.setVisibility(VISIBLE);

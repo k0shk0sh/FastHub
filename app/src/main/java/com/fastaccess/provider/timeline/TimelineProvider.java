@@ -86,7 +86,8 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ");
-                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
+                    if ((user != null && issueEventModel.getAssignee() != null) && user.getLogin()
+                            .equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
                         spannableBuilder
                                 .append(event == IssueEventType.assigned ? "self-assigned this" : "removed their assignment");
                     } else {
@@ -94,7 +95,7 @@ public class TimelineProvider {
                                 .append(event == IssueEventType.assigned ? "assigned" : "unassigned");
                         spannableBuilder
                                 .append(" ")
-                                .bold(issueEventModel.getAssignee().getLogin());
+                                .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "");
                     }
                 } else if (event == IssueEventType.locked || event == IssueEventType.unlocked) {
                     spannableBuilder
