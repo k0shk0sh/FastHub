@@ -40,7 +40,7 @@ public class ProgressDialogFragment extends DialogFragment {
         progressDialog.setCancelable(isCancelable);
         setCancelable(isCancelable);
         if (getActivity() != null && !getActivity().isFinishing()) {
-            if (PrefGetter.isAppAnimationDisabled())
+            if (!PrefGetter.isAppAnimationDisabled())
                 progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog, 200));
         }
         return progressDialog;

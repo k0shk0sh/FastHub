@@ -117,24 +117,36 @@ public class ActivityHelper {
     }
 
     public static void startReveal(@NonNull Activity activity, Intent intent, @NonNull View sharedElement, int requestCode) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
-                sharedElement.getHeight() / 2,
-                sharedElement.getWidth(), sharedElement.getHeight());
-        activity.startActivityForResult(intent, requestCode, options.toBundle());
+        if (!PrefGetter.isAppAnimationDisabled()) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                    sharedElement.getHeight() / 2,
+                    sharedElement.getWidth(), sharedElement.getHeight());
+            activity.startActivityForResult(intent, requestCode, options.toBundle());
+        } else {
+            activity.startActivityForResult(intent, requestCode);
+        }
     }
 
     public static void startReveal(@NonNull Fragment fragment, Intent intent, @NonNull View sharedElement, int requestCode) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
-                sharedElement.getHeight() / 2,
-                sharedElement.getWidth(), sharedElement.getHeight());
-        fragment.startActivityForResult(intent, requestCode, options.toBundle());
+        if (!PrefGetter.isAppAnimationDisabled()) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                    sharedElement.getHeight() / 2,
+                    sharedElement.getWidth(), sharedElement.getHeight());
+            fragment.startActivityForResult(intent, requestCode, options.toBundle());
+        } else {
+            fragment.startActivityForResult(intent, requestCode);
+        }
     }
 
     public static void startReveal(@NonNull Activity activity, Intent intent, @NonNull View sharedElement) {
-        ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
-                sharedElement.getHeight() / 2,
-                sharedElement.getWidth(), sharedElement.getHeight());
-        activity.startActivity(intent, options.toBundle());
+        if (!PrefGetter.isAppAnimationDisabled()) {
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeClipRevealAnimation(sharedElement, sharedElement.getWidth() / 2,
+                    sharedElement.getHeight() / 2,
+                    sharedElement.getWidth(), sharedElement.getHeight());
+            activity.startActivity(intent, options.toBundle());
+        } else {
+            activity.startActivity(intent);
+        }
     }
 
     @SafeVarargs public static void start(@NonNull Activity activity, @NonNull Intent intent,
