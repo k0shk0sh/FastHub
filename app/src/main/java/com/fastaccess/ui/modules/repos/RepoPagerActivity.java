@@ -468,6 +468,16 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         UserPagerActivity.startActivity(this, Login.getUser().getLogin(), false, PrefGetter.isEnterprise(), -1);
     }
 
+    @Override public void onScrolled(boolean isUp) {
+        if (fab != null) {
+            if (isUp) {
+                fab.hide();
+            } else {
+                fab.show();
+            }
+        }
+    }
+
     @Override public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.repo_menu, menu);
         return super.onCreateOptionsMenu(menu);

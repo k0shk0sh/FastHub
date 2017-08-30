@@ -21,6 +21,7 @@ import com.fastaccess.ui.adapter.PullRequestAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.repos.RepoPagerMvp;
 import com.fastaccess.ui.modules.repos.extras.popup.IssuePopupFragment;
+import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.PullRequestPagerActivity;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
@@ -41,6 +42,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private OnLoadMore<IssueState> onLoadMore;
     private PullRequestAdapter adapter;
+    private RepoPullRequestPagerMvp.View pagerCallback;
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static RepoPullRequestFragment newInstance(@NonNull String repoId, @NonNull String login, @NonNull IssueState issueState) {
@@ -55,6 +57,11 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
 
     @Override public void onAttach(Context context) {
         super.onAttach(context);
+        if (getParentFragment() instanceof RepoPullRequestPagerMvp.View) {
+            pagerCallback = (RepoPullRequestPagerMvp.View) getParentFragment();
+        } else if (context instanceof RepoPullRequestPagerMvp.View) {
+            pagerCallback = (RepoPullRequestPagerMvp.View) context;
+        }
         if (getParentFragment() instanceof RepoPagerMvp.TabsBadgeListener) {
             tabsBadgeListener = (RepoPagerMvp.TabsBadgeListener) getParentFragment();
         } else if (context instanceof RepoPagerMvp.TabsBadgeListener) {
@@ -130,9 +137,7 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
     }
 
     @Override public void showProgress(@StringRes int resId) {
-
         refresh.setRefreshing(true);
-
         stateLayout.showProgress();
     }
 
@@ -148,7 +153,12 @@ public class RepoPullRequestFragment extends BaseFragment<RepoPullRequestMvp.Vie
 
     @NonNull @Override public OnLoadMore<IssueState> getLoadMore() {
         if (onLoadMore == null) {
-            onLoadMore = new OnLoadMore<>(getPresenter());
+            onLoadMore = new OnLoadMore<IssueState>(getPresenter()) {
+                @Override public void onScrolled(boolean isUp) {
+                    super.onScrolled(isUp);
+                    if (pagerCallback != null) pagerCallback.onScrolled(isUp);
+                }
+            };
         }
         onLoadMore.setParameter(getIssueState());
         return onLoadMore;

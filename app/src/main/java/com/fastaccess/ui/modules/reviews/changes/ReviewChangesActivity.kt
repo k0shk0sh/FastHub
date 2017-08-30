@@ -27,18 +27,12 @@ class ReviewChangesActivity : BaseActivity<ReviewChangesMvp.View, ReviewChangesP
     @BindView(R.id.toolbar) lateinit var toolbar: Toolbar
     @BindView(R.id.reviewMethod) lateinit var spinner: Spinner
 
-    @State
-    var reviewRequest: ReviewRequestModel? = null
-    @State
-    var repoId: String? = null
-    @State
-    var owner: String? = null
-    @State
-    var number: Long? = null
-    @State
-    var isProgressShowing: Boolean = false
-    @State
-    var isClosed: Boolean = false
+    @State var reviewRequest: ReviewRequestModel? = null
+    @State var repoId: String? = null
+    @State var owner: String? = null
+    @State var number: Long? = null
+    @State var isProgressShowing: Boolean = false
+    @State var isClosed: Boolean = false
 
     private val commentEditorFragment: CommentEditorFragment? by lazy {
         supportFragmentManager.findFragmentByTag("commentContainer") as CommentEditorFragment?

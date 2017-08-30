@@ -89,7 +89,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.ThemeDark
                 PrefGetter.LIGHT_BLUE -> return R.style.ThemeDark_LightBlue
                 PrefGetter.CYAN -> return R.style.ThemeDark_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.ThemeDark_Green
+                PrefGetter.GREEN -> return R.style.ThemeDark_Green
+                PrefGetter.TEAL -> return R.style.ThemeDark_Teal
                 PrefGetter.LIGHT_GREEN -> return R.style.ThemeDark_LightGreen
                 PrefGetter.LIME -> return R.style.ThemeDark_Lime
                 PrefGetter.YELLOW -> return R.style.ThemeDark_Yellow
@@ -107,7 +108,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.ThemeAmlod
                 PrefGetter.LIGHT_BLUE -> return R.style.ThemeAmlod_LightBlue
                 PrefGetter.CYAN -> return R.style.ThemeAmlod_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.ThemeAmlod_Green
+                PrefGetter.TEAL -> return R.style.ThemeAmlod_Teal
+                PrefGetter.GREEN -> return R.style.ThemeAmlod_Green
                 PrefGetter.LIGHT_GREEN -> return R.style.ThemeAmlod_LightGreen
                 PrefGetter.LIME -> return R.style.ThemeAmlod_Lime
                 PrefGetter.YELLOW -> return R.style.ThemeAmlod_Yellow
@@ -125,7 +127,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.ThemeMidNighBlue
                 PrefGetter.LIGHT_BLUE -> return R.style.ThemeMidNighBlue_LightBlue
                 PrefGetter.CYAN -> return R.style.ThemeMidNighBlue_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.ThemeMidNighBlue_Green
+                PrefGetter.TEAL -> return R.style.ThemeMidNighBlue_Teal
+                PrefGetter.GREEN -> return R.style.ThemeMidNighBlue_Green
                 PrefGetter.LIGHT_GREEN -> return R.style.ThemeMidNighBlue_LightGreen
                 PrefGetter.LIME -> return R.style.ThemeMidNighBlue_Lime
                 PrefGetter.YELLOW -> return R.style.ThemeMidNighBlue_Yellow
@@ -143,7 +146,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.ThemeBluish
                 PrefGetter.LIGHT_BLUE -> return R.style.ThemeBluish_LightBlue
                 PrefGetter.CYAN -> return R.style.ThemeBluish_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.ThemeBluish_Green
+                PrefGetter.TEAL -> return R.style.ThemeBluish_Teal
+                PrefGetter.GREEN -> return R.style.ThemeBluish_Green
                 PrefGetter.LIGHT_GREEN -> return R.style.ThemeBluish_LightGreen
                 PrefGetter.LIME -> return R.style.ThemeBluish_Lime
                 PrefGetter.YELLOW -> return R.style.ThemeBluish_Yellow
@@ -186,7 +190,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.DialogThemeDark
                 PrefGetter.LIGHT_BLUE -> return R.style.DialogThemeDark_LightBlue
                 PrefGetter.CYAN -> return R.style.DialogThemeDark_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.DialogThemeDark_Green
+                PrefGetter.TEAL -> return R.style.DialogThemeDark_Teal
+                PrefGetter.GREEN -> return R.style.DialogThemeDark_Green
                 PrefGetter.LIGHT_GREEN -> return R.style.DialogThemeDark_LightGreen
                 PrefGetter.LIME -> return R.style.DialogThemeDark_Lime
                 PrefGetter.YELLOW -> return R.style.DialogThemeDark_Yellow
@@ -204,7 +209,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.DialogThemeAmlod
                 PrefGetter.LIGHT_BLUE -> return R.style.DialogThemeAmlod_LightBlue
                 PrefGetter.CYAN -> return R.style.DialogThemeAmlod_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.DialogThemeAmlod_Green
+                PrefGetter.TEAL -> return R.style.DialogThemeAmlod_Teal
+                PrefGetter.GREEN -> return R.style.DialogThemeAmlod_Green
                 PrefGetter.LIGHT_GREEN -> return R.style.DialogThemeAmlod_LightGreen
                 PrefGetter.LIME -> return R.style.DialogThemeAmlod_Lime
                 PrefGetter.YELLOW -> return R.style.DialogThemeAmlod_Yellow
@@ -222,7 +228,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.DialogThemeLight
                 PrefGetter.LIGHT_BLUE -> return R.style.DialogThemeLight_LightBlue
                 PrefGetter.CYAN -> return R.style.DialogThemeLight_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.DialogThemeLight_Green
+                PrefGetter.TEAL -> return R.style.DialogThemeLight_Teal
+                PrefGetter.GREEN -> return R.style.DialogThemeLight_Green
                 PrefGetter.LIGHT_GREEN -> return R.style.DialogThemeLight_LightGreen
                 PrefGetter.LIME -> return R.style.DialogThemeLight_Lime
                 PrefGetter.YELLOW -> return R.style.DialogThemeLight_Yellow
@@ -240,7 +247,8 @@ object ThemeEngine {
                 PrefGetter.BLUE -> return R.style.DialogThemeBluish
                 PrefGetter.LIGHT_BLUE -> return R.style.DialogThemeBluish_LightBlue
                 PrefGetter.CYAN -> return R.style.DialogThemeBluish_Cyan
-                PrefGetter.TEAL, PrefGetter.GREEN -> return R.style.DialogThemeBluish_Green
+                PrefGetter.TEAL -> return R.style.DialogThemeBluish_Teal
+                PrefGetter.GREEN -> return R.style.DialogThemeBluish_Green
                 PrefGetter.LIGHT_GREEN -> return R.style.DialogThemeBluish_LightGreen
                 PrefGetter.LIME -> return R.style.DialogThemeBluish_Lime
                 PrefGetter.YELLOW -> return R.style.DialogThemeBluish_Yellow

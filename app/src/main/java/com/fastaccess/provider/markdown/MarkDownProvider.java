@@ -253,10 +253,7 @@ public class MarkDownProvider {
 
     public static void addPhoto(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
         String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
-        String text = InputHelper.toString(editText);
-        text += result;
-        editText.setText(text);
-        editText.setSelection(text.length());
+        insertAtCursor(editText, result);
     }
 
     public static void addLink(@NonNull EditText editText) {
@@ -265,10 +262,7 @@ public class MarkDownProvider {
 
     public static void addLink(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
         String result = "[" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
-        String text = InputHelper.toString(editText);
-        text += result;
-        editText.setText(text);
-        editText.setSelection(text.length());
+        insertAtCursor(editText, result);
     }
 
     private static boolean hasNewLine(@NonNull String source, int selectionStart) {
@@ -312,5 +306,14 @@ public class MarkDownProvider {
         }
 
         return false;
+    }
+
+    private static void insertAtCursor(@NonNull EditText editText, @NonNull String text) {
+        String oriContent = editText.getText().toString();
+        int index = editText.getSelectionStart() >= 0 ? editText.getSelectionStart() : 0;
+        StringBuilder builder = new StringBuilder(oriContent);
+        builder.insert(index, text);
+        editText.setText(builder.toString());
+        editText.setSelection(index + text.length());
     }
 }

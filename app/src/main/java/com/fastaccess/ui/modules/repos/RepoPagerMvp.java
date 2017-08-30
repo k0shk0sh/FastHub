@@ -63,12 +63,13 @@ public interface RepoPagerMvp {
 
         void onChangeForkCount(boolean isForked);
 
-
         boolean hasUserInteractedWithView();
 
         void disableIssueTab();
 
         void openUserProfile();
+
+        void onScrolled(boolean isUp);
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BottomNavigation.OnMenuItemSelectionListener {

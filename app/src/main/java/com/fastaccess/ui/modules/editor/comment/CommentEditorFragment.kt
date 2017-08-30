@@ -18,7 +18,6 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -27,6 +26,8 @@ import com.fastaccess.ui.modules.editor.emoji.EmojiMvp
 import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
 
 /**
  * Created by kosh on 21/08/2017.
@@ -41,6 +42,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     @BindView(R.id.sendComment) lateinit var sendComment: View
     @BindView(R.id.toggleButtons) lateinit var toggleButtons: View
     private var commentListener: CommentListener? = null
+    private var keyboardListener: Unregistrar? = null
 
     @OnClick(R.id.sendComment) internal fun onComment() {
         if (!InputHelper.isEmpty(getEditText())) {
@@ -95,7 +97,20 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         if (savedInstanceState == null) {
             commentText.setText(arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA))
         }
-        commentText.setOnFocusChangeListener { _, focused -> if (focused) onToggleButtons(toggleButtons) }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        keyboardListener = KeyboardVisibilityEvent.registerEventListener(activity, {
+            TransitionManager.beginDelayedTransition((view as ViewGroup?)!!)
+            toggleButtons.isActivated = it
+            markdownBtnHolder.visibility = if (!it) View.GONE else View.VISIBLE
+        })
+    }
+
+    override fun onStop() {
+        keyboardListener?.unregister()
+        super.onStop()
     }
 
     override fun getEditText(): EditText = commentText
@@ -136,12 +151,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     }
 
     override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
-        if (isLink) {
-            MarkDownProvider.addLink(getEditText(), InputHelper.toString(title), InputHelper.toString(link))
-        } else {
-            getEditText().setText(String.format("%s\n", getEditText().text))
-            MarkDownProvider.addPhoto(getEditText(), InputHelper.toString(title), InputHelper.toString(link))
-        }
+        markdDownLayout.onAppendLink(title, link, isLink)
     }
 
     interface CommentListener {

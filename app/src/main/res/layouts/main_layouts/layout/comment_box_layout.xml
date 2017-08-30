@@ -8,11 +8,6 @@
     android:background="?colorPrimary"
     android:orientation="vertical">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@drawable/toolbar_shadow_up"/>
-
     <LinearLayout
         android:id="@+id/markdownBtnHolder"
         android:layout_width="match_parent"

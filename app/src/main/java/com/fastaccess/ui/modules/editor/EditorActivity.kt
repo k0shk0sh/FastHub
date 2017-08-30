@@ -175,12 +175,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     }
 
     override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
-        if (isLink) {
-            MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
-        } else {
-            editText.setText(String.format("%s\n", editText.text))
-            MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
-        }
+        markDownLayout.onAppendLink(title, link, isLink)
     }
 
     override fun getEditText(): EditText = editText

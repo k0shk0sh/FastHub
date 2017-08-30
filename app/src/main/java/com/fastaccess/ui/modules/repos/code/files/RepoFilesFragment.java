@@ -105,7 +105,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                     break;
                 case R.id.editFile:
                     EditRepoFileActivity.Companion.startForResult(this, getPresenter().repoId,
-                            getPresenter().login, item.getPath(), item.getDownloadUrl(), true);
+                            getPresenter().login, item.getPath(), item.getDownloadUrl(), getPresenter().ref, true);
                     break;
             }
             return true;

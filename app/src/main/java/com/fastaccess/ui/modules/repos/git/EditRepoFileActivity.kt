@@ -14,9 +14,7 @@ import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
-import com.fastaccess.helper.InputHelper
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
@@ -85,12 +83,7 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
     }
 
     override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
-        if (isLink) {
-            MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
-        } else {
-            editText.setText(String.format("%s\n", editText.text))
-            MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
-        }
+        markDownLayout.onAppendLink(title, link, isLink)
     }
 
     override fun getEditText(): EditText = editText
@@ -108,7 +101,7 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
         val EDIT_RQ = 2017
 
         fun startForResult(activity: Activity, repoId: String, login: String,
-                           path: String, contentUrl: String, isEdit: Boolean) {
+                           path: String, contentUrl: String, ref: String?, isEdit: Boolean) {
             val bundle = Bundler.start()
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.EXTRA, login)
@@ -123,7 +116,7 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
         }
 
         fun startForResult(activity: Fragment, repoId: String, login: String,
-                           path: String, contentUrl: String, isEdit: Boolean) {
+                           path: String, contentUrl: String, ref: String?, isEdit: Boolean) {
             val bundle = Bundler.start()
                     .put(BundleConstant.ID, repoId)
                     .put(BundleConstant.EXTRA, login)
