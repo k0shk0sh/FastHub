@@ -71,7 +71,7 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void dismiss() {
-        if (!PrefGetter.isAppAnimationDisabled()) {
+        if (PrefGetter.isAppAnimationDisabled()) {
             super.dismiss();
         } else {
             AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime),
@@ -142,10 +142,6 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     }
 
-    @Override public void onDialogDismissed() {
-
-    }
-
     @Override public void onRequireLogin() {
         callback.onRequireLogin();
     }
@@ -168,6 +164,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void onScrollTop(int index) {}
+
+    @Override public void onDialogDismissed() {
+
+    }
 
     @Override public boolean isEnterprise() {
         return callback != null && callback.isEnterprise();
