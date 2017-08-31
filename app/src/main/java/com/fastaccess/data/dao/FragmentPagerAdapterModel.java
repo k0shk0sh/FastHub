@@ -152,7 +152,8 @@ import lombok.Setter;
     }
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForGist(@NonNull Context context, @NonNull Gist gistsModel) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListFragment.newInstance(gistsModel.getFilesAsList(), false)),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListFragment.newInstance(gistsModel
+                        .getFilesAsList(), false)),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), GistCommentsFragment.newInstance(gistsModel.getGistId())))
                 .collect(Collectors.toList());
     }
@@ -217,7 +218,8 @@ import lombok.Setter;
         return Stream.of(new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeLight)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeDark)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)),
-                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)))
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)),
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeMidnight)))
                 .collect(Collectors.toList());
     }
 

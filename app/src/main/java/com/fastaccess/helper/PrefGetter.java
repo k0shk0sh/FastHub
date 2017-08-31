@@ -24,8 +24,8 @@ public class PrefGetter {
     public static final int LIGHT = 1;
     public static final int DARK = 2;
     public static final int AMLOD = 3;
-    public static final int MID_NIGHT_BLUE = 4;
-    public static final int BLUISH = 5;
+    public static final int BLUISH = 4;
+    public static final int MID_NIGHT_BLUE = 5;
 
     public static final int RED = 1;
     public static final int PINK = 2;

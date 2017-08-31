@@ -23,7 +23,8 @@ import java.util.ArrayList;
 public class GithubHelper {
 
     @NonNull public static String generateContent(@NonNull Context context, @NonNull String source,
-                                                  @Nullable String baseUrl, boolean dark, boolean isWiki, boolean replace) {
+                                                  @Nullable String baseUrl, boolean dark,
+                                                  boolean isWiki, boolean replace) {
         if (baseUrl == null) {
             return mergeContent(context, source, dark, replace);
         } else {

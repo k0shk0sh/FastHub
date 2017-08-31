@@ -44,7 +44,7 @@ object ThemeEngine {
             PrefGetter.LIGHT -> activity.setTheme(R.style.AppTheme_AboutActivity_Light)
             PrefGetter.DARK -> activity.setTheme(R.style.AppTheme_AboutActivity_Dark)
             PrefGetter.AMLOD -> activity.setTheme(R.style.AppTheme_AboutActivity_Amlod)
-            PrefGetter.MID_NIGHT_BLUE -> activity.setTheme(R.style.AppTheme_AboutActivity_MidNightBlue)
+            PrefGetter.MID_NIGHT_BLUE -> activity.setTheme(R.style.AppTheme_AboutActivity_Midnight)
             PrefGetter.BLUISH -> activity.setTheme(R.style.AppTheme_AboutActivity_Bluish)
         }
         setTaskDescription(activity)
@@ -119,23 +119,23 @@ object ThemeEngine {
                 else -> return R.style.ThemeAmlod
             }
             PrefGetter.MID_NIGHT_BLUE -> when (themeColor) {
-                PrefGetter.RED -> return R.style.ThemeMidNighBlue_Red
-                PrefGetter.PINK -> return R.style.ThemeMidNighBlue_Pink
-                PrefGetter.PURPLE -> return R.style.ThemeMidNighBlue_Purple
-                PrefGetter.DEEP_PURPLE -> return R.style.ThemeMidNighBlue_DeepPurple
-                PrefGetter.INDIGO -> return R.style.ThemeMidNighBlue_Indigo
-                PrefGetter.BLUE -> return R.style.ThemeMidNighBlue
-                PrefGetter.LIGHT_BLUE -> return R.style.ThemeMidNighBlue_LightBlue
-                PrefGetter.CYAN -> return R.style.ThemeMidNighBlue_Cyan
-                PrefGetter.TEAL -> return R.style.ThemeMidNighBlue_Teal
-                PrefGetter.GREEN -> return R.style.ThemeMidNighBlue_Green
-                PrefGetter.LIGHT_GREEN -> return R.style.ThemeMidNighBlue_LightGreen
-                PrefGetter.LIME -> return R.style.ThemeMidNighBlue_Lime
-                PrefGetter.YELLOW -> return R.style.ThemeMidNighBlue_Yellow
-                PrefGetter.AMBER -> return R.style.ThemeMidNighBlue_Amber
-                PrefGetter.ORANGE -> return R.style.ThemeMidNighBlue_Orange
-                PrefGetter.DEEP_ORANGE -> return R.style.ThemeMidNighBlue_DeepOrange
-                else -> return R.style.ThemeMidNighBlue
+                PrefGetter.RED -> return R.style.ThemeMidnight_Red
+                PrefGetter.PINK -> return R.style.ThemeMidnight_Pink
+                PrefGetter.PURPLE -> return R.style.ThemeMidnight_Purple
+                PrefGetter.DEEP_PURPLE -> return R.style.ThemeMidnight_DeepPurple
+                PrefGetter.INDIGO -> return R.style.ThemeMidnight_Indigo
+                PrefGetter.BLUE -> return R.style.ThemeMidnight
+                PrefGetter.LIGHT_BLUE -> return R.style.ThemeMidnight_LightBlue
+                PrefGetter.CYAN -> return R.style.ThemeMidnight_Cyan
+                PrefGetter.TEAL -> return R.style.ThemeMidnight_Teal
+                PrefGetter.GREEN -> return R.style.ThemeMidnight_Green
+                PrefGetter.LIGHT_GREEN -> return R.style.ThemeMidnight_LightGreen
+                PrefGetter.LIME -> return R.style.ThemeMidnight_Lime
+                PrefGetter.YELLOW -> return R.style.ThemeMidnight_Yellow
+                PrefGetter.AMBER -> return R.style.ThemeMidnight_Amber
+                PrefGetter.ORANGE -> return R.style.ThemeMidnight_Orange
+                PrefGetter.DEEP_ORANGE -> return R.style.ThemeMidnight_DeepOrange
+                else -> return R.style.ThemeMidnight
             }
             PrefGetter.BLUISH -> when (themeColor) {
                 PrefGetter.RED -> return R.style.ThemeBluish_Red
@@ -220,22 +220,22 @@ object ThemeEngine {
                 else -> return R.style.DialogThemeAmlod
             }
             PrefGetter.MID_NIGHT_BLUE -> when (themeColor) {
-                PrefGetter.RED -> return R.style.DialogThemeLight_Red
-                PrefGetter.PINK -> return R.style.DialogThemeLight_Pink
-                PrefGetter.PURPLE -> return R.style.DialogThemeLight_Purple
-                PrefGetter.DEEP_PURPLE -> return R.style.DialogThemeLight_DeepPurple
-                PrefGetter.INDIGO -> return R.style.DialogThemeLight_Indigo
-                PrefGetter.BLUE -> return R.style.DialogThemeLight
-                PrefGetter.LIGHT_BLUE -> return R.style.DialogThemeLight_LightBlue
-                PrefGetter.CYAN -> return R.style.DialogThemeLight_Cyan
-                PrefGetter.TEAL -> return R.style.DialogThemeLight_Teal
-                PrefGetter.GREEN -> return R.style.DialogThemeLight_Green
-                PrefGetter.LIGHT_GREEN -> return R.style.DialogThemeLight_LightGreen
-                PrefGetter.LIME -> return R.style.DialogThemeLight_Lime
-                PrefGetter.YELLOW -> return R.style.DialogThemeLight_Yellow
-                PrefGetter.AMBER -> return R.style.DialogThemeLight_Amber
-                PrefGetter.ORANGE -> return R.style.DialogThemeLight_Orange
-                PrefGetter.DEEP_ORANGE -> return R.style.DialogThemeLight_DeepOrange
+                PrefGetter.RED -> return R.style.DialogThemeMidnight_Red
+                PrefGetter.PINK -> return R.style.DialogThemeMidnight_Pink
+                PrefGetter.PURPLE -> return R.style.DialogThemeMidnight_Purple
+                PrefGetter.DEEP_PURPLE -> return R.style.DialogThemeMidnight_DeepPurple
+                PrefGetter.INDIGO -> return R.style.DialogThemeMidnight_Indigo
+                PrefGetter.BLUE -> return R.style.DialogThemeMidnight
+                PrefGetter.LIGHT_BLUE -> return R.style.DialogThemeMidnight_LightBlue
+                PrefGetter.CYAN -> return R.style.DialogThemeMidnight_Cyan
+                PrefGetter.TEAL -> return R.style.DialogThemeMidnight_Teal
+                PrefGetter.GREEN -> return R.style.DialogThemeMidnight_Green
+                PrefGetter.LIGHT_GREEN -> return R.style.DialogThemeMidnight_LightGreen
+                PrefGetter.LIME -> return R.style.DialogThemeMidnight_Lime
+                PrefGetter.YELLOW -> return R.style.DialogThemeMidnight_Yellow
+                PrefGetter.AMBER -> return R.style.DialogThemeMidnight_Amber
+                PrefGetter.ORANGE -> return R.style.DialogThemeMidnight_Orange
+                PrefGetter.DEEP_ORANGE -> return R.style.DialogThemeMidnight_DeepOrange
                 else -> return R.style.DialogThemeLight
             }
             PrefGetter.BLUISH -> when (themeColor) {

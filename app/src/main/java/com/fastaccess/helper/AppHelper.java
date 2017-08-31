@@ -63,7 +63,7 @@ public class AppHelper {
 
     public static boolean isNightMode(@NonNull Resources resources) {
         @PrefGetter.ThemeType int themeType = PrefGetter.getThemeType(resources);
-        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD || themeType == PrefGetter.BLUISH;
+        return themeType != PrefGetter.LIGHT;
     }
 
     public static String getFastHubIssueTemplate(boolean enterprise) {
