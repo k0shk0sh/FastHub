@@ -333,7 +333,7 @@
     <string name="personal_token">Token Pessoal</string>
     <string name="basic_login">Entra com autenticação básica</string>
     <string name="no_orgs_description">Se você está ligado a alguma organização e não consegue vê-las aqui, por favor entre no link abaixo.
-    	\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Você poderia usar o token de acesso para entrar, o que vai
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: Você poderia usar o token de acesso para entrar, o que vai
         permitir acesso ao FastHub para poder ver a lista de suas organizações.</string>
     <string name="insert">Inserir</string>
     <string name="select">Selecionar</string>
@@ -415,5 +415,18 @@
     <string name="original_poster">Original Poster</string>
     <string name="cancel_reviews">Cancelar Reviews</string>
     <string name="colored_navbar_summary">Desabilitar a coloração da barra de navegação nos temas</string>
-<string name="colored_navbar_title">Desabilitar a coloração da barra de navegação</string>
+    <string name="colored_navbar_title">Desabilitar a coloração da barra de navegação</string>
+    <string name="sound_chooser_summary">Escolher som de notificação personalizado</string>
+    <string name="sound_chooser_title">Escolher Som de Notificação</string>
+    <string name="disable_auto_gif_summary">Desabilitar o auto play de GIFs</string>
+    <string name="disable_auto_gif_title">Dessabilitar Reproduzir GIF</string>
+    <string name="request_changes">mudanças solicitadas</string>
+    <string name="google_play_service_error">Google Play Service insdisponível</string>
+    <string name="edit_gist">Editar Gist</string>
+    <string name="content">Conteúdo</string>
+    <string name="expand">expandir</string>
+    <string name="copy_sha">Copiar SHA</string>
+    <string name="view_as_code">Ver como código</string>
+    <string name="app_animation_title">Animações no App</string>
+    <string name="app_animation_summary">Desabilitar todas as animações no App.</string>
 </resources>
