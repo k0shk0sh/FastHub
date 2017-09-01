@@ -15,9 +15,14 @@ interface EditRepoFileMvp {
             MarkDownLayout.MarkdownListener, EmojiMvp.EmojiCallback {
 
         fun onSetText(content: String?)
+        fun onSetTextError(isEmpty: Boolean)
+        fun onSetDescriptionError(isEmpty: Boolean)
+        fun onSetFilenameError(isEmpty: Boolean)
+        fun onSuccessfullyCommitted()
     }
 
     interface Presenter {
         fun onInit(intent: Intent?)
+        fun onSubmit(text: String?, filename: String?, description: String?)
     }
 }

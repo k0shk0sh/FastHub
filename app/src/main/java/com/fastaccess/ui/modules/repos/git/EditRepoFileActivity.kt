@@ -5,20 +5,25 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.TextInputLayout
+import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.widget.EditText
 import butterknife.BindView
 import com.fastaccess.R
+import com.fastaccess.data.dao.EditRepoFileModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.scheme.LinkParserHelper
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 /**
  * Created by kosh on 29/08/2017.
@@ -27,6 +32,12 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
 
     @BindView(R.id.markDownLayout) lateinit var markDownLayout: MarkDownLayout
     @BindView(R.id.editText) lateinit var editText: MarkdownEditText
+    @BindView(R.id.description) lateinit var description: TextInputLayout
+    @BindView(R.id.fileName) lateinit var fileName: TextInputLayout
+    @BindView(R.id.fileNameHolder) lateinit var fileNameHolder: View
+    @BindView(R.id.commitHolder) lateinit var commitHolder: View
+    @BindView(R.id.layoutHolder) lateinit var layoutHolder: View
+
 
     override fun layout(): Int = R.layout.edit_repo_file_layout
 
@@ -45,14 +56,29 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
         if (savedInstanceState == null) {
             presenter.onInit(intent)
         }
-        val path = presenter.path
-        if (!path.isNullOrBlank()) {
-            title = Uri.parse(path)?.lastPathSegment
-            toolbar?.let {
-                it.subtitle = "${presenter.login}/${presenter.repoId}"
-            }
+        val path = presenter.model?.path
+        if (!path.isNullOrBlank() && presenter.model?.fileName.isNullOrBlank()) {
+            val name = Uri.parse(path)?.lastPathSegment
+            title = name
+            fileName.editText?.setText(name)
+        } else if (!presenter.model?.fileName.isNullOrBlank()) {
+            fileName.editText?.setText(presenter.model?.fileName)
+            fileName.isEnabled = false
+            title = presenter.model?.fileName
         }
-        invalidateOptionsMenu()
+        toolbar?.let {
+            it.subtitle = "${presenter.model?.login}/${presenter.model?.repoId}"
+        }
+        KeyboardVisibilityEvent.registerEventListener(this, { isOpen ->
+            TransitionManager.beginDelayedTransition(layoutHolder as ViewGroup)
+            if (editText.isFocused && isOpen) {
+                fileNameHolder.visibility = View.GONE
+                commitHolder.visibility = View.GONE
+            } else {
+                fileNameHolder.visibility = View.VISIBLE
+                commitHolder.visibility = View.VISIBLE
+            }
+        })
     }
 
     override fun onSetText(content: String?) {
@@ -67,6 +93,7 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.submit) {
+            presenter.onSubmit(editText.text?.toString(), fileName.editText?.text?.toString(), description.editText?.text?.toString())
             return true
         }
         return super.onOptionsItemSelected(item)
@@ -76,7 +103,7 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
         if (menu.findItem(R.id.submit) != null) {
             menu.findItem(R.id.submit).isEnabled = true
         }
-        presenter.isEdit?.let {
+        presenter.model?.isEdit?.let {
             menu.findItem(R.id.submit).setIcon(R.drawable.ic_done)
         }
         return super.onPrepareOptionsMenu(menu)
@@ -97,37 +124,44 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
         markDownLayout.onEmojiAdded(emoji)
     }
 
+    override fun onSetTextError(isEmpty: Boolean) {
+        editText.error = if (isEmpty) getString(R.string.required_field) else null
+    }
+
+    override fun onSetDescriptionError(isEmpty: Boolean) {
+        description.error = if (isEmpty) getString(R.string.required_field) else null
+    }
+
+    override fun onSetFilenameError(isEmpty: Boolean) {
+        fileName.error = if (isEmpty) getString(R.string.required_field) else null
+    }
+
+    override fun onSuccessfullyCommitted() {
+        setResult(Activity.RESULT_OK)
+        finish()
+    }
+
     companion object {
         val EDIT_RQ = 2017
 
-        fun startForResult(activity: Activity, repoId: String, login: String,
-                           path: String, contentUrl: String, ref: String?, isEdit: Boolean) {
+        fun startForResult(activity: Activity, model: EditRepoFileModel, isEnterprise: Boolean) {
             val bundle = Bundler.start()
-                    .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.EXTRA, login)
-                    .put(BundleConstant.EXTRA_TWO, path)
-                    .put(BundleConstant.EXTRA_THREE, contentUrl)
-                    .put(BundleConstant.EXTRA_TYPE, isEdit)
-                    .put(BundleConstant.IS_ENTERPRISE, LinkParserHelper.isEnterprise(contentUrl))
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                    .put(BundleConstant.ITEM, model)
                     .end()
             val intent = Intent(activity, EditRepoFileActivity::class.java)
             intent.putExtras(bundle)
             activity.startActivityForResult(intent, EDIT_RQ)
         }
 
-        fun startForResult(activity: Fragment, repoId: String, login: String,
-                           path: String, contentUrl: String, ref: String?, isEdit: Boolean) {
+        fun startForResult(fragment: Fragment, model: EditRepoFileModel, isEnterprise: Boolean) {
             val bundle = Bundler.start()
-                    .put(BundleConstant.ID, repoId)
-                    .put(BundleConstant.EXTRA, login)
-                    .put(BundleConstant.EXTRA_TWO, path)
-                    .put(BundleConstant.EXTRA_THREE, contentUrl)
-                    .put(BundleConstant.EXTRA_TYPE, isEdit)
-                    .put(BundleConstant.IS_ENTERPRISE, LinkParserHelper.isEnterprise(contentUrl))
+                    .put(BundleConstant.IS_ENTERPRISE, isEnterprise)
+                    .put(BundleConstant.ITEM, model)
                     .end()
-            val intent = Intent(activity.context, EditRepoFileActivity::class.java)
+            val intent = Intent(fragment.context, EditRepoFileActivity::class.java)
             intent.putExtras(bundle)
-            activity.startActivityForResult(intent, EDIT_RQ)
+            fragment.startActivityForResult(intent, EDIT_RQ)
         }
     }
 }

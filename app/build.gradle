@@ -165,6 +165,7 @@ dependencies {
     implementation 'com.apollographql.apollo:apollo-rx2-support:0.4.0'
     implementation 'com.jaredrummler:android-device-names:1.1.4'
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
+    implementation 'com.airbnb.android:lottie:2.2.0'
     implementation project(path: ':jobdispatcher')
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     kapt "org.projectlombok:lombok:${lombokVersion}"
