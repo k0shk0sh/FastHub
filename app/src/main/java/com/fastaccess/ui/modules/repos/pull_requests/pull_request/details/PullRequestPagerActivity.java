@@ -45,6 +45,7 @@ import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFragment;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullRequestDialogFragment;
 import com.fastaccess.ui.modules.reviews.changes.ReviewChangesActivity;
@@ -110,7 +111,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                     getPresenter().getPullRequest().getTitle(), false, true)
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
-
 
     @OnClick(R.id.submitReviews) void onSubmitReviews(View view) {
         addPrReview(view);
@@ -445,9 +445,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     protected void hideAndClearReviews() {
-        onUpdateTimeline();
         getPresenter().getCommitComment().clear();
         AnimHelper.mimicFabVisibility(false, prReviewHolder, null);
+        if (pager == null || pager.getAdapter() == null) return;
+        PullRequestFilesFragment fragment = (PullRequestFilesFragment) pager.getAdapter().instantiateItem(pager, 2);
+        if (fragment != null) {
+            fragment.onRefresh();
+        }
+
     }
 
     private void addPrReview(@NonNull View view) {

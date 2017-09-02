@@ -26,6 +26,7 @@ public class CommitLinesViewHolder extends BaseViewHolder<CommitLinesModel> {
     @BindView(R.id.textView) AppCompatTextView textView;
     @BindView(R.id.leftLinNo) AppCompatTextView leftLinNo;
     @BindView(R.id.rightLinNo) AppCompatTextView rightLinNo;
+    @BindView(R.id.hasComment) View hasComment;
     private final int patchAdditionColor;
     private final int patchDeletionColor;
     private final int patchRefColor;
@@ -44,6 +45,7 @@ public class CommitLinesViewHolder extends BaseViewHolder<CommitLinesModel> {
     @Override public void bind(@NonNull CommitLinesModel item) {
         leftLinNo.setText(item.getLeftLineNo() > 0 ? String.valueOf(item.getLeftLineNo()) : "  ");
         rightLinNo.setText(item.getRightLineNo() > 0 ? String.valueOf(item.getRightLineNo()) : "  ");
+        hasComment.setVisibility(item.isHasCommentedOn() ? View.VISIBLE : View.GONE);
         switch (item.getColor()) {
             case CommitLinesModel.ADDITION:
                 textView.setBackgroundColor(patchAdditionColor);

@@ -215,13 +215,20 @@ public class PullRequestFilesFragment extends BaseFragment<PullRequestFilesMvp.V
             CommentRequestModel commentRequestModel = new CommentRequestModel();
             commentRequestModel.setBody(comment);
             commentRequestModel.setPath(path);
-            if (item.getRightLineNo() > 0 && item.getLeftLineNo() > 0) {
-                commentRequestModel.setPosition(item.getPosition());
-            } else {
-                commentRequestModel.setPosition(item.getPosition());
-//                commentRequestModel.setLine(item.getRightLineNo() > 0 ? item.getRightLineNo() : item.getLeftLineNo());
-            }
+            commentRequestModel.setPosition(item.getPosition());
             if (viewCallback != null) viewCallback.onAddComment(commentRequestModel);
+            int groupPosition = bundle.getInt(BundleConstant.EXTRA_TWO);
+            int childPosition = bundle.getInt(BundleConstant.EXTRA_THREE);
+            CommitFileChanges commitFileChanges = adapter.getItem(groupPosition);
+            List<CommitLinesModel> models = commitFileChanges.getLinesModel();
+            if (models != null && !models.isEmpty()) {
+                CommitLinesModel current = models.get(childPosition);
+                if (current != null) {
+                    current.setHasCommentedOn(true);
+                }
+                models.set(childPosition, current);
+                adapter.notifyItemChanged(groupPosition);
+            }
         }
     }
 
