@@ -37,6 +37,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Wiki
 - **Repositories**
   - Browse & Read Wiki
+  - Edit, Create & Delete files (commit)
   - Search Repos
   - Browse and search Repos
   - See your public, private and forked Repos
