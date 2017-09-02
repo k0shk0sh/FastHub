@@ -245,10 +245,23 @@ public class SchemeParser {
 
     @Nullable private static Intent getRepo(@NonNull Context context, @NonNull Uri uri) {
         List<String> segments = uri.getPathSegments();
-        if (segments == null || segments.size() < 2 || segments.size() > 2) return null;
+        if (segments == null || segments.size() < 2 || segments.size() > 3) return null;
         String owner = segments.get(0);
         String repoName = segments.get(1);
-        return RepoPagerActivity.createIntent(context, repoName, owner);
+        if (segments.size() == 3) {
+            String lastPath = uri.getLastPathSegment();
+            if ("network".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 3);
+            } else if ("stargazers".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 2);
+            } else if ("watchers".equalsIgnoreCase(lastPath)) {
+                return RepoPagerActivity.createIntent(context, repoName, owner, RepoPagerMvp.CODE, 1);
+            } else {
+                return null;
+            }
+        } else {
+            return RepoPagerActivity.createIntent(context, repoName, owner);
+        }
     }
 
     @Nullable private static Intent getWiki(@NonNull Context context, @NonNull Uri uri) {

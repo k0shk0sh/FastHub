@@ -102,6 +102,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @State @RepoPagerMvp.RepoNavigationType int navType;
     @State String login;
     @State String repoId;
+    @State int showWhich = -1;
 
     private NumberFormat numberFormat = NumberFormat.getNumberInstance();
     private boolean userInteracted;
@@ -127,11 +128,17 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
 
     public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
                                       @RepoPagerMvp.RepoNavigationType int navType) {
+        return createIntent(context, repoId, login, navType, -1);
+    }
+
+    public static Intent createIntent(@NonNull Context context, @NonNull String repoId, @NonNull String login,
+                                      @RepoPagerMvp.RepoNavigationType int navType, int showWhat) {
         Intent intent = new Intent(context, RepoPagerActivity.class);
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA_TWO, login)
                 .put(BundleConstant.EXTRA_TYPE, navType)
+                .put(BundleConstant.EXTRA_THREE, showWhat)
                 .end());
         return intent;
     }
@@ -254,13 +261,13 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
     @OnLongClick({R.id.forkRepoLayout, R.id.starRepoLayout, R.id.watchRepoLayout}) boolean onLongClick(View view) {
         switch (view.getId()) {
             case R.id.forkRepoLayout:
-                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.FORKS);
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), login, repoId, RepoMiscMVp.FORKS);
                 return true;
             case R.id.starRepoLayout:
-                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.STARS);
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), login, repoId, RepoMiscMVp.STARS);
                 return true;
             case R.id.watchRepoLayout:
-                RepoMiscDialogFragment.show(getSupportFragmentManager(), getPresenter().login(), getPresenter().repoId(), RepoMiscMVp.WATCHERS);
+                RepoMiscDialogFragment.show(getSupportFragmentManager(), login, repoId, RepoMiscMVp.WATCHERS);
                 return true;
         }
         return false;
@@ -306,8 +313,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
             repoId = extras.getString(BundleConstant.ID);
             login = extras.getString(BundleConstant.EXTRA_TWO);
             navType = extras.getInt(BundleConstant.EXTRA_TYPE);
-        }
-        if (savedInstanceState == null) {
+            showWhich = extras.getInt(BundleConstant.EXTRA_THREE);
             getPresenter().onUpdatePinnedEntry(repoId, login);
         }
         getPresenter().onActivityCreate(repoId, login, navType);
@@ -348,6 +354,18 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         if (getPresenter().getRepo() == null) {
             return;
         }
+        switch (showWhich) {
+            case 1:
+                onLongClick(watchRepoLayout);
+                break;
+            case 2:
+                onLongClick(starRepoLayout);
+                break;
+            case 3:
+                onLongClick(forkRepoLayout);
+                break;
+        }
+        showWhich = -1;
         setTaskName(getPresenter().getRepo().getFullName());
         bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
