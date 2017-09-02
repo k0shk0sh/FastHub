@@ -11,6 +11,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.types.StatusStateType;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -44,12 +45,20 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
     }
 
     @Override public void bind(@NonNull PullRequestStatusModel pullRequestStatusModel) {
+        Logger.e(pullRequestStatusModel.getState());
         if (pullRequestStatusModel.getState() != null) {
             StatusStateType stateType = pullRequestStatusModel.getState();
             stateImage.setImageResource(stateType.getDrawableRes());
             if (stateType == StatusStateType.failure) {
                 stateImage.tintDrawableColor(red);
-                status.setText(R.string.checks_failed);
+                if (pullRequestStatusModel.isMergable()) {
+                    status.setText(R.string.checks_failed);
+                } else {
+                    status.setText(SpannableBuilder.builder()
+                            .append(status.getResources().getString(R.string.checks_failed))
+                            .append("\n")
+                            .append(status.getResources().getString(R.string.can_not_merge_pr)));
+                }
             } else if (stateType == StatusStateType.pending) {
                 if (pullRequestStatusModel.isMergable()) {
                     stateImage.setImageResource(R.drawable.ic_check_small);

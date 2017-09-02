@@ -43,12 +43,22 @@ public class RepoCommitsFragment extends BaseFragment<RepoCommitsMvp.View, RepoC
     private RepoPagerMvp.TabsBadgeListener tabsBadgeListener;
 
     public static RepoCommitsFragment newInstance(@NonNull String repoId, @NonNull String login, @NonNull String branch) {
-        RepoCommitsFragment view = new RepoCommitsFragment();
-        view.setArguments(Bundler.start()
+        return newInstance(repoId, login, branch, null);
+    }
+
+    public static RepoCommitsFragment newInstance(@NonNull String repoId, @NonNull String login, @NonNull String branch,
+                                                  @Nullable String path) {
+        return newInstance(Bundler.start()
                 .put(BundleConstant.ID, repoId)
                 .put(BundleConstant.EXTRA, login)
                 .put(BundleConstant.EXTRA_TWO, branch)
+                .put(BundleConstant.EXTRA_THREE, path)
                 .end());
+    }
+
+    public static RepoCommitsFragment newInstance(@NonNull Bundle bundle) {
+        RepoCommitsFragment view = new RepoCommitsFragment();
+        view.setArguments(bundle);
         return view;
     }
 

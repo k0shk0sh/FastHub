@@ -12,6 +12,7 @@ import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.repos.code.commit.history.FileCommitHistoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +40,9 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFile item) {}
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {
+        FileCommitHistoryActivity.Companion.startActivity(v.getContext(), login, repoId, ref, item.getPath(), isEnterprise());
+    }
 
     @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();

@@ -353,9 +353,9 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             Observable<List<TimelineModel>> observable = Observable.zip(
                     RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number, page),
                     RestProvider.getReviewService(isEnterprise()).getPrReviewComments(login, repoId, number),
-                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, parameter.getHead().getRef())
+                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, parameter.getHead().getSha())
                             .onErrorReturn(throwable -> RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId,
-                                    parameter.getBase().getRef()).blockingFirst(new PullRequestStatusModel())),
+                                    parameter.getBase().getSha()).blockingFirst(new PullRequestStatusModel())),
                     (response, comments, status) -> {
                         if (response != null) {
                             lastPage = response.getLast();

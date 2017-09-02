@@ -560,4 +560,5 @@
     <string name="view_as_code">View as code</string>
     <string name="app_animation_title">In App Animations</string>
     <string name="app_animation_summary">Disable in App animations everywhere.</string>
+    <string name="can_not_merge_pr">This PR can\'t be merged now.</string>
 </resources>
