@@ -5,6 +5,7 @@ import android.util.Base64
 import com.fastaccess.data.dao.CommitRequestModel
 import com.fastaccess.data.dao.EditRepoFileModel
 import com.fastaccess.helper.BundleConstant
+import com.fastaccess.helper.Logger
 import com.fastaccess.provider.rest.RestProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 
@@ -22,6 +23,7 @@ class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFil
             intent?.let {
                 it.extras?.let {
                     model = it.getParcelable(BundleConstant.ITEM)
+                    Logger.e(model)
                     loadContent()
                 }
             }
@@ -42,17 +44,17 @@ class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFil
         if (!text.isNullOrBlank() && !description.isNullOrBlank() && !filename.isNullOrBlank()) {
             model?.let {
                 val commitModel = CommitRequestModel(description!!, Base64.encodeToString(text!!.toByteArray(), Base64.DEFAULT), it.sha)
-                makeRestCall(RestProvider.getContentService(isEnterprise).createUpdateFile(it.login, it.repoId,
+                val observable = RestProvider.getContentService(isEnterprise).updateCreateFile(it.login, it.repoId,
                         if (it.path.isNullOrBlank()) {
                             filename!!
                         } else {
                             if (it.path!!.endsWith("/")) {
                                 "${it.path}$filename"
                             } else {
-                                "${it.path}/$filename"
+                                "${it.path}"
                             }
-                        }, it.ref, commitModel),
-                        { t -> sendToView { it.onSuccessfullyCommitted() } })
+                        }, it.ref, commitModel)
+                makeRestCall(observable, { sendToView { it.onSuccessfullyCommitted() } })
             }
         }
     }

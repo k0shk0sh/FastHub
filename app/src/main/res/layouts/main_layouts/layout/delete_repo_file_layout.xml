@@ -3,14 +3,10 @@
     android:id="@+id/layoutHolder"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/window_background"
+    android:background="?android:windowBackground"
     android:orientation="vertical">
-
-    <include layout="@layout/appbar_elevation_dark"/>
-
 
     <android.support.v7.widget.CardView
         android:id="@+id/commitHolder"
@@ -68,44 +64,31 @@
         </android.support.design.widget.TextInputLayout>
     </android.support.v7.widget.CardView>
 
-    <ScrollView
-        android:id="@+id/parentView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="@dimen/spacing_normal"
+        android:paddingTop="@dimen/spacing_normal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <com.fastaccess.ui.widgets.FontButton
+            android:id="@+id/cancel"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/cancel"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="?colorAccent"/>
 
-            <com.fastaccess.ui.widgets.markdown.MarkdownEditText
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:gravity="top|start"
-                android:hint="@string/type_here"
-                android:inputType="textMultiLine|textCapSentences"
-                android:minLines="5"
-                android:padding="@dimen/spacing_xs_large"
-                android:scrollbars="vertical"
-                tools:ignore="ScrollViewSize"/>
+        <com.fastaccess.ui.widgets.FontButton
+            android:id="@+id/delete"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            android:textColor="@color/material_pink_700"/>
 
-        </LinearLayout>
-
-    </ScrollView>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="4dp"
-        android:background="@drawable/toolbar_shadow_up"/>
-
-    <com.fastaccess.ui.widgets.markdown.MarkDownLayout
-        android:id="@+id/markDownLayout"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:orientation="horizontal"/>
+    </LinearLayout>
 </LinearLayout>

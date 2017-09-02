@@ -2,9 +2,11 @@ package com.fastaccess.ui.modules.repos.code.files;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommitRequestModel;
 import com.fastaccess.data.dao.RepoPathsManager;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.RxHelper;
@@ -33,7 +35,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         if (v.getId() != R.id.menu) {
             getView().onItemClicked(item);
         } else {
-            getView().onMenuClicked(item, v);
+            getView().onMenuClicked(position, item, v);
         }
     }
 
@@ -113,5 +115,12 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Nullable @Override public List<RepoFile> getCachedFiles(@NonNull String url, @NonNull String ref) {
         return pathsModel.getPaths(url, ref);
+    }
+
+    @Override public void onDeleteFile(@NonNull String message, @NonNull RepoFile item) {
+        CommitRequestModel body = new CommitRequestModel(message, null, item.getSha());
+        makeRestCall(RestProvider.getContentService(isEnterprise())
+                        .deleteFile(login, repoId, item.getPath(), ref, body),
+                gitCommitModel -> sendToView(SwipeRefreshLayout.OnRefreshListener::onRefresh));
     }
 }

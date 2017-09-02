@@ -91,6 +91,7 @@
     <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
         • All PRO Themes\n
         • PR Reviews & On-line code comments (PRs & Commits)\n
+        • Commit from FastHub (Edit, Create & Delete files)\n
         • Support to other Merge methods (Rebase & Squash)\n
         • Login to unlimited accounts\n
         • Edit & Add unlimited Gist Files\n

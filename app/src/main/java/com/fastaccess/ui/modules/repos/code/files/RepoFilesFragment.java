@@ -21,14 +21,17 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
 import com.fastaccess.ui.modules.repos.git.EditRepoFileActivity;
+import com.fastaccess.ui.modules.repos.git.delete.DeleteFileBottomSheetFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -82,7 +85,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         }
     }
 
-    @Override public void onMenuClicked(@NonNull RepoFile item, View v) {
+    @Override public void onMenuClicked(int position, @NonNull RepoFile item, View v) {
         if (login == null) {
             login = Login.getUser();
         }
@@ -94,6 +97,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         popup.getMenu().findItem(R.id.download).setVisible(item.getType() == FilesType.file);
         boolean canOpen = canOpen(item);
         popup.getMenu().findItem(R.id.editFile).setVisible(isOwner && item.getType() == FilesType.file && canOpen);
+        popup.getMenu().findItem(R.id.deleteFile).setVisible(isOwner && item.getType() == FilesType.file);
         popup.setOnMenuItemClickListener(item1 -> {
             switch (item1.getItemId()) {
                 case R.id.share:
@@ -108,10 +112,22 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                     AppHelper.copyToClipboard(v.getContext(), !InputHelper.isEmpty(item.getHtmlUrl()) ? item.getHtmlUrl() : item.getUrl());
                     break;
                 case R.id.editFile:
-                    if (canOpen) {
-                        EditRepoFileModel fileModel = new EditRepoFileModel(getPresenter().login, getPresenter().repoId,
-                                item.getPath(), getPresenter().ref, item.getSha(), item.getDownloadUrl(), item.getName(), true);
-                        EditRepoFileActivity.Companion.startForResult(this, fileModel, isEnterprise());
+                    if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+                        if (canOpen) {
+                            EditRepoFileModel fileModel = new EditRepoFileModel(getPresenter().login, getPresenter().repoId,
+                                    item.getPath(), getPresenter().ref, item.getSha(), item.getDownloadUrl(), item.getName(), true);
+                            EditRepoFileActivity.Companion.startForResult(this, fileModel, isEnterprise());
+                        }
+                    } else {
+                        PremiumActivity.Companion.startActivity(getContext());
+                    }
+                    break;
+                case R.id.deleteFile:
+                    if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+                        DeleteFileBottomSheetFragment.Companion.newInstance(position, item.getName())
+                                .show(getChildFragmentManager(), DeleteFileBottomSheetFragment.class.getSimpleName());
+                    } else {
+                        PremiumActivity.Companion.startActivity(getContext());
                     }
                     break;
             }
@@ -195,6 +211,10 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         if (resultCode == Activity.RESULT_OK && requestCode == EditRepoFileActivity.Companion.getEDIT_RQ()) {
             onRefresh();
         }
+    }
+
+    @Override public void onDelete(@NonNull String message, int position) {
+        getPresenter().onDeleteFile(message, adapter.getItem(position));
     }
 
     private void showReload() {

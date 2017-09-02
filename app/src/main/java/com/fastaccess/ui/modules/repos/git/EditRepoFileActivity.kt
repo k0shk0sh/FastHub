@@ -6,13 +6,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.TextInputLayout
-import android.support.transition.TransitionManager
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
 import butterknife.BindView
 import com.fastaccess.R
@@ -23,7 +21,6 @@ import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
-import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 
 /**
  * Created by kosh on 29/08/2017.
@@ -69,16 +66,6 @@ class EditRepoFileActivity : BaseActivity<EditRepoFileMvp.View, EditRepoFilePres
         toolbar?.let {
             it.subtitle = "${presenter.model?.login}/${presenter.model?.repoId}"
         }
-        KeyboardVisibilityEvent.registerEventListener(this, { isOpen ->
-            TransitionManager.beginDelayedTransition(layoutHolder as ViewGroup)
-            if (editText.isFocused && isOpen) {
-                fileNameHolder.visibility = View.GONE
-                commitHolder.visibility = View.GONE
-            } else {
-                fileNameHolder.visibility = View.VISIBLE
-                commitHolder.visibility = View.VISIBLE
-            }
-        })
     }
 
     override fun onSetText(content: String?) {

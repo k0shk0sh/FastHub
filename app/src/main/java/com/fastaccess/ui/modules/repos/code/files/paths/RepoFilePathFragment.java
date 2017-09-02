@@ -22,9 +22,11 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilePathsAdapter;
 import com.fastaccess.ui.base.BaseFragment;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.repos.code.files.RepoFilesFragment;
 import com.fastaccess.ui.modules.repos.extras.branches.pager.BranchesPagerFragment;
 import com.fastaccess.ui.modules.repos.git.EditRepoFileActivity;
@@ -73,10 +75,14 @@ public class RepoFilePathFragment extends BaseFragment<RepoFilePathMvp.View, Rep
     }
 
     @OnClick(R.id.addFile) void onAddFile() {
-        RepoFile repoFile = !adapter.isEmpty() ? adapter.getItem(adapter.getItemCount() - 1) : null;
-        EditRepoFileModel fileModel = new EditRepoFileModel(getPresenter().login, getPresenter().repoId,
-                repoFile != null ? repoFile.getPath() : "", ref, repoFile != null ? repoFile.getSha() : "", null, null, false);
-        EditRepoFileActivity.Companion.startForResult(this, fileModel, isEnterprise());
+        if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+            RepoFile repoFile = !adapter.isEmpty() ? adapter.getItem(adapter.getItemCount() - 1) : null;
+            EditRepoFileModel fileModel = new EditRepoFileModel(getPresenter().login, getPresenter().repoId,
+                    repoFile != null ? repoFile.getPath() : "", ref, repoFile != null ? repoFile.getSha() : "", null, null, false);
+            EditRepoFileActivity.Companion.startForResult(this, fileModel, isEnterprise());
+        } else {
+            PremiumActivity.Companion.startActivity(getContext());
+        }
     }
 
     @OnClick(R.id.downloadRepoFiles) void onDownloadRepoFiles() {
