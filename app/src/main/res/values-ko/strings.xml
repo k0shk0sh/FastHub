@@ -416,7 +416,7 @@
     <string name="sound_chooser_summary">알림 소리를 선택합니다</string>
     <string name="sound_chooser_title">알림 소리 선택</string>
     <string name="disable_auto_gif_summary">GIF 자동 재생 사용을 비활성화합니다</string>
-    <string name="disable_auto_gif_title"GIF 자동 재생 사용 비활성화</string>
+    <string name="disable_auto_gif_title">GIF 자동 재생 사용 비활성화</string>
     <string name="request_changes">요청된 변경 사항</string>
     <string name="google_play_service_error">Google Play 서비스를 사용할 수 없음</string>
     <string name="edit_gist">Gist 수정</string>
