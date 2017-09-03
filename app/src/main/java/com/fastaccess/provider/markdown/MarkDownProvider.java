@@ -252,7 +252,7 @@ public class MarkDownProvider {
     }
 
     public static void addPhoto(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
-        String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
+        String result = "![" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")";
         insertAtCursor(editText, result);
     }
 
@@ -261,7 +261,7 @@ public class MarkDownProvider {
     }
 
     public static void addLink(@NonNull EditText editText, @NonNull String title, @NonNull String link) {
-        String result = "[" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")\n";
+        String result = "[" + InputHelper.toString(title) + "](" + InputHelper.toString(link) + ")";
         insertAtCursor(editText, result);
     }
 

@@ -87,8 +87,10 @@ class MarkDownLayout : LinearLayout {
                     Snackbar.make(this, R.string.error_highlighting_editor, Snackbar.LENGTH_SHORT).show()
                 } else {
                     when {
-                        v.id == R.id.link -> EditorLinkImageDialogFragment.newInstance(true).show(it.fragmentManager(), "BannerDialogFragment")
-                        v.id == R.id.image -> EditorLinkImageDialogFragment.newInstance(false).show(it.fragmentManager(), "BannerDialogFragment")
+                        v.id == R.id.link -> EditorLinkImageDialogFragment.newInstance(true)
+                                .show(it.fragmentManager(), "EditorLinkImageDialogFragment")
+                        v.id == R.id.image -> EditorLinkImageDialogFragment.newInstance(false)
+                                .show(it.fragmentManager(), "EditorLinkImageDialogFragment")
                         v.id == R.id.addEmoji -> {
                             ViewHelper.hideKeyboard(it.getEditText())
                             EmojiBottomSheet().show(it.fragmentManager(), "EmojiBottomSheet")
@@ -141,7 +143,6 @@ class MarkDownLayout : LinearLayout {
             ViewHelper.showKeyboard(editText)
             emoji?.let {
                 MarkDownProvider.insertAtCursor(editText, ":${it.aliases[0]}:")
-                editText.setSelection(editText.text.length)
             }
         }
     }
