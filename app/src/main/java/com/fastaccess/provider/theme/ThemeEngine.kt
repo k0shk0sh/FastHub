@@ -13,7 +13,6 @@ import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.modules.login.LoginActivity
 import com.fastaccess.ui.modules.login.chooser.LoginChooserActivity
 import com.fastaccess.ui.modules.main.donation.DonateActivity
-import com.fastaccess.ui.modules.reviews.changes.ReviewChangesActivity
 
 /**
  * Created by Kosh on 07 Jun 2017, 6:52 PM
@@ -267,5 +266,5 @@ object ThemeEngine {
     }
 
     private fun hasTheme(activity: BaseActivity<*, *>) = (activity is LoginChooserActivity || activity is LoginActivity ||
-            activity is DonateActivity || activity is ReviewChangesActivity)
+            activity is DonateActivity)
 }

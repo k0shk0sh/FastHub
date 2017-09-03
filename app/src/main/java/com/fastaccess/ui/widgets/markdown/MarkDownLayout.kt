@@ -35,6 +35,7 @@ class MarkDownLayout : LinearLayout {
     var markdownListener: MarkdownListener? = null
 
     @BindView(R.id.editorIconsHolder) lateinit var editorIconsHolder: HorizontalScrollView
+    @BindView(R.id.addEmoji) lateinit var addEmojiView: View
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -61,12 +62,14 @@ class MarkDownLayout : LinearLayout {
                     editText.isEnabled = false
                     MarkDownProvider.setMdText(editText, InputHelper.toString(editText))
                     editorIconsHolder.visibility = View.INVISIBLE
+                    addEmojiView.visibility = View.INVISIBLE
                     ViewHelper.hideKeyboard(editText)
                 } else {
                     editText.setText(it.getSavedText())
                     editText.setSelection(editText.text.length)
                     editText.isEnabled = true
                     editorIconsHolder.visibility = View.VISIBLE
+                    addEmojiView.visibility = View.VISIBLE
                     ViewHelper.showKeyboard(editText)
                 }
             }
@@ -137,11 +140,7 @@ class MarkDownLayout : LinearLayout {
         markdownListener?.getEditText()?.let { editText ->
             ViewHelper.showKeyboard(editText)
             emoji?.let {
-                editText.setText(if (editText.text.isNullOrEmpty()) {
-                    ":${it.aliases[0]}:"
-                } else {
-                    "${editText.text} :${it.aliases[0]}:"
-                })
+                MarkDownProvider.insertAtCursor(editText, it.aliases[0])
                 editText.setSelection(editText.text.length)
             }
         }

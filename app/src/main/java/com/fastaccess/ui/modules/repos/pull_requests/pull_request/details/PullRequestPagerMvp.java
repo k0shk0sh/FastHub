@@ -17,6 +17,7 @@ import com.fastaccess.ui.modules.repos.extras.labels.LabelsMvp;
 import com.fastaccess.ui.modules.repos.issues.issue.details.IssuePagerMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesMvp;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullReqeustMvp;
+import com.fastaccess.ui.modules.reviews.changes.ReviewChangesMvp;
 import com.fastaccess.ui.widgets.SpannableBuilder;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public interface PullRequestPagerMvp {
     interface View extends BaseMvp.FAView, LabelsMvp.SelectedLabelsListener,
             AssigneesMvp.SelectedAssigneesListener, MergePullReqeustMvp.MergeCallback,
             IssuePagerMvp.IssuePrCallback<PullRequest>, PullRequestFilesMvp.PatchCallback,
-            CommentEditorFragment.CommentListener {
+            CommentEditorFragment.CommentListener, ReviewChangesMvp.ReviewSubmissionCallback {
 
         void onSetupIssue(boolean update);
 

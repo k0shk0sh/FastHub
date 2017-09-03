@@ -308,7 +308,7 @@ public class MarkDownProvider {
         return false;
     }
 
-    private static void insertAtCursor(@NonNull EditText editText, @NonNull String text) {
+    public static void insertAtCursor(@NonNull EditText editText, @NonNull String text) {
         String oriContent = editText.getText().toString();
         int index = editText.getSelectionStart() >= 0 ? editText.getSelectionStart() : 0;
         StringBuilder builder = new StringBuilder(oriContent);

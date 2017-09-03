@@ -171,9 +171,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 } else {
                     getPresenter().onRefresh();
                 }
-            } else if (requestCode == BundleConstant.REVIEW_REQUEST_CODE) {
-                hideAndClearReviews();
-                pager.setCurrentItem(0);
             }
         }
     }
@@ -444,6 +441,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         commentEditorFragment.onCreateComment(text, bundle);
     }
 
+    @Override public void onSuccessfullyReviewed() {
+        hideAndClearReviews();
+        pager.setCurrentItem(0);
+    }
+
     protected void hideAndClearReviews() {
         getPresenter().getCommitComment().clear();
         AnimHelper.mimicFabVisibility(false, prReviewHolder, null);
@@ -464,9 +466,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         requestModel.setComments(getPresenter().getCommitComment().isEmpty() ? null : getPresenter().getCommitComment());
         requestModel.setCommitId(pullRequest.getHead().getSha());
         boolean isAuthor = author != null && Login.getUser().getLogin().equalsIgnoreCase(author.getLogin());
-        ReviewChangesActivity.Companion.startForResult(this, view, requestModel, getPresenter().getRepoId(),
+
+        ReviewChangesActivity.Companion.startForResult(requestModel, getPresenter().getRepoId(),
                 getPresenter().getLogin(), pullRequest.getNumber(), isAuthor, isEnterprise(), pullRequest.isMerged()
-                        || pullRequest.getState() == IssueState.closed);
+                        || pullRequest.getState() == IssueState.closed)
+                .show(getSupportFragmentManager(), ReviewChangesActivity.class.getSimpleName());
     }
 
     private void initTabs(@NonNull PullRequest pullRequest) {
