@@ -140,7 +140,7 @@ class MarkDownLayout : LinearLayout {
         markdownListener?.getEditText()?.let { editText ->
             ViewHelper.showKeyboard(editText)
             emoji?.let {
-                MarkDownProvider.insertAtCursor(editText, it.aliases[0])
+                MarkDownProvider.insertAtCursor(editText, ":${it.aliases[0]}:")
                 editText.setSelection(editText.text.length)
             }
         }

@@ -26,6 +26,7 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -361,8 +362,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                             lastPage = response.getLast();
                             List<TimelineModel> models = TimelineConverter.INSTANCE.convert(response.getItems(), comments);
                             if (page == 1 && status != null) {
-                                status.setMergable(parameter.isMergable());
-                                if (status.getState() != null && status.getStatuses() != null) models.add(0, new TimelineModel(status));
+                                status.setMergable(parameter.isMergeable());
+                                if (status.getState() != null) models.add(0, new TimelineModel(status));
                             }
                             return models;
                         } else {
