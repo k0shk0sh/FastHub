@@ -218,8 +218,8 @@ import lombok.Setter;
         return Stream.of(new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeLight)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeDark)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)),
-                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)),
-                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeMidnight)))
+                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)))
+//                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeMidnight)))
                 .collect(Collectors.toList());
     }
 

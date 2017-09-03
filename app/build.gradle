@@ -29,8 +29,8 @@ android {
         applicationId "com.fastaccess.github"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 410
-        versionName "4.1.0"
+        versionCode 420
+        versionName "4.2.0"
         buildConfigString "GITHUB_CLIENT_ID", (buildProperties.secrets['github_client_id'] | buildProperties.notThere['github_client_id']).string
         buildConfigString "GITHUB_SECRET", (buildProperties.secrets['github_secret'] | buildProperties.notThere['github_secret']).string
         buildConfigString "IMGUR_CLIENT_ID", (buildProperties.secrets['imgur_client_id'] | buildProperties.notThere['imgur_client_id']).string
