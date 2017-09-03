@@ -11,6 +11,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.types.StatusStateType;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.ui.widgets.FontTextView;
 import com.fastaccess.ui.widgets.ForegroundImageView;
@@ -44,6 +45,7 @@ public class PullStatusViewHolder extends BaseViewHolder<PullRequestStatusModel>
     }
 
     @Override public void bind(@NonNull PullRequestStatusModel pullRequestStatusModel) {
+        Logger.e(pullRequestStatusModel.getState(), pullRequestStatusModel.isMergable());
         if (pullRequestStatusModel.getState() != null) {
             StatusStateType stateType = pullRequestStatusModel.getState();
             stateImage.setImageResource(stateType.getDrawableRes());

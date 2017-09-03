@@ -120,18 +120,23 @@ public class TimelineCommentsViewHolder extends BaseViewHolder<TimelineModel> {
             avatar.setUrl(commentsModel.getUser().getAvatarUrl(), commentsModel.getUser().getLogin(),
                     false, LinkParserHelper.isEnterprise(commentsModel.getHtmlUrl()));
             name.setText(commentsModel.getUser() != null ? commentsModel.getUser().getLogin() : "Anonymous");
-            boolean isRepoOwner = TextUtils.equals(commentsModel.getUser().getLogin(), repoOwner);
-            if (isRepoOwner) {
+            if (commentsModel.getAuthorAssociation() != null && !"none".equalsIgnoreCase(commentsModel.getAuthorAssociation())) {
+                owner.setText(commentsModel.getAuthorAssociation().toLowerCase());
                 owner.setVisibility(View.VISIBLE);
-                owner.setText(R.string.owner);
             } else {
-                boolean isPoster = TextUtils.equals(commentsModel.getUser().getLogin(), poster);
-                if (isPoster) {
+                boolean isRepoOwner = TextUtils.equals(commentsModel.getUser().getLogin(), repoOwner);
+                if (isRepoOwner) {
                     owner.setVisibility(View.VISIBLE);
-                    owner.setText(R.string.original_poster);
+                    owner.setText(R.string.owner);
                 } else {
-                    owner.setText(null);
-                    owner.setVisibility(View.GONE);
+                    boolean isPoster = TextUtils.equals(commentsModel.getUser().getLogin(), poster);
+                    if (isPoster) {
+                        owner.setVisibility(View.VISIBLE);
+                        owner.setText(R.string.original_poster);
+                    } else {
+                        owner.setText(null);
+                        owner.setVisibility(View.GONE);
+                    }
                 }
             }
         } else {

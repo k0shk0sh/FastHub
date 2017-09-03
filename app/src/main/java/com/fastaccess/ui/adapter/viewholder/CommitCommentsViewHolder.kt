@@ -4,6 +4,7 @@ import android.support.transition.ChangeBounds
 import android.support.transition.TransitionManager
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import butterknife.BindView
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Comment
@@ -43,6 +44,7 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
     @BindView(R.id.commentMenu) lateinit var commentMenu: ForegroundImageView
     @BindView(R.id.comment) lateinit var comment: FontTextView
     @BindView(R.id.commentOptions) lateinit var commentOptions: View
+    @BindView(R.id.owner) lateinit var owner: TextView
 
     override fun onClick(v: View) {
         if (v.id == R.id.toggle || v.id == R.id.toggleHolder) {
@@ -67,6 +69,12 @@ class CommitCommentsViewHolder private constructor(view: View, adapter: BaseRecy
             MarkDownProvider.setMdText(comment, t.body)
         } else {
             comment.text = ""
+        }
+        if (t.authorAssociation != null && !"none".equals(t.authorAssociation, ignoreCase = true)) {
+            owner.text = t.authorAssociation.toLowerCase()
+            owner.visibility = View.VISIBLE
+        } else {
+            owner.visibility = View.GONE
         }
         if (t.createdAt == t.updatedAt) {
             date.text = String.format("%s %s", ParseDateFormat.getTimeAgo(t.updatedAt), itemView

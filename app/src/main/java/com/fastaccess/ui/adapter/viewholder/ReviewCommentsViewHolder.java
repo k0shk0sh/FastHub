@@ -108,18 +108,23 @@ public class ReviewCommentsViewHolder extends BaseViewHolder<ReviewCommentModel>
             avatarView.setUrl(commentModel.getUser().getAvatarUrl(), commentModel.getUser().getLogin(), commentModel.getUser()
                     .isOrganizationType(), LinkParserHelper.isEnterprise(commentModel.getHtmlUrl()));
             name.setText(commentModel.getUser().getLogin());
-            boolean isRepoOwner = TextUtils.equals(commentModel.getUser().getLogin(), repoOwner);
-            if (isRepoOwner) {
+            if (commentModel.getAuthorAssociation() != null && !"none".equalsIgnoreCase(commentModel.getAuthorAssociation())) {
+                owner.setText(commentModel.getAuthorAssociation().toLowerCase());
                 owner.setVisibility(View.VISIBLE);
-                owner.setText(R.string.owner);
             } else {
-                boolean isPoster = TextUtils.equals(commentModel.getUser().getLogin(), poster);
-                if (isPoster) {
+                boolean isRepoOwner = TextUtils.equals(commentModel.getUser().getLogin(), repoOwner);
+                if (isRepoOwner) {
                     owner.setVisibility(View.VISIBLE);
-                    owner.setText(R.string.original_poster);
+                    owner.setText(R.string.owner);
                 } else {
-                    owner.setText(null);
-                    owner.setVisibility(View.GONE);
+                    boolean isPoster = TextUtils.equals(commentModel.getUser().getLogin(), poster);
+                    if (isPoster) {
+                        owner.setVisibility(View.VISIBLE);
+                        owner.setText(R.string.original_poster);
+                    } else {
+                        owner.setText(null);
+                        owner.setVisibility(View.GONE);
+                    }
                 }
             }
         }
