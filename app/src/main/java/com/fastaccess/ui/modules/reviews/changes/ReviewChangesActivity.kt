@@ -93,6 +93,7 @@ class ReviewChangesActivity : BaseDialogFragment<ReviewChangesMvp.View, ReviewCh
     }
 
     override fun onSuccessfullySubmitted() {
+        hideProgress()
         subimssionCallback?.onSuccessfullyReviewed()
         dismiss()
     }
