@@ -278,6 +278,13 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         commentEditorFragment.onAddUserName(username);
     }
 
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
+    }
+
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
 
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
@@ -285,9 +292,5 @@ public class GistActivity extends BaseActivity<GistMvp.View, GistPresenter>
         } else {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
-    }
-
-    @Override public void onCreateComment(String text, Bundle bundle) {
-
     }
 }

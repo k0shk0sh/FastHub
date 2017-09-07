@@ -206,6 +206,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         if (adapter != null) {
             adapter.addItem(TimelineModel.constructComment(newComment));
         }
+        if (commentsCallback != null) commentsCallback.onClearEditText();
     }
 
     @Override public void onDestroyView() {

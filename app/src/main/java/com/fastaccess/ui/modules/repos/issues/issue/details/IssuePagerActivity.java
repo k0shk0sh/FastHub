@@ -376,6 +376,10 @@ public class IssuePagerActivity extends BaseActivity<IssuePagerMvp.View, IssuePa
 
     @Override public void onCreateComment(String text, Bundle bundle) {}
 
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
     private void hideShowFab() {
         if (getPresenter().isLocked() && !getPresenter().isOwner()) {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();

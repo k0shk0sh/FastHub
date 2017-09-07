@@ -47,7 +47,6 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     @OnClick(R.id.sendComment) internal fun onComment() {
         if (!InputHelper.isEmpty(getEditText())) {
             commentListener?.onSendActionClicked(InputHelper.toString(getEditText()), arguments?.getBundle(BundleConstant.ITEM))
-            getEditText().setText("")
             ViewHelper.hideKeyboard(getEditText())
             arguments = null
         }
@@ -158,6 +157,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         fun onCreateComment(text: String, bundle: Bundle?) {}
         fun onSendActionClicked(text: String, bundle: Bundle?)
         fun onTagUser(username: String)
+        fun onClearEditText()
     }
 
     companion object {
@@ -168,9 +168,5 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
             }
             return fragment
         }
-    }
-
-    fun hideSendButton() {
-        if (sendComment != null) sendComment.visibility = View.GONE
     }
 }

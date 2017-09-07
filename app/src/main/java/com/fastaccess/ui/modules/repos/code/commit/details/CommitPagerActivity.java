@@ -257,15 +257,19 @@ public class CommitPagerActivity extends BaseActivity<CommitPagerMvp.View, Commi
         commentEditorFragment.onAddUserName(username);
     }
 
+    @Override public void onCreateComment(String text, Bundle bundle) {
+
+    }
+
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
     private void hideShowFab() {
         if (pager.getCurrentItem() == 1) {
             getSupportFragmentManager().beginTransaction().show(commentEditorFragment).commit();
         } else {
             getSupportFragmentManager().beginTransaction().hide(commentEditorFragment).commit();
         }
-    }
-
-    @Override public void onCreateComment(String text, Bundle bundle) {
-
     }
 }

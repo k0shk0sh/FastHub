@@ -446,6 +446,10 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         pager.setCurrentItem(0);
     }
 
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
     protected void hideAndClearReviews() {
         getPresenter().getCommitComment().clear();
         AnimHelper.mimicFabVisibility(false, prReviewHolder, null);

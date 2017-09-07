@@ -121,6 +121,14 @@ class ReviewChangesActivity : BaseDialogFragment<ReviewChangesMvp.View, ReviewCh
 
     override fun onTagUser(username: String) {}
 
+    override fun onClearEditText() {
+        commentEditorFragment?.let {
+            it.commentText?.let {
+                it.setText(null)
+            }
+        }
+    }
+
     companion object {
         fun startForResult(reviewChanges: ReviewRequestModel, repoId: String, owner: String, number: Long,
                            isAuthor: Boolean, isEnterprise: Boolean, isClosed: Boolean): ReviewChangesActivity {

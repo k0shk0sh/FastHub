@@ -32,7 +32,6 @@ class EditRepoFilePresenter : BasePresenter<EditRepoFileMvp.View>(), EditRepoFil
         }
     }
 
-
     override fun onSubmit(text: String?, filename: String?, description: String?) {
         if (model?.login.isNullOrBlank() || model?.repoId.isNullOrBlank()) return
 

@@ -281,6 +281,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @Override public void addComment(@NonNull TimelineModel timelineModel) {
         hideProgress();
         adapter.addItem(timelineModel);
+        if (commentsCallback != null) commentsCallback.onClearEditText();
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId,

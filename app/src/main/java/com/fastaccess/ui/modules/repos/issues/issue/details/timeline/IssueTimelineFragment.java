@@ -267,6 +267,7 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @Override public void addNewComment(@NonNull TimelineModel timelineModel) {
         hideProgress();
         adapter.addItem(timelineModel);
+        if (commentsCallback != null) commentsCallback.onClearEditText();
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
