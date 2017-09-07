@@ -24,18 +24,9 @@ class GlideDrawableTarget extends SimpleTarget<GlideDrawable> {
     @Override public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
         if (container != null && container.get() != null) {
             TextView textView = container.get();
-            float width;
-            float height;
-            if (resource.getIntrinsicWidth() >= textView.getWidth()) {
-                float downScale = (float) resource.getIntrinsicWidth() / textView.getWidth();
-                width = (float) resource.getIntrinsicWidth() / downScale;
-                height = (float) resource.getIntrinsicHeight() / downScale;
-            } else {
-                float multiplier = (float) textView.getWidth() / resource.getIntrinsicWidth();
-                width = (float) resource.getIntrinsicWidth() * multiplier;
-                height = (float) resource.getIntrinsicHeight() * multiplier;
-            }
-            Rect rect = new Rect(0, 0, (int) Math.round(width / 1.3), (int) Math.round(height / 1.3));
+            float width = (float) (resource.getIntrinsicWidth() / 1.3);
+            float height = (float) (resource.getIntrinsicHeight() / 1.3);
+            Rect rect = new Rect(0, 0, Math.round(width), Math.round(height));
             resource.setBounds(rect);
             urlDrawable.setBounds(rect);
             urlDrawable.setDrawable(resource);

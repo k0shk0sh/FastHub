@@ -18,7 +18,7 @@ import java.util.Set;
  * Created by Kosh on 22 Apr 2017, 7:44 PM
  */
 
-public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
+public class DrawableGetter implements Html.ImageGetter {
     private WeakReference<TextView> container;
     private final Set<GlideDrawableTarget> cachedTargets;
 
@@ -41,16 +41,6 @@ public class DrawableGetter implements Html.ImageGetter, Drawable.Callback {
         }
         return urlDrawable;
     }
-
-    @Override public void invalidateDrawable(@NonNull Drawable drawable) {
-        if (container != null && container.get() != null) {
-            container.get().invalidate();
-        }
-    }
-
-    @Override public void scheduleDrawable(@NonNull Drawable drawable, @NonNull Runnable runnable, long l) {}
-
-    @Override public void unscheduleDrawable(@NonNull Drawable drawable, @NonNull Runnable runnable) {}
 
     public void clear(@NonNull DrawableGetter drawableGetter) {
         if (drawableGetter.cachedTargets != null) {
