@@ -330,8 +330,8 @@
     <string name="login_with_personal_token">개인 토큰으로 로그인</string>
     <string name="personal_token">개인 토큰</string>
     <string name="basic_login">기본 인증으로 로그인</string>
-    <string name="no_orgs_description">If you are actually tied to an organizations and you can\'t see them here please follow link
-        below.\nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: 조직에 FastHub 엑세스 권한을 부여하고 액세스 토큰을 사용해서 로그인할 수 있습니다.\n또한 https://github.com/settings/applications에서 FastHub를 찾아 조직 액세스로 스크롤 한 다음 승인 버튼을 클릭하세요.</string>
+    <string name="no_orgs_description">실제로 조직에 속해 있고 여기에서 볼 수 없다면 다음 링크를 따르십시오.
+        \nhttps://help.github.com/articles/about-third-party-application-restrictions\nPS: 조직에 FastHub 엑세스 권한을 부여하고 액세스 토큰을 사용해서 로그인할 수 있습니다.\n또한 https://github.com/settings/applications에서 FastHub를 찾아 조직 액세스로 스크롤 한 다음 승인 버튼을 클릭하세요.</string>
     <string name="insert">삽입</string>
     <string name="select">선택</string>
     <string name="select_picture">사진 선택</string>
@@ -401,9 +401,9 @@
     <string name="feed">Feed</string>
     <string name="premium_theme">프리미엄 테마</string>
     <string name="choose_code_theme">코드 색상 표</string>
-    <string name="enterprise_login_warning">Please do login to your GitHub account in order to access everything from GitHub API
-        otherwise you\'ll end up being kicked out every time you access anything rather than your Enterprise GitHub due to the token transmitted to
-        GitHub API is coming from your Enterprise Account.</string>
+    <string name="enterprise_login_warning">GitHub API의 모든 항목에 액세스하려면 GitHub 계정에 로그인하십시오. 
+        그렇지 않으면 GitHub API로 전송 된 토큰은 엔터프라이즈 계정에서 전송되기 때문에 Enterprise GitHub가 아닌 
+        다른 항목에 액세스 할 때마다 강제 로그아웃 될 수 있습니다.</string>
     <string name="add_account">계정 추가</string>
     <string name="choose_account">계정 선택</string>
     <string name="not_match">일치하지 않음</string>
