@@ -131,3 +131,4 @@
 -dontwarn com.octo.android.robospice.retrofit.RetrofitJackson**
 -dontwarn retrofit.appengine.UrlFetchClient
 -dontwarn icepick.**
+-dontwarn com.fastaccess.ui.modules.repos.**

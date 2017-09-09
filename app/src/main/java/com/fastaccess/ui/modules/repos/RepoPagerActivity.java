@@ -39,6 +39,7 @@ import com.fastaccess.helper.TypeFaceHelper;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.colors.ColorsProvider;
 import com.fastaccess.provider.scheme.LinkParserHelper;
+import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.tasks.git.GithubActionService;
 import com.fastaccess.ui.adapter.TopicsAdapter;
 import com.fastaccess.ui.base.BaseActivity;
@@ -529,7 +530,7 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         } else if (item.getItemId() == R.id.originalRepo) {
             if (getPresenter().getRepo() != null && getPresenter().getRepo().getParent() != null) {
                 Repo parent = getPresenter().getRepo().getParent();
-                RepoPagerActivity.startRepoPager(this, new NameParser(parent.getHtmlUrl()));
+                SchemeParser.launchUri(this, parent.getHtmlUrl());
             }
             return true;
         } else if (item.getItemId() == R.id.deleteRepo) {
