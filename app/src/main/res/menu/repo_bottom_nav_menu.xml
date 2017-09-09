@@ -18,10 +18,17 @@
         android:color="?colorPrimary"
         android:icon="@drawable/ic_issues"
         android:title="@string/issues"/>
+
     <item
         android:id="@+id/pullRequests"
         android:color="?colorPrimary"
         android:icon="@drawable/ic_pull_requests"
         android:title="@string/pull_requests"/>
+
+    <item
+        android:id="@+id/projects"
+        android:color="?colorPrimary"
+        android:icon="@drawable/ic_project"
+        android:title="@string/projects"/>
 
 </menu>

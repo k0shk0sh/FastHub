@@ -561,4 +561,6 @@
     <string name="app_animation_title">In App Animations</string>
     <string name="app_animation_summary">Disable in App animations everywhere.</string>
     <string name="can_not_merge_pr">This PR can\'t be merged now.</string>
+    <string name="projects">Projects</string>
+    <string name="no_projects">No Projects</string>
 </resources>

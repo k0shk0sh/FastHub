@@ -18,6 +18,7 @@ import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.modules.repos.code.RepoCodePagerFragment;
 import com.fastaccess.ui.modules.repos.issues.RepoIssuesPagerFragment;
+import com.fastaccess.ui.modules.repos.projects.RepoProjectsFragmentPager;
 import com.fastaccess.ui.modules.repos.pull_requests.RepoPullRequestPagerFragment;
 
 import static com.fastaccess.helper.ActivityHelper.getVisibleFragment;
@@ -185,6 +186,8 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                 AppHelper.getFragmentByTag(fragmentManager, RepoIssuesPagerFragment.TAG);
         RepoPullRequestPagerFragment pullRequestPagerView = (RepoPullRequestPagerFragment)
                 AppHelper.getFragmentByTag(fragmentManager, RepoPullRequestPagerFragment.TAG);
+        RepoProjectsFragmentPager projectsFragmentPager = (RepoProjectsFragmentPager) AppHelper.getFragmentByTag(fragmentManager,
+                RepoProjectsFragmentPager.Companion.getTAG());
         if (getRepo() == null) {
             sendToView(RepoPagerMvp.View::onFinishActivity);
             return;
@@ -217,6 +220,13 @@ class RepoPagerPresenter extends BasePresenter<RepoPagerMvp.View> implements Rep
                     onAddAndHide(fragmentManager, RepoPullRequestPagerFragment.newInstance(repoId(), login()), currentVisible);
                 } else {
                     onShowHideFragment(fragmentManager, pullRequestPagerView, currentVisible);
+                }
+                break;
+            case RepoPagerMvp.PROJECTS:
+                if (projectsFragmentPager == null) {
+                    onAddAndHide(fragmentManager, RepoProjectsFragmentPager.Companion.newInstance(repoId(), login()), currentVisible);
+                } else {
+                    onShowHideFragment(fragmentManager, projectsFragmentPager, currentVisible);
                 }
                 break;
         }

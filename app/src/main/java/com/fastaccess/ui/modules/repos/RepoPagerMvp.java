@@ -24,12 +24,14 @@ public interface RepoPagerMvp {
     int CODE = 0;
     int ISSUES = 1;
     int PULL_REQUEST = 2;
-    int PROFILE = 3;
+    int PROJECTS = 3;
+    int PROFILE = 4;
 
     @IntDef({
             CODE,
             ISSUES,
             PULL_REQUEST,
+            PROJECTS,
             PROFILE
     })
     @Retention(RetentionPolicy.SOURCE) @interface RepoNavigationType {}
