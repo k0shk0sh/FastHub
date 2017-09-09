@@ -18,6 +18,7 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
+import com.fastaccess.provider.timeline.CommentsHelper
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
@@ -57,6 +58,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.FOR_RESULT_EXTRA)
                 .put(BundleConstant.EXTRA, getEditText().text.toString())
+                .putStringArrayList("participants", commentListener?.getNamesToTag())
                 .end())
         startActivityForResult(intent, BundleConstant.REQUEST_CODE)
     }
@@ -158,6 +160,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         fun onSendActionClicked(text: String, bundle: Bundle?)
         fun onTagUser(username: String)
         fun onClearEditText()
+        fun getNamesToTag(): ArrayList<String>?
     }
 
     companion object {

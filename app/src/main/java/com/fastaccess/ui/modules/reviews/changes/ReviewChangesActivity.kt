@@ -124,9 +124,13 @@ class ReviewChangesActivity : BaseDialogFragment<ReviewChangesMvp.View, ReviewCh
     override fun onClearEditText() {
         commentEditorFragment?.let {
             it.commentText?.let {
-                it.setText(null)
+                it.text = null
             }
         }
+    }
+
+    override fun getNamesToTag(): ArrayList<String>? {
+        return arrayListOf()
     }
 
     companion object {

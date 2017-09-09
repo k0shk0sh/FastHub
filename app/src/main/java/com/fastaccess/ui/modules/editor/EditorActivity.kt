@@ -206,12 +206,12 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
             commentId = bundle.getLong(BundleConstant.EXTRA_FOUR)
             val textToUpdate = bundle.getString(BundleConstant.EXTRA)
             if (!InputHelper.isEmpty(textToUpdate)) {
-                editText.setText(String.format("%s ", textToUpdate))
+                editText.setText(String.format("%s", textToUpdate))
                 editText.setSelection(InputHelper.toString(editText).length)
             }
-            if (bundle.getString("message", "").isEmpty())
+            if (bundle.getString("message", "").isBlank()) {
                 replyQuote.visibility = GONE
-            else {
+            } else {
                 MarkDownProvider.setMdText(quote, bundle.getString("message", ""))
             }
             participants = bundle.getStringArrayList("participants")

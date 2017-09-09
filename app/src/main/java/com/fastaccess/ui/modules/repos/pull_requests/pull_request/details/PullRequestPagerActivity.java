@@ -290,7 +290,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         setTaskName(pullRequest.getRepoId() + " - " + pullRequest.getTitle());
         updateViews(pullRequest);
         if (update) {
-            PullRequestTimelineFragment issueDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+            PullRequestTimelineFragment issueDetailsView = getPullRequestTimelineFragment();
             if (issueDetailsView != null && getPresenter().getPullRequest() != null) {
                 issueDetailsView.onUpdateHeader();
             }
@@ -371,8 +371,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @Override public void onUpdateTimeline() {
         supportInvalidateOptionsMenu();
-        if (pager == null || pager.getAdapter() == null) return;
-        PullRequestTimelineFragment pullRequestDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+        PullRequestTimelineFragment pullRequestDetailsView = getPullRequestTimelineFragment();
         if (pullRequestDetailsView != null && getPresenter().getPullRequest() != null) {
             pullRequestDetailsView.onRefresh();
         }
@@ -425,12 +424,15 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
-        if (pager != null && pager.getAdapter() != null) {
-            PullRequestTimelineFragment fragment = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-            if (fragment != null) {
-                fragment.onHandleComment(text, bundle);
-            }
+        PullRequestTimelineFragment fragment = getPullRequestTimelineFragment();
+        if (fragment != null) {
+            fragment.onHandleComment(text, bundle);
         }
+    }
+
+    private PullRequestTimelineFragment getPullRequestTimelineFragment() {
+        if (pager == null || pager.getAdapter() == null) return null;
+        return (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
     }
 
     @Override public void onTagUser(@NonNull String username) {
@@ -448,6 +450,14 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
         if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
+    @Override public ArrayList<String> getNamesToTag() {
+        PullRequestTimelineFragment fragment = getPullRequestTimelineFragment();
+        if (fragment != null) {
+            return fragment.getNamesToTag();
+        }
+        return new ArrayList<>();
     }
 
     protected void hideAndClearReviews() {

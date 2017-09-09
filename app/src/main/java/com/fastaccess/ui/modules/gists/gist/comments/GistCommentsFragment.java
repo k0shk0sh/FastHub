@@ -29,6 +29,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -200,6 +201,10 @@ public class GistCommentsFragment extends BaseFragment<GistCommentsMvp.View, Gis
         hideProgress();
         adapter.addItem(comment);
         if (commentsCallback != null) commentsCallback.onClearEditText();
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        return CommentsHelper.getUsers(adapter.getData());
     }
 
     @Override public void onDestroyView() {

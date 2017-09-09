@@ -75,6 +75,8 @@ public interface PullRequestTimelineMvp {
                                    @NonNull EditReviewCommentModel model);
 
         void addComment(@NonNull TimelineModel timelineModel);
+
+        @NonNull ArrayList<String> getNamesToTag();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,

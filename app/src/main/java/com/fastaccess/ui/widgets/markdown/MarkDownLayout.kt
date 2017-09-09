@@ -158,7 +158,6 @@ class MarkDownLayout : LinearLayout {
             if (isLink) {
                 MarkDownProvider.addLink(it.getEditText(), InputHelper.toString(title), InputHelper.toString(link))
             } else {
-                it.getEditText().setText(String.format("%s\n", it.getEditText().text))
                 MarkDownProvider.addPhoto(it.getEditText(), InputHelper.toString(title), InputHelper.toString(link))
             }
         }
