@@ -368,8 +368,11 @@ public class RepoPagerActivity extends BaseActivity<RepoPagerMvp.View, RepoPager
         }
         showWhich = -1;
         setTaskName(getPresenter().getRepo().getFullName());
-        bottomNavigation.setOnMenuItemClickListener(getPresenter());
         Repo repoModel = getPresenter().getRepo();
+        if (repoModel.isHasProjects()) {
+            bottomNavigation.inflateMenu(R.menu.repo_with_project_bottom_nav_menu);
+        }
+        bottomNavigation.setOnMenuItemClickListener(getPresenter());
         if (repoModel.getTopics() != null && !repoModel.getTopics().isEmpty()) {
             tagsIcon.setVisibility(View.VISIBLE);
             topicsList.setAdapter(new TopicsAdapter(repoModel.getTopics()));

@@ -92,6 +92,7 @@
                 android:minLines="5"
                 android:padding="@dimen/spacing_xs_large"
                 android:scrollbars="vertical"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
                 tools:ignore="ScrollViewSize"/>
 
         </LinearLayout>
