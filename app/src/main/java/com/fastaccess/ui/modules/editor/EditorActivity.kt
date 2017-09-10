@@ -26,6 +26,7 @@ import com.fastaccess.provider.emoji.Emoji
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.widgets.FontTextView
+import com.fastaccess.ui.widgets.dialog.MessageDialogView
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
 import java.util.*
@@ -163,6 +164,15 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun onBackPressed() {
         if (!InputHelper.isEmpty(editText)) {
             ViewHelper.hideKeyboard(editText)
+            MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
+                    Bundler.start()
+                            .put("primary_extra", getString(R.string.discard))
+                            .put("secondary_extra", getString(R.string.cancel))
+                            .put(BundleConstant.EXTRA, true)
+                            .end())
+                    .show(supportFragmentManager, MessageDialogView.TAG)
+            return
+
         }
         super.onBackPressed()
     }
