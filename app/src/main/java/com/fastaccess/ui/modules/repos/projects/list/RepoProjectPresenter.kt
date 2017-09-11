@@ -8,6 +8,7 @@ import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Logger
 import com.fastaccess.provider.rest.RestProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
+import com.fastaccess.ui.modules.repos.projects.list.details.ProjectPagerActivity
 import java.util.*
 
 /**
@@ -22,13 +23,11 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
     @com.evernote.android.state.State var login: String = ""
     @com.evernote.android.state.State var repoId: String = ""
 
-    override fun onItemClick(position: Int, v: View?, item: ProjectsModel?) {
-
+    override fun onItemClick(position: Int, v: View, item: ProjectsModel) {
+        ProjectPagerActivity.startActivity(v.context, login, repoId, item.id)
     }
 
-    override fun onItemLongClick(position: Int, v: View?, item: ProjectsModel?) {
-
-    }
+    override fun onItemLongClick(position: Int, v: View?, item: ProjectsModel?) {}
 
     override fun onFragmentCreate(bundle: Bundle?) {
         bundle?.let {

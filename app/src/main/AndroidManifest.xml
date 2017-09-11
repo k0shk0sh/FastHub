@@ -249,6 +249,15 @@
                 android:value=".ui.modules.repos.RepoPagerActivity"/>
         </activity>
 
+        <activity
+            android:name=".ui.modules.repos.projects.list.details.ProjectPagerActivity"
+            android:label="@string/projects"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

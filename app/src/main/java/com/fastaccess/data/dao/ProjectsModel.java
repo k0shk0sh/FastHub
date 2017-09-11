@@ -16,7 +16,7 @@ public class ProjectsModel implements Parcelable {
     private String url;
     private String htmlUrl;
     private String columnsUrl;
-    private int id;
+    private long id;
     private String name;
     private String body;
     private int number;
@@ -57,11 +57,11 @@ public class ProjectsModel implements Parcelable {
         this.columnsUrl = columnsUrl;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -128,7 +128,7 @@ public class ProjectsModel implements Parcelable {
         dest.writeString(this.url);
         dest.writeString(this.htmlUrl);
         dest.writeString(this.columnsUrl);
-        dest.writeInt(this.id);
+        dest.writeLong(this.id);
         dest.writeString(this.name);
         dest.writeString(this.body);
         dest.writeInt(this.number);
@@ -145,7 +145,7 @@ public class ProjectsModel implements Parcelable {
         this.url = in.readString();
         this.htmlUrl = in.readString();
         this.columnsUrl = in.readString();
-        this.id = in.readInt();
+        this.id = in.readLong();
         this.name = in.readString();
         this.body = in.readString();
         this.number = in.readInt();
@@ -157,7 +157,7 @@ public class ProjectsModel implements Parcelable {
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
     }
 
-    public static final Parcelable.Creator<ProjectsModel> CREATOR = new Parcelable.Creator<ProjectsModel>() {
+    public static final Creator<ProjectsModel> CREATOR = new Creator<ProjectsModel>() {
         @Override public ProjectsModel createFromParcel(Parcel source) {return new ProjectsModel(source);}
 
         @Override public ProjectsModel[] newArray(int size) {return new ProjectsModel[size];}
