@@ -191,7 +191,7 @@
     <string name="background_job_summary">Wähle wie regelmäßig FastHub nach neuen Benachrichtigungen sucht.</string>
     <string name="background_job_title">Benachrichtigunssynchronisierungsintervall</string>
     <string name="every">Alle</string>
-    <string name="behavior">Verhalten :\&#38; Aussehen</string>
+    <string name="behavior">Verhalten &amp; Aussehen</string>
     <string name="recycler_view_animation_summary">Listenanimationen aktivieren</string>
     <string name="recycler_view_animation_title">Listenanimationen</string>
     <string name="back_button_summary">Dialog deaktivieren, der verhindert, dass du FastHub ausversehen verlässt</string>
