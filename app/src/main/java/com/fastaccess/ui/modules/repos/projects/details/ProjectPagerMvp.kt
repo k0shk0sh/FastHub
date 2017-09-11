@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.repos.projects.list.details
+package com.fastaccess.ui.modules.repos.projects.details
 
 import android.content.Intent
 import com.fastaccess.data.dao.ProjectColumnModel

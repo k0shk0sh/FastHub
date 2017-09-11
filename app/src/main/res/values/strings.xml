@@ -563,4 +563,6 @@
     <string name="can_not_merge_pr">This PR can\'t be merged now.</string>
     <string name="projects">Projects</string>
     <string name="no_projects">No Projects</string>
+    <string name="no_cards">No Cards</string>
+    <string name="card_added_by">Added by %s</string>
 </resources>

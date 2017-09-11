@@ -11,7 +11,7 @@ import java.util.Date;
 
 public class ProjectColumnModel implements Parcelable {
 
-    private int id;
+    private long id;
     private String name;
     private String url;
     private String projectUrl;
@@ -19,11 +19,11 @@ public class ProjectColumnModel implements Parcelable {
     private Date createdAt;
     private Date updatedAt;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -78,7 +78,7 @@ public class ProjectColumnModel implements Parcelable {
     @Override public int describeContents() { return 0; }
 
     @Override public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.id);
+        dest.writeLong(this.id);
         dest.writeString(this.name);
         dest.writeString(this.url);
         dest.writeString(this.projectUrl);
@@ -90,7 +90,7 @@ public class ProjectColumnModel implements Parcelable {
     public ProjectColumnModel() {}
 
     protected ProjectColumnModel(Parcel in) {
-        this.id = in.readInt();
+        this.id = in.readLong();
         this.name = in.readString();
         this.url = in.readString();
         this.projectUrl = in.readString();
@@ -101,7 +101,7 @@ public class ProjectColumnModel implements Parcelable {
         this.updatedAt = tmpUpdatedAt == -1 ? null : new Date(tmpUpdatedAt);
     }
 
-    public static final Parcelable.Creator<ProjectColumnModel> CREATOR = new Parcelable.Creator<ProjectColumnModel>() {
+    public static final Creator<ProjectColumnModel> CREATOR = new Creator<ProjectColumnModel>() {
         @Override public ProjectColumnModel createFromParcel(Parcel source) {return new ProjectColumnModel(source);}
 
         @Override public ProjectColumnModel[] newArray(int size) {return new ProjectColumnModel[size];}

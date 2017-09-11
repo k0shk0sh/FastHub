@@ -250,7 +250,7 @@
         </activity>
 
         <activity
-            android:name=".ui.modules.repos.projects.list.details.ProjectPagerActivity"
+            android:name="com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity"
             android:label="@string/projects"
             android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data

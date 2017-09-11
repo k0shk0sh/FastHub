@@ -41,15 +41,16 @@
                     android:paddingTop="@dimen/spacing_normal">
 
                     <com.fastaccess.ui.widgets.FontTextView
+                        android:id="@+id/columnName"
                         style="@style/TextAppearance.AppCompat.Medium"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:maxLines="3"
-                        android:ellipsize="marquee"
                         android:layout_gravity="center"
+                        android:ellipsize="marquee"
+                        android:maxLines="3"
                         android:padding="@dimen/spacing_xs_large"
-                        android:text="One must need the visitor in order to study the lord of great awareness."
-                        android:textColor="@color/white"/>
+                        android:textColor="@color/white"
+                        tools:text="One must need the visitor in order to study the lord of great awareness."/>
 
                     <LinearLayout
                         android:id="@+id/editColumnHolder"
@@ -100,6 +101,6 @@
         android:layout_height="wrap_content"
         app:layout_behavior="@string/scroll_behavior">
 
-        <include layout="@layout/vertical_refresh_list"/>
+        <include layout="@layout/micro_grid_refresh_list"/>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

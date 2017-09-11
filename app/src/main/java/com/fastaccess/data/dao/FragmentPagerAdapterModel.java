@@ -45,7 +45,7 @@ import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineFragment;
 import com.fastaccess.ui.modules.repos.projects.list.RepoProjectFragment;
-import com.fastaccess.ui.modules.repos.projects.list.columns.PorjectColumnsFragment;
+import com.fastaccess.ui.modules.repos.projects.columns.ProjectColumnFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.RepoPullRequestFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.commits.PullRequestCommitsFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesFragment;
@@ -242,9 +242,10 @@ import lombok.Setter;
                 .toList();
     }
 
-    @NonNull public static List<FragmentPagerAdapterModel> buildForProjectColumns(@NonNull List<ProjectColumnModel> models) {
+    @NonNull public static List<FragmentPagerAdapterModel> buildForProjectColumns(@NonNull List<ProjectColumnModel> models, boolean isCollaborator) {
         return Stream.of(models)
-                .map(projectColumnModel -> new FragmentPagerAdapterModel("", new PorjectColumnsFragment()))
+                .map(projectColumnModel -> new FragmentPagerAdapterModel("", ProjectColumnFragment.Companion
+                        .newInstance(projectColumnModel, isCollaborator)))
                 .toList();
     }
 }

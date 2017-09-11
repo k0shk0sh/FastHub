@@ -5,10 +5,9 @@ import android.view.View
 import com.fastaccess.data.dao.ProjectsModel
 import com.fastaccess.data.dao.types.IssueState
 import com.fastaccess.helper.BundleConstant
-import com.fastaccess.helper.Logger
 import com.fastaccess.provider.rest.RestProvider
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
-import com.fastaccess.ui.modules.repos.projects.list.details.ProjectPagerActivity
+import com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity
 import java.util.*
 
 /**
@@ -63,7 +62,6 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
         makeRestCall(RestProvider.getProjectsService(isEnterprise)
                 .getRepoProjects(login, repoId, parameter?.name, page), { response ->
             lastPage = response.last
-            Logger.e(response.items as List<Any>?)
             sendToView({ it.onNotifyAdapter(response.items, page) })
         })
         return true

@@ -1,4 +1,4 @@
-package com.fastaccess.ui.modules.repos.projects.list.details
+package com.fastaccess.ui.modules.repos.projects.details
 
 import android.content.Context
 import android.content.Intent
@@ -37,7 +37,8 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
 
     override fun onInitPager(list: List<ProjectColumnModel>) {
         hideProgress()
-        pager.adapter = FragmentsPagerAdapter(supportFragmentManager, FragmentPagerAdapterModel.buildForProjectColumns(list))
+        pager.adapter = FragmentsPagerAdapter(supportFragmentManager, FragmentPagerAdapterModel
+                .buildForProjectColumns(list, presenter.isCollaborator))
     }
 
     override fun showMessage(titleRes: Int, msgRes: Int) {
@@ -89,7 +90,6 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         pager.clipToPadding = false
         val pageMargin = resources.getDimensionPixelSize(R.dimen.spacing_normal)
         pager.pageMargin = pageMargin

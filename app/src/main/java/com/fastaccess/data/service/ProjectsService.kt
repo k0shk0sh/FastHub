@@ -32,5 +32,5 @@ interface ProjectsService {
 
     @GET("projects/columns/{columnId}/cards")
     @Headers("Accept: application/vnd.github.inertia-preview+json")
-    fun getProjectCards(@Path("columnId") columnId: String): Observable<Pageable<ProjectCardModel>>
+    fun getProjectCards(@Path("columnId") columnId: Long, @Query("page") page: Int): Observable<Pageable<ProjectCardModel>>
 }
