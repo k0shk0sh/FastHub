@@ -114,7 +114,7 @@ public abstract class JobService extends Service {
         synchronized (runningJobs) {
             if (runningJobs.containsKey(job.getTag())) {
                 Log.w(TAG, String
-                    .format(Locale.US, "Job with tag = %s was already running.", job.getTag()));
+                        .format(Locale.US, "Job with tag = %s was already running.", job.getTag()));
                 return;
             }
             runningJobs.put(job.getTag(), new JobCallback(msg));
@@ -188,7 +188,7 @@ public abstract class JobService extends Service {
             for (int i = runningJobs.size() - 1; i >= 0; i--) {
                 JobCallback callback = runningJobs.get(runningJobs.keyAt(i));
                 if (callback != null && callback.message != null) {
-                    if(callback.message.obj instanceof JobParameters) {
+                    if (callback.message.obj instanceof JobParameters) {
                         callback.sendResult(onStopJob((JobParameters) callback.message.obj)
                                             // returned true, would like to be rescheduled
                                             ? RESULT_FAIL_RETRY
@@ -242,10 +242,12 @@ public abstract class JobService extends Service {
         }
 
         void sendResult(@JobResult int result) {
-            if (message != null) {
-                message.arg1 = result;
-                message.sendToTarget();
-            }
+            try {
+                if (message != null) {
+                    message.arg1 = result;
+                    message.sendToTarget();
+                }
+            } catch (Exception ignored) {}//catch this freaking crash!!!!
         }
     }
 

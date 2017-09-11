@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.annimon.stream.IntStream;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.markdown.extension.emoji.EmojiExtension;
 import com.fastaccess.provider.markdown.extension.mention.MentionExtension;
 import com.fastaccess.provider.timeline.HtmlHelper;
@@ -74,14 +73,17 @@ public class MarkDownProvider {
         Parser parser = Parser.builder()
                 .extensions(extensions)
                 .build();
-        Node node = parser.parse(markdown);
-        String rendered = HtmlRenderer
-                .builder()
-                .extensions(extensions)
-                .build()
-                .render(node);
-        Logger.e(rendered);
-        HtmlHelper.htmlIntoTextView(textView, rendered, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
+        try {
+            Node node = parser.parse(markdown);
+            String rendered = HtmlRenderer
+                    .builder()
+                    .extensions(extensions)
+                    .build()
+                    .render(node);
+            HtmlHelper.htmlIntoTextView(textView, rendered, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
+        } catch (Exception ignored) {
+            HtmlHelper.htmlIntoTextView(textView, markdown, (width - (textView.getPaddingStart() + textView.getPaddingEnd())));
+        }
     }
 
     public static void stripMdText(@NonNull TextView textView, String markdown) {
