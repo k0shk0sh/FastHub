@@ -8,12 +8,12 @@ import android.text.TextUtils;
 
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.rx2.Rx2Apollo;
-import com.fastaccess.App;
 import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.User;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.helper.RxHelper;
+import com.fastaccess.provider.rest.ApolloProdivder;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 import com.fastaccess.ui.widgets.contributions.ContributionsDay;
@@ -23,8 +23,8 @@ import com.fastaccess.ui.widgets.contributions.GitHubContributionsView;
 import java.util.ArrayList;
 import java.util.List;
 
+import github.GetPinnedReposQuery;
 import io.reactivex.Observable;
-import pr.GetPinnedReposQuery;
 
 /**
  * Created by Kosh on 03 Dec 2016, 9:16 AM
@@ -106,7 +106,7 @@ class ProfileOverviewPresenter extends BasePresenter<ProfileOverviewMvp.View> im
     }
 
     @SuppressWarnings("ConstantConditions") private void loadPinnedRepos(@NonNull String login) {
-        ApolloCall<GetPinnedReposQuery.Data> apolloCall = App.getInstance().getApolloClient()
+        ApolloCall<GetPinnedReposQuery.Data> apolloCall = ApolloProdivder.INSTANCE.getApollo(isEnterprise())
                 .query(GetPinnedReposQuery.builder()
                         .login(login)
                         .build());

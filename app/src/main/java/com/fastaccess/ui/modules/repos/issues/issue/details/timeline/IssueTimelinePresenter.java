@@ -46,6 +46,7 @@ import lombok.Getter;
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    @com.evernote.android.state.State boolean isCollaborator;
 
     @Override public boolean isPreviouslyReacted(long commentId, int vId) {
         return getReactionsProvider().isPreviouslyReacted(commentId, vId);
@@ -60,7 +61,7 @@ import lombok.Getter;
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, issue.getLogin(), item.getComment().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, issue.getLogin(), item.getComment().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -112,7 +113,8 @@ import lombok.Getter;
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, item.getIssue().getLogin(), item.getIssue().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, item.getIssue().getLogin(),
+                            item.getIssue().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
@@ -259,6 +261,11 @@ import lombok.Getter;
         setCurrentPage(page);
         String login = parameter.getLogin();
         String repoId = parameter.getRepoId();
+        if (page == 1) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId,
+                    Login.getUser().getLogin())
+                    .doOnNext(booleanResponse -> isCollaborator = booleanResponse.code() == 204));
+        }
         int number = parameter.getNumber();
         Observable<List<TimelineModel>> observable = RestProvider.getIssueService(isEnterprise())
                 .getTimeline(login, repoId, number, page)

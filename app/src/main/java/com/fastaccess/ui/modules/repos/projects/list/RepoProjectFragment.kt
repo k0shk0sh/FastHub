@@ -1,21 +1,23 @@
 package com.fastaccess.ui.modules.repos.projects.list
 
+import android.content.Context
 import android.os.Bundle
 import android.support.annotation.StringRes
 import android.support.v4.widget.SwipeRefreshLayout
 import android.view.View
 import butterknife.BindView
 import com.fastaccess.R
-import com.fastaccess.data.dao.ProjectsModel
 import com.fastaccess.data.dao.types.IssueState
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.provider.rest.loadmore.OnLoadMore
 import com.fastaccess.ui.adapter.ProjectsAdapter
 import com.fastaccess.ui.base.BaseFragment
+import com.fastaccess.ui.modules.repos.RepoPagerMvp
 import com.fastaccess.ui.widgets.StateLayout
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller
+import github.RepoProjectsOpenQuery
 
 /**
  * Created by kosh on 09/09/2017.
@@ -29,11 +31,25 @@ class RepoProjectFragment : BaseFragment<RepoProjectMvp.View, RepoProjectPresent
     @BindView(R.id.fastScroller) lateinit var fastScroller: RecyclerViewFastScroller
     private var onLoadMore: OnLoadMore<IssueState>? = null
     private val adapter by lazy { ProjectsAdapter(presenter.getProjects()) }
+    private var badgeListener: RepoPagerMvp.TabsBadgeListener? = null
 
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (parentFragment is RepoPagerMvp.TabsBadgeListener) {
+            badgeListener = parentFragment as RepoPagerMvp.TabsBadgeListener
+        } else if (context is RepoPagerMvp.TabsBadgeListener) {
+            badgeListener = context
+        }
+    }
+
+    override fun onDetach() {
+        badgeListener = null
+        super.onDetach()
+    }
 
     override fun providePresenter(): RepoProjectPresenter = RepoProjectPresenter()
 
-    override fun onNotifyAdapter(items: List<ProjectsModel>?, page: Int) {
+    override fun onNotifyAdapter(items: List<RepoProjectsOpenQuery.Node>?, page: Int) {
         hideProgress()
         if (items == null || items.isEmpty()) {
             adapter.clear()
@@ -44,6 +60,10 @@ class RepoProjectFragment : BaseFragment<RepoProjectMvp.View, RepoProjectPresent
         } else {
             adapter.addItems(items)
         }
+    }
+
+    override fun onChangeTotalCount(count: Int) {
+        badgeListener?.onSetBadge(if (getState() == IssueState.open) 0 else 1, count)
     }
 
     override fun getLoadMore(): OnLoadMore<IssueState> {

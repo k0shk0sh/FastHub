@@ -26,7 +26,6 @@ import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.InputHelper;
-import com.fastaccess.helper.Logger;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
 import com.fastaccess.provider.timeline.CommentsHelper;
@@ -54,6 +53,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    @com.evernote.android.state.State boolean isCollaborator;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (getView() == null) return;
@@ -64,7 +64,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, pullRequest.getLogin(), item.getComment().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, pullRequest.getLogin(), item.getComment().getUser().getLogin())
+                            || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -119,7 +120,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
                     boolean isOwner = CommentsHelper.isOwner(username, item.getPullRequest().getLogin(),
-                            item.getPullRequest().getUser().getLogin());
+                            item.getPullRequest().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
@@ -275,7 +276,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             popupMenu.inflate(R.menu.comments_menu);
             String username = Login.getUser().getLogin();
-            boolean isOwner = CommentsHelper.isOwner(username, getView().getPullRequest().getLogin(), comment.getUser().getLogin());
+            boolean isOwner = CommentsHelper.isOwner(username, getView().getPullRequest().getLogin(), comment.getUser().getLogin()) || isCollaborator;
             popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
             popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
             popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -348,6 +349,11 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
         if (page > lastPage || lastPage == 0) {
             sendToView(PullRequestTimelineMvp.View::hideProgress);
             return false;
+        }
+        if (page == 1) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId,
+                    Login.getUser().getLogin())
+                    .doOnNext(booleanResponse -> isCollaborator = booleanResponse.code() == 204));
         }
         setCurrentPage(page);
         if (parameter.getHead() != null) {

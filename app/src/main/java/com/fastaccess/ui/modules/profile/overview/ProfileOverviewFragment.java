@@ -52,7 +52,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import pr.GetPinnedReposQuery;
+import github.GetPinnedReposQuery;
 
 import static android.view.Gravity.TOP;
 import static android.view.View.GONE;

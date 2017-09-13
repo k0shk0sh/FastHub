@@ -185,7 +185,11 @@ public class FeedsPresenter extends BasePresenter<FeedsMvp.View> implements Feed
                         .collect(Collectors.toCollection(ArrayList::new)));
             }
         } else {
-            onItemClick(position, v, item);
+            Repo repo = item.getRepo();
+            if (repo != null) {
+                NameParser parser = new NameParser(repo.getUrl());
+                RepoPagerActivity.startRepoPager(v.getContext(), parser);
+            }
         }
     }
 }

@@ -2,31 +2,35 @@ package com.fastaccess.ui.modules.repos.projects.list
 
 import android.os.Bundle
 import android.view.View
-import com.fastaccess.data.dao.ProjectsModel
+import com.apollographql.apollo.rx2.Rx2Apollo
 import com.fastaccess.data.dao.types.IssueState
 import com.fastaccess.helper.BundleConstant
-import com.fastaccess.provider.rest.RestProvider
+import com.fastaccess.provider.rest.ApolloProdivder
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity
-import java.util.*
+import github.RepoProjectsClosedQuery
+import github.RepoProjectsOpenQuery
+import io.reactivex.Observable
 
 /**
  * Created by kosh on 09/09/2017.
  */
 class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMvp.Presenter {
 
-    private val projects = ArrayList<ProjectsModel>()
+    private val projects = arrayListOf<RepoProjectsOpenQuery.Node>()
     private var page: Int = 0
     private var previousTotal: Int = 0
     private var lastPage = Integer.MAX_VALUE
     @com.evernote.android.state.State var login: String = ""
     @com.evernote.android.state.State var repoId: String = ""
+    var count: Int = 0
+    val pages = arrayListOf<String>()
 
-    override fun onItemClick(position: Int, v: View, item: ProjectsModel) {
-        ProjectPagerActivity.startActivity(v.context, login, repoId, item.id)
+    override fun onItemClick(position: Int, v: View, item: RepoProjectsOpenQuery.Node) {
+        ProjectPagerActivity.startActivity(v.context, login, repoId, item.number().toLong())
     }
 
-    override fun onItemLongClick(position: Int, v: View?, item: ProjectsModel?) {}
+    override fun onItemLongClick(position: Int, v: View?, item: RepoProjectsOpenQuery.Node?) {}
 
     override fun onFragmentCreate(bundle: Bundle?) {
         bundle?.let {
@@ -35,7 +39,7 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
         }
     }
 
-    override fun getProjects(): ArrayList<ProjectsModel> = projects
+    override fun getProjects(): ArrayList<RepoProjectsOpenQuery.Node> = projects
 
     override fun getCurrentPage(): Int = page
 
@@ -54,16 +58,80 @@ class RepoProjectPresenter : BasePresenter<RepoProjectMvp.View>(), RepoProjectMv
             lastPage = Integer.MAX_VALUE
             sendToView { view -> view.getLoadMore().reset() }
         }
-        if (page > lastPage || lastPage == 0) {
+        if (page > lastPage || lastPage == 0 || parameter == null) {
             sendToView({ it.hideProgress() })
             return false
         }
         currentPage = page
-        makeRestCall(RestProvider.getProjectsService(isEnterprise)
-                .getRepoProjects(login, repoId, parameter?.name, page), { response ->
-            lastPage = response.last
-            sendToView({ it.onNotifyAdapter(response.items, page) })
-        })
+        val apollo = ApolloProdivder.getApollo(isEnterprise)
+        if (parameter == IssueState.open) {
+            val query = RepoProjectsOpenQuery.builder()
+                    .name(repoId)
+                    .owner(login)
+                    .page(getPage())
+                    .build()
+            makeRestCall(Rx2Apollo.from(apollo.query(query))
+                    .flatMap {
+                        val list = arrayListOf<RepoProjectsOpenQuery.Node>()
+                        it.data()?.repository()?.let {
+                            it.projects().let {
+                                pages.clear()
+                                count = it.totalCount()
+                                it.edges()?.let {
+                                    pages.addAll(it.map { it.cursor() })
+                                }
+                                it.nodes()?.let {
+                                    list.addAll(it)
+                                }
+                            }
+                        }
+                        return@flatMap Observable.just(list)
+                    },
+                    {
+                        sendToView({ v ->
+                            v.onNotifyAdapter(it, page)
+                            if (page == 1) v.onChangeTotalCount(count)
+                        })
+                    })
+        } else {
+            val query = RepoProjectsClosedQuery.builder()
+                    .name(repoId)
+                    .owner(login)
+                    .page(getPage())
+                    .build()
+            makeRestCall(Rx2Apollo.from(apollo.query(query))
+                    .flatMap {
+                        val list = arrayListOf<RepoProjectsOpenQuery.Node>()
+                        it.data()?.repository()?.let {
+                            it.projects().let {
+                                pages.clear()
+                                count = it.totalCount()
+                                it.edges()?.let {
+                                    pages.addAll(it.map { it.cursor() })
+                                }
+                                it.nodes()?.let {
+                                    val toConvert = arrayListOf<RepoProjectsOpenQuery.Node>()
+                                    it.onEach {
+                                        val columns = RepoProjectsOpenQuery.Columns(it.columns().__typename(), it.columns().totalCount())
+                                        val node = RepoProjectsOpenQuery.Node(it.__typename(), it.name(), it.number(), it.body(),
+                                                it.createdAt(), it.id(), it.viewerCanUpdate(), columns)
+                                        toConvert.add(node)
+                                    }
+                                    list.addAll(toConvert)
+                                }
+                            }
+                        }
+                        return@flatMap Observable.just(list)
+                    },
+                    {
+                        sendToView({ v ->
+                            v.onNotifyAdapter(it, page)
+                            if (page == 1) v.onChangeTotalCount(count)
+                        })
+                    })
+        }
         return true
     }
+
+    private fun getPage(): String? = if (pages.isNotEmpty()) pages.last() else null
 }

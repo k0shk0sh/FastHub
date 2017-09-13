@@ -21,8 +21,8 @@ import com.fastaccess.ui.widgets.SpannableBuilder
 import com.fastaccess.ui.widgets.recyclerview.BaseRecyclerAdapter
 import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 import com.zzhoujay.markdown.style.CodeSpan
-import pr.PullRequestTimelineQuery
-import pr.type.StatusState
+import github.PullRequestTimelineQuery
+import github.type.StatusState
 
 /**
  * Created by kosh on 03/08/2017.
