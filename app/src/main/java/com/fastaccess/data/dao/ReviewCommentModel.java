@@ -30,6 +30,7 @@ import java.util.Date;
     private String htmlUrl;
     private String pullRequestUrl;
     private ReactionsModel reactions;
+    private String authorAssociation;
 
     public ReviewCommentModel() {}
 
@@ -161,6 +162,14 @@ import java.util.Date;
         this.reactions = reactions;
     }
 
+    public String getAuthorAssociation() {
+        return authorAssociation;
+    }
+
+    public void setAuthorAssociation(String authorAssociation) {
+        this.authorAssociation = authorAssociation;
+    }
+
     @Override public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -172,6 +181,14 @@ import java.util.Date;
 
     @Override public int hashCode() {
         return (int) (id ^ (id >>> 32));
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     @Override public int describeContents() { return 0; }
@@ -194,6 +211,7 @@ import java.util.Date;
         dest.writeString(this.htmlUrl);
         dest.writeString(this.pullRequestUrl);
         dest.writeParcelable(this.reactions, flags);
+        dest.writeString(this.authorAssociation);
     }
 
     protected ReviewCommentModel(Parcel in) {
@@ -216,6 +234,7 @@ import java.util.Date;
         this.htmlUrl = in.readString();
         this.pullRequestUrl = in.readString();
         this.reactions = in.readParcelable(ReactionsModel.class.getClassLoader());
+        this.authorAssociation = in.readString();
     }
 
     public static final Creator<ReviewCommentModel> CREATOR = new Creator<ReviewCommentModel>() {
@@ -223,12 +242,4 @@ import java.util.Date;
 
         @Override public ReviewCommentModel[] newArray(int size) {return new ReviewCommentModel[size];}
     };
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }

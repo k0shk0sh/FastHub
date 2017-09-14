@@ -2,7 +2,8 @@
 <manifest
     package="com.fastaccess"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
@@ -232,6 +233,31 @@
             android:configChanges="keyboard|orientation|screenSize"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"/>
+
+        <activity
+            android:name=".ui.modules.repos.git.EditRepoFileActivity"
+            android:configChanges="keyboard|orientation|screenSize"
+            android:label="@string/markdown"
+            android:windowSoftInputMode="adjustResize"/>
+
+        <activity
+            android:name=".ui.modules.repos.code.commit.history.FileCommitHistoryActivity"
+            android:label="@string/commits"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+
+        <activity
+            android:name="com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity"
+            android:label="@string/projects"
+            android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.modules.repos.RepoPagerActivity"/>
+        </activity>
+
 
         <activity
             android:name=".ui.modules.parser.LinksParserActivity"

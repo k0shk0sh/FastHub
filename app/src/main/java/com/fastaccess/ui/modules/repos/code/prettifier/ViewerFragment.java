@@ -66,8 +66,8 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
         return fragmentView;
     }
 
-    @Override public void onSetImageUrl(@NonNull String url) {
-        webView.loadImage(url);
+    @Override public void onSetImageUrl(@NonNull String url, boolean isSvg) {
+        webView.loadImage(url, isSvg);
         webView.setOnContentChangedListener(this);
         webView.setVisibility(View.VISIBLE);
         getActivity().invalidateOptionsMenu();
@@ -107,6 +107,10 @@ public class ViewerFragment extends BaseFragment<ViewerMvp.View, ViewerPresenter
 
     @Override public void openUrl(@NonNull String url) {
         ActivityHelper.startCustomTab(getActivity(), url);
+    }
+
+    @Override public void onViewAsCode() {
+        getPresenter().onLoadContentAsStream();
     }
 
     @Override public void showProgress(@StringRes int resId) {

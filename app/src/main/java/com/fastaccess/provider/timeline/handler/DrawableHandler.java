@@ -8,7 +8,6 @@ import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.timeline.handler.drawable.DrawableGetter;
 
 import net.nightwhistler.htmlspanner.TagNodeHandler;
-import net.nightwhistler.htmlspanner.spans.CenterSpan;
 
 import org.htmlcleaner.TagNode;
 
@@ -33,9 +32,7 @@ import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
         if (!InputHelper.isEmpty(src)) {
             builder.append("￼");
             if (isNull()) return;
-            CenterSpan centerSpan = new CenterSpan();
             DrawableGetter imageGetter = new DrawableGetter(textView);
-            builder.setSpan(centerSpan, start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
             builder.setSpan(new ImageSpan(imageGetter.getDrawable(src)), start, builder.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
             appendNewLine(builder);
         }

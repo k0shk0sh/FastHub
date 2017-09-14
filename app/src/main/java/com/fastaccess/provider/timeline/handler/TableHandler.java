@@ -144,12 +144,13 @@ public class TableHandler extends TagNodeHandler {
 
         int rowHeight = 0;
 
-        for (Spanned cell : row) {
-            StaticLayout layout = new StaticLayout(cell, textPaint, columnWidth
-                    - 2 * PADDING, Alignment.ALIGN_NORMAL, 1f, 0f, true);
-
-            if (layout.getHeight() > rowHeight) {
-                rowHeight = layout.getHeight();
+        if (columnWidth > 0) {
+            for (Spanned cell : row) {
+                StaticLayout layout = new StaticLayout(cell, textPaint, columnWidth
+                        - 2 * PADDING, Alignment.ALIGN_NORMAL, 1f, 0f, true);
+                if (layout.getHeight() > rowHeight) {
+                    rowHeight = layout.getHeight();
+                }
             }
         }
 

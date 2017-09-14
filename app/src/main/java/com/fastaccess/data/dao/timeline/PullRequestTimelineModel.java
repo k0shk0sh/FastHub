@@ -7,7 +7,7 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
-import pr.PullRequestTimelineQuery;
+import github.PullRequestTimelineQuery;
 
 /**
  * Created by kosh on 02/08/2017.

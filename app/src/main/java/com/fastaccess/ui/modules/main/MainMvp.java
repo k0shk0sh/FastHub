@@ -41,6 +41,8 @@ public interface MainMvp {
         void onOpenProfile();
 
         void onInvalidateNotification();
+
+        void onUserIsBlackListed();
     }
 
     interface Presenter extends BaseMvp.FAPresenter,

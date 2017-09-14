@@ -23,10 +23,10 @@ import com.fastaccess.data.dao.EditReviewCommentModel
 import com.fastaccess.data.dao.model.Comment
 import com.fastaccess.helper.*
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.markdown.CachedComments
 import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseActivity
 import com.fastaccess.ui.widgets.FontTextView
+import com.fastaccess.ui.widgets.dialog.MessageDialogView
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
 import java.util.*
@@ -51,21 +51,13 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     @BindView(R.id.parentView) lateinit var parentView: View
     @BindView(R.id.autocomplete) lateinit var mention: ListView
 
-    @State
-    @BundleConstant.ExtraType
-    var extraType: String? = null
-    @State
-    var itemId: String? = null
-    @State
-    var login: String? = null
-    @State
-    var issueNumber: Int = 0
-    @State
-    var commentId: Long = 0
-    @State
-    var sha: String? = null
-    @State
-    var reviewComment: EditReviewCommentModel? = null
+    @State @BundleConstant.ExtraType var extraType: String? = null
+    @State var itemId: String? = null
+    @State var login: String? = null
+    @State var issueNumber: Int = 0
+    @State var commentId: Long = 0
+    @State var sha: String? = null
+    @State var reviewComment: EditReviewCommentModel? = null
 
     override fun layout(): Int = R.layout.editor_layout
 
@@ -172,6 +164,15 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     override fun onBackPressed() {
         if (!InputHelper.isEmpty(editText)) {
             ViewHelper.hideKeyboard(editText)
+            MessageDialogView.newInstance(getString(R.string.close), getString(R.string.unsaved_data_warning),
+                    Bundler.start()
+                            .put("primary_extra", getString(R.string.discard))
+                            .put("secondary_extra", getString(R.string.cancel))
+                            .put(BundleConstant.EXTRA, true)
+                            .end())
+                    .show(supportFragmentManager, MessageDialogView.TAG)
+            return
+
         }
         super.onBackPressed()
     }
@@ -184,12 +185,7 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
     }
 
     override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
-        if (isLink) {
-            MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
-        } else {
-            editText.setText(String.format("%s\n", editText.text))
-            MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
-        }
+        markDownLayout.onAppendLink(title, link, isLink)
     }
 
     override fun getEditText(): EditText = editText
@@ -220,12 +216,12 @@ class EditorActivity : BaseActivity<EditorMvp.View, EditorPresenter>(), EditorMv
             commentId = bundle.getLong(BundleConstant.EXTRA_FOUR)
             val textToUpdate = bundle.getString(BundleConstant.EXTRA)
             if (!InputHelper.isEmpty(textToUpdate)) {
-                editText.setText(String.format("%s ", textToUpdate))
+                editText.setText(String.format("%s", textToUpdate))
                 editText.setSelection(InputHelper.toString(editText).length)
             }
-            if (bundle.getString("message", "").isEmpty())
+            if (bundle.getString("message", "").isBlank()) {
                 replyQuote.visibility = GONE
-            else {
+            } else {
                 MarkDownProvider.setMdText(quote, bundle.getString("message", ""))
             }
             participants = bundle.getStringArrayList("participants")

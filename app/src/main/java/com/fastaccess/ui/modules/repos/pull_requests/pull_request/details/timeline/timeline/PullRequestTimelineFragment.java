@@ -22,6 +22,7 @@ import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.provider.rest.loadmore.OnLoadMore;
+import com.fastaccess.provider.timeline.CommentsHelper;
 import com.fastaccess.ui.adapter.IssuesTimelineAdapter;
 import com.fastaccess.ui.adapter.viewholder.TimelineCommentsViewHolder;
 import com.fastaccess.ui.base.BaseFragment;
@@ -35,6 +36,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -190,7 +192,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA_FOUR, item.getId())
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.EDIT_ISSUE_COMMENT_EXTRA)
-//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
@@ -213,7 +215,7 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
                 .put(BundleConstant.EXTRA, item.getBody())
                 .put(BundleConstant.REVIEW_EXTRA, model)
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.EDIT_REVIEW_COMMENT_EXTRA)
-//                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
                 .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
                 .end());
         View view = getFromView();
@@ -235,33 +237,56 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     }
 
     @Override public void onReply(User user, String message) {
-        if (commentsCallback != null && user != null) {
-            commentsCallback.onTagUser(user.getLogin());
-        }
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        if (getPullRequest() == null) return;
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, getPullRequest().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
+                .put(BundleConstant.EXTRA, "@" + user.getLogin())
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.NEW_ISSUE_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
+                .put("message", message)
+                .end());
+        View view = getFromView();
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
     }
 
     @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
         getPresenter().onHandleComment(text, bundle);
     }
 
-    @Override public void onReplyOrCreateReview(@Nullable User user, @Nullable Bundle bundle) {
-        if (commentsCallback != null) {
-            if (user != null) commentsCallback.onTagUser(user.getLogin());
-            commentsCallback.onCreateComment("", bundle);
-        }
+    @Override public void onReplyOrCreateReview(@Nullable User user, @Nullable String message,
+                                                int groupPosition, int childPosition,
+                                                @NonNull EditReviewCommentModel model) {
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        if (getPullRequest() == null) return;
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, getPullRequest().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getPullRequest().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getPullRequest().getNumber())
+                .put(BundleConstant.EXTRA, user != null ? "@" + user.getLogin() : "")
+                .put(BundleConstant.REVIEW_EXTRA, model)
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.NEW_REVIEW_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
+                .put("message", message)
+                .end());
+        View view = getFromView();
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REVIEW_REQUEST_CODE);
     }
 
-    @Override public void onAddReviewComment(@Nullable ReviewCommentModel reviewCommentModel, @NonNull EditReviewCommentModel commentModel) {
+    @Override public void addComment(@NonNull TimelineModel timelineModel) {
         hideProgress();
-        if (reviewCommentModel != null) {
-            TimelineModel timelineModel = adapter.getItem(commentModel.getGroupPosition());
-            if (timelineModel.getGroupedReviewModel() != null && timelineModel.getGroupedReviewModel().getComments() != null) {
-                timelineModel.getGroupedReviewModel().getComments().add(reviewCommentModel);
-                adapter.notifyItemChanged(commentModel.getGroupPosition());
-            } else {
-                onRefresh();
-            }
-        }
+        adapter.addItem(timelineModel);
+        if (commentsCallback != null) commentsCallback.onClearEditText();
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        return CommentsHelper.getUsersByTimeline(adapter.getData());
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login, @NonNull String repoId,
@@ -283,16 +308,16 @@ public class PullRequestTimelineFragment extends BaseFragment<PullRequestTimelin
     @Override public void onRemoveReviewComment(int groupPosition, int commentPosition) {
         hideProgress();
         TimelineModel timelineModel = adapter.getItem(groupPosition);
-//        if (timelineModel != null && timelineModel.getGroupedReview() != null) {
-//            if (timelineModel.getGroupedReview().getComments() != null) {
-//                timelineModel.getGroupedReview().getComments().remove(commentPosition);
-//                if (timelineModel.getGroupedReview().getComments().isEmpty()) {
-//                    adapter.removeItem(groupPosition);
-//                } else {
-//                    adapter.notifyItemChanged(groupPosition);
-//                }
-//            }
-//        }
+        if (timelineModel != null && timelineModel.getGroupedReviewModel() != null) {
+            if (timelineModel.getGroupedReviewModel().getComments() != null) {
+                timelineModel.getGroupedReviewModel().getComments().remove(commentPosition);
+                if (timelineModel.getGroupedReviewModel().getComments().isEmpty()) {
+                    adapter.removeItem(groupPosition);
+                } else {
+                    adapter.notifyItemChanged(groupPosition);
+                }
+            }
+        }
     }
 
     @Override public void onSetHeader(@NonNull TimelineModel timelineModel) {

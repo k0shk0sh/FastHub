@@ -4,7 +4,7 @@
     <SwitchPreference
         android:defaultValue="false"
         android:icon="@drawable/ic_edit"
-        android:key="sent_via"
+        android:key="fasthub_signature"
         android:summary="@string/enable_signature_summary"
         android:title="@string/enable_signature"/>
 

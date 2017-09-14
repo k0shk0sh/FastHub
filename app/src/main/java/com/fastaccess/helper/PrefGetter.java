@@ -24,8 +24,8 @@ public class PrefGetter {
     public static final int LIGHT = 1;
     public static final int DARK = 2;
     public static final int AMLOD = 3;
-    public static final int MID_NIGHT_BLUE = 4;
-    public static final int BLUISH = 5;
+    public static final int BLUISH = 4;
+    public static final int MID_NIGHT_BLUE = 5;
 
     public static final int RED = 1;
     public static final int PINK = 2;
@@ -91,7 +91,7 @@ public class PrefGetter {
     private static final String OTP_CODE = "otp_code";
     private static final String ENTERPRISE_OTP_CODE = "enterprise_otp_code";
     private static final String APP_LANGUAGE = "app_language";
-    private static final String SENT_VIA = "sent_via";
+    private static final String SENT_VIA = "fasthub_signature";
     private static final String SENT_VIA_BOX = "sent_via_enabled";
     private static final String PROFILE_BACKGROUND_URL = "profile_background_url";
     private static final String AMLOD_THEME_ENABLED = "amlod_theme_enabled";
@@ -463,5 +463,9 @@ public class PrefGetter {
 
     public static boolean isGistDisabled() {
         return PrefHelper.getBoolean(DISABLE_AUTO_PLAY_GIF);
+    }
+
+    public static boolean isAppAnimationDisabled() {
+        return PrefHelper.getBoolean("app_animation");
     }
 }

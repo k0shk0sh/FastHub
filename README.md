@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub) [![Build status](https://ci.appveyor.com/api/projects/status/2yhxx7hu6hju24bk?svg=true)](https://ci.appveyor.com/project/k0shk0sh/fasthub)
-[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Discord](https://img.shields.io/badge/chat-discord-7289DA.svg)](https://discord.gg/V6afZWf)
+[![Build Status](https://travis-ci.org/k0shk0sh/FastHub.svg?branch=master)](https://travis-ci.org/k0shk0sh/FastHub)
+[![Releases](https://img.shields.io/github/release/k0shk0sh/FastHub.svg)](https://github.com/k0shk0sh/FastHub/releases/latest) [![Slack](https://img.shields.io/badge/slack-join-e01563.svg)](http://rebrand.ly/fasthub)
 
 ![Logo](/.github/assets/feature_graphic.png?raw=true "Logo")
 
@@ -18,10 +18,6 @@ Yet another **open-source** GitHub client app but unlike any other app, FastHub 
       alt="Direct apk download"
       height="80">](https://github.com/k0shk0sh/FastHub/releases/latest)
 
-#### Snapshots / Test builds
-
-We have configured snapshots of FastHub, which can be downloaded from [AppVeyor CI](https://ci.appveyor.com/project/k0shk0sh/fasthub/build/artifacts).
-
 # Features  
 - **App**
   - Three login types (Basic Auth), (Access Token) or via (OAuth)
@@ -37,6 +33,7 @@ We have configured snapshots of FastHub, which can be downloaded from [AppVeyor 
   - Wiki
 - **Repositories**
   - Browse & Read Wiki
+  - Edit, Create & Delete files (commit)
   - Search Repos
   - Browse and search Repos
   - See your public, private and forked Repos

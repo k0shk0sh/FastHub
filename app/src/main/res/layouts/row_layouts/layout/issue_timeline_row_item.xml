@@ -64,7 +64,6 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_gravity="top"
-                android:layout_marginEnd="@dimen/avatar_margin_end"
                 android:layout_marginStart="@dimen/avatar_margin"/>
 
             <com.fastaccess.ui.widgets.FontTextView
@@ -73,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="@dimen/spacing_xs_large"
                 android:ellipsize="end"
                 android:maxLines="5"
                 tools:text="For a divided large loaf, add some champaign and cinnamon."/>

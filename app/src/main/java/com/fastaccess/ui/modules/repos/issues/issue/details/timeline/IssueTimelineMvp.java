@@ -57,6 +57,8 @@ public interface IssueTimelineMvp {
         void onHandleComment(String text, @Nullable Bundle bundle);
 
         void addNewComment(@NonNull TimelineModel timelineModel);
+
+        @NonNull ArrayList<String> getNamesToTag();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,

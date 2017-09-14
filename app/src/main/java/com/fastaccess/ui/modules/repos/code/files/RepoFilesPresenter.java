@@ -2,14 +2,17 @@ package com.fastaccess.ui.modules.repos.code.files;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.CommitRequestModel;
 import com.fastaccess.data.dao.RepoPathsManager;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.helper.RxHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
+import com.fastaccess.ui.modules.repos.code.commit.history.FileCommitHistoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +36,13 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
         if (v.getId() != R.id.menu) {
             getView().onItemClicked(item);
         } else {
-            getView().onMenuClicked(item, v);
+            getView().onMenuClicked(position, item, v);
         }
     }
 
-    @Override public void onItemLongClick(int position, View v, RepoFile item) {}
+    @Override public void onItemLongClick(int position, View v, RepoFile item) {
+        FileCommitHistoryActivity.Companion.startActivity(v.getContext(), login, repoId, ref, item.getPath(), isEnterprise());
+    }
 
     @Override public void onError(@NonNull Throwable throwable) {
         onWorkOffline();
@@ -72,6 +77,7 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
                 .flatMap(response -> {
                     if (response != null && response.getItems() != null) {
                         return Observable.fromIterable(response.getItems())
+                                .filter(repoFile -> repoFile.getType() != null)
                                 .sorted((repoFile, repoFile2) -> repoFile2.getType().compareTo(repoFile.getType()));
                     }
                     return Observable.empty();
@@ -113,5 +119,12 @@ class RepoFilesPresenter extends BasePresenter<RepoFilesMvp.View> implements Rep
 
     @Nullable @Override public List<RepoFile> getCachedFiles(@NonNull String url, @NonNull String ref) {
         return pathsModel.getPaths(url, ref);
+    }
+
+    @Override public void onDeleteFile(@NonNull String message, @NonNull RepoFile item) {
+        CommitRequestModel body = new CommitRequestModel(message, null, item.getSha());
+        makeRestCall(RestProvider.getContentService(isEnterprise())
+                        .deleteFile(login, repoId, item.getPath(), ref, body),
+                gitCommitModel -> sendToView(SwipeRefreshLayout.OnRefreshListener::onRefresh));
     }
 }

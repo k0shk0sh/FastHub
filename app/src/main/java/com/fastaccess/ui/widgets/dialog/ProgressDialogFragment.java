@@ -10,6 +10,7 @@ import android.support.v4.app.DialogFragment;
 
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.Bundler;
+import com.fastaccess.helper.PrefGetter;
 
 /**
  * Created by Kosh on 09 Dec 2016, 5:18 PM
@@ -39,7 +40,8 @@ public class ProgressDialogFragment extends DialogFragment {
         progressDialog.setCancelable(isCancelable);
         setCancelable(isCancelable);
         if (getActivity() != null && !getActivity().isFinishing()) {
-            progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog, 200));
+            if (!PrefGetter.isAppAnimationDisabled())
+                progressDialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(progressDialog, 200));
         }
         return progressDialog;
     }

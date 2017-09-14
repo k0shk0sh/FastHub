@@ -50,7 +50,7 @@ public class App extends Application {
         FabricProvider.initFabric(this);
         RxBillingService.register(this);
         deleteDatabase("database.db");
-        getDataStore();//init requery before anything.
+        getDataStore();
         setupPreference();
         TypeFaceHelper.generateTypeface(this);
         NotificationSchedulerJobTask.scheduleJob(this);
@@ -72,7 +72,7 @@ public class App extends Application {
     public ReactiveEntityStore<Persistable> getDataStore() {
         if (dataStore == null) {
             EntityModel model = Models.DEFAULT;
-            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 11);
+            DatabaseSource source = new DatabaseSource(this, model, "FastHub-DB", 13);
             Configuration configuration = source.getConfiguration();
             if (BuildConfig.DEBUG) {
                 source.setTableCreationMode(TableCreationMode.CREATE_NOT_EXISTS);

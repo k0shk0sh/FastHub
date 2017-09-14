@@ -37,6 +37,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
     @com.evernote.android.state.State String repoId;
     @com.evernote.android.state.State String login;
     @com.evernote.android.state.State String sha;
+    @com.evernote.android.state.State boolean isCollaborator;
 
 
     @Override public int getCurrentPage() {
@@ -63,6 +64,11 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
         if (page > lastPage || lastPage == 0) {
             sendToView(CommitCommentsMvp.View::hideProgress);
             return false;
+        }
+        if (page == 1) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId,
+                    Login.getUser().getLogin())
+                    .doOnNext(booleanResponse -> isCollaborator = booleanResponse.code() == 204));
         }
         setCurrentPage(page);
         makeRestCall(RestProvider.getRepoService(isEnterprise()).getCommitComments(login, repoId, sha, page)
@@ -152,7 +158,7 @@ class CommitCommentsPresenter extends BasePresenter<CommitCommentsMvp.View> impl
                 PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                 popupMenu.inflate(R.menu.comments_menu);
                 String username = Login.getUser().getLogin();
-                boolean isOwner = CommentsHelper.isOwner(username, login, item.getUser().getLogin());
+                boolean isOwner = CommentsHelper.isOwner(username, login, item.getUser().getLogin()) || isCollaborator;
                 popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                 popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                 popupMenu.setOnMenuItemClickListener(item1 -> {

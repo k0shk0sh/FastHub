@@ -21,7 +21,6 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
-import com.fastaccess.provider.markdown.MarkDownProvider
 import com.fastaccess.ui.base.BaseDialogFragment
 import com.fastaccess.ui.modules.gists.create.dialog.AddGistMvp.AddGistFileListener
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
@@ -61,12 +60,7 @@ class AddGistBottomSheetDialog : BaseDialogFragment<AddGistMvp.View, AddGistPres
     override fun providePresenter(): AddGistPresenter = AddGistPresenter()
 
     override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
-        if (isLink) {
-            MarkDownProvider.addLink(editText, InputHelper.toString(title), InputHelper.toString(link))
-        } else {
-            editText.setText(String.format("%s\n", editText.text))
-            MarkDownProvider.addPhoto(editText, InputHelper.toString(title), InputHelper.toString(link))
-        }
+        markDownLayout.onAppendLink(title, link, isLink)
     }
 
     override fun fragmentLayout(): Int = R.layout.add_gist_file_layout

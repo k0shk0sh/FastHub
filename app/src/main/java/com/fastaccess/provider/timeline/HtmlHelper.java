@@ -47,13 +47,15 @@ public class HtmlHelper {
 
     public static void htmlIntoTextView(@NonNull TextView textView, @NonNull String html, int width) {
         registerClickEvent(textView);
-        if (textView.getMeasuredWidth() > 0) {
+        if (textView.getWidth() > 100) {
             textView.setText(initHtml(textView, getActualWidth(textView)).fromHtml(format(html).toString()));
         } else {
             textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
                 @Override public void onGlobalLayout() {
                     textView.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                    textView.setText(initHtml(textView, getActualWidth(textView)).fromHtml(format(html).toString()));
+                    textView.setText(initHtml(textView, textView.getWidth() > 100 ? getActualWidth(textView) : (width + convertDpToPx(textView
+                            .getContext(), 16)))
+                            .fromHtml(format(html).toString()));
                 }
             });
         }
@@ -92,7 +94,7 @@ public class HtmlHelper {
     }
 
     private static int getActualWidth(TextView textView) {
-        return textView.getMeasuredWidth() - (convertDpToPx(textView.getContext(), 16));
+        return textView.getWidth() - (convertDpToPx(textView.getContext(), 16));
     }
 
     private static HtmlSpanner initHtml(@NonNull TextView textView, int width) {

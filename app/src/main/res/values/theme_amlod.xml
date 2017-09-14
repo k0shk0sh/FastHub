@@ -18,7 +18,7 @@
         <item name="android:windowBackground">@color/amlodWindowBackground</item>
         <item name="colorPrimary">#040408</item>
         <item name="colorPrimaryDark">#010102</item>
-        <item name="colorAccent">#483078</item>
+        <item name="colorAccent">#2962FF</item>
         <item name="colorControlNormal">?colorAccent</item>
         <item name="actionModeBackground">?colorPrimary</item>
         <item name="windowActionModeOverlay">true</item>
@@ -150,7 +150,7 @@
         <item name="timeLineBackground">@style/TimeLineBackgroundAmlod</item>
         <item name="colorPrimary">#040408</item>
         <item name="colorPrimaryDark">#08080F</item>
-        <item name="colorAccent">#483078</item>
+        <item name="colorAccent">#2962FF</item>
         <item name="android:windowBackground">@color/amlodWindowBackground</item>
     </style>
 
@@ -218,7 +218,7 @@
         <item name="mal_popupOverlay">@style/Theme.Mal.Dark.PopupOverlay</item>
         <item name="colorPrimary">#040408</item>
         <item name="colorPrimaryDark">#08080F</item>
-        <item name="colorAccent">#483078</item>
+        <item name="colorAccent">#2962FF</item>
         <item name="mal_lightActionBar">false</item>
         <item name="mal_color_primary">#eee</item>
         <item name="mal_color_secondary">#ffe0e0e0</item>

@@ -64,6 +64,7 @@ public class DynamicRecyclerView extends RecyclerView {
         }
     }
 
+
     public void removeBottomDecoration() {
         if (bottomPaddingDecoration != null) {
             removeItemDecoration(bottomPaddingDecoration);

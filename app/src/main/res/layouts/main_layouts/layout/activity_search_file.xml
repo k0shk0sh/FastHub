@@ -55,7 +55,7 @@
                     android:contentDescription="@string/clear"
                     android:padding="@dimen/spacing_micro"
                     android:src="@drawable/ic_clear"
-                    android:visibility="invisible"/>
+                    android:visibility="gone"/>
 
                 <com.fastaccess.ui.widgets.ForegroundImageView
                     android:id="@+id/search"

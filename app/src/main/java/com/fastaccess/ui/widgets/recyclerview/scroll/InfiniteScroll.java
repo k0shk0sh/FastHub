@@ -48,6 +48,7 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
             newlyAdded = false;
             return;
         }
+        onScrolled(dy > 0);
         if (layoutManager == null) {
             initLayoutManager(recyclerView.getLayoutManager());
         }
@@ -102,6 +103,8 @@ public abstract class InfiniteScroll extends RecyclerView.OnScrollListener {
     }
 
     public abstract boolean onLoadMore(int page, int totalItemsCount);
+
+    public void onScrolled(boolean isUp) {}
 
 }
 

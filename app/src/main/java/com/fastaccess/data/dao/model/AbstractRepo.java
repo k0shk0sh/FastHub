@@ -120,6 +120,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
     int networkCount;
     String starredUser;
     String reposOwner;
+    @Nullable boolean hasProjects;
 
     public Disposable save(Repo entity) {
         return Single.create(e -> {
@@ -147,30 +148,32 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
 
     public static Disposable saveStarred(@NonNull List<Repo> models, @NonNull String starredUser) {
         return RxHelper.getSingle(Single.fromPublisher(s -> {
-            Login login = Login.getUser();
-            if (login != null) {
-                BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
-                if (login.getLogin().equalsIgnoreCase(starredUser)) {
-                    dataSource.delete(Repo.class)
-                            .where(STARRED_USER.eq(starredUser))
-                            .get()
-                            .value();
-                    if (!models.isEmpty()) {
-                        for (Repo repo : models) {
-                            dataSource.delete(Repo.class).where(Repo.ID.eq(repo.getId())).get().value();
-                            repo.setStarredUser(starredUser);
-                            dataSource.insert(repo);
+            try {
+                Login login = Login.getUser();
+                if (login != null) {
+                    BlockingEntityStore<Persistable> dataSource = App.getInstance().getDataStore().toBlocking();
+                    if (login.getLogin().equalsIgnoreCase(starredUser)) {
+                        dataSource.delete(Repo.class)
+                                .where(STARRED_USER.eq(starredUser))
+                                .get()
+                                .value();
+                        if (!models.isEmpty()) {
+                            for (Repo repo : models) {
+                                dataSource.delete(Repo.class).where(Repo.ID.eq(repo.getId())).get().value();
+                                repo.setStarredUser(starredUser);
+                                dataSource.insert(repo);
+                            }
                         }
+                    } else {
+                        dataSource.delete(Repo.class)
+                                .where(STARRED_USER.notEqual(login.getLogin())
+                                        .or(STATUSES_URL.isNull()))
+                                .get()
+                                .value();
                     }
-                } else {
-                    dataSource.delete(Repo.class)
-                            .where(STARRED_USER.notEqual(login.getLogin())
-                                    .or(STATUSES_URL.isNull()))
-                            .get()
-                            .value();
                 }
-            }
-            s.onNext("");
+                s.onNext("");
+            } catch (Exception ignored) {}
             s.onComplete();
         })).subscribe(o -> {/*donothing*/}, Throwable::printStackTrace);
     }
@@ -320,6 +323,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         dest.writeInt(this.networkCount);
         dest.writeString(this.starredUser);
         dest.writeString(this.reposOwner);
+        dest.writeByte(this.hasProjects ? (byte) 1 : (byte) 0);
     }
 
     protected AbstractRepo(Parcel in) {
@@ -404,6 +408,7 @@ import static com.fastaccess.data.dao.model.Repo.UPDATED_AT;
         this.networkCount = in.readInt();
         this.starredUser = in.readString();
         this.reposOwner = in.readString();
+        this.hasProjects = in.readByte() != 0;
     }
 
     public static final Creator<Repo> CREATOR = new Creator<Repo>() {

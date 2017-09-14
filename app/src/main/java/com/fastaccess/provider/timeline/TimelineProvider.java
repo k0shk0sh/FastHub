@@ -86,7 +86,8 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.assigned || event == IssueEventType.unassigned) {
                     spannableBuilder
                             .append(" ");
-                    if (user != null && user.getLogin().equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
+                    if ((user != null && issueEventModel.getAssignee() != null) && user.getLogin()
+                            .equalsIgnoreCase(issueEventModel.getAssignee().getLogin())) {
                         spannableBuilder
                                 .append(event == IssueEventType.assigned ? "self-assigned this" : "removed their assignment");
                     } else {
@@ -94,7 +95,7 @@ public class TimelineProvider {
                                 .append(event == IssueEventType.assigned ? "assigned" : "unassigned");
                         spannableBuilder
                                 .append(" ")
-                                .bold(issueEventModel.getAssignee().getLogin());
+                                .bold(issueEventModel.getAssignee() != null ? issueEventModel.getAssignee().getLogin() : "");
                     }
                 } else if (event == IssueEventType.locked || event == IssueEventType.unlocked) {
                     spannableBuilder
@@ -133,11 +134,13 @@ public class TimelineProvider {
                 } else if (event == IssueEventType.cross_referenced) {
                     SourceModel sourceModel = issueEventModel.getSource();
                     if (sourceModel != null) {
+                        String type = sourceModel.getType();
                         SpannableBuilder title = SpannableBuilder.builder();
-                        if (sourceModel.getIssue() != null) {
+                        if (sourceModel.getPullRequest() != null) {
+                            if (sourceModel.getIssue() != null) title.url("#" + sourceModel.getIssue().getNumber());
+                            type = "pull request";
+                        } else if (sourceModel.getIssue() != null) {
                             title.url("#" + sourceModel.getIssue().getNumber());
-                        } else if (sourceModel.getPullRequest() != null) {
-                            title.url("#" + sourceModel.getPullRequest().getNumber());
                         } else if (sourceModel.getCommit() != null) {
                             title.url(substring(sourceModel.getCommit().getSha()));
                         } else if (sourceModel.getRepository() != null) {
@@ -147,7 +150,7 @@ public class TimelineProvider {
                             spannableBuilder.append(" ")
                                     .append(thisString)
                                     .append(" in ")
-                                    .append(sourceModel.getType())
+                                    .append(type)
                                     .append(" ")
                                     .append(title);
                         }

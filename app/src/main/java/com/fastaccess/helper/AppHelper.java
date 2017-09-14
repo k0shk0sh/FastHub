@@ -34,7 +34,9 @@ public class AppHelper {
 
     public static void hideKeyboard(@NonNull View view) {
         InputMethodManager inputManager = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        if (inputManager != null) {
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     @Nullable public static Fragment getFragmentByTag(@NonNull FragmentManager fragmentManager, @NonNull String tag) {
@@ -47,28 +49,35 @@ public class AppHelper {
 
     public static void cancelNotification(@NonNull Context context, int id) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(id);
+        if (notificationManager != null) {
+            notificationManager.cancel(id);
+        }
     }
 
     public static void cancelAllNotifications(@NonNull Context context) {
-        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).cancelAll();
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        if (notificationManager != null) {
+            notificationManager.cancelAll();
+        }
     }
 
     public static void copyToClipboard(@NonNull Context context, @NonNull String uri) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText(context.getString(R.string.app_name), uri);
-        clipboard.setPrimaryClip(clip);
-        Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
+        if (clipboard != null) {
+            clipboard.setPrimaryClip(clip);
+            Toasty.success(App.getInstance(), context.getString(R.string.success_copied)).show();
+        }
     }
 
     public static boolean isNightMode(@NonNull Resources resources) {
         @PrefGetter.ThemeType int themeType = PrefGetter.getThemeType(resources);
-        return themeType == PrefGetter.DARK || themeType == PrefGetter.AMLOD || themeType == PrefGetter.BLUISH;
+        return themeType != PrefGetter.LIGHT;
     }
 
     public static String getFastHubIssueTemplate(boolean enterprise) {
         String brand = (!isEmulator()) ? Build.BRAND : "Android Emulator";
-        String model = (!isEmulator()) ? Build.MODEL : "Android Emulator";
+        String model = (!isEmulator()) ? DeviceNameGetter.getInstance().getDeviceName() : "Android Emulator";
         StringBuilder builder = new StringBuilder()
                 .append("**FastHub Version: ").append(BuildConfig.VERSION_NAME).append(enterprise ? " Enterprise**" : "**").append("  \n")
                 .append(!isInstalledFromPlaySore(App.getInstance()) ? "**APK Source: Unknown**  \n" : "")
@@ -86,7 +95,7 @@ public class AppHelper {
         builder.append("- **Model:** ").append(model).append("  \n")
                 .append("---").append("\n\n");
         if (!Locale.getDefault().getLanguage().equals(new Locale("en").getLanguage())) {
-            builder.append("<--")
+            builder.append("<!--")
                     .append(App.getInstance().getString(R.string.english_please))
                     .append("-->")
                     .append("\n");

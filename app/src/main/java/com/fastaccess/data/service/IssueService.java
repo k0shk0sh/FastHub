@@ -51,11 +51,11 @@ public interface IssueService {
     Observable<Pageable<IssueEvent>> getTimeline(@Path("owner") String owner, @Path("repo") String repo,
                                                  @Path("issue_number") int issue_number);
 
-    @GET("repos/{owner}/{repo}/issues/{issue_number}/timeline")
+    @GET("repos/{owner}/{repo}/issues/{issue_number}/timeline?per_page=100")
     @Headers("Accept: application/vnd.github.mockingbird-preview,application/vnd.github.VERSION.full+json," +
             " application/vnd.github.squirrel-girl-preview")
     Observable<IssuesPageable<JsonObject>> getTimeline(@Path("owner") String owner, @Path("repo") String repo,
-                                                   @Path("issue_number") int issue_number, @Query("page") int page);
+                                                       @Path("issue_number") int issue_number, @Query("page") int page);
 
     @POST("repos/{owner}/{repo}/issues")
     Observable<Issue> createIssue(@Path("owner") String owner, @Path("repo") String repo,

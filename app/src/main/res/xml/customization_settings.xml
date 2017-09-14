@@ -10,29 +10,37 @@
     <com.fastaccess.ui.widgets.ColorPickerPreference
         android:defaultValue="@string/blue_theme_mode"
         android:dialogTitle="@string/theme_color_title"
-        android:key="appColor"
         android:icon="@drawable/ic_color_lens"
+        android:key="appColor"
         android:summary="@string/theme_color_summary"
         android:title="@string/theme_color_title"/>
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="navigation_color"
         android:icon="@drawable/ic_minus"
+        android:key="navigation_color"
         android:summary="@string/colored_navbar_summary"
         android:title="@string/colored_navbar_title"/>
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="rect_avatar"
         android:icon="@drawable/ic_crop_square"
+        android:key="rect_avatar"
         android:summary="@string/rect_avatar_summary"
         android:title="@string/rect_avatar_title"/>
 
     <SwitchPreference
         android:defaultValue="false"
-        android:key="recylerViewAnimation"
+        android:icon="@drawable/ic_fullscreen"
+        android:key="app_animation"
+        android:summary="@string/app_animation_summary"
+        android:title="@string/app_animation_title"/>
+
+
+    <SwitchPreference
+        android:defaultValue="false"
         android:icon="@drawable/ic_filter"
+        android:key="recylerViewAnimation"
         android:summary="@string/recycler_view_animation_summary"
         android:title="@string/recycler_view_animation_title"/>
 

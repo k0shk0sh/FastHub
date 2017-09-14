@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.webkit.MimeTypeMap;
 
 import com.fastaccess.R;
 import com.fastaccess.data.dao.MarkdownModel;
@@ -68,6 +69,18 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
         }
     }
 
+    @Override public void onLoadContentAsStream() {
+        boolean isImage = MarkDownProvider.isImage(url) && !"svg".equalsIgnoreCase(MimeTypeMap.getFileExtensionFromUrl(url));
+        if (isImage || MarkDownProvider.isArchive(url)) {
+            return;
+        }
+        makeRestCall(RestProvider.getRepoService(isEnterprise()).getFileAsStream(url),
+                body -> {
+                    downloadedStream = body;
+                    sendToView(view -> view.onSetCode(body));
+                });
+    }
+
     @Override public String downloadedStream() {
         return downloadedStream;
     }
@@ -83,7 +96,7 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
                         if (fileModel != null) {
                             isImage = MarkDownProvider.isImage(fileModel.getFullUrl());
                             if (isImage) {
-                                sendToView(view -> view.onSetImageUrl(fileModel.getFullUrl()));
+                                sendToView(view -> view.onSetImageUrl(fileModel.getFullUrl(), false));
                             } else {
                                 downloadedStream = fileModel.getContent();
                                 isRepo = fileModel.isRepo();
@@ -104,7 +117,12 @@ class ViewerPresenter extends BasePresenter<ViewerMvp.View> implements ViewerMvp
     @Override public void onWorkOnline() {
         isImage = MarkDownProvider.isImage(url);
         if (isImage) {
-            sendToView(view -> view.onSetImageUrl(url));
+            if ("svg".equalsIgnoreCase(MimeTypeMap.getFileExtensionFromUrl(url))) {
+                makeRestCall(RestProvider.getRepoService(isEnterprise()).getFileAsStream(url),
+                        s -> sendToView(view -> view.onSetImageUrl(s, true)));
+                return;
+            }
+            sendToView(view -> view.onSetImageUrl(url, false));
             return;
         }
         Observable<String> streamObservable = MarkDownProvider.isMarkdown(url)

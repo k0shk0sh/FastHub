@@ -30,6 +30,7 @@ import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.Logger;
 import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.helper.ViewHelper;
 import com.fastaccess.provider.scheme.LinkParserHelper;
@@ -44,6 +45,7 @@ import com.fastaccess.ui.modules.repos.extras.assignees.AssigneesDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.labels.LabelsDialogFragment;
 import com.fastaccess.ui.modules.repos.extras.milestone.create.MilestoneDialogFragment;
 import com.fastaccess.ui.modules.repos.issues.create.CreateIssueActivity;
+import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.timeline.timeline.PullRequestTimelineFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.merge.MergePullRequestDialogFragment;
 import com.fastaccess.ui.modules.reviews.changes.ReviewChangesActivity;
@@ -110,7 +112,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                     .show(getSupportFragmentManager(), MessageDialogView.TAG);
     }
 
-
     @OnClick(R.id.submitReviews) void onSubmitReviews(View view) {
         addPrReview(view);
     }
@@ -170,9 +171,6 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
                 } else {
                     getPresenter().onRefresh();
                 }
-            } else if (requestCode == BundleConstant.REVIEW_REQUEST_CODE) {
-                hideAndClearReviews();
-                pager.setCurrentItem(0);
             }
         }
     }
@@ -292,7 +290,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         setTaskName(pullRequest.getRepoId() + " - " + pullRequest.getTitle());
         updateViews(pullRequest);
         if (update) {
-            PullRequestTimelineFragment issueDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+            PullRequestTimelineFragment issueDetailsView = getPullRequestTimelineFragment();
             if (issueDetailsView != null && getPresenter().getPullRequest() != null) {
                 issueDetailsView.onUpdateHeader();
             }
@@ -373,8 +371,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
 
     @Override public void onUpdateTimeline() {
         supportInvalidateOptionsMenu();
-        if (pager == null || pager.getAdapter() == null) return;
-        PullRequestTimelineFragment pullRequestDetailsView = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
+        PullRequestTimelineFragment pullRequestDetailsView = getPullRequestTimelineFragment();
         if (pullRequestDetailsView != null && getPresenter().getPullRequest() != null) {
             pullRequestDetailsView.onRefresh();
         }
@@ -393,6 +390,7 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         getPresenter().onAddComment(comment);
         AnimHelper.mimicFabVisibility(getPresenter().hasReviewComments(), prReviewHolder, null);
         reviewsCount.setText(String.format("%s", getPresenter().getCommitComment().size()));
+        Logger.e(reviewsCount.getText(), prReviewHolder.getVisibility());
     }
 
     @Override public void onMerge(@NonNull String msg, @NonNull String mergeMethod) {
@@ -426,12 +424,15 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
     }
 
     @Override public void onSendActionClicked(@NonNull String text, Bundle bundle) {
-        if (pager != null && pager.getAdapter() != null) {
-            PullRequestTimelineFragment fragment = (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
-            if (fragment != null) {
-                fragment.onHandleComment(text, bundle);
-            }
+        PullRequestTimelineFragment fragment = getPullRequestTimelineFragment();
+        if (fragment != null) {
+            fragment.onHandleComment(text, bundle);
         }
+    }
+
+    private PullRequestTimelineFragment getPullRequestTimelineFragment() {
+        if (pager == null || pager.getAdapter() == null) return null;
+        return (PullRequestTimelineFragment) pager.getAdapter().instantiateItem(pager, 0);
     }
 
     @Override public void onTagUser(@NonNull String username) {
@@ -442,10 +443,32 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         commentEditorFragment.onCreateComment(text, bundle);
     }
 
+    @Override public void onSuccessfullyReviewed() {
+        hideAndClearReviews();
+        pager.setCurrentItem(0);
+    }
+
+    @SuppressWarnings("ConstantConditions") @Override public void onClearEditText() {
+        if (commentEditorFragment != null && commentEditorFragment.commentText != null) commentEditorFragment.commentText.setText(null);
+    }
+
+    @Override public ArrayList<String> getNamesToTag() {
+        PullRequestTimelineFragment fragment = getPullRequestTimelineFragment();
+        if (fragment != null) {
+            return fragment.getNamesToTag();
+        }
+        return new ArrayList<>();
+    }
+
     protected void hideAndClearReviews() {
-        onUpdateTimeline();
         getPresenter().getCommitComment().clear();
         AnimHelper.mimicFabVisibility(false, prReviewHolder, null);
+        if (pager == null || pager.getAdapter() == null) return;
+        PullRequestFilesFragment fragment = (PullRequestFilesFragment) pager.getAdapter().instantiateItem(pager, 2);
+        if (fragment != null) {
+            fragment.onRefresh();
+        }
+
     }
 
     private void addPrReview(@NonNull View view) {
@@ -457,9 +480,11 @@ public class PullRequestPagerActivity extends BaseActivity<PullRequestPagerMvp.V
         requestModel.setComments(getPresenter().getCommitComment().isEmpty() ? null : getPresenter().getCommitComment());
         requestModel.setCommitId(pullRequest.getHead().getSha());
         boolean isAuthor = author != null && Login.getUser().getLogin().equalsIgnoreCase(author.getLogin());
-        ReviewChangesActivity.Companion.startForResult(this, view, requestModel, getPresenter().getRepoId(),
+
+        ReviewChangesActivity.Companion.startForResult(requestModel, getPresenter().getRepoId(),
                 getPresenter().getLogin(), pullRequest.getNumber(), isAuthor, isEnterprise(), pullRequest.isMerged()
-                        || pullRequest.getState() == IssueState.closed);
+                        || pullRequest.getState() == IssueState.closed)
+                .show(getSupportFragmentManager(), ReviewChangesActivity.class.getSimpleName());
     }
 
     private void initTabs(@NonNull PullRequest pullRequest) {

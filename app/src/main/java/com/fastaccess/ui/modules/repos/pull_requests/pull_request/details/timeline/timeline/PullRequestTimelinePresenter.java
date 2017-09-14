@@ -13,6 +13,7 @@ import com.fastaccess.R;
 import com.fastaccess.data.dao.CommentRequestModel;
 import com.fastaccess.data.dao.EditReviewCommentModel;
 import com.fastaccess.data.dao.GroupedReviewModel;
+import com.fastaccess.data.dao.PullRequestStatusModel;
 import com.fastaccess.data.dao.ReviewCommentModel;
 import com.fastaccess.data.dao.TimelineModel;
 import com.fastaccess.data.dao.model.Comment;
@@ -20,10 +21,10 @@ import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.PullRequest;
 import com.fastaccess.data.dao.timeline.GenericEvent;
 import com.fastaccess.data.dao.timeline.SourceModel;
+import com.fastaccess.data.dao.types.IssueEventType;
 import com.fastaccess.data.dao.types.ReactionTypes;
 import com.fastaccess.helper.ActivityHelper;
 import com.fastaccess.helper.BundleConstant;
-import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.InputHelper;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.provider.scheme.SchemeParser;
@@ -52,6 +53,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
     private int page;
     private int previousTotal;
     private int lastPage = Integer.MAX_VALUE;
+    @com.evernote.android.state.State boolean isCollaborator;
 
     @Override public void onItemClick(int position, View v, TimelineModel item) {
         if (getView() == null) return;
@@ -62,7 +64,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
-                    boolean isOwner = CommentsHelper.isOwner(username, pullRequest.getLogin(), item.getComment().getUser().getLogin());
+                    boolean isOwner = CommentsHelper.isOwner(username, pullRequest.getLogin(), item.getComment().getUser().getLogin())
+                            || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -95,17 +98,19 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 } else if (issueEventModel.getAssignee() != null) {
                     FilterIssuesActivity.startActivity(v, pullRequest.getLogin(), pullRequest.getRepoId(), false,
                             true, isEnterprise(), "assignee:\"" + issueEventModel.getAssignee().getLogin() + "\"");
+                } else if (issueEventModel.getEvent() == IssueEventType.committed) {
+                    SchemeParser.launchUri(v.getContext(), issueEventModel.getUrl().replace("git/", ""));
                 } else {
                     SourceModel sourceModel = issueEventModel.getSource();
                     if (sourceModel != null) {
                         if (sourceModel.getCommit() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getCommit().getUrl()));
-                        } else if (sourceModel.getIssue() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getIssue().getUrl()));
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getCommit().getUrl());
                         } else if (sourceModel.getPullRequest() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getPullRequest().getUrl()));
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getPullRequest().getUrl());
+                        } else if (sourceModel.getIssue() != null) {
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getIssue().getHtmlUrl());
                         } else if (sourceModel.getRepository() != null) {
-                            SchemeParser.launchUri(v.getContext(), Uri.parse(sourceModel.getRepository().getUrl()));
+                            SchemeParser.launchUri(v.getContext(), sourceModel.getRepository().getUrl());
                         }
                     }
                 }
@@ -115,7 +120,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     popupMenu.inflate(R.menu.comments_menu);
                     String username = Login.getUser().getLogin();
                     boolean isOwner = CommentsHelper.isOwner(username, item.getPullRequest().getLogin(),
-                            item.getPullRequest().getUser().getLogin());
+                            item.getPullRequest().getUser().getLogin()) || isCollaborator;
                     popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
                     popupMenu.setOnMenuItemClickListener(item1 -> {
                         if (getView() == null) return false;
@@ -139,15 +144,14 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             } else if (item.getType() == TimelineModel.GROUP) {
                 GroupedReviewModel reviewModel = item.getGroupedReviewModel();
                 if (v.getId() == R.id.addCommentPreview) {
-                    EditReviewCommentModel model = new EditReviewCommentModel();
-                    model.setCommentPosition(-1);
-                    model.setGroupPosition(position);
-                    model.setInReplyTo(reviewModel.getId());
-                    Bundle bundle = Bundler.start()
-                            .put(BundleConstant.REVIEW_EXTRA, model)
-                            .put(BundleConstant.EXTRA_TWO, position)
-                            .end();
-                    if (getView() != null) getView().onReplyOrCreateReview(null, bundle);
+                    if (getView() != null) {
+                        EditReviewCommentModel model = new EditReviewCommentModel();
+                        model.setCommentPosition(-1);
+                        model.setGroupPosition(position);
+                        model.setInReplyTo(reviewModel.getId());
+                        getView().onReplyOrCreateReview(null, null, position, -1, model);
+
+                    }
                 }
             }
         }
@@ -249,20 +253,8 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                 CommentRequestModel commentRequestModel = new CommentRequestModel();
                 commentRequestModel.setBody(text);
                 makeRestCall(RestProvider.getIssueService(isEnterprise()).createIssueComment(pullRequest.getLogin(), pullRequest.getRepoId(),
-                        pullRequest.getNumber(), commentRequestModel), comment -> {
-                });
-            } else {
-                EditReviewCommentModel commentModel = bundle.getParcelable(BundleConstant.REVIEW_EXTRA);
-                if (commentModel != null) {
-                    CommentRequestModel commentRequestModel = new CommentRequestModel();
-                    commentRequestModel.setBody(text);
-                    commentRequestModel.setInReplyTo(commentModel.getInReplyTo());
-                    makeRestCall(RestProvider.getReviewService(isEnterprise())
-                                    .submitComment(pullRequest.getLogin(), pullRequest.getRepoId(), pullRequest.getNumber(), commentRequestModel),
-                            reviewCommentModel -> {
-                                sendToView(view -> view.onAddReviewComment(reviewCommentModel, commentModel));
-                            });
-                }
+                        pullRequest.getNumber(), commentRequestModel), comment -> sendToView(view -> view.addComment(TimelineModel.constructComment
+                        (comment))));
             }
         }
     }
@@ -284,7 +276,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             PopupMenu popupMenu = new PopupMenu(v.getContext(), v);
             popupMenu.inflate(R.menu.comments_menu);
             String username = Login.getUser().getLogin();
-            boolean isOwner = CommentsHelper.isOwner(username, getView().getPullRequest().getLogin(), comment.getUser().getLogin());
+            boolean isOwner = CommentsHelper.isOwner(username, getView().getPullRequest().getLogin(), comment.getUser().getLogin()) || isCollaborator;
             popupMenu.getMenu().findItem(R.id.delete).setVisible(isOwner);
             popupMenu.getMenu().findItem(R.id.edit).setVisible(isOwner);
             popupMenu.setOnMenuItemClickListener(item1 -> {
@@ -296,12 +288,7 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
                     model.setGroupPosition(groupPosition);
                     model.setCommentPosition(commentPosition);
                     model.setInReplyTo(comment.getId());
-                    Bundle bundle = Bundler.start()
-                            .put(BundleConstant.REVIEW_EXTRA, model)
-                            .put(BundleConstant.EXTRA_TWO, groupPosition)
-                            .put(BundleConstant.EXTRA_THREE, commentPosition)
-                            .end();
-                    getView().onReplyOrCreateReview(comment.getUser(), bundle);
+                    getView().onReplyOrCreateReview(comment.getUser(), comment.getBodyHtml(), groupPosition, commentPosition, model);
                 } else if (item1.getItemId() == R.id.edit) {
                     getView().onEditReviewComment(comment, groupPosition, commentPosition);
                 } else if (item1.getItemId() == R.id.share) {
@@ -363,18 +350,26 @@ public class PullRequestTimelinePresenter extends BasePresenter<PullRequestTimel
             sendToView(PullRequestTimelineMvp.View::hideProgress);
             return false;
         }
+        if (page == 1) {
+            manageObservable(RestProvider.getRepoService(isEnterprise()).isCollaborator(login, repoId,
+                    Login.getUser().getLogin())
+                    .doOnNext(booleanResponse -> isCollaborator = booleanResponse.code() == 204));
+        }
         setCurrentPage(page);
         if (parameter.getHead() != null) {
-            Observable<List<TimelineModel>> observable = Observable.zip(RestProvider.getIssueService(isEnterprise())
-                            .getTimeline(login, repoId, number, page), RestProvider.getReviewService(isEnterprise())
-                            .getPrReviewComments(login, repoId, number),
-                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, parameter.getHead().getRef()),
+            Observable<List<TimelineModel>> observable = Observable.zip(
+                    RestProvider.getIssueService(isEnterprise()).getTimeline(login, repoId, number, page),
+                    RestProvider.getReviewService(isEnterprise()).getPrReviewComments(login, repoId, number),
+                    RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId, parameter.getHead().getSha())
+                            .onErrorReturn(throwable -> RestProvider.getPullRequestService(isEnterprise()).getPullStatus(login, repoId,
+                                    parameter.getBase().getSha()).blockingFirst(new PullRequestStatusModel())),
                     (response, comments, status) -> {
                         if (response != null) {
                             lastPage = response.getLast();
                             List<TimelineModel> models = TimelineConverter.INSTANCE.convert(response.getItems(), comments);
                             if (page == 1 && status != null) {
-                                models.add(0, new TimelineModel(status));
+                                status.setMergable(parameter.isMergeable());
+                                if (status.getState() != null) models.add(0, new TimelineModel(status));
                             }
                             return models;
                         } else {

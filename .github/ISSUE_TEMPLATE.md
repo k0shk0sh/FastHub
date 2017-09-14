@@ -4,8 +4,7 @@
    - Make sure that you are always on the latest version.
    - Search issue before submitting a new one.
    
-   Public Slack channel: https://rebrand.ly/fasthub-slack
-   Discord: https://discord.gg/V6afZWf
+   Public Slack channel: https://rebrand.ly/fasthub
    
    #### How to submit Issue/Feature Request to *FastHub*
    - Make sure the included template is filled ( using FastHub will fill them up automatically ). 

@@ -1,5 +1,6 @@
 package com.fastaccess.ui.modules.main.premium
 
+import android.animation.Animator
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -10,6 +11,7 @@ import android.widget.FrameLayout
 import butterknife.BindView
 import butterknife.OnClick
 import butterknife.OnEditorAction
+import com.airbnb.lottie.LottieAnimationView
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
 import com.fastaccess.helper.AppHelper
@@ -28,6 +30,8 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     @BindView(R.id.editText) lateinit var editText: EditText
     @BindView(R.id.viewGroup) lateinit var viewGroup: FrameLayout
     @BindView(R.id.progressLayout) lateinit var progressLayout: View
+    @BindView(R.id.successActivationView) lateinit var successActivationView: LottieAnimationView
+    @BindView(R.id.successActivationHolder) lateinit var successActivationHolder: View
 
     override fun layout(): Int = R.layout.pro_features_layout
 
@@ -87,11 +91,23 @@ class PremiumActivity : BaseActivity<PremiumMvp.View, PremiumPresenter>(), Premi
     }
 
     override fun onSuccessfullyActivated() {
-        FabricProvider.logPurchase(InputHelper.toString(editText))
-        PrefGetter.setProItems()
-        PrefGetter.setEnterpriseItem()
-        showMessage(R.string.success, R.string.success)
-        successResult()
+        hideProgress()
+        successActivationHolder.visibility = View.VISIBLE
+        successActivationView.addAnimatorListener(object : Animator.AnimatorListener {
+            override fun onAnimationRepeat(p0: Animator?) {}
+            override fun onAnimationEnd(p0: Animator?) {
+                FabricProvider.logPurchase(InputHelper.toString(editText))
+                PrefGetter.setProItems()
+                PrefGetter.setEnterpriseItem()
+                showMessage(R.string.success, R.string.success)
+                successResult()
+            }
+
+            override fun onAnimationCancel(p0: Animator?) {}
+
+            override fun onAnimationStart(p0: Animator?) {}
+        })
+        successActivationView.playAnimation()
     }
 
     override fun onNoMatch() {

@@ -32,6 +32,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -206,6 +207,7 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
         if (adapter != null) {
             adapter.addItem(TimelineModel.constructComment(newComment));
         }
+        if (commentsCallback != null) commentsCallback.onClearEditText();
     }
 
     @Override public void onDestroyView() {
@@ -290,5 +292,9 @@ public class CommitCommentsFragment extends BaseFragment<CommitCommentsMvp.View,
 
     @Override public void onHandleComment(@NonNull String text, @Nullable Bundle bundle) {
         getPresenter().onHandleComment(text, bundle);
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTags() {
+        return CommentsHelper.getUsersByTimeline(adapter.getData());
     }
 }

@@ -44,6 +44,8 @@ import com.fastaccess.ui.modules.repos.extras.branches.BranchesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoClosedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.RepoOpenedIssuesFragment;
 import com.fastaccess.ui.modules.repos.issues.issue.details.timeline.IssueTimelineFragment;
+import com.fastaccess.ui.modules.repos.projects.list.RepoProjectFragment;
+import com.fastaccess.ui.modules.repos.projects.columns.ProjectColumnFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.RepoPullRequestFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.commits.PullRequestCommitsFragment;
 import com.fastaccess.ui.modules.repos.pull_requests.pull_request.details.files.PullRequestFilesFragment;
@@ -152,7 +154,8 @@ import lombok.Setter;
     }
 
     @NonNull public static List<FragmentPagerAdapterModel> buildForGist(@NonNull Context context, @NonNull Gist gistsModel) {
-        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListFragment.newInstance(gistsModel.getFilesAsList(), false)),
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.files), GistFilesListFragment.newInstance(gistsModel
+                        .getFilesAsList(), false)),
                 new FragmentPagerAdapterModel(context.getString(R.string.comments), GistCommentsFragment.newInstance(gistsModel.getGistId())))
                 .collect(Collectors.toList());
     }
@@ -218,6 +221,7 @@ import lombok.Setter;
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeDark)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeAmlod)),
                 new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeBluish)))
+//                new FragmentPagerAdapterModel("", ThemeFragment.Companion.newInstance(R.style.ThemeMidnight)))
                 .collect(Collectors.toList());
     }
 
@@ -226,6 +230,22 @@ import lombok.Setter;
                         BranchesFragment.Companion.newInstance(login, repoId, true)),
                 new FragmentPagerAdapterModel(context.getString(R.string.tags),
                         BranchesFragment.Companion.newInstance(login, repoId, false)))
+                .toList();
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForRepoProjects(@NonNull Context context, @NonNull String repoId,
+                                                                                @NonNull String login) {
+        return Stream.of(new FragmentPagerAdapterModel(context.getString(R.string.open),
+                        RepoProjectFragment.Companion.newInstance(login, repoId, IssueState.open)),
+                new FragmentPagerAdapterModel(context.getString(R.string.closed),
+                        RepoProjectFragment.Companion.newInstance(login, repoId, IssueState.closed)))
+                .toList();
+    }
+
+    @NonNull public static List<FragmentPagerAdapterModel> buildForProjectColumns(@NonNull List<ProjectColumnModel> models, boolean isCollaborator) {
+        return Stream.of(models)
+                .map(projectColumnModel -> new FragmentPagerAdapterModel("", ProjectColumnFragment.Companion
+                        .newInstance(projectColumnModel, isCollaborator)))
                 .toList();
     }
 }

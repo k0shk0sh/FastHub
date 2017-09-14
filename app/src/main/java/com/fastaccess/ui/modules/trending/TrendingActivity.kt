@@ -190,18 +190,18 @@ class TrendingActivity : BaseActivity<TrendingMvp.View, TrendingPresenter>(), Tr
                 val bundle = intent.extras
                 if (bundle != null) {
                     val lang: String = bundle.getString(BundleConstant.EXTRA)
-                    val query: String = bundle.getString(BundleConstant.EXTRA_TWO)
+                    val query: String? = bundle.getString(BundleConstant.EXTRA_TWO)
                     if (!lang.isEmpty()) {
                         selectedTitle = lang
                     }
-                    if (!query.isEmpty()) {
-                        when (query.toLowerCase()) {
+                    if (query.isNullOrEmpty()) {
+                        daily.isSelected = true
+                    } else {
+                        when (query?.toLowerCase()) {
                             "daily" -> daily.isSelected = true
                             "weekly" -> weekly.isSelected = true
                             "monthly" -> monthly.isSelected = true
                         }
-                    } else {
-                        daily.isSelected = true
                     }
                 } else {
                     daily.isSelected = true

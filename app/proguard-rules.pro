@@ -71,6 +71,12 @@
 -keeppackagenames org.jsoup.nodes
 -keep class com.github.b3er.** { *; }
 -keep class com.memoizrlabs.** { *; }
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.AppGlideModule
+-keep public enum com.bumptech.glide.load.resource.bitmap.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
 
 -dontwarn com.github.b3er.**
 -dontwarn com.memoizrlabs.**
@@ -125,3 +131,4 @@
 -dontwarn com.octo.android.robospice.retrofit.RetrofitJackson**
 -dontwarn retrofit.appengine.UrlFetchClient
 -dontwarn icepick.**
+-dontwarn com.fastaccess.ui.modules.repos.**

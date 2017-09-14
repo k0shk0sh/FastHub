@@ -91,6 +91,7 @@
     <string name="pro_features_list" translatable="false"><![CDATA[Get the PRO features of FastHub which includes:\n
         • All PRO Themes\n
         • PR Reviews & On-line code comments (PRs & Commits)\n
+        • Commit from FastHub (Edit, Create & Delete files)\n
         • Support to other Merge methods (Rebase & Squash)\n
         • Login to unlimited accounts\n
         • Edit & Add unlimited Gist Files\n
@@ -122,7 +123,6 @@
     <string name="unlock" translatable="false">Unlock</string>
     <string name="unlock_everything" translatable="false">Unlock Everything</string>
     <string name="feeds" translatable="false">Feeds</string>
-
     <!-- END OF DO NOT COPY START COPYING FROM LINE BELOW -->
 
     <string name="in_progress">Loading, please wait…</string>
@@ -556,4 +556,13 @@
     <string name="edit_gist">Edit Gist</string>
     <string name="content">Content</string>
     <string name="expand">expand</string>
+    <string name="copy_sha">Copy SHA</string>
+    <string name="view_as_code">View as code</string>
+    <string name="app_animation_title">In App Animations</string>
+    <string name="app_animation_summary">Disable in App animations everywhere.</string>
+    <string name="can_not_merge_pr">This PR can\'t be merged now.</string>
+    <string name="projects">Projects</string>
+    <string name="no_projects">No Projects</string>
+    <string name="no_cards">No Cards</string>
+    <string name="card_added_by">Added by %s</string>
 </resources>

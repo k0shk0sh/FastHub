@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true"
@@ -17,8 +17,8 @@
         <android.support.design.widget.CoordinatorLayout
             android:id="@+id/coordinatorLayout"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/commentFragment">
 
             <android.support.design.widget.AppBarLayout
                 android:id="@+id/appbar"
@@ -96,9 +96,9 @@
             android:name="com.fastaccess.ui.modules.editor.comment.CommentEditorFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
             tools:layout="@layout/comment_box_layout"/>
-
-    </LinearLayout>
+    </RelativeLayout>
 
     <include layout="@layout/nav_menu_layout"/>
 

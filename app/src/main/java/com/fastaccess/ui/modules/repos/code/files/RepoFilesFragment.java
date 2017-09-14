@@ -1,5 +1,7 @@
 package com.fastaccess.ui.modules.repos.code.files;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.widget.PopupMenu;
 
 import com.fastaccess.R;
+import com.fastaccess.data.dao.EditRepoFileModel;
+import com.fastaccess.data.dao.model.Login;
 import com.fastaccess.data.dao.model.RepoFile;
 import com.fastaccess.data.dao.types.FilesType;
 import com.fastaccess.helper.ActivityHelper;
@@ -17,13 +21,17 @@ import com.fastaccess.helper.BundleConstant;
 import com.fastaccess.helper.Bundler;
 import com.fastaccess.helper.FileHelper;
 import com.fastaccess.helper.InputHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.provider.markdown.MarkDownProvider;
 import com.fastaccess.provider.rest.RestProvider;
 import com.fastaccess.ui.adapter.RepoFilesAdapter;
 import com.fastaccess.ui.base.BaseFragment;
 import com.fastaccess.ui.modules.code.CodeViewerActivity;
+import com.fastaccess.ui.modules.main.premium.PremiumActivity;
 import com.fastaccess.ui.modules.repos.code.files.activity.RepoFilesActivity;
 import com.fastaccess.ui.modules.repos.code.files.paths.RepoFilePathFragment;
+import com.fastaccess.ui.modules.repos.git.EditRepoFileActivity;
+import com.fastaccess.ui.modules.repos.git.delete.DeleteFileBottomSheetFragment;
 import com.fastaccess.ui.widgets.AppbarRefreshLayout;
 import com.fastaccess.ui.widgets.StateLayout;
 import com.fastaccess.ui.widgets.dialog.MessageDialogView;
@@ -43,6 +51,7 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
     @BindView(R.id.stateLayout) StateLayout stateLayout;
     @BindView(R.id.fastScroller) RecyclerViewFastScroller fastScroller;
     private RepoFilesAdapter adapter;
+    private Login login;
     private RepoFilePathFragment parentFragment;
 
     @Override public void onNotifyAdapter() {
@@ -76,12 +85,19 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         }
     }
 
-    @Override public void onMenuClicked(@NonNull RepoFile item, View v) {
+    @Override public void onMenuClicked(int position, @NonNull RepoFile item, View v) {
+        if (login == null) {
+            login = Login.getUser();
+        }
         if (refresh.isRefreshing()) return;
+        boolean isOwner = login.getLogin().equals(getPresenter().login);
         PopupMenu popup = new PopupMenu(getContext(), v);
         MenuInflater inflater = popup.getMenuInflater();
         inflater.inflate(R.menu.download_share_menu, popup.getMenu());
         popup.getMenu().findItem(R.id.download).setVisible(item.getType() == FilesType.file);
+        boolean canOpen = canOpen(item);
+        popup.getMenu().findItem(R.id.editFile).setVisible(isOwner && item.getType() == FilesType.file && canOpen);
+        popup.getMenu().findItem(R.id.deleteFile).setVisible(isOwner && item.getType() == FilesType.file);
         popup.setOnMenuItemClickListener(item1 -> {
             switch (item1.getItemId()) {
                 case R.id.share:
@@ -94,6 +110,25 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
                     break;
                 case R.id.copy:
                     AppHelper.copyToClipboard(v.getContext(), !InputHelper.isEmpty(item.getHtmlUrl()) ? item.getHtmlUrl() : item.getUrl());
+                    break;
+                case R.id.editFile:
+                    if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+                        if (canOpen) {
+                            EditRepoFileModel fileModel = new EditRepoFileModel(getPresenter().login, getPresenter().repoId,
+                                    item.getPath(), getPresenter().ref, item.getSha(), item.getDownloadUrl(), item.getName(), true);
+                            EditRepoFileActivity.Companion.startForResult(this, fileModel, isEnterprise());
+                        }
+                    } else {
+                        PremiumActivity.Companion.startActivity(getContext());
+                    }
+                    break;
+                case R.id.deleteFile:
+                    if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+                        DeleteFileBottomSheetFragment.Companion.newInstance(position, item.getName())
+                                .show(getChildFragmentManager(), DeleteFileBottomSheetFragment.class.getSimpleName());
+                    } else {
+                        PremiumActivity.Companion.startActivity(getContext());
+                    }
                     break;
             }
             return true;
@@ -171,6 +206,17 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
         }
     }
 
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == EditRepoFileActivity.Companion.getEDIT_RQ()) {
+            onRefresh();
+        }
+    }
+
+    @Override public void onDelete(@NonNull String message, int position) {
+        getPresenter().onDeleteFile(message, adapter.getItem(position));
+    }
+
     private void showReload() {
         hideProgress();
         stateLayout.showReload(adapter.getItemCount());
@@ -181,5 +227,10 @@ public class RepoFilesFragment extends BaseFragment<RepoFilesMvp.View, RepoFiles
             parentFragment = (RepoFilePathFragment) getParentFragment();
         }
         return parentFragment;
+    }
+
+    private boolean canOpen(@NonNull RepoFile item) {
+        return item.getDownloadUrl() != null && !MarkDownProvider.isImage(item.getDownloadUrl())
+                && !MarkDownProvider.isArchive(item.getDownloadUrl());
     }
 }

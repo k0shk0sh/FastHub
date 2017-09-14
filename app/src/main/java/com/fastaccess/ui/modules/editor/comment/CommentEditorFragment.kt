@@ -18,30 +18,36 @@ import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.InputHelper
 import com.fastaccess.helper.ViewHelper
 import com.fastaccess.provider.emoji.Emoji
+import com.fastaccess.provider.timeline.CommentsHelper
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.base.mvp.BaseMvp
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter
 import com.fastaccess.ui.modules.editor.EditorActivity
 import com.fastaccess.ui.modules.editor.emoji.EmojiMvp
+import com.fastaccess.ui.modules.editor.popup.EditorLinkImageMvp
 import com.fastaccess.ui.widgets.markdown.MarkDownLayout
 import com.fastaccess.ui.widgets.markdown.MarkdownEditText
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import net.yslibrary.android.keyboardvisibilityevent.Unregistrar
 
 /**
  * Created by kosh on 21/08/2017.
  */
 class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp.FAView>>(), MarkDownLayout.MarkdownListener,
-        EmojiMvp.EmojiCallback {
+        EmojiMvp.EmojiCallback, EditorLinkImageMvp.EditorLinkCallback {
 
     @BindView(R.id.commentBox) lateinit var commentBox: View
     @BindView(R.id.markdDownLayout) lateinit var markdDownLayout: MarkDownLayout
     @BindView(R.id.commentText) lateinit var commentText: MarkdownEditText
     @BindView(R.id.markdownBtnHolder) lateinit var markdownBtnHolder: View
+    @BindView(R.id.sendComment) lateinit var sendComment: View
+    @BindView(R.id.toggleButtons) lateinit var toggleButtons: View
     private var commentListener: CommentListener? = null
+    private var keyboardListener: Unregistrar? = null
 
     @OnClick(R.id.sendComment) internal fun onComment() {
         if (!InputHelper.isEmpty(getEditText())) {
             commentListener?.onSendActionClicked(InputHelper.toString(getEditText()), arguments?.getBundle(BundleConstant.ITEM))
-            getEditText().setText("")
             ViewHelper.hideKeyboard(getEditText())
             arguments = null
         }
@@ -52,6 +58,7 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         intent.putExtras(Bundler.start()
                 .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.FOR_RESULT_EXTRA)
                 .put(BundleConstant.EXTRA, getEditText().text.toString())
+                .putStringArrayList("participants", commentListener?.getNamesToTag())
                 .end())
         startActivityForResult(intent, BundleConstant.REQUEST_CODE)
     }
@@ -81,10 +88,30 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
     override fun fragmentLayout(): Int = R.layout.comment_box_layout
 
     override fun onFragmentCreated(view: View, savedInstanceState: Bundle?) {
+        arguments?.let {
+            val hideSendButton = it.getBoolean(BundleConstant.YES_NO_EXTRA)
+            if (hideSendButton) {
+                sendComment.visibility = View.GONE
+            }
+        }
         markdDownLayout.markdownListener = this
         if (savedInstanceState == null) {
             commentText.setText(arguments?.getBundle(BundleConstant.ITEM)?.getString(BundleConstant.EXTRA))
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        keyboardListener = KeyboardVisibilityEvent.registerEventListener(activity, {
+            TransitionManager.beginDelayedTransition((view as ViewGroup?)!!)
+            toggleButtons.isActivated = it
+            markdownBtnHolder.visibility = if (!it) View.GONE else View.VISIBLE
+        })
+    }
+
+    override fun onStop() {
+        keyboardListener?.unregister()
+        super.onStop()
     }
 
     override fun getEditText(): EditText = commentText
@@ -113,12 +140,6 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
         getEditText().setSelection(getEditText().text.length)
     }
 
-    interface CommentListener {
-        fun onCreateComment(text: String, bundle: Bundle?) {}
-        fun onSendActionClicked(text: String, bundle: Bundle?)
-        fun onTagUser(username: String)
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
@@ -128,6 +149,18 @@ class CommentEditorFragment : BaseFragment<BaseMvp.FAView, BasePresenter<BaseMvp
                 getEditText().setSelection(getEditText().text.length)
             }
         }
+    }
+
+    override fun onAppendLink(title: String?, link: String?, isLink: Boolean) {
+        markdDownLayout.onAppendLink(title, link, isLink)
+    }
+
+    interface CommentListener {
+        fun onCreateComment(text: String, bundle: Bundle?) {}
+        fun onSendActionClicked(text: String, bundle: Bundle?)
+        fun onTagUser(username: String)
+        fun onClearEditText()
+        fun getNamesToTag(): ArrayList<String>?
     }
 
     companion object {

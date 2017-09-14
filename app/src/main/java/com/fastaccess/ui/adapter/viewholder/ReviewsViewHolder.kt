@@ -21,7 +21,8 @@ import com.fastaccess.ui.widgets.recyclerview.BaseViewHolder
 
 class ReviewsViewHolder private constructor(itemView: View,
                                             adapter: BaseRecyclerAdapter<*, *, *>?,
-                                            val viewGroup: ViewGroup) : BaseViewHolder<TimelineModel>(itemView, adapter) {
+                                            val viewGroup: ViewGroup)
+    : BaseViewHolder<TimelineModel>(itemView, adapter) {
 
     @BindView(R.id.stateImage) lateinit var stateImage: ForegroundImageView
     @BindView(R.id.avatarLayout) lateinit var avatarLayout: AvatarLayout
@@ -42,7 +43,8 @@ class ReviewsViewHolder private constructor(itemView: View,
                 it.user.login
             } else {
                 ""
-            }).append(" ${if (model.event == IssueEventType.reviewed) "reviewed" else "requested changes"} ").append(ParseDateFormat.getTimeAgo(it.submittedAt))
+            }).append(" ${if (model.event == IssueEventType.reviewed) "reviewed" else "requested changes"} ")
+                    .append(ParseDateFormat.getTimeAgo(it.submittedAt))
             if (!it.bodyHtml.isNullOrBlank()) {
                 HtmlHelper.htmlIntoTextView(body, it.bodyHtml, viewGroup.width)
                 body.visibility = View.VISIBLE

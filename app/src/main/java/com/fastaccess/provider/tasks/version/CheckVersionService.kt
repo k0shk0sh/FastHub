@@ -3,6 +3,7 @@ package com.fastaccess.provider.tasks.version
 import android.app.IntentService
 import android.content.Intent
 import android.widget.Toast
+import com.fastaccess.App
 import com.fastaccess.BuildConfig
 import com.fastaccess.R
 import com.fastaccess.data.dao.model.Release
@@ -19,7 +20,7 @@ class CheckVersionService : IntentService("CheckVersionService") {
                 .getLatestRelease("k0shk0sh", "FastHub"))
                 .subscribe({ t: Release? ->
                     t?.let {
-                        Toast.makeText(this, if (BuildConfig.VERSION_NAME.contains(it.tagName))
+                        Toast.makeText(App.getInstance(), if (BuildConfig.VERSION_NAME.contains(it.tagName))
                             R.string.up_to_date else R.string.new_version, Toast.LENGTH_LONG).show()
                     }
                 }, { throwable -> throwable.printStackTrace() })

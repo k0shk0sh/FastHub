@@ -71,9 +71,12 @@ public interface PullRequestTimelineMvp {
 
         void onHandleComment(String text, @Nullable Bundle bundle);
 
-        void onReplyOrCreateReview(@Nullable User user, @Nullable Bundle bundle);
+        void onReplyOrCreateReview(@Nullable User user, @Nullable String message, int groupPosition, int childPosition,
+                                   @NonNull EditReviewCommentModel model);
 
-        void onAddReviewComment(@Nullable ReviewCommentModel reviewCommentModel, @NonNull EditReviewCommentModel commentModel);
+        void addComment(@NonNull TimelineModel timelineModel);
+
+        @NonNull ArrayList<String> getNamesToTag();
     }
 
     interface Presenter extends BaseMvp.FAPresenter, BaseViewHolder.OnItemClickListener<TimelineModel>,

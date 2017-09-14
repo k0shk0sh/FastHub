@@ -19,6 +19,7 @@ import com.evernote.android.state.StateSaver;
 import com.fastaccess.R;
 import com.fastaccess.helper.AnimHelper;
 import com.fastaccess.helper.AppHelper;
+import com.fastaccess.helper.PrefGetter;
 import com.fastaccess.ui.base.mvp.BaseMvp;
 import com.fastaccess.ui.base.mvp.presenter.BasePresenter;
 
@@ -70,12 +71,17 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void dismiss() {
-        AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime), new AnimatorListenerAdapter() {
-            @Override public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                BaseDialogFragment.super.dismiss();
-            }
-        });
+        if (PrefGetter.isAppAnimationDisabled()) {
+            super.dismiss();
+        } else {
+            AnimHelper.dismissDialog(this, getResources().getInteger(android.R.integer.config_shortAnimTime),
+                    new AnimatorListenerAdapter() {
+                        @Override public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+                            BaseDialogFragment.super.dismiss();
+                        }
+                    });
+        }
     }
 
     @SuppressLint("RestrictedApi") @Nullable @Override
@@ -92,8 +98,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     @NonNull @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Dialog dialog = super.onCreateDialog(savedInstanceState);
-        dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
-                getResources().getInteger(android.R.integer.config_longAnimTime)));
+        if (!PrefGetter.isAppAnimationDisabled()) {
+            dialog.setOnShowListener(dialogInterface -> AnimHelper.revealDialog(dialog,
+                    getResources().getInteger(android.R.integer.config_longAnimTime)));
+        }
         return dialog;
     }
 
@@ -134,10 +142,6 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
 
     }
 
-    @Override public void onDialogDismissed() {
-
-    }
-
     @Override public void onRequireLogin() {
         callback.onRequireLogin();
     }
@@ -160,6 +164,10 @@ public abstract class BaseDialogFragment<V extends BaseMvp.FAView, P extends Bas
     }
 
     @Override public void onScrollTop(int index) {}
+
+    @Override public void onDialogDismissed() {
+
+    }
 
     @Override public boolean isEnterprise() {
         return callback != null && callback.isEnterprise();

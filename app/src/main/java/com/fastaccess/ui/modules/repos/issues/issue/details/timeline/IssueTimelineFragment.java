@@ -36,6 +36,7 @@ import com.fastaccess.ui.widgets.dialog.MessageDialogView;
 import com.fastaccess.ui.widgets.recyclerview.DynamicRecyclerView;
 import com.fastaccess.ui.widgets.recyclerview.scroll.RecyclerViewFastScroller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -217,7 +218,22 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     }
 
     @Override public void onReply(User user, String message) {
-        onTagUser(user);
+        if (getIssue() == null) return;
+        Intent intent = new Intent(getContext(), EditorActivity.class);
+        intent.putExtras(Bundler
+                .start()
+                .put(BundleConstant.ID, getIssue().getRepoId())
+                .put(BundleConstant.EXTRA_TWO, getIssue().getLogin())
+                .put(BundleConstant.EXTRA_THREE, getIssue().getNumber())
+                .put(BundleConstant.EXTRA, "@" + user.getLogin())
+                .put(BundleConstant.EXTRA_TYPE, BundleConstant.ExtraType.NEW_ISSUE_COMMENT_EXTRA)
+                .putStringArrayList("participants", CommentsHelper.getUsersByTimeline(adapter.getData()))
+                .put(BundleConstant.IS_ENTERPRISE, isEnterprise())
+                .put("message", message)
+                .end());
+        View view = getActivity() != null && getActivity().findViewById(R.id.fab) != null ? getActivity().findViewById(R.id.fab) : recycler;
+        ActivityHelper.startReveal(this, intent, view, BundleConstant.REQUEST_CODE);
+
     }
 
     @Override public void showReactionsPopup(@NonNull ReactionTypes type, @NonNull String login,
@@ -252,6 +268,11 @@ public class IssueTimelineFragment extends BaseFragment<IssueTimelineMvp.View, I
     @Override public void addNewComment(@NonNull TimelineModel timelineModel) {
         hideProgress();
         adapter.addItem(timelineModel);
+        if (commentsCallback != null) commentsCallback.onClearEditText();
+    }
+
+    @NonNull @Override public ArrayList<String> getNamesToTag() {
+        return CommentsHelper.getUsersByTimeline(adapter.getData());
     }
 
     @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {

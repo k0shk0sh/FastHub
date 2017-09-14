@@ -11,7 +11,6 @@ import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import butterknife.BindView
 import butterknife.ButterKnife
 import butterknife.Unbinder
@@ -19,6 +18,7 @@ import com.fastaccess.R
 import com.fastaccess.helper.*
 import com.fastaccess.ui.base.BaseFragment
 import com.fastaccess.ui.modules.main.donation.DonateActivity
+import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.widgets.SpannableBuilder
 
 /**
@@ -113,6 +113,7 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
             R.style.ThemeDark -> setTheme(getString(R.string.dark_theme_mode))
             R.style.ThemeAmlod -> applyAmlodTheme()
             R.style.ThemeBluish -> applyBluishTheme()
+            R.style.ThemeMidnight -> applyMidnightTheme()
         }
     }
 
@@ -131,6 +132,15 @@ class ThemeFragment : BaseFragment<ThemeFragmentMvp.View, ThemeFragmentPresenter
             setTheme(getString(R.string.amlod_theme_mode))
         } else {
             DonateActivity.start(this, getString(R.string.amlod_theme_purchase))
+        }
+    }
+
+    private fun applyMidnightTheme() {
+        if (!isGoogleSupported()) return
+        if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+            setTheme(getString(R.string.mid_night_blue_theme_mode))
+        } else {
+            PremiumActivity.startActivity(context)
         }
     }
 
