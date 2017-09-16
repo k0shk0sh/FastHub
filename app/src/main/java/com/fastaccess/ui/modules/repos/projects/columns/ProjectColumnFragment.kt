@@ -13,9 +13,11 @@ import com.fastaccess.data.dao.ProjectColumnModel
 import com.fastaccess.helper.BundleConstant
 import com.fastaccess.helper.Bundler
 import com.fastaccess.helper.Logger
+import com.fastaccess.helper.PrefGetter
 import com.fastaccess.provider.rest.loadmore.OnLoadMore
 import com.fastaccess.ui.adapter.ColumnCardAdapter
 import com.fastaccess.ui.base.BaseFragment
+import com.fastaccess.ui.modules.main.premium.PremiumActivity
 import com.fastaccess.ui.modules.repos.projects.crud.ProjectCurdDialogFragment
 import com.fastaccess.ui.modules.repos.projects.details.ProjectPagerMvp
 import com.fastaccess.ui.widgets.FontTextView
@@ -56,19 +58,25 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
     }
 
     @OnClick(R.id.editColumn) fun onEditColumn() {
-        ProjectCurdDialogFragment.newInstance(getColumn().name)
-                .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+        if (canEdit()) {
+            ProjectCurdDialogFragment.newInstance(getColumn().name)
+                    .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+        }
     }
 
     @OnClick(R.id.deleteColumn) fun onDeleteColumn() {
-        MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
-                false, MessageDialogView.getYesNoBundle(context))
-                .show(childFragmentManager, MessageDialogView.TAG)
+        if (canEdit()) {
+            MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
+                    false, MessageDialogView.getYesNoBundle(context))
+                    .show(childFragmentManager, MessageDialogView.TAG)
+        }
     }
 
     @OnClick(R.id.addCard) fun onAddCard() {
-        ProjectCurdDialogFragment.newInstance(isCard = true)
-                .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+        if (canEdit()) {
+            ProjectCurdDialogFragment.newInstance(isCard = true)
+                    .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+        }
     }
 
     override fun onNotifyAdapter(items: List<ProjectCardModel>?, page: Int) {
@@ -189,15 +197,19 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
     override fun isOwner(): Boolean = arguments.getBoolean(BundleConstant.EXTRA)
 
     override fun onDeleteCard(position: Int) {
-        val yesNoBundle = MessageDialogView.getYesNoBundle(context)
-        yesNoBundle.putInt(BundleConstant.ID, position)
-        MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
-                false, yesNoBundle).show(childFragmentManager, MessageDialogView.TAG)
+        if (canEdit()) {
+            val yesNoBundle = MessageDialogView.getYesNoBundle(context)
+            yesNoBundle.putInt(BundleConstant.ID, position)
+            MessageDialogView.newInstance(getString(R.string.delete), getString(R.string.confirm_message),
+                    false, yesNoBundle).show(childFragmentManager, MessageDialogView.TAG)
+        }
     }
 
     override fun onEditCard(note: String?, position: Int) {
-        ProjectCurdDialogFragment.newInstance(note, true, position)
-                .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+        if (canEdit()) {
+            ProjectCurdDialogFragment.newInstance(note, true, position)
+                    .show(childFragmentManager, ProjectCurdDialogFragment.TAG)
+        }
     }
 
     override fun addCard(it: ProjectCardModel) {
@@ -221,6 +233,13 @@ class ProjectColumnFragment : BaseFragment<ProjectColumnMvp.View, ProjectColumnP
     }
 
     private fun getColumn(): ProjectColumnModel = arguments.getParcelable(BundleConstant.ITEM)
+
+    private fun canEdit(): Boolean = if (PrefGetter.isProEnabled() || PrefGetter.isAllFeaturesUnlocked()) {
+        true
+    } else {
+        PremiumActivity.startActivity(context)
+        false
+    }
 
     companion object {
         fun newInstance(column: ProjectColumnModel, isCollaborator: Boolean): ProjectColumnFragment {
