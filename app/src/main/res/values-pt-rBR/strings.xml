@@ -425,7 +425,7 @@
     <string name="edit_gist">Editar Gist</string>
     <string name="content">Conteúdo</string>
     <string name="expand">expandir</string>
-    <string name="copy_sha">Copiar SHA</string>
+    <string name="copy_sha">Copiar SHA-1</string>
     <string name="view_as_code">Ver como código</string>
     <string name="app_animation_title">Animações no App</string>
     <string name="app_animation_summary">Desabilitar todas as animações no App.</string>

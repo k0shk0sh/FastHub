@@ -422,7 +422,7 @@
     <string name="edit_gist">Gist 수정</string>
     <string name="content">내용</string>
     <string name="expand">확장</string>
-    <string name="copy_sha">SHA 복사</string>
+    <string name="copy_sha">SHA-1 복사</string>
     <string name="view_as_code">코드로 보기</string>
     <string name="app_animation_title">앱 애니메이션</string>
     <string name="app_animation_summary">모든 앱 애니메이션을 비활성화합니다</string>
