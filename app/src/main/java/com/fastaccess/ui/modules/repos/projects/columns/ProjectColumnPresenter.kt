@@ -32,8 +32,8 @@ class ProjectColumnPresenter : BasePresenter<ProjectColumnMvp.View>(), ProjectCo
                 popupMenu.inflate(R.menu.project_card_menu)
                 popupMenu.menu.findItem(R.id.share).isVisible = !item.contentUrl.isNullOrBlank()
                 popupMenu.menu.findItem(R.id.copy).isVisible = !item.contentUrl.isNullOrBlank()
-                popupMenu.menu.findItem(R.id.edit).isVisible = it.isOwner() && item.note.isNullOrBlank()
-                popupMenu.menu.findItem(R.id.delete).isVisible = it.isOwner() && item.note.isNullOrBlank()
+                popupMenu.menu.findItem(R.id.edit).isVisible = it.isOwner() && !item.note.isNullOrBlank()
+                popupMenu.menu.findItem(R.id.delete).isVisible = it.isOwner() && !item.note.isNullOrBlank()
                 popupMenu.setOnMenuItemClickListener {
                     when (it.itemId) {
                         R.id.edit -> sendToView { it.onEditCard(item.note, position) }

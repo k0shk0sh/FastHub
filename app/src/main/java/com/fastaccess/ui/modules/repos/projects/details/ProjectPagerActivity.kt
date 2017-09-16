@@ -110,6 +110,7 @@ class ProjectPagerActivity : BaseActivity<ProjectPagerMvp.View, ProjectPagerPres
         } else {
             onInitPager(presenter.getColumns())
         }
+        toolbar?.subtitle = "${presenter.login}/${presenter.repoId}"
     }
 
     override fun onDeletePage(model: ProjectColumnModel) {

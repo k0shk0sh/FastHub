@@ -251,7 +251,7 @@
 
         <activity
             android:name="com.fastaccess.ui.modules.repos.projects.details.ProjectPagerActivity"
-            android:label="@string/projects"
+            android:label="@string/project"
             android:parentActivityName=".ui.modules.repos.RepoPagerActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
